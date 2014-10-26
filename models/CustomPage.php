@@ -10,6 +10,7 @@
  * @property string $icon
  * @property string $content
  * @property integer $sort_order
+ * @property integer $admin_only
  * @property string $navigation_class
  */
 class CustomPage extends HActiveRecord
@@ -51,7 +52,7 @@ class CustomPage extends HActiveRecord
         // will receive user inputs.
         return array(
             array('type, title, navigation_class', 'required'),
-            array('type, sort_order', 'numerical', 'integerOnly' => true),
+            array('type, sort_order, admin_only', 'numerical', 'integerOnly' => true),
             array('title, navigation_class', 'length', 'max' => 255),
             array('icon', 'length', 'max' => 100),
             array('content, url', 'safe'),
@@ -82,6 +83,7 @@ class CustomPage extends HActiveRecord
             'content' => 'Content',
             'url' => 'URL',
             'sort_order' => 'Sort Order',
+            'admin_only' => 'Only visible for admins',
             'navigation_class' => 'Navigation',
         );
     }
@@ -108,7 +110,7 @@ class CustomPage extends HActiveRecord
     {
         return array(
             self::NAV_CLASS_TOPNAV => Yii::t('CustomPagesModule.base', 'Top Navigation'),
-            self::NAV_CLASS_ACCOUNTNAV => Yii::t('CustomPagesModule.base', 'User Account Menu'),
+            self::NAV_CLASS_ACCOUNTNAV => Yii::t('CustomPagesModule.base', 'User Account Menu (Settings)'),
         );
     }
 

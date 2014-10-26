@@ -43,6 +43,31 @@ class CustomPagesEvents
     public static function onTopMenuInit($event)
     {
         foreach (CustomPage::model()->findAllByAttributes(array('navigation_class' => CustomPage::NAV_CLASS_TOPNAV)) as $page) {
+
+            // Admin only
+            if ($page->admin_only == 1 && !Yii::app()->user->isAdmin()) {
+                continue;
+            }
+
+            $event->sender->addItem(array(
+                'label' => $page->title,
+                'url' => Yii::app()->createUrl('//custom_pages/view', array('id' => $page->id)),
+                'target' => ($page->type == CustomPage::TYPE_LINK) ? '_blank' : '',
+                'icon' => '<i class="fa ' . $page->icon . '"></i>',
+                'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'custom_pages' && Yii::app()->controller->id == 'view' && Yii::app()->request->getParam('id') == $page->id),
+                'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
+            ));
+        }
+    }
+
+    public static function onAccountMenuInit($event)
+    {
+        foreach (CustomPage::model()->findAllByAttributes(array('navigation_class' => CustomPage::NAV_CLASS_ACCOUNTNAV)) as $page) {
+            // Admin only
+            if ($page->admin_only == 1 && !Yii::app()->user->isAdmin()) {
+                continue;
+            }
+
             $event->sender->addItem(array(
                 'label' => $page->title,
                 'url' => Yii::app()->createUrl('//custom_pages/view', array('id' => $page->id)),

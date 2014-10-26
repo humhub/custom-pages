@@ -11,6 +11,7 @@ Yii::app()->moduleManager->register(array(
     'events' => array(
         array('class' => 'AdminMenuWidget', 'event' => 'onInit', 'callback' => array('CustomPagesEvents', 'onAdminMenuInit')),
         array('class' => 'TopMenuWidget', 'event' => 'onInit', 'callback' => array('CustomPagesEvents', 'onTopMenuInit')),
+        array('class' => 'AccountMenuWidget', 'event' => 'onInit', 'callback' => array('CustomPagesEvents', 'onAccountMenuInit')),
     ),
 ));
 ?>

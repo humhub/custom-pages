@@ -62,14 +62,22 @@ class ViewController extends Controller
             throw new CHttpException('404', 'Could not find requested page');
         }
 
+        if  ($page->admin_only == 1 && !Yii::app()->user->isAdmin()) {
+            throw new CHttpException(403, 'Access denied!');
+        }
+
+        if ($page->navigation_class == CustomPage::NAV_CLASS_ACCOUNTNAV) {
+            $this->subLayout = "application.modules_core.user.views.account._layout";
+        }
+        
         if ($page->type == CustomPage::TYPE_HTML) {
             $this->render('html', array('html' => $page->content));
         } elseif ($page->type == CustomPage::TYPE_IFRAME) {
-            $this->render('iframe', array('url' => $page->content));
+            $this->render('iframe', array('url' => $page->content, 'navigationClass' => $page->navigation_class));
         } elseif ($page->type == CustomPage::TYPE_LINK) {
             $this->redirect($page->content);
         } elseif ($page->type == CustomPage::TYPE_MARKDOWN) {
-            $this->render('markdown', array('md' => $page->content));
+            $this->render('markdown', array('md' => $page->content, 'navigationClass' => $page->navigation_class));
         } else {
             throw new CHttpException('500', 'Invalid page type!');
         }

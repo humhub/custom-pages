@@ -45,7 +45,7 @@
         <div class="form-group">
             <?php echo $form->labelEx($page, 'sort_order'); ?>
             <?php echo $form->textField($page, 'sort_order', array('class' => 'form-control', 'placeholder' => Yii::t('CustomPages.views_admin_edit', 'Sort Order'))); ?>
-           <p class="help-block"><?php echo Yii::t('CustomPages.views_admin_edit', 'Default sort orders scheme: 100, 200, 300, ...'); ?></p>
+            <p class="help-block"><?php echo Yii::t('CustomPages.views_admin_edit', 'Default sort orders scheme: 100, 200, 300, ...'); ?></p>
 
         </div>
 
@@ -63,6 +63,13 @@
             </select>
         </div>
 
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <?php echo $form->checkBox($page, 'admin_only'); ?> <?php echo $page->getAttributeLabel('admin_only'); ?>
+                </label>
+            </div>
+        </div>        
 
         <?php echo CHtml::submitButton(Yii::t('CustomPages.views_admin_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
 

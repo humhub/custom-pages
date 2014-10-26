@@ -74,9 +74,9 @@ class AdminController extends Controller
             Yii::app()->end();
         }
 
-        Yii::app()->clientScript->registerCssFile($this->getModule()->getAssetsUrl().'/bootstrap-select.min.css');
-        Yii::app()->clientScript->registerScriptFile($this->getModule()->getAssetsUrl().'/bootstrap-select.min.js');
-        
+        Yii::app()->clientScript->registerCssFile($this->getModule()->getAssetsUrl() . '/bootstrap-select.min.css');
+        Yii::app()->clientScript->registerScriptFile($this->getModule()->getAssetsUrl() . '/bootstrap-select.min.js');
+
         if (isset($_POST['CustomPage'])) {
             $page->attributes = $_POST['CustomPage'];
 
@@ -89,6 +89,17 @@ class AdminController extends Controller
 
 
         $this->render('edit', array('page' => $page));
+    }
+
+    public function actionDelete()
+    {
+        $page = CustomPage::model()->findByPk(Yii::app()->request->getParam('id'));
+
+        if ($page !== null) {
+            $page->delete();
+        }
+
+        $this->redirect(Yii::app()->createUrl('//custom_pages/admin'));
     }
 
 }

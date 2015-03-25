@@ -1,9 +1,9 @@
 
 <div class="panel panel-default">
     <?php if (!$page->isNewRecord) : ?>
-        <div class="panel-heading"><?php echo Yii::t('CustomPages.views_admin_edit', '<strong>Edit</strong> page'); ?></div>
+        <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.views_admin_edit', '<strong>Edit</strong> page'); ?></div>
     <?php else: ?>
-        <div class="panel-heading"><?php echo Yii::t('CustomPages.views_admin_edit', '<strong>Create</strong> page'); ?></div>
+        <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.views_admin_edit', '<strong>Create</strong> page'); ?></div>
     <?php endif; ?>
     <div class="panel-body">
 
@@ -18,34 +18,34 @@
 
         <div class="form-group">
             <?php echo $form->labelEx($page, 'title'); ?>
-            <?php echo $form->textField($page, 'title', array('class' => 'form-control', 'placeholder' => Yii::t('CustomPages.views_admin_edit', 'Page title'))); ?>
+            <?php echo $form->textField($page, 'title', array('class' => 'form-control', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Page title'))); ?>
         </div>
 
         <div class="form-group">
             <?php echo $form->labelEx($page, 'type'); ?>
-            <?php echo $form->dropdownList($page, 'type', CustomPage::getPageTypes(), array('id' => 'page_type', 'class' => 'form-control', 'rows' => '5', 'placeholder' => Yii::t('CustomPages.views_admin_edit', 'Content'))); ?>
+            <?php echo $form->dropdownList($page, 'type', CustomPage::getPageTypes(), array('id' => 'page_type', 'class' => 'form-control', 'rows' => '5', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
         </div>
 
         <div class="form-group" id="content_field">
             <?php echo $form->labelEx($page, 'content'); ?>
-            <?php echo $form->textArea($page, 'content', array('class' => 'form-control', 'rows' => '5', 'placeholder' => Yii::t('CustomPages.views_admin_edit', 'Content'))); ?>
+            <?php echo $form->textArea($page, 'content', array('class' => 'form-control', 'rows' => '5', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
         </div>
 
         <div class="form-group" id="url_field">
             <?php echo $form->labelEx($page, 'url'); ?>
-            <?php echo $form->textField($page, 'url', array('class' => 'form-control', 'placeholder' => Yii::t('CustomPages.views_admin_edit', 'URL'))); ?>
+            <?php echo $form->textField($page, 'url', array('class' => 'form-control', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'URL'))); ?>
         </div>
 
 
         <div class="form-group">
             <?php echo $form->labelEx($page, 'navigation_class'); ?>
-            <?php echo $form->dropdownList($page, 'navigation_class', CustomPage::getNavigationClasses(), array('class' => 'form-control', 'rows' => '5', 'placeholder' => Yii::t('CustomPages.views_admin_edit', 'Content'))); ?>
+            <?php echo $form->dropdownList($page, 'navigation_class', CustomPage::getNavigationClasses(), array('class' => 'form-control', 'rows' => '5', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
         </div>
 
         <div class="form-group">
             <?php echo $form->labelEx($page, 'sort_order'); ?>
-            <?php echo $form->textField($page, 'sort_order', array('class' => 'form-control', 'placeholder' => Yii::t('CustomPages.views_admin_edit', 'Sort Order'))); ?>
-            <p class="help-block"><?php echo Yii::t('CustomPages.views_admin_edit', 'Default sort orders scheme: 100, 200, 300, ...'); ?></p>
+            <?php echo $form->textField($page, 'sort_order', array('class' => 'form-control', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Sort Order'))); ?>
+            <p class="help-block"><?php echo Yii::t('CustomPagesModule.views_admin_edit', 'Default sort orders scheme: 100, 200, 300, ...'); ?></p>
 
         </div>
 
@@ -69,13 +69,13 @@
                     <?php echo $form->checkBox($page, 'admin_only'); ?> <?php echo $page->getAttributeLabel('admin_only'); ?>
                 </label>
             </div>
-        </div>        
+        </div>
 
-        <?php echo CHtml::submitButton(Yii::t('CustomPages.views_admin_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton(Yii::t('CustomPagesModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
 
         <?php
         if (!$page->isNewRecord) {
-            echo CHtml::link(Yii::t('CustomPages.views_admin_edit', 'Delete'), $this->createUrl('//custom_pages/admin/delete', array('id' => $page->id)), array('class' => 'btn btn-danger'));
+            echo CHtml::link(Yii::t('CustomPagesModule.views_admin_edit', 'Delete'), $this->createUrl('//custom_pages/admin/delete', array('id' => $page->id)), array('class' => 'btn btn-danger'));
         }
         ?>
 
@@ -103,4 +103,4 @@
     });
 
 
-</script>    
+</script>

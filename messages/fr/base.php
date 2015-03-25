@@ -11,6 +11,6 @@ return array (
   'Sort Order' => 'Ordre de tri',
   'Title' => 'Titre',
   'Top Navigation' => '',
-  'Type' => '',
+  'Type' => 'Type',
   'User Account Menu (Settings)' => '',
 );

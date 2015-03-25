@@ -9,7 +9,7 @@ return array (
   'Navigation' => '',
   'No custom pages created yet!' => '',
   'Sort Order' => '',
-  'Title' => 'Títol',
+  'Title' => 'Titel',
   'Top Navigation' => '',
   'Type' => '',
   'User Account Menu (Settings)' => '',

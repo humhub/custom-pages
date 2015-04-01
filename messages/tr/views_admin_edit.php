@@ -1,12 +1,12 @@
 <?php
 return array (
-  '<strong>Create</strong> page' => '',
-  '<strong>Edit</strong> page' => '',
-  'Content' => '',
+  '<strong>Create</strong> page' => '<strong>Sayfa</strong> oluştur',
+  '<strong>Edit</strong> page' => '<strong>Sayfa</strong> düzenle',
+  'Content' => 'İçerik',
   'Default sort orders scheme: 100, 200, 300, ...' => '',
   'Delete' => 'Sil',
-  'Page title' => '',
+  'Page title' => 'Sayfa Başlık',
   'Save' => 'Kaydet',
   'Sort Order' => '',
-  'URL' => '',
+  'URL' => 'Url',
 );

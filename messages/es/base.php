@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Create new Page' => '',
+  'Create new Page' => 'Crear nueva página',
   'Custom Pages' => 'Páginas personalizadas',
   'HTML' => 'HTML',
   'IFrame' => 'IFrame',
@@ -8,9 +8,9 @@ return array (
   'MarkDown' => 'MarkDown',
   'Navigation' => 'Navegación',
   'No custom pages created yet!' => '¡No se han creado páginas personalizadas todavía!',
-  'Sort Order' => '',
+  'Sort Order' => 'Orden de clasificación',
   'Title' => 'Título',
-  'Top Navigation' => '',
+  'Top Navigation' => 'Navegación superior',
   'Type' => 'Tipo',
-  'User Account Menu (Settings)' => '',
+  'User Account Menu (Settings)' => 'Menú de cuenta de usuario (ajustes)',
 );

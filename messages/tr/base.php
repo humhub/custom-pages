@@ -8,7 +8,7 @@ return array (
   'MarkDown' => '',
   'Navigation' => 'Navigasyon',
   'No custom pages created yet!' => '',
-  'Sort Order' => '',
+  'Sort Order' => 'Sıralama',
   'Title' => 'Başlık',
   'Top Navigation' => '',
   'Type' => 'Tip',

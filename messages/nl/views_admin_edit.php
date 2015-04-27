@@ -1,12 +1,12 @@
 <?php
 return array (
-  '<strong>Create</strong> page' => '',
-  '<strong>Edit</strong> page' => '',
-  'Content' => '',
-  'Default sort orders scheme: 100, 200, 300, ...' => '',
+  '<strong>Create</strong> page' => '<strong>Maak</strong> pagina',
+  '<strong>Edit</strong> page' => '<strong>Bewerk</strong> pagina',
+  'Content' => 'Inhoud',
+  'Default sort orders scheme: 100, 200, 300, ...' => 'Standaard sorteervolgorde: 100, 200, 300, ...',
   'Delete' => 'Verwijder',
-  'Page title' => '',
+  'Page title' => 'Paginatitel',
   'Save' => 'Bewaar',
-  'Sort Order' => '',
-  'URL' => '',
+  'Sort Order' => 'Sorteervolgorde',
+  'URL' => 'URL',
 );

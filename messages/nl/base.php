@@ -8,7 +8,7 @@ return array (
   'MarkDown' => 'Markdown',
   'Navigation' => 'Navigatie',
   'No custom pages created yet!' => 'Geen aangepaste pagina\'s tot nu toe!',
-  'Sort Order' => '',
+  'Sort Order' => 'Sorteervolgorde',
   'Title' => 'Titel',
   'Top Navigation' => 'Hoofd navigatie',
   'Type' => 'Type',

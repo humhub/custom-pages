@@ -1,4 +1,12 @@
+<?php
 
+use yii\helpers\Html;
+use humhub\compat\CActiveForm;
+use module\custom_pages\models\CustomPage;
+use module\custom_pages\Assets;
+
+Assets::register($this);
+?>
 <div class="panel panel-default">
     <?php if (!$page->isNewRecord) : ?>
         <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.views_admin_edit', '<strong>Edit</strong> page'); ?></div>
@@ -7,12 +15,7 @@
     <?php endif; ?>
     <div class="panel-body">
 
-        <?php
-        $form = $this->beginWidget('HActiveForm', array(
-            'id' => 'page-edit-form',
-            'enableAjaxValidation' => false,
-        ));
-        ?>
+        <?php $form = CActiveForm::begin(); ?>
 
         <?php echo $form->errorSummary($page); ?>
 
@@ -71,15 +74,15 @@
             </div>
         </div>
 
-        <?php echo CHtml::submitButton(Yii::t('CustomPagesModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
+        <?php echo Html::submitButton(Yii::t('CustomPagesModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
 
         <?php
         if (!$page->isNewRecord) {
-            echo CHtml::link(Yii::t('CustomPagesModule.views_admin_edit', 'Delete'), $this->createUrl('//custom_pages/admin/delete', array('id' => $page->id)), array('class' => 'btn btn-danger'));
+            echo Html::a(Yii::t('CustomPagesModule.views_admin_edit', 'Delete'), ['/custom_pages/admin/delete', 'id' => $page->id], array('class' => 'btn btn-danger'));
         }
         ?>
 
-        <?php $this->endWidget(); ?>
+        <?php CActiveForm::end(); ?>
 
     </div>
 </div>
@@ -92,7 +95,7 @@
         $("#url_field").hide();
     }
 
-    $("#page_type").change(function() {
+    $("#page_type").change(function () {
         if ($("#page_type").val() == '1' || $("#page_type").val() == '3') {
             $("#content_field").hide();
             $("#url_field").show();

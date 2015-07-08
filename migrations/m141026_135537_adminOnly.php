@@ -1,6 +1,8 @@
 <?php
 
-class m141026_135537_adminOnly extends EDbMigration
+use humhub\components\Migration;
+
+class m141026_135537_adminOnly extends Migration
 {
 
     public function up()

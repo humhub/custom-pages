@@ -1,6 +1,8 @@
 <?php
 
-class uninstall extends ZDbMigration
+use yii\db\Migration;
+
+class uninstall extends Migration
 {
 
     public function up()

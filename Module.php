@@ -1,6 +1,8 @@
 <?php
 
-class CustomPagesModule extends HWebModule
+namespace module\custom_pages;
+
+class Module extends \humhub\components\Module
 {
 
     public $subLayout = "application.modules_core.admin.views._layout";

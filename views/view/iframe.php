@@ -1,13 +1,6 @@
 <?php
 
-// save url to standard loader graphic
-$loader_url = Yii::app()->baseUrl . "/img/loader.gif";
-
-// check if there is a themed loader graphic and replace the url
-if (file_exists(Yii::getPathOfAlias('webroot') . "/themes/" . Yii::app()->theme->name . "/img/loader.gif")) {
-    $loader_url = Yii::app()->theme->baseUrl . "/img/loader.gif";
-}
-
+use module\custom_pages\models\CustomPage;
 ?>
 
 <?php if ($navigationClass == CustomPage::NAV_CLASS_ACCOUNTNAV): ?>
@@ -17,7 +10,7 @@ if (file_exists(Yii::getPathOfAlias('webroot') . "/themes/" . Yii::app()->theme-
     <style>
         #iframepage {
             border: none;
-            background: url('<?php echo $loader_url; ?>') center center no-repeat;
+            background: url('<?php echo Yii::getAlias("@web/img/loader.gif"); ?>') center center no-repeat;
         }
     </style>
 
@@ -46,7 +39,7 @@ if (file_exists(Yii::getPathOfAlias('webroot') . "/themes/" . Yii::app()->theme-
             left: 0;
             top: 98px;
             border: none;
-            background: url('<?php echo $loader_url; ?>') center center no-repeat;
+            background: url('<?php echo Yii::getAlias("@web/img/loader.gif"); ?>') center center no-repeat;
         }
     </style>
 

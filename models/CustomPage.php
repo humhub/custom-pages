@@ -1,5 +1,10 @@
 <?php
 
+namespace module\custom_pages\models;
+
+use Yii;
+use humhub\components\ActiveRecord;
+
 /**
  * This is the model class for table "custom_pages_page".
  *
@@ -13,7 +18,7 @@
  * @property integer $admin_only
  * @property string $navigation_class
  */
-class CustomPage extends HActiveRecord
+class CustomPage extends ActiveRecord
 {
 
     public $url;
@@ -26,47 +31,21 @@ class CustomPage extends HActiveRecord
     const TYPE_MARKDOWN = '4';
 
     /**
-     * Returns the static model of the specified AR class.
-     * @param string $className active record class name.
-     * @return CustomPage the static model class
-     */
-    public static function model($className = __CLASS__)
-    {
-        return parent::model($className);
-    }
-
-    /**
      * @return string the associated database table name
      */
-    public function tableName()
+    public static function tableName()
     {
         return 'custom_pages_page';
     }
 
-    /**
-     * @return array validation rules for model attributes.
-     */
     public function rules()
     {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
-            array('type, title, navigation_class', 'required'),
-            array('type, sort_order, admin_only', 'numerical', 'integerOnly' => true),
-            array('title, navigation_class', 'length', 'max' => 255),
-            array('icon', 'length', 'max' => 100),
-            array('content, url', 'safe'),
-        );
-    }
-
-    /**
-     * @return array relational rules.
-     */
-    public function relations()
-    {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return array(
+            [['type', 'title', 'navigation_class'], 'required'],
+            [['type', 'sort_order', 'admin_only'], 'integer'],
+            [['title', 'navigation_class'], 'string', 'max' => 255],
+            [['icon'], 'string', 'max' => 100],
+            [['content', 'url'], 'safe'],
         );
     }
 
@@ -88,13 +67,13 @@ class CustomPage extends HActiveRecord
         );
     }
 
-    public function beforeSave()
+    public function beforeSave($insert)
     {
         if ($this->type == self::TYPE_IFRAME || $this->type == self::TYPE_LINK) {
             $this->content = $this->url;
         }
 
-        return parent::beforeSave();
+        return parent::beforeSave($insert);
     }
 
     public function afterFind()

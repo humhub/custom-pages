@@ -2,6 +2,8 @@
 
 namespace module\custom_pages;
 
+use module\custom_pages\models\CustomPage;
+
 class Module extends \humhub\components\Module
 {
 
@@ -16,7 +18,7 @@ class Module extends \humhub\components\Module
     {
         if (parent::disable()) {
 
-            foreach (CustomPage::model()->findAll() as $entry) {
+            foreach (CustomPage::find()->all() as $entry) {
                 $entry->delete();
             }
 

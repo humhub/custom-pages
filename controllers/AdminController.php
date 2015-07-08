@@ -10,7 +10,7 @@ use module\custom_pages\models\CustomPage;
  *
  * @author luke
  */
-class AdminController extends \humhub\modules\admin\components\AdminController
+class AdminController extends \humhub\modules\admin\components\Controller
 {
 
     public function actionIndex()

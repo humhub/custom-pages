@@ -1,6 +1,6 @@
 <?php
 
-namespace module\custom_pages\models;
+namespace humhub\modules\custom_pages\models;
 
 use Yii;
 use humhub\components\ActiveRecord;

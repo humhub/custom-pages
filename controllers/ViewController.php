@@ -1,11 +1,11 @@
 <?php
 
-namespace module\custom_pages\controllers;
+namespace humhub\modules\custom_pages\controllers;
 
 use Yii;
 use yii\web\HttpException;
 use humhub\components\Controller;
-use module\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\models\CustomPage;
 
 /**
  * Description of ViewController

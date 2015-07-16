@@ -1,10 +1,10 @@
 <?php
 
-namespace module\custom_pages;
+namespace humhub\modules\custom_pages;
 
 use Yii;
 use yii\helpers\Url;
-use module\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\models\CustomPage;
 
 /**
  * CustomPagesEvents

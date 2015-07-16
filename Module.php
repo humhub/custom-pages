@@ -1,8 +1,8 @@
 <?php
 
-namespace module\custom_pages;
+namespace humhub\modules\custom_pages;
 
-use module\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\models\CustomPage;
 
 class Module extends \humhub\components\Module
 {

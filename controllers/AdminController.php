@@ -1,9 +1,9 @@
 <?php
 
-namespace module\custom_pages\controllers;
+namespace humhub\modules\custom_pages\controllers;
 
 use Yii;
-use module\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\models\CustomPage;
 
 /**
  * AdminController

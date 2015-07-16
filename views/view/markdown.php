@@ -1,6 +1,6 @@
 <?php
 
-use module\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\models\CustomPage;
 ?>
 
 <?php if ($navigationClass == CustomPage::NAV_CLASS_ACCOUNTNAV): ?>

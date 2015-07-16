@@ -2,8 +2,8 @@
 
 use yii\helpers\Html;
 use humhub\compat\CActiveForm;
-use module\custom_pages\models\CustomPage;
-use module\custom_pages\Assets;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\Assets;
 
 Assets::register($this);
 ?>

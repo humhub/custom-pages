@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use module\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\models\CustomPage;
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.base', 'Custom Pages'); ?></div>

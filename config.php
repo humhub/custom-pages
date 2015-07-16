@@ -1,17 +1,17 @@
 <?php
 
-use module\custom_pages\Events;
 use humhub\modules\user\widgets\AccountMenu;
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\widgets\TopMenu;
 
 return [
     'id' => 'custom_pages',
-    'class' => 'module\custom_pages\Module',
+    'class' => 'humhub\modules\custom_pages\Module',
+    'namespace' => 'humhub\modules\custom_pages',
     'events' => [
-        ['class' => AdminMenu::className(), 'event' => AdminMenu::EVENT_INIT, 'callback' => [Events::className(), 'onAdminMenuInit']],
-        ['class' => TopMenu::className(), 'event' => TopMenu::EVENT_INIT, 'callback' => [Events::className(), 'onTopMenuInit']],
-        ['class' => AccountMenu::className(), 'event' => AccountMenu::EVENT_INIT, 'callback' => [Events::className(), 'onAccountMenuInit']],
+        ['class' => AdminMenu::className(), 'event' => AdminMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onAdminMenuInit']],
+        ['class' => TopMenu::className(), 'event' => TopMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onTopMenuInit']],
+        ['class' => AccountMenu::className(), 'event' => AccountMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onAccountMenuInit']],
     ],
 ];
 ?>

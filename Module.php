@@ -2,30 +2,30 @@
 
 namespace humhub\modules\custom_pages;
 
+use yii\helpers\Url;
 use humhub\modules\custom_pages\models\CustomPage;
 
 class Module extends \humhub\components\Module
 {
 
-    public $subLayout = "application.modules_core.admin.views._layout";
-
+    /**
+     * @inheritdoc
+     */
     public function getConfigUrl()
     {
-        return Yii::app()->createUrl('//custom_pages/admin');
+        return Url::to(['/custom_pages/admin']);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function disable()
     {
-        if (parent::disable()) {
+        parent::disable();
 
-            foreach (CustomPage::find()->all() as $entry) {
-                $entry->delete();
-            }
-
-            return true;
+        foreach (CustomPage::find()->all() as $entry) {
+            $entry->delete();
         }
-
-        return false;
     }
 
 }

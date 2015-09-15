@@ -31,7 +31,7 @@ Assets::register($this);
 
         <div class="form-group" id="content_field">
             <?php echo $form->labelEx($page, 'content'); ?>
-            <?php echo $form->textArea($page, 'content', array('class' => 'form-control', 'rows' => '5', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
+            <?php echo $form->textArea($page, 'content', array('class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
         </div>
 
         <div class="form-group" id="url_field">

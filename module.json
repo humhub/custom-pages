@@ -3,7 +3,7 @@
     "name": "Custom Pages",
     "description": "Allows admins to add custom pages (html or markdown) or external links to various navigations (e.g. top navigation, account menu).",
     "keywords": ["pages", "custom", "iframe", "markdown", "link", "navigation"],
-    "version": "0.2.0",
+    "version": "0.2.1",
     "humhub": {
         "minVersion": "0.20"
     }

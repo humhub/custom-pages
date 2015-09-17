@@ -7,10 +7,10 @@ return array (
   'Link' => 'Bağlantı',
   'MarkDown' => '',
   'Navigation' => 'Navigasyon',
-  'No custom pages created yet!' => '',
+  'No custom pages created yet!' => 'Özel sayfalar henüz oluşturulmadı!',
   'Sort Order' => 'Sıralama',
   'Title' => 'Başlık',
-  'Top Navigation' => '',
+  'Top Navigation' => 'En Navigasyon',
   'Type' => 'Tip',
   'User Account Menu (Settings)' => 'Kullanıcı Hesap Menüsü (Ayarlar)',
 );

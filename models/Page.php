@@ -18,13 +18,14 @@ use humhub\components\ActiveRecord;
  * @property integer $admin_only
  * @property string $navigation_class
  */
-class CustomPage extends ActiveRecord
+class Page extends ActiveRecord
 {
 
     public $url;
 
     const NAV_CLASS_TOPNAV = 'TopMenuWidget';
     const NAV_CLASS_ACCOUNTNAV = 'AccountMenuWidget';
+    
     const TYPE_LINK = '1';
     const TYPE_HTML = '2';
     const TYPE_IFRAME = '3';

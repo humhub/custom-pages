@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use humhub\compat\CActiveForm;
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\Assets;
 
 Assets::register($this);
@@ -25,37 +25,24 @@ Assets::register($this);
             <?php echo $types[$page->type]; ?>
         </div>
 
-
         <div class="form-group">
             <?php echo $form->labelEx($page, 'title'); ?>
             <?php echo $form->textField($page, 'title', array('class' => 'form-control', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Page title'))); ?>
         </div>
 
-        <?php if ($page->type == Page::TYPE_HTML): ?>
-            <div class="form-group" id="content_field">
-                <?php echo $form->labelEx($page, 'content'); ?>
-                <?php echo $form->textArea($page, 'content', array('class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
-            </div>
-        <?php elseif ($page->type == Page::TYPE_MARKDOWN): ?>
-            <?php echo $form->textArea($page, 'content', array('id'=>'markdownField', 'class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
+        <?php if ($page->type == ContainerPage::TYPE_MARKDOWN): ?>
+            <?php echo $form->textArea($page, 'page_content', array('id' => 'markdownField', 'class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
             <?php echo \humhub\widgets\MarkdownEditor::widget(['fieldId' => 'markdownField']); ?>
-        <?php elseif ($page->type == Page::TYPE_LINK || $page->type == Page::TYPE_IFRAME): ?>
-            <div class="form-group" id="url_field">
+        <?php elseif ($page->type == ContainerPage::TYPE_LINK || $page->type == ContainerPage::TYPE_IFRAME): ?>
+            <div class="form-group">
                 <?php echo $form->labelEx($page, 'url'); ?>
                 <?php echo $form->textField($page, 'url', array('class' => 'form-control', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'URL'))); ?>
             </div>
         <?php endif; ?>
-
-        <div class="form-group">
-            <?php echo $form->labelEx($page, 'navigation_class'); ?>
-            <?php echo $form->dropdownList($page, 'navigation_class', Page::getNavigationClasses(), array('class' => 'form-control', 'rows' => '5', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
-        </div>
-
         <div class="form-group">
             <?php echo $form->labelEx($page, 'sort_order'); ?>
             <?php echo $form->textField($page, 'sort_order', array('class' => 'form-control', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Sort Order'))); ?>
             <p class="help-block"><?php echo Yii::t('CustomPagesModule.views_admin_edit', 'Default sort orders scheme: 100, 200, 300, ...'); ?></p>
-
         </div>
 
         <?php
@@ -65,19 +52,11 @@ Assets::register($this);
         <div class="form-group">
             <?php echo $form->labelEx($page, 'icon'); ?>
 
-            <select class='selectpicker form-control' name="Page[icon]">
+            <select class='selectpicker form-control' name="ContainerPage[icon]">
                 <?php foreach ($faIcons as $icon): ?>
                     <option data-content="<i class='fa  <?php echo $icon; ?>'></i>" value="<?php echo $icon; ?>" <?php if ($page->icon == $icon): ?>selected='selected'<?php endif; ?>><?php echo $icon; ?></option>
                 <?php endforeach; ?>
             </select>
-        </div>
-
-        <div class="form-group">
-            <div class="checkbox">
-                <label>
-                    <?php echo $form->checkBox($page, 'admin_only'); ?> <?php echo $page->getAttributeLabel('admin_only'); ?>
-                </label>
-            </div>
         </div>
 
         <?php echo Html::submitButton(Yii::t('CustomPagesModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary')); ?>

@@ -1,9 +1,9 @@
 <?php
 
-use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\models\Page;
 ?>
 
-<?php if ($navigationClass == CustomPage::NAV_CLASS_ACCOUNTNAV): ?>
+<?php if ($navigationClass == Page::NAV_CLASS_ACCOUNTNAV): ?>
 
     <iframe id="iframepage" style="width:100%; height: 400px;" src="<?php echo $url; ?>"></iframe>
 

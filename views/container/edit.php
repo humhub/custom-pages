@@ -58,7 +58,15 @@ Assets::register($this);
                 <?php endforeach; ?>
             </select>
         </div>
-
+        
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <?php echo $form->checkBox($page, 'in_new_window'); ?> <?php echo $page->getAttributeLabel('in_new_window'); ?>
+                </label>
+            </div>
+        </div>
+        
         <?php echo Html::submitButton(Yii::t('CustomPagesModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
 
         <?php

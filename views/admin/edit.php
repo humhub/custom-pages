@@ -37,7 +37,7 @@ Assets::register($this);
                 <?php echo $form->textArea($page, 'content', array('class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
             </div>
         <?php elseif ($page->type == Page::TYPE_MARKDOWN): ?>
-            <?php echo $form->textArea($page, 'content', array('id'=>'markdownField', 'class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
+            <?php echo $form->textArea($page, 'content', array('id' => 'markdownField', 'class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
             <?php echo \humhub\widgets\MarkdownEditor::widget(['fieldId' => 'markdownField']); ?>
         <?php elseif ($page->type == Page::TYPE_LINK || $page->type == Page::TYPE_IFRAME): ?>
             <div class="form-group" id="url_field">
@@ -79,6 +79,15 @@ Assets::register($this);
                 </label>
             </div>
         </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <?php echo $form->checkBox($page, 'in_new_window'); ?> <?php echo $page->getAttributeLabel('in_new_window'); ?>
+                </label>
+            </div>
+        </div>
+
 
         <?php echo Html::submitButton(Yii::t('CustomPagesModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
 

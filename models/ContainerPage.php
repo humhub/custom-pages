@@ -13,6 +13,7 @@ use Yii;
  * @property string $title
  * @property string $icon
  * @property string $page_content
+ * @property integer $in_new_window
  * @property integer $sort_order
  */
 class ContainerPage extends \humhub\modules\content\components\ContentActiveRecord implements \humhub\modules\search\interfaces\Searchable
@@ -43,7 +44,7 @@ class ContainerPage extends \humhub\modules\content\components\ContentActiveReco
     {
         return array(
             [['type', 'title'], 'required'],
-            [['type', 'sort_order'], 'integer'],
+            [['type', 'sort_order', 'in_new_window'], 'integer'],
             [['title'], 'string', 'max' => 255],
             [['icon'], 'string', 'max' => 100],
             [['page_content', 'url'], 'safe'],
@@ -64,6 +65,7 @@ class ContainerPage extends \humhub\modules\content\components\ContentActiveReco
             'url' => 'URL',
             'sort_order' => 'Sort Order',
             'admin_only' => 'Only visible for admins',
+            'in_new_window' => 'Open in new window',
             'navigation_class' => 'Navigation',
         );
     }

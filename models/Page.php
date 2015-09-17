@@ -16,6 +16,7 @@ use humhub\components\ActiveRecord;
  * @property string $content
  * @property integer $sort_order
  * @property integer $admin_only
+ * @property integer $in_new_window
  * @property string $navigation_class
  */
 class Page extends ActiveRecord
@@ -25,7 +26,6 @@ class Page extends ActiveRecord
 
     const NAV_CLASS_TOPNAV = 'TopMenuWidget';
     const NAV_CLASS_ACCOUNTNAV = 'AccountMenuWidget';
-    
     const TYPE_LINK = '1';
     const TYPE_HTML = '2';
     const TYPE_IFRAME = '3';
@@ -43,7 +43,7 @@ class Page extends ActiveRecord
     {
         return array(
             [['type', 'title', 'navigation_class'], 'required'],
-            [['type', 'sort_order', 'admin_only'], 'integer'],
+            [['type', 'sort_order', 'admin_only', 'in_new_window'], 'integer'],
             [['title', 'navigation_class'], 'string', 'max' => 255],
             [['icon'], 'string', 'max' => 100],
             [['content', 'url'], 'safe'],
@@ -64,6 +64,7 @@ class Page extends ActiveRecord
             'url' => 'URL',
             'sort_order' => 'Sort Order',
             'admin_only' => 'Only visible for admins',
+            'in_new_window' => 'Open in new window',
             'navigation_class' => 'Navigation',
         );
     }

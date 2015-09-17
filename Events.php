@@ -34,14 +34,10 @@ class Events extends \yii\base\Object
 
             $pages = ContainerPage::find()->contentContainer($space)->all();
             foreach ($pages as $page) {
-                $target = "_self";
-                if ($page->type == ContainerPage::TYPE_LINK) {
-                    $target = "_blank";
-                }
                 $event->sender->addItem(array(
                     'label' => \yii\helpers\Html::encode($page->title),
                     'group' => 'modules',
-                    'target' => $target,
+                    'target' => ($page->in_new_window) ? '_blank' : '',
                     'url' => $space->createUrl('/custom_pages/container/view', ['id' => $page->id]),
                     'icon' => '<i class="fa ' . \yii\helpers\Html::encode($page->icon) . '"></i>',
                     'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' && Yii::$app->controller->id == 'container' && Yii::$app->controller->action->id == 'view' && Yii::$app->request->get('id') == $page->id),
@@ -74,16 +70,10 @@ class Events extends \yii\base\Object
                 continue;
             }
 
-            $target = "_self";
-            if ($page->type == Page::TYPE_LINK) {
-                $target = "_blank";
-            }
-
             $event->sender->addItem(array(
                 'label' => $page->title,
                 'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
-                'target' => $target,
-                'target' => ($page->type == Page::TYPE_LINK) ? '_blank' : '',
+                'target' => ($page->in_new_window) ? '_blank' : '',
                 'icon' => '<i class="fa ' . $page->icon . '"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' && Yii::$app->controller->id == 'view' && Yii::$app->request->get('id') == $page->id),
                 'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
@@ -102,7 +92,7 @@ class Events extends \yii\base\Object
             $event->sender->addItem(array(
                 'label' => $page->title,
                 'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
-                'target' => ($page->type == Page::TYPE_LINK) ? '_blank' : '',
+                'target' => ($page->in_new_window) ? '_blank' : '',
                 'icon' => '<i class="fa ' . $page->icon . '"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' && Yii::$app->controller->id == 'view' && Yii::$app->request->get('id') == $page->id),
                 'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,

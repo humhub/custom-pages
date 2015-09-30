@@ -32,13 +32,17 @@ class ViewController extends Controller
         }
 
         if ($page->type == Page::TYPE_HTML) {
-            return $this->render('html', array('html' => $page->content));
+            return $this->render('html', array('html' => $page->content, 'title' => $page->title));
         } elseif ($page->type == Page::TYPE_IFRAME) {
             return $this->render('iframe', array('url' => $page->content, 'navigationClass' => $page->navigation_class));
         } elseif ($page->type == Page::TYPE_LINK) {
             return $this->redirect($page->content);
         } elseif ($page->type == Page::TYPE_MARKDOWN) {
-            return $this->render('markdown', array('md' => $page->content, 'navigationClass' => $page->navigation_class));
+            return $this->render('markdown', array(
+                'md' => $page->content,
+                'navigationClass' => $page->navigation_class,
+                'title' => $page->title
+            ));
         } else {
             throw new HttpException('500', 'Invalid page type!');
         }

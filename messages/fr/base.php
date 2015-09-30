@@ -13,4 +13,5 @@ return array (
   'Top Navigation' => '',
   'Type' => 'Type',
   'User Account Menu (Settings)' => '',
+  'Without adding to navigation (Direct link)' => '',
 );

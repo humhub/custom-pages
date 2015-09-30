@@ -13,4 +13,5 @@ return array (
   'Top Navigation' => 'En Navigasyon',
   'Type' => 'Tip',
   'User Account Menu (Settings)' => 'Kullanıcı Hesap Menüsü (Ayarlar)',
+  'Without adding to navigation (Direct link)' => '',
 );

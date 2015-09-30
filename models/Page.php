@@ -26,6 +26,7 @@ class Page extends ActiveRecord
 
     const NAV_CLASS_TOPNAV = 'TopMenuWidget';
     const NAV_CLASS_ACCOUNTNAV = 'AccountMenuWidget';
+    const NAV_CLASS_EMPTY = 'WithOutMenu';
     const TYPE_LINK = '1';
     const TYPE_HTML = '2';
     const TYPE_IFRAME = '3';
@@ -92,6 +93,7 @@ class Page extends ActiveRecord
         return array(
             self::NAV_CLASS_TOPNAV => Yii::t('CustomPagesModule.base', 'Top Navigation'),
             self::NAV_CLASS_ACCOUNTNAV => Yii::t('CustomPagesModule.base', 'User Account Menu (Settings)'),
+            self::NAV_CLASS_EMPTY => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)'),
         );
     }
 

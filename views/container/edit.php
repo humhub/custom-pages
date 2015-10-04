@@ -58,7 +58,7 @@ Assets::register($this);
                 <?php endforeach; ?>
             </select>
         </div>
-        
+
         <div class="form-group">
             <div class="checkbox">
                 <label>
@@ -66,12 +66,12 @@ Assets::register($this);
                 </label>
             </div>
         </div>
-        
+
         <?php echo Html::submitButton(Yii::t('CustomPagesModule.views_admin_edit', 'Save'), array('class' => 'btn btn-primary')); ?>
 
         <?php
         if (!$page->isNewRecord) {
-            echo Html::a(Yii::t('CustomPagesModule.views_admin_edit', 'Delete'), ['/custom_pages/admin/delete', 'id' => $page->id], array('class' => 'btn btn-danger'));
+            echo Html::a(Yii::t('CustomPagesModule.views_admin_edit', 'Delete'), $page->content->container->createUrl('delete', ['id' => $page->id]), array('class' => 'btn btn-danger', 'data-confirm' => 'Are you sure?'));
         }
         ?>
 

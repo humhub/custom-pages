@@ -13,4 +13,5 @@ return array (
   'Top Navigation' => 'منوی بالا',
   'Type' => 'تایپ',
   'User Account Menu (Settings)' => 'منوی حساب کاربری (تنظیمات)',
+  'Without adding to navigation (Direct link)' => '',
 );

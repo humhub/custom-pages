@@ -13,4 +13,5 @@ return array (
   'Top Navigation' => 'Barra de navegació',
   'Type' => 'Tipus',
   'User Account Menu (Settings)' => 'Menu del compte d\'usuari (Configuració)',
+  'Without adding to navigation (Direct link)' => '',
 );

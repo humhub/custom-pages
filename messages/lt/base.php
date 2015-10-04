@@ -13,4 +13,5 @@ return array (
   'Top Navigation' => 'Top navigacija',
   'Type' => 'Tipas',
   'User Account Menu (Settings)' => 'Vartotojo paskyros meniu (nustatymai)',
+  'Without adding to navigation (Direct link)' => '',
 );

@@ -13,4 +13,5 @@ return array (
   'Top Navigation' => 'Лучшие',
   'Type' => 'Тип',
   'User Account Menu (Settings)' => 'Аккаунт пользователя (настройки)',
+  'Without adding to navigation (Direct link)' => 'Без добавления в навигацию (Прямая ссылка)',
 );

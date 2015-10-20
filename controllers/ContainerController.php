@@ -70,6 +70,7 @@ class ContainerController extends ContentContainerController
             $page->content->container = $this->contentContainer;
             $page->type = (int) Yii::$app->request->get('type');
         }
+        $page->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
 
         if ($page->load(Yii::$app->request->post()) && $page->validate() && $page->save()) {
             \humhub\modules\file\models\File::attachPrecreated($page, Yii::$app->request->post('fileUploaderHiddenGuidField'));

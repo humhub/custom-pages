@@ -50,7 +50,7 @@ class Events extends \yii\base\Object
     public static function onSpaceAdminMenuInit($event)
     {
         $space = $event->sender->space;
-        if ($space->isModuleEnabled('custom_pages') && $space->isAdmin()) {
+        if ($space->isModuleEnabled('custom_pages') && $space->isAdmin() && $space->isMember()) {
             $event->sender->addItem(array(
                 'label' => Yii::t('CustomPagesModule.base', 'Custom Pages'),
                 'group' => 'admin',

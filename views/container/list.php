@@ -25,7 +25,7 @@ use humhub\modules\custom_pages\models\ContainerPage;
                 </tr>
                 <?php foreach ($pages as $page): ?>
                     <tr>
-                        <td><i class="fa <?php echo $page->icon; ?>"></i> <?php echo Html::a(Html::encode($page->title), ['edit', 'id' => $page->id]); ?></td>
+                        <td><i class="fa <?php echo $page->icon; ?>"></i> <?php echo Html::a(Html::encode($page->title), $container->createUrl('edit', ['id' => $page->id])); ?></td>
                         <td><?php echo $types[$page->type]; ?></td>
                         <td><?php echo (int) $page->sort_order; ?></td>
                         <td><?php echo Html::a('Edit', $container->createUrl('edit', ['id' => $page->id]), array('class' => 'btn btn-primary btn-xs pull-right')); ?></td>

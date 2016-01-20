@@ -1,12 +1,12 @@
 <?php
 return array (
-  '<strong>Create</strong> page' => '',
-  '<strong>Edit</strong> page' => '',
-  'Content' => '',
-  'Default sort orders scheme: 100, 200, 300, ...' => '',
+  '<strong>Create</strong> page' => '<strong>Vytvořit</strong> stránku',
+  '<strong>Edit</strong> page' => '<strong>Změnit</strong> stránku',
+  'Content' => 'Obsah',
+  'Default sort orders scheme: 100, 200, 300, ...' => 'Výchozí schéma řazení: 100, 200, 300...',
   'Delete' => 'Smazat',
-  'Page title' => '',
+  'Page title' => 'Titulek stránky',
   'Save' => 'Uložit',
   'Sort Order' => 'Řazení',
-  'URL' => '',
+  'URL' => 'Adresa odkazu',
 );

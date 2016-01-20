@@ -13,5 +13,5 @@ return array (
   'Top Navigation' => 'Hlavní navigace',
   'Type' => 'Typ',
   'User Account Menu (Settings)' => 'Uživatelské menu (nastavení)',
-  'Without adding to navigation (Direct link)' => '',
+  'Without adding to navigation (Direct link)' => 'Nepřidávat do navigace (přímý odkaz)',
 );

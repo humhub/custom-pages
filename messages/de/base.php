@@ -13,5 +13,5 @@ return array (
   'Top Navigation' => 'Obere Navigationsleiste',
   'Type' => 'Typ',
   'User Account Menu (Settings)' => 'Benutzerprofilmenü (Einstellungen)',
-  'Without adding to navigation (Direct link)' => '',
+  'Without adding to navigation (Direct link)' => 'Ohne Berücksichtigung in der Navigation (Direkter Link)',
 );

@@ -13,5 +13,5 @@ return array (
   'Top Navigation' => 'Top Navigation',
   'Type' => 'Type',
   'User Account Menu (Settings)' => 'Bruger Profil menu (Indstillinger)',
-  'Without adding to navigation (Direct link)' => '',
+  'Without adding to navigation (Direct link)' => 'Uden at tilføje til navigation (Direkte link)',
 );

@@ -13,5 +13,5 @@ return array (
   'Top Navigation' => 'Górna nawigacja',
   'Type' => 'Rodzaj',
   'User Account Menu (Settings)' => 'Konto użytkownika (Ustawienia)',
-  'Without adding to navigation (Direct link)' => '',
+  'Without adding to navigation (Direct link)' => 'Bez dodawania do nawigacji (odnośnik bezpośredni)',
 );

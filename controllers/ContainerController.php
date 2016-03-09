@@ -39,7 +39,7 @@ class ContainerController extends ContentContainerController
 
     public function actionAdd()
     {
-        $this->adminOrGroup();
+        $this->adminOnly();
 
         $model = new AddPageForm;
         $model->availableTypes = ContainerPage::getPageTypes();
@@ -53,15 +53,15 @@ class ContainerController extends ContentContainerController
 
     public function actionList()
     {
-        $this->adminOrGroup();
-        
+        $this->adminOnly();
+
         $pages = ContainerPage::find()->contentContainer($this->contentContainer)->all();
         return $this->render('list', array('pages' => $pages, 'container' => $this->contentContainer));
     }
 
     public function actionEdit()
     {
-        $this->adminOrGroup();
+        $this->adminOnly();
 
         $page = ContainerPage::find()->contentContainer($this->contentContainer)->where(['custom_pages_container_page.id' => Yii::$app->request->get('id')])->one();
 
@@ -82,7 +82,7 @@ class ContainerController extends ContentContainerController
 
     public function actionDelete()
     {
-        $this->adminOrGroup();
+        $this->adminOnly();
 
         $page = ContainerPage::find()->contentContainer($this->contentContainer)->where(['custom_pages_container_page.id' => Yii::$app->request->get('id')])->one();
 
@@ -93,18 +93,18 @@ class ContainerController extends ContentContainerController
         return $this->redirect($this->contentContainer->createUrl('list'));
     }
 
-    protected function adminOrGroup()
+    protected function adminOnly()
     {
         $usergroupid = \humhub\modules\custom_pages\models\CurrentUserGroup::find();
         $page = Page::findOne(['id' => Yii::$app->request->get('id')]);
         $groups = explode(",",$page->groups_allowed);
 
                 if (!$this->contentContainer->isAdmin()) {
-            throw new \yii\web\HttpException('400', 'Access denied!');
+            throw new \yii\web\HttpException('403', 'Access denied!');
         }
 
         if(!in_array($usergroupid,$groups)) {
-            throw new \yii\web\HttpException('400', 'Access denied!');
+            throw new \yii\web\HttpException('403', 'Access denied!');
         }
     }
 

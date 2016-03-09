@@ -102,6 +102,12 @@ class Events extends \yii\base\Object
         }
     }
 
+    /**
+     * Checks if the user is permitted to view the Page by Group.
+     * Admins are always permitted.
+     * @param $page Page
+     * @return bool Is the user allowed to view the page.
+     */
     private static function checkForGroupRights($page){
         $usergroupid = CurrentUserGroup::find();
         $groups = explode(",",$page->groups_allowed);

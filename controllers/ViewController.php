@@ -6,6 +6,7 @@ use Yii;
 use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\CurrentUserGroup;
 
 /**
  * Description of ViewController
@@ -23,8 +24,16 @@ class ViewController extends Controller
             throw new HttpException('404', 'Could not find requested page');
         }
 
+        // Looks up the current Users group and checks if the user is permitted to view this page
+        $usergroupid = CurrentUserGroup::find();
+        $groups = explode(",",$page->groups_allowed);
+
+        if(!in_array(array_values($usergroupid)[0],$groups) && !Yii::$app->user->isAdmin() ){
+            throw new HttpException('403', 'Access denied!');
+        }
+
         if ($page->admin_only == 1 && !Yii::$app->user->isAdmin()) {
-            throw new HttpException(403, 'Access denied!');
+            throw new HttpException('403', 'Access denied!');
         }
 
         if ($page->navigation_class == Page::NAV_CLASS_ACCOUNTNAV) {

@@ -39,7 +39,7 @@ class ContainerController extends ContentContainerController
 
     public function actionAdd()
     {
-        $this->adminOnly();
+        $this->adminOrGroup();
 
         $model = new AddPageForm;
         $model->availableTypes = ContainerPage::getPageTypes();
@@ -53,7 +53,7 @@ class ContainerController extends ContentContainerController
 
     public function actionList()
     {
-        $this->adminOnly();
+        $this->adminOrGroup();
         
         $pages = ContainerPage::find()->contentContainer($this->contentContainer)->all();
         return $this->render('list', array('pages' => $pages, 'container' => $this->contentContainer));
@@ -61,7 +61,7 @@ class ContainerController extends ContentContainerController
 
     public function actionEdit()
     {
-        $this->adminOnly();
+        $this->adminOrGroup();
 
         $page = ContainerPage::find()->contentContainer($this->contentContainer)->where(['custom_pages_container_page.id' => Yii::$app->request->get('id')])->one();
 
@@ -82,7 +82,7 @@ class ContainerController extends ContentContainerController
 
     public function actionDelete()
     {
-        $this->adminOnly();
+        $this->adminOrGroup();
 
         $page = ContainerPage::find()->contentContainer($this->contentContainer)->where(['custom_pages_container_page.id' => Yii::$app->request->get('id')])->one();
 
@@ -93,9 +93,17 @@ class ContainerController extends ContentContainerController
         return $this->redirect($this->contentContainer->createUrl('list'));
     }
 
-    protected function adminOnly()
+    protected function adminOrGroup()
     {
-        if (!$this->contentContainer->isAdmin()) {
+        $usergroupid = \humhub\modules\custom_pages\models\CurrentUserGroup::find();
+        $page = Page::findOne(['id' => Yii::$app->request->get('id')]);
+        $groups = explode(",",$page->groups_allowed);
+
+                if (!$this->contentContainer->isAdmin()) {
+            throw new \yii\web\HttpException('400', 'Access denied!');
+        }
+
+        if(!in_array($usergroupid,$groups)) {
             throw new \yii\web\HttpException('400', 'Access denied!');
         }
     }

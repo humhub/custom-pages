@@ -6,6 +6,7 @@ use Yii;
 use yii\helpers\Url;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\ContainerPage;
+use humhub\modules\custom_pages\models\CurrentUserGroup;
 
 /**
  * CustomPagesEvents
@@ -66,9 +67,10 @@ class Events extends \yii\base\Object
         foreach (Page::findAll(['navigation_class' => Page::NAV_CLASS_TOPNAV]) as $page) {
 
             // Admin only
-            if ($page->admin_only == 1 && !Yii::$app->user->isAdmin()) {
+            if (($page->admin_only == 1 && !Yii::$app->user->isAdmin()) || !self::checkForGroupRights($page)) {
                 continue;
             }
+
 
             $event->sender->addItem(array(
                 'label' => $page->title,
@@ -85,7 +87,7 @@ class Events extends \yii\base\Object
     {
         foreach (Page::findAll(['navigation_class' => Page::NAV_CLASS_ACCOUNTNAV]) as $page) {
             // Admin only
-            if ($page->admin_only == 1 && !Yii::$app->user->isAdmin()) {
+            if (($page->admin_only == 1 && !Yii::$app->user->isAdmin()) || !self::checkForGroupRights($page)) {
                 continue;
             }
 
@@ -100,4 +102,13 @@ class Events extends \yii\base\Object
         }
     }
 
+    private static function checkForGroupRights($page){
+        $usergroupid = CurrentUserGroup::find();
+        $groups = explode(",",$page->groups_allowed);
+
+        if(in_array(array_values($usergroupid)[0],$groups) || Yii::$app->user->isAdmin() ){
+            return true;
+        }
+        return false;
+    }
 }

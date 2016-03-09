@@ -73,6 +73,12 @@ Assets::register($this);
         </div>
 
         <div class="form-group">
+            <?php echo $form->labelEx($page, 'groups_allowed'); ?>
+            <?php echo $form->textField($page, 'groups_allowed', array('class' => 'form-control', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Groups Allowed'))); ?>
+            <p class="help-block"><?php echo Yii::t('CustomPagesModule.views_admin_edit', 'Group IDs comma separated "1,2,3,..." '); ?></p>
+        </div>
+
+        <div class="form-group">
             <div class="checkbox">
                 <label>
                     <?php echo $form->checkBox($page, 'admin_only'); ?> <?php echo $page->getAttributeLabel('admin_only'); ?>

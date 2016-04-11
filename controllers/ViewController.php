@@ -26,6 +26,8 @@ class ViewController extends Controller
 
         // Looks up the current Users group and checks if the user is permitted to view this page
         $usergroupid = CurrentUserGroup::find();
+
+        
         $groups = explode(",",$page->groups_allowed);
 
         if(!in_array(array_values($usergroupid)[0],$groups) && !Yii::$app->user->isAdmin() ){

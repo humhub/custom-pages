@@ -35,6 +35,10 @@ class Events extends \yii\base\Object
 
             $pages = ContainerPage::find()->contentContainer($space)->all();
             foreach ($pages as $page) {
+
+                if (!Yii::$app->user->isAdmin() || !self::checkForGroupRights($page)) {
+                            continue;
+                      }
                 $event->sender->addItem(array(
                     'label' => \yii\helpers\Html::encode($page->title),
                     'group' => 'modules',
@@ -70,7 +74,6 @@ class Events extends \yii\base\Object
             if (($page->admin_only == 1 && !Yii::$app->user->isAdmin()) || !self::checkForGroupRights($page)) {
                 continue;
             }
-
 
             $event->sender->addItem(array(
                 'label' => $page->title,

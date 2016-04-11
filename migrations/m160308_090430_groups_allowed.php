@@ -7,6 +7,7 @@ class m160308_090430_groups_allowed extends Migration
     public function up()
     {
         $this->addColumn('custom_pages_page', 'groups_allowed', 'string');
+        $this->addColumn('custom_pages_container_page', 'groups_allowed', 'string');
     }
 
     public function down()

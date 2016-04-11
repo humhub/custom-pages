@@ -7,6 +7,7 @@ use yii\web\HttpException;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\AddPageForm;
+use humhub\modules\custom_pages\models\CurrentUserGroup;
 
 /**
  * Custom Pages for ContentContainer
@@ -56,6 +57,7 @@ class ContainerController extends ContentContainerController
         $this->adminOnly();
 
         $pages = ContainerPage::find()->contentContainer($this->contentContainer)->all();
+        
         return $this->render('list', array('pages' => $pages, 'container' => $this->contentContainer));
     }
 
@@ -86,6 +88,7 @@ class ContainerController extends ContentContainerController
 
         $page = ContainerPage::find()->contentContainer($this->contentContainer)->where(['custom_pages_container_page.id' => Yii::$app->request->get('id')])->one();
 
+
         if ($page !== null) {
             $page->delete();
         }
@@ -95,17 +98,32 @@ class ContainerController extends ContentContainerController
 
     protected function adminOnly()
     {
-        $usergroupid = \humhub\modules\custom_pages\models\CurrentUserGroup::find();
-        $page = Page::findOne(['id' => Yii::$app->request->get('id')]);
-        $groups = explode(",",$page->groups_allowed);
-
-                if (!$this->contentContainer->isAdmin()) {
+        if (!$this->contentContainer->isAdmin()) {
             throw new \yii\web\HttpException('403', 'Access denied!');
         }
 
-        if(!in_array($usergroupid,$groups)) {
-            throw new \yii\web\HttpException('403', 'Access denied!');
+    }
+
+    protected function groupCheck()
+    {
+        $usergroupid = CurrentUserGroup::find();
+        $page = ContainerPage::findOne(['custom_pages_container_page.id' => Yii::$app->request->get('id')]);
+        // Turn on output buffering
+
+        if ($page === null) {
+            throw new HttpException('404', 'Could not find requested page');
         }
+
+        $allowedgroups = $page->groups_allowed;
+
+        $groups = explode(",",$allowedgroups);
+
+        if($this->contentContainer->isAdmin()){
+            return true;
+        }else if(!in_array($usergroupid,$groups)) {
+            return false;
+        }
+        return true;
     }
 
 }

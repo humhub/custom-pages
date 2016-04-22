@@ -58,15 +58,15 @@ class ContainerPage extends \humhub\modules\content\components\ContentActiveReco
     {
         return array(
             'id' => 'ID',
-            'type' => 'Type',
-            'title' => 'Title',
-            'icon' => 'Icon',
-            'page_content' => 'Content',
-            'url' => 'URL',
-            'sort_order' => 'Sort Order',
-            'admin_only' => 'Only visible for admins',
-            'in_new_window' => 'Open in new window',
-            'navigation_class' => 'Navigation',
+            'type' => Yii::t('CustomPagesModule.base', 'Type'),
+            'title' => Yii::t('CustomPagesModule.base', 'Title'),
+            'icon' => Yii::t('CustomPagesModule.base', 'Icon'),
+            'page_content' => Yii::t('CustomPagesModule.base', 'Content'),
+            'url' => Yii::t('CustomPagesModule.base', 'URL'),
+            'sort_order' => Yii::t('CustomPagesModule.base', 'Sort Order'),
+            'admin_only' => Yii::t('CustomPagesModule.base', 'Only visible for admins'),
+            'in_new_window' => Yii::t('CustomPagesModule.base', 'Open in new window'),
+            'navigation_class' => Yii::t('CustomPagesModule.base', 'Navigation'),
         );
     }
 

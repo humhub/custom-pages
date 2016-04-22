@@ -14,4 +14,11 @@ return array (
   'Type' => 'Typ',
   'User Account Menu (Settings)' => 'Benutzerprofilmenü (Einstellungen)',
   'Without adding to navigation (Direct link)' => 'Ohne Berücksichtigung in der Navigation (Direkter Link)',
+  'Type' => 'Typ'
+  'Icon' => 'Icon'
+  'Content' => 'Content'
+  'Sort Order' => 'Sortierung'
+  'Only visible for admins' => 'Nur für Administratoren Sichtbar'
+  'Open in new window' => 'In neuem Fenster öffnen'
+  'Navigation' => ''
 );

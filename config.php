@@ -16,8 +16,10 @@ return [
         ['class' => humhub\modules\space\widgets\Menu::className(), 'event' => humhub\modules\space\widgets\Menu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onSpaceMenuInit']],
         // v0.20 and prior
         ['class' => humhub\modules\space\widgets\AdminMenu::className(), 'event' => humhub\modules\space\widgets\AdminMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onSpaceAdminMenuInit']],
-        // v.021 and above
+        // v.21 and above
         ['class' => 'humhub\modules\space\modules\manage\widgets\Menu', 'event' => BaseMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onSpaceAdminMenuInit']],
+        // v.1.1 and above
+        ['class' => 'humhub\modules\space\widgets\HeaderControlsMenu', 'event' => BaseMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onSpaceAdminMenuInit']],
     ],
 ];
 ?>

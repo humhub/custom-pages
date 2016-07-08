@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages;
 
+use Yii;
 use yii\helpers\Url;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\ContainerPage;

@@ -5,7 +5,7 @@ return array (
   'HTML' => 'HTML',
   'IFrame' => 'IFrame',
   'Link' => 'پیوند',
-  'MarkDown' => 'MarkDown',
+  'MarkDown' => 'نشانه دار كردن',
   'Navigation' => 'راهبری',
   'No custom pages created yet!' => 'هنوز هیج صفحه‌ی سفارشی‌شده‌ای ایجاد نشده‌است!',
   'Sort Order' => 'ترتیب مرتب‌سازی',
@@ -13,5 +13,5 @@ return array (
   'Top Navigation' => 'منوی بالا',
   'Type' => 'تایپ',
   'User Account Menu (Settings)' => 'منوی حساب کاربری (تنظیمات)',
-  'Without adding to navigation (Direct link)' => '',
+  'Without adding to navigation (Direct link)' => 'بدون اضافه كردن دايركت لينك',
 );

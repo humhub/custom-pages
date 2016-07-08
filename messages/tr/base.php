@@ -5,7 +5,7 @@ return array (
   'HTML' => 'Html',
   'IFrame' => 'İframe',
   'Link' => 'Bağlantı',
-  'MarkDown' => '',
+  'MarkDown' => 'Daralt',
   'Navigation' => 'Navigasyon',
   'No custom pages created yet!' => 'Özel sayfalar henüz oluşturulmadı!',
   'Sort Order' => 'Sıralama',
@@ -13,5 +13,5 @@ return array (
   'Top Navigation' => 'En Navigasyon',
   'Type' => 'Tip',
   'User Account Menu (Settings)' => 'Kullanıcı Hesap Menüsü (Ayarlar)',
-  'Without adding to navigation (Direct link)' => '',
+  'Without adding to navigation (Direct link)' => 'Navigasyon eklemeden (Doğrudan bağlantı)',
 );

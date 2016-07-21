@@ -23,7 +23,8 @@ class Page extends ActiveRecord
 {
 
     public $url;
-
+    public $templateId;
+    
     const NAV_CLASS_TOPNAV = 'TopMenuWidget';
     const NAV_CLASS_ACCOUNTNAV = 'AccountMenuWidget';
     const NAV_CLASS_EMPTY = 'WithOutMenu';
@@ -31,6 +32,7 @@ class Page extends ActiveRecord
     const TYPE_HTML = '2';
     const TYPE_IFRAME = '3';
     const TYPE_MARKDOWN = '4';
+    const TYPE_TEMPLATE = '5';
 
     /**
      * @return string the associated database table name
@@ -47,8 +49,16 @@ class Page extends ActiveRecord
             [['type', 'sort_order', 'admin_only', 'in_new_window'], 'integer'],
             [['title', 'navigation_class'], 'string', 'max' => 255],
             [['icon'], 'string', 'max' => 100],
-            [['content', 'url'], 'safe'],
+            [['content', 'url', 'templateId'], 'safe'],
+            ['type', 'validateTemplateType'],
         );
+    }
+    
+    public function validateTemplateType($attribute, $params)
+    {
+        if($this->type == self::TYPE_TEMPLATE && $this->templateId == null) {
+            $this->addError('templateId', Yii::t('CustomPagesModule.base', 'Invalid template selection!'));
+        }
     }
 
     /**
@@ -63,6 +73,7 @@ class Page extends ActiveRecord
             'icon' => 'Icon',
             'content' => 'Content',
             'url' => 'URL',
+            'templateId' => 'Template',
             'sort_order' => 'Sort Order',
             'admin_only' => 'Only visible for admins',
             'in_new_window' => 'Open in new window',
@@ -78,6 +89,18 @@ class Page extends ActiveRecord
 
         return parent::beforeSave($insert);
     }
+    
+    public function afterSave($insert, $changedAttributes)
+    {
+        if($this->type == self::TYPE_TEMPLATE) {
+            $pageTemplate = new PageTemplate();
+            $pageTemplate->page_id = $this->id;
+            $pageTemplate->template_id = $this->templateId;
+            $pageTemplate->save();
+        }
+        
+        parent::afterSave($insert, $changedAttributes);
+    }
 
     public function afterFind()
     {
@@ -90,21 +113,22 @@ class Page extends ActiveRecord
 
     public static function getNavigationClasses()
     {
-        return array(
+        return [
             self::NAV_CLASS_TOPNAV => Yii::t('CustomPagesModule.base', 'Top Navigation'),
             self::NAV_CLASS_ACCOUNTNAV => Yii::t('CustomPagesModule.base', 'User Account Menu (Settings)'),
             self::NAV_CLASS_EMPTY => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)'),
-        );
+        ];
     }
 
     public static function getPageTypes()
     {
-        return array(
+        return [
             self::TYPE_LINK => Yii::t('CustomPagesModule.base', 'Link'),
             self::TYPE_HTML => Yii::t('CustomPagesModule.base', 'HTML'),
             self::TYPE_MARKDOWN => Yii::t('CustomPagesModule.base', 'MarkDown'),
             self::TYPE_IFRAME => Yii::t('CustomPagesModule.base', 'IFrame'),
-        );
+            self::TYPE_TEMPLATE => Yii::t('CustomPagesModule.base', 'Template'),
+        ];
     }
 
 }

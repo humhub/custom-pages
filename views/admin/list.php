@@ -4,13 +4,12 @@ use yii\helpers\Html;
 use humhub\modules\custom_pages\models\Page;
 ?>
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.base', 'Custom Pages'); ?></div>
+    <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
+     <?= \humhub\modules\custom_pages\widgets\AdminMenu::widget([]); ?>
     <div class="panel-body">
+        <?php echo Html::a(Yii::t('CustomPagesModule.base', 'Create new Page'), ['add'], ['class' => 'btn btn-primary']); ?>
 
-        <?php echo Html::a(Yii::t('CustomPagesModule.base', 'Create new Page'), ['add'], array('class' => 'btn btn-primary')); ?>
-
-        <p />
-        <p />
+        <br /><br />
 
         <?php if (count($pages) != 0): ?>
             <?php

@@ -5,6 +5,7 @@ namespace humhub\modules\custom_pages\controllers;
 use Yii;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\AddPageForm;
+use humhub\modules\custom_pages\models\Template;
 
 /**
  * AdminController
@@ -49,7 +50,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             return $this->redirect(['index']);
         }
 
-        return $this->render('edit', array('page' => $page));
+        return $this->render('edit', ['page' => $page]);
     }
 
     public function actionDelete()

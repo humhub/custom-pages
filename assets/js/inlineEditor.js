@@ -232,10 +232,10 @@
         }
         
         if(left) {
-            offsetLeftAlign += (options.outside) ? +2 : +5;
+            offsetLeftAlign += (options.outside) ? 0 : +5;
         } else {
             offsetLeftAlign += that.$.outerWidth() - that.$menu.outerWidth();
-            offsetLeftAlign += (options.outside) ? -2 : -5;
+            offsetLeftAlign += (options.outside) ? 0 : -5;
         }
 
         this.$menu.css({

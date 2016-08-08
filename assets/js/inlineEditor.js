@@ -199,6 +199,10 @@
             evt.stopPropagation();
             that.$menu.css('z-index', '1040');
         });
+        
+        this.$menu.on('click', function(evt) {
+            evt.stopPropagation();
+        });
 
         this.$menu.on('mouseout', function(evt) {
             that.$menu.css('z-index', '');
@@ -210,16 +214,33 @@
             options.afterInsert.call();
         }
 
+        var position = (options.position) ? options.position : 'rt';
+        
         var offset = this.$.offset();
 
-        //var offsetLeftAlign = ($containerEditToggle.length) ? +8 : -5;
-
-        var offsetLeftAlign = (options.top) ? 0 : -5;
-        var offsetTopAlign = (options.top) ? - (this.$menu.height()) : +5;
+        var left = position.indexOf('l') === 0;
+        var top = position.indexOf('t') === 1;
+        
+        var offsetTopAlign = options.topAlign || 0;
+        var offsetLeftAlign = options.leftAlign || 0;
+        
+        if(top) {
+            offsetTopAlign += (options.outside) ? - (this.$menu.height()) : 5;
+        } else {
+            offsetTopAlign += that.$.outerHeight() - that.$menu.outerHeight();
+            offsetTopAlign += (options.outside) ? (this.$menu.height()) : -5;
+        }
+        
+        if(left) {
+            offsetLeftAlign += (options.outside) ? +2 : +5;
+        } else {
+            offsetLeftAlign += that.$.outerWidth() - that.$menu.outerWidth();
+            offsetLeftAlign += (options.outside) ? -2 : -5;
+        }
 
         this.$menu.css({
             'top': offset.top + offsetTopAlign,
-            'left': offset.left + that.$.outerWidth() - that.$menu.outerWidth() + offsetLeftAlign
+            'left': offset.left + offsetLeftAlign
         });
 
         if(options.beforeShow) {
@@ -273,7 +294,7 @@
     inherits(TemplateContainerElement, TemplateElement);
 
     TemplateContainerElement.prototype.renderMenu = function() {
-        var items = [this.createEditButton()];
+        var items = [];
 
         if(this.multiple || !this.hasItems()) {
             items.push(this.createAddItemButton());
@@ -281,7 +302,7 @@
 
         this.renderMenuItems({
             items: items,
-            top : true
+            outside : true
         });
     };
 
@@ -385,7 +406,10 @@
         this.renderMenuItems({
             items: items ,
             'cssClass': 'elementToggleMenu',
-            'top': true,
+            'position' : 'lt',
+            outside : true,
+            leftAlign: -13,
+            
             'afterInsert': function() {
                 $containerEditToggle = that.$menu.find('#containerEditToggle');
                 $containerEditToggle.bootstrapSwitch({
@@ -512,6 +536,11 @@
                 evt.stopPropagation();
             }
         });
+        
+        this.$.on('click', '[data-template-element], [data-template-item]', function (evt) {
+            evt.preventDefault();
+            evt.stopPropagation();
+        });
 
         this.$.on('custom_pages.afterActivateContainer', function(event, item) {
             that.activeItem = item;
@@ -546,7 +575,7 @@
 
     TemplateInlineEdit.prototype.clearExcept = function(element) {
         $.each(this.activeElements, function(index, active) {
-            if(!active.isEqual(element)) {
+            if(!element || !active.isEqual(element)) {
                 active.deactivate();
             }
         });

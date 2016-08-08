@@ -72,8 +72,6 @@ class ContainerContent extends TemplateContentActiveRecord
 
         $items = $this->items;
 
-       
-
         $result = '';
         
         $editMode = isset($options['editMode']) ? $options['editMode'] : false;

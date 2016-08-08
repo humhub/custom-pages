@@ -161,7 +161,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         
         if(!$template->delete()) {
             Yii::$app->session->setFlash('error', 
-                Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'The template could not be deleted, please get sure, that this template is not in use.'));
+                Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'The template could not be deleted, please get sure that this template is not in use.'));
         
         }
         
@@ -229,6 +229,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
     private function getContentTypes()
     {
         return [
+            \humhub\modules\custom_pages\modules\template\models\TextContent::$label => \humhub\modules\custom_pages\modules\template\models\TextContent::className(),
             \humhub\modules\custom_pages\modules\template\models\RichtextContent::$label => \humhub\modules\custom_pages\modules\template\models\RichtextContent::className(),
             \humhub\modules\custom_pages\modules\template\models\ImageContent::$label => \humhub\modules\custom_pages\modules\template\models\ImageContent::className(),
             \humhub\modules\custom_pages\modules\template\models\ContainerContent::$label => \humhub\modules\custom_pages\modules\template\models\ContainerContent::className(),

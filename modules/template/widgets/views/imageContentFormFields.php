@@ -9,8 +9,6 @@ $sguid = Yii::$app->request->get('sguid');
 
 $uploadUrl = Url::to(['/file/file/upload']);
 
-$isAdminEdit = $model->scenario === 'edit-admin';
-
 $disableDefinition = !$isAdminEdit && $model->definition->is_default;
 
 ?>
@@ -21,7 +19,7 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
 <?= $form->field($model->definition, 'width')->textInput(['disabled' => $disableDefinition]); ?>
 <?= $form->field($model->definition, 'style')->textInput(['disabled' => $disableDefinition]); ?>    
 
-<hr class="hr-text" data-content="<?= Yii::t('CustomPagesModule.base', 'Content'); ?>">
+<?= \humhub\modules\custom_pages\modules\template\widgets\EditContentSeperator::widget(['isAdminEdit' => $isAdminEdit]) ?>
 
 <?= $form->field($model, 'file_guid')->hiddenInput(['class' => 'file-guid']); ?>
 

@@ -91,6 +91,11 @@ class EditMultipleElementsForm extends \yii\base\Model
 
     public function validate()
     {
+        // Default content is not mandatory
+        if($this->scenario === 'edit-admin') {
+            return true;
+        }
+        
         $result = true;
         foreach ($this->contentMap as $key => $contentItem) {
             if(!$contentItem->validate()) {

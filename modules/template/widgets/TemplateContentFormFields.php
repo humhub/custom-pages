@@ -30,7 +30,8 @@ class TemplateContentFormFields extends \humhub\components\Widget
         return $this->render($this->view, [
             'form' => $this->form,
             'model' => $this->model,
-            'fileList' => $this->fileList
+            'fileList' => $this->fileList,
+            'isAdminEdit' =>  $this->model->scenario === 'edit-admin' || $this->model->scenario === 'create'
         ]);
     }
 

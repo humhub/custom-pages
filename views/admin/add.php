@@ -16,7 +16,7 @@ use humhub\compat\CActiveForm;
             <?php echo $form->dropdownList($model, 'type', $model->availableTypes, array('class' => 'form-control', 'rows' => '5', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
         </div>
 
-        <?php echo Html::submitButton(Yii::t('CustomPagesModule.views_admin_edit', 'Next'), array('class' => 'btn btn-primary')); ?>
+        <?php echo Html::submitButton(Yii::t('CustomPagesModule.views_admin_edit', 'Next'), array('data-ui-loader' => '', 'class' => 'btn btn-primary')); ?>
 
         <?php CActiveForm::end(); ?>
 

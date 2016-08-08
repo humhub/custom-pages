@@ -6,12 +6,6 @@ use Yii;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use humhub\modules\file\models\File;
 
-
-/**
- * This is the model class for table "custom_pages_page".
- *
- * The followings are the available columns in table 'custom_pages_page':
- */
  class ImageContent extends TemplateContentActiveRecord
 {
     public static $label = 'Image';

@@ -13,8 +13,6 @@ $uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', $csr
 
 $model->definition->initAllowedTemplateSelection();
 
-$isAdminEdit = $model->scenario === 'edit-admin';
-
 $disableDefinition = !$isAdminEdit && !$model->definition->isNewRecord;
 
 ?>

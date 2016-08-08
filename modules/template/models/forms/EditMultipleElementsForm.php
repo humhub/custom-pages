@@ -76,10 +76,14 @@ class EditMultipleElementsForm extends \yii\base\Model
 
     public function load($data)
     {
-        parent::load($data); 
+        // This prevents items without elements from beeing rejected
+        if(parent::load($data) && empty($this->contentMap)) {
+            return true;
+        } 
         
         $result = false;
         
+        // If one of the content was loaded we expect a successful form submit
         foreach ($this->contentMap as $key => $contentItem) {
             if($contentItem->load($data)) {
                 $result = true;

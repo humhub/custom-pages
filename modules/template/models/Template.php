@@ -68,7 +68,8 @@ class Template extends ActiveRecord implements TemplateContentOwner
     public function rules()
     {
         return [
-            [['name', 'description', 'type'], 'required', 'on' => ['edit']],
+            [['name', 'type'], 'required', 'on' => ['edit']],
+            ['description', 'safe'],
             [['allow_for_spaces', 'isLyout'], 'integer'],
             [['name'], 'unique'],
             [['name', 'type'], 'string', 'max' => 100],

@@ -501,7 +501,7 @@
             });
         }
         this.$.css('background-color', '');
-        this.$.css('z-index', '1026');
+        this.$.css('z-index', '');
     };
 
     TemplateContainerItem.prototype.getUniqueId = function ($element) {

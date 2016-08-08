@@ -12,11 +12,12 @@ use yii\helpers\Url;
 ?>
 
 <?php if ($canEdit) : ?>
+    <?php $sguid = Yii::$app->request->get('sguid'); ?>
     <div style="position:fixed;right:5px;top:105px;z-index:1028">
         <input id="templatEditMode" type="checkbox" />
         <div id="templateEditMenu">
             <?php if ($editMode && !Yii::$app->user->isGuest && Yii::$app->user->getIdentity()->isSystemAdmin()) : ?>
-                <a style="width:100%" target="_blank" class="btn btn-primary btn-xs tt editTemplateElement"  href="<?= Url::to(['/custom_pages/template/admin/edit-source', 'id' => $templateInstance->template_id]) ?>">
+                <a style="width:100%" target="_blank" class="btn btn-primary btn-xs tt editTemplateElement"  href="<?= Url::to(['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid]) ?>">
                     <?= Yii::t('CustomPagesModule.views_view_template', 'Edit Template') ?>
                 </a><br />
             <?php endif; ?>

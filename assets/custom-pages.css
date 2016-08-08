@@ -48,7 +48,6 @@ div#overlay {
 
 div[data-template-item] {
     border: 1px solid rgba(210, 210, 210, 0.5);
-    z-index: 1026;
     position:relative;
     box-sizing:border-box;
 }
@@ -63,7 +62,6 @@ div[data-template-item].highlightEdit {
 
 div[data-template-element] {
     border: 1px solid rgba(210, 210, 210, 0.5);
-    z-index: 1026;
     position:relative;
     overflow:auto;
     box-sizing:border-box;

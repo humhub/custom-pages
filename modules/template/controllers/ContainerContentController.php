@@ -212,7 +212,7 @@ class ContainerContentController extends \humhub\components\Controller
             'success' => false,
             'content' => EditContainerItemModal::widget([
                 'model' => $form,
-                'title' => Yii::t('CustomPagesModule.controllers_AdminController', '<strong>Edit</strong> template item')
+                'title' => Yii::t('CustomPagesModule.controllers_AdminController', '<strong>Edit</strong> container item')
             ])
         ];
     }

@@ -77,14 +77,6 @@ class m160719_131212_init_templates extends Migration
         /**
          * Create Content Type Image
          */
-        $this->createTable('custom_pages_template_text_content', [
-            'id' => 'pk',
-            'content' => 'text NOT NULL',
-        ], '');
-        
-        /**
-         * Create Content Type Image
-         */
         $this->createTable('custom_pages_template_image_content', [
             'id' => 'pk',
             'file_guid' => 'varchar(45) NOT NULL',

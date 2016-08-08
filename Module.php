@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages;
 
+use Yii;
 use yii\helpers\Url;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\ContainerPage;
@@ -45,10 +46,19 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
         ];
     }
 
+    
+     /**
+     * @inheritdoc
+     */
+    public function getContentContainerName(ContentContainerActiveRecord $container)
+    {
+        return Yii::t('CustomPagesModule.base', 'Custom pages');
+    }
+   
     public function getContentContainerDescription(ContentContainerActiveRecord $container)
     {
         if ($container instanceof Space) {
-            return "Allows to add pages (markdown, iframe or links) to the space navigation";
+            return Yii::t('CustomPagesModule.base', 'Allows to add pages (markdown, iframe or links) to the space navigation');
         }
     }
 

@@ -12,6 +12,12 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 class Module extends \humhub\modules\content\components\ContentContainerModule
 {
 
+    public function init()
+    {
+        self::loadTwig();
+        parent::init();
+    }
+
     /**
      * @inheritdoc
      */
@@ -46,15 +52,14 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
         ];
     }
 
-    
-     /**
+    /**
      * @inheritdoc
      */
     public function getContentContainerName(ContentContainerActiveRecord $container)
     {
         return Yii::t('CustomPagesModule.base', 'Custom pages');
     }
-   
+
     public function getContentContainerDescription(ContentContainerActiveRecord $container)
     {
         if ($container instanceof Space) {
@@ -72,6 +77,14 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
         foreach (ContainerPage::find()->contentContainer($container)->all() as $page) {
             $page->delete();
         }
+    }
+
+    public static function loadTwig()
+    {
+
+        $autoloader = Yii::getAlias('@custom_pages/vendors/Twig/Autoloader.php');
+        require_once $autoloader;
+        \Twig_Autoloader::register();
     }
 
 }

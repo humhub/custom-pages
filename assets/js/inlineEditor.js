@@ -289,6 +289,7 @@
         this.isContainer = true;
         this.multiple = this.data('template-multiple');
         this.templateId = this.data('template-id');
+        this.inline = this.$.hasClass('inline');
     };
 
     inherits(TemplateContainerElement, TemplateElement);
@@ -362,8 +363,9 @@
         TemplateElement.call(this, $elem);
         this.itemId = this.data('template-item');
         this.index = this.$.index();
+        this.parent = this.getParent();
         this.name = this.data('template-item-title');
-
+        this.inline = this.$.hasClass('inline');
         if(!this.name) {
             this.name = this.getParent().name+':'+this.index;
         }
@@ -427,8 +429,14 @@
 
     TemplateContainerItem.prototype.createMoveButton = function (step) {
         var that = this;
-
-        var iconClass = (step > 0) ? 'fa-caret-up' : 'fa-caret-down'
+        var iconClass;
+        
+        if(this.inline) {
+            iconClass = (step > 0) ? 'fa-caret-right' : 'fa-caret-left';
+        } else {
+            iconClass = (step > 0) ? 'fa-caret-down' : 'fa-caret-up';
+        }
+        
         var buttonHtml = '<a class="btn btn-success btn-xs tt template-menu-button" href="#"><i class="fa '+iconClass+'"></i></a>';
 
         var parent = that.getParent();

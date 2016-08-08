@@ -78,6 +78,7 @@ class ContainerPage extends \humhub\modules\content\components\ContentActiveReco
             'admin_only' => 'Only visible for admins',
             'in_new_window' => 'Open in new window',
             'navigation_class' => 'Navigation',
+            'templateId' => 'Template Layout'
         );
     }
 

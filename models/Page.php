@@ -74,7 +74,7 @@ class Page extends ActiveRecord
             'icon' => 'Icon',
             'content' => 'Content',
             'url' => 'URL',
-            'templateId' => 'Template',
+            'templateId' => 'Template Layout',
             'sort_order' => 'Sort Order',
             'admin_only' => 'Only visible for admins',
             'in_new_window' => 'Open in new window',

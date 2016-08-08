@@ -34,7 +34,7 @@ Assets::register($this);
         <?php if ($page->type == ContainerPage::TYPE_TEMPLATE): ?>
             <div class="form-group" id="content_field">
                 <?php echo $form->labelEx($page, 'templateId'); ?>
-                <?php echo $form->dropdownList($page, 'templateId', Template::getSelection(['type' => Template::TYPE_LAYOUT, 'allow_for_spaces' => '1']), array('class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Template'))); ?>
+                <?php echo $form->dropdownList($page, 'templateId', Template::getSelection(['type' => Template::TYPE_LAYOUT, 'allow_for_spaces' => '1']), array('disabled' => !$page->isNewRecord, 'class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Template'))); ?>
             </div>
         <?php elseif ($page->type == ContainerPage::TYPE_MARKDOWN): ?>
             <?php echo $form->textArea($page, 'page_content', array('id' => 'markdownField', 'class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>

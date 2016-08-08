@@ -6,6 +6,8 @@ use Yii;
 use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 
 /**
  * Description of ViewController
@@ -14,7 +16,6 @@ use humhub\modules\custom_pages\models\Page;
  */
 class ViewController extends Controller
 {
-
     public function actionIndex()
     {
         $page = Page::findOne(['id' => Yii::$app->request->get('id')]);
@@ -50,22 +51,35 @@ class ViewController extends Controller
         }
     }
     
-     public function viewTemplatePage($page)
+    public function actionView()
     {
-        $pageTemplate = \humhub\modules\custom_pages\models\PageTemplate::findOne(['page_id' => $page->id]);
-        $template = $pageTemplate->template;
+        return $this->actionIndex();
+    }
+    
+    public function viewTemplatePage($page)
+    {
+        $editMode = Yii::$app->request->get('editMode');
+        $templateInstance = TemplateInstance::findOne(['object_model' => Page::className() ,'object_id' => $page->id]);
         
-        $loader = new \humhub\modules\custom_pages\lib\twig\DatabaseTwigLoader();
-        $twig = new \Twig_Environment($loader, ['autoescape' => false]);
+        $canEdit = !Yii::$app->user->isGuest && Yii::$app->user->getIdentity()->isSystemAdmin();
         
-        $blocks = $pageTemplate->getBlocks();
-        $content = [];
-        foreach($blocks as $block) {
-            $content[$block->name] = $block->render();
+        $html = '';
+        if(!$canEdit && TemplateCache::exists($templateInstance)) {
+            $html = TemplateCache::get($templateInstance);
+        } else {
+            $html = $templateInstance->render($editMode);
+            if(!$canEdit) {
+                TemplateCache::set($templateInstance, $html);
+            }
         }
-
-        $html = $twig->render($template->name ,$content);
-        return $this->render('template', ['pageTemplate' => $pageTemplate, 'html' => $html]);
+        
+        return $this->render('template', [
+            'page' => $page, 
+            'templateInstance' => $templateInstance, 
+            'editMode' => $editMode,  
+            'canEdit' => $canEdit,
+            'html' => $html
+        ]);
     }
 
 }

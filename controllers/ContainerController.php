@@ -7,6 +7,8 @@ use yii\web\HttpException;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\AddPageForm;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 
 /**
  * Custom Pages for ContentContainer
@@ -32,9 +34,37 @@ class ContainerController extends ContentContainerController
             return $this->redirect($page->page_content);
         } elseif ($page->type == ContainerPage::TYPE_MARKDOWN) {
             return $this->render('view_markdown', array('md' => $page->page_content));
+        } elseif ($page->type == ContainerPage::TYPE_TEMPLATE) {
+            return $this->viewTemplatePage($page);
         } else {
             throw new HttpException('500', 'Invalid page type!');
         }
+    }
+    
+    public function viewTemplatePage($page)
+    {
+        $editMode = Yii::$app->request->get('editMode');
+        $templateInstance = TemplateInstance::findOne(['object_model' => ContainerPage::className() ,'object_id' => $page->id]);  
+        
+        $canEdit = $this->contentContainer->isAdmin();
+        
+        $html = '';
+        if(!$canEdit && TemplateCache::exists($templateInstance)) {
+            $html = TemplateCache::get($templateInstance);
+        } else {
+            $html = $templateInstance->render($editMode);
+            if(!$canEdit) {
+                TemplateCache::set($templateInstance, $html);
+            }
+        }
+        
+        return $this->render('view_template', [
+            'page' => $page, 
+            'templateInstance' => $templateInstance, 
+            'editMode' => $editMode,  
+            'canEdit' => $canEdit,
+            'html' => $html
+        ]);
     }
 
     public function actionAdd()
@@ -71,7 +101,7 @@ class ContainerController extends ContentContainerController
             $page->type = (int) Yii::$app->request->get('type');
         }
         $page->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
-
+        
         if ($page->load(Yii::$app->request->post()) && $page->validate() && $page->save()) {
             \humhub\modules\file\models\File::attachPrecreated($page, Yii::$app->request->post('fileUploaderHiddenGuidField'));
             return $this->redirect($this->contentContainer->createUrl('list'));

@@ -3,6 +3,7 @@
 namespace humhub\modules\custom_pages\models;
 
 use Yii;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 
 /**
  * This is the model class for table "custom_pages_container_page".
@@ -21,11 +22,13 @@ class ContainerPage extends \humhub\modules\content\components\ContentActiveReco
 
     public $autoAddToWall = false;
     public $url;
+    public $templateId;
 
     const TYPE_LINK = '1';
     const TYPE_HTML = '2';
     const TYPE_IFRAME = '3';
     const TYPE_MARKDOWN = '4';
+    const TYPE_TEMPLATE = '5';
 
     /**
      * @inheritdoc
@@ -47,8 +50,16 @@ class ContainerPage extends \humhub\modules\content\components\ContentActiveReco
             [['type', 'sort_order', 'in_new_window'], 'integer'],
             [['title'], 'string', 'max' => 255],
             [['icon'], 'string', 'max' => 100],
-            [['page_content', 'url'], 'safe'],
+            [['page_content', 'url', 'templateId'], 'safe'],
+            ['type', 'validateTemplateType'],
         );
+    }
+    
+    public function validateTemplateType($attribute, $params)
+    {
+        if($this->type == self::TYPE_TEMPLATE && $this->templateId == null) {
+            $this->addError('templateId', Yii::t('CustomPagesModule.base', 'Invalid template selection!'));
+        }
     }
 
     /**
@@ -77,6 +88,27 @@ class ContainerPage extends \humhub\modules\content\components\ContentActiveReco
         }
         return parent::beforeSave($insert);
     }
+    
+    public function afterDelete()
+    {
+        if($this->type == self::TYPE_TEMPLATE) {
+            TemplateInstance::deleteByOwner($this);
+        }
+        parent::afterDelete();
+    }
+    
+    public function afterSave($insert, $changedAttributes)
+    {
+        if($this->type == self::TYPE_TEMPLATE) {
+            $container = new TemplateInstance();
+            $container->object_model = $this->className();
+            $container->object_id = $this->id;
+            $container->template_id = $this->templateId;
+            $container->save();
+        }
+        
+        parent::afterSave($insert, $changedAttributes);
+    }
 
     public function afterFind()
     {
@@ -93,6 +125,7 @@ class ContainerPage extends \humhub\modules\content\components\ContentActiveReco
             self::TYPE_MARKDOWN => Yii::t('CustomPagesModule.base', 'MarkDown'),
             self::TYPE_LINK => Yii::t('CustomPagesModule.base', 'Link'),
             self::TYPE_IFRAME => Yii::t('CustomPagesModule.base', 'IFrame'),
+            self::TYPE_TEMPLATE => Yii::t('CustomPagesModule.base', 'Template'),
         );
     }
 

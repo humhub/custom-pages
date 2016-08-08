@@ -7,14 +7,21 @@ class uninstall extends Migration
 
     public function up()
     {
-        $this->dropTable('custom_pages_template_content_html');
-        $this->dropTable('custom_pages_template_block');
-        $this->dropTable('custom_pages_template_content');
-        $this->dropTable('custom_pages_page_template');
+        $this->dropTable('custom_pages_template_container_content_item');
+        $this->dropTable('custom_pages_template_container_content_template');
+        $this->dropTable('custom_pages_template_container_content');
+        $this->dropTable('custom_pages_template_image_content');
+        $this->dropTable('custom_pages_template_richtext_content');
+        $this->dropTable('custom_pages_template_element');
+        $this->dropTable('custom_pages_template_owner_content');
+        $this->dropTable('custom_pages_template_container');
+        $this->dropTable('custom_pages_template_container_content_definition');
+        $this->dropTable('custom_pages_template_image_content_definition');
         $this->dropTable('custom_pages_template');
         
         $this->dropTable('custom_pages_page');
         $this->dropTable('custom_pages_container_page');
+        
     }
 
     public function down()

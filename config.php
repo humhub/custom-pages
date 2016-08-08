@@ -8,6 +8,11 @@ use humhub\widgets\TopMenu;
 return [
     'id' => 'custom_pages',
     'class' => 'humhub\modules\custom_pages\Module',
+    'modules' => [
+        'template' => [
+            'class' => 'humhub\modules\custom_pages\modules\template\Module'
+        ],
+    ],
     'namespace' => 'humhub\modules\custom_pages',
     'events' => [
         ['class' => AdminMenu::className(), 'event' => AdminMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onAdminMenuInit']],
@@ -18,6 +23,7 @@ return [
         ['class' => humhub\modules\space\widgets\AdminMenu::className(), 'event' => humhub\modules\space\widgets\AdminMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onSpaceAdminMenuInit']],
         // v.021 and above
         ['class' => 'humhub\modules\space\modules\manage\widgets\Menu', 'event' => BaseMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onSpaceAdminMenuInit']],
+        ['class' => 'humhub\modules\space\widgets\HeaderControlsMenu', 'event' => BaseMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onSpaceAdminMenuInit']],
     ],
 ];
 ?>

@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use humhub\compat\CActiveForm;
 use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\models\Template;
+use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\Assets;
 
 Assets::register($this);
@@ -40,7 +40,7 @@ Assets::register($this);
         <?php elseif ($page->type == Page::TYPE_TEMPLATE): ?>
             <div class="form-group" id="content_field">
                 <?php echo $form->labelEx($page, 'templateId'); ?>
-                <?php echo $form->dropdownList($page, 'templateId', Template::getSelection(), array('class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Template'))); ?>
+                <?php echo $form->dropdownList($page, 'templateId', Template::getSelection(['type' => Template::TYPE_LAYOUT]), array('class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Template'))); ?>
             </div>
         <?php elseif ($page->type == Page::TYPE_MARKDOWN): ?>
             <?php echo $form->textArea($page, 'content', array('id' => 'markdownField', 'class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>

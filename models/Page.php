@@ -4,6 +4,7 @@ namespace humhub\modules\custom_pages\models;
 
 use Yii;
 use humhub\components\ActiveRecord;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 
 /**
  * This is the model class for table "custom_pages_page".
@@ -93,13 +94,22 @@ class Page extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if($this->type == self::TYPE_TEMPLATE) {
-            $pageTemplate = new PageTemplate();
-            $pageTemplate->page_id = $this->id;
-            $pageTemplate->template_id = $this->templateId;
-            $pageTemplate->save();
+            $container = new TemplateInstance();
+            $container->object_model = $this->className();
+            $container->object_id = $this->id;
+            $container->template_id = $this->templateId;
+            $container->save();
         }
         
         parent::afterSave($insert, $changedAttributes);
+    }
+    
+    public function afterDelete()
+    {
+        if($this->type == self::TYPE_TEMPLATE) {
+            TemplateInstance::deleteByOwner($this);
+        }
+        parent::afterDelete();
     }
 
     public function afterFind()

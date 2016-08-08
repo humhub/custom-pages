@@ -31,7 +31,6 @@ class Events extends \yii\base\Object
     {
         $space = $event->sender->space;
         if ($space->isModuleEnabled('custom_pages')) {
-
             $pages = ContainerPage::find()->contentContainer($space)->all();
             foreach ($pages as $page) {
                 $event->sender->addItem(array(
@@ -78,6 +77,10 @@ class Events extends \yii\base\Object
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' && Yii::$app->controller->id == 'view' && Yii::$app->request->get('id') == $page->id),
                 'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
             ));
+            
+            if($page->type == Page::TYPE_TEMPLATE && !Yii::$app->user->isGuest && Yii::$app->user->getIdentity()->isSystemAdmin()) {
+                
+            }
         }
     }
 

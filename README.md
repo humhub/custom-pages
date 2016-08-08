@@ -1,6 +1,11 @@
 ## Description
 Allows admins to create custom pages (html or markdown) or external links to various navigations (e.g. top navigation, account menu).
 
+Requires:
+
+- http://twig.sensiolabs.org/doc/installation.html
+
+
 __Status:__ beta   
 __Module website:__ <https://github.com/humhub/humhub-modules-custom-pages>    
 __Author:__ luke    

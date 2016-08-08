@@ -1,0 +1,18 @@
+<?php
+
+return [
+    #'humhub_root' => '...',
+    'modules' => ['custom_pages'],
+    'fixtures' => [
+        'default',
+        'template' => 'tests\codeception\fixtures\modules\custom_pages\template\TemplateFixture',
+        'containerContent' => 'tests\codeception\fixtures\modules\custom_pages\template\ContainerContentFixture',
+        'templateInstance' => 'tests\codeception\fixtures\modules\custom_pages\template\TemplateInstanceFixture',
+        'templateElement' => 'tests\codeception\fixtures\modules\custom_pages\template\TemplateElementFixture',
+        'richtextContent' => 'tests\codeception\fixtures\modules\custom_pages\template\RichtextContentFixture',
+        'ownerContent' => 'tests\codeception\fixtures\modules\custom_pages\template\OwnerContentFixture',
+    ]
+];
+
+
+

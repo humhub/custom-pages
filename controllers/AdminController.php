@@ -5,7 +5,6 @@ namespace humhub\modules\custom_pages\controllers;
 use Yii;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\AddPageForm;
-use humhub\modules\custom_pages\models\Template;
 
 /**
  * AdminController

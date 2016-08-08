@@ -1,0 +1,189 @@
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ *//* 
+    Created on : 26.07.2016, 14:59:56
+    Author     : buddha
+*/
+.cke_button__show_more .cke_button_label { 
+    display: inline !important; 
+}
+
+.cke_button__show_more .cke_button_icon { 
+    display: none !important; 
+}
+
+.info-content {
+    padding:5px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+img.preview {
+    display:block;
+    margin:auto;
+    max-width: 200px;
+    max-height:200px;
+}
+
+div#overlay {
+    position:fixed;
+    top:0px;
+    left:0px;
+    width: 100%;
+    height: 100%;
+    z-index: 1027;
+    background-color:black;
+    opacity:0.3;
+}
+
+.btn-xs.template-menu-button {
+    margin-left:1px;
+}
+
+.btn-sm.template-menu-button {
+    margin-left:2px;
+}
+
+div[data-template-item] {
+    border: 1px solid rgba(210, 210, 210, 0.5);
+    z-index: 1026;
+    position:relative;
+    box-sizing:border-box;
+}
+
+div[data-template-item].inline {
+    display: inline-block;
+}
+
+div[data-template-item].highlightEdit {
+    border: 1px dashed #708fa0 !important;
+}
+
+div[data-template-element] {
+    border: 1px solid rgba(210, 210, 210, 0.5);
+    z-index: 1026;
+    position:relative;
+    overflow:auto;
+    box-sizing:border-box;
+}
+
+div[data-template-element].highlightEdit {
+    border: 1px dashed #708fa0 !important;
+}
+
+div[data-template-element] .emptyBlock {
+    background-color:silver;
+    border:1px dashed grey;
+    min-height:200px;
+}
+
+div[data-template-element] .emptyContainerBlock {
+    border: 1px solid #ff8989;
+    background-color:lightsteelblue;
+    min-height:100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+div[data-template-element].highlightAdd {
+    border: 1px dashed #97d271 !important;
+}
+
+.emptyBlock {
+    height:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.elementMenu {
+    height: 26px;
+    position:absolute;
+    display:none;
+    z-index:1028;
+    background-color: lightgray; 
+    border-radius:4px;
+    -webkit-user-select: none; /* Chrome/Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+}
+
+.elementMenu span {
+    line-height: 26px;
+    font-size: 11px;
+    padding: 0px 5px 0px 5px;
+    float:left;
+    -webkit-user-select: none; /* Chrome/Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+}
+
+.elementToggleMenu {
+    height: 22px;
+    position:absolute;
+    display:none;
+    z-index:1028;
+    background-color: lightgray; 
+    border-radius:4px;
+}
+
+.elementToggleMenu span {
+    line-height: 22px;
+    font-size: 11px;
+    padding: 0px 5px 0px 5px;
+    float:left;
+}
+
+
+.bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-handle-off, 
+.bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-handle-on, 
+.bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-label {
+    white-space: nowrap;
+}
+
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary, 
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
+    background-color: #97d271 !important;
+}
+
+.btn-info-source {
+    color: #708fa0;
+    padding: 0 10px !important;
+    font-size: 23px !important;
+}
+
+.hr-text {
+  line-height: 1em;
+  position: relative;
+  outline: 0;
+  border: 0;
+  color: black;
+  text-align: center;
+  height: 1.5em;
+  opacity: .5;
+}
+
+.hr-text:before {
+    content: '';
+    background: linear-gradient(to right, transparent, #818078, transparent);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+}
+.hr-text:after {
+    content: attr(data-content);
+    position: relative;
+    display: inline-block;
+    color: black;
+ 
+    padding: 0 .5em;
+    line-height: 1.5em;
+    color: #818078;
+    background-color: #fcfcfa;
+}

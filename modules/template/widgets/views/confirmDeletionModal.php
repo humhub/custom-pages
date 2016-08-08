@@ -19,7 +19,7 @@ use yii\helpers\Url;
                 <p><?= $message ?></p>
             </div>
             <div class="modal-footer">
-                <button id="editTemplateSubmit" class="btn btn-primary"><?= Yii::t('CustomPagesModule.base', 'Delete'); ?></button>
+                <button id="editTemplateSubmit" data-ui-loader class="btn btn-primary"><?= Yii::t('CustomPagesModule.base', 'Delete'); ?></button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('CustomPagesModule.base', 'Cancel'); ?></button>
             </div>
     </div>

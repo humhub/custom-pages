@@ -39,7 +39,7 @@ $action = ($action == null) ? Url::to() : $action;
                 
             </div>
             <div class="modal-footer">
-                <button id="editTemplateSubmit" class="btn btn-primary"><?= Yii::t('CustomPagesModule.base', 'Save'); ?></button>
+                <button id="editTemplateSubmit" class="btn btn-primary" data-ui-loader><?= Yii::t('CustomPagesModule.base', 'Save'); ?></button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('CustomPagesModule.base', 'Cancel'); ?></button>
             </div>
         <?php ActiveForm::end(); ?>

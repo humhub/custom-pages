@@ -464,12 +464,12 @@
         var $overlay = $('#overlay');
         if ($overlay.length) {
             $overlay.fadeOut('fast', function () {
-                that.$.css('background-color', 'none');
-                that.$.css('z-index', '1026');
                 $overlay.remove();
                 that.$root.trigger('custom_pages.afterDeactivateContainer', [that]);
             });
         }
+        this.$.css('background-color', '');
+        this.$.css('z-index', '1026');
     };
 
     TemplateContainerItem.prototype.getUniqueId = function ($element) {

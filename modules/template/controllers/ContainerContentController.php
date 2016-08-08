@@ -198,7 +198,6 @@ class ContainerContentController extends \humhub\components\Controller
         $form = new EditItemForm();
         $form->setItem($itemId);
         $form->setScenario('edit');
-
         if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
             $ownerContent = OwnerContent::findByContent($form->owner->container);
             TemplateCache::flushByOwnerContent($ownerContent);

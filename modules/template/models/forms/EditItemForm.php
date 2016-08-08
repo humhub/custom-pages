@@ -28,6 +28,13 @@ class EditItemForm extends EditMultipleElementsForm
         ];
     }
     
+    public function scenarios()
+    {
+        return [
+            'edit' => ['title']
+        ];
+    }
+    
     public function setItem($itemId)
     {
         $this->owner = ContainerContentItem::findOne(['id' => $itemId]);

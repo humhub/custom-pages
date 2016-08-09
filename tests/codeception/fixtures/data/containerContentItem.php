@@ -18,8 +18,9 @@
  * GNU Affero General Public License for more details.
  */
 return [
-    ['id' => 1, 'name' => 'testTemplate', 'source' => '<div>{{ test_content }}</div>{{ test_text }}', 'description' => 'Template with two richtext elements', 'type' => 'layout'],
-    ['id' => 2, 'name' => 'layout1', 'source' => '<div>{{ container }}</div>', 'description' => 'Layout with one container element', 'type' => 'layout'],
-    ['id' => 3, 'name' => 'containerText', 'source' => '{{ container }} {{ text }}', 'description' => 'Cotnainer template with other container inside', 'type' => 'container'],
-    ['id' => 4, 'name' => 'simpleText', 'source' => '<div>{{ text }}</div>', 'description' => 'Simple text', 'type' => 'container'],
+    ['id' => 1, 'template_id' => 3, 'container_content_id' => 1, 'sort_order' => 0, 'title' => 'test1'],
+    
+    ['id' => 2, 'template_id' => 4, 'container_content_id' => 2, 'sort_order' => 0, 'title' => 'test2'],
+    ['id' => 3, 'template_id' => 4, 'container_content_id' => 2, 'sort_order' => 1, 'title' => 'test3'],
+    ['id' => 4, 'template_id' => 4, 'container_content_id' => 2, 'sort_order' => 2, 'title' => 'test4'],
 ];

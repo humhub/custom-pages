@@ -135,8 +135,8 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
 
     public function afterDelete()
     {
-        if ($this->hasDefinition()) {
-            if (self::find(['definition_id' => $this->definition_id])->count() == 0) {
+        if($this instanceof ContainerContent) {
+            if (self::find()->where(['definition_id' => $this->definition_id])->count() == 0) {
                 $this->definition->delete();
             }
         }

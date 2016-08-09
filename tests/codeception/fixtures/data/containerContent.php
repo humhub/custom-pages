@@ -17,4 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  */
-return [];
+return [
+    ['id' => 1, 'definition_id' => 1],
+    ['id' => 2, 'definition_id' => 2]
+];

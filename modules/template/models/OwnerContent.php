@@ -51,13 +51,13 @@ class OwnerContent extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function afterDelete()
+    public function beforeDelete()
     {
         if ($this->getInstance() != null) {
             $this->getInstance()->delete();
-        }
+        } 
 
-        parent::afterDelete();
+        return parent::beforeDelete();
     }
 
     /**
@@ -231,6 +231,8 @@ class OwnerContent extends ActiveRecord
      */
     public static function deleteByOwner($ownerClass, $ownerId = null, $elementName = null)
     {
+        
+        
         // We can't use delteAll since it won't trigger the afetDelete
         foreach (self::findByOwner($ownerClass, $ownerId, $elementName)->all() as $instance) {
             $instance->delete();

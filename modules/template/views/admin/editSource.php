@@ -33,10 +33,9 @@ use yii\helpers\Url;
         <li class="active">
             <?php echo Html::a(Yii::t('CustomPagesModule.base', 'Source'), Url::to(['edit-source', 'id' => $model->id])); ?>
         </li>
-        <li>
-            <?php echo Html::a('<i aria-hidden="true" class="fa fa-question-circle"></i> '.Yii::t('CustomPagesModule.base', 'Help'), 
-                    Url::to(['info', 'id' => $model->id])); ?>
-        </li>
+        <!-- <li>
+            <?// echo Html::a('<i aria-hidden="true" class="fa fa-question-circle"></i> '.Yii::t('CustomPagesModule.base', 'Help'), Url::to(['info', 'id' => $model->id])); ?>
+        </li> -->
     </ul>
 
     <div class="panel-body">

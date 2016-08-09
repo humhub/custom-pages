@@ -20,7 +20,7 @@ class ContainerContent extends TemplateContentActiveRecord
     {
         $this->definitionModel = ContainerContentDefinition::className();
     }
-    
+
     /**
      * @return string the associated database table name
      */
@@ -28,11 +28,12 @@ class ContainerContent extends TemplateContentActiveRecord
     {
         return 'custom_pages_template_container_content';
     }
-    
-    public function validate() {
+
+    public function validate()
+    {
         return parent::validate() && $this->definition->validate();
     }
-    
+
     public function getAllowedTemplates()
     {
         if (empty($this->definition->templates)) {
@@ -56,6 +57,17 @@ class ContainerContent extends TemplateContentActiveRecord
         parent::afterSave($insert, $changedAttributes);
     }
 
+    public function beforeDelete()
+    {
+        if($this->hasItems()) {
+            foreach($this->items as $item) {
+                $item->delete();
+            }
+        }
+
+        return parent::beforeDelete();
+    }
+
     public function getLabel()
     {
         return self::$label;
@@ -73,101 +85,100 @@ class ContainerContent extends TemplateContentActiveRecord
         $items = $this->items;
 
         $result = '';
-        
+
         $editMode = isset($options['editMode']) ? $options['editMode'] : false;
-        
-         if (empty($items) && $editMode) {
+
+        if (empty($items) && $editMode) {
             return $this->renderEmpty($options);
         }
-        
+
         foreach ($this->items as $containerItem) {
             $result .= $containerItem->render($editMode, $this->definition->is_inline);
         }
-        
-        if($this->isEditMode($options)) {
+
+        if ($this->isEditMode($options)) {
             return $this->wrap('div', $result, $options, ['data-template-multiple' => $this->definition->allow_multiple]);
         } else {
             return $result;
         }
     }
-    
+
     public function renderEmpty($options = [])
     {
-        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_Container', 'Empty <br />Container'), 
-                $options, ['class' => 'emptyContainerBlock', 'data-template-multiple' => $this->definition->allow_multiple]);
+        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_Container', 'Empty <br />Container'), $options, ['class' => 'emptyContainerBlock', 'data-template-multiple' => $this->definition->allow_multiple]);
     }
 
-    public function addContainerItem($templateId, $index = null) 
-    {       
+    public function addContainerItem($templateId, $index = null)
+    {
         $index = ($index == null) ? $this->getNextIndex() : $index;
-        
+
         ContainerContentItem::incrementIndex($this->id, $index);
-        
+
         $item = new ContainerContentItem();
         $item->template_id = $templateId;
         $item->container_content_id = $this->id;
         $item->sort_order = $index;
         $item->save();
-        
+
         return $item;
     }
-    
+
     public function moveItem($itemId, $step)
     {
         $item = ContainerContentItem::findOne(['id' => $itemId]);
-        
-        if($item == null || $item->container_content_id != $this->id) {
+
+        if ($item == null || $item->container_content_id != $this->id) {
             return;
         }
-        
+
         $nextIndex = $this->getNextIndex();
-        
+
         // If move up and item is not last
-        if($step > 0 && $item->sort_order != $nextIndex - 1) {
+        if ($step > 0 && $item->sort_order != $nextIndex - 1) {
             $oldIndex = $item->sort_order;
             $newIndex = $oldIndex + $step;
-            $item->sort_order = ($newIndex < $nextIndex) ? $newIndex : ($nextIndex -1);
-            
+            $item->sort_order = ($newIndex < $nextIndex) ? $newIndex : ($nextIndex - 1);
+
             ContainerContentItem::decrementBetween($this->id, $oldIndex, $item->sort_order);
-     
+
             $item->save();
-        } else if($step < 0 && $item->sort_order != 0) {
+        } else if ($step < 0 && $item->sort_order != 0) {
             $oldIndex = $item->sort_order;
             $newIndex = $oldIndex + $step;
             $item->sort_order = ($newIndex > 0) ? $newIndex : 0;
-            
+
             ContainerContentItem::incrementBetween($this->id, $item->sort_order, $oldIndex);
-            
+
             $item->save();
         }
     }
-    
+
     public function createEmptyItem($templateId, $index = null)
     {
         $index = ($index == null) ? $this->getNextIndex() : $index;
-        
+
         $item = new ContainerContentItem();
         $item->template_id = $templateId;
         $item->container_content_id = $this->id;
         $item->sort_order = $index;
         return $item;
     }
-    
+
     public function getNextIndex()
     {
         return $this->getItems()->count();
     }
-    
+
     public function hasItems()
     {
         return $this->getItems()->count() > 0;
     }
-    
+
     public function getItems()
     {
         return $this->hasMany(ContainerContentItem::className(), ['container_content_id' => 'id'])->orderBy('sort_order ASC');
     }
-    
+
     public function canAddItem()
     {
         return $this->definition == null || $this->definition->allow_multiple || !$this->hasItems();

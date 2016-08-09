@@ -98,7 +98,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
         parent::beforeDelete();
         // We just allow the template deletion if there are template owner relations.
         if(TemplateInstance::findByTemplateId($this->id)->count() == 0 
-                && ContainerContentTemplate::find(['template_id' => $this->id])->count() == 0) {
+                && ContainerContentTemplate::find()->where(['template_id' => $this->id])->count() == 0) {
             foreach ($this->elements as $element) {
                 $element->delete();
             }

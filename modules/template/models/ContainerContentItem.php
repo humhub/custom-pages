@@ -28,6 +28,12 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
             ['title', 'safe']
         ];
     }
+    
+    public function afterDelete()
+    {
+        OwnerContent::deleteByOwner($this);
+        parent::afterDelete();
+    }
 
     public static function incrementIndex($cotnainerId, $index)
     {

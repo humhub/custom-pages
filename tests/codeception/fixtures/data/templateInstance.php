@@ -18,5 +18,6 @@
  * GNU Affero General Public License for more details.
  */
 return [
-    ['id' => 1, 'object_model'  => 'humhub\modules\custom_pages\models\Page', 'object_id' => 1, 'template_id' => 1]
+    ['id' => 1, 'object_model'  => 'humhub\modules\custom_pages\models\Page', 'object_id' => 1, 'template_id' => 1],
+    ['id' => 2, 'object_model'  => 'humhub\modules\custom_pages\models\Page', 'object_id' => 2, 'template_id' => 2]
 ];

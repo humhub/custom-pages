@@ -4,6 +4,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+use humhub\modules\custom_pages\modules\template\widgets\CollapsableFormGroup;
 
 $sguid = Yii::$app->request->get('sguid');
 
@@ -12,13 +13,6 @@ $uploadUrl = Url::to(['/file/file/upload']);
 $disableDefinition = !$isAdminEdit && $model->definition->is_default;
 
 ?>
-
-<hr class="hr-text" data-content="<?= Yii::t('CustomPagesModule.base', 'Definition'); ?>" />
-
-<?= $form->field($model->definition, 'height')->textInput(['disabled' => $disableDefinition]); ?>
-<?= $form->field($model->definition, 'width')->textInput(['disabled' => $disableDefinition]); ?>
-<?= $form->field($model->definition, 'style')->textInput(['disabled' => $disableDefinition]); ?>    
-
 <?= \humhub\modules\custom_pages\modules\template\widgets\EditContentSeperator::widget(['isAdminEdit' => $isAdminEdit]) ?>
 
 <?= $form->field($model, 'file_guid')->hiddenInput(['class' => 'file-guid']); ?>
@@ -34,6 +28,14 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
 <?php endif;?>
 <br />
 <?= $form->field($model, 'alt')->textInput(); ?>
+
+<?php CollapsableFormGroup::begin(['defaultState' => false]) ?>
+
+<?= $form->field($model->definition, 'height')->textInput(['disabled' => $disableDefinition]); ?>
+<?= $form->field($model->definition, 'width')->textInput(['disabled' => $disableDefinition]); ?>
+<?= $form->field($model->definition, 'style')->textInput(['disabled' => $disableDefinition]); ?>    
+
+<?php CollapsableFormGroup::end() ?>
     
 <script>
     $('.uploadNewImage').off('click').on('click', function(evt) {

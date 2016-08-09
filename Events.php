@@ -45,6 +45,24 @@ class Events extends \yii\base\Object
             }
         }
     }
+    
+    public static function onSpaceHeaderMenuInit($event)
+    {
+        if (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' 
+                && Yii::$app->controller->id == 'container' && Yii::$app->controller->action->id == 'view'
+                && modules\template\models\TemplatePagePermission::canEdit()) {
+            $event->sender->addWidget(modules\template\widgets\TemplatePageEditButton::className(), [], ['sortOrder' => 500]);
+        }
+    }
+    
+    public static function onTopStackInit($event)
+    {
+        if (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' 
+                && Yii::$app->controller->id == 'view' && (Yii::$app->controller->action->id == 'view' || Yii::$app->controller->action->id == 'index')
+                && modules\template\models\TemplatePagePermission::canEdit()) {
+            $event->sender->addWidget(modules\template\widgets\TemplatePageEditStackMenuButton::className(), [], ['sortOrder' => 500]);
+        }
+    }
 
     public static function onSpaceAdminMenuInit($event)
     {

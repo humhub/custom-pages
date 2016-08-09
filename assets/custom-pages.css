@@ -102,7 +102,7 @@ div[data-template-element].highlightAdd {
     height: 26px;
     position:absolute;
     display:none;
-    z-index:1028;
+    z-index:8;
     background-color: lightgray; 
     border-radius:4px;
     -webkit-user-select: none; /* Chrome/Safari */        
@@ -124,7 +124,7 @@ div[data-template-element].highlightAdd {
     height: 22px;
     position:absolute;
     display:none;
-    z-index:1028;
+    z-index:1028 !important;
     background-color: lightgray; 
     border-radius:4px;
 }
@@ -165,9 +165,18 @@ div[data-template-element].highlightAdd {
   opacity: .5;
 }
 
+.hr-text.collapsableTrigger {
+    cursor:pointer;
+}
+
+.hr-text.collapsableTrigger:after {
+    color: #818078;
+    font-weight: bold;
+}
+
 .hr-text:before {
     content: '';
-    background: linear-gradient(to right, transparent, #818078, transparent);
+    background: #E0E0E0;
     position: absolute;
     left: 0;
     top: 50%;
@@ -184,4 +193,18 @@ div[data-template-element].highlightAdd {
     line-height: 1.5em;
     color: #818078;
     background-color: #fcfcfa;
+}
+
+#editPageButton .dropdown-menu li {
+    background-color: #f7f7f7;
+    border-left: 3px solid transparent;
+}
+
+#editPageButton .dropdown-menu li:hover, #editPageButton .dropdown-menu li.selected {
+    background-color: #f7f7f7;
+    border-left: 3px solid #6fdbe8;
+}
+
+#editPageButton .dropdown-menu a{
+    background: none;
 }

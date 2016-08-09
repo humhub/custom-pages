@@ -10,8 +10,6 @@ if($editMode) {
 }
 ?>
 
-<?= InlineEditorEditMenu::widget(['pageId' => $page->id, 'templateInstance' => $templateInstance, 'canEdit' => $canEdit, 'editMode' => $editMode]);?>
-
 <div id="templatePageRoot" data-page-template-id="<?= $templateInstance->id ?>">
     <div class="panel panel-default">
         <div class="panel-body">

@@ -49,24 +49,5 @@ use yii\helpers\Url;
             window.location.href = '<?= Url::to(['view', 'id' => $pageId, 'editMode' => false, 'sguid' => $guid]); ?>';
         }
     });
-    
-    $('#editAllElements').on('click', function(evt) {
-        evt.preventDefault();
-        var url = $(this).attr('href');
-        $.ajax(url, {
-            type: 'POST',
-            dataType: 'json',
-            beforeSend: function () {
-                setModalLoader();
-                $('#globalModal').modal('show');
-            },
-            success: function (json) {
-                $('#globalModal').html(json.content);
-            }
-        });
-    });
-    
-    $(document).on('templateMultipleElementEditSuccess', function() {
-        window.location.href = '<?= Url::to(); ?>';
-    });
+   
 </script>

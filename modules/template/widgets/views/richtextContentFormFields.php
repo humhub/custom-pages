@@ -17,7 +17,7 @@ $uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', 'sgu
 
 <?= \humhub\modules\custom_pages\modules\template\widgets\EditContentSeperator::widget(['isAdminEdit' => $isAdminEdit]) ?>
 
-<?= $form->field($model, 'content')->textarea(['id' => $id, 'rows' => 6, 'class' => 'ckeditorInput', 'data-form-name' => $model->formName()]); ?>
+<?= $form->field($model, 'content')->textarea(['id' => $id, 'rows' => 6, 'class' => 'ckeditorInput', 'data-form-name' => $model->formName()])->label(false); ?>
 
 <?php foreach ($model->fileList as $file) : ?>
     <?= Html::hiddenInput($model->formName().'[fileList][]', $file); ?>

@@ -187,7 +187,7 @@
         }
 
         options.cssClass = options.cssClass || 'elementMenu';
-        this.$menu = (!this.$menu) ? $('<div class="' + options.cssClass + '" style="display:none;"></div>') : this.$menu;
+        this.$menu = (!this.$menu) ? $('<div class="editMenu ' + options.cssClass + '" style="display:none;"></div>') : this.$menu;
 
         if(this.name) {
             this.$menu.append($('<span>#' + this.name + '</span>'), options.items);
@@ -197,7 +197,7 @@
 
         this.$menu.on('mouseover', function(evt) {
             evt.stopPropagation();
-            that.$menu.css('z-index', '1040');
+            that.$menu.css('z-index', '9');
         });
         
         this.$menu.on('click', function(evt) {
@@ -205,7 +205,9 @@
         });
 
         this.$menu.on('mouseout', function(evt) {
-            that.$menu.css('z-index', '');
+            if(!editPage.activeitem) {
+                that.$menu.css('z-index', '8');
+            }
         });
 
         $('body').append(this.$menu);
@@ -481,6 +483,7 @@
             $('#overlay').remove();
         }
 
+        $('.editMenu').css('z-index', '1028');
         this.$.css('background-color', '#fff');
         this.$.css('z-index', '1027');
         $('<div id="overlay" style="display:none;"></div>').insertBefore(this.$).fadeIn('fast');
@@ -491,6 +494,7 @@
     };
 
     TemplateContainerItem.prototype.stopInlineEdit = function () {
+        $('.editMenu').css('z-index', '');
         this.data('isActiveItem', false);
         var that = this;
         var $overlay = $('#overlay');
@@ -574,6 +578,12 @@
             $('#globalModal').modal('hide');
             that.replaceElement(that.currentElement, json.content);
         });
+        
+        /*$('a, button').on('click', function() {
+            if(that.$.find($(this)) && !$(this).closest('editMenu').length && !$(this).closest('.modal').length) {
+                that.clearExcept();
+            }
+        });*/
     };
 
     TemplateInlineEdit.prototype.replaceElement = function (element, content) {

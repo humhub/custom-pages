@@ -111,10 +111,17 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
     
     public function beforeSave($insert)
     {   
-        if($this->isDefinitionContent() && $this->definition->validate()) {
-            $this->definition->save(false);
-            $this->definition_id = $this->definition->getPrimaryKey();
+        $definition = $this->definition;
+        if($this->isDefinitionContent() && $definition->validate() && $definition->hasValues()) {
+            $definition->save(false);
+            $this->definition_id = $definition->getPrimaryKey();
+        } else if($this->isDefinitionContent() && !$definition->isNewRecord && !$definition->hasValues()) {
+            // If we reset the default definition to an empty state we remove the definition settings, which will allow content to define own definitions
+           self::updateAll(['definition_id' => null], ['definition_id' => $definition->id]);
+           $definition->delete();
+           return false;
         }
+        
         return parent::beforeSave($insert);
     }
 

@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Url;
-use humhub\modules\custom_pages\modules\template\widgets\InlineEditorEditMenu;
 
 humhub\assets\Select2ExtensionAsset::register($this);
 
@@ -9,8 +8,6 @@ if($editMode) {
     \humhub\modules\custom_pages\InlineEditAsset::register($this);
 }
 ?>
-
-<?= InlineEditorEditMenu::widget(['pageId' => $page->id, 'templateInstance' => $templateInstance, 'canEdit' => $canEdit, 'editMode' => $editMode]);?>
 
 <div id="templatePageRoot" class="container" data-page-template-id="<?= $templateInstance->id ?>">
     <div class="row">

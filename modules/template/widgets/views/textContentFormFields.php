@@ -5,4 +5,4 @@
 
 <?= \humhub\modules\custom_pages\modules\template\widgets\EditContentSeperator::widget(['isAdminEdit' => $isAdminEdit]) ?>
 
-<?= $form->field($model, 'content')->textInput(['maxlength' => 255]) ?>
+<?= $form->field($model, 'content')->textInput(['maxlength' => 255])->label(false) ?>

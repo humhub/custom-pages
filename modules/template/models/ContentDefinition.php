@@ -11,16 +11,34 @@ use yii\db\ActiveRecord;
  */
 abstract class ContentDefinition extends ActiveRecord
 {
-    
+
     private $formName;
-    
+
     public function setFormName($formName)
     {
         $this->formName = $formName;
     }
-    
+
+    public function hasValues()
+    {
+        $result = false;
+        foreach ($this->attributes() as $key) {
+            if ($this->getAttribute($key) != null && $key != 'id' && $key != 'is_default') {
+                $result = true;
+                break;
+            }
+        }
+        return $result;
+    }
+
     public function formName()
     {
         return ($this->formName != null) ? $this->formName : parent::formName();
     }
+
+    public function load($data, $formName = null)
+    {
+        parent::load($data, $formName);
+    }
+
 }

@@ -196,7 +196,7 @@
             if($('#overlay').length) {
                 that.$menu.css('z-index', '1029');
             } else {
-                that.$menu.css('z-index', '9');
+                that.$menu.css('z-index', '1');
             }
         });
         
@@ -208,7 +208,7 @@
             if($('#overlay').length) {
                 that.$menu.css('z-index', '1028');
             } else {
-                that.$menu.css('z-index', '9');
+                that.$menu.css('z-index', '');
             }
         });
         

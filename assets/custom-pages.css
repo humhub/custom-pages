@@ -108,7 +108,7 @@ div[data-template-element].highlightAdd {
     height: 26px;
     position:absolute;
     display:none;
-    z-index:8;
+    /*z-index:7;*/
     background-color: lightgray; 
     border-radius:4px;
     -webkit-user-select: none; /* Chrome/Safari */        
@@ -130,7 +130,7 @@ div[data-template-element].highlightAdd {
     height: 22px;
     position:absolute;
     display:none;
-    z-index:8;
+    /*z-index:7;*/
     background-color: lightgray; 
     border-radius:4px;
 }

@@ -22,6 +22,10 @@
     box-shadow: 1px 1px 1px 1px rgba(210, 210, 210, 0.5);
 }
 
+.previewContainer {
+    text-align: center;
+}
+
 .imageLoader {
     position: absolute;
     z-index: 2000;

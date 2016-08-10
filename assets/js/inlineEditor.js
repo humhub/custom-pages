@@ -230,6 +230,10 @@
         var left = position.indexOf('l') === 0;
         var top = position.indexOf('t') === 1;
         
+        if(offset.top <= this.$root.offset().top + 5) {
+            top = 0;
+        }
+        
         var offsetTopAlign = options.topAlign || 0;
         var offsetLeftAlign = options.leftAlign || 0;
         

@@ -31,6 +31,9 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
             <img class="preview" src="<?= $model->getUrl() ?>"/>
         <?php else: ?>
             <img class="preview" style="display:none;" src="#"/>
+            <p class="empty-image-text">
+                <?= Yii::t('CustomPagesModule.base', '<strong>No image available.</strong>');?>
+            </p>
         <?php endif; ?>
     </div>
 </div>
@@ -53,12 +56,23 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
 <script>
     $('.uploadElementImage').off('change').on('change', function () {
         //$(this).parent().next('.fileName').html(this.files[0].name)
+        console.log(this);
+        if(!this.files.length) {
+            return;
+        }
+        
         $this = $(this);
         $('.imageLoader').remove();
         var $loader = $('<div class="imageLoader loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div>');
         $loader.hide();
 
         var $preview = $this.closest('.uploadContainer').next().find('.preview');
+        var isEmpty = false;
+        if(!$preview.is(':visible')) {
+            $preview = $preview.next();
+            isEmpty = true;
+        }
+        
         var offset = $preview.offset();
         var height = $preview.outerHeight();
         var width = $preview.outerWidth();
@@ -70,7 +84,12 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
             width: width,
             'line-height': $preview.height()+'px',
         });
-
+        
+        if(isEmpty) {
+            $preview.remove();
+            $loader.css('background-color', 'transparent');
+        }
+        
         $('body').append($loader);
 
         $loader.show();

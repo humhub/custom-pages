@@ -7,7 +7,7 @@ use humhub\modules\custom_pages\models\ContainerPage;
     <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.base', 'Custom Pages'); ?></div>
     <div class="panel-body">
 
-        <?php echo Html::a(Yii::t('CustomPagesModule.base', 'Create new Page'), $container->createUrl('add'), array('class' => 'btn btn-primary')); ?>
+        <?php echo Html::a(Yii::t('CustomPagesModule.base', 'Create new Page'), $container->createUrl('add'), array('class' => 'btn btn-primary', 'data-ui-loader' => '')); ?>
 
         <p />
         <p />

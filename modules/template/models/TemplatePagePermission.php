@@ -24,5 +24,10 @@ class TemplatePagePermission
             return !Yii::$app->user->isGuest && Yii::$app->user->getIdentity()->isSystemAdmin();
         }
     }
+    public static function canTemplate()
+    {
+        return !Yii::$app->user->isGuest && Yii::$app->user->getIdentity()->isSystemAdmin();
+    }
+    
 }
 

@@ -55,6 +55,7 @@ class EditMultipleElementsForm extends \yii\base\Model
     public function prepareContentInstances()
     {
         $ownerContentArr = $this->template->getContentElements($this->owner);
+
         foreach ($ownerContentArr as $ownerContent) {            
             $contentItem = new ContentFormItem([
                 'ownerContent' => $ownerContent, 

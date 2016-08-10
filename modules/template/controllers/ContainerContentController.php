@@ -49,16 +49,21 @@ class ContainerContentController extends \humhub\components\Controller
         $owner = OwnerContent::getOwnerModel($ownerModel, $ownerId);
         $defaultOwnerContent = OwnerContent::findOne(['id' => $ownerContentId]);
 
-        // Copy default ContainerContent and save
-        $content = $defaultOwnerContent->copyContent();
-        $content->save();
+        // Check if owner content already exists
+        $ownerContent = OwnerContent::findOne(['owner_model' => $ownerModel, 'owner_id' => $owner->id, 'element_name' => $defaultOwnerContent->element_name]);     
+                
+        if($ownerContent == null) {
+            // Copy default ContainerContent and save
+            $content = $defaultOwnerContent->copyContent();
 
-        // Copy default OwnerContent and set owner and new content
-        $ownerContent = $defaultOwnerContent->copy();
-        $ownerContent->setOwner($owner);
-        $ownerContent->setContent($content);
-        $ownerContent->save();
+            $content->save();
 
+            // Copy default OwnerContent and set owner and new content
+            $ownerContent = $defaultOwnerContent->copy();
+            $ownerContent->setOwner($owner);
+            $ownerContent->setContent($content);
+            $ownerContent->save();
+        }
         // Forward to AddItem action
         return $this->runAction('add-item', ['ownerContentId' => $ownerContent->id, 'ownerContent' => $ownerContent, 'sguid' => $sguid]);
     }

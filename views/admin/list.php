@@ -7,7 +7,7 @@ use humhub\modules\custom_pages\models\Page;
     <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
      <?= \humhub\modules\custom_pages\widgets\AdminMenu::widget([]); ?>
     <div class="panel-body">
-        <?php echo Html::a(Yii::t('CustomPagesModule.base', 'Create new Page'), ['add'], ['class' => 'btn btn-primary']); ?>
+        <?php echo Html::a(Yii::t('CustomPagesModule.base', 'Create new Page'), ['add'], ['class' => 'btn btn-primary',  'data-ui-loader' => '']); ?>
 
         <br /><br />
 

@@ -6,6 +6,17 @@
     Created on : 26.07.2016, 14:59:56
     Author     : buddha
 */
+.selectpicker {
+    font-family: FontAwesome;
+    font-feature-settings: normal;
+}
+
+.selectpicker option {
+    font-family: FontAwesome;
+    font-feature-settings: normal;
+}
+
+
 .cke_button__show_more .cke_button_label { 
     display: inline !important; 
 }
@@ -43,7 +54,7 @@ div#overlay {
 }
 
 .btn-sm.template-menu-button {
-    margin-left:2px;
+    margin-left:1px;
 }
 
 div[data-template-item] {

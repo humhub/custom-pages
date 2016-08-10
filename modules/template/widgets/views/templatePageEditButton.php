@@ -9,7 +9,7 @@ use yii\helpers\Url;
  * and open the template in the editor.
  */
 
-//echo Html::a('<i class="fa fa-plus"></i> '. Yii::t('SpaceModule.widgets_views_inviteButton', 'Invite'), '#', array('class' => 'btn btn-primary btn-sm', 'data-target' => '#globalModal'));
+
 ?>
 
 <?php if ($editMode) : ?>
@@ -25,13 +25,15 @@ use yii\helpers\Url;
                     <?= Yii::t('CustomPagesModule.views_view_template', 'Page configuration') ?>
                 </a>
             </li>
+            <?php if(humhub\modules\custom_pages\modules\template\models\TemplatePagePermission::canTemplate()): ?>
+                <li>
+                    <a target="_blank"  href="<?= Url::to(['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid]) ?>">
+                        <?= Yii::t('CustomPagesModule.views_view_template', 'Edit template') ?>
+                    </a>
+                </li>
+            <?php endif; ?>
             <li>
-                <a target="_blank"  href="<?= Url::to(['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid]) ?>">
-                    <?= Yii::t('CustomPagesModule.views_view_template', 'Edit template') ?>
-                </a>
-            </li>
-            <li>
-                <a id="editAllElements" href="<?= Url::to(['/custom_pages/template/owner-content/edit-multiple', 'id' => $templateInstance->id]) ?>">
+                <a id="editAllElements" href="<?= Url::to(['/custom_pages/template/owner-content/edit-multiple', 'id' => $templateInstance->id, 'sguid' => $sguid]) ?>">
                     <?= Yii::t('CustomPagesModule.views_view_template', 'Edit elements') ?>
                 </a>
             </li>

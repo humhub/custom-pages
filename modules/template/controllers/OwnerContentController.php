@@ -117,10 +117,6 @@ class OwnerContentController extends \humhub\components\Controller
                             'message' => Yii::t('CustomPagesModule.modules_template_widgets_views_confirmDeletionModal', 'Do you really want to delete this content?')
         ]));
     }
-    
-    public function actionReset($elementId) {
-        //
-    }
 
     public function actionEditMultiple($id)
     {

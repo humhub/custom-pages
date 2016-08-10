@@ -38,6 +38,8 @@ use yii\helpers\Url;
                     <?= $form->field($model, 'use_default')->checkbox(['style' => 'margin: 100px']); ?>
                 <?php endif; ?>
                 
+                <?= \humhub\modules\custom_pages\modules\template\widgets\EditContentSeperator::widget(['isAdminEdit' => true])?>
+                
                 <?= $model->content->renderForm($form); ?>
                 
                 <?php foreach($model->fileList as $file) :?>

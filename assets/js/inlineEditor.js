@@ -126,11 +126,11 @@
                 data: that.getEditData(),
                 beforeSend: function () {
                     setModalLoader();
+                    $('#globalModal').modal('show');
                     editPage.currentElement = that;
                 },
                 success: function (json) {
                     $('#globalModal').html(json.content);
-                    $('#globalModal').modal('show');
                 }
             });
         });
@@ -166,6 +166,7 @@
                 data: that.getEditData(),
                 beforeSend: function () {
                     setModalLoader();
+                    $('#globalModal').modal('show');
                     editPage.currentElement = that;
                 },
                 success: function (json) {

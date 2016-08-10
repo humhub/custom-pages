@@ -209,7 +209,7 @@
             if($('#overlay').length) {
                 that.$menu.css('z-index', '1028');
             } else {
-                that.$menu.css('z-index', '');
+                that.$menu.css('z-index', '0');
             }
         });
         
@@ -509,7 +509,7 @@
     };
 
     TemplateContainerItem.prototype.stopInlineEdit = function () {
-        $('.editMenu').css('z-index', '');
+        $('.editMenu').css('z-index', '0');
         this.data('isActiveItem', false);
         var that = this;
         var $overlay = $('#overlay');
@@ -520,7 +520,7 @@
             });
         }
         this.$.css('background-color', '');
-        this.$.css('z-index', '');
+        this.$.css('z-index', '0');
     };
 
     TemplateContainerItem.prototype.getUniqueId = function ($element) {

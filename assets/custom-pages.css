@@ -83,6 +83,7 @@ div[data-template-item] {
     border: 1px solid rgba(210, 210, 210, 0.5);
     position:relative;
     box-sizing:border-box;
+    z-index:0;
 }
 
 div[data-template-item].inline {
@@ -98,6 +99,7 @@ div[data-template-element] {
     position:relative;
     overflow:auto;
     box-sizing:border-box;
+    z-index:0;
 }
 
 div[data-template-element].highlightEdit {

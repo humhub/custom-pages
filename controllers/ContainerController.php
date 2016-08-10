@@ -79,7 +79,7 @@ class ContainerController extends ContentContainerController
             return $this->redirect($this->contentContainer->createUrl('edit', ['type' => $model->type]));
         }
 
-        return $this->render('add', ['model' => $model]);
+        return $this->render('add', ['model' => $model, 'sguid' => $this->space->guid]);
     }
 
     public function actionList()
@@ -108,7 +108,7 @@ class ContainerController extends ContentContainerController
             return $this->redirect($this->contentContainer->createUrl('list'));
         }
 
-        return $this->render('edit', array('page' => $page));
+        return $this->render('edit', ['page' => $page, 'sguid' => $this->space->guid]);
     }
 
     public function actionDelete()

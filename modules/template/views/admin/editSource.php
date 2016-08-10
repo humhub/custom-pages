@@ -25,7 +25,9 @@ use yii\helpers\Url;
             ?>
         </div>
     </div>
-
+<a href="<?= Url::to(['preview', 'id' => $model->id]) ?>" target="_blank" class="btn btn-success btn-sm pull-right" style="margin: 0 10px 10px 0">
+                    <i aria-hidden="true" class="fa fa-eye"></i>
+                </a>
     <ul class="nav nav-tabs tab-sub-menu" id="tabs">
         <li>
             <?php echo Html::a(Yii::t('CustomPagesModule.base', 'General'), Url::to(['edit', 'id' => $model->id])); ?>
@@ -48,6 +50,7 @@ use yii\helpers\Url;
             <?php echo Html::submitButton(Yii::t('CustomPagesModule.base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
             <?= \humhub\widgets\DataSaved::widget([]); ?>
             <div class="dropdown pull-right">
+                
                 <button id="editAllElements" class="btn btn-primary" type="button">
                     <i aria-hidden="true" class="fa fa-pencil"></i>
                     <?php echo Yii::t('CustomPagesModule.modules_template_views_admin_editSource', 'Edit All'); ?>

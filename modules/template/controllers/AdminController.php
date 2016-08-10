@@ -103,7 +103,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $form = new AddElementForm();
         $form->setElementDefinition($templateId, $contentType);
         $form->setScenario('create');
-        
+
         if ($form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByTemplateId($templateId);
             return $this->getJsonEditElementResult(true, TemplateElementAdminRow::widget(['form' => $form, 'saved' => true]), $form);
@@ -116,57 +116,79 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         return $this->getJsonEditElementResult(false, $result, $form);
     }
-    
+
     public function actionEditElement()
     {
         $elementId = Yii::$app->request->get('id');
-        
+
         if ($elementId == null) {
             throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'Invalid request data!'));
         }
-        
+
         Yii::$app->response->format = 'json';
-         
+
         $form = new EditElementForm();
         $form->setElementId($elementId);
         $form->setScenario('edit-admin');
-        
-        if($form->load(Yii::$app->request->post()) && $form->save()) {
+
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByTemplateId($form->element->template_id);
             return $this->getJsonEditElementResult(true, TemplateElementAdminRow::widget(['form' => $form, 'saved' => true]), $form);
         }
-        
+
         $result = EditElementModal::widget([
-            'model' => $form,
-            'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> element {name}', ['name' => $form->element->name]),
-            'resetUrl' => \yii\helpers\Url::to(['reset-element', 'id' => $elementId])
+                    'model' => $form,
+                    'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> element {name}', ['name' => $form->element->name]),
+                    'resetUrl' => \yii\helpers\Url::to(['reset-element', 'id' => $elementId])
         ]);
-        
+
         return $this->getJsonEditElementResult(false, $result, $form);
     }
-    
-     public function actionResetElement($id) {
+
+    public function actionResetElement($id)
+    {
         $this->forcePostRequest();
-        
+
         Yii::$app->response->format = 'json';
-        
+
         $element = TemplateElement::findOne(['id' => $id]);
         $ownerContent = $element->getDefaultContent();
-        
-        if($ownerContent != null) {
+
+        if ($ownerContent != null) {
             $ownerContent->delete();
         }
-        
+
         Yii::$app->getSession()->setFlash('data-saved', Yii::t('CustomPagesModule.base', 'Saved'));
-        
+
         return [
             'success' => true,
             'id' => $id,
             'content' => \humhub\widgets\DataSaved::widget(),
-            
         ];
     }
-    
+
+    public function actionPreview($id, $editView = null, $reload = null)
+    {
+        $this->subLayout = null;
+        $template = Template::findOne(['id' => $id]);
+        
+        $editView = ($editView != null) ? $editView : false;
+        
+        if($reload != null) {
+            return $this->renderPartial('@custom_pages/modules/template/views/admin/preview', [
+                'template' => $template,
+                'editView' => $editView
+            ]);
+        } else {
+            return $this->render('@custom_pages/modules/template/views/admin/preview', [
+            'template' => $template,
+            'editView' => $editView
+        ]);
+        }
+        
+        
+    }
+
     private function getJsonEditElementResult($success, $content, $form)
     {
         $json = [];
@@ -181,16 +203,14 @@ class AdminController extends \humhub\modules\admin\components\Controller
     {
         $id = Yii::$app->request->get('id');
         $template = Template::findOne(['id' => $id]);
-        
-        if(!$template->delete()) {
-            Yii::$app->session->setFlash('error', 
-                Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'The template could not be deleted, please get sure that this template is not in use.'));
-        
+
+        if (!$template->delete()) {
+            Yii::$app->session->setFlash('error', Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'The template could not be deleted, please get sure that this template is not in use.'));
         }
-        
+
         return $this->redirect(['index']);
     }
-    
+
     public function actionDeleteElement()
     {
         $id = Yii::$app->request->get('id');
@@ -199,18 +219,18 @@ class AdminController extends \humhub\modules\admin\components\Controller
         if ($id == null) {
             throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'Invalid request data!'));
         }
-        
-        if(Yii::$app->request->post('confirmation')) {
+
+        if (Yii::$app->request->post('confirmation')) {
             $element = TemplateElement::findOne(['id' => $id]);
             TemplateCache::flushByTemplateId($element->template_id);
             $element->delete();
-            
+
             return [
                 'success' => true,
                 'id' => $id
             ];
         }
-        
+
         return [
             'success' => true,
             'content' => \humhub\modules\custom_pages\modules\template\widgets\ConfirmDeletionModal::widget([
@@ -258,7 +278,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             \humhub\modules\custom_pages\modules\template\models\ContainerContent::$label => \humhub\modules\custom_pages\modules\template\models\ContainerContent::className(),
         ];
     }
-    
+
     public function actionInfo()
     {
         return $this->renderPartial('@custom_pages/modules/template/views/admin/info');

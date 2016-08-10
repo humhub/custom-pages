@@ -5,12 +5,16 @@ use humhub\modules\custom_pages\models\Page;
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
-     <?= \humhub\modules\custom_pages\widgets\AdminMenu::widget([]); ?>
+    <?= \humhub\modules\custom_pages\widgets\AdminMenu::widget([]); ?>
     <div class="panel-body">
-        <?php echo Html::a(Yii::t('CustomPagesModule.base', 'Create new Page'), ['add'], ['class' => 'btn btn-primary',  'data-ui-loader' => '']); ?>
-
-        <br /><br />
-
+        <div class="clearfix">
+            <?php echo Html::a('<i class="fa fa-plus"></i> ' . Yii::t('CustomPagesModule.base', 'Create new page'), ['add'], ['data-ui-loader' => '','class' => 'pull-right btn btn-success']); ?>
+            <h4><?= Yii::t('CustomPagesModule.base', 'Overview') ?></h4>
+            <div class="help-block">
+                <?= Yii::t('CustomPagesModule.views_admin_list', 'This page lists all available main pages.'); ?>
+            </div>
+        </div>
+        <br />
         <?php if (count($pages) != 0): ?>
             <?php
             $classes = Page::getNavigationClasses();
@@ -30,7 +34,7 @@ use humhub\modules\custom_pages\models\Page;
                         <td><?php echo $classes[$page->navigation_class]; ?></td>
                         <td><?php echo $types[$page->type]; ?></td>
                         <td><?php echo $page->sort_order; ?></td>
-                        <td><?php echo Html::a('Edit', ['edit', 'id' => $page->id], array('class' => 'btn btn-primary btn-xs pull-right')); ?></td>
+                        <td><?php echo Html::a('<i class="fa fa-pencil"></i>', ['edit', 'id' => $page->id], array('class' => 'btn btn-primary btn-xs pull-right')); ?></td>
                     </tr>
 
                 <?php endforeach; ?>

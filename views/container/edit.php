@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use humhub\compat\CActiveForm;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\modules\template\models\Template;
@@ -605,13 +606,18 @@ $faIcons = array(
 ?>
 
 <div class="panel panel-default">
-    <?php if (!$page->isNewRecord) : ?>
-        <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.views_admin_edit', '<strong>Edit</strong> page'); ?></div>
-    <?php else: ?>
-        <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.views_admin_edit', '<strong>Create</strong> page'); ?></div>
-    <?php endif; ?>
-    <div class="panel-body">
+        <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
 
+    <div class="panel-body">
+        <div class="clearfix">
+            <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('base', 'Back to overview'), Url::to(['list', 'sguid' => $sguid]), ['class' => 'btn btn-default pull-right', 'data-ui-loader' => '']); ?>
+
+            <h4><?= Yii::t('CustomPagesModule.base', 'Page configuration') ?></h4>
+            <div class="help-block">
+                <?= Yii::t('CustomPagesModule.views_container_list', 'This page lists all available pages of this space.'); ?>
+            </div>
+        </div>
+        <br />
         <?php $form = CActiveForm::begin(); ?>
 
         <?php echo $form->errorSummary($page); ?>
@@ -619,7 +625,7 @@ $faIcons = array(
         <div class="form-group">
             <?php echo $form->labelEx($page, 'type'); ?><br />
             <?php $types = $page->getPageTypes(); ?>
-            <?php echo $types[$page->type]; ?>
+            <?= Html::textInput('', $types[$page->type], ['class' => 'form-control', 'disabled' => '1']); ?>
         </div>
 
         <div class="form-group">
@@ -677,6 +683,11 @@ $faIcons = array(
             echo Html::a(Yii::t('CustomPagesModule.views_admin_edit', 'Delete'), $page->content->container->createUrl('delete', ['id' => $page->id]), array('class' => 'btn btn-danger', 'data-confirm' => 'Are you sure?'));
         }
         ?>
+        
+         <?php if ($page->type == ContainerPage::TYPE_TEMPLATE && !$page->isNewRecord): ?>
+            <?php echo Html::a('<i class="fa fa-pencil"></i> '.Yii::t('CustomPagesModule.views_container_edit', 'Inline Editor'),
+                    ['/custom_pages/container/view', 'id' => $page->id, 'sguid' => $sguid, 'editMode' => 1],['class' => 'btn btn-success pull-right', 'data-ui-loader' => '']); ?>
+        <?php endif; ?>
 
         <?php CActiveForm::end(); ?>
 

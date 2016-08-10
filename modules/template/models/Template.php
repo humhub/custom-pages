@@ -160,6 +160,10 @@ class Template extends ActiveRecord implements TemplateContentOwner
     public function render(ActiveRecord $owner = null, $editMode = false)
     {
         $contentElements = $this->getContentElements($owner);
+        
+        if($owner == null) {
+            $owner = $this;
+        }
 
         $content = [];
         foreach ($contentElements as $contentElement) {

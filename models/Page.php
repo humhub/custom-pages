@@ -57,7 +57,7 @@ class Page extends ActiveRecord
     
     public function validateTemplateType($attribute, $params)
     {
-        if($this->type == self::TYPE_TEMPLATE && $this->templateId == null) {
+        if($this->isNewRecord && $this->type == self::TYPE_TEMPLATE && $this->templateId == null) {
             $this->addError('templateId', Yii::t('CustomPagesModule.base', 'Invalid template selection!'));
         }
     }

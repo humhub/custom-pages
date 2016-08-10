@@ -40,8 +40,8 @@ class AdminController extends \humhub\modules\admin\components\Controller
             $page = new Page;
             $page->type = (int) Yii::$app->request->get('type');
         }
-
-        if ($page->load(Yii::$app->request->post()) && $page->validate() && $page->save()) {
+        
+        if ($page->load(Yii::$app->request->post()) && $page->save()) {
             if ($page->type == Page::TYPE_MARKDOWN) {
                 \humhub\modules\file\models\File::attachPrecreated($page, Yii::$app->request->post('fileUploaderHiddenGuidField'));
             }

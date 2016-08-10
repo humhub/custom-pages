@@ -244,7 +244,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             'success' => false,
             'content' => EditMultipleElementsModal::widget([
                 'model' => $form,
-                'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> all elements of {templateName}', ['templateName' => $form->template->name])
+                'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> default content of {templateName}', ['templateName' => $form->template->name])
             ])
         ];
     }

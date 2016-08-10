@@ -13,7 +13,6 @@ $uploadUrl = Url::to(['/file/file/upload']);
 $disableDefinition = !$isAdminEdit && $model->definition->is_default;
 
 ?>
-<?= \humhub\modules\custom_pages\modules\template\widgets\EditContentSeperator::widget(['isAdminEdit' => $isAdminEdit]) ?>
 
 <?= $form->field($model, 'file_guid')->hiddenInput(['class' => 'file-guid'])->label(false); ?>
 

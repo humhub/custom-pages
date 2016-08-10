@@ -15,34 +15,54 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
 ?>
 <?= \humhub\modules\custom_pages\modules\template\widgets\EditContentSeperator::widget(['isAdminEdit' => $isAdminEdit]) ?>
 
-<?= $form->field($model, 'file_guid')->hiddenInput(['class' => 'file-guid']); ?>
+<?= $form->field($model, 'file_guid')->hiddenInput(['class' => 'file-guid'])->label(false); ?>
 
-<?= Html::fileInput('files')?>
+<div class="row">
+<div class="col-md-3">
+    <label class="btn btn-default btn-file btn-primary btn-sm">
+        <?= Yii::t('CustomPagesModule.modules_template_widgets_views_imageContentFormFields', 'Choose New Image')?> 
+        <?= Html::fileInput('files', null, ['class' => 'uploadElementImage', 'style' => 'display:none;'])?>
+    </label>
+    <span class="fileName"></span>
+    <br />
+    <br />
+    <button class="uploadNewImage btn btn-primary btn-sm" data-ui-loader disabled data-form-name="<?= $model->formName()?>"><?= Yii::t('CustomPagesModule.base', 'Upload'); ?></button>
+</div>
+<div class="col-md-9">
+    <?php if($model->hasFile()) : ?>
+        <img class="preview" src="<?= $model->getUrl() ?>"/>
+    <?php else:?>
+        <img class="preview" style="display:none;" src="#"/>
+    <?php endif;?>
+</div>
+</div>
 <br />
-<button class="uploadNewImage" class="btn btn-primary" data-form-name="<?= $model->formName()?>"><?= Yii::t('CustomPagesModule.base', 'Upload'); ?></button>
-<br />
-<?php if($model->hasFile()) : ?>
-    <img class="preview" src="<?= $model->getUrl() ?>"/>
-<?php else:?>
-    <img class="preview" style="display:none;" src="#"/>
-<?php endif;?>
-<br />
-<?= $form->field($model, 'alt')->textInput(); ?>
+
 
 <?php CollapsableFormGroup::begin(['defaultState' => false]) ?>
-
-<?= $form->field($model->definition, 'height')->textInput(['disabled' => $disableDefinition]); ?>
-<?= $form->field($model->definition, 'width')->textInput(['disabled' => $disableDefinition]); ?>
-<?= $form->field($model->definition, 'style')->textInput(['disabled' => $disableDefinition]); ?>    
-
+<div class="row">
+    <div class="col-md-6">
+        <?= $form->field($model->definition, 'height')->textInput(['disabled' => $disableDefinition]); ?>
+    </div>
+    <div class="col-md-6">
+        <?= $form->field($model->definition, 'width')->textInput(['disabled' => $disableDefinition]); ?>
+    </div>
+</div>
+    <?= $form->field($model->definition, 'style')->textInput(['disabled' => $disableDefinition]); ?>    
+    <?= $form->field($model, 'alt')->textInput(); ?>
 <?php CollapsableFormGroup::end() ?>
     
 <script>
+    $('.uploadElementImage').off('change').on('change', function() {
+        $(this).parent().next('.fileName').html(this.files[0].name);
+        $(this).parent().siblings('.uploadNewImage').prop('disabled', false);
+    });
+    
     $('.uploadNewImage').off('click').on('click', function(evt) {
         evt.preventDefault();
         
-        var $form = $(this).closest('form');
         var $this = $(this);
+        var $form = $this.closest('form');
         var formData = new FormData($form[0]);
         
         $.ajax({
@@ -58,8 +78,11 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
             //Ajax events
             //beforeSend: beforeSendHandler,
             success: function(json) {
+                // remove the disabled class of loader but disable the upload button
+                $this.html('<?= Yii::t('CustomPagesModule.base', 'Upload'); ?>').removeClass('disabled');
+                $this.prop('disabled', true);
                 var files = json.files;
-                var $preview = $this.siblings('.preview');
+                var $preview = $this.parent().next().find('.preview');
                 $preview.attr('src', files[0].url);
                 $preview.fadeIn('fast');
                 $form.find('.file-guid').val(files[0].guid);

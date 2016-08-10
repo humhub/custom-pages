@@ -93,10 +93,6 @@
         this.renderMenu();
     };
 
-    TemplateElement.prototype.updateMenuPosition = function() {
-
-    }
-
     TemplateElement.prototype.renderMenu = function () {
         var items = [this.createEditButton()];
 
@@ -197,7 +193,11 @@
 
         this.$menu.on('mouseover', function(evt) {
             evt.stopPropagation();
-            that.$menu.css('z-index', '9');
+            if($('#overlay').length) {
+                that.$menu.css('z-index', '1029');
+            } else {
+                that.$menu.css('z-index', '9');
+            }
         });
         
         this.$menu.on('click', function(evt) {
@@ -205,10 +205,16 @@
         });
 
         this.$menu.on('mouseout', function(evt) {
-            if(!editPage.activeitem) {
-                that.$menu.css('z-index', '8');
+            if($('#overlay').length) {
+                that.$menu.css('z-index', '1028');
+            } else {
+                that.$menu.css('z-index', '9');
             }
         });
+        
+        if($('#overlay').length) {
+                that.$menu.css('z-index', '1028');
+            } 
 
         $('body').append(this.$menu);
 
@@ -219,12 +225,16 @@
         var position = (options.position) ? options.position : 'rt';
         
         var offset = this.$.offset();
-
+        
         var left = position.indexOf('l') === 0;
         var top = position.indexOf('t') === 1;
         
         var offsetTopAlign = options.topAlign || 0;
         var offsetLeftAlign = options.leftAlign || 0;
+        
+        if(this.$.is('span, a')) {
+            options.outside = true;
+        }
         
         if(top) {
             offsetTopAlign += (options.outside) ? - (this.$menu.height()) : 5;
@@ -418,7 +428,7 @@
                 $containerEditToggle = that.$menu.find('#containerEditToggle');
                 $containerEditToggle.bootstrapSwitch({
                     'size': 'mini',
-                    'state': false,
+                    'state': that.data('isActiveItem'),
                     'onText': cfg.toggleOnText,
                     'offText': cfg.toggleOffText
                 });
@@ -562,7 +572,9 @@
 
         this.$.on('custom_pages.afterDeactivateContainer', function(event, item) {
             that.activeItem = undefined;
-            that.setActivateElement(item.getParent().$);
+            if(item.getParent()) {
+                that.setActivateElement(item.getParent().$);
+            }
         });
 
         $(document).on('itemDeleteSuccess', function (evt, json) {
@@ -587,8 +599,18 @@
     };
 
     TemplateInlineEdit.prototype.replaceElement = function (element, content) {
-        element.$.replaceWith(content);
-        element.highlight();
+        var $content = $(content);
+        element.$.replaceWith($content);
+        var newElement = this.getElement($content);
+        
+        if(this.isActiveItem(element)) {
+            this.activeItem = undefined;
+            this.clearExcept();
+            newElement.data('isActiveItem', true);
+            this.setActivateElement($content);
+            newElement.startInlineEdit(true);
+        }
+        
     };
 
     TemplateInlineEdit.prototype.clearExcept = function(element) {

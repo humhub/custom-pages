@@ -114,8 +114,12 @@ class OwnerContentController extends \humhub\components\Controller
 
         return $this->getJsonEditElementResult(false, ConfirmDeletionModal::widget([
                             'title' => Yii::t('CustomPagesModule.modules_template_controller_OwnerContentController', '<strong>Confirm</strong> content deletion'),
-                            'message' => Yii::t('CustomPagesModule.modules_template_widgets_views_confirmDeletionModal', 'Do you really want to delete this content?'),
+                            'message' => Yii::t('CustomPagesModule.modules_template_widgets_views_confirmDeletionModal', 'Do you really want to delete this content?')
         ]));
+    }
+    
+    public function actionReset($elementId) {
+        //
     }
 
     public function actionEditMultiple($id)
@@ -129,7 +133,7 @@ class OwnerContentController extends \humhub\components\Controller
         $form->setOwner($templateInstance, $templateInstance->template_id);
         
         if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
-            TemplateCache::flushByTemplateInstance($templateInstance);;
+            TemplateCache::flushByTemplateInstance($templateInstance);
             return [
                 'success' => true
             ];

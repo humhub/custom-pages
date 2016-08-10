@@ -73,7 +73,13 @@ div[data-template-element].highlightEdit {
 
 div[data-template-element] .emptyBlock {
     background-color:silver;
-    border:1px dashed grey;
+    border:1px solid orange;
+    min-height:200px;
+}
+
+div[data-template-element].highlightAdd .emptyBlock {
+    background-color:silver;
+    border:1px dashed #97d271;
     min-height:200px;
 }
 
@@ -124,7 +130,7 @@ div[data-template-element].highlightAdd {
     height: 22px;
     position:absolute;
     display:none;
-    z-index:1028 !important;
+    z-index:8;
     background-color: lightgray; 
     border-radius:4px;
 }
@@ -165,13 +171,33 @@ div[data-template-element].highlightAdd {
   opacity: .5;
 }
 
+.template-edit-multiple .panel-body {
+    padding-top:0px !important;
+}
+
+.template-edit-multiple .panel-heading {
+    background-color: #f5f5f5 !important;
+}
+
+.template-edit-multiple .panel-heading:hover {
+    background-color: #EDEDED !important;
+}
+
+.template-edit-multiple .panel-footer {
+    padding:0px !important;
+}
+
 .hr-text.collapsableTrigger {
     cursor:pointer;
 }
 
 .hr-text.collapsableTrigger:after {
-    color: #818078;
+    color: #000;
     font-weight: bold;
+}
+
+.hr-text.collapsableTrigger:after:hover {
+    text-decoration: underline;
 }
 
 .hr-text:before {

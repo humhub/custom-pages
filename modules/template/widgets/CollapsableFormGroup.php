@@ -29,12 +29,12 @@ class CollapsableFormGroup extends \humhub\components\Widget
 
     public function run()
     {
-        if($this->closeText == null) {
-            $this->closeText = Yii::t('CustomPagesModule.modules_template_widgets_CollapsableFOrmGroup', 'Close');
+        if($this->openText == null) {
+            $this->openText = Yii::t('CustomPagesModule.modules_template_widgets_CollapsableFOrmGroup', 'Show more');
         }
         
-        if($this->openText == null) {
-            $this->openText = Yii::t('CustomPagesModule.modules_template_widgets_CollapsableFOrmGroup', 'More');
+        if($this->closeText == null) {
+            $this->closeText = Yii::t('CustomPagesModule.modules_template_widgets_CollapsableFOrmGroup', 'Show less');
         }
         
         return $this->render('collapsableFormGroup', [

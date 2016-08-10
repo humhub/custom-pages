@@ -28,8 +28,7 @@ use humhub\modules\file\models\File;
     public function rules()
     {
         $result = parent::rules();
-        $result[] = ['alt', 'safe'];
-        $result[] = ['file_guid', 'required'];
+        $result[] = [['alt', 'file_guid'], 'safe'];
         return $result;
     }
     
@@ -55,6 +54,11 @@ use humhub\modules\file\models\File;
             'file_guid' => 'File',
             'alt' => 'Alternate text'
         ];
+    }
+    
+    public function beforeSave($insert)
+    {
+        return parent::beforeSave($insert);
     }
     
     public function getLabel()
@@ -86,19 +90,25 @@ use humhub\modules\file\models\File;
 
     public function render($options = [])
     {   
-        
-        $options['htmlOptions'] = [
-            'src' => $this->getFile()->getUrl(),
-            'alt' => $this->alt
-        ];
-        
-        if($this->hasDefinition()) {
-            $options['htmlOptions']['height'] = $this->definition->height;
-            $options['htmlOptions']['width'] = $this->definition->width;
-            $options['htmlOptions']['style'] = $this->definition->style;
+        if($this->hasFile()) {
+            $options['htmlOptions'] = [
+                'src' => $this->getFile()->getUrl(),
+                'alt' => $this->purify($this->alt)
+            ];
+
+            if($this->hasDefinition()) {
+                $options['htmlOptions']['height'] = $this->purify($this->definition->height);
+                $options['htmlOptions']['width'] = $this->purify($this->definition->width);
+                $options['htmlOptions']['style'] = $this->purify($this->definition->style);
+            }
+
+            return $this->wrap('img','', $options);
+        } else if(isset($options['editMode']) && $options['editMode']) {
+            $options['empty'] = true;
+            return $this->renderEmpty($options);
         }
         
-        return $this->wrap('img','', $options);
+        return '';
     }
     
     public function renderEmpty($options = [])

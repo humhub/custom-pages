@@ -58,10 +58,11 @@ class ViewController extends Controller
     
     public function viewTemplatePage($page)
     {
-        $editMode = Yii::$app->request->get('editMode');
+        
         $templateInstance = TemplateInstance::findOne(['object_model' => Page::className() ,'object_id' => $page->id]);
         
-        $canEdit = !Yii::$app->user->isGuest && Yii::$app->user->getIdentity()->isSystemAdmin();
+        $canEdit = \humhub\modules\custom_pages\modules\template\models\TemplatePagePermission::canEdit();
+        $editMode = Yii::$app->request->get('editMode') && $canEdit;
         
         $html = '';
         if(!$canEdit && TemplateCache::exists($templateInstance)) {

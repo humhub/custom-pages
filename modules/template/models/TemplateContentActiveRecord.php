@@ -202,9 +202,12 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
 
     protected function renderEmptyDiv($title, $options = [], $attributes = [])
     {
-        $class = $this->getOption($attributes, 'class', 'emptyBlock');
-        $defaultContent = '<div class="'.$class.'"><strong>' . $title . '</strong></div>';
-        return $this->wrap('div', $defaultContent, $options, $attributes);
+        if($this->isEditMode($options)) {
+            $class = $this->getOption($attributes, 'class', 'emptyBlock');
+            $defaultContent = '<div class="'.$class.'"><strong>' . $title . '</strong></div>';
+            return $this->wrap('div', $defaultContent, $options, $attributes);
+        }
+        return '';
     }
 
 }

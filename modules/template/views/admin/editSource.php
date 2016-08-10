@@ -90,6 +90,12 @@ use yii\helpers\Url;
             return "<?= Yii::t('CustomPagesModule.modules_template_views_admin_editSource', "You haven't saved your last changes yet. Do you want to leave without saving?") ?>";
         }
     });
+    
+    $(document).on('contentResetSuccess', function(evt, result) {
+        if(result.id && result.content) {
+            $('[data-template-element-definition="'+result.id+'"]').children().eq(1).append($(result.content).show());
+        }
+    });
 
     $(document).on('keydown', '#template-form-source', function (e) {
         var keyCode = e.keyCode || e.which;

@@ -138,10 +138,33 @@ class AdminController extends \humhub\modules\admin\components\Controller
         
         $result = EditElementModal::widget([
             'model' => $form,
-            'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> element')
+            'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> element {name}', ['name' => $form->element->name]),
+            'resetUrl' => \yii\helpers\Url::to(['reset-element', 'id' => $elementId])
         ]);
         
         return $this->getJsonEditElementResult(false, $result, $form);
+    }
+    
+     public function actionResetElement($id) {
+        $this->forcePostRequest();
+        
+        Yii::$app->response->format = 'json';
+        
+        $element = TemplateElement::findOne(['id' => $id]);
+        $ownerContent = $element->getDefaultContent();
+        
+        if($ownerContent != null) {
+            $ownerContent->delete();
+        }
+        
+        Yii::$app->getSession()->setFlash('data-saved', Yii::t('CustomPagesModule.base', 'Saved'));
+        
+        return [
+            'success' => true,
+            'id' => $id,
+            'content' => \humhub\widgets\DataSaved::widget(),
+            
+        ];
     }
     
     private function getJsonEditElementResult($success, $content, $form)
@@ -221,7 +244,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             'success' => false,
             'content' => EditMultipleElementsModal::widget([
                 'model' => $form,
-                'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> elements of {templateName}', ['templateName' => $form->template->name])
+                'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> all elements of {templateName}', ['templateName' => $form->template->name])
             ])
         ];
     }

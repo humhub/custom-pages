@@ -46,7 +46,8 @@ class ContainerController extends ContentContainerController
         $editMode = Yii::$app->request->get('editMode');
         $templateInstance = TemplateInstance::findOne(['object_model' => ContainerPage::className() ,'object_id' => $page->id]);  
         
-        $canEdit = $this->contentContainer->isAdmin();
+        $canEdit = \humhub\modules\custom_pages\modules\template\models\TemplatePagePermission::canEdit();
+        $editMode = Yii::$app->request->get('editMode') && $canEdit;
         
         $html = '';
         if(!$canEdit && TemplateCache::exists($templateInstance)) {

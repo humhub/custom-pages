@@ -18,13 +18,15 @@ class EditElementModal extends \humhub\components\Widget
     public $model;
     public $title;
     public $contentOnly = false;
+    public $resetUrl;
 
     public function run()
     {
         return $this->render('editElementModal', [
             'model' => $this->model,
             'title' => $this->title,
-            'contentOnly' => $this->contentOnly
+            'contentOnly' => $this->contentOnly,
+            'resetUrl' => $this->resetUrl
         ]);
     }
 

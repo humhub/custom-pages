@@ -86,12 +86,13 @@ class TemplateElementForm extends \yii\base\Model
         
         $this->fileList = (isset($data['fileList'])) ? $data['fileList'] : [];
 
+        $result = false;
         if ($this->content != null) {
-            $this->content->load($data, $formName);
+            $result = $result || $this->content->load($data, $formName);
         }
 
         // Note, only the template element loading is mandatory.
-        return $this->element->load($data, $formName);
+        return $result || $this->element->load($data, $formName);
     }
 
     public function validate()

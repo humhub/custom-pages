@@ -56,6 +56,11 @@ class ViewController extends Controller
         return $this->actionIndex();
     }
     
+    public function actionEdit($id)
+    {
+        return $this->redirect(\yii\helpers\Url::to(['/custom_pages/admin/edit', 'id' => $id]));
+    }
+    
     public function viewTemplatePage($page)
     {
         

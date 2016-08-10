@@ -17,25 +17,48 @@ $action = ($action == null) ? Url::to() : $action;
                    <?= $title ?>
                 </h4>
             </div>
-            <div class="modal-body media-body">  
+            <div class="modal-body media-body template-edit-multiple">  
                 <?= $form->field($model, 'title'); ?>
-                <?php foreach($model->contentMap as $key => $contentItem) :?>
-                    <h4 class="media-heading clearfix">
-                        <strong>#<?= $contentItem->ownerContent->element_name ?></strong>
+                <?php foreach ($model->contentMap as $key => $contentItem) : ?>
+                
+                <?php $isContainer = $contentItem->content instanceof humhub\modules\custom_pages\modules\template\models\ContainerContent; ?>
+                
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>#<?= $contentItem->ownerContent->element_name ?>&nbsp;<i class="switchIcon fa fa-caret-down" aria-hidden="true"></i></strong>
                         <small class="pull-right">
                             <span class="label label-success"><?= $contentItem->ownerContent->label ?></span>
                         </small>
-                        <?php if($contentItem->content->isNewRecord): ?>
+                        <?php if ($contentItem->content->isNewRecord): ?>
                             <small class="pull-right" style="margin-right: 2px">
                                 <span class="label label-warning"><?= Yii::t('CustomPagesModule.widgets_views_editMultipleElements', 'Empty') ?></span>
                             </small>
-                        <?php endif;?>
-                    </h4> 
-                    
-                    <?= $contentItem->content->renderForm($form); ?>
+                        <?php endif; ?>
+                        <?php if ($isContainer && $contentItem->content->definition->allow_multiple): ?>
+                            <small class="pull-right" style="margin-right: 2px">
+                                <span class="label label-success"><?= Yii::t('CustomPagesModule.widgets_views_editMultipleElements', 'Multiple') ?></span>
+                            </small>
+                        <?php endif; ?>
+                        <?php if ($isContainer && $contentItem->content->definition->is_inline): ?>
+                            <small class="pull-right" style="margin-right: 2px">
+                                <span class="label label-success"><?= Yii::t('CustomPagesModule.widgets_views_editMultipleElements', 'Inline') ?></span>
+                            </small>
+                        <?php endif; ?>
+                    </div>
+                    <?php // This was only set for container elements before. ?>
+                    <div class="panel-body" style="<?= (true) ? 'display:none' : '' ?>">
+                        <?= $contentItem->content->renderForm($form); ?>
+                    </div>
+                    <div class="panel-footer">&nbsp;</div>
+                </div>
 
-                    <hr>
-                <?php endforeach; ?>
+            <?php endforeach; ?>
+
+            <?php if (empty($model->contentMap)) : ?>
+                <div class="text-center">
+                    <?= Yii::t('CustomPagesModule.widgets_views_editMultipleElements', 'This template does not contain any elements yet.') ?>
+                </div>
+            <?php endif; ?>
                 
             </div>
             <div class="modal-footer">
@@ -47,6 +70,18 @@ $action = ($action == null) ? Url::to() : $action;
 </div>
 
 <script type="text/javascript">
+     $('.template-edit-multiple').find('.panel-heading').on('click', function() {
+        $(this).next('.panel-body').slideToggle('fast');
+        var $switchIcon = $(this).find('.switchIcon');
+        if($switchIcon.hasClass('fa-caret-down')) {
+            $switchIcon.removeClass('fa-caret-down');
+            $switchIcon.addClass('fa-caret-up');
+        } else {
+            $switchIcon.removeClass('fa-caret-up');
+            $switchIcon.addClass('fa-caret-down');
+        }
+    });
+    
     $('#editTemplateSubmit').on('click', function (evt) {
         evt.preventDefault();
         

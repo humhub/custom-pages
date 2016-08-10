@@ -32,12 +32,12 @@ use yii\helpers\Url;
             </li>
             <li>
                 <a id="editAllElements" href="<?= Url::to(['/custom_pages/template/owner-content/edit-multiple', 'id' => $templateInstance->id]) ?>">
-                    <?= Yii::t('CustomPagesModule.views_view_template', 'Edit Elements') ?>
+                    <?= Yii::t('CustomPagesModule.views_view_template', 'Edit elements') ?>
                 </a>
             </li>
             <li>
                 <a href="<?= Url::to(['view', 'id' => $pageId, 'editMode' => false, 'sguid' => $sguid]); ?>">
-                    <?= Yii::t('CustomPagesModule.views_view_template', 'Edit off') ?>
+                    <?= Yii::t('CustomPagesModule.views_view_template', 'Turn edit off') ?>
                 </a>
             </li>
         </ul>

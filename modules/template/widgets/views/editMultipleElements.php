@@ -22,7 +22,7 @@ use yii\helpers\Html;
                 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>#<?= $contentItem->ownerContent->element_name ?></strong>
+                        <strong>#<?= $contentItem->ownerContent->element_name ?>&nbsp;<i class="switchIcon fa fa-caret-down" aria-hidden="true"></i></strong>
                         <small class="pull-right">
                             <span class="label label-success"><?= $contentItem->ownerContent->label ?></span>
                         </small>
@@ -42,7 +42,8 @@ use yii\helpers\Html;
                             </small>
                         <?php endif; ?>
                     </div>
-                    <div class="panel-body" style="<?= ($isContainer) ? 'display:none' : '' ?>">
+                    <?php // This was only set for container elements before. ?>
+                    <div class="panel-body" style="<?= (true) ? 'display:none' : '' ?>">
                         <?= $contentItem->content->renderForm($form); ?>
                     </div>
                     <div class="panel-footer">&nbsp;</div>
@@ -72,6 +73,14 @@ use yii\helpers\Html;
 <script type="text/javascript">
     $('.template-edit-multiple').find('.panel-heading').on('click', function() {
         $(this).next('.panel-body').slideToggle('fast');
+        var $switchIcon = $(this).find('.switchIcon');
+        if($switchIcon.hasClass('fa-caret-down')) {
+            $switchIcon.removeClass('fa-caret-down');
+            $switchIcon.addClass('fa-caret-up');
+        } else {
+            $switchIcon.removeClass('fa-caret-up');
+            $switchIcon.addClass('fa-caret-down');
+        }
     });
     
     $('#editTemplateSubmit').on('click', function (evt) {

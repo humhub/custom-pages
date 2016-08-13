@@ -51,7 +51,12 @@ class Events extends \yii\base\Object
         if (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' 
                 && Yii::$app->controller->id == 'container' && Yii::$app->controller->action->id == 'view'
                 && modules\template\models\TemplatePagePermission::canEdit()) {
-            $event->sender->addWidget(modules\template\widgets\TemplatePageEditButton::className(), [], ['sortOrder' => 500]);
+            
+            $page =  ContainerPage::find()->contentContainer(Yii::$app->controller->contentContainer)->where(['custom_pages_container_page.id' => Yii::$app->request->get('id')])->one();
+            
+            if($page->type == ContainerPage::TYPE_TEMPLATE) {
+                $event->sender->addWidget(modules\template\widgets\TemplatePageEditButton::className(), [], ['sortOrder' => 500]);
+            }
         }
     }
     
@@ -60,7 +65,12 @@ class Events extends \yii\base\Object
         if (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' 
                 && Yii::$app->controller->id == 'view' && (Yii::$app->controller->action->id == 'view' || Yii::$app->controller->action->id == 'index')
                 && modules\template\models\TemplatePagePermission::canEdit()) {
-            $event->sender->addWidget(modules\template\widgets\TemplatePageEditStackMenuButton::className(), [], ['sortOrder' => 500]);
+            
+            $page = Page::findOne(['id' => Yii::$app->request->get('id')]);
+            
+            if($page->type  == Page::TYPE_TEMPLATE) {
+                $event->sender->addWidget(modules\template\widgets\TemplatePageEditStackMenuButton::className(), [], ['sortOrder' => 500]);
+            }
         }
     }
 

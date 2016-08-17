@@ -67,6 +67,7 @@ $uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', 'sgu
         var initCkEditor = function (id, toolbars, buttonLabel) {
             var instance = CKEDITOR.replace(id, {
                 'inline': false,
+                'skin': 'bootstrapck',
                 'removeButtons': 'Flash',
                 'filebrowserUploadUrl': '<?= $uploadUrl ?>',
                  toolbarGroups: toolbars

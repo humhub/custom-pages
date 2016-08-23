@@ -148,7 +148,13 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
                 $this->definition->delete();
             }
         }
-        \humhub\modules\file\models\File::deleteAll(['object_model' => $this->className(), 'object_id' => $this->getPrimaryKey()]);
+        
+        $files = \humhub\modules\file\models\File::getFilesOfObject($this);
+        
+        foreach($files as $file) {
+            $file->delete();
+        }
+        
         parent::afterDelete();
     }
 

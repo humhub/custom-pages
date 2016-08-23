@@ -3,6 +3,7 @@
 /* @var $form humhub\compat\CActiveForm */
 
 use yii\helpers\Url;
+use yii\helpers\Html;
 
 $id = 'ckeditor_' . $model->id;
 $id .= ($model->id == null) ? preg_replace( "/(\[|\])/","", $model->formName() )   : $model->id;

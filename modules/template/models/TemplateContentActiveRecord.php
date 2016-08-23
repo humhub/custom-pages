@@ -194,7 +194,16 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
     }
     
     public function getOption($options, $key, $default = null) {
-        return isset($options[$key]) ? $options[$key] : $default;
+        if(isset($options[$key])) {
+            if(is_bool($options[$key])) {
+                return ($options[$key]) ? '1' : '0';
+            } else {
+                return $options[$key];
+            }
+        } else {
+            return $default;
+        }
+        return isset($options[$key]) ? strval($options[$key]) : $default;
     }
 
     public function isEditMode($options = [])

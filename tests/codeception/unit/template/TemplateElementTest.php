@@ -35,7 +35,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
     public function testRenderDefaultContent()
     {
-        $result = $this->template->render($this->owner);
+        $result = $this->template->render($this->owner, true);
 
         $this->assertContains('<p>Default</p>', $result);
         $this->assertContains('data-template-element="test_content"', $result);
@@ -51,7 +51,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $this->element->saveInstance($this->owner, $content);
 
-        $result = $this->template->render($this->owner);
+        $result = $this->template->render($this->owner, true);
 
         $this->assertContains('<p>Non Default</p>', $result);
         $this->assertContains('data-template-element="test_content"', $result);
@@ -69,7 +69,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $this->element2->saveInstance($this->owner, $content);
 
-        $result = $this->template->render($this->owner);
+        $result = $this->template->render($this->owner, true);
 
         $this->assertContains('<p>Non Default2</p>', $result);
         $this->assertContains('data-template-element="test_text"', $result);
@@ -89,7 +89,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $this->element2->saveInstance($this->owner, $content2);
 
-        $result = $this->template->render($this->owner);
+        $result = $this->template->render($this->owner, true);
 
         $this->assertContains('<p>Non Default New</p>', $result);
         $this->assertNull(RichtextContent::findOne(['id' => $content->id]));
@@ -102,7 +102,7 @@ class TemplateElementTest extends HumHubDbTestCase
         $content->save();
         $this->element->saveAsDefaultContent($content);
 
-        $result = $this->template->render($this->owner);
+        $result = $this->template->render($this->owner, true);
 
         $this->assertContains('<p>Default2</p>', $result);
         // Get sure the old default content was removed

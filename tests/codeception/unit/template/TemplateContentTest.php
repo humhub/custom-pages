@@ -35,6 +35,7 @@ class TemplateContentTest extends HumHubDbTestCase
        
        $result = $pageContent->render([
            'empty' => false,
+           'editMode' => true,
            'element_name' => 'test',
            'owner_model' => $this->owner->className(),
            'owner_id' => $this->owner->id

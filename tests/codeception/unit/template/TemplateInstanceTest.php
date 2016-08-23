@@ -22,8 +22,9 @@ class TemplateInstanceTest extends HumHubDbTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->page = new Page(['id' => 2, 'type' => '5', 'title' => 'test2', 'navigation_class' => 'TopMenuWidget']);
-        $this->page->save();
+        $this->page = new Page(['type' => '5', 'title' => 'test2', 'navigation_class' => 'TopMenuWidget']);
+        //Don't validate since we are missing a valid template id...
+        $this->page->save(false);
         
         $this->owner1 = new Template();
         $this->owner1->scenario = 'edit';
@@ -36,6 +37,8 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $this->owner2->object_id = $this->page->id;
         $this->owner2->template_id = $this->owner1->id;
         $this->owner2->save();
+        
+       
     }
     
     public function testDeleteOwner()
@@ -45,10 +48,8 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $richtext = new RichtextContent(['content' => 'testContent']);
         $ownerContent = $element->saveInstance($this->owner2, $richtext);
         
-        $this->assertFalse($richtext->isNewRecord);
-        $this->assertFalse($ownerContent->isNewRecord);
-        
         $ownerTestContent = $element->getOwnerContent($this->owner2);
+        
         $content = $ownerContent->instance;
         
         $this->assertNotNull($content);
@@ -68,9 +69,9 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $richtext = new RichtextContent(['content' => 'testContent']);
         $ownerContent = $element->saveInstance($this->owner2, $richtext);
         
-        $this->assertFalse($richtext->isNewRecord);
-        $this->assertFalse($ownerContent->isNewRecord);
         TemplateInstance::deleteByOwner($this->page);
+        
+        $test = TemplateInstance::findOne(['id' => $this->owner2->id]);
         
         $this->assertNull(TemplateInstance::findOne(['id' => $this->owner2->id]));
         $this->assertNull(OwnerContent::findOne(['id' => $ownerContent->id]));

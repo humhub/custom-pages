@@ -13,7 +13,7 @@ use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use humhub\modules\custom_pages\modules\template\models\ContainerContentItem;
 use humhub\modules\custom_pages\modules\template\models\ContainerContentDefinition;
 
-class TemplateInstanceTest extends HumHubDbTestCase
+class ContainerContentTest extends HumHubDbTestCase
 {
 
     use Specify;

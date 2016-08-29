@@ -73,12 +73,13 @@ use humhub\modules\file\models\File;
     
     public function hasFile()
     {
-        return $this->file_guid != null;
+        return $this->file_guid != null && $this->getFile() != null;
     }
     
     public function getUrl()
     {
-        return $this->getFile()->getUrl();
+        $file = $this->getFile();
+        return ($file != null) ? $file->getUrl() : null;
     }
     
     public function copy() {
@@ -90,7 +91,7 @@ use humhub\modules\file\models\File;
 
     public function render($options = [])
     {   
-        if($this->hasFile()) {
+        if($this->hasFile() != null) {
             $options['htmlOptions'] = [
                 'src' => $this->getFile()->getUrl(),
                 'alt' => $this->purify($this->alt)

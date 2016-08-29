@@ -27,7 +27,7 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
         <button style="display:none;" class="uploadNewImage btn btn-primary btn-sm" data-form-name="<?= $model->formName() ?>"><?= Yii::t('CustomPagesModule.base', 'Upload'); ?></button>
     </div>
     <div class="col-md-9 previewContainer">
-        <?php if ($model->hasFile()) : ?>
+        <?php if ($model->hasFile() && $model->getFile() != null) : ?>
             <img class="preview" src="<?= $model->getUrl() ?>"/>
         <?php else: ?>
             <img class="preview" style="display:none;" src="#"/>

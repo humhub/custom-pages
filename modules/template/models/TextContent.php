@@ -68,6 +68,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
     
     public function renderEmpty($options = [])
     {
+        $options['class'] = 'emptyBlock text';
         return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_RichtextContent', 'Empty Text'), $options);
     }
 

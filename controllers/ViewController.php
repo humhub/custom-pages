@@ -6,8 +6,8 @@ use Yii;
 use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
-use humhub\modules\custom_pages\modules\template\components\TemplateCache;
+use humhub\modules\custom_pages\components\Container;
+use humhub\modules\custom_pages\components\TemplateViewBehavior;
 
 /**
  * Description of ViewController
@@ -16,6 +16,18 @@ use humhub\modules\custom_pages\modules\template\components\TemplateCache;
  */
 class ViewController extends Controller
 {
+    public $canEdit;
+    
+    /**
+     * @inhritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            ['class' => TemplateViewBehavior::className()],
+        ];
+    }
+    
     public function actionIndex()
     {
         $page = Page::findOne(['id' => Yii::$app->request->get('id')]);
@@ -32,15 +44,15 @@ class ViewController extends Controller
             $this->subLayout = "@humhub/modules/user/views/account/_layout";
         }
 
-        if ($page->type == Page::TYPE_HTML) {
+        if ($page->type == Container::TYPE_HTML) {
             return $this->render('html', array('html' => $page->content, 'title' => $page->title));
-        } elseif ($page->type == Page::TYPE_IFRAME) {
+        } elseif ($page->type == Container::TYPE_IFRAME) {
             return $this->render('iframe', array('url' => $page->content, 'navigationClass' => $page->navigation_class));
-        } elseif ($page->type == Page::TYPE_LINK) {
+        } elseif ($page->type == Container::TYPE_LINK) {
             return $this->redirect($page->content);
-        } elseif ($page->type == Page::TYPE_TEMPLATE) {
+        } elseif ($page->type == Container::TYPE_TEMPLATE) {
             return $this->viewTemplatePage($page);
-        } elseif ($page->type == Page::TYPE_MARKDOWN) {
+        } elseif ($page->type == Container::TYPE_MARKDOWN) {
             return $this->render('markdown', array(
                 'md' => $page->content,
                 'navigationClass' => $page->navigation_class,
@@ -60,32 +72,4 @@ class ViewController extends Controller
     {
         return $this->redirect(\yii\helpers\Url::to(['/custom_pages/admin/edit', 'id' => $id]));
     }
-    
-    public function viewTemplatePage($page)
-    {
-        
-        $templateInstance = TemplateInstance::findOne(['object_model' => Page::className() ,'object_id' => $page->id]);
-        
-        $canEdit = \humhub\modules\custom_pages\modules\template\models\TemplatePagePermission::canEdit();
-        $editMode = Yii::$app->request->get('editMode') && $canEdit;
-        
-        $html = '';
-        if(!$canEdit && TemplateCache::exists($templateInstance)) {
-            $html = TemplateCache::get($templateInstance);
-        } else {
-            $html = $templateInstance->render($editMode);
-            if(!$canEdit) {
-                TemplateCache::set($templateInstance, $html);
-            }
-        }
-        
-        return $this->render('template', [
-            'page' => $page, 
-            'templateInstance' => $templateInstance, 
-            'editMode' => $editMode,  
-            'canEdit' => $canEdit,
-            'html' => $html
-        ]);
-    }
-
 }

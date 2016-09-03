@@ -38,6 +38,14 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
         foreach (ContainerPage::find()->all() as $page) {
             $page->delete();
         }
+        
+        foreach (models\Snippet::find()->all() as $page) {
+            $page->delete();
+        }
+        
+        foreach (models\ContainerSnippet::find()->all() as $page) {
+            $page->delete();
+        }
 
         parent::disable();
     }
@@ -77,11 +85,14 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
         foreach (ContainerPage::find()->contentContainer($container)->all() as $page) {
             $page->delete();
         }
+        
+        foreach (models\ContainerSnippet::find()->contentContainer($container)->all() as $page) {
+            $page->delete();
+        }
     }
 
     public static function loadTwig()
     {
-
         $autoloader = Yii::getAlias('@custom_pages/vendors/Twig/Autoloader.php');
         require_once $autoloader;
         \Twig_Autoloader::register();

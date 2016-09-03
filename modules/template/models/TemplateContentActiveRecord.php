@@ -181,8 +181,7 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
         if (isset($options['htmlOptions'])) {
             $attributes = array_merge($attributes, $options['htmlOptions']);
         }
-
-
+        
         $result = '<' . $type;
         foreach ($attributes as $key => $value) {
             if($value != null) {
@@ -219,7 +218,7 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
     protected function renderEmptyDiv($title, $options = [], $attributes = [])
     {
         if($this->isEditMode($options)) {
-            $class = $this->getOption($attributes, 'class', 'emptyBlock');
+            $class = $this->getOption($options, 'class', 'emptyBlock');
             $defaultContent = '<div class="'.$class.'"><strong>' . $title . '</strong></div>';
             return $this->wrap('div', $defaultContent, $options, $attributes);
         }

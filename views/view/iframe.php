@@ -31,7 +31,7 @@ use humhub\modules\custom_pages\models\Page;
 
 <?php else: ?>
 
-    <iframe id="iframepage" style="width:100%;height:400px" src="<?php echo $url; ?>"></iframe>
+    <iframe id="iframepage" style="width:100%;height: 400px" src="<?php echo $url; ?>"></iframe>
 
     <style>
         #iframepage {

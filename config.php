@@ -23,6 +23,9 @@ return [
         ['class' => 'humhub\modules\space\widgets\HeaderControlsMenu', 'event' => BaseMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onSpaceAdminMenuInit']],
         ['class' => 'humhub\modules\space\widgets\HeaderControls', 'event' => BaseMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onSpaceHeaderMenuInit']],
         ['class' => 'humhub\widgets\TopMenuRightStack', 'event' => BaseMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onTopStackInit']],
+        
+        ['class' => 'humhub\modules\dashboard\widgets\Sidebar', 'event' => BaseMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onDashboardSidebarInit']],
+        ['class' => 'humhub\modules\space\widgets\Sidebar', 'event' => BaseMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onSpaceSidebarInit']],
     ],
 ];
 ?>

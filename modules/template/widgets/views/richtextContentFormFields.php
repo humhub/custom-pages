@@ -11,9 +11,14 @@ $id .= ($model->id == null) ? preg_replace( "/(\[|\])/","", $model->formName() )
 $csrfTokenName = Yii::$app->request->csrfParam;
 $csrfToken = Yii::$app->request->csrfToken;
 
-$sguid = Yii::$app->request->get('sguid');
+$contentContainer = property_exists(Yii::$app->controller, 'contentContainer') ? Yii::$app->controller->contentContainer : null;
 
-$uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', 'sguid' => $sguid]);
+if($contentContainer == null) {
+    $uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file']);
+} else {
+    $contentContainer->createUrl('/custom_pages/template/upload/upload-ckeditor-file');
+}
+
 ?>
 
 <?= $form->field($model, 'content')->textarea(['id' => $id, 'rows' => 6, 'class' => 'ckeditorInput', 'data-form-name' => $model->formName()])->label(false); ?>

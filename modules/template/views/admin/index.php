@@ -22,8 +22,15 @@ use yii\helpers\Url;
                 <?= Yii::$app->session->getFlash('error') ?>
             </div>
         <?php endif; ?>
-        <?php echo Html::a('<i class="fa fa-plus"></i> ' . Yii::t('CustomPagesModule.base', 'Create new {type}', ['type' => $type]), ['edit'], ['class' => 'pull-right btn btn-success']); ?>
-       
+        </div>
+   
+    <?= \humhub\modules\custom_pages\modules\template\widgets\TemplateAdminMenu::widget(); ?>
+    
+    <div class="panel-body">
+        
+         <?php echo Html::a('<i class="fa fa-plus"></i> ' . Yii::t('CustomPagesModule.base', 'Create new {type}', ['type' => $type]), ['edit'], ['class' => 'pull-right btn btn-success']); ?>
+    
+        
         <?php
         echo GridView::widget([
             'dataProvider' => $dataProvider,

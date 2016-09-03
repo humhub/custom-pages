@@ -6,9 +6,9 @@ use Yii;
 use yii\web\HttpException;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\custom_pages\models\ContainerPage;
+use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\models\AddPageForm;
-use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
-use humhub\modules\custom_pages\modules\template\components\TemplateCache;
+use humhub\modules\custom_pages\components\TemplateViewBehavior;
 
 /**
  * Custom Pages for ContentContainer
@@ -19,6 +19,22 @@ class ContainerController extends ContentContainerController
 {
 
     public $hideSidebar = true;
+    public $canEdit;
+
+    /**
+     * @inhritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            ['class' => TemplateViewBehavior::className()],
+        ];
+    }
+
+    public function actionIndex()
+    {
+        return $this->redirect($this->contentContainer->createUrl('list'));
+    }
 
     public function actionView()
     {
@@ -28,100 +44,100 @@ class ContainerController extends ContentContainerController
             throw new HttpException('404', 'Could not find requested page');
         }
 
-        if ($page->type == ContainerPage::TYPE_IFRAME) {
-            return $this->render('view_iframe', array('url' => $page->page_content));
-        } elseif ($page->type == ContainerPage::TYPE_LINK) {
+        if ($page->type == Container::TYPE_IFRAME) {
+            return $this->render('iframe', array('url' => $page->page_content));
+        } elseif ($page->type == Container::TYPE_LINK) {
             return $this->redirect($page->page_content);
-        } elseif ($page->type == ContainerPage::TYPE_MARKDOWN) {
-            return $this->render('view_markdown', array('md' => $page->page_content));
-        } elseif ($page->type == ContainerPage::TYPE_TEMPLATE) {
+        } elseif ($page->type == Container::TYPE_MARKDOWN) {
+            return $this->render('markdown', array('md' => $page->page_content));
+        } elseif ($page->type == Container::TYPE_TEMPLATE) {
             return $this->viewTemplatePage($page);
         } else {
             throw new HttpException('500', 'Invalid page type!');
         }
     }
-    
-    public function viewTemplatePage($page)
+
+    public function actionList()
     {
-        $editMode = Yii::$app->request->get('editMode');
-        $templateInstance = TemplateInstance::findOne(['object_model' => ContainerPage::className() ,'object_id' => $page->id]);  
-        
-        $canEdit = \humhub\modules\custom_pages\modules\template\models\TemplatePagePermission::canEdit();
-        $editMode = Yii::$app->request->get('editMode') && $canEdit;
-        
-        $html = '';
-        if(!$canEdit && TemplateCache::exists($templateInstance)) {
-            $html = TemplateCache::get($templateInstance);
-        } else {
-            $html = $templateInstance->render($editMode);
-            if(!$canEdit) {
-                TemplateCache::set($templateInstance, $html);
-            }
-        }
-        
-        return $this->render('view_template', [
-            'page' => $page, 
-            'templateInstance' => $templateInstance, 
-            'editMode' => $editMode,  
-            'canEdit' => $canEdit,
-            'html' => $html
+        $this->adminOnly();
+
+        $pages = $this->findAll();
+        return $this->render('@custom_pages/views/common/list', [
+                    'pages' => $pages,
+                    'label' => Yii::createObject($this->getPageClassName())->getLabel(),
+                    'subNav' => \humhub\modules\custom_pages\widgets\ContainerPageMenu::widget()
         ]);
+    }
+
+    protected function findAll()
+    {
+        return ContainerPage::find()->contentContainer($this->contentContainer)->all();
     }
 
     public function actionAdd()
     {
         $this->adminOnly();
 
-        $model = new AddPageForm;
-        $model->availableTypes = ContainerPage::getPageTypes();
+        $model = new AddPageForm(['class' => $this->getPageClassName()]);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             return $this->redirect($this->contentContainer->createUrl('edit', ['type' => $model->type]));
         }
 
-        return $this->render('add', ['model' => $model, 'sguid' => $this->space->guid]);
+        return $this->render('@custom_pages/views/common/add', [
+                    'model' => $model,
+                    'subNav' => \humhub\modules\custom_pages\widgets\ContainerPageMenu::widget()]);
     }
 
-    public function actionList()
+    protected function getPageClassName()
     {
-        $this->adminOnly();
-        
-        $pages = ContainerPage::find()->contentContainer($this->contentContainer)->all();
-        return $this->render('list', array('pages' => $pages, 'container' => $this->contentContainer));
+        return ContainerPage::className();
     }
 
-    public function actionEdit()
+    public function actionEdit($type = null, $id = null)
     {
         $this->adminOnly();
 
-        $page = ContainerPage::find()->contentContainer($this->contentContainer)->where(['custom_pages_container_page.id' => Yii::$app->request->get('id')])->one();
+        $page = $this->findPageById($id);
 
         if ($page === null) {
-            $page = new ContainerPage;
+            $page = Yii::createObject($this->getPageClassName());
+            $page->type = $type;
             $page->content->container = $this->contentContainer;
-            $page->type = (int) Yii::$app->request->get('type');
         }
+
         $page->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
-        
-        if ($page->load(Yii::$app->request->post()) && $page->validate() && $page->save()) {
-            \humhub\modules\file\models\File::attachPrecreated($page, Yii::$app->request->post('fileUploaderHiddenGuidField'));
+
+        if ($page->load(Yii::$app->request->post()) && $page->save()) {
+            if ($page->type == Container::TYPE_MARKDOWN) {
+                \humhub\modules\file\models\File::attachPrecreated($page, Yii::$app->request->post('fileUploaderHiddenGuidField'));
+            }
+
             return $this->redirect($this->contentContainer->createUrl('list'));
         }
 
-        return $this->render('edit', ['page' => $page, 'sguid' => $this->space->guid]);
+        return $this->render('@custom_pages/views/common/edit', [
+                    'page' => $page,
+                    'sguid' => $this->space->guid,
+                    'subNav' => \humhub\modules\custom_pages\widgets\ContainerPageMenu::widget()]);
     }
 
-    public function actionDelete()
+    public function actionDelete($id)
     {
         $this->adminOnly();
 
-        $page = ContainerPage::find()->contentContainer($this->contentContainer)->where(['custom_pages_container_page.id' => Yii::$app->request->get('id')])->one();
+        $page = $this->findPageById($id);
 
         if ($page !== null) {
             $page->delete();
         }
 
         return $this->redirect($this->contentContainer->createUrl('list'));
+    }
+
+    protected function findPageById($id = null)
+    {
+        return ContainerPage::find()->contentContainer($this->contentContainer)->where(['custom_pages_container_page.id' => $id])->one();
     }
 
     protected function adminOnly()

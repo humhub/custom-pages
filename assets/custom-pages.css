@@ -112,10 +112,15 @@ div[data-template-element] .emptyBlock {
     min-height:200px;
 }
 
+div[data-template-element] .emptyBlock.text {
+    background-color:silver;
+    border:1px solid orange;
+    min-height:50px;
+}
+
 div[data-template-element].highlightAdd .emptyBlock {
     background-color:silver;
     border:1px dashed #97d271;
-    min-height:200px;
 }
 
 div[data-template-element] .emptyContainerBlock {

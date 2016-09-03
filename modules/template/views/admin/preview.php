@@ -5,7 +5,7 @@ $class = ($template->isLayout()) ? 'prview-layout' : 'priview-container';
 
 ?>
 
-<div id="templatePageRoot" class="container" data-page-template-id="11">
+<div id="templatePageRoot" class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="clearfix">

@@ -6,7 +6,7 @@ use yii\helpers\Url;
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
-    <?= \humhub\modules\custom_pages\widgets\AdminMenu::widget([]); ?>
+    <?= \humhub\modules\custom_pages\widgets\AdminMenu::widget(); ?>
 
     <div class="panel-body">
         <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('base', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default pull-right')); ?>

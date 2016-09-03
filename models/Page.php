@@ -4,7 +4,8 @@ namespace humhub\modules\custom_pages\models;
 
 use Yii;
 use humhub\components\ActiveRecord;
-use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\modules\custom_pages\components\Container;
+use humhub\modules\custom_pages\modules\template\models\Template;
 
 /**
  * This is the model class for table "custom_pages_page".
@@ -20,20 +21,22 @@ use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
  * @property integer $in_new_window
  * @property string $navigation_class
  */
-class Page extends ActiveRecord
+class Page extends ActiveRecord implements CustomContentContainer
 {
 
-    public $url;
-    public $templateId;
-    
     const NAV_CLASS_TOPNAV = 'TopMenuWidget';
     const NAV_CLASS_ACCOUNTNAV = 'AccountMenuWidget';
     const NAV_CLASS_EMPTY = 'WithOutMenu';
-    const TYPE_LINK = '1';
-    const TYPE_HTML = '2';
-    const TYPE_IFRAME = '3';
-    const TYPE_MARKDOWN = '4';
-    const TYPE_TEMPLATE = '5';
+
+    /**
+     * @inhritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            ['class' => Container::className()],
+        ];
+    }
 
     /**
      * @return string the associated database table name
@@ -42,85 +45,46 @@ class Page extends ActiveRecord
     {
         return 'custom_pages_page';
     }
-
-    public function rules()
-    {
-        return array(
-            [['type', 'title', 'navigation_class'], 'required'],
-            [['type', 'sort_order', 'admin_only', 'in_new_window'], 'integer'],
-            [['title', 'navigation_class'], 'string', 'max' => 255],
-            [['icon'], 'string', 'max' => 100],
-            [['content', 'url', 'templateId'], 'safe'],
-            ['type', 'validateTemplateType'],
-        );
-    }
     
-    public function validateTemplateType($attribute, $params)
-    {
-        if($this->isNewRecord && $this->type == self::TYPE_TEMPLATE && $this->templateId == null) {
-            $this->addError('templateId', Yii::t('CustomPagesModule.base', 'Invalid template selection!'));
-        }
-    }
-
     /**
-     * @return array customized attribute labels (name=>label)
+     * @inerhitdoc
+     * @return array
      */
     public function attributeLabels()
     {
-        return array(
-            'id' => 'ID',
-            'type' => 'Type',
-            'title' => 'Title',
-            'icon' => 'Icon',
-            'content' => 'Content',
-            'url' => 'URL',
-            'templateId' => 'Template Layout',
-            'sort_order' => 'Sort Order',
-            'admin_only' => 'Only visible for admins',
-            'in_new_window' => 'Open in new window',
-            'navigation_class' => 'Navigation',
-        );
+        $result = $this->defaultAttributeLabels();
+        $result['in_new_window'] = Yii::t('CustomPagesModule.models_Page', 'Open in new window');
+        $result['admin_only'] = Yii::t('CustomPagesModule.models_Page', 'Only visible for admins');
+        $result['content'] = Yii::t('CustomPagesModule.models_Page', 'Content');
+        $result['navigation_class'] = Yii::t('CustomPagesModule.models_Page','Navigation');
+        return $result;
     }
 
-    public function beforeSave($insert)
+    /**
+     * @inhritdoc
+     */
+    public function rules()
     {
-        if ($this->type == self::TYPE_IFRAME || $this->type == self::TYPE_LINK) {
-            $this->content = $this->url;
-        }
-
-        return parent::beforeSave($insert);
+        $rules = $this->defaultRules();
+        $rules[] = ['navigation_class', 'required'];
+        $rules[] = [['in_new_window', 'admin_only'], 'integer'];
+        $rules[] = ['content', 'safe'];
+        return $rules;
     }
-    
-    public function afterSave($insert, $changedAttributes)
+
+    /**
+     * Returns a container specific title mainly used in views.
+     * @return string
+     */
+    public function getLabel()
     {
-        if($this->type == self::TYPE_TEMPLATE) {
-            $container = new TemplateInstance();
-            $container->object_model = $this->className();
-            $container->object_id = $this->id;
-            $container->template_id = $this->templateId;
-            $container->save();
-        }
-        
-        parent::afterSave($insert, $changedAttributes);
-    }
-    
-    public function afterDelete()
-    {
-        if($this->type == self::TYPE_TEMPLATE) {
-            TemplateInstance::deleteByOwner($this);
-        }
-        parent::afterDelete();
+        return Yii::t('CustomPagesModule.models_Page', 'page');
     }
 
-    public function afterFind()
-    {
-        if ($this->type == self::TYPE_IFRAME || $this->type == self::TYPE_LINK) {
-            $this->url = $this->content;
-        }
-
-        return parent::afterFind();
-    }
-
+    /**
+     * Returns a navigation selection for all navigations this page can be added.
+     * @return array
+     */
     public static function getNavigationClasses()
     {
         return [
@@ -130,15 +94,29 @@ class Page extends ActiveRecord
         ];
     }
 
-    public static function getPageTypes()
+    /**
+     * Returns an array of all allowed conten types for this container type.
+     * @return type
+     */
+    public function getContentTypes()
     {
         return [
-            self::TYPE_LINK => Yii::t('CustomPagesModule.base', 'Link'),
-            self::TYPE_HTML => Yii::t('CustomPagesModule.base', 'HTML'),
-            self::TYPE_MARKDOWN => Yii::t('CustomPagesModule.base', 'MarkDown'),
-            self::TYPE_IFRAME => Yii::t('CustomPagesModule.base', 'IFrame'),
-            self::TYPE_TEMPLATE => Yii::t('CustomPagesModule.base', 'Template'),
+            Container::TYPE_LINK,
+            Container::TYPE_HTML,
+            Container::TYPE_MARKDOWN,
+            Container::TYPE_IFRAME,
+            Container::TYPE_TEMPLATE,
         ];
+    }
+
+    public function getPageContent()
+    {
+        return $this->content;
+    }
+    
+    public function getAllowedTemplateSelection()
+    {
+        return Template::getSelection(['type' => Template::TYPE_LAYOUT]);
     }
 
 }

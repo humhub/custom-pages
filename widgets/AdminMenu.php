@@ -32,25 +32,24 @@ class AdminMenu extends \humhub\widgets\BaseMenu
                     && Yii::$app->controller->id == 'admin'),
         ]);  
         
+        
         $this->addItem([
-            'label' => Yii::t('CustomPagesModule.base', 'Layouts'),
-            'url' => Url::to(['/custom_pages/template/layout-admin']),
+            'label' => Yii::t('CustomPagesModule.base', 'Snippets'),
+            'url' => Url::to(['/custom_pages/snippet']),
             'sortOrder' => 200,
-            
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template' 
-                    && Yii::$app->controller->id == 'layout-admin'),
-        ]);
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' 
+                    && Yii::$app->controller->id == 'snippet'),
+        ]);  
         
         
         $this->addItem([
-            'label' => Yii::t('CustomPagesModule.base', 'Container'),
-            'url' => Url::to(['/custom_pages/template/container-admin']),
+            'label' => Yii::t('CustomPagesModule.base', 'Templates'),
+            'url' => Url::to(['/custom_pages/template/layout-admin']),
             'sortOrder' => 300,
             
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template' 
-                    && Yii::$app->controller->id == 'container-admin' ),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template'),
         ]);
-
+        
         parent::init();
     }
 

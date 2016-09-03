@@ -28,6 +28,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
 {
 
     const TYPE_LAYOUT = 'layout';
+    const TYPE_SNIPPED_LAYOUT = 'snipped-layout';
     const TYPE_NAVIGATION = 'navigation';
     const TYPE_CONTAINER = 'container';
     

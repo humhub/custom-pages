@@ -6,8 +6,6 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\modules\custom_pages\modules\template\widgets\CollapsableFormGroup;
 
-$sguid = Yii::$app->request->get('sguid');
-
 $uploadUrl = Url::to(['/file/file/upload']);
 
 $disableDefinition = !$isAdminEdit && $model->definition->is_default;

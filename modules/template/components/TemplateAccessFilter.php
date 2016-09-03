@@ -28,14 +28,4 @@ class TemplateAccessFilter extends ActionFilter
         
         return parent::beforeAction($action);
     }
-
-    public function afterAction($action, $result)
-    {
-        return parent::afterAction($action, $result);
-    }
-    
-    public function checkSpacePermission($suid)
-    {
-        
-    }
 }

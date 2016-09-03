@@ -1,16 +1,7 @@
 <?php
+humhub\modules\custom_pages\Assets::register($this);
 
-use yii\helpers\Html;
-use yii\helpers\Url;
-use humhub\compat\CActiveForm;
-use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\Assets;
-
-$root = humhub\assets\AppAsset::register($this);
-Assets::register($this);
-
-$faIcons = array(
+$faIcons = [
     'fa-adjust' => '&#xf042',
     'fa-adn' => '&#xf170',
     'fa-align-center' => '&#xf037',
@@ -603,113 +594,18 @@ $faIcons = array(
     'fa-yen-alias' => '&#xf157',
     'fa-youtube' => '&#xf167',
     'fa-youtube-play' => '&#xf16a',
-    'fa-youtube-square' => '&#xf166');
+    'fa-youtube-square' => '&#xf166'
+];
 ?>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <?php echo Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?>
-    </div>
 
+<div class="form-group">
+    <label class="control-label" for="Page[icon]"><?= $page->getAttributeLabel('icon') ?></label>
 
-    <?= \humhub\modules\custom_pages\widgets\AdminMenu::widget([]); ?>
-    <div class="panel-body">
-
-        <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('base', 'Back to overview'), Url::to(['index']), ['data-ui-loader' => '','class' => 'btn btn-default pull-right']); ?>
-
-            <h4><?php echo Yii::t('CustomPagesModule.views_admin_edit', 'Page configuration'); ?></h4>
-
-            <div class="help-block">
-                <?= Yii::t('CustomPagesModule.views_admin_edit', 'Here you can configure the general settings of your page.') ?>
-            </div>
-            <br />
-        <?php $form = CActiveForm::begin(); ?>
-
-        <?php echo $form->errorSummary($page); ?>
-
-        <div class="form-group">
-            <?php echo $form->labelEx($page, 'type'); ?><br />
-            <?php $types = $page->getPageTypes(); ?>
-            <?= Html::textInput('', $types[$page->type], ['class' => 'form-control', 'disabled' => '1']); ?>
-        </div>
-
-        <div class="form-group">
-            <?php echo $form->labelEx($page, 'title'); ?>
-            <?php echo $form->textField($page, 'title', array('class' => 'form-control', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Page title'))); ?>
-        </div>
-
-        <?php if ($page->type == Page::TYPE_HTML): ?>
-            <div class="form-group" id="content_field">
-                <?php echo $form->labelEx($page, 'content'); ?>
-                <?php echo $form->textArea($page, 'content', array('class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
-            </div>
-        <?php elseif ($page->type == Page::TYPE_TEMPLATE): ?>
-            <div class="form-group" id="content_field">
-                <?php echo $form->labelEx($page, 'templateId'); ?>
-                <?php echo $form->dropdownList($page, 'templateId', Template::getSelection(['type' => Template::TYPE_LAYOUT]), ['disabled' => !$page->isNewRecord, 'class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Template')]); ?>
-            </div>
-        <?php elseif ($page->type == Page::TYPE_MARKDOWN): ?>
-            <?php echo $form->textArea($page, 'content', array('id' => 'markdownField', 'class' => 'form-control', 'rows' => '15', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
-            <?php echo \humhub\widgets\MarkdownEditor::widget(['fieldId' => 'markdownField']); ?>
-        <?php elseif ($page->type == Page::TYPE_LINK || $page->type == Page::TYPE_IFRAME): ?>
-            <div class="form-group" id="url_field">
-                <?php echo $form->labelEx($page, 'url'); ?>
-                <?php echo $form->textField($page, 'url', array('class' => 'form-control', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'URL'))); ?>
-            </div>
-        <?php endif; ?>
-
-        <div class="form-group">
-            <?php echo $form->labelEx($page, 'navigation_class'); ?>
-            <?php echo $form->dropdownList($page, 'navigation_class', Page::getNavigationClasses(), array('class' => 'form-control', 'rows' => '5', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Content'))); ?>
-        </div>
-
-        <div class="form-group">
-            <?php echo $form->labelEx($page, 'sort_order'); ?>
-            <?php echo $form->textField($page, 'sort_order', array('class' => 'form-control', 'placeholder' => Yii::t('CustomPagesModule.views_admin_edit', 'Sort Order'))); ?>
-            <p class="help-block"><?php echo Yii::t('CustomPagesModule.views_admin_edit', 'Default sort orders scheme: 100, 200, 300, ...'); ?></p>
-
-        </div>
-
-        <div class="form-group">
-            <?php echo $form->labelEx($page, 'icon'); ?>
-
-            <select class='selectpicker form-control' name="Page[icon]">
-                <?php foreach ($faIcons as $name => $value): ?>
-                    <option class="" value="<?php echo $name; ?>" <?php if ($page->icon == $name): ?>selected='selected'<?php endif; ?>>
-                        <?php echo $value . ' ' . $name; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <div class="checkbox">
-                <label>
-                    <?php echo $form->checkBox($page, 'admin_only'); ?> <?php echo $page->getAttributeLabel('admin_only'); ?>
-                </label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="checkbox">
-                <label>
-                    <?php echo $form->checkBox($page, 'in_new_window'); ?> <?php echo $page->getAttributeLabel('in_new_window'); ?>
-                </label>
-            </div>
-        </div>
-
-
-        <?php echo Html::submitButton(Yii::t('CustomPagesModule.views_admin_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
-
-        <?php if (!$page->isNewRecord) : ?>
-            <?= Html::a(Yii::t('CustomPagesModule.views_admin_edit', 'Delete'), ['/custom_pages/admin/delete', 'id' => $page->id], array('class' => 'btn btn-danger')); ?>
-        <?php endif; ?>
-            
-        <?php if ($page->type == Page::TYPE_TEMPLATE && !$page->isNewRecord): ?>
-            <?php echo Html::a('<i class="fa fa-pencil"></i> '.Yii::t('CustomPagesModule.views_admin_edit', 'Inline Editor'),
-                    ['/custom_pages/view/view', 'id' => $page->id, 'editMode' => 1],['class' => 'btn btn-success pull-right', 'data-ui-loader' => '']); ?>
-        <?php endif; ?>
-
-        <?php CActiveForm::end(); ?>
-
-    </div>
+    <select class='selectpicker form-control' name="<?= $page->formName() ?>[icon]">
+        <?php foreach ($faIcons as $name => $value): ?>
+            <option class="" value="<?= $name; ?>" <?php if ($page->icon == $name): ?>selected='selected'<?php endif; ?>>
+                <?php echo $value . ' ' . substr($name, 3); ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
 </div>

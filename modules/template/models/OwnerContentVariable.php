@@ -20,9 +20,14 @@ class OwnerContentVariable extends Model
         return (isset($this->options['editMode'])) ? $this->options['editMode'] : false;
     }
     
-    public function getEmpty()
+    public function getEmptyContent()
     {
         return $this->ownerContent->renderEmpty();
+    }
+    
+    public function getEmpty()
+    {
+        return $this->ownerContent->isEmpty();
     }
     
     public function render($editMode = false)

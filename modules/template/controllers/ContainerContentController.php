@@ -170,7 +170,7 @@ class ContainerContentController extends \humhub\components\Controller
         // Render form or handle form submission
         $form = new AddItemEditForm(['ownerContent' => $ownerContent]);
         $form->setItemTemplate($itemTemplate);
-        $form->scenario = 'edit';
+        $form->setScenario('edit');
 
         if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByOwnerContent($ownerContent);

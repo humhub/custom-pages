@@ -379,7 +379,6 @@
     TemplateContainerItem = function ($elem) {
         TemplateElement.call(this, $elem);
         this.itemId = this.data('template-item');
-        this.index = this.$.index();
         this.parent = this.getParent();
         this.name = this.data('template-item-title');
         this.inline = this.$.hasClass('inline');
@@ -396,11 +395,11 @@
     inherits(TemplateContainerItem, TemplateElement);
 
     TemplateContainerItem.prototype.isFirst = function () {
-        return this.index == 0;
+        return this.$.index() == 0;
     }
 
     TemplateContainerItem.prototype.isLast = function () {
-        return (this.index + 1) == this.getParent().$.children().length;
+        return (this.$.index() + 1) == this.getParent().$.children().length;
     }
 
     TemplateContainerItem.prototype.renderMenu = function() {

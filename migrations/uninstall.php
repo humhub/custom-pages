@@ -9,6 +9,7 @@ class uninstall extends Migration
     {
         $this->dropTable('custom_pages_template_container_content_item');
         $this->dropTable('custom_pages_template_container_content_template');
+        $this->dropTable('custom_pages_template_file_content');
         $this->dropTable('custom_pages_template_container_content');
         $this->dropTable('custom_pages_template_image_content');
         $this->dropTable('custom_pages_template_richtext_content');

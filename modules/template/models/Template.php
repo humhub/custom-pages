@@ -3,7 +3,7 @@
 namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\modules\custom_pages\lib\templates\TemplateEngineFactory;
-use \yii\db\ActiveRecord;
+use humhub\components\ActiveRecord;
 
 /**
  * This is the model class for all templates.

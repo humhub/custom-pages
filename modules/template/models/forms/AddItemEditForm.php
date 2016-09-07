@@ -27,6 +27,7 @@ class AddItemEditForm extends EditItemForm
     
     public function save()
     {
+        $this->owner->title = $this->title;
         $this->owner->save();
         return parent::save(false);
     }

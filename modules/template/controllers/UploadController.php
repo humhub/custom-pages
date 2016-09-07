@@ -31,6 +31,7 @@ class UploadController extends Controller
         return [
             'success' => true,
             'url' => $result['files'][0]['url'],
+            'name' => $result['files'][0]['name'],
             'message' => $result['files'][0]['error'],
             'guid' => $result['files'][0]['guid'],  
         ];

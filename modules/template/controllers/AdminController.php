@@ -111,6 +111,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         $result = EditElementModal::widget([
                     'model' => $form,
+                    'isAdminEdit' => true,
                     'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Add</strong> new {type} element', ['type' => $form->getLabel()])
         ]);
 
@@ -138,6 +139,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         $result = EditElementModal::widget([
                     'model' => $form,
+                    'isAdminEdit' => true,
                     'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> element {name}', ['name' => $form->element->name]),
                     'resetUrl' => \yii\helpers\Url::to(['reset-element', 'id' => $elementId])
         ]);
@@ -171,22 +173,20 @@ class AdminController extends \humhub\modules\admin\components\Controller
     {
         $this->subLayout = null;
         $template = Template::findOne(['id' => $id]);
-        
+
         $editView = ($editView != null) ? $editView : false;
-        
-        if($reload != null) {
+
+        if ($reload != null) {
             return $this->renderPartial('@custom_pages/modules/template/views/admin/preview', [
-                'template' => $template,
-                'editView' => $editView
+                        'template' => $template,
+                        'editView' => $editView
             ]);
         } else {
             return $this->render('@custom_pages/modules/template/views/admin/preview', [
-            'template' => $template,
-            'editView' => $editView
-        ]);
+                        'template' => $template,
+                        'editView' => $editView
+            ]);
         }
-        
-        
     }
 
     private function getJsonEditElementResult($success, $content, $form)
@@ -276,6 +276,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             \humhub\modules\custom_pages\modules\template\models\RichtextContent::$label => \humhub\modules\custom_pages\modules\template\models\RichtextContent::className(),
             \humhub\modules\custom_pages\modules\template\models\ImageContent::$label => \humhub\modules\custom_pages\modules\template\models\ImageContent::className(),
             \humhub\modules\custom_pages\modules\template\models\ContainerContent::$label => \humhub\modules\custom_pages\modules\template\models\ContainerContent::className(),
+            \humhub\modules\custom_pages\modules\template\models\FileContent::$label => \humhub\modules\custom_pages\modules\template\models\FileContent::className(),
         ];
     }
 

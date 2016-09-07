@@ -137,7 +137,19 @@ class Events extends \yii\base\Object
             return;
         }
 
-        $snippets = Snippet::find(['sidebar' => Snippet::SIDEBAR_DASHBOARD])->all();
+        $snippets = Snippet::findAll(['sidebar' => Snippet::SIDEBAR_DASHBOARD]);
+        foreach ($snippets as $snippet) {
+            $event->sender->addWidget(SnippetWidget::className(), ['model' => $snippet], ['sortOrder' => $snippet->sort_order]);
+        }
+    }
+    
+    public static function onDirectorySidebarInit($event)
+    {
+        if (Yii::$app->user->isGuest) {
+            return;
+        }
+
+        $snippets = Snippet::findAll(['sidebar' => Snippet::SIDEBAR_DIRECTORY]);
         foreach ($snippets as $snippet) {
             $event->sender->addWidget(SnippetWidget::className(), ['model' => $snippet], ['sortOrder' => $snippet->sort_order]);
         }

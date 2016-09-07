@@ -4,9 +4,8 @@ namespace humhub\modules\custom_pages\modules\template\models;
 
 use Yii;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
-use humhub\modules\file\models\File;
 
- class ImageContent extends TemplateContentActiveRecord
+ class ImageContent extends FileContent
 {
     public static $label = 'Image';
     
@@ -27,18 +26,19 @@ use humhub\modules\file\models\File;
     
     public function rules()
     {
-        $result = parent::rules();
+        $result = [];
+        // Here we preven the content instance from beeing saved if there is no definition setting, to get sure we have an empty content in this case
+        // TODO: perhaps overwrite the validate method and call parent validate only if no definition is set
+        if($this->definition == null || !$this->definition->hasValues()) {
+            $result[] = [['file_guid'], 'required'];
+        }
         $result[] = [['alt', 'file_guid'], 'safe'];
         return $result;
     }
-    
         
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_CREATE][] = 'file_guid';
-        $scenarios[self::SCENARIO_EDIT_ADMIN][] = 'file_guid';
-        $scenarios[self::SCENARIO_EDIT][] = 'file_guid';
         $scenarios[self::SCENARIO_CREATE][] = 'alt';
         $scenarios[self::SCENARIO_EDIT_ADMIN][] = 'alt';
         $scenarios[self::SCENARIO_EDIT][] = 'alt';
@@ -56,35 +56,8 @@ use humhub\modules\file\models\File;
         ];
     }
     
-    public function beforeSave($insert)
-    {
-        return parent::beforeSave($insert);
-    }
-    
-    public function getLabel()
-    {
-        return self::$label;
-    }
-    
-    public function getFile()
-    {
-        return File::findOne(['guid' => $this->file_guid]);
-    }
-    
-    public function hasFile()
-    {
-        return $this->file_guid != null && $this->getFile() != null;
-    }
-    
-    public function getUrl()
-    {
-        $file = $this->getFile();
-        return ($file != null) ? $file->getUrl() : null;
-    }
-    
     public function copy() {
-        $clone = $this->createCopy();
-        $clone->file_guid = $this->file_guid;
+        $clone = parent::copy();
         $clone->alt = $this->alt;
         return $clone;
     }

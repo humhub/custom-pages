@@ -19,6 +19,7 @@ class EditElementModal extends \humhub\components\Widget
     public $title;
     public $contentOnly = false;
     public $resetUrl;
+    public $isAdminEdit = false;
 
     public function run()
     {
@@ -26,7 +27,8 @@ class EditElementModal extends \humhub\components\Widget
             'model' => $this->model,
             'title' => $this->title,
             'contentOnly' => $this->contentOnly,
-            'resetUrl' => $this->resetUrl
+            'resetUrl' => $this->resetUrl,
+            'isAdminEdit' => $this->isAdminEdit
         ]);
     }
 

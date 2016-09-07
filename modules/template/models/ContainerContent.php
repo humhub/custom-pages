@@ -28,7 +28,7 @@ class ContainerContent extends TemplateContentActiveRecord
     {
         return 'custom_pages_template_container_content';
     }
-
+    
     public function validate()
     {
         return parent::validate() && $this->definition->validate();

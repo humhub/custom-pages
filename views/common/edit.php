@@ -32,10 +32,10 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
 
         <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('base', 'Back to overview'), $indexUrl, ['data-ui-loader' => '', 'class' => 'btn btn-default pull-right']); ?>
 
-        <h4><?php echo Yii::t('CustomPagesModule.views_admin_edit', 'Page configuration'); ?></h4>
+        <h4><?php echo Yii::t('CustomPagesModule.views_common_edit', 'Configuration'); ?></h4>
 
         <div class="help-block">
-            <?= Yii::t('CustomPagesModule.views_admin_edit', 'Here you can configure the general settings of your page.') ?>
+            <?= Yii::t('CustomPagesModule.views_common_edit', 'Here you can configure the general settings of your {label}.', ['label' => $page->getLabel()]) ?>
         </div>
         <br />
         <?php $form = ActiveForm::begin(); ?>
@@ -77,21 +77,23 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
             <?= $form->field($page, 'in_new_window')->checkbox() ?>
         <?php endif; ?>
 
-        <?php echo Html::submitButton(Yii::t('CustomPagesModule.views_admin_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
+        <?php echo Html::submitButton(Yii::t('CustomPagesModule.views_common_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
         <?php if (!$page->isNewRecord) : ?>
-            <?= Html::a(Yii::t('CustomPagesModule.views_admin_edit', 'Delete'), $deleteUrl, ['class' => 'btn btn-danger']); ?>
+            <?= Html::a(Yii::t('CustomPagesModule.views_common_edit', 'Delete'), $deleteUrl, ['class' => 'btn btn-danger']); ?>
         <?php endif; ?>
 
         <?php if ($page->isType(Container::TYPE_TEMPLATE) && !$page->isNewRecord): ?>
             <?php if ($page instanceof Snippet) : ?>
                 <?php $url = Url::to(['/custom_pages/snippet/edit-snippet', 'id' => $page->id]); ?>
             <?php elseif ($page instanceof ContainerSnippet) : ?>
-                <?php $url = Url::to(['/custom_pages/container-snippet/edit-snippet', 'id' => $page->id]); ?>
+                <?php $url = $contentContainer->createUrl('/custom_pages/container-snippet/edit-snippet', ['id' => $page->id]); ?>
+            <?php elseif ($page instanceof ContainerPage) : ?>
+                <?php $url = $contentContainer->createUrl('/custom_pages/container/view', ['id' => $page->id, 'editMode' => 1]); ?>
             <?php else : ?>
                 <?php $url = Url::to(['/custom_pages/view/view', 'id' => $page->id, 'editMode' => 1]); ?>
             <?php endif; ?>
-            <?php echo Html::a('<i class="fa fa-pencil"></i> ' . Yii::t('CustomPagesModule.views_admin_edit', 'Inline Editor'), $url, ['class' => 'btn btn-success pull-right', 'data-ui-loader' => '']);
+            <?php echo Html::a('<i class="fa fa-pencil"></i> ' . Yii::t('CustomPagesModule.views_common_edit', 'Inline Editor'), $url, ['class' => 'btn btn-success pull-right', 'data-ui-loader' => '']);
             ?>
         <?php endif; ?>
         <?php ActiveForm::end(); ?>

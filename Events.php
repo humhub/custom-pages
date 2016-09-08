@@ -37,6 +37,10 @@ class Events extends \yii\base\Object
         if ($space->isModuleEnabled('custom_pages')) {
             $pages = ContainerPage::find()->contentContainer($space)->all();
             foreach ($pages as $page) {
+                if($page->admin_only && !modules\template\models\TemplatePagePermission::canEdit()) {
+                    continue;
+                }
+            
                 $event->sender->addItem([
                     'label' => \yii\helpers\Html::encode($page->title),
                     'group' => 'modules',
@@ -52,7 +56,8 @@ class Events extends \yii\base\Object
 
     public static function onSpaceHeaderMenuInit($event)
     {
-        if (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' && Yii::$app->controller->id == 'container' && Yii::$app->controller->action->id == 'view' && modules\template\models\TemplatePagePermission::canEdit()) {
+        if (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' 
+                && Yii::$app->controller->id == 'container' && Yii::$app->controller->action->id == 'view' && modules\template\models\TemplatePagePermission::canEdit()) {
 
             $page = ContainerPage::find()->contentContainer(Yii::$app->controller->contentContainer)->where(['custom_pages_container_page.id' => Yii::$app->request->get('id')])->one();
 
@@ -105,10 +110,6 @@ class Events extends \yii\base\Object
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' && Yii::$app->controller->id == 'view' && Yii::$app->request->get('id') == $page->id),
                 'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
             ));
-
-            if ($page->type == Container::TYPE_TEMPLATE && !Yii::$app->user->isGuest && Yii::$app->user->getIdentity()->isSystemAdmin()) {
-                
-            }
         }
     }
 
@@ -139,6 +140,10 @@ class Events extends \yii\base\Object
 
         $snippets = Snippet::findAll(['sidebar' => Snippet::SIDEBAR_DASHBOARD]);
         foreach ($snippets as $snippet) {
+            if($snippet->admin_only && !modules\template\models\TemplatePagePermission::canEdit()) {
+                continue;
+            }
+            
             $event->sender->addWidget(SnippetWidget::className(), ['model' => $snippet], ['sortOrder' => $snippet->sort_order]);
         }
     }
@@ -151,6 +156,9 @@ class Events extends \yii\base\Object
 
         $snippets = Snippet::findAll(['sidebar' => Snippet::SIDEBAR_DIRECTORY]);
         foreach ($snippets as $snippet) {
+            if($snippet->admin_only && !modules\template\models\TemplatePagePermission::canEdit()) {
+                continue;
+            }
             $event->sender->addWidget(SnippetWidget::className(), ['model' => $snippet], ['sortOrder' => $snippet->sort_order]);
         }
     }
@@ -165,6 +173,9 @@ class Events extends \yii\base\Object
         if ($space->isModuleEnabled('custom_pages')) {
             $snippets = ContainerSnippet::find()->contentContainer($space)->all();
             foreach ($snippets as $snippet) {
+                if($snippet->admin_only && !modules\template\models\TemplatePagePermission::canEdit()) {
+                    continue;
+                }
                 $event->sender->addWidget(SnippetWidget::className(), ['model' => $snippet], ['sortOrder' => $snippet->sort_order]);
             }
         }

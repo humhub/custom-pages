@@ -65,6 +65,7 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
         $result = $this->defaultAttributeLabels();
         $result['in_new_window'] = Yii::t('CustomPagesModule.models_ContainerPage', 'Open in new window');
         $result['page_content'] = Yii::t('CustomPagesModule.models_ContainerPage', 'Content');
+        $result['admin_only'] = Yii::t('CustomPagesModule.models_ContainerPage', 'Only visible for space admins');
         return $result;
     }
 

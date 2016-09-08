@@ -23,9 +23,13 @@ class TemplateViewBehavior extends Behavior
 {
     
     public function viewTemplatePage($page)
-    {        
+    {  
         $html = $this->renderTemplate($page);
         $canEdit = $this->isCanEdit();
+       
+        if(!$canEdit && $page->admin_only) {
+            throw new \yii\web\HttpException(403, 'Access denied!');
+        }
         
         return $this->owner->render('template', [
             'page' => $page, 

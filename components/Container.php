@@ -43,7 +43,7 @@ class Container extends Behavior
     {
         return [
             [['type', 'title'], 'required'],
-            [['type', 'sort_order'], 'integer'],
+            [['type', 'sort_order', 'admin_only'], 'integer'],
             [['title'], 'string', 'max' => 255],
             [['icon'], 'string', 'max' => 100],
             [['templateId'], 'safe'],
@@ -73,6 +73,7 @@ class Container extends Behavior
             'sort_order' => Yii::t('CustomPagesModule.components_Container', 'Sort Order'),
             'url' => Yii::t('CustomPagesModule.components_Container', 'Url'),
             'templateId' => Yii::t('CustomPagesModule.components_Container', 'Template Layout'),
+            'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins')
         ];
     }
 
@@ -134,5 +135,4 @@ class Container extends Behavior
     {
         return self::contentTypes()[$type];
     }
-
 }

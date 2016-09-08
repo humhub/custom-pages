@@ -22,9 +22,9 @@ class SnippetController extends AdminController
      */
     public function behaviors()
     {
-        return [
-            ['class' => TemplateViewBehavior::className()],
-        ];
+        $result = parent::behaviors();
+        $result[] = ['class' => TemplateViewBehavior::className()];
+        return $result;
     }
     
     public function actionEditSnippet()

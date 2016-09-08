@@ -70,6 +70,6 @@ class ContainerSnippet extends ContainerPage
     
      public function getAllowedTemplateSelection()
     {
-        return Template::getSelection(['type' => Template::TYPE_SNIPPED_LAYOUT]);
+        return Template::getSelection(['type' => Template::TYPE_SNIPPED_LAYOUT, 'allow_for_spaces' => 1]);
     }
 }

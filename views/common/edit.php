@@ -69,11 +69,11 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
 
         <?= \humhub\modules\custom_pages\widgets\PageIconSelect::widget(['page' => $page]) ?>
 
-        <?php if (property_exists($page, 'admin_only')) : ?>
+        <?php if ($page->hasAttribute('admin_only')) : ?>
             <?= $form->field($page, 'admin_only')->checkbox() ?>
         <?php endif; ?>
 
-        <?php if (property_exists($page, 'in_new_window')) : ?> 
+        <?php if ($page->hasAttribute('in_new_window')) : ?> 
             <?= $form->field($page, 'in_new_window')->checkbox() ?>
         <?php endif; ?>
 

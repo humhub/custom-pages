@@ -9,15 +9,13 @@ use yii\web\HttpException;
 /**
  * Custom Pages for ContentContainer
  *
- * @author luke
+ * @author buddha
  */
 class ContainerSnippetController extends ContainerController
 {   
     public function actionEditSnippet()
     {
-        if(!$this->isCanEdit()) {
-            throw new HttpException(403, 'Access denied!');
-        }
+        $this->adminOnly();
         
         $containerSnippet = ContainerSnippet::findOne(['id' => Yii::$app->request->get('id')]);
         

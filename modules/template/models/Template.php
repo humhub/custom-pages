@@ -115,7 +115,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
      */
     public function isLayout()
     {
-        return $this->type === self::TYPE_LAYOUT;
+        return $this->type === self::TYPE_LAYOUT || $this->type === self::TYPE_SNIPPED_LAYOUT;
     }
 
     /**

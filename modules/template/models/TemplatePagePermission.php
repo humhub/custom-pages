@@ -17,7 +17,6 @@ class TemplatePagePermission
 {
     public static function canEdit()
     {
-        // TODO use permission system!
         if(isset(Yii::$app->controller->contentContainer)) {
             return Yii::$app->controller->contentContainer->isAdmin();
         } else {

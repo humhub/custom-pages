@@ -19,7 +19,7 @@ use yii\helpers\Url;
             <div class="modal-body">
                 <div class="clearfix">
                     <?php if(!$model->element->isNewRecord) : ?>
-                        #<strong><?= $model->element->name ?></strong>
+                        #<strong><?= Html::encode($model->element->name) ?></strong>
                      <?php endif; ?>
                     <small class="pull-right">
                         <span class="label label-success"><?= $model->label ?></span>

@@ -120,7 +120,7 @@ class EditOwnerContentForm extends TemplateElementForm
      * @inheritdoc
      * @return boolean
      */
-    public function validate()
+    public function validate($attributeNames = null, $clearErrors = true)
     {
         return $this->content->validate();
     }

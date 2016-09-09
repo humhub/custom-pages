@@ -18,7 +18,7 @@ use yii\helpers\Html;
                 <div class="col-md-4">
                     <div class="panel panel-default custom-snippet">
                         <div class="panel-heading">
-                            <i class="fa <?= $snippet->icon; ?>"></i> <?= Html::encode($snippet->title) ?>
+                            <i class="fa <?= Html::encode($snippet->icon); ?>"></i> <?= Html::encode($snippet->title) ?>
                             <a id="snippet-config-button" href="<?= $contentContainer->createUrl('edit', ['id' => $snippet->id]) ?>" title="<?= Yii::t('CustomPagesModule.base', 'Configuration'); ?>" target="_blank" class="pull-right"><i class="fa fa-pencil"></i></a>
                         </div>
                         <div class="panel-body">

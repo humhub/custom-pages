@@ -1,0 +1,89 @@
+<?php
+namespace custom_pages\acceptance\template;
+
+
+use custom_pages\AcceptanceTester;
+
+class CreateTemplatePageCest
+{
+    
+    public function testCreateMarkdownPageOnTopMenu(AcceptanceTester $I)
+    {
+        $I->amAdmin();
+        $I->wantToTest('the creation of a template page');
+        $I->amGoingTo('add a new layout template');
+        $I->amOnPage('index-test.php?r=custom_pages/template/layout-admin');
+        $I->expectTo('see the overview site');
+        $I->see('Overview');
+        
+        $I->click('Create new layout'); // Add Markdown button
+        
+        $I->fillField('Template[name]', 'MyTestTemplate');
+        $I->fillField('Template[description]', 'Test Content');
+        $I->jsClick('#template-allow_for_spaces');
+        $I->click('Save');
+        $I->wait(3);
+        
+        $I->expectTo('see the edit source view');
+        $I->seeElement('#template-form-source');
+        
+        $I->amGoingTo('add a text element');
+        $this->clickAddElement($I, 'Text');
+        $I->expectTo('see the add text element view');
+        $I->fillField('TemplateElement[name]', 'text');
+        $I->fillField('TextContent[content]', 'This is my test text!');
+        $I->click('#editTemplateSubmit');
+        $I->waitForElementNotVisible('#editTemplateSubmit');
+        $I->expectTo('see the new element added to the source');
+        $I->seeInField('#template-form-source', '{{ text }}');
+        
+        $I->amGoingTo('add a richtext element');
+        $this->clickAddElement($I, 'Richtext');
+        $I->fillField('TemplateElement[name]', 'richtext');
+        $I->jsFillField('RichtextContent[content]', '<p>Richtext Test</p>');
+        $I->click('#editTemplateSubmit');
+        $I->waitForElementNotVisible('#editTemplateSubmit');
+        
+        $I->amGoingTo('add a image element');
+        $this->clickAddElement($I, 'Image');
+        $I->fillField('TemplateElement[name]', 'image');
+        //Workaround
+        $I->jsShow('.uploadElementImage', 'type');
+        $I->attachFile('.uploadElementImage', 'test.jpg');
+        $I->click('.collapsableTrigger'); //Show more
+        $I->wait(2);
+        $I->fillField('ImageContent[definitionPostData][height]', '100');
+        $I->fillField('ImageContent[definitionPostData][width]', '100');
+        $I->fillField('ImageContent[definitionPostData][style]', 'border:1px solid black');
+        $I->fillField('ImageContent[alt]', 'This is my test alt text');
+        $I->click('#editTemplateSubmit');
+        $I->waitForElementNotVisible('#editTemplateSubmit');
+        
+        $I->amGoingTo('add a file element');
+        $this->clickAddElement($I, 'File');
+        $I->fillField('TemplateElement[name]', 'file');
+        //Workaround
+        $I->jsShow('.uploadElementImage', 'type');
+        $I->attachFile('.uploadElementFile', 'test.jpg');
+        $I->wait(2);
+        $I->click('#editTemplateSubmit');
+        $I->waitForElementNotVisible('#editTemplateSubmit');
+        
+        $I->expectTo('see the new element added to the element row');
+        $I->see('#text');
+        $I->see('#richtext');
+        $I->see('#image');
+        $I->see('#file');
+        
+        $I->click('Save');
+    }
+    
+    private function clickAddElement($I, $type) {
+        $I->click('Add Element');
+        $I->wait(1);
+        
+        $I->click($type);
+        $I->waitForElementVisible('#editTemplateSubmit');
+        
+    }
+}

@@ -11,9 +11,9 @@ use yii\helpers\Url;
     <div class="panel-body">
         <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('base', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default pull-right')); ?>
         <?php if ($model->isNewRecord): ?>
-            <h4><?php echo Yii::t('CustomPagesModule.modules_template_views_admin_edit', 'Create new template'); ?></h4>
+            <h4><?php echo Yii::t('CustomPagesModule.modules_template_views_admin_edit', 'Create new {type}', ['type' => $model->type]); ?></h4>
         <?php else: ?>
-            <h4><h4><?= Yii::t('CustomPagesModule.modules_template_views_admin_edit', 'Edit template \'{templateName}\'', ['templateName' => $model->name]); ?></h4>
+            <h4><h4><?= Yii::t('CustomPagesModule.modules_template_views_admin_edit', 'Edit template \'{templateName}\'', ['templateName' => Html::encode($model->name)]); ?></h4>
         </h4>
         </div>
         <ul class="nav nav-tabs tab-sub-menu" id="tabs">

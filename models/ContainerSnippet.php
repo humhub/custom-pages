@@ -5,9 +5,12 @@ namespace humhub\modules\custom_pages\models;
 use Yii;
 use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\modules\template\models\Template;
+
 /**
  * This is the model class for table "custom_pages_container_snipped".
  *
+ * ContainerSnippets are snippets which can be added to a space sidebar.
+ * 
  * The followings are the available columns in table 'custom_pages_container_page':
  * @property integer $id
  * @property integer $type
@@ -15,6 +18,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
  * @property string $icon
  * @property string $page_content
  * @property integer $sort_order
+ * @property integer $admin_only
  */
 class ContainerSnippet extends ContainerPage
 {
@@ -54,6 +58,9 @@ class ContainerSnippet extends ContainerPage
         return $this->content->container->createUrl('/custom_pages/container-snippet/view', ['id' => $this->id]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getContentTypes()
     {
         return [
@@ -63,13 +70,20 @@ class ContainerSnippet extends ContainerPage
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getLabel()
     {
         return Yii::t('CustomPagesModule.models_ContainerSnippet', 'snippet');
     }
-    
-     public function getAllowedTemplateSelection()
+
+    /**
+     * @inheritdoc
+     */
+    public function getAllowedTemplateSelection()
     {
         return Template::getSelection(['type' => Template::TYPE_SNIPPED_LAYOUT, 'allow_for_spaces' => 1]);
     }
+
 }

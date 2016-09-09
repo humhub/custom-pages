@@ -10,13 +10,12 @@ use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\components\TemplateViewBehavior;
 
 /**
- * Description of ViewController
+ * Controller for viewing Pages.
  *
- * @author luke
+ * @author buddha
  */
 class ViewController extends Controller
 {
-    public $canEdit;
     
     /**
      * @inhritdoc
@@ -28,6 +27,14 @@ class ViewController extends Controller
         ];
     }
     
+      /**
+     * Is used to view/render a Page of a certain page content type.
+     * 
+     * This action expects an page id as request parameter.
+     * 
+     * @return type
+     * @throws HttpException if the page was not found
+     */
     public function actionIndex()
     {
         $page = Page::findOne(['id' => Yii::$app->request->get('id')]);
@@ -63,11 +70,19 @@ class ViewController extends Controller
         }
     }
     
+    /**
+     * This redirect is needed within some common views shared with container page logic.
+     * @return type
+     */
     public function actionView()
     {
         return $this->actionIndex();
     }
     
+    /**
+     * This redirect is needed within some common views shared with container page logic.
+     * @return type
+     */
     public function actionEdit($id)
     {
         return $this->redirect(\yii\helpers\Url::to(['/custom_pages/admin/edit', 'id' => $id]));

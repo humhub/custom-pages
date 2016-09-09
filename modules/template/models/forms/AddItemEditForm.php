@@ -9,7 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
 /**
- * Description of UserGroupForm
+ * Form model used for adding container items.
  *
  * @author buddha
  */

@@ -95,7 +95,7 @@ class TemplateElementForm extends \yii\base\Model
         return $result || $this->element->load($data, $formName);
     }
 
-    public function validate()
+    public function validate($attributeNames = NULL, $clearErrors = true)
     {
         return parent::validate() && $this->element->validate();
     }

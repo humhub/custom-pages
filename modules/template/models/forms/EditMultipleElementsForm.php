@@ -75,12 +75,12 @@ class EditMultipleElementsForm extends \yii\base\Model
         }
     }
 
-    public function load($data)
+    public function load($data, $formName = NULL)
     {
         // This prevents items without elements from beeing rejected
         if(parent::load($data) && empty($this->contentMap)) {
             return true;
-        } 
+        }
         
         $result = false;
         
@@ -94,21 +94,22 @@ class EditMultipleElementsForm extends \yii\base\Model
         return $result;
     }
 
-    public function validate()
+    public function validate($attributeNames = null, $clearErrors = true)
     {
         // Default content is not mandatory
         if($this->scenario === 'edit-admin') {
             return true;
         }
         
-        $result = true;
+        //Todo: implement multiedit content validation. Skip validation if no values are set. 
+        /*$result = true;
         foreach ($this->contentMap as $key => $contentItem) {
             if(!$contentItem->validate()) {
                 $result = false;
             }
-        }
+        }*/
         
-        return $result;
+        return true;
     }
 
     public function save()

@@ -14,5 +14,11 @@ namespace humhub\modules\custom_pages\lib\templates;
  */
 interface TemplateEngine
 {
+    /**
+     * Renders the content of a given template.
+     * 
+     * @param string $template template identity
+     * @param type $content input content which is used to generate the resulting render output 
+     */
     public function render($template, $content);
 }

@@ -104,12 +104,6 @@ if($contentContainer == null) {
             });
         };
 
-        /*CKEDITOR && CKEDITOR.instances[<?= $id ?>] && CKEDITOR.instances[<?= $id ?>].on('change', function () {
-         CKEDITOR.instances[<?= $id ?>].updateElement();
-         $('#' + <?= $id ?>).trigger('change');
-         return false;
-         });*/
-
         $(document).off('click', '.cke_dialog_tabs a:visible:eq(2)').on('click', '.cke_dialog_tabs a:visible:eq(2)', function () {
             var $form = $('.cke_dialog_ui_input_file iframe').contents().find('form');
             var csrfName = '<?= $csrfTokenName ?>';

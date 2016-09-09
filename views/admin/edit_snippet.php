@@ -25,7 +25,7 @@ $editUrl = Url::to(['edit', 'id' => $snippet->id]);
                 <div class="col-md-6">
                     <div class="panel panel-default custom-snippet">
                         <div class="panel-heading">
-                            <i class="fa <?= $snippet->icon; ?>"></i> <?= Html::encode($snippet->title) ?>
+                            <i class="fa <?= Html::encode($snippet->icon) ?>"></i> <?= Html::encode($snippet->title) ?>
                             <a id="snippet-config-button" href="<?= $editUrl ?>" title="<?= Yii::t('CustomPagesModule.base', 'Configuration'); ?>" target="_blank" class="pull-right"><i class="fa fa-pencil"></i></a>
                         </div>
                         <div class="panel-body">

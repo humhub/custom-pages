@@ -37,7 +37,7 @@ class ContentFormItem extends \yii\base\Model
         $this->content->scenario = $this->scenario;
     }
 
-    public function load($data)
+    public function load($data, $formName = NULL)
     {
         if (!isset($data['Content']) || !isset($data['Content'][$this->key])) {
             return false;
@@ -59,9 +59,9 @@ class ContentFormItem extends \yii\base\Model
         return true;
     }
 
-    public function validate()
+    public function validate($attributeNames = null, $clearErrors = true)
     {
-        if ($this->content->isNewRecord && !$this->isLoaded) {
+        if ($this->content->isNewRecord && !$this->isLoaded && !$this->content->hasValues()) {
             return true;
         }
 

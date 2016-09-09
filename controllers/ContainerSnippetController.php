@@ -7,12 +7,18 @@ use humhub\modules\custom_pages\models\ContainerSnippet;
 use yii\web\HttpException;
 
 /**
- * Custom Pages for ContentContainer
+ * Controller for managing ContainerSnippets models.
  *
  * @author buddha
  */
 class ContainerSnippetController extends ContainerController
 {   
+    /**
+     * Action for viewing the snippet inline edit view.
+     * 
+     * @return type
+     * @throws HttpException if snippet could not be found.
+     */
     public function actionEditSnippet()
     {
         $this->adminOnly();
@@ -28,19 +34,27 @@ class ContainerSnippetController extends ContainerController
             'contentContainer' => $this->contentContainer,
             'html' => $this->renderTemplate($containerSnippet, true)
         ]);
-        
     }
     
+    /**
+     * @inheritdoc
+     */
     protected function findAll()
     {
         return ContainerSnippet::find()->contentContainer($this->contentContainer)->all();
     }
     
+    /**
+     * @inheritdoc
+     */
     protected function getPageClassName()
     {
         return ContainerSnippet::className();
     }
     
+    /**
+     * @inheritdoc
+     */
     protected function findPageById($id = null) 
     {
         return ContainerSnippet::find()->contentContainer($this->contentContainer)->where(['custom_pages_container_snippet.id' => $id])->one();

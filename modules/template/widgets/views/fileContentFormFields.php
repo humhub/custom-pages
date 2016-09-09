@@ -22,7 +22,7 @@ $uploadUrl = Url::to(['/file/file/upload']);
     <div class="col-md-9 previewContainer">
         <p class="file-text">
             <?php if ($model->hasFile() && $model->getFile() != null) : ?>
-                <a target="_blank" href="<?= $model->getUrl() ?>"><?= $model->getFile()->file_name ?></a>
+                <a target="_blank" href="<?= $model->getUrl() ?>"><?= Html::encode($model->getFile()->file_name) ?></a>
             <?php else: ?>
                 <?= Yii::t('CustomPagesModule.base', '<strong>No file available.</strong>'); ?>
             <?php endif; ?>

@@ -34,6 +34,18 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
 
     abstract public function renderForm($form);
     
+    public function hasValues()
+    {
+        $result = false;
+        foreach ($this->attributes() as $key) {
+            if ($this->getAttribute($key) != null && $key != 'id') {
+                $result = true;
+                break;
+            }
+        }
+        return $result;
+    }
+    
     protected function createCopy() {
         $copy = Yii::createObject($this->className());
         if($this->isDefinitionContent()) {

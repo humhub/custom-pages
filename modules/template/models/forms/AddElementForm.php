@@ -18,14 +18,14 @@ use humhub\modules\custom_pages\modules\template\models\TemplateElement;
  */
 class AddElementForm extends TemplateElementForm
 {
-    
+
     /**
      * Owner TemplateId of the new element definition.
      * 
      * @var integer
      */
     public $templateId;
-    
+
     /**
      * Content type definition for this element.
      * 
@@ -33,8 +33,12 @@ class AddElementForm extends TemplateElementForm
      */
     public $type;
     
+    /**
+     * Default scenario
+     * @var type 
+     */
     public $scenario = 'create';
-    
+
     /**
      * @inheritdocs
      */
@@ -42,7 +46,7 @@ class AddElementForm extends TemplateElementForm
     {
         $this->element = new TemplateElement(['scenario' => 'create']);
     }
-    
+
     /**
      * @inheritdocs
      */
@@ -52,7 +56,7 @@ class AddElementForm extends TemplateElementForm
             [['templateId', 'type'], 'required']
         ];
     }
-    
+
     /**
      * Initializes the form data.
      * 
@@ -65,16 +69,20 @@ class AddElementForm extends TemplateElementForm
     {
         $this->templateId = $templateId;
         $this->type = $type;
-        
+
         $this->content = Yii::createObject($type);
         $this->element->content_type = $type;
         $this->element->template_id = $templateId;
-    }    
-    
+    }
+
+    /**
+     * Validates and saves the TemplateElement instance and appended files.
+     * 
+     * @return boolean
+     */
     public function save()
     {
-        
-        if($this->validate()) {
+        if ($this->validate()) {
             // Try saving the default content if
             $this->element->saveAsDefaultContent($this->content);
             $this->saveFiles();
@@ -83,4 +91,5 @@ class AddElementForm extends TemplateElementForm
             return false;
         }
     }
+
 }

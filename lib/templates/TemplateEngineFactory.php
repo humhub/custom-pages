@@ -16,6 +16,7 @@ class TemplateEngineFactory
 {
     public static function create($engine)
     {
+        // Currently the only supported template engin...
         if(strtolower($engine) === 'twig') {
             return new twig\TwigEngine();
         } else {

@@ -27,7 +27,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
     public function rules()
     {
         $result = [];
-        // Here we preven the content instance from beeing saved if there is no definition setting, to get sure we have an empty content in this case
+        // We preven the content instance from beeing saved if there is no definition setting, to get sure we have an empty content in this case
         // TODO: perhaps overwrite the validate method and call parent validate only if no definition is set
         if($this->definition == null || !$this->definition->hasValues()) {
             $result[] = [['file_guid'], 'required'];

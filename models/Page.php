@@ -10,6 +10,9 @@ use humhub\modules\custom_pages\modules\template\models\Template;
 /**
  * This is the model class for table "custom_pages_page".
  *
+ * Pages are global custom page container which can be added to the main navigation or
+ * user account setting navigation.
+ * 
  * The followings are the available columns in table 'custom_pages_page':
  * @property integer $id
  * @property integer $type
@@ -54,7 +57,6 @@ class Page extends ActiveRecord implements CustomContentContainer
     {
         $result = $this->defaultAttributeLabels();
         $result['in_new_window'] = Yii::t('CustomPagesModule.models_Page', 'Open in new window');
-        $result['admin_only'] = Yii::t('CustomPagesModule.models_Page', 'Only visible for admins');
         $result['content'] = Yii::t('CustomPagesModule.models_Page', 'Content');
         $result['navigation_class'] = Yii::t('CustomPagesModule.models_Page','Navigation');
         return $result;
@@ -109,11 +111,17 @@ class Page extends ActiveRecord implements CustomContentContainer
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getPageContent()
     {
         return $this->content;
     }
     
+    /**
+     * @inheritdoc
+     */
     public function getAllowedTemplateSelection()
     {
         return Template::getSelection(['type' => Template::TYPE_LAYOUT]);

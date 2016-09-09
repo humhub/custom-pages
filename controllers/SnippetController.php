@@ -8,15 +8,12 @@ use humhub\modules\custom_pages\components\TemplateViewBehavior;
 use yii\web\HttpException;
 
 /**
- * SnippetController
+ * Controller for managing Snippets.
  *
  * @author buddha
  */
 class SnippetController extends AdminController
 {   
-    
-    public $canEdit;
-    
     /**
      * @inhritdoc
      */
@@ -27,6 +24,12 @@ class SnippetController extends AdminController
         return $result;
     }
     
+    /**
+     * Action for viewing the snippet inline edit view.
+     * 
+     * @return type
+     * @throws HttpException if snippet could not be found.
+     */
     public function actionEditSnippet()
     {   
         $snippet = $this->findById(Yii::$app->request->get('id'));
@@ -42,16 +45,25 @@ class SnippetController extends AdminController
         
     }
     
+    /**
+     * @inhritdoc
+     */
     protected function findAll()
     {
         return Snippet::find()->all();
     }
 
+    /**
+     * @inhritdoc
+     */
     protected function getPageClassName()
     {
         return Snippet::className();
     }
     
+    /**
+     * @inhritdoc
+     */
     protected function findById($id)
     {
         return Snippet::findOne(['id' => $id]);

@@ -22,7 +22,7 @@ use yii\helpers\Html;
                 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>#<?= $contentItem->ownerContent->element_name ?>&nbsp;<i class="switchIcon fa fa-caret-down" aria-hidden="true"></i></strong>
+                        <strong>#<?= Html::encode($contentItem->ownerContent->element_name) ?>&nbsp;<i class="switchIcon fa fa-caret-down" aria-hidden="true"></i></strong>
                         <small class="pull-right">
                             <span class="label label-success"><?= $contentItem->ownerContent->label ?></span>
                         </small>

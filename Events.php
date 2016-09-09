@@ -63,6 +63,8 @@ class Events extends \yii\base\Object
 
             if ($page->type == Container::TYPE_TEMPLATE) {
                 $event->sender->addWidget(modules\template\widgets\TemplatePageEditButton::className(), [], ['sortOrder' => 500]);
+            } else {
+                $event->sender->addWidget(modules\template\widgets\PageConfigurationButton::className(), [], ['sortOrder' => 500]);
             }
         }
     }
@@ -75,6 +77,8 @@ class Events extends \yii\base\Object
 
             if ($page->type == Container::TYPE_TEMPLATE) {
                 $event->sender->addWidget(modules\template\widgets\TemplatePageEditStackMenuButton::className(), [], ['sortOrder' => 500]);
+            } else {
+                $event->sender->addWidget(modules\template\widgets\PageConfigurationStackMenuButton::className(), [], ['sortOrder' => 500]);
             }
         }
     }

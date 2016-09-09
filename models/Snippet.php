@@ -6,9 +6,12 @@ use Yii;
 use humhub\components\ActiveRecord;
 use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\modules\template\models\Template;
+
 /**
  * This is the model class for table "custom_pages_container_snipped".
  *
+ * Snippets are custom sidebar panels which can be added to the directory/dashboard sidebar.
+ * 
  * The followings are the available columns in table 'custom_pages_container_page':
  * @property integer $id
  * @property integer $type
@@ -16,13 +19,14 @@ use humhub\modules\custom_pages\modules\template\models\Template;
  * @property string $icon
  * @property string $page_content
  * @property integer $sort_order
+ * @property integer $admin_only
  */
 class Snippet extends ActiveRecord implements CustomContentContainer
 {
-    
+
     const SIDEBAR_DASHBOARD = 'Dasboard';
     const SIDEBAR_DIRECTORY = 'Directory';
-    
+
     /**
      * @inhritdoc
      */
@@ -52,8 +56,8 @@ class Snippet extends ActiveRecord implements CustomContentContainer
         $rules[] = ['sidebar', 'required'];
         return $rules;
     }
-    
-     /**
+
+    /**
      * @inerhitdoc
      * @return array
      */
@@ -64,7 +68,7 @@ class Snippet extends ActiveRecord implements CustomContentContainer
         $result['sidebar'] = Yii::t('CustomPagesModule.models_Snippet', 'Sidebar');
         return $result;
     }
-    
+
     /**
      * Returns a sidebar selection for all sidebars this page can be added.
      * @return array
@@ -77,6 +81,9 @@ class Snippet extends ActiveRecord implements CustomContentContainer
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getContentTypes()
     {
         return [
@@ -86,16 +93,25 @@ class Snippet extends ActiveRecord implements CustomContentContainer
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getLabel()
     {
         return Yii::t('CustomPagesModule.models_Snippet', 'snippet');
     }
-    
-     public function getAllowedTemplateSelection()
+
+    /**
+     * @inheritdoc
+     */
+    public function getAllowedTemplateSelection()
     {
         return Template::getSelection(['type' => Template::TYPE_SNIPPED_LAYOUT]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getPageContent()
     {
         return $this->content;

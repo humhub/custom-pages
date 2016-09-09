@@ -20,6 +20,9 @@ use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 class ContainerContentController extends \humhub\components\Controller
 {
 
+    /**
+     * @inerhitdoc
+     */
     public function behaviors()
     {
         return [
@@ -157,7 +160,7 @@ class ContainerContentController extends \humhub\components\Controller
         }
 
         if ($itemTemplate == null && $templateId == null && Yii::$app->request->post('templateId') == null) {
-            throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.base', 'This action requres an templateId or template instance!'));
+            throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.base', 'This action requires an templateId or template instance!'));
         }
 
         // Initialize the itemTemplate
@@ -192,18 +195,20 @@ class ContainerContentController extends \humhub\components\Controller
         ];
     }
 
-    public function actionEditItem()
+    /**
+     * This action is used to edit an container item.
+     * 
+     * @return type
+     * @throws \yii\web\HttpException
+     */
+    public function actionEditItem($itemId)
     {
         Yii::$app->response->format = 'json';
-        $itemId = Yii::$app->request->get('itemId');
-
-        if ($itemId == null) {
-            throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.controllers_TemplateController', 'Invalid request data!'));
-        }
 
         $form = new EditItemForm();
         $form->setItem($itemId);
         $form->setScenario('edit');
+        
         if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
             $ownerContent = OwnerContent::findByContent($form->owner->container);
             TemplateCache::flushByOwnerContent($ownerContent);
@@ -222,16 +227,16 @@ class ContainerContentController extends \humhub\components\Controller
         ];
     }
 
-    public function actionDeleteItem()
+    /**
+     * This action is used to delete container items.
+     * 
+     * @param type $itemId item id
+     * @param type $ownerContentId content owner id for renderint the new result
+     * @return type
+     */
+    public function actionDeleteItem($itemId, $ownerContentId)
     {
         Yii::$app->response->format = 'json';
-
-        $itemId = Yii::$app->request->get('itemId');
-        $ownerContentId = Yii::$app->request->get('ownerContentId');
-
-        if ($itemId == null) {
-            throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.controllers_TemplateController', 'Invalid request data!'));
-        }
 
         if (Yii::$app->request->post('confirmation')) {
             ContainerContentItem::findOne(['id' => $itemId])->delete();
@@ -256,6 +261,15 @@ class ContainerContentController extends \humhub\components\Controller
         ];
     }
 
+    /**
+     * Action for moving an containeritem position.
+     * 
+     * @param type $ownerContentId
+     * @param type $itemId
+     * @param type $step
+     * @return type
+     * @throws \yii\web\HttpException
+     */
     public function actionMoveItem($ownerContentId, $itemId, $step)
     {
         Yii::$app->response->format = 'json';

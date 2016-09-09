@@ -22,6 +22,8 @@ use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 class TemplateViewBehavior extends Behavior
 {
     
+    public $_canEdit;
+    
     public function viewTemplatePage($page)
     {  
         $html = $this->renderTemplate($page);
@@ -43,7 +45,7 @@ class TemplateViewBehavior extends Behavior
     {
         $templateInstance = TemplateInstance::findOne(['object_model' => $page->className() ,'object_id' => $page->id]);
         
-        $canEdit = $this->owner->isCanEdit();
+        $canEdit = $this->isCanEdit();
         $editMode = ($editMode || Yii::$app->request->get('editMode')) && $canEdit;
         
         $html = '';
@@ -60,9 +62,9 @@ class TemplateViewBehavior extends Behavior
     }
     
     public function isCanEdit() {
-        if($this->owner->canEdit == null) {
-            $this->owner->canEdit = TemplatePagePermission::canEdit();
+        if($this->_canEdit == null) {
+            $this->_canEdit = TemplatePagePermission::canEdit();
         }
-        return $this->owner->canEdit;
+        return $this->_canEdit;
     }
 }

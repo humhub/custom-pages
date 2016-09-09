@@ -11,15 +11,18 @@ use humhub\modules\custom_pages\models\AddPageForm;
 use humhub\modules\custom_pages\components\TemplateViewBehavior;
 
 /**
- * Custom Pages for ContentContainer
+ * Controller for managing ContainerPage instances.
  *
- * @author luke
+ * @author luke, buddha
  */
 class ContainerController extends ContentContainerController
 {
 
+    /**
+     * @inheritdoc
+     * @var boolean 
+     */
     public $hideSidebar = true;
-    public $canEdit;
 
     /**
      * @inhritdoc
@@ -31,11 +34,23 @@ class ContainerController extends ContentContainerController
         ];
     }
 
+    /**
+     * Redirects to actionList.
+     * @return type
+     */
     public function actionIndex()
     {
         return $this->redirect($this->contentContainer->createUrl('list'));
     }
 
+    /**
+     * Is used to view/render a ContainerPage of a certain page content type.
+     * 
+     * This action expects an page id as request parameter.
+     * 
+     * @return type
+     * @throws HttpException if the page was not found
+     */
     public function actionView()
     {
         $page = ContainerPage::find()->contentContainer($this->contentContainer)->where(['custom_pages_container_page.id' => Yii::$app->request->get('id')])->one();
@@ -57,6 +72,10 @@ class ContainerController extends ContentContainerController
         }
     }
 
+    /**
+     * Provides an overview over all available ContainerPages.
+     * @return type
+     */
     public function actionList()
     {
         $this->adminOnly();
@@ -69,11 +88,21 @@ class ContainerController extends ContentContainerController
         ]);
     }
 
+    /**
+     * Returns all available ContainerPage models.
+     * @return array
+     */
     protected function findAll()
     {
         return ContainerPage::find()->contentContainer($this->contentContainer)->all();
     }
 
+    /**
+     * Action for adding new ContainerPages.
+     * This function can be redelcared by subclasses for supporting other container page types.
+     * 
+     * @return type
+     */
     public function actionAdd()
     {
         $this->adminOnly();
@@ -89,11 +118,25 @@ class ContainerController extends ContentContainerController
                     'subNav' => \humhub\modules\custom_pages\widgets\ContainerPageMenu::widget()]);
     }
 
+    /**
+     * Returns the class name of the ContainerPage name. This function can be redelcared by subclasses
+     * for supporting other container page types.
+     * 
+     * @return string
+     */
     protected function getPageClassName()
     {
         return ContainerPage::className();
     }
 
+    /**
+     * Action for editing ContainerPage models.
+     * This action expects either an page id or a content type for creating new pages of a given content type.
+     * 
+     * @param type $type
+     * @param type $id
+     * @return type
+     */
     public function actionEdit($type = null, $id = null)
     {
         $this->adminOnly();
@@ -122,6 +165,12 @@ class ContainerController extends ContentContainerController
                     'subNav' => \humhub\modules\custom_pages\widgets\ContainerPageMenu::widget()]);
     }
 
+    /**
+     * Action for deleting ContainerPage models with a given $id.
+     * 
+     * @param type $id page id
+     * @return type
+     */
     public function actionDelete($id)
     {
         $this->adminOnly();
@@ -135,11 +184,22 @@ class ContainerController extends ContentContainerController
         return $this->redirect($this->contentContainer->createUrl('list'));
     }
 
+    /**
+     * Searches for a ContainerPage with the given $id.
+     * This action expects either an page id or a content type for creating new pages of a given content type.
+     * 
+     * @param type $id
+     * @return type
+     */
     protected function findPageById($id = null)
     {
         return ContainerPage::find()->contentContainer($this->contentContainer)->where(['custom_pages_container_page.id' => $id])->one();
     }
 
+    /**
+     * Makes sure only admins can execute an action.
+     * @throws HttpException
+     */
     protected function adminOnly()
     {
         if (!$this->contentContainer->isAdmin()) {

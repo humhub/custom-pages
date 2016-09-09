@@ -17,7 +17,7 @@ use yii\helpers\Url;
 
     <div class="panel-body">
         <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('base', 'Back to overview'), Url::to(['index']), ['class' => 'btn btn-default pull-right']); ?>
-        <h4><?= Yii::t('CustomPagesModule.modules_template_views_admin_editSource', 'Edit template \'{templateName}\'', ['templateName' => $model->name]); ?></h4>
+        <h4><?= Yii::t('CustomPagesModule.modules_template_views_admin_editSource', 'Edit template \'{templateName}\'', ['templateName' => Html::encode($model->name)]); ?></h4>
         <div class="help-block">
             <?=
             Yii::t('CustomPagesModule.modules_template_views_admin_editSource', 'Here you can edit the source of your template by defining the template layout and adding content elements. '
@@ -25,7 +25,7 @@ use yii\helpers\Url;
             ?>
         </div>
     </div>
-<a href="<?= Url::to(['preview', 'id' => $model->id]) ?>" target="_blank" class="btn btn-success btn-sm pull-right" style="margin: 0 10px 10px 0">
+<a href="<?= Url::to(['preview', 'id' => $model->id]) ?>" id="previewButton" target="_blank" class="btn btn-success btn-sm pull-right" style="margin: 0 10px 10px 0">
                     <i aria-hidden="true" class="fa fa-eye"></i>
                 </a>
     <ul class="nav nav-tabs tab-sub-menu" id="tabs">

@@ -11,6 +11,8 @@ use humhub\modules\custom_pages\models\CustomContentContainer;
 /**
  * This is the model class for table "custom_pages_container_page".
  *
+ * A container page is a custom page cotnainer, which can be added to a spaces.
+ * 
  * The followings are the available columns in table 'custom_pages_container_page':
  * @property integer $id
  * @property integer $type
@@ -19,10 +21,14 @@ use humhub\modules\custom_pages\models\CustomContentContainer;
  * @property string $page_content
  * @property integer $in_new_window
  * @property integer $sort_order
+ * @property integer $admin_only
  */
 class ContainerPage extends ContentActiveRecord implements Searchable, CustomContentContainer
 {
 
+    /**
+     * @inheritdoc
+     */
     public $autoAddToWall = false;
 
     /**
@@ -30,6 +36,9 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
      */
     public $wallEntryClass = 'humhub\modules\custom_pages\widgets\WallEntry';
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -104,6 +113,9 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
         return $this->content->container->createUrl('/custom_pages/container/view', ['id' => $this->id]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getContentTypes()
     {
         return [
@@ -114,16 +126,25 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getLabel()
     {
         return Yii::t('CustomPagesModule.models_ContainerPage', 'page');
     }
     
-     public function getPageContent()
+    /**
+     * @inheritdoc
+     */
+    public function getPageContent()
     {
         return $this->page_content;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getAllowedTemplateSelection()
     {
         return Template::getSelection(['type' => Template::TYPE_LAYOUT, 'allow_for_spaces' => 1]);

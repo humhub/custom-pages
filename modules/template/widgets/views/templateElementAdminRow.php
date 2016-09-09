@@ -1,11 +1,14 @@
 <?php
+
+use yii\helpers\Html;
+
 /* @var $model humhub\modules\custom_pages\modules\template\models\TemplateElement */
 
 use yii\helpers\Url;
 ?>
 <tr data-template-element-definition="<?= $model->id ?>" >
     <td>
-        #<strong><?= $model->name ?> </strong>
+        #<strong><?= Html::encode($model->name) ?> </strong>
     </td>
     <td>
         <small>

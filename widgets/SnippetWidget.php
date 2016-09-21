@@ -23,6 +23,7 @@ class SnippetWidget extends \yii\base\Widget
     
     public function run()
     {
+        \humhub\modules\custom_pages\Module::loadTwig();
         $contentContainer = property_exists(Yii::$app->controller, 'contentContainer') ? Yii::$app->controller->contentContainer : null;
         
         return $this->render('snippet_'.strtolower(Container::getLabel($this->model->type)), [

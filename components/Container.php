@@ -44,7 +44,7 @@ class Container extends Behavior
         return [
             [['type', 'title'], 'required'],
             [['type', 'sort_order', 'admin_only'], 'integer'],
-            [['title'], 'string', 'max' => 255],
+            [['title', 'cssClass'], 'string', 'max' => 255],
             [['icon'], 'string', 'max' => 100],
             [['templateId'], 'safe'],
             ['type', 'validateTemplateType'],
@@ -68,10 +68,11 @@ class Container extends Behavior
             'type' => Yii::t('CustomPagesModule.components_Container', 'Type'),
             'title' => Yii::t('CustomPagesModule.components_Container', 'Title'),
             'icon' => Yii::t('CustomPagesModule.components_Container', 'Icon'),
+            'cssClass' => Yii::t('CustomPagesModule.components_Container', 'Style Class'),
             'content' => Yii::t('CustomPagesModule.components_Container', 'Content'),
             'templateId' => Yii::t('CustomPagesModule.components_Container', 'Template Layout'),
             'sort_order' => Yii::t('CustomPagesModule.components_Container', 'Sort Order'),
-            'url' => Yii::t('CustomPagesModule.components_Container', 'Url'),
+            'targetUrl' => Yii::t('CustomPagesModule.components_Container', 'Target Url'),
             'templateId' => Yii::t('CustomPagesModule.components_Container', 'Template Layout'),
             'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins')
         ];

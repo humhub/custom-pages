@@ -1,9 +1,13 @@
-<iframe id="iframepage" style="width:100%; height: 400px;" src="<?php echo \yii\helpers\Html::encode($url); ?>"></iframe>
+<?php
+$cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
+?>
+
+<iframe class="<?= $cssClass ?>" id="iframepage" style="width:100%; height: 400px;" src="<?php echo \yii\helpers\Html::encode($url); ?>"></iframe>
 
 <style>
     #iframepage {
         border: none;
-        background: url('<?php echo Yii::getAlias("@web/img/loader.gif"); ?>') center center no-repeat;
+        background: url('<?= Yii::$app->moduleManager->getModule('custom_pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
     }
 </style>
 

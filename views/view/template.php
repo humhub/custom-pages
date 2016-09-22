@@ -7,9 +7,11 @@ humhub\assets\Select2ExtensionAsset::register($this);
 if($editMode) {
     \humhub\modules\custom_pages\InlineEditAsset::register($this);
 }
+
+$cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 ?>
 
-<div id="templatePageRoot" class="container">
+<div id="templatePageRoot" class="container <?= $cssClass ?>">
     <div class="row">
         <div class="col-md-12">
             <?php echo $html; ?>

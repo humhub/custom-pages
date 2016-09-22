@@ -1,5 +1,8 @@
 <?php
-humhub\modules\custom_pages\Assets::register($this);
+use humhub\modules\custom_pages\models\ContainerSnippet;
+use \humhub\modules\custom_pages\models\Snippet;
+
+\humhub\modules\custom_pages\Assets::register($this);
 
 $faIcons = [
     'fa-adjust' => '&#xf042',
@@ -596,6 +599,11 @@ $faIcons = [
     'fa-youtube-play' => '&#xf16a',
     'fa-youtube-square' => '&#xf166'
 ];
+
+if($page instanceof Snippet || $page instanceof ContainerSnippet) {
+    $faIcons = array_merge([Yii::t('CustomPagesModule.widgets_views_pageIconSelect', 'none') => 'none'], $faIcons);
+}
+
 ?>
 
 <div class="form-group">
@@ -603,9 +611,15 @@ $faIcons = [
 
     <select class='selectpicker form-control' name="<?= $page->formName() ?>[icon]">
         <?php foreach ($faIcons as $name => $value): ?>
+            
             <option class="" value="<?= $name; ?>" <?php if ($page->icon == $name): ?>selected='selected'<?php endif; ?>>
-                <?php echo $value . ' ' . substr($name, 3); ?>
+                <?php if($value != 'none') : ?>
+                    <?= $value . ' ' . substr($name, 3); ?>
+                <?php else: ?>
+                    <?= $value; ?>
+                <?php endif; ?>
             </option>
+            
         <?php endforeach; ?>
     </select>
 </div>

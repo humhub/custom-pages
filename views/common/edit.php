@@ -45,7 +45,11 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
         </div>
 
         <?= $form->field($page, 'title') ?>
-
+        
+        <?php if ($page instanceof Page && $page->hasAttribute('url')) : ?>
+            <?= $form->field($page, 'url') ?>
+        <?php endif; ?>
+        
         <?php if ($page->isType(Container::TYPE_HTML)): ?>
             <?= $form->field($page, $contentProp)->textarea(['id' => 'html_content', 'class' => 'form-control', 'rows' => '15']); ?>
         <?php elseif ($page->isType(Container::TYPE_TEMPLATE)): ?>
@@ -54,7 +58,7 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
             <?= $form->field($page, $contentProp)->textarea(['id' => 'markdownField', 'class' => 'form-control', 'rows' => '15']); ?>
             <?= \humhub\widgets\MarkdownEditor::widget(['fieldId' => 'markdownField']); ?>
         <?php elseif ($page->isType(Container::TYPE_LINK) || $page->isType(Container::TYPE_IFRAME)): ?>
-            <?= $form->field($page, $contentProp)->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('Url')); ?>
+            <?= $form->field($page, $contentProp)->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('targetUrl')); ?>
         <?php endif; ?>
 
         <?php if ($page instanceof Page) : ?> 
@@ -69,6 +73,10 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
 
         <?= \humhub\modules\custom_pages\widgets\PageIconSelect::widget(['page' => $page]) ?>
 
+         <?php if ($page->hasAttribute('cssClass') && !$page->isType(Container::TYPE_LINK)) : ?>
+            <?= $form->field($page, 'cssClass'); ?>
+        <?php endif; ?>
+        
         <?php if ($page->hasAttribute('admin_only')) : ?>
             <?= $form->field($page, 'admin_only')->checkbox() ?>
         <?php endif; ?>

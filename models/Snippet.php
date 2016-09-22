@@ -20,6 +20,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
  * @property string $page_content
  * @property integer $sort_order
  * @property integer $admin_only
+ * @property string $cssClass
  */
 class Snippet extends ActiveRecord implements CustomContentContainer
 {

@@ -21,7 +21,7 @@ if ($contentContainer != null) {
 <style>
     #<?= $iframeId ?> {
         border: none;
-        background: url('<?php echo Yii::getAlias("@web/img/loader.gif"); ?>') center center no-repeat;
+        background: url('<?= Yii::$app->moduleManager->getModule('custom_pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
     }
 </style>
 

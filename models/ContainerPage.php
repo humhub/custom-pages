@@ -22,6 +22,7 @@ use humhub\modules\custom_pages\models\CustomContentContainer;
  * @property integer $in_new_window
  * @property integer $sort_order
  * @property integer $admin_only
+ * @property string $cssClass
  */
 class ContainerPage extends ContentActiveRecord implements Searchable, CustomContentContainer
 {
@@ -62,7 +63,7 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
     {
         $rules = $this->defaultRules();
         $rules[] = ['in_new_window', 'integer'];
-        $rules[] = ['page_content', 'safe'];
+        $rules[] = [['page_content'], 'safe'];
         return $rules;
     }
 

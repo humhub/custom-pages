@@ -7,9 +7,13 @@ humhub\assets\Select2ExtensionAsset::register($this);
 if ($editMode) {
     \humhub\modules\custom_pages\InlineEditAsset::register($this);
 }
+
+
+$cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
+
 ?>
 
-<div id="templatePageRoot">
+<div class="<?= $cssClass ?>" id="templatePageRoot">
     <div class="panel panel-default">
         <div class="panel-body">
             <?php echo $html; ?>

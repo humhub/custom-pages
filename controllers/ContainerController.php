@@ -60,11 +60,11 @@ class ContainerController extends ContentContainerController
         }
 
         if ($page->type == Container::TYPE_IFRAME) {
-            return $this->render('iframe', array('url' => $page->page_content));
+            return $this->render('iframe', array('page' => $page, 'url' => $page->page_content));
         } elseif ($page->type == Container::TYPE_LINK) {
             return $this->redirect($page->page_content);
         } elseif ($page->type == Container::TYPE_MARKDOWN) {
-            return $this->render('markdown', array('md' => $page->page_content));
+            return $this->render('markdown', array('page' => $page, 'md' => $page->page_content));
         } elseif ($page->type == Container::TYPE_TEMPLATE) {
             return $this->viewTemplatePage($page);
         } else {

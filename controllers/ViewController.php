@@ -52,15 +52,16 @@ class ViewController extends Controller
         }
 
         if ($page->type == Container::TYPE_HTML) {
-            return $this->render('html', array('html' => $page->content, 'title' => $page->title));
+            return $this->render('html', array('page' => $page, 'html' => $page->content, 'title' => $page->title));
         } elseif ($page->type == Container::TYPE_IFRAME) {
-            return $this->render('iframe', array('url' => $page->content, 'navigationClass' => $page->navigation_class));
+            return $this->render('iframe', array('page' => $page, 'url' => $page->content, 'navigationClass' => $page->navigation_class));
         } elseif ($page->type == Container::TYPE_LINK) {
             return $this->redirect($page->content);
         } elseif ($page->type == Container::TYPE_TEMPLATE) {
             return $this->viewTemplatePage($page);
         } elseif ($page->type == Container::TYPE_MARKDOWN) {
             return $this->render('markdown', array(
+                'page' => $page,
                 'md' => $page->content,
                 'navigationClass' => $page->navigation_class,
                 'title' => $page->title

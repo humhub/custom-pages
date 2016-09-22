@@ -1,16 +1,17 @@
 <?php
-
 use humhub\modules\custom_pages\models\Page;
+
+$cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 ?>
 
 <?php if ($navigationClass == Page::NAV_CLASS_ACCOUNTNAV): ?>
 
-    <iframe id="iframepage" style="width:100%; height: 400px;" src="<?php echo $url; ?>"></iframe>
+    <iframe class="<?= $cssClass ?>" id="iframepage" style="width:100%; height: 400px;" src="<?php echo $url; ?>"></iframe>
 
     <style>
         #iframepage {
             border: none;
-            background: url('<?php echo Yii::getAlias("@web/img/loader.gif"); ?>') center center no-repeat;
+            background: url('<?= Yii::$app->moduleManager->getModule('custom_pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
         }
     </style>
 
@@ -31,7 +32,7 @@ use humhub\modules\custom_pages\models\Page;
 
 <?php else: ?>
 
-    <iframe id="iframepage" style="width:100%;height: 400px" src="<?php echo $url; ?>"></iframe>
+    <iframe class="<?= $cssClass ?>" id="iframepage" style="width:100%;height: 400px" src="<?php echo $url; ?>"></iframe>
 
     <style>
         #iframepage {
@@ -39,7 +40,7 @@ use humhub\modules\custom_pages\models\Page;
             left: 0;
             top: 98px;
             border: none;
-            background: url('<?php echo Yii::getAlias("@web/img/loader.gif"); ?>') center center no-repeat;
+            background: url('<?= Yii::$app->moduleManager->getModule('custom_pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
         }
     </style>
 

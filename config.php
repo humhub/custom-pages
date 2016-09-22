@@ -13,6 +13,9 @@ return [
             'class' => 'humhub\modules\custom_pages\modules\template\Module'
         ],
     ],
+    'urlManagerRules' => [
+        ['class' => 'humhub\modules\custom_pages\components\PageUrlRule']
+    ],
     'namespace' => 'humhub\modules\custom_pages',
     'events' => [
         ['class' => AdminMenu::className(), 'event' => AdminMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onAdminMenuInit']],

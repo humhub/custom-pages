@@ -23,6 +23,8 @@ use humhub\modules\custom_pages\modules\template\models\Template;
  * @property integer $admin_only
  * @property integer $in_new_window
  * @property string $navigation_class
+ * @property string $cssClass
+ * @property string $url
  */
 class Page extends ActiveRecord implements CustomContentContainer
 {
@@ -70,7 +72,8 @@ class Page extends ActiveRecord implements CustomContentContainer
         $rules = $this->defaultRules();
         $rules[] = ['navigation_class', 'required'];
         $rules[] = [['in_new_window', 'admin_only'], 'integer'];
-        $rules[] = ['content', 'safe'];
+        $rules[] = [['content', 'url'], 'safe'];
+        $rules[] = [['url'], 'unique', 'skipOnEmpty' => 'true'];
         return $rules;
     }
 

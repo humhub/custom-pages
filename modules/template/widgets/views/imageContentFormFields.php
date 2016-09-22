@@ -15,7 +15,7 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
 
 <div class="row">
     <div class="col-md-3 uploadContainer">
-        <label class="btn btn-default btn-file btn-primary btn-sm">
+        <label class="file-chooser btn btn-default btn-file btn-primary btn-sm" tabindex="0">
             <?= Yii::t('CustomPagesModule.modules_template_widgets_views_imageContentFormFields', 'Choose New Image') ?> 
             <?= Html::fileInput('files', null, ['class' => 'uploadElementImage', 'style' => 'display:none;']) ?>
         </label>
@@ -30,15 +30,15 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
         <?php else: ?>
             <img class="preview" style="display:none;" src="#"/>
             <p class="empty-image-text">
-                <?= Yii::t('CustomPagesModule.base', '<strong>No image available.</strong>');?>
+                <?= Yii::t('CustomPagesModule.base', '<strong>No image available.</strong>'); ?>
             </p>
         <?php endif; ?>
     </div>
 </div>
 <br />
 
-
 <?php CollapsableFormGroup::begin(['defaultState' => false]) ?>
+
 <div class="row">
     <div class="col-md-6">
         <?= $form->field($model->definition, 'height')->textInput(['disabled' => $disableDefinition]); ?>
@@ -52,11 +52,18 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
 <?php CollapsableFormGroup::end() ?>
 
 <script>
+    $('.file-chooser').off('keyup').on('keyup', function (e) {
+        if (e.which == 13) {
+            e.preventDefault();
+            $(this).find('.uploadElementImage').click();
+        }
+    });
+
     $('.uploadElementImage').off('change').on('change', function () {
-        if(!this.files.length) {
+        if (!this.files.length) {
             return;
         }
-        
+
         $this = $(this);
         $('.imageLoader').remove();
         var $loader = $('<div class="imageLoader loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div>');
@@ -64,11 +71,11 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
 
         var $preview = $this.closest('.uploadContainer').next().find('.preview');
         var isEmpty = false;
-        if(!$preview.is(':visible')) {
+        if (!$preview.is(':visible')) {
             $preview = $preview.next();
             isEmpty = true;
         }
-        
+
         var offset = $preview.offset();
         var height = $preview.outerHeight();
         var width = $preview.outerWidth();
@@ -78,14 +85,14 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
             top: offset.top,
             height: height,
             width: width,
-            'line-height': $preview.height()+'px',
+            'line-height': $preview.height() + 'px',
         });
-        
-        if(isEmpty) {
+
+        if (isEmpty) {
             $preview.remove();
             $loader.css('background-color', 'transparent');
         }
-        
+
         $('body').append($loader);
 
         $loader.show();
@@ -98,14 +105,14 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
         var st = $(this).scrollTop();
         if (st > lastScrollTop) {
             var value = Math.abs(st - lastScrollTop);
-             $('.imageLoader').animate({
-               top: '-='+value
-            },0);
+            $('.imageLoader').animate({
+                top: '-=' + value
+            }, 0);
         } else {
             var value = Math.abs(st - lastScrollTop);
             $('.imageLoader').animate({
-               top: '+='+value
-            },0);
+                top: '+=' + value
+            }, 0);
         }
         lastScrollTop = st;
     });
@@ -115,20 +122,20 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
 
         var $this = $(this);
         var $form = $this.closest('form');
-        var formData = new FormData($form[0]);
+        var formData = new FormData();
+
+        $.each($(this).parent().find('.uploadElementImage')[0].files, function (key, value) {
+            formData.append('files', value);
+        });
 
         $.ajax({
             url: '<?= $uploadUrl ?>', //Server script to process data
             type: 'POST',
-            /*xhr: function() {  // Custom XMLHttpRequest
-             var myXhr = $.ajaxSettings.xhr();
-             if(myXhr.upload){ // Check if upload property exists
-             myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
-             }
-             return myXhr;
-             },*/
-            //Ajax events
-            //beforeSend: beforeSendHandler,
+            data: formData,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            contentType: false,
+            processData: false,
             success: function (json) {
                 // remove the disabled class of loader but disable the upload button
                 $this.html('<?= Yii::t('CustomPagesModule.base', 'Upload'); ?>').removeClass('disabled');
@@ -140,12 +147,7 @@ $disableDefinition = !$isAdminEdit && $model->definition->is_default;
                 $form.find('.file-guid').val(files[0].guid);
                 $form.append('<input type="hidden" name="' + $this.data('form-name') + '[fileList][]" value="' + files[0].guid + '" />');
                 $('.imageLoader').remove();
-            },
-            data: formData,
-            //Options to tell jQuery not to process data or worry about content-type.
-            cache: false,
-            contentType: false,
-            processData: false
+            }
         });
     });
 </script>

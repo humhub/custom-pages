@@ -16,12 +16,13 @@ use yii\helpers\Html;
             </h4>
         </div>
         <div class="modal-body media-body template-edit-multiple"> 
+            <?php $counter = 0 ?>
             <?php foreach ($model->contentMap as $key => $contentItem) : ?>
                 
                 <?php $isContainer = $contentItem->content instanceof humhub\modules\custom_pages\modules\template\models\ContainerContent; ?>
                 
                 <div class="panel panel-default">
-                    <div class="panel-heading">
+                    <div class="template-edit-multiple-tab panel-heading" tabindex="0">
                         <strong>#<?= Html::encode($contentItem->ownerContent->element_name) ?>&nbsp;<i class="switchIcon fa fa-caret-down" aria-hidden="true"></i></strong>
                         <small class="pull-right">
                             <span class="label label-success"><?= $contentItem->ownerContent->label ?></span>
@@ -43,12 +44,12 @@ use yii\helpers\Html;
                         <?php endif; ?>
                     </div>
                     <?php // This was only set for container elements before. ?>
-                    <div class="panel-body" style="<?= (true) ? 'display:none' : '' ?>">
+                    <div class="panel-body" data-element-index="<?= $counter ?>" style="<?= ($counter != 0) ? 'display:none' : '' ?>">
                         <?= $contentItem->content->renderForm($form); ?>
                     </div>
                     <div class="panel-footer">&nbsp;</div>
                 </div>
-
+                <?php $counter++ ?>
             <?php endforeach; ?>
 
             <?php if (empty($model->contentMap)) : ?>
@@ -71,7 +72,32 @@ use yii\helpers\Html;
 </div>
 
 <script type="text/javascript">
-    $('.template-edit-multiple').find('.panel-heading').on('click', function() {
+    $('.template-edit-multiple-tab:first').focus();
+
+    $('.template-edit-multiple-tab').on('keyup', function (e) {
+        switch (e.which) {
+            case 13:
+                e.preventDefault();
+                $(this).trigger('click');
+                break;
+            case 39:
+            case 40:
+                e.preventDefault();
+                if (!$(this).next('.panel-body').is(':visible')) {
+                    $(this).trigger('click');
+                }
+                break;
+            case 37:
+            case 38:
+                e.preventDefault();
+                if ($(this).next('.panel-body').is(':visible')) {
+                    $(this).trigger('click');
+                }
+                break;
+        }
+    });
+
+    $('.template-edit-multiple-tab').on('click', function () {
         $(this).next('.panel-body').slideToggle('fast');
         var $switchIcon = $(this).find('.switchIcon');
         if($switchIcon.hasClass('fa-caret-down')) {

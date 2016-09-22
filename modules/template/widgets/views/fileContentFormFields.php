@@ -12,7 +12,7 @@ $uploadUrl = Url::to(['/file/file/upload']);
 
 <div class="row">
     <div class="col-md-3 uploadContainer">
-        <label class="btn btn-default btn-file btn-primary btn-sm">
+        <label class="file-chooser btn btn-default btn-file btn-primary btn-sm" tabindex="0">
             <?= Yii::t('CustomPagesModule.modules_template_widgets_views_fileContentFormFields', 'Choose New File') ?> 
             <?= Html::fileInput('files', null, ['class' => 'uploadElementFile', 'style' => 'display:none;']) ?>
         </label>
@@ -26,18 +26,26 @@ $uploadUrl = Url::to(['/file/file/upload']);
             <?php else: ?>
                 <?= Yii::t('CustomPagesModule.base', '<strong>No file available.</strong>'); ?>
             <?php endif; ?>
-                
+
         </p>
         <br />
     </div>
 </div>
 
 <script>
+    $('.file-chooser').off('keyup').on('keyup', function (e) {
+        if (e.which == 13) {
+            e.preventDefault();
+            $(this).find('.uploadElementFile').click();
+        }
+    });
+
     $('.uploadElementFile').off('change').on('change', function () {
+
         if (!this.files.length) {
             return;
         }
-        
+
         $this = $(this);
         $('.imageLoader').remove();
         var $loader = $('<div class="imageLoader loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div>');
@@ -45,6 +53,7 @@ $uploadUrl = Url::to(['/file/file/upload']);
 
         var $preview = $this.closest('.uploadContainer').next().find('.file-text');
         var isEmpty = false;
+        
         if (!$preview.is(':visible')) {
             $preview = $preview.next();
             isEmpty = true;
@@ -95,37 +104,31 @@ $uploadUrl = Url::to(['/file/file/upload']);
 
         var $this = $(this);
         var $form = $this.closest('form');
-        var formData = new FormData($form[0]);
+        var formData = new FormData();
 
+        $.each($(this).parent().find('.uploadElementFile')[0].files, function (key, value) {
+            formData.append('files', value);
+        });
         $.ajax({
             url: '<?= $uploadUrl ?>', //Server script to process data
             type: 'POST',
-            /*xhr: function() {  // Custom XMLHttpRequest
-             var myXhr = $.ajaxSettings.xhr();
-             if(myXhr.upload){ // Check if upload property exists
-             myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
-             }
-             return myXhr;
-             },*/
-            //Ajax events
-            //beforeSend: beforeSendHandler,
+            data: formData,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            contentType: false,
+            processData: false,
             success: function (json) {
                 // remove the disabled class of loader but disable the upload button
                 $this.html('<?= Yii::t('CustomPagesModule.base', 'Upload'); ?>').removeClass('disabled');
                 $this.prop('disabled', true);
                 var files = json.files;
                 var $preview = $this.parent().next().find('.file-text');
-                $preview.html('<a href='+files[0].url+' target="_blank">'+files[0].title+'</a>');
+                $preview.html('<a href=' + files[0].url + ' target="_blank">' + files[0].title + '</a>');
                 $preview.fadeIn('fast');
                 $form.find('.file-guid').val(files[0].guid);
                 $form.append('<input type="hidden" name="' + $this.data('form-name') + '[fileList][]" value="' + files[0].guid + '" />');
                 $('.imageLoader').remove();
-            },
-            data: formData,
-            //Options to tell jQuery not to process data or worry about content-type.
-            cache: false,
-            contentType: false,
-            processData: false
+            }
         });
     });
 </script>

@@ -2,17 +2,16 @@
 
 use yii\db\Migration;
 
-class m160922_115053_page_url extends Migration
+class m160922_143514_page_url_index extends Migration
 {
     public function up()
     {
-        $this->addColumn('custom_pages_page','url', $this->string(45));
-        #$this->addColumn('custom_pages_container_page','url', $this->string(45));
+        $this->createIndex('custom-page-url-unique', 'custom_pages_page', 'url', false);
     }
 
     public function down()
     {
-        echo "m160922_115053_page_url cannot be reverted.\n";
+        echo "m160922_143514_page_url_index cannot be reverted.\n";
 
         return false;
     }

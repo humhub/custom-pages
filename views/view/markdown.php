@@ -3,6 +3,8 @@
 use humhub\modules\custom_pages\models\Page;
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
+
+$this->pageTitle = $title;
 ?>
 
 <?php if ($navigationClass == Page::NAV_CLASS_ACCOUNTNAV): ?>

@@ -92,7 +92,7 @@ class PageUrlRule extends Object implements UrlRuleInterface
 
         $page = Page::findOne(['id' => $id]);
         if ($page !== null) {
-            static::$pageUrlMap[$page->id] = !empty($page->url != '') ? $page->url : $page->id;
+            static::$pageUrlMap[$page->id] = !empty($page->url) ? $page->url : $page->id;
             return static::$pageUrlMap[$page->id];
         }
 

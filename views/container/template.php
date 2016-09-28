@@ -14,10 +14,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 ?>
 
 <div class="<?= $cssClass ?>" id="templatePageRoot">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <?php echo $html; ?>
-        </div>
+    <?php echo $html; ?>
     </div>
 </div>
 

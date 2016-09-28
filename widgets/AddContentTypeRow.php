@@ -9,9 +9,9 @@
 namespace humhub\modules\custom_pages\widgets;
 
 /**
- * User Administration Menu
+ * Content Type Row for adding a new Page/Snippet of a certain type
  *
- * @author Basti
+ * @author buddha
  */
 class AddContentTypeRow extends \yii\base\Widget
 {

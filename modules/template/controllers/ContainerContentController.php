@@ -97,7 +97,8 @@ class ContainerContentController extends \humhub\components\Controller
         if ($ownerContent->instance->isSingleAllowedTemplate()) {
             return $this->runAction('edit-add-item', [
                         'templateId' => $ownerContent->instance->allowedTemplates[0],
-                        'ownerContent' => $ownerContent
+                        'ownerContent' => $ownerContent,
+                        'sguid' => $sguid
             ]);
         }
 
@@ -105,7 +106,9 @@ class ContainerContentController extends \humhub\components\Controller
             'success' => false,
             'content' => $this->renderPartial('addItemChooseTemplateModal', [
                 'allowedTemplateSelection' => $this->getAllowedTemplateSelection($ownerContent->instance),
-                'action' => \yii\helpers\Url::to(['edit-add-item', 'ownerContentId' => $ownerContentId, 'sguid' => $sguid])
+                'action' => \yii\helpers\Url::to(['edit-add-item', 
+                    'ownerContentId' => $ownerContentId, 
+                    'sguid' => $sguid])
             ])
         ];
     }

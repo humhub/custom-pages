@@ -383,7 +383,7 @@
         this.name = this.data('template-item-title');
         this.inline = this.$.hasClass('inline');
         if(!this.name) {
-            this.name = this.getParent().name+':'+this.index;
+            this.name = this.getParent().name+':'+this.$.index();
         }
 
         this.editTemplateUrl = this.data('template-edit-url');

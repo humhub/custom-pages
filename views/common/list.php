@@ -9,17 +9,15 @@ use humhub\modules\custom_pages\components\Container;
 /* @var $label string */
 /* @var $subNav string */
 
-$contentContainer = property_exists(Yii::$app->controller, 'contentContainer') ? Yii::$app->controller->contentContainer : null;
+$sguid = Yii::$app->request->get('sguid');
 
-
-$addUrl = ($contentContainer == null) ? Url::to(['add']) : $contentContainer->createUrl('add');
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
     <?= $subNav ?>
     <div class="panel-body">
         <div class="clearfix">
-            <?php echo Html::a('<i class="fa fa-plus"></i> ' . Yii::t('CustomPagesModule.views_common_list', 'Create new {label}', ['label' => $label]), $addUrl, ['data-ui-loader' => '', 'class' => 'pull-right btn btn-success']); ?>
+            <?php echo Html::a('<i class="fa fa-plus"></i> ' . Yii::t('CustomPagesModule.views_common_list', 'Create new {label}', ['label' => $label]), Url::to(['add', 'sguid' => $sguid]), ['data-ui-loader' => '', 'class' => 'pull-right btn btn-success']); ?>
             <h4><?= Yii::t('CustomPagesModule.base', 'Overview') ?></h4>
             <div class="help-block">
                 <?= Yii::t('CustomPagesModule.views_common_list', 'This page lists all available {label} entries.', ['label' => $label]); ?>
@@ -41,8 +39,7 @@ $addUrl = ($contentContainer == null) ? Url::to(['add']) : $contentContainer->cr
                     <th>&nbsp;</th>
                 </tr>
                 <?php foreach ($pages as $page): ?>
-                 <?php  $editUrl = ($contentContainer == null) 
-                    ? Url::to(['edit', 'id' => $page->id]) : $contentContainer->createUrl('edit', ['id' => $page->id]); ?>
+                 <?php  $editUrl = Url::to(['edit', 'id' => $page->id, 'sguid' => $sguid]) ?>
                     <tr>
                         <td><i class="fa <?php echo $page->icon; ?>"></i> <?php echo Html::a($page->title, $editUrl); ?></td>
                         <?php if ($isMainPage) : ?>
@@ -64,5 +61,3 @@ $addUrl = ($contentContainer == null) ? Url::to(['add']) : $contentContainer->cr
 
     </div>
 </div>
-
-

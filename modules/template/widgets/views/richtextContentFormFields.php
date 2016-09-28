@@ -11,13 +11,7 @@ $id .= ($model->id == null) ? preg_replace( "/(\[|\])/","", $model->formName() )
 $csrfTokenName = Yii::$app->request->csrfParam;
 $csrfToken = Yii::$app->request->csrfToken;
 
-$contentContainer = property_exists(Yii::$app->controller, 'contentContainer') ? Yii::$app->controller->contentContainer : null;
-
-if($contentContainer == null) {
-    $uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file']);
-} else {
-    $contentContainer->createUrl('/custom_pages/template/upload/upload-ckeditor-file');
-}
+$uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', 'sguid' => Yii::$app->request->get('sguid')]);
 
 ?>
 
@@ -100,14 +94,13 @@ if($contentContainer == null) {
                 label: buttonLabel,
                 command: 'show_more',
                 toolbar: 'showmore',
-                //icon: 'https://avatars1.githubusercontent.com/u/5500999?v=2&s=16'
             });
         };
 
         $(document).off('click', '.cke_dialog_tabs a:visible:eq(2)').on('click', '.cke_dialog_tabs a:visible:eq(2)', function () {
-            var $form = $('.cke_dialog_ui_input_file iframe').contents().find('form');
+            var $form = $('.cke_dialog_ui_input_file:visible iframe').contents().find('form');
             var csrfName = '<?= $csrfTokenName ?>';
-            var token = yii.getCsrfToken();
+            var token = '<?= $csrfToken ?>';
 
             if (!$form.find('input[name=' + csrfName + ']').length) {
                 var csrfTokenInput = $('<input/>').attr({

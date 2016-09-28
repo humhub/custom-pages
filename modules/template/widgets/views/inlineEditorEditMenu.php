@@ -1,28 +1,21 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
-
 use yii\helpers\Url;
 
 \humhub\modules\custom_pages\SwitchAssetBundle::register($this);
 \humhub\modules\custom_pages\Assets::register($this);
 
-$contentContainer = property_exists(Yii::$app->controller, 'contentContainer') ? Yii::$app->controller->contentContainer : null;
+$sguid = Yii::$app->request->get('sguid');
 
-if($contentContainer == null) {
-    $editUrl = Url::to(['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid]);
-    $editMultipleUrl = Url::to(['/custom_pages/template/owner-content/edit-multiple', 'id' => $templateInstance->id]);
-    $editOnUrl = Url::to(['view', 'id' => $pageId, 'editMode' => true]);
-    $editOffUrl = Url::to(['view', 'id' => $pageId, 'editMode' => false]);
-} else {
-    $editUrl = $contentContainer->createUrl('/custom_pages/template/layout-admin/edit-source', ['id' => $templateInstance->template_id]);
-    $editMultipleUrl = $contentContainer->createUrl('/custom_pages/template/owner-content/edit-multiple', ['id' => $templateInstance->id]);
-    $editOnUrl = $contentContainer->createUrl('view', ['id' => $pageId, 'editMode' => true]);
-    $editOffUrl = $contentContainer->createUrl('view', ['id' => $pageId, 'editMode' => false]);
-}
+$editUrl = Url::to(['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid]);
+$editMultipleUrl = Url::to(['/custom_pages/template/owner-content/edit-multiple', 'id' => $templateInstance->id, 'sguid' => $sguid]);
+$editOnUrl = Url::to(['view', 'id' => $pageId, 'editMode' => true, 'sguid' => $sguid]);
+$editOffUrl = Url::to(['view', 'id' => $pageId, 'editMode' => false, 'sguid' => $sguid]);
 
 ?>
 
@@ -36,10 +29,10 @@ if($contentContainer == null) {
                 </a><br />
             <?php endif; ?>
             <?php if ($editMode): ?>
-            <a id="editAllElements" style="width:100%" class="btn btn-primary btn-xs tt editTemplateElement"  href="<?= $editMultipleUrl ?>">
-                <?= Yii::t('CustomPagesModule.views_view_template', 'Edit Elements') ?>
-            </a>
-            <?php  endif; ?>
+                <a id="editAllElements" style="width:100%" class="btn btn-primary btn-xs tt editTemplateElement"  href="<?= $editMultipleUrl ?>">
+                    <?= Yii::t('CustomPagesModule.views_view_template', 'Edit Elements') ?>
+                </a>
+            <?php endif; ?>
         </div>
     </div>
 <?php endif; ?>
@@ -59,5 +52,5 @@ if($contentContainer == null) {
             window.location.href = '<?= $editOffUrl ?>';
         }
     });
-   
+
 </script>

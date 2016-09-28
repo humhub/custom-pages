@@ -17,6 +17,8 @@ use humhub\modules\custom_pages\components\TemplateViewBehavior;
 class ViewController extends Controller
 {
     
+    
+    
     /**
      * @inhritdoc
      */
@@ -24,6 +26,10 @@ class ViewController extends Controller
     {
         return [
             ['class' => TemplateViewBehavior::className()],
+            'acl' => [
+                'class' => \humhub\components\behaviors\AccessControl::className(),
+                'guestAllowedActions' => ['index', 'view']
+            ]
         ];
     }
     

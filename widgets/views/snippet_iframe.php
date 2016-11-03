@@ -11,9 +11,10 @@ if ($contentContainer != null) {
 ?>
 
 <?=
+
 \humhub\modules\custom_pages\widgets\SnippetContent::widget([
     'model' => $model,
-    'content' => '<iframe id="' . $iframeId . '" style="border:0px;width:100%;" src="' . \yii\helpers\Html::encode($model->content) . '"></iframe>',
+    'content' => '<iframe id="' . $iframeId . '" style="border:0px;width:100%;" src="' . \yii\helpers\Html::encode($model->page_content) . '"></iframe>',
     'navigation' => ['<a href="' . $editUrl . '" class="panel-collapse"><i class="fa fa-pencil"></i>' . Yii::t('CustomPagesModule.base', 'Edit') . '</a>']
 ]);
 ?>

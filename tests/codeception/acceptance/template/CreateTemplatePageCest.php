@@ -7,7 +7,7 @@ use custom_pages\AcceptanceTester;
 class CreateTemplatePageCest
 {
     
-    public function testCreateMarkdownPageOnTopMenu(AcceptanceTester $I)
+    public function testCreateTemplate(AcceptanceTester $I)
     {
         $I->amAdmin();
         $I->wantToTest('the creation of a template page');
@@ -62,20 +62,21 @@ class CreateTemplatePageCest
         $I->amGoingTo('add a file element');
         $this->clickAddElement($I, 'File');
         $I->fillField('TemplateElement[name]', 'file');
+        
         //Workaround
         $I->jsShow('.uploadElementImage', 'type');
         $I->attachFile('.uploadElementFile', 'test.jpg');
         $I->wait(2);
         $I->click('#editTemplateSubmit');
         $I->waitForElementNotVisible('#editTemplateSubmit');
-        
+
+        $I->click('Save');
+       
         $I->expectTo('see the new element added to the element row');
         $I->see('#text');
         $I->see('#richtext');
         $I->see('#image');
         $I->see('#file');
-        
-        $I->click('Save');
     }
     
     private function clickAddElement($I, $type) {

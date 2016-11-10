@@ -143,12 +143,12 @@ class Events extends \yii\base\Object
         }
 
         $snippets = Snippet::findAll(['sidebar' => Snippet::SIDEBAR_DASHBOARD]);
+        $canEdit = modules\template\models\TemplatePagePermission::canEdit();
         foreach ($snippets as $snippet) {
-            if($snippet->admin_only && !modules\template\models\TemplatePagePermission::canEdit()) {
+            if($snippet->admin_only && !$canEdit) {
                 continue;
             }
-            
-            $event->sender->addWidget(SnippetWidget::className(), ['model' => $snippet], ['sortOrder' => $snippet->sort_order]);
+            $event->sender->addWidget(SnippetWidget::className(), ['model' => $snippet, 'canEdit' => $canEdit], ['sortOrder' => $snippet->sort_order]);
         }
     }
     
@@ -159,11 +159,12 @@ class Events extends \yii\base\Object
         }
 
         $snippets = Snippet::findAll(['sidebar' => Snippet::SIDEBAR_DIRECTORY]);
+        $canEdit = modules\template\models\TemplatePagePermission::canEdit();
         foreach ($snippets as $snippet) {
-            if($snippet->admin_only && !modules\template\models\TemplatePagePermission::canEdit()) {
+            if($snippet->admin_only && !$canEdit) {
                 continue;
             }
-            $event->sender->addWidget(SnippetWidget::className(), ['model' => $snippet], ['sortOrder' => $snippet->sort_order]);
+            $event->sender->addWidget(SnippetWidget::className(), ['model' => $snippet, 'canEdit' => $canEdit], ['sortOrder' => $snippet->sort_order]);
         }
     }
 
@@ -174,13 +175,14 @@ class Events extends \yii\base\Object
         }
 
         $space = $event->sender->space;
+        $canEdit = modules\template\models\TemplatePagePermission::canEdit();
         if ($space->isModuleEnabled('custom_pages')) {
             $snippets = ContainerSnippet::find()->contentContainer($space)->all();
             foreach ($snippets as $snippet) {
-                if($snippet->admin_only && !modules\template\models\TemplatePagePermission::canEdit()) {
+                if($snippet->admin_only && !$canEdit) {
                     continue;
                 }
-                $event->sender->addWidget(SnippetWidget::className(), ['model' => $snippet], ['sortOrder' => $snippet->sort_order]);
+                $event->sender->addWidget(SnippetWidget::className(), ['model' => $snippet, 'canEdit' => $canEdit], ['sortOrder' => $snippet->sort_order]);
             }
         }
     }

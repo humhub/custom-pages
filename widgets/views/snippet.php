@@ -13,7 +13,7 @@ foreach($navigation as $navigationOption) {
 
 ?>
 
-<div class="panel panel-default custom-snippet <?= $cssClass?> " id="<?= $snippedId ?>">
+<div class="panel panel-default custom-snippet <?= Html::encode($cssClass) ?> " id="<?= $snippedId ?>">
     <?php echo \humhub\widgets\PanelMenu::widget(['id' => $snippedId, 'extraMenus' => $extraOptions]); ?>
     <div class="panel-heading"><i class="fa <?= $model->icon; ?>"></i> <?= Html::encode($model->title) ?></div>
     <div class="panel-body">

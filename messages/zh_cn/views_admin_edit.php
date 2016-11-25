@@ -17,13 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Create</strong> page' => '',
-    '<strong>Edit</strong> page' => '',
-    'Content' => '',
-    'Default sort orders scheme: 100, 200, 300, ...' => '',
-    'Next' => '',
-    'Page title' => '',
-    'Sort Order' => '',
+    '<strong>Create</strong> page' => '<strong>添加</strong> 页面',
+    '<strong>Edit</strong> page' => '<strong>编辑</strong> 页面',
+    'Content' => '内容',
+    'Default sort orders scheme: 100, 200, 300, ...' => '默认排序规则: 100, 200, 300, ...',
+    'Next' => '下一步',
+    'Page title' => '页面标题',
+    'Sort Order' => '排序',
     'URL' => '',
     'Delete' => '删除',
     'Save' => '保存',

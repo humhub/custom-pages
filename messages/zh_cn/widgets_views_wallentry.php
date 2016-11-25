@@ -17,5 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Open page...' => '',
+    'Open page...' => '打开页面...',
 ];

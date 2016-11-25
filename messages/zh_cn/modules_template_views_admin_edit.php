@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Add</strong> new page' => '<strong>添加</strong> 新页面',
-    'Add new {pageType}' => '添加新的 {pageType}',
+    'Create new {type}' => '创建新的 {type}',
+    'Edit template \'{templateName}\'' => '编辑 \'{templateName}\'',
+    'Save' => '保存',
 ];

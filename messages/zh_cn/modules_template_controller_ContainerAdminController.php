@@ -17,6 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Add</strong> new page' => '<strong>添加</strong> 新页面',
-    'Add new {pageType}' => '添加新的 {pageType}',
+    'Here you can manage your template container elements.' => '在这里您可以管理您的模板容器元素。',
 ];

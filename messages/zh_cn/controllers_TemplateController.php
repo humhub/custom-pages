@@ -17,6 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Add</strong> new page' => '<strong>添加</strong> 新页面',
-    'Add new {pageType}' => '添加新的 {pageType}',
+    'Access denied!' => '拒绝访问！',
+    'Invalid request data!' => '无效的请求数据！',
+    '<strong>Edit</strong> {type} element' => '<strong>编辑</strong> {type} 元素',
+    'You are not allowed to delete default content!' => '你不能删除默认内容！',
+    'Empty content elements cannot be delted!' => '不能删除空内容！',
 ];

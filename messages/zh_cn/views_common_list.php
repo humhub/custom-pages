@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Add</strong> new page' => '<strong>添加</strong> 新页面',
-    'Add new {pageType}' => '添加新的 {pageType}',
+    'This page lists all available {label} entries.' => '当前页面展示了所有可用的 {label} 记录。',
+    'Create new {label}' => '创建新的 {label}',
+    'No {label} entry created yet!' => '还没有{label}!'
 ];

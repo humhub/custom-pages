@@ -23,14 +23,14 @@ use yii\helpers\Url;
             </div>
         <?php endif; ?>
         </div>
-   
+
     <?= \humhub\modules\custom_pages\modules\template\widgets\TemplateAdminMenu::widget(); ?>
-    
+
     <div class="panel-body">
-        
+
          <?php echo Html::a('<i class="fa fa-plus"></i> ' . Yii::t('CustomPagesModule.base', 'Create new {type}', ['type' => $type]), ['edit'], ['class' => 'pull-right btn btn-success']); ?>
-    
-        
+
+
         <?php
         echo GridView::widget([
             'dataProvider' => $dataProvider,

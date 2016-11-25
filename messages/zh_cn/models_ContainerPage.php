@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Add</strong> new page' => '<strong>添加</strong> 新页面',
-    'Add new {pageType}' => '添加新的 {pageType}',
+    'Open in new window' => '新窗口打开',
+    'Content' => '内容',
+    'Only visible for space admins' => '仅管理员可见',
 ];

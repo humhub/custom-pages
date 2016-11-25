@@ -17,6 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Add</strong> new page' => '<strong>添加</strong> 新页面',
-    'Add new {pageType}' => '添加新的 {pageType}',
+    'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => '在这里你可以管理你的片段布局。片段布局是模板，它可以包含侧边栏。',
 ];

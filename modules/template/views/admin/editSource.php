@@ -16,7 +16,7 @@ use yii\helpers\Url;
     <?= \humhub\modules\custom_pages\widgets\AdminMenu::widget([]); ?>
 
     <div class="panel-body">
-        <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('base', 'Back to overview'), Url::to(['index']), ['class' => 'btn btn-default pull-right']); ?>
+        <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), ['class' => 'btn btn-default pull-right']); ?>
         <h4><?= Yii::t('CustomPagesModule.modules_template_views_admin_editSource', 'Edit template \'{templateName}\'', ['templateName' => Html::encode($model->name)]); ?></h4>
         <div class="help-block">
             <?=

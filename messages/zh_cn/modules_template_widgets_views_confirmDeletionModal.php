@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Add</strong> new page' => '<strong>添加</strong> 新页面',
-    'Add new {pageType}' => '添加新的 {pageType}',
+    'Do you really want to delete this element? <br />The deletion will affect all pages using this template.' => '你真的要删除这个元素吗？删除会影响使用此模板的所有页面。',
+    'Are you sure you want to delete this container item?' => '您确定要删除此容器项目吗？',
+    'Do you really want to delete this content?' => '确定删除此内容？',
 ];

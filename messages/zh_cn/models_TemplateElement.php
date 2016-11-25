@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Add</strong> new page' => '<strong>添加</strong> 新页面',
-    'Add new {pageType}' => '添加新的 {pageType}',
+    'The element name must contain at least two characters without spaces or special signs except \'_\'' => '元素名称必须至少包含两个字符没有空格或特殊符号除了“_”',
+    'Element name' => '元素名',
+    'The given element name is already in use for this template.' => '给定的元素名称已在这个模板中使用。',
 ];

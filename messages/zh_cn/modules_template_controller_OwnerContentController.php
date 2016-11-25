@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Add</strong> new page' => '<strong>添加</strong> 新页面',
-    'Add new {pageType}' => '添加新的 {pageType}',
+    '<strong>Confirm</strong> element deletion' => '<strong>确定</strong> 删除元素',
+    '<strong>Confirm</strong> container item deletion' => '<strong>确定</strong> 删除容器项目',
+    '<strong>Confirm</strong> content deletion' => '<strong>确定</strong> 删除内容',
 ];

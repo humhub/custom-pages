@@ -19,7 +19,7 @@ $indexUrl = Url::to(['index' , 'sguid' => Yii::$app->request->get('sguid')]);
 
     <div class="panel-body">
         <div class="clearfix">
-            <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('base', 'Back to overview'), $indexUrl, ['data-ui-loader' => '', 'class' => 'btn btn-default pull-right']); ?>
+            <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), $indexUrl, ['data-ui-loader' => '', 'class' => 'btn btn-default pull-right']); ?>
             <h4><?= Yii::t('CustomPagesModule.views_admin_add', 'Add new {pageType}', ['pageType' => $model->getPageLabel()]) ?></h4>
             <div class="help-block">
                 <?= Yii::t('CustomPagesModule.base', 'Please choose one of the following content types. The content type defines how your content is embeded to your site.') ?>  

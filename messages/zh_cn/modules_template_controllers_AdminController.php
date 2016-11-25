@@ -17,6 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Add</strong> new page' => '<strong>添加</strong> 新页面',
-    'Add new {pageType}' => '添加新的 {pageType}',
+    'Template not found!' => '没有找到模版！',
+    '<strong>Add</strong> new {type} element' => '<strong>增加</strong> 新的 {type} 元素',
+    '<strong>Edit</strong> element {name}' => '<strong>编辑</strong> 元素 {name}',
+    'The template could not be deleted, please get sure that this template is not in use.' => '模版不能被删除，请确认该模版是不是在使用中。',
+    '<strong>Edit</strong> default content of {templateName}' => '<strong>编辑</strong> {templateName} 的 默认内容',
+    '<strong>Edit</strong> elements of {templateName}' => '<strong>编辑</strong> {templateName} 的元素',
 ];

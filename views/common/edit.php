@@ -25,7 +25,7 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
 
     <div class="panel-body">
 
-        <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('base', 'Back to overview'), $indexUrl, ['data-ui-loader' => '', 'class' => 'btn btn-default pull-right']); ?>
+        <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), $indexUrl, ['data-ui-loader' => '', 'class' => 'btn btn-default pull-right']); ?>
 
         <h4><?php echo Yii::t('CustomPagesModule.views_common_edit', 'Configuration'); ?></h4>
 

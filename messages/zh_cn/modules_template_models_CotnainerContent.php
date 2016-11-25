@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Add</strong> new page' => '<strong>添加</strong> 新页面',
-    'Add new {pageType}' => '添加新的 {pageType}',
+    'Allow multiple items?' => '允许多个项目？',
+    'Allowed Templates' => '允许模版',
+    'Render items as inline-blocks within the inline editor?' => '渲染内联块在内联编辑器中的项目？ ',
 ];

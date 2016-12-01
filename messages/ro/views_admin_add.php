@@ -18,4 +18,5 @@
  */
 return [
     '<strong>Add</strong> new page' => '',
+    'Add new {pageType}' => '',
 ];

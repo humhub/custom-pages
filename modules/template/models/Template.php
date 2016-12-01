@@ -4,6 +4,7 @@ namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\modules\custom_pages\lib\templates\TemplateEngineFactory;
 use humhub\components\ActiveRecord;
+use Yii;
 
 /**
  * This is the model class for all templates.
@@ -55,11 +56,11 @@ class Template extends ActiveRecord implements TemplateContentOwner
     public function attributeLabels()
     {
         return array(
-            'id' => 'ID',
-            'name' => 'Name',
-            'source' => 'Source',
-            'allow_for_spaces' => 'Allow this layout in spaces',
-            'description' => 'Description',
+            'id' => Yii::t('CustomPagesModule.modules_template_models_Template', 'ID'),
+            'name' => Yii::t('CustomPagesModule.modules_template_models_Template', 'Name'),
+            'source' => Yii::t('CustomPagesModule.modules_template_models_Template', 'Source'),
+            'allow_for_spaces' => Yii::t('CustomPagesModule.modules_template_models_Template', 'Allow this layout in spaces'),
+            'description' => Yii::t('CustomPagesModule.modules_template_models_Template', 'Description'),
         );
     }
 
@@ -87,7 +88,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
     public function validType($attribute, $model) {
         $validTypes = [self::TYPE_CONTAINER, self::TYPE_LAYOUT, self::TYPE_NAVIGATION];
         if(!in_array($this->type, $validTypes)) {
-            $this->addError($attribute, 'Invalid template type!');
+            $this->addError($attribute, Yii::t('CustomPagesModule.modules_template_models_Template', 'Invalid template type!'));
         }
     }
 

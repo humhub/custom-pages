@@ -24,7 +24,7 @@ return [
     'HTML' => 'HTML页面',
     'IFrame' => 'IFrame框架',
     'Link' => '链接',
-    'MarkDown' => 'MarkDown标记语言',
+    'MarkDown' => 'MarkDown',
     'Navigation' => '导航',
     'No custom pages created yet!' => '目前还没有创建自定义页面！',
     'Sort Order' => '排序',

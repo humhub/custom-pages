@@ -1,4 +1,5 @@
 <?php
-return array (
-  '<strong>Add</strong> new page' => '<strong>Neue</strong> Seite erstellen',
+return array(
+    '<strong>Add</strong> new page' => '<strong>Neue</strong> Seite erstellen',
+    'Add new {pageType}' => '',
 );

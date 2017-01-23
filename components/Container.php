@@ -121,15 +121,39 @@ class Container extends Behavior
             Container::TYPE_TEMPLATE => Yii::t('CustomPagesModule.base', 'Template'),
         ];
     }
+    
+    /**
+     * @return array view names by page type
+     */
+    private static function viewNames()
+    {
+        return [
+            Container::TYPE_HTML => 'html',
+            Container::TYPE_MARKDOWN => 'markdown',
+            Container::TYPE_IFRAME => 'iframe',
+            Container::TYPE_TEMPLATE => 'template'
+        ];
+    }
 
     public function getTemplateId()
     {
+        if($this->templateId == null) {
+            $templateInstance = TemplateInstance::findByOwner($this->owner);
+            if($templateInstance) {
+                $this->owner->templateId = $templateInstance->template_id;
+            }
+        }
         return $this->templateId;
     }
 
     public function setTemplateId($value)
     {
         return $this->templateId = $value;
+    }
+    
+    public static function getViewName($type)
+    {
+        return self::viewNames()[$type];
     }
 
     public static function getLabel($type)

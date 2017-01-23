@@ -30,6 +30,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $this->owner1->scenario = 'edit';
         $this->owner1->name = 'containerTestTmpl';
         $this->owner1->description = 'My Test Template';
+        $this->owner1->type = Template::TYPE_LAYOUT;
         $this->owner1->save();
         
         $this->owner2 = new TemplateInstance();

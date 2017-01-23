@@ -48,7 +48,7 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
         <?php if ($page->isType(Container::TYPE_HTML)): ?>
             <?= $form->field($page, $contentProp)->textarea(['id' => 'html_content', 'class' => 'form-control', 'rows' => '15']); ?>
         <?php elseif ($page->isType(Container::TYPE_TEMPLATE)): ?>
-            <?= $form->field($page, 'templateId')->dropDownList($page->getAllowedTemplateSelection(), ['disabled' => !$page->isNewRecord]) ?>
+            <?= $form->field($page, 'templateId')->dropDownList($page->getAllowedTemplateSelection(), ['value' => $page->getTemplateId(), 'disabled' => !$page->isNewRecord]) ?>
         <?php elseif ($page->isType(Container::TYPE_MARKDOWN)): ?>
             <?= $form->field($page, $contentProp)->textarea(['id' => 'markdownField', 'class' => 'form-control', 'rows' => '15']); ?>
             <?= \humhub\widgets\MarkdownEditor::widget(['fieldId' => 'markdownField']); ?>

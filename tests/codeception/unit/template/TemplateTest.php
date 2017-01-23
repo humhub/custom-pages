@@ -17,6 +17,7 @@ class TemplateTest extends HumHubDbTestCase
         $template->scenario = 'edit';
         $template->name = 'testTemplate';
         $template->description = 'My Test Template';
+        $template->type = Template::TYPE_LAYOUT;
         $this->assertFalse($template->save());
     }
 
@@ -26,6 +27,7 @@ class TemplateTest extends HumHubDbTestCase
         $template->scenario = 'source';
         $template->name = 'testTemplate2';
         $template->description = 'My Test Template';
+        $template->type = Template::TYPE_LAYOUT;
         $this->assertFalse($template->save());
 
         $template->source = "Whatever";
@@ -38,6 +40,7 @@ class TemplateTest extends HumHubDbTestCase
         $template->scenario = 'edit';
         $template->name = 'testTemplate2';
         $template->description = 'My Test Template';
+        $template->type = Template::TYPE_LAYOUT;
         $this->assertTrue($template->save());
 
         $template = Template::findOne(['id' => $template->id]);
@@ -51,6 +54,7 @@ class TemplateTest extends HumHubDbTestCase
         $template->name = 'testTemplate2';
         $template->description = 'My Test Template';
         $template->source = "Whatever";
+        $template->type = Template::TYPE_CONTAINER;
         $template->save();
 
         $this->assertEquals('Whatever', $template->render());

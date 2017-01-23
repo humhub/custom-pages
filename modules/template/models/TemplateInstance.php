@@ -71,6 +71,11 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
         return $this->template_id;
     }
     
+    public static function findByOwner(\yii\db\ActiveRecord $owner)
+    {
+        return self::findOne(['object_model' => $owner->className(), 'object_id' => $owner->getPrimaryKey()]);
+    }
+    
     public static function deleteByOwner(\yii\db\ActiveRecord $owner)
     {
         $container = self::findOne(['object_model' => $owner->className(), 'object_id' => $owner->getPrimaryKey()]);

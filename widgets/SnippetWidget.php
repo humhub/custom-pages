@@ -26,7 +26,7 @@ class SnippetWidget extends \yii\base\Widget
     {
         \humhub\modules\custom_pages\Module::loadTwig();
         $contentContainer = property_exists(Yii::$app->controller, 'contentContainer') ? Yii::$app->controller->contentContainer : null;
-        return $this->render('snippet_'.strtolower(Container::getLabel($this->model->type)), [
+        return $this->render('snippet_'.strtolower(Container::getViewName($this->model->type)), [
             'model' => $this->model,
             'contentContainer' => $contentContainer,
             'canEdit' => $this->canEdit

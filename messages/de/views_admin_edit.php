@@ -1,5 +1,6 @@
 <?php
 return array (
+
   '<strong>Create</strong> page' => '<strong>Seite</strong> erstellen',
   '<strong>Edit</strong> page' => '<strong>Seite</strong> bearbeiten',
   'Content' => 'Inhalt',
@@ -10,4 +11,7 @@ return array (
   'Save' => 'Speichern',
   'Sort Order' => 'Sortierung',
   'URL' => 'URL',
+    'page' => 'Inhalt',
+    'snippet' => 'Schnipsel',
+    'layout' => 'Layout',
 );

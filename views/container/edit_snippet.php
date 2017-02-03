@@ -2,7 +2,9 @@
 
 use yii\helpers\Html;
 
-\humhub\assets\Select2ExtensionAsset::register($this);
+if(version_compare(Yii::$app->version, '1.2', '<')) {   
+    \humhub\assets\Select2ExtensionAsset::register($this);
+}
 \humhub\modules\custom_pages\InlineEditAsset::register($this);
 ?>
 

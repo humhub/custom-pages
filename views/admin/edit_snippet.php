@@ -4,7 +4,9 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\modules\custom_pages\models\Snippet;
 
-\humhub\assets\Select2ExtensionAsset::register($this);
+if(version_compare(Yii::$app->version, '1.2', '<')) {
+    \humhub\assets\Select2ExtensionAsset::register($this);
+}
 \humhub\modules\custom_pages\InlineEditAsset::register($this);
 
 $backUrl = ($snippet->sidebar == Snippet::SIDEBAR_DASHBOARD) ? Url::to(['/dashboard/dashboard']) :  Url::to(['/directory/directory']);

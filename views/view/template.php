@@ -2,7 +2,9 @@
 
 use yii\helpers\Url;
 
-humhub\assets\Select2ExtensionAsset::register($this);
+if(version_compare(Yii::$app->version, '1.2', '<')) {
+    humhub\assets\Select2ExtensionAsset::register($this);
+}
 
 if($editMode) {
     \humhub\modules\custom_pages\InlineEditAsset::register($this);
@@ -14,7 +16,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 <div id="templatePageRoot" class="container <?= $cssClass ?>">
     <div class="row">
         <div class="col-md-12">
-            <?php echo $html; ?>
+            <?= $html; ?>
         </div>
     </div>
 </div>

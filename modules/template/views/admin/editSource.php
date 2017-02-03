@@ -6,7 +6,10 @@ use yii\helpers\Url;
 
 \humhub\modules\custom_pages\CkEditorAssetBundle::register($this);
 \humhub\modules\custom_pages\Assets::register($this);
-\humhub\assets\Select2ExtensionAsset::register($this);
+
+if(version_compare(Yii::$app->version, '1.2', '<')) {
+    \humhub\assets\Select2ExtensionAsset::register($this);
+}
 
 /* @var $model humhub\modules\custom_pages\modules\template\models\Template */
 ?>

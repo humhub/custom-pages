@@ -8,6 +8,8 @@
 
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
+use yii\helpers\Url;
+
 /**
  * User Administration Menu
  *
@@ -21,6 +23,8 @@ class EditContainerItemModal extends \humhub\components\Widget
 
     public function run()
     {
+        $this->action = (!$this->action) ? Url::to() : $this->action;
+        
         return $this->render('editItemModal', [
             'model' => $this->model,
             'title' => $this->title,

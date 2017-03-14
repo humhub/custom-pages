@@ -44,24 +44,8 @@ class AddPageForm extends Model
     {
         return array(
             ['type', 'in', 'range' => array_values($this->getPageInstance()->getContentTypes())],
+            ['type', 'required'],
         );
-    }
-    
-    /**
-     * Tries to load the type from the given $data array.
-     * 
-     * @param type $data
-     * @param type $formName
-     * @return boolean
-     */
-    public function load($data, $formName = null)
-    {
-        if(isset($data['type'])) {
-            $this->type = $data['type'];
-            return true;
-        } else {
-            return parent::load($data, $formName = null);
-        }
     }
     
     /**

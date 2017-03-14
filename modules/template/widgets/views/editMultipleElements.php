@@ -60,10 +60,12 @@ use yii\helpers\Html;
         </div>
         <div class="modal-footer">
             <?php if (!empty($model->contentMap)) : ?>
-                <button id="editTemplateSubmit" class="btn btn-primary" data-ui-loader><?= Yii::t('CustomPagesModule.base', 'Save'); ?></button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('CustomPagesModule.base', 'Cancel'); ?></button>
+                <button data-action-click="editMultipleElementsSubmit" data-action-target="#templatePageRoot" type="submit"  class="btn btn-primary" data-ui-loader>
+                    <?= Yii::t('CustomPagesModule.base', 'Save'); ?>
+                </button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><?= Yii::t('CustomPagesModule.base', 'Cancel'); ?></button>
             <?php else: ?>
-                <button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('CustomPagesModule.base', 'Back'); ?></button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><?= Yii::t('CustomPagesModule.base', 'Back'); ?></button>
             <?php endif; ?>
 
         </div>
@@ -73,77 +75,4 @@ use yii\helpers\Html;
 
 <script type="text/javascript">
     $('.template-edit-multiple-tab:first').focus();
-
-    $('.template-edit-multiple-tab').on('keyup', function (e) {
-        switch (e.which) {
-            case 13:
-                e.preventDefault();
-                $(this).trigger('click');
-                break;
-            case 39:
-            case 40:
-                e.preventDefault();
-                if (!$(this).next('.panel-body').is(':visible')) {
-                    $(this).trigger('click');
-                }
-                break;
-            case 37:
-            case 38:
-                e.preventDefault();
-                if ($(this).next('.panel-body').is(':visible')) {
-                    $(this).trigger('click');
-                }
-                break;
-        }
-    });
-
-    $('.template-edit-multiple-tab').on('click', function () {
-        $(this).next('.panel-body').slideToggle('fast');
-        var $switchIcon = $(this).find('.switchIcon');
-        if($switchIcon.hasClass('fa-caret-down')) {
-            $switchIcon.removeClass('fa-caret-down');
-            $switchIcon.addClass('fa-caret-up');
-        } else {
-            $switchIcon.removeClass('fa-caret-up');
-            $switchIcon.addClass('fa-caret-down');
-        }
-    });
-    
-    $('#editTemplateSubmit').on('click', function (evt) {
-        evt.preventDefault();
-
-        var $form = $(this).closest('form');
-
-        var $disabled = $form.find(':disabled');
-
-        // TODO: This is rather hacky, we do not want to save the definition fields in this cas
-        // Should rather be handled in the backend!
-        $disabled.each(function () {
-            var name = $(this).attr('name');
-            $form.find('[name="' + name + '"]').remove();
-        });
-
-        var action = $form.attr('action');
-
-        $('textarea.ckeditorInput').each(function () {
-            var $textarea = $(this);
-            $textarea.val(CKEDITOR.instances[$textarea.attr('id')].getData());
-        });
-
-        $.ajax(action, {
-            type: 'POST',
-            dataType: 'json',
-            data: $form.serialize(),
-            success: function (json) {
-                if (json.success) {
-                    $(document).trigger('templateMultipleElementEditSuccess', [json]);
-                } else {
-                    $('#globalModal').html(json.content);
-                }
-            },
-            error: function () {
-                $(document).trigger('templateElementEditError');
-            }
-        });
-    });
 </script>

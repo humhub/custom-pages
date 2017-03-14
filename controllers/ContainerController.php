@@ -58,6 +58,8 @@ class ContainerController extends ContentContainerController
         if ($page === null) {
             throw new HttpException('404', 'Could not find requested page');
         }
+        
+        $this->getView()->pageTitle = $page->title;
 
         if ($page->type == Container::TYPE_IFRAME) {
             return $this->render('iframe', array('page' => $page, 'url' => $page->page_content));
@@ -103,13 +105,13 @@ class ContainerController extends ContentContainerController
      * 
      * @return type
      */
-    public function actionAdd()
+    public function actionAdd($type = null)
     {
         $this->adminOnly();
 
-        $model = new AddPageForm(['class' => $this->getPageClassName()]);
+        $model = new AddPageForm(['class' => $this->getPageClassName(), 'type' => $type]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        if ($model->validate()) {
             return $this->redirect($this->contentContainer->createUrl('edit', ['type' => $model->type]));
         }
 

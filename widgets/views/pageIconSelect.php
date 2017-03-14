@@ -1,8 +1,9 @@
 <?php
+
 use humhub\modules\custom_pages\models\ContainerSnippet;
 use \humhub\modules\custom_pages\models\Snippet;
 
-\humhub\modules\custom_pages\Assets::register($this);
+\humhub\modules\custom_pages\assets\Assets::register($this);
 
 $faIcons = [
     'fa-adjust' => '&#xf042',
@@ -44,7 +45,6 @@ $faIcons = [
     'fa-arrows-v' => '&#xf07d',
     'fa-asterisk' => '&#xf069',
     'fa-at' => '&#xf1fa',
-    'fa-automobile-alias' => '&#xf1b9',
     'fa-backward' => '&#xf04a',
     'fa-ban' => '&#xf05e',
     'fa-bank-alias' => '&#xf19c',
@@ -529,12 +529,8 @@ $faIcons = [
     'fa-times-circle' => '&#xf057',
     'fa-times-circle-o' => '&#xf05c',
     'fa-tint' => '&#xf043',
-    'fa-toggle-down-alias' => '&#xf150',
-    'fa-toggle-left-alias' => '&#xf191',
     'fa-toggle-off' => '&#xf204',
     'fa-toggle-on' => '&#xf205',
-    'fa-toggle-right-alias' => '&#xf152',
-    'fa-toggle-up-alias' => '&#xf151',
     'fa-train' => '&#xf238',
     'fa-transgender' => '&#xf224',
     'fa-transgender-alt' => '&#xf225',
@@ -548,7 +544,6 @@ $faIcons = [
     'fa-tty' => '&#xf1e4',
     'fa-tumblr' => '&#xf173',
     'fa-tumblr-square' => '&#xf174',
-    'fa-turkish-lira-alias' => '&#xf195',
     'fa-twitch' => '&#xf1e8',
     'fa-twitter' => '&#xf099',
     'fa-twitter-square' => '&#xf081',
@@ -556,10 +551,8 @@ $faIcons = [
     'fa-underline' => '&#xf0cd',
     'fa-undo' => '&#xf0e2',
     'fa-university' => '&#xf19c',
-    'fa-unlink-alias' => '&#xf127',
     'fa-unlock' => '&#xf09c',
     'fa-unlock-alt' => '&#xf13e',
-    'fa-unsorted-alias' => '&#xf0dc',
     'fa-upload' => '&#xf093',
     'fa-usd' => '&#xf155',
     'fa-user' => '&#xf007',
@@ -579,31 +572,26 @@ $faIcons = [
     'fa-volume-down' => '&#xf027',
     'fa-volume-off' => '&#xf026',
     'fa-volume-up' => '&#xf028',
-    'fa-warning-alias' => '&#xf071',
-    'fa-wechat-alias' => '&#xf1d7',
     'fa-weibo' => '&#xf18a',
     'fa-weixin' => '&#xf1d7',
     'fa-whatsapp' => '&#xf232',
     'fa-wheelchair' => '&#xf193',
     'fa-wifi' => '&#xf1eb',
     'fa-windows' => '&#xf17a',
-    'fa-won-alias' => '&#xf159',
     'fa-wordpress' => '&#xf19a',
     'fa-wrench' => '&#xf0ad',
     'fa-xing' => '&#xf168',
     'fa-xing-square' => '&#xf169',
     'fa-yahoo' => '&#xf19e',
     'fa-yelp' => '&#xf1e9',
-    'fa-yen-alias' => '&#xf157',
     'fa-youtube' => '&#xf167',
     'fa-youtube-play' => '&#xf16a',
     'fa-youtube-square' => '&#xf166'
 ];
 
-if($page instanceof Snippet || $page instanceof ContainerSnippet) {
+if ($page instanceof Snippet || $page instanceof ContainerSnippet) {
     $faIcons = array_merge([Yii::t('CustomPagesModule.widgets_views_pageIconSelect', 'none') => 'none'], $faIcons);
 }
-
 ?>
 
 <div class="form-group">
@@ -611,15 +599,27 @@ if($page instanceof Snippet || $page instanceof ContainerSnippet) {
 
     <select class='selectpicker form-control' name="<?= $page->formName() ?>[icon]">
         <?php foreach ($faIcons as $name => $value): ?>
-            
+
             <option class="" value="<?= $name; ?>" <?php if ($page->icon == $name): ?>selected='selected'<?php endif; ?>>
-                <?php if($value != 'none') : ?>
-                    <?= $value . ' ' . substr($name, 3); ?>
-                <?php else: ?>
-                    <?= $value; ?>
-                <?php endif; ?>
+                <?= substr($name, 3) ?>
             </option>
-            
+
         <?php endforeach; ?>
     </select>
 </div>
+
+<script>
+    var formatState = function(state) {
+        if (!state.id) {
+            return state.text;
+        }
+
+        return $('<span><i class="fa '+state.element.value+'"></i> ' + state.text + '</span>');
+    };
+
+    $(".selectpicker").select2({
+        theme: "humhub",
+        templateResult: formatState,
+        templateSelection: formatState
+    });
+</script>

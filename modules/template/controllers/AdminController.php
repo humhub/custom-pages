@@ -37,7 +37,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
      * @var type 
      */
     public $type;
-    
+
     /**
      * Defines the index help text for the given template type.
      * @var type 
@@ -76,7 +76,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         }
 
         $model->scenario = 'edit';
-        
+
         // If the form was submitted try to save/validate and flush the template cache
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             TemplateCache::flushByTemplateId($model->id);
@@ -115,7 +115,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
                     'contentTypes' => $this->getContentTypes()
         ]);
     }
-    
+
     /**
      * Returns a selection of all available template content types.
      * @return type
@@ -137,18 +137,16 @@ class AdminController extends \humhub\modules\admin\components\Controller
      * @return type
      * @throws \yii\web\HttpException
      */
-    public function actionAddElement($template_id, $content_type)
+    public function actionAddElement($templateId, $type)
     {
-        Yii::$app->response->format = 'json';
-
         $form = new AddElementForm();
-        $form->setElementDefinition($template_id, $content_type);
+        $form->setElementDefinition($templateId, $type);
         $form->setScenario('create');
 
         // If the form was submitted try to save/validate and flush the template cache
         if ($form->load(Yii::$app->request->post()) && $form->save()) {
-            TemplateCache::flushByTemplateId($template_id);
-            return $this->getJsonEditElementResult(true, TemplateElementAdminRow::widget(['form' => $form, 'saved' => true]), $form);
+            TemplateCache::flushByTemplateId($templateId);
+            return $this->getJsonEditElementResult(true, TemplateElementAdminRow::widget(['form' => $form]), $form);
         }
 
         $result = EditElementModal::widget([
@@ -170,12 +168,8 @@ class AdminController extends \humhub\modules\admin\components\Controller
      */
     public function actionEditElement($id)
     {
-        $elementId = $id;
-
-        Yii::$app->response->format = 'json';
-
         $form = new EditElementForm();
-        $form->setElementId($elementId);
+        $form->setElementId($id);
         $form->setScenario('edit-admin');
 
         if ($form->load(Yii::$app->request->post()) && $form->save()) {
@@ -187,7 +181,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
                     'model' => $form,
                     'isAdminEdit' => true,
                     'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> element {name}', ['name' => $form->element->name]),
-                    'resetUrl' => \yii\helpers\Url::to(['reset-element', 'id' => $elementId])
+                    'resetUrl' => \yii\helpers\Url::to(['reset-element', 'id' => $id])
         ]);
 
         return $this->getJsonEditElementResult(false, $result, $form);
@@ -202,8 +196,6 @@ class AdminController extends \humhub\modules\admin\components\Controller
     {
         $this->forcePostRequest();
 
-        Yii::$app->response->format = 'json';
-
         $element = TemplateElement::findOne(['id' => $id]);
         $ownerContent = $element->getDefaultContent();
 
@@ -211,13 +203,11 @@ class AdminController extends \humhub\modules\admin\components\Controller
             $ownerContent->delete();
         }
 
-        Yii::$app->getSession()->setFlash('data-saved', Yii::t('CustomPagesModule.base', 'Saved'));
-
-        return [
-            'success' => true,
-            'id' => $id,
-            'content' => \humhub\widgets\DataSaved::widget(),
-        ];
+        return $this->asJson([
+                    'success' => true,
+                    'id' => $id,
+                    'output' => TemplateElementAdminRow::widget(['model' => $element, 'saved' => true])
+        ]);
     }
 
     /**
@@ -258,12 +248,12 @@ class AdminController extends \humhub\modules\admin\components\Controller
      */
     private function getJsonEditElementResult($success, $content, $form)
     {
-        $json = [];
-        $json['success'] = $success;
-        $json['content'] = $content;
-        $json['name'] = $form->element->name;
-        $json['id'] = $form->element->id;
-        return $json;
+        return $this->asJson([
+                    'success' => $success,
+                    'output' => $content,
+                    'name' => $form->element->name,
+                    'id' => $form->element->id
+        ]);
     }
 
     /**
@@ -276,7 +266,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $template = Template::findOne(['id' => $id]);
 
         if (!$template->delete()) {
-            Yii::$app->session->setFlash('error', Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'The template could not be deleted, please get sure that this template is not in use.'));
+            $this->view->error(Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'The template could not be deleted, please get sure that this template is not in use.'));
         }
 
         return $this->redirect(['index']);
@@ -292,26 +282,14 @@ class AdminController extends \humhub\modules\admin\components\Controller
      */
     public function actionDeleteElement($id)
     {
-        Yii::$app->response->format = 'json';
+        $element = TemplateElement::findOne(['id' => $id]);
+        TemplateCache::flushByTemplateId($element->template_id);
+        $element->delete();
 
-        if (Yii::$app->request->post('confirmation')) {
-            $element = TemplateElement::findOne(['id' => $id]);
-            TemplateCache::flushByTemplateId($element->template_id);
-            $element->delete();
-
-            return [
-                'success' => true,
-                'id' => $id
-            ];
-        }
-
-        return [
+        $this->asJson([
             'success' => true,
-            'content' => \humhub\modules\custom_pages\modules\template\widgets\ConfirmDeletionModal::widget([
-                'title' => Yii::t('CustomPagesModule.modules_template_controller_OwnerContentController', '<strong>Confirm</strong> element deletion'),
-                'message' => Yii::t('CustomPagesModule.modules_template_widgets_views_confirmDeletionModal', 'Do you really want to delete this element? <br />The deletion will affect all pages using this template.'),
-            ])
-        ];
+            'id' => $id
+        ]);
     }
 
     /**
@@ -322,27 +300,24 @@ class AdminController extends \humhub\modules\admin\components\Controller
      */
     public function actionEditMultiple($id)
     {
-        Yii::$app->response->format = 'json';
-        $templateId = $id;
-
         $form = new EditMultipleElementsForm(['scenario' => 'edit-admin']);
-        $form->setOwnerTemplateId($templateId);
+        $form->setOwnerTemplateId($id);
 
         if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
-            TemplateCache::flushByTemplateId($templateId);
-            return [
+            TemplateCache::flushByTemplateId($id);
+            return $this->asJson([
                 'success' => true,
-                'content' => TemplateContentTable::widget(['template' => $form->template, 'saved' => true])
-            ];
+                'output' => TemplateContentTable::widget(['template' => $form->template, 'saved' => true])
+            ]);
         }
 
-        return [
+        $this->asJson([
             'success' => false,
-            'content' => EditMultipleElementsModal::widget([
+            'output' => EditMultipleElementsModal::widget([
                 'model' => $form,
                 'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> default content of {templateName}', ['templateName' => $form->template->name])
             ])
-        ];
+        ]);
     }
 
     /**

@@ -3,7 +3,6 @@
 use humhub\libs\Helpers;
 use humhub\widgets\MarkdownView;
 use humhub\modules\custom_pages\components\Container;
-use humhub\modules\custom_pages\models\ContainerPage;
 ?>
 <div class="media">
     <div class="media-body">

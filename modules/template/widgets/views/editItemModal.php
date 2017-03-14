@@ -2,22 +2,17 @@
 
 use yii\bootstrap\Html;
 use yii\widgets\ActiveForm;
-use yii\helpers\Url;
 
 /* @var $model humhub\modules\custom_pages\modules\template\models\forms\TemplateElementForm */
+/* @var $action string */
+/* @var $title string */
 
-$action = ($action == null) ? Url::to() : $action;
 ?>
-<div class="modal-dialog modal-dialog-large">
-    <div class="modal-content media">
-        <?php $form = ActiveForm::begin(['action' => $action, 'enableClientValidation' => false]); ?>
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">
-                <?= $title ?>
-            </h4>
-        </div>
+
+<?php humhub\widgets\ModalDialog::begin(['header' => $title, 'size' => 'large']) ?>
+    <?php $form = ActiveForm::begin(['action' => $action, 'enableClientValidation' => false]); ?>
         <div class="modal-body media-body template-edit-multiple">  
+            
             <?= $form->field($model, 'title')->textInput(['class' => 'form-control template-edit-multiple-title']); ?>
             <?php $counter = 0 ?>
             <?php foreach ($model->contentMap as $key => $contentItem) : ?>
@@ -63,84 +58,10 @@ $action = ($action == null) ? Url::to() : $action;
 
         </div>
         <div class="modal-footer">
-            <button id="editTemplateSubmit" class="btn btn-primary" data-ui-loader><?= Yii::t('CustomPagesModule.base', 'Save'); ?></button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal"><?php echo Yii::t('CustomPagesModule.base', 'Cancel'); ?></button>
+            <button data-action-click="editItemSubmit" data-action-target="#templatePageRoot" type="submit"  class="btn btn-primary" data-ui-loader>
+                <?= Yii::t('CustomPagesModule.base', 'Save'); ?>
+            </button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal"><?= Yii::t('CustomPagesModule.base', 'Cancel'); ?></button>
         </div>
-        <?php ActiveForm::end(); ?>
-    </div>
-</div>
-
-<script type="text/javascript">
-    $('.template-edit-multiple-title').focus();
-
-    $('.template-edit-multiple-tab').on('keyup', function (e) {
-        switch (e.which) {
-            case 13:
-                e.preventDefault();
-                $(this).trigger('click');
-                break;
-            case 39:
-            case 40:
-                e.preventDefault();
-                if (!$(this).next('.panel-body').is(':visible')) {
-                    $(this).trigger('click');
-                }
-                break;
-            case 37:
-            case 38:
-                e.preventDefault();
-                if ($(this).next('.panel-body').is(':visible')) {
-                    $(this).trigger('click');
-                }
-                break;
-        }
-    });
-
-    $('.template-edit-multiple-tab').on('click', function () {
-        $(this).next('.panel-body').slideToggle('fast');
-        var $switchIcon = $(this).find('.switchIcon');
-        if ($switchIcon.hasClass('fa-caret-down')) {
-            $switchIcon.removeClass('fa-caret-down');
-            $switchIcon.addClass('fa-caret-up');
-        } else {
-            $switchIcon.removeClass('fa-caret-up');
-            $switchIcon.addClass('fa-caret-down');
-        }
-    });
-
-    $('#editTemplateSubmit').on('click', function (evt) {
-        evt.preventDefault();
-
-        var $form = $(this).closest('form');
-
-        var $disabled = $form.find(':disabled');
-
-        $disabled.each(function () {
-            var name = $(this).attr('name');
-            $form.find('[name="' + name + '"]').remove();
-        });
-
-        var action = $form.attr('action');
-
-        $('textarea.ckeditorInput').each(function () {
-            var $textarea = $(this);
-            $textarea.val(CKEDITOR.instances[$textarea.attr('id')].getData());
-        });
-
-        $.ajax(action, {
-            type: 'POST',
-            dataType: 'json',
-            data: $form.serialize(),
-            success: function (json) {
-                if (json.success) {
-                    $(document).trigger('templateElementEditSuccess', [json]);
-                } else {
-                    $('#globalModal').html(json.content);
-                }
-            },
-            error: function () {
-                $(document).trigger('templateElementEditError');
-            }
-        });
-    });
-</script>
+    <?php ActiveForm::end(); ?>
+<?php humhub\widgets\ModalDialog::end() ?>

@@ -11,28 +11,28 @@ use humhub\modules\custom_pages\models\ContainerSnippet;
 
 $sguid = Yii::$app->request->get('sguid');
 
-$indexUrl = Url::to(['index' , 'sguid' => $sguid]);
-$deleteUrl =  Url::to(['delete', 'id' => $page->id , 'sguid' => $sguid]);
+$indexUrl = Url::to(['index', 'sguid' => $sguid]);
+$deleteUrl = Url::to(['delete', 'id' => $page->id, 'sguid' => $sguid]);
 
 $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
 ?>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?php echo Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?>
+        <?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?>
     </div>
 
     <?= $subNav ?>
 
     <div class="panel-body">
 
-        <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('base', 'Back to overview'), $indexUrl, ['data-ui-loader' => '', 'class' => 'btn btn-default pull-right']); ?>
+        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('base', 'Back to overview'), $indexUrl, ['data-ui-loader' => '', 'class' => 'btn btn-default pull-right']); ?>
 
-        <h4><?php echo Yii::t('CustomPagesModule.views_common_edit', 'Configuration'); ?></h4>
+        <h4><?= Yii::t('CustomPagesModule.views_common_edit', 'Configuration'); ?></h4>
 
         <div class="help-block">
             <?= Yii::t('CustomPagesModule.views_common_edit', 'Here you can configure the general settings of your {label}.', ['label' => $page->getLabel()]) ?>
         </div>
-        <br />
+
         <?php $form = ActiveForm::begin(); ?>
 
         <div class="form-group"> 
@@ -41,10 +41,15 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
 
         <?= $form->field($page, 'title') ?>
         
+        <?= \humhub\modules\custom_pages\widgets\PageIconSelect::widget(['page' => $page]) ?>
+
         <?php if ($page instanceof Page && $page->hasAttribute('url')) : ?>
             <?= $form->field($page, 'url') ?>
+            <div class="help-block">
+                <?= Yii::t('CustomPagesModule.views_common_edit', 'By setting an url value, you can create a better readable url for your page. If <b>URL Rewriting</b> is enabled on your site, the value \'mypage\' will result in an url \'www.example.de/p/mypage\'.') ?>
+            </div>
         <?php endif; ?>
-        
+
         <?php if ($page->isType(Container::TYPE_HTML)): ?>
             <?= $form->field($page, $contentProp)->textarea(['id' => 'html_content', 'class' => 'form-control', 'rows' => '15']); ?>
         <?php elseif ($page->isType(Container::TYPE_TEMPLATE)): ?>
@@ -66,12 +71,10 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
 
         <?= $form->field($page, 'sort_order')->textInput(); ?>
 
-        <?= \humhub\modules\custom_pages\widgets\PageIconSelect::widget(['page' => $page]) ?>
-
-         <?php if ($page->hasAttribute('cssClass') && !$page->isType(Container::TYPE_LINK)) : ?>
+        <?php if ($page->hasAttribute('cssClass') && !$page->isType(Container::TYPE_LINK)) : ?>
             <?= $form->field($page, 'cssClass'); ?>
         <?php endif; ?>
-        
+
         <?php if ($page->hasAttribute('admin_only')) : ?>
             <?= $form->field($page, 'admin_only')->checkbox() ?>
         <?php endif; ?>
@@ -80,10 +83,10 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
             <?= $form->field($page, 'in_new_window')->checkbox() ?>
         <?php endif; ?>
 
-        <?php echo Html::submitButton(Yii::t('CustomPagesModule.views_common_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
+        <?= Html::submitButton(Yii::t('CustomPagesModule.views_common_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
         <?php if (!$page->isNewRecord) : ?>
-            <?= Html::a(Yii::t('CustomPagesModule.views_common_edit', 'Delete'), $deleteUrl, ['class' => 'btn btn-danger', 'data-ui-loader' => '']); ?>
+            <?= Html::a(Yii::t('CustomPagesModule.views_common_edit', 'Delete'), $deleteUrl, ['class' => 'btn btn-danger', 'data-ui-loader' => '', 'data-pjax-prevent' => '']); ?>
         <?php endif; ?>
 
         <?php if ($page->isType(Container::TYPE_TEMPLATE) && !$page->isNewRecord): ?>
@@ -96,7 +99,7 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
             <?php else : ?>
                 <?php $url = Url::to(['/custom_pages/view/view', 'id' => $page->id, 'editMode' => 1]); ?>
             <?php endif; ?>
-            <?php echo Html::a('<i class="fa fa-pencil"></i> ' . Yii::t('CustomPagesModule.views_common_edit', 'Inline Editor'), $url, ['class' => 'btn btn-success pull-right', 'data-ui-loader' => '']);
+            <?= Html::a('<i class="fa fa-pencil"></i> ' . Yii::t('CustomPagesModule.views_common_edit', 'Inline Editor'), $url, ['class' => 'btn btn-success pull-right', 'data-ui-loader' => '']);
             ?>
         <?php endif; ?>
         <?php ActiveForm::end(); ?>

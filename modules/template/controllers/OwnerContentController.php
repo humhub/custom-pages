@@ -3,7 +3,6 @@
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
 use Yii;
-use humhub\modules\custom_pages\modules\template\widgets\ConfirmDeletionModal;
 use humhub\modules\custom_pages\modules\template\widgets\EditElementModal;
 use humhub\modules\custom_pages\modules\template\models\OwnerContentVariable;
 use humhub\modules\custom_pages\modules\template\models\forms\EditOwnerContentForm;
@@ -26,9 +25,7 @@ class OwnerContentController extends \humhub\components\Controller
     public function behaviors()
     {
         return [
-            [
-                'class' => 'humhub\modules\custom_pages\modules\template\components\TemplateAccessFilter'
-            ],
+            ['class' => 'humhub\modules\custom_pages\modules\template\components\TemplateAccessFilter'],
         ];
     }
 
@@ -58,22 +55,27 @@ class OwnerContentController extends \humhub\components\Controller
      */
     public function actionEdit($ownerModel, $ownerId, $name)
     {
-        Yii::$app->response->format = 'json';
-
         $form = new EditOwnerContentForm();
         $form->setElementData($ownerModel, $ownerId, $name);
         $form->setScenario('edit');
 
-        if ($form->load(Yii::$app->request->post()) && $form->save()) {
-            TemplateCache::flushByOwnerContent($form->ownerContent);
-            $wrapper = new OwnerContentVariable(['ownerContent' => $form->ownerContent]);
-            return $this->getJsonEditElementResult(true, $wrapper->render(true));
+        if ($form->load(Yii::$app->request->post())) {
+            if ($form->save()) {
+                TemplateCache::flushByOwnerContent($form->ownerContent);
+                $wrapper = new OwnerContentVariable(['ownerContent' => $form->ownerContent]);
+                return $this->getJsonEditElementResult(true, $wrapper->render(true));
+            } else {
+                return $this->getJsonEditElementResult(false, EditElementModal::widget(['model' => $form,
+                    'title' => Yii::t('CustomPagesModule.controllers_TemplateController', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()])]));
+            }
         }
 
-        return $this->getJsonEditElementResult(false, EditElementModal::widget([
-                            'model' => $form,
-                            'title' => Yii::t('CustomPagesModule.controllers_TemplateController', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()])
-                        ]), $form);
+        return $this->asJson([
+            'output' => EditElementModal::widget([
+                    'model' => $form,
+                    'title' => Yii::t('CustomPagesModule.controllers_TemplateController', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()])
+            ])
+        ]);
     }
 
     /**
@@ -82,38 +84,39 @@ class OwnerContentController extends \humhub\components\Controller
      * @return type
      * @throws \yii\web\HttpException
      */
-    public function actionDelete($ownerModel, $ownerId, $name)
+    public function actionDelete()
     {
-        Yii::$app->response->format = 'json';
+        $ownerModel = Yii::$app->request->post('ownerModel');
+        $ownerId = Yii::$app->request->post('ownerId');
+        $name = Yii::$app->request->post('name');
 
-        if (Yii::$app->request->post('confirmation')) {
-            $form = new EditOwnerContentForm();
-            $form->setElementData($ownerModel, $ownerId, $name);
-
-            // Do not allow the deletion of default content this is only allowed in admin controller.
-            if ($form->ownerContent->isDefault()) {
-                throw new \yii\web\HttpException(403, Yii::t('CustomPagesModule.controllers_TemplateController', 'You are not allowed to delete default content!'));
-            } else if ($form->ownerContent->isEmpty()) {
-                throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.controllers_TemplateController', 'Empty content elements cannot be delted!'));
-            }
-
-            TemplateCache::flushByOwnerContent($form->ownerContent);
-            
-            $form->ownerContent->delete();
-
-            // Set our original owner for this element block
-            $variable = new OwnerContentVariable(['ownerContent' => $form->element->getDefaultContent(true), 'options' => [
-                    'owner_model' => $ownerModel,
-                    'owner_id' => $ownerId
-            ]]);
-
-            return $this->getJsonEditElementResult(true, $variable->render(true));
+        if (!$ownerModel || !$ownerId || !$name) {
+            throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.controllers_TemplateController', 'Invalid request data!'));
         }
 
-        return $this->getJsonEditElementResult(false, ConfirmDeletionModal::widget([
-                            'title' => Yii::t('CustomPagesModule.modules_template_controller_OwnerContentController', '<strong>Confirm</strong> content deletion'),
-                            'message' => Yii::t('CustomPagesModule.modules_template_widgets_views_confirmDeletionModal', 'Do you really want to delete this content?')
-        ]));
+        $this->forcePostRequest();
+
+        $form = new EditOwnerContentForm();
+        $form->setElementData($ownerModel, $ownerId, $name);
+
+        // Do not allow the deletion of default content this is only allowed in admin controller.
+        if ($form->ownerContent->isDefault()) {
+            throw new \yii\web\HttpException(403, Yii::t('CustomPagesModule.controllers_TemplateController', 'You are not allowed to delete default content!'));
+        } else if ($form->ownerContent->isEmpty()) {
+            throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.controllers_TemplateController', 'Empty content elements cannot be delted!'));
+        }
+
+        TemplateCache::flushByOwnerContent($form->ownerContent);
+
+        $form->ownerContent->delete();
+
+        // Set our original owner for this element block
+        $variable = new OwnerContentVariable(['ownerContent' => $form->element->getDefaultContent(true), 'options' => [
+                'owner_model' => $ownerModel,
+                'owner_id' => $ownerId
+        ]]);
+
+        return $this->getJsonEditElementResult(true, $variable->render(true));
     }
 
     /**
@@ -124,26 +127,23 @@ class OwnerContentController extends \humhub\components\Controller
      */
     public function actionEditMultiple($id)
     {
-        Yii::$app->response->format = 'json';
-        
         $templateInstance = TemplateInstance::findOne(['id' => $id]);
-        
+
         $form = new EditMultipleElementsForm();
         $form->editDefault = false;
         $form->setOwner($templateInstance, $templateInstance->template_id);
-        
+
         if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByTemplateInstance($templateInstance);
-            return ['success' => true];
+            return $this->asJson(['success' => true]);
         }
-        
-        return [
-            'success' => false,
-            'content' => EditMultipleElementsModal::widget([
+
+        return $this->asJson([
+            'output' => EditMultipleElementsModal::widget([
                 'model' => $form,
                 'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> elements of {templateName}', ['templateName' => $form->template->name])
             ])
-        ];
+        ]);
     }
 
     /**
@@ -158,10 +158,11 @@ class OwnerContentController extends \humhub\components\Controller
     {
         $json = [];
         $json['success'] = $success;
-        $json['content'] = $content;
+        $json['output'] = $content;
         $json['ownerModel'] = Yii::$app->request->get('ownerModel');
         $json['ownerId'] = Yii::$app->request->get('ownerId');
         $json['name'] = Yii::$app->request->get('name');
-        return $json;
+        return $this->asJson($json);
     }
+
 }

@@ -26,6 +26,10 @@ use humhub\modules\custom_pages\models\CustomContentContainer;
  */
 class ContainerPage extends ContentActiveRecord implements Searchable, CustomContentContainer
 {
+    /**
+     * @inheritdoc
+     */
+    public $streamChannel = null;
 
     /**
      * @inheritdoc
@@ -107,7 +111,7 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
     }
 
     /**
-     * @inheritdoc
+     * Returns the view url of this page.
      */
     public function getUrl()
     {

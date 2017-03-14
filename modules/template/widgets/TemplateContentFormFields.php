@@ -11,7 +11,7 @@ namespace humhub\modules\custom_pages\modules\template\widgets;
 /**
  * User Administration Menu
  *
- * @author Basti
+ * @author buddh4
  */
 class TemplateContentFormFields extends \humhub\components\Widget
 {

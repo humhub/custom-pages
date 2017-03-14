@@ -1,17 +1,22 @@
 <?php
 
-humhub\modules\custom_pages\Assets::register($this);
+humhub\modules\custom_pages\modules\template\assets\SourceEditorAsset::register($this);
+
 $class = ($template->isLayout()) ? 'prview-layout' : 'priview-container';
 
 ?>
 
-<div id="templatePageRoot" class="container">
+<div id="templatePageRoot" data-ui-widget="custom_pages.template.source.TemplateSourcePreview" class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="clearfix">
-                <a id="update" style="margin-left:5px;" href="#" class="btn btn-primary btn-lg pull-right" role="button" data-ui-loader><?= Yii::t('CustomPagesModule.modules_template_views_admin_preview', 'Update'); ?></a>
-        
-                <a id="switchMode" href="#" class="btn btn-success btn-lg pull-right" role="button"><?= Yii::t('CustomPagesModule.modules_template_views_admin_preview', 'Display Empty Content'); ?></a>
+                <button data-action-click="update" 
+                        data-action-url="<?= \yii\helpers\Url::to(['preview', 'id' => $template->id]) ?>" style="margin-left:5px;" class="btn btn-primary btn-md pull-right" role="button" data-ui-loader>
+                    <?= Yii::t('CustomPagesModule.modules_template_views_admin_preview', 'Update'); ?>
+                </button>  
+                <button data-action-click="switchMode" class="btn btn-success btn-md pull-right">
+                    <?= Yii::t('CustomPagesModule.modules_template_views_admin_preview', 'Display Empty Content'); ?>
+                </button>
             </div>
             <br />
             <div id="stage">
@@ -25,31 +30,5 @@ $class = ($template->isLayout()) ? 'prview-layout' : 'priview-container';
         </div>
     </div>
 </div>
-<script>
-    $('#update').on('click', function(evt) {
-        var $this = $(this);
-        $.ajax('<?= \yii\helpers\Url::to(['preview', 'id' => $template->id]) ?>', {
-            method: 'GET',
-            data: {
-                'reload': '1',
-                'editView': $('#editModePreview').is(':visible') ? '1' : '0'
-            },
-            success: function(result) {
-                var $result = $(result);
-                $result.find('#stage').hide();
-                $('#templatePageRoot').replaceWith($result);
-                $result.find('#stage').fadeIn('fast');
-               
-            }
-        });
-    });
-    
-    $('#switchMode').on('click', function(evt) {
-        $(this).toggleClass('active');
-        evt.preventDefault();
-        $('#nonEditModePreview, #editModePreview').toggle();
-    });
-</script>
-
 
 

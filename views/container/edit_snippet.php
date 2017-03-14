@@ -5,7 +5,7 @@ use yii\helpers\Html;
 if(version_compare(Yii::$app->version, '1.2', '<')) {   
     \humhub\assets\Select2ExtensionAsset::register($this);
 }
-\humhub\modules\custom_pages\InlineEditAsset::register($this);
+\humhub\modules\custom_pages\assets\TemplateEditorAsset::register($this);
 ?>
 
 <div id="templatePageRoot" class="col-md-12 layout-content-container">

@@ -1,6 +1,6 @@
 <?php
 
-namespace humhub\modules\custom_pages;
+namespace humhub\modules\custom_pages\assets;
 
 use yii\web\AssetBundle;
 
@@ -15,7 +15,7 @@ class Assets extends AssetBundle
 
     public function init()
     {
-        $this->sourcePath = dirname(__FILE__) . '/assets';
+        $this->sourcePath = dirname(dirname(__FILE__)) . '/resources';
         parent::init();
     }
 

@@ -96,10 +96,12 @@ class Template extends ActiveRecord implements TemplateContentOwner
      */
     public function beforeDelete()
     {
-        parent::beforeDelete();
+        if(!parent::beforeDelete()) {
+            return false;
+        }
+        
         // We just allow the template deletion if there are template owner relations.
-        if(TemplateInstance::findByTemplateId($this->id)->count() == 0 
-                && ContainerContentTemplate::find()->where(['template_id' => $this->id])->count() == 0) {
+        if(!$this->isInUse()) {
             foreach ($this->elements as $element) {
                 $element->delete();
             }
@@ -107,6 +109,15 @@ class Template extends ActiveRecord implements TemplateContentOwner
         }
         
         return false;
+    }
+    
+    public function isInUse()
+    {
+        if($this->isLayout()) {
+            return TemplateInstance::findByTemplateId($this->id)->count() > 0;
+        } else {
+            return ContainerContentTemplate::find()->where(['template_id' => $this->id])->count() > 0;
+        }
     }
     
     /**
@@ -186,7 +197,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
     
     /**
      * Merges the default OwnerContent instances with the OwnerContent instances of the given $owner.
-     * If there is no default OwnerContent and no OwnerContent of the $owner this function will create an
+     * If there is no default OwnerContent and no OwnerContent for the given $owner this function will create an
      * empty dummy content for the given placeholder.
      * 
      * If no $owner is given, this function will just return default OwnerContent of this template and empty OwnerContent instances.

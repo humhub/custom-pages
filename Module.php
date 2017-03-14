@@ -12,6 +12,8 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 class Module extends \humhub\modules\content\components\ContentContainerModule
 {
 
+    public $resourcesPath = 'resources';
+    
     public function init()
     {
         self::loadTwig();

@@ -4,10 +4,8 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\modules\custom_pages\models\Snippet;
 
-if(version_compare(Yii::$app->version, '1.2', '<')) {
-    \humhub\assets\Select2ExtensionAsset::register($this);
-}
-\humhub\modules\custom_pages\InlineEditAsset::register($this);
+
+\humhub\modules\custom_pages\assets\TemplateEditorAsset::register($this);
 
 $backUrl = ($snippet->sidebar == Snippet::SIDEBAR_DASHBOARD) ? Url::to(['/dashboard/dashboard']) :  Url::to(['/directory/directory']);
 $backText = ($snippet->sidebar == Snippet::SIDEBAR_DASHBOARD) ?Yii::t('CustomPagesModule.base', 'Back to dashboard') : Yii::t('CustomPagesModule.base', 'Back to directory');

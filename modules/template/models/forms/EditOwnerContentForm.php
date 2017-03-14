@@ -100,8 +100,6 @@ class EditOwnerContentForm extends TemplateElementForm
     public function save()
     {
         if ($this->validate()) {
-            $this->saveFiles();
-            
             if($this->ownerContent->isDefault()) {
                 $this->ownerContent = $this->element->saveInstance($this->owner, $this->content, $this->use_default);
             } else {

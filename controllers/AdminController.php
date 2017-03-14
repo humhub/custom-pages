@@ -46,11 +46,11 @@ class AdminController extends \humhub\modules\admin\components\Controller
      * @see getPageClassName() which returns the actual page type.
      * @return string view
      */
-    public function actionAdd()
+    public function actionAdd($type = null)
     {
-        $model = new AddPageForm(['class' => $this->getPageClassName()]);
+        $model = new AddPageForm(['class' => $this->getPageClassName(), 'type' => $type]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        if ($model->validate()) {
             return $this->redirect(['edit', 'type' => $model->type]);
         }
 

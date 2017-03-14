@@ -6,7 +6,7 @@ use Yii;
 use humhub\components\ActiveRecord;
 
 /**
- * This is the base class for all TemplateContent Types.
+ * This is the base class for all TemplateContent types.
  */
 abstract class TemplateContentActiveRecord extends ActiveRecord
 {
@@ -15,22 +15,65 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
     const SCENARIO_EDIT = 'edit';
     const SCENARIO_EDIT_ADMIN = 'edit-admin';
 
+    /**
+     * @var string the formname of this model used for loading form data. 
+     */
     private $formName;
+
+    /**
+     * @var ContainerContentDefinition instance of this template 
+     */
     private $definitionInstance;
+
+    /**
+     * @var array post data used for loading the definition instance
+     * @see TemplateContentActiveRecord::load()
+     */
     public $definitionPostData;
+
+    /**
+     * @var string definition model class used by content types with definition 
+     */
     public $definitionModel;
+
+    /**
+     * @var array attached files used when creating/saving the record 
+     */
     public $fileList = [];
 
+    /**
+     * @return string rendered content type by means of the given $options.
+     */
     abstract public function render($options = []);
 
+    /**
+     * @return string empty block representation of this content type.
+     */
     abstract public function renderEmpty($options = []);
 
+    /**
+     * Copies the values of this content type instance.
+     * This function can initiate the copy by using `createCopy`.
+     * 
+     * @see TemplateContentActiveRecord::createCopy()
+     * @return TemplateContentActiveRecord instance copy.
+     */
     abstract public function copy();
 
+    /**
+     * @return string the label of this content type
+     */
     abstract public function getLabel();
 
+    /**
+     * @param \yii\widgets\ActiveForm $form form instance
+     * @return string edit form of this content type
+     */
     abstract public function renderForm($form);
 
+    /**
+     * @return boolean determines if the content instance has currently an attribute set.
+     */
     public function hasValues()
     {
         $result = false;
@@ -43,6 +86,10 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
         return $result;
     }
 
+    /**
+     * Creates an empty copy of the current conten tpye and adopts the definition_id (if present).
+     * @return TemplateContentActiveRecord
+     */
     protected function createCopy()
     {
         $copy = Yii::createObject($this->className());
@@ -52,6 +99,9 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
         return $copy;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         return [
@@ -62,15 +112,23 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
         ];
     }
 
+    /**
+     * Loads the given $data and also loads the definition if $definitionPostData is set.
+     * @param type $data
+     * @param type $formName
+     */
     public function load($data, $formName = null)
     {
-
         parent::load($data, $formName);
         if ($this->isDefinitionContent() && $this->definitionPostData != null) {
             $this->definition->load(['content' => $this->definitionPostData], 'content');
         }
     }
 
+    /**
+     * Sets the $formName of this instance and of the $definition instance if given.
+     * @param string $formName
+     */
     public function setFormName($formName)
     {
         $this->formName = $formName;
@@ -79,27 +137,42 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
         }
     }
 
+    /**
+     * Returns the formName for this content instance.
+     * @return type
+     */
     public function formName()
     {
         return ($this->formName != null) ? $this->formName : parent::formName();
     }
 
+    /**
+     * Returns the ContainerContentDefinition instance of this instance. +
+     * This function will create an empty definition instance if this content type has an definitionModel and
+     * does not have an related definition_id.
+     * 
+     * @return ContainerContentDefinition the definition instance.
+     */
     public function getDefinition()
     {
-        if ($this->definitionModel == null) {
+        if (!$this->isDefinitionContent()) {
             return;
         }
 
-        if ($this->definitionInstance != null) {
+        if ($this->definitionInstance) {
             return $this->definitionInstance;
         }
 
-        $this->definitionInstance = call_user_func($this->definitionModel . "::findOne", ['id' => $this->definition_id]);
+        if ($this->definition_id != null) {
+            $this->definitionInstance = call_user_func($this->definitionModel . "::findOne", ['id' => $this->definition_id]);
+        }
 
-        if ($this->definitionInstance == null) {
+        // Create empty definition instance
+        if (!$this->definitionInstance) {
             $this->definitionInstance = Yii::createObject($this->definitionModel);
         }
 
+        // Mark the definition instance as default if the content is created or edited by admin
         if ($this->scenario === self::SCENARIO_EDIT_ADMIN || $this->scenario === self::SCENARIO_CREATE) {
             $this->definitionInstance->is_default = true;
         }
@@ -109,16 +182,25 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
         return $this->definitionInstance;
     }
 
+    /**
+     * @return boolean determines if this content instance has an definition instance relation.
+     */
     public function hasDefinition()
     {
         return isset($this->definition_id);
     }
 
+    /**
+     * @return boolean determines if this content type has an definition type.
+     */
     public function isDefinitionContent()
     {
         return $this->definitionModel != null;
     }
 
+    /**
+     * @ineritdoc
+     */
     public function beforeSave($insert)
     {
         $definition = $this->definition;
@@ -126,7 +208,7 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
             $definition->save(false);
             $this->definition_id = $definition->getPrimaryKey();
         } else if ($this->isDefinitionContent() && !$definition->isNewRecord && !$definition->hasValues() && $this->scenario === self::SCENARIO_EDIT_ADMIN) {
-            // If we reset the default definition to an empty state we remove the definition settings, which will allow content to define own definitions
+            // If we reset the default definition to an empty state we remove the definition settings, which will allow the content to define own definitions
             self::updateAll(['definition_id' => null], ['definition_id' => $definition->id]);
             $definition->delete();
             return false;
@@ -135,21 +217,30 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
         return parent::beforeSave($insert);
     }
 
+    /**
+     * @ineritdoc
+     */
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
         $this->saveFiles();
     }
 
+    /**
+     * Saves all attached files.
+     */
     public function saveFiles()
     {
         if ($this->isNewRecord || $this->fileList == null) {
             return;
         }
 
-        \humhub\modules\file\models\File::attachPrecreated($this, implode(',', $this->fileList));
+        $this->fileManager->attach($this->fileList);
     }
 
+    /**
+     * @ineritdoc
+     */
     public function afterDelete()
     {
         if ($this instanceof ContainerContent) {
@@ -158,7 +249,7 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
             }
         }
 
-        $files = \humhub\modules\file\models\File::getFilesOfObject($this);
+        $files = $this->fileManager->findAll();
 
         foreach ($files as $file) {
             $file->delete();
@@ -169,36 +260,40 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
 
     protected function wrap($type, $content, $options = [], $attributes = [])
     {
-        if ($this->getOption($options, 'editMode', false)) {
-            $attributes['data-template-element'] = $this->getOption($options, 'element_name');
-            $attributes['data-template-owner'] = $this->getOption($options, 'owner_model');
-            $attributes['data-template-owner-id'] = $this->getOption($options, 'owner_id');
-            $attributes['data-template-id'] = $this->getOption($options, 'template_id');
-            $attributes['data-template-owner-content-id'] = $this->getOption($options, 'owner_content_id');
-            $attributes['data-template-element'] = $this->getOption($options, 'element_name');
-            $attributes['data-template-default'] = $this->getOption($options, 'default', '0');
-            $attributes['data-template-empty'] = $this->getOption($options, 'empty', '0');
-            $attributes['data-template-content'] = $this->className();
-
-
-            // Note that the rendered contentid in the frontend can be the contentid of the default content if use_default is set to true
-            if ($this->getPrimaryKey() != null) {
-                $attributes['data-template-content-id'] = $this->getPrimaryKey();
-            }
+        if ($this->getPrimaryKey() != null) {
+            $options['template-content-id'] = $this->getPrimaryKey();
         }
 
-        if (isset($options['htmlOptions'])) {
-            $attributes = array_merge($attributes, $options['htmlOptions']);
-        }
+        return \humhub\modules\custom_pages\modules\template\widgets\TemplateEditorElement::widget([
+            'container' => $type,
+            'templateContent' => $this,
+            'content' => $content,
+            'renderOptions' => $options,
+            'renderAttributes' => $attributes
+        ]);
+    }
 
-        $result = '<' . $type;
-        foreach ($attributes as $key => $value) {
-            if ($value != null) {
-                $result .= ' ' . $key . '="' . $value . '"';
-            }
-        }
+    public function isEditMode($options = [])
+    {
+        return isset($options['editMode']) && $options['editMode'];
+    }
 
-        return $result . '>' . $content . '</' . $type . '>';
+    public function purify($content)
+    {
+        $config = \HTMLPurifier_Config::createDefault();
+        $config->set('HTML.Attr.Name.UseCDATA', true);
+
+        return \yii\helpers\HtmlPurifier::process($content, $config);
+    }
+
+    protected function renderEmptyDiv($title, $options = [], $attributes = [])
+    {
+        if ($this->isEditMode($options)) {
+            $class = $this->getOption($options, 'class', 'emptyBlock');
+            $defaultContent = '<div class="' . $class . '"><strong>' . $title . '</strong></div>';
+            return $this->wrap('div', $defaultContent, $options, $attributes);
+        }
+        return '';
     }
 
     public function getOption($options, $key, $default = null)
@@ -213,29 +308,6 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
             return $default;
         }
         return isset($options[$key]) ? strval($options[$key]) : $default;
-    }
-
-    public function isEditMode($options = [])
-    {
-        return isset($options['editMode']) && $options['editMode'];
-    }
-
-    public function purify($content)
-    {
-        $config = \HTMLPurifier_Config::createDefault();
-        $config->set('HTML.Attr.Name.UseCDATA', true);
-     
-        return \yii\helpers\HtmlPurifier::process($content,$config);
-    }
-
-    protected function renderEmptyDiv($title, $options = [], $attributes = [])
-    {
-        if ($this->isEditMode($options)) {
-            $class = $this->getOption($options, 'class', 'emptyBlock');
-            $defaultContent = '<div class="' . $class . '"><strong>' . $title . '</strong></div>';
-            return $this->wrap('div', $defaultContent, $options, $attributes);
-        }
-        return '';
     }
 
 }

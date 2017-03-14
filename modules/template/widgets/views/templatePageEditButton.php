@@ -1,25 +1,14 @@
 <?php
-
-use yii\helpers\Html;
 use yii\helpers\Url;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
 ?>
 
 <?php if ($editMode) : ?>
 
     <div id="editPageButton" class="btn-group">
-        <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-pencil"></i>
-            <?= Yii::t('CustomPagesModule.modules_template_widgets_views_templatePageEditButton', 'Edit Page') ?> <span class="caret"></span>
+        <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-pencil"></i>&nbsp;&nbsp;<span class="caret"></span>
         </button>
-        <ul class="dropdown-menu pull-right">
+        <ul class="dropdown-menu">
             <li>
                 <a target="_blank"  href="<?= Url::to(['edit', 'id' => $pageId, 'sguid' => $sguid]) ?>">
                     <?= Yii::t('CustomPagesModule.views_view_template', 'Page configuration') ?>
@@ -33,7 +22,7 @@ use yii\helpers\Url;
                 </li>
             <?php endif; ?>
             <li>
-                <a id="editAllElements" href="<?= Url::to(['/custom_pages/template/owner-content/edit-multiple', 'id' => $templateInstance->id, 'sguid' => $sguid]) ?>">
+                <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/owner-content/edit-multiple', 'id' => $templateInstance->id, 'sguid' => $sguid]) ?>" id="editAllElements" href="#">
                     <?= Yii::t('CustomPagesModule.views_view_template', 'Edit elements') ?>
                 </a>
             </li>
@@ -46,30 +35,8 @@ use yii\helpers\Url;
     </div>
 
 <?php else: ?>
-    <a id="editPageButton" class="btn btn-danger btn-sm" style="color:#000;" href="<?= Url::to(['view', 'id' => $pageId, 'editMode' => true, 'sguid' => $sguid]); ?>">
+    <a id="editPageButton" class="btn btn-primary btn-xs" data-ui-loader style="color:#000;" href="<?= Url::to(['view', 'id' => $pageId, 'editMode' => true, 'sguid' => $sguid]); ?>">
         <i class="fa fa-pencil"></i>    
         <?= Yii::t('CustomPagesModule.modules_template_widgets_views_templatePageEditButton', 'Edit Page') ?>
     </a>
 <?php endif; ?>
-
-<script>
-    $('#editAllElements').on('click', function(evt) {
-        evt.preventDefault();
-        var url = $(this).attr('href');
-        $.ajax(url, {
-            type: 'POST',
-            dataType: 'json',
-            beforeSend: function () {
-                setModalLoader();
-                $('#globalModal').modal('show');
-            },
-            success: function (json) {
-                $('#globalModal').html(json.content);
-            }
-        });
-    });
-    
-    $(document).on('templateMultipleElementEditSuccess', function() {
-        window.location.href = '<?= Url::to(); ?>';
-    });
-</script>

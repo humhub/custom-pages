@@ -57,15 +57,13 @@ $indexUrl = Url::to(['index' , 'sguid' => Yii::$app->request->get('sguid')]);
                     ?>
 
 
-                    <?=
-                    AddContentTypeRow::widget([
+                    <?= AddContentTypeRow::widget([
                         'type' => Container::TYPE_TEMPLATE,
                         'label' => Yii::t('CustomPagesModule.base', 'Template'),
                         'description' => Yii::t('CustomPagesModule.base', 'Templates allow you to define combinable page fragments with inline edit functionality.'),
                         'hide' => !$model->isAllowedType(Container::TYPE_TEMPLATE),
                         'disabled' => !$model->showTemplateType()
-                    ])
-                    ?>
+                    ]) ?>
 
                     <?=
                     AddContentTypeRow::widget([

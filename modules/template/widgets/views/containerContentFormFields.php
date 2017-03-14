@@ -29,7 +29,3 @@ $disableDefinition = !$isAdminEdit && !$model->definition->isNewRecord;
 <?= $form->field($model->definition, 'allow_multiple')->checkbox(['disabled' => $disableDefinition]); ?>
 
 <?= $form->field($model->definition, 'is_inline')->checkbox(['disabled' => $disableDefinition]); ?>
-
-<script>
-    checkForMultiSelectDropDowns();
-</script>

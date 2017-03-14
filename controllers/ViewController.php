@@ -16,9 +16,6 @@ use humhub\modules\custom_pages\components\TemplateViewBehavior;
  */
 class ViewController extends Controller
 {
-    
-    
-    
     /**
      * @inhritdoc
      */
@@ -56,6 +53,8 @@ class ViewController extends Controller
         if ($page->navigation_class == Page::NAV_CLASS_ACCOUNTNAV) {
             $this->subLayout = "@humhub/modules/user/views/account/_layout";
         }
+        
+        $this->getView()->pageTitle = $page->title;
 
         if ($page->type == Container::TYPE_HTML) {
             return $this->render('html', array('page' => $page, 'html' => $page->content, 'title' => $page->title));

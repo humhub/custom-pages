@@ -1,6 +1,6 @@
 <?php
 
-namespace humhub\modules\custom_pages;
+namespace humhub\modules\custom_pages\modules\template\assets;
 
 use yii\web\AssetBundle;
 
@@ -22,7 +22,7 @@ class SwitchAssetBundle extends AssetBundle
 
     public function init()
     {
-        $this->sourcePath = dirname(__FILE__) . '/assets/switch';
+        $this->sourcePath = dirname(dirname(__FILE__)) . '/resources/js/switch';
         parent::init();
     }
 

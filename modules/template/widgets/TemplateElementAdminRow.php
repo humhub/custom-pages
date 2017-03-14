@@ -17,8 +17,19 @@ use Yii;
  */
 class TemplateElementAdminRow extends \humhub\components\Widget
 {
+    /**
+     * @var \humhub\modules\custom_pages\modules\template\models\TemplateElement
+     */
     public $model;
+    
+    /**
+     * @var \humhub\modules\custom_pages\modules\template\models\forms\TemplateElementForm
+     */
     public $form;
+    
+    /**
+     * @var boolean determines if the output should contain a saved user feedback 
+     */
     public $saved;
 
     public function run()

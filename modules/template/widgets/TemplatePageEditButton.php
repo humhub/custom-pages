@@ -11,7 +11,6 @@ namespace humhub\modules\custom_pages\modules\template\widgets;
 use Yii;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\modules\template\models\TemplatePagePermission;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 
 /**
@@ -21,33 +20,43 @@ use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
  */
 class TemplatePageEditButton extends \humhub\components\Widget
 {
-    public $canEdit;
-    public $editMode;
-    public $pageId;
-    public $templateInstance;
 
+    /**
+     * @var \humhub\modules\custom_pages\models\CustomContentContainer page instance
+     */
+    public $page;
+
+    /**
+     * @var boolean
+     */
+    public $canEdit;
+
+    /**
+     * @var boolean
+     */
+    public $editMode;
+
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
-        $editMode = Yii::$app->request->get('editMode');
-        $pageId = Yii::$app->request->get('id');
-        
+        if (!$this->canEdit) {
+            return;
+        }
+
         $space = (isset(Yii::$app->controller->contentContainer)) ? Yii::$app->controller->contentContainer : null;
-        
-        $sguid = ($space != null) ? $space->guid : null;
-        $canEdit = TemplatePagePermission::canEdit();
-        
-        $ownerModel = ($space != null) ? ContainerPage::className() : Page::className();   
-        
-        
-        $templateInstance = TemplateInstance::findOne(['object_model' => $ownerModel ,'object_id' => $pageId]);
-        
+        $sguid = ($space) ? $space->guid : null;
+        $ownerModel = ($space) ? ContainerPage::className() : Page::className();
+
+        $templateInstance = TemplateInstance::findOne(['object_model' => $ownerModel, 'object_id' => $this->page->id]);
+
         return $this->render('templatePageEditButton', [
-            'canEdit' => $canEdit,
-            'sguid' => $sguid,
-            'editMode' => $editMode,
-            'pageId' => $pageId,
-            'templateInstance' => $templateInstance
+                    'canEdit' => $this->canEdit,
+                    'sguid' => $sguid,
+                    'editMode' => $this->editMode,
+                    'pageId' => $this->page->id,
+                    'templateInstance' => $templateInstance
         ]);
     }
-
 }

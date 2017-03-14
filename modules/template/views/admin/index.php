@@ -17,22 +17,16 @@ use yii\helpers\Url;
         <div class="help-block">
             <?= $helpText ?>
         </div>
-         <?php if (Yii::$app->session->hasFlash('error')): ?>
-            <div class="alert alert-danger" role="alert">
-                <?= Yii::$app->session->getFlash('error') ?>
-            </div>
-        <?php endif; ?>
-        </div>
+    </div>
    
     <?= \humhub\modules\custom_pages\modules\template\widgets\TemplateAdminMenu::widget(); ?>
     
     <div class="panel-body">
         
-         <?php echo Html::a('<i class="fa fa-plus"></i> ' . Yii::t('CustomPagesModule.base', 'Create new {type}', ['type' => $type]), ['edit'], ['class' => 'pull-right btn btn-success']); ?>
+         <?= Html::a('<i class="fa fa-plus"></i> ' . Yii::t('CustomPagesModule.base', 'Create new {type}', ['type' => $type]), ['edit'], ['class' => 'pull-right btn btn-success', 'data-ui-loader']); ?>
     
         
-        <?php
-        echo GridView::widget([
+        <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [

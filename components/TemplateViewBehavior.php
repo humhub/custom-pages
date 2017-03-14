@@ -24,8 +24,14 @@ class TemplateViewBehavior extends Behavior
     
     public $_canEdit;
     
-    public function viewTemplatePage($page)
-    {  
+    /**
+     * 
+     * @param \humhub\modules\custom_pages\models\CustomContentContainer $page
+     * @return string rendered template page
+     * @throws \yii\web\HttpException in case the page is protected from non admin access
+     */
+    public function viewTemplatePage(\humhub\modules\custom_pages\models\CustomContentContainer $page)
+    {
         $html = $this->renderTemplate($page);
         $canEdit = $this->isCanEdit();
        

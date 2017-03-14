@@ -53,7 +53,6 @@ class EditElementForm extends TemplateElementForm
                 $this->defaultOwnerContent->setContent($this->content);
                 $this->defaultOwnerContent->use_default = $this->use_default;
                 $this->defaultOwnerContent->save();
-                $this->saveFiles();
             }
             return true;
         } 

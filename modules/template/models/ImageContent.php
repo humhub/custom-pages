@@ -9,8 +9,6 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
 {
     public static $label = 'Image';
     
-    public $file;
-    
     public function init()
     {
         $this->definitionModel = ImageContentDefinition::className();
@@ -51,8 +49,8 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
     public function attributeLabels()
     {
         return  [
-            'file_guid' => 'File',
-            'alt' => 'Alternate text'
+            'file_guid' =>  Yii::t('CustomPagesModule.base', 'File'),
+            'alt' =>  Yii::t('CustomPagesModule.base', 'Alternate text')
         ];
     }
     

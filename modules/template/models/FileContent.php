@@ -20,16 +20,20 @@ use humhub\modules\file\models\File;
         return 'custom_pages_template_file_content';
     }
     
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
-        
         $result = parent::rules();
         $result[] = [['file_guid'], 'required'];
         $result[] = [['alt', 'file_guid'], 'safe'];
         return $result;
     }
-    
-        
+       
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         $scenarios = parent::scenarios();
@@ -45,8 +49,21 @@ use humhub\modules\file\models\File;
     public function attributeLabels()
     {
         return  [
-            'file_guid' => 'File',
+            'file_guid' => Yii::t('CustomPagesModule.base', 'File')
         ];
+    }
+    
+    public function saveFiles()
+    {
+        $files = File::findByRecord($this);
+
+        foreach($files as $file) {
+            if($file->guid !== $this->file_guid) {
+                $file->delete();
+            }
+        }
+        
+        $this->fileManager->attach($this->file_guid);
     }
     
     public function getLabel()

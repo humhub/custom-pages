@@ -16,6 +16,9 @@ class ContainerContent extends TemplateContentActiveRecord
 
     public static $label = 'Container';
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->definitionModel = ContainerContentDefinition::className();
@@ -28,7 +31,7 @@ class ContainerContent extends TemplateContentActiveRecord
     {
         return 'custom_pages_template_container_content';
     }
-    
+
     public function validate($attributeNames = null, $clearErrors = true)
     {
         return parent::validate() && $this->definition->validate();
@@ -59,8 +62,8 @@ class ContainerContent extends TemplateContentActiveRecord
 
     public function beforeDelete()
     {
-        if($this->hasItems()) {
-            foreach($this->items as $item) {
+        if ($this->hasItems()) {
+            foreach ($this->items as $item) {
                 $item->delete();
             }
         }
@@ -97,6 +100,7 @@ class ContainerContent extends TemplateContentActiveRecord
         }
 
         if ($this->isEditMode($options)) {
+            $options['jsWidget'] = 'custom_pages.template.TemplateContainer';
             return $this->wrap('div', $result, $options, ['data-template-multiple' => $this->definition->allow_multiple]);
         } else {
             return $result;
@@ -105,7 +109,11 @@ class ContainerContent extends TemplateContentActiveRecord
 
     public function renderEmpty($options = [])
     {
-        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_Container', 'Empty <br />Container'), $options, ['class' => 'emptyContainerBlock', 'data-template-multiple' => $this->definition->allow_multiple]);
+        $options['jsWidget'] = 'custom_pages.template.TemplateContainer';
+        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_Container', 'Empty <br />Container'), $options, [
+            'class' => 'emptyContainerBlock', 
+            'data-template-multiple' => $this->definition->allow_multiple
+         ]);
     }
 
     public function addContainerItem($templateId, $index = null)

@@ -5,9 +5,7 @@ namespace humhub\modules\custom_pages\modules\template\models;
 use yii\helpers\Url;
 
 /**
- * This is the model class for table "custom_pages_page".
- *
- * The followings are the available columns in table 'custom_pages_page':
+ * This is the model class for table "custom_pages_template_container_content_item".
  */
 class ContainerContentItem extends \humhub\components\ActiveRecord implements TemplateContentOwner
 {
@@ -76,13 +74,18 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
 
     public function wrap($content, $inline)
     {
-        $cssClass = ($inline) ? 'inline' : '';
-        return '<div class="'.$cssClass.'" '
-                . 'data-template-item="' . $this->id . '" '
-                . 'data-template-edit-url="' . Url::to(['/custom_pages/template/container-admin/edit-source', 'id' => $this->template_id]) . '" '
-                . 'data-template-item-title="' . $this->title . '" '
-                . 'data-template-owner="' . ContainerContent::className() . '" '
-                . 'data-template-owner-id="' . $this->container_content_id.'">' . $content . '</div>';
+        return \humhub\widgets\JsWidget::widget([
+            'jsWidget' => 'custom_pages.template.TemplateContainerItem',
+            'content' => $content,
+            'options' => [
+                'class' => ($inline) ? 'inline' : '',
+                'data-template-item' => $this->id,
+                'data-template-edit-url' => Url::to(['/custom_pages/template/container-admin/edit-source', 'id' => $this->template_id]),
+                'data-template-item-title' => $this->title,
+                'data-template-owner' => ContainerContent::className(),
+                'data-template-owner-id' => $this->container_content_id
+            ]
+        ]);
     }
 
     public function getTemplateId()

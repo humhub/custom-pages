@@ -3,6 +3,7 @@
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
 use Yii;
+use humhub\modules\custom_pages\models\Page;
 
 /**
  * Description of TemplatePage
@@ -11,7 +12,7 @@ use Yii;
  */
 class TemplatePage extends \humhub\widgets\JsWidget
 {
-
+    
     /**
      * @inheritdoc
      */
@@ -38,7 +39,7 @@ class TemplatePage extends \humhub\widgets\JsWidget
     public $editMode;
 
     /**
-     * @var string additional style class of editor root
+     * @var \humhub\modules\custom_pages\models\CustomContentContainer page instance
      */
     public $page;
 
@@ -91,7 +92,13 @@ class TemplatePage extends \humhub\widgets\JsWidget
     public function getAttributes()
     {
         //TODO: fullscreen flag
-        $cssClass = (!$this->contentContainer) ? 'container ' : '';
+        if($this->page instanceof Page && $this->page->navigation_class !== Page::NAV_CLASS_ACCOUNTNAV) {
+            $cssClass = 'container ';
+        } else {
+            $cssClass = '';
+        }
+
+        
         $cssClass .= ($this->page->hasAttribute('cssClass') && !empty($this->page->cssClass)) ? $this->page->cssClass : 'custom-pages-page';
         return [
             'class' => $cssClass

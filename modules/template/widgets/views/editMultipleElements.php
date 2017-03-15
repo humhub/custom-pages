@@ -18,9 +18,9 @@ use yii\helpers\Html;
         <div class="modal-body media-body template-edit-multiple"> 
             <?php $counter = 0 ?>
             <?php foreach ($model->contentMap as $key => $contentItem) : ?>
-                
+
                 <?php $isContainer = $contentItem->content instanceof humhub\modules\custom_pages\modules\template\models\ContainerContent; ?>
-                
+
                 <div class="panel panel-default">
                     <div class="template-edit-multiple-tab panel-heading" tabindex="0">
                         <strong>#<?= Html::encode($contentItem->ownerContent->element_name) ?>&nbsp;<i class="switchIcon fa fa-caret-down" aria-hidden="true"></i></strong>
@@ -63,7 +63,7 @@ use yii\helpers\Html;
                 <button data-action-click="editMultipleElementsSubmit" data-action-target="#templatePageRoot" type="submit"  class="btn btn-primary" data-ui-loader>
                     <?= Yii::t('CustomPagesModule.base', 'Save'); ?>
                 </button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal"><?= Yii::t('CustomPagesModule.base', 'Cancel'); ?></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('CustomPagesModule.base', 'Cancel'); ?></button>
             <?php else: ?>
                 <button type="button" class="btn btn-primary" data-dismiss="modal"><?= Yii::t('CustomPagesModule.base', 'Back'); ?></button>
             <?php endif; ?>
@@ -76,3 +76,12 @@ use yii\helpers\Html;
 <script type="text/javascript">
     $('.template-edit-multiple-tab:first').focus();
 </script>
+
+<style>
+    /**
+     * This prevents the select2 template selection to be shrunk if rendered within a hidden panel.
+     */
+    .field-templateelement-name .select2-container--humhub {
+        width:100% !important;
+    }
+</style>

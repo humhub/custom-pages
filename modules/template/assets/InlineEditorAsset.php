@@ -8,7 +8,7 @@ class InlineEditorAsset extends AssetBundle
 {
 
     public $publishOptions = [
-        'forceCopy' => true
+        'forceCopy' => false
     ];
     
     public $jsOptions = ['position' => \yii\web\View::POS_END];

@@ -1,4 +1,6 @@
 0.7.4 
+ - Fix: select2  template selection shrink if rendered in hidden panel
+ - Fix: Cancel button color
  - Fix: Fixed account setting template page container issue
  - Enh: #56 Use of select2 dropdown as icon chooser
  - Fix: #40 Image/File upload ajax error handling

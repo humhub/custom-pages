@@ -46,7 +46,7 @@ use yii\helpers\Html;
                 <?= Yii::t('CustomPagesModule.base', 'Save'); ?>
             </button>
                 
-            <button class="btn btn-primary" data-dismiss="modal"><?= Yii::t('CustomPagesModule.base', 'Cancel'); ?></button>
+            <button class="btn btn-default" data-dismiss="modal"><?= Yii::t('CustomPagesModule.base', 'Cancel'); ?></button>
             
             <?php if(!$model->content->isNewRecord && $resetUrl != null) : ?>
                 <button data-action-click="reset" data-action-url="<?= $resetUrl ?>" data-action-target="#templatePageRoot"  class="btn btn-danger pull-right" data-ui-loader>

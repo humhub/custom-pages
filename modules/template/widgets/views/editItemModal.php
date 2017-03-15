@@ -61,7 +61,7 @@ use yii\widgets\ActiveForm;
             <button data-action-click="editItemSubmit" data-action-target="#templatePageRoot" type="submit"  class="btn btn-primary" data-ui-loader>
                 <?= Yii::t('CustomPagesModule.base', 'Save'); ?>
             </button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal"><?= Yii::t('CustomPagesModule.base', 'Cancel'); ?></button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('CustomPagesModule.base', 'Cancel'); ?></button>
         </div>
     <?php ActiveForm::end(); ?>
 <?php humhub\widgets\ModalDialog::end() ?>

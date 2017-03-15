@@ -223,7 +223,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
 
     module.initOnPjaxLoad = true;
     var init = function () {
-        if ($('#templatePageRoot').length && require('ui.status').getState().action !== 'edit-source') {
+        if ($('#templatePageRoot').length && require('ui.view').getState().action !== 'edit-source') {
             module.editor = Widget.instance('#templatePageRoot');
             _initEvents();
         }

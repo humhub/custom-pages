@@ -6,7 +6,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 
 <?php if ($navigationClass == Page::NAV_CLASS_ACCOUNTNAV): ?>
 
-    <iframe class="<?= $cssClass ?>" id="iframepage" style="width:100%; height: 400px;" src="<?php echo $url; ?>"></iframe>
+    <iframe class="<?= $cssClass ?>" id="iframepage" style="width:100%; height: 100%;" src="<?php echo $url; ?>"></iframe>
 
     <style>
         #iframepage {
@@ -32,7 +32,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 
 <?php else: ?>
 
-    <iframe class="<?= $cssClass ?>" id="iframepage" style="width:100%;height: 400px" src="<?php echo $url; ?>"></iframe>
+    <iframe class="<?= $cssClass ?>" id="iframepage" style="width:100%;height: 100%" src="<?php echo $url; ?>"></iframe>
 
     <style>
         #iframepage {

@@ -601,7 +601,7 @@ if ($page instanceof Snippet || $page instanceof ContainerSnippet) {
         <?php foreach ($faIcons as $name => $value): ?>
 
             <option class="" value="<?= $name; ?>" <?php if ($page->icon == $name): ?>selected='selected'<?php endif; ?>>
-                <?= substr($name, 3) ?>
+                <?= (substr($name, 0, 2) == 'fa') ?  substr($name, 3) : $name ?>
             </option>
 
         <?php endforeach; ?>

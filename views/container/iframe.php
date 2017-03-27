@@ -12,12 +12,13 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 </style>
 
 <script>
-    window.onload = function (evt) {
+    $(document).on('humhub:ready', function() {
         setSize();
-    }
+    });
+    
     window.onresize = function (evt) {
         setSize();
-    }
+    };
 
     function setSize() {
 

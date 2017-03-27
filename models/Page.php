@@ -61,6 +61,7 @@ class Page extends ActiveRecord implements CustomContentContainer
         $result['in_new_window'] = Yii::t('CustomPagesModule.models_Page', 'Open in new window');
         $result['content'] = Yii::t('CustomPagesModule.models_Page', 'Content');
         $result['navigation_class'] = Yii::t('CustomPagesModule.models_Page','Navigation');
+        $result['url'] = Yii::t('CustomPagesModule.models_Page','Url shortcut');
         return $result;
     }
 

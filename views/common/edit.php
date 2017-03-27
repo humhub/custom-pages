@@ -43,10 +43,17 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
         
         <?= \humhub\modules\custom_pages\widgets\PageIconSelect::widget(['page' => $page]) ?>
 
+        <?php if ($page->isType(Container::TYPE_LINK) || $page->isType(Container::TYPE_IFRAME)): ?>
+            <?= $form->field($page, $contentProp)->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('targetUrl')); ?>
+            <div class="help-block">
+                <?= Yii::t('CustomPagesModule.views_common_edit', 'e.g. http://www.example.de') ?>
+            </div>
+        <?php endif; ?>
+        
         <?php if ($page instanceof Page && $page->hasAttribute('url')) : ?>
             <?= $form->field($page, 'url') ?>
             <div class="help-block">
-                <?= Yii::t('CustomPagesModule.views_common_edit', 'By setting an url value, you can create a better readable url for your page. If <b>URL Rewriting</b> is enabled on your site, the value \'mypage\' will result in an url \'www.example.de/p/mypage\'.') ?>
+                <?= Yii::t('CustomPagesModule.views_common_edit', 'By setting an url shortcut value, you can create a better readable url for your page. If <b>URL Rewriting</b> is enabled on your site, the value \'mypage\' will result in an url \'www.example.de/p/mypage\'.') ?>
             </div>
         <?php endif; ?>
 
@@ -57,8 +64,6 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
         <?php elseif ($page->isType(Container::TYPE_MARKDOWN)): ?>
             <?= $form->field($page, $contentProp)->textarea(['id' => 'markdownField', 'class' => 'form-control', 'rows' => '15']); ?>
             <?= \humhub\widgets\MarkdownEditor::widget(['fieldId' => 'markdownField']); ?>
-        <?php elseif ($page->isType(Container::TYPE_LINK) || $page->isType(Container::TYPE_IFRAME)): ?>
-            <?= $form->field($page, $contentProp)->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('targetUrl')); ?>
         <?php endif; ?>
 
         <?php if ($page instanceof Page) : ?> 

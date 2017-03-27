@@ -1,4 +1,5 @@
 <?php
+
 use humhub\modules\custom_pages\models\Page;
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
@@ -46,15 +47,15 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 
 
     <script>
-        window.onload = function (evt) {
+        $(document).on('humhub:ready', function () {
             setSize();
-        }
+        });
+
         window.onresize = function (evt) {
             setSize();
-        }
+        };
 
         function setSize() {
-
             $('#iframepage').css('height', window.innerHeight - 100 + 'px');
             $('#iframepage').css('width', jQuery('body').outerWidth() - 1 + 'px');
         }

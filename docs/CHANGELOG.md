@@ -1,3 +1,6 @@
+0.7.6:
+- Fix: Iframe page size fix.
+
 0.7.5:
 - Fix: edit snippet issue.
 - Fix: icon 'none' in snippet icon selector.

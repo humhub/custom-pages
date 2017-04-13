@@ -13,6 +13,7 @@ use yii\helpers\Html;
             <div class="clearfix">
                 <?php if(!$model->element->isNewRecord) : ?>
                     #<strong><?= Html::encode($model->element->name) ?></strong>
+                    <br />
                  <?php endif; ?>
                 <small class="pull-right">
                     <span class="label label-success"><?= $model->label ?></span>
@@ -27,6 +28,8 @@ use yii\helpers\Html;
                 </div>
             <?php endif; ?>
 
+            <?= $form->field($model->element, 'title')->textInput(); ?>
+            
             <?php if(false) : ?>
                 <?= $form->field($model, 'use_default')->checkbox(['style' => 'margin: 100px']); ?>
             <?php endif; ?>

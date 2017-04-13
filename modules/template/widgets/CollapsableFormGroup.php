@@ -20,6 +20,7 @@ class CollapsableFormGroup extends \humhub\components\Widget
     public $defaultState;
     public $openText;
     public $closeText;
+    public $label;
 
     public function init()
     {
@@ -30,11 +31,11 @@ class CollapsableFormGroup extends \humhub\components\Widget
     public function run()
     {
         if($this->openText == null) {
-            $this->openText = Yii::t('CustomPagesModule.modules_template_widgets_CollapsableFOrmGroup', 'Show more');
+            $this->openText = ($this->label) ? $this->label : Yii::t('CustomPagesModule.modules_template_widgets_CollapsableFOrmGroup', 'Show more');
         }
         
         if($this->closeText == null) {
-            $this->closeText = Yii::t('CustomPagesModule.modules_template_widgets_CollapsableFOrmGroup', 'Show less');
+            $this->closeText = ($this->label) ? $this->label :  Yii::t('CustomPagesModule.modules_template_widgets_CollapsableFOrmGroup', 'Show less');
         }
         
         return $this->render('collapsableFormGroup', [

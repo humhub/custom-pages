@@ -10,6 +10,11 @@ use yii\db\ActiveRecord;
  * 
  * TemplateElements represent the placeholders of a template.
  * A TemplateElement consists of an name which is unique within the template and content type definition. 
+ * 
+ * @var $name string
+ * @var $content_type string
+ * @var $template_id int
+ * @var $title string
  */
 class TemplateElement extends ActiveRecord
 {
@@ -33,7 +38,7 @@ class TemplateElement extends ActiveRecord
     {
         return [
             [['name', 'content_type', 'template_id'], 'required'],
-            [['name', 'content_type'], 'string', 'length' => [2, 100]],
+            [['name', 'title', 'content_type'], 'string', 'length' => [2, 100]],
             ['name', 'match', 'pattern' => '/^[a-zA-Z][a-zA-Z0-9_]+$/', 'message' => Yii::t('CustomPagesModule.models_TemplateElement', 'The element name must contain at least two characters without spaces or special signs except \'_\'')],
             ['name', 'uniqueTemplateElementName', 'on' => ['create']],
             [['template_id'], 'integer']
@@ -43,8 +48,8 @@ class TemplateElement extends ActiveRecord
     public function scenarios()
     {
         return [
-            self::SCENARIO_CREATE => ['name', 'content_type', 'template_id'],
-            self::SCENARIO_EDIT_ADMIN => ['name', 'content_type', 'template_id'],
+            self::SCENARIO_CREATE => ['name', 'content_type', 'template_id', 'title'],
+            self::SCENARIO_EDIT_ADMIN => ['title'],
             self::SCENARIO_EDIT => [],
         ];
     }
@@ -55,10 +60,16 @@ class TemplateElement extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'name' => Yii::t('CustomPagesModule.models_TemplateElement', 'Element name')
+            'name' => Yii::t('CustomPagesModule.models_TemplateElement', 'Placeholder name'),
+            'title' => Yii::t('CustomPagesModule.models_TemplateElement', 'Label')
         ];
     }
 
+    public function getTitle()
+    {
+        return ($this->title) ? $this->title : $this->name;
+    }
+    
     /**
      * This validator gets sure each element name is used only once for a template.
      * 

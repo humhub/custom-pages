@@ -64,6 +64,8 @@ class TemplatePage extends \humhub\widgets\JsWidget
      */
     public function run()
     {
+        \humhub\modules\custom_pages\modules\template\assets\TemplatePageStyleAsset::register($this->getView());
+        
         if ($this->canEdit && $this->editMode) {
             \humhub\modules\custom_pages\modules\template\assets\InlineEditorAsset::register($this->getView());
 

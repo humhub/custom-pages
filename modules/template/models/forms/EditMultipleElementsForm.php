@@ -66,7 +66,7 @@ class EditMultipleElementsForm extends \yii\base\Model
         }
     }
     
-    protected function getElement($name)
+    public function getElement($name)
     {
         foreach ($this->template->elements as $element) {
             if ($name === $element->name) {

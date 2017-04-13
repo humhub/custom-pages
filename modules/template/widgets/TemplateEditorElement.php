@@ -50,6 +50,7 @@ class TemplateEditorElement extends \humhub\widgets\JsWidget
     public function getData()
     {
         return [
+          'template-element-title' => $this->_getOption($this->renderOptions, 'element_title'),
           'template-element'  => $this->_getOption($this->renderOptions, 'element_name'),
           'template-owner'  => $this->_getOption($this->renderOptions, 'owner_model'),
           'template-owner-id'  => $this->_getOption($this->renderOptions, 'owner_id'),
@@ -58,7 +59,7 @@ class TemplateEditorElement extends \humhub\widgets\JsWidget
           'template-default'  => $this->_getOption($this->renderOptions, 'default', '0'),
           'template-empty'  => $this->_getOption($this->renderOptions, 'empty', '0'),
           'template-label' => $this->templateContent->getLabel(),
-          'template-content'  => $this->templateContent->className()
+          'template-content'  => $this->templateContent->className(),
         ];
     }
     

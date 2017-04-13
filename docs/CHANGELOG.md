@@ -1,3 +1,11 @@
+0.7.7:
+- Enh: Added file download content + download item/download list template
+- Enh: Usability enhancements
+- Fix: Add item with only one allowed template not working
+- Enh: Allow Inline Activation only for certain container items
+- Enh: Added template elemen title field
+- Enh: Use select2 dropdown as template select
+
 0.7.6:
 - Fix: Iframe page size fix.
 

@@ -23,6 +23,12 @@ use humhub\components\ActiveRecord;
  * 
  *  - Layout: Root template which is not combinable with other templates.
  *  - Container: Template which is combinable with other templates.
+ * 
+ * @var $id int
+ * @var $name string
+ * @var $source string
+ * @var $allow_for_spaces boolean
+ * @var $allow_inline_activation boolean
  */
 class Template extends ActiveRecord implements TemplateContentOwner
 {
@@ -31,6 +37,11 @@ class Template extends ActiveRecord implements TemplateContentOwner
     const TYPE_SNIPPED_LAYOUT = 'snipped-layout';
     const TYPE_NAVIGATION = 'navigation';
     const TYPE_CONTAINER = 'container';
+    
+    /**
+     * @var TemplateElement[] all template elements used for the rendering process.
+     */
+    private $_elements;
     
     /**
      * @inheritdoc
@@ -54,13 +65,14 @@ class Template extends ActiveRecord implements TemplateContentOwner
      */
     public function attributeLabels()
     {
-        return array(
+        return [
             'id' => 'ID',
             'name' => 'Name',
             'source' => 'Source',
             'allow_for_spaces' => 'Allow this layout in spaces',
+            'allow_inline_activation' => 'Allow inline edit activation in inline editor',
             'description' => 'Description',
-        );
+        ];
     }
 
     /**
@@ -71,12 +83,23 @@ class Template extends ActiveRecord implements TemplateContentOwner
         return [
             [['name', 'type'], 'required', 'on' => ['edit']],
             ['description', 'safe'],
-            [['allow_for_spaces', 'isLyout'], 'integer'],
+            [['allow_for_spaces', 'isLyout', 'allow_inline_activation'], 'integer'],
             [['name'], 'unique'],
             [['name', 'type'], 'string', 'max' => 100],
             [['type'], 'validType'],
             [['source'], 'required', 'on' => ['source']],
         ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios['edit'] = ['name', 'description', 'allow_for_spaces', 'allow_inline_activation'];
+        $scenarios['source'] = ['source'];
+        return $scenarios;
     }
     
     /**
@@ -149,17 +172,6 @@ class Template extends ActiveRecord implements TemplateContentOwner
     }
 
     /**
-     * @inheritdoc
-     */
-    public function scenarios()
-    {
-        $scenarios = parent::scenarios();
-        $scenarios['edit'] = ['name', 'description', 'allow_for_spaces'];
-        $scenarios['source'] = ['source'];
-        return $scenarios;
-    }
-
-    /**
      * Renders the template for the given $owner or with all default content if
      * no $owner was given.
      * 
@@ -169,7 +181,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
      * @param ActiveRecord $owner
      * @return string
      */
-    public function render(ActiveRecord $owner = null, $editMode = false)
+    public function render(ActiveRecord $owner = null, $editMode = false, $containerItem = null)
     {
         $contentElements = $this->getContentElements($owner);
         
@@ -181,14 +193,20 @@ class Template extends ActiveRecord implements TemplateContentOwner
         foreach ($contentElements as $contentElement) {
             $options = [
                 'editMode' => $editMode,
+                'element_title' => $this->getElementTitle($contentElement->element_name),
                 'owner_model' => $owner->className(),
-                'owner_id' => $owner->id
+                'owner_id' => $owner->id,
+                'item' => $containerItem
             ];
             
             $content[$contentElement->element_name] = new OwnerContentVariable(['ownerContent' => $contentElement, 'options' => $options]);
         }
         
         $content['assets'] = new AssetVariable();
+        
+        if($containerItem) {
+            //$content['item'] = new ContainerItemVariable(['item' => $containerItem]);
+        }
 
         $engine = TemplateEngineFactory::create($this->engine);
         $result = $engine->render($this->name, $content);
@@ -208,9 +226,9 @@ class Template extends ActiveRecord implements TemplateContentOwner
     public function getContentElements(ActiveRecord $owner = null)
     {
         $result = [];
-        $elements = $this->getElements()->all();
+        $this->_elements = $this->getElements()->all();
 
-        if (count($elements) == 0) {
+        if (count($this->_elements) == 0) {
             return $result;
         }
 
@@ -223,13 +241,26 @@ class Template extends ActiveRecord implements TemplateContentOwner
             return $contentInstance->element_name;
         }, $result);
 
-        foreach ($elements as $element) {
+        foreach ($this->_elements as $element) {
             if (!in_array($element->name, $ownerElementNames)) {
                 $result[] = $element->getDefaultContent(true);
             }
         }
 
         return $result;
+    }
+    
+    private function getElementTitle($element_name)
+    {
+        if(!$this->_elements) {
+            $this->_elements = $this->getElements()->all();
+        }
+        
+        foreach ($this->_elements as $element) {
+            if($element->name === $element_name) {
+                return $element->getTitle();
+            }
+        }
     }
     
     /**

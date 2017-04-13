@@ -6,10 +6,6 @@ use yii\web\AssetBundle;
 
 class TemplateCoreAsset extends AssetBundle
 {
-
-    public $publishOptions = [
-        'forceCopy' => true
-    ];
     
     public $jsOptions = ['position' => \yii\web\View::POS_END];
     

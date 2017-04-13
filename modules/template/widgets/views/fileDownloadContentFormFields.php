@@ -1,4 +1,5 @@
 <?php
+use humhub\modules\custom_pages\modules\template\widgets\CollapsableFormGroup;
 /* @var $model humhub\modules\custom_pages\modules\template\models\template\FileContent */
 /* @var $form humhub\compat\CActiveForm */
 
@@ -9,7 +10,11 @@ $uploadUrl = Url::to(['/file/file/upload']);
 $id = 'fileContent-' . $model->id;
 ?>
 
-<?= $form->field($model, 'file_guid')->hiddenInput(['class' => 'file-guid'])->label(false); ?>
+
+
+<?= $form->field($model, 'title')->textInput(); ?>
+<?= $form->field($model, 'showFileinfo')->checkbox(); ?>
+<?= $form->field($model, 'showIcon')->checkbox(); ?>
 
 <div id="<?= $id ?>" class="file-upload-container clearfix">
 
@@ -33,7 +38,13 @@ $id = 'fileContent-' . $model->id;
         'popoverPosition' => 'top',
         'items' => [$model->getFile()],
         'options' => ['style' => 'display:block;margin-left:150px']]) ?>
-    
     <?= humhub\modules\file\widgets\UploadProgress::widget(['id' => $id . '-progress', 'options' => ['style' => 'display:block;margin-left:150px;width:500px']]) ?>
 
 </div>
+
+<?php CollapsableFormGroup::begin(['defaultState' => false, 'label' => Yii::t('CustomPagesModule.base', 'Advanced'),]) ?>
+    <?= $form->field($model, 'style')->textInput(); ?>
+    <?= $form->field($model, 'cssClass')->textInput(); ?>
+    <?= $form->field($model, 'file_guid')->hiddenInput(['class' => 'file-guid'])->label(false); ?>
+<?php CollapsableFormGroup::end() ?>
+

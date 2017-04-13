@@ -12,7 +12,7 @@ use yii\helpers\Html;
         <div class="modal-body media-body">  
             <div class="form-group field-templateelement-name required">
                 <label class="control-label" for="templateSelection"><?= Yii::t('CustomPagesModule.modules_template_views_element_addItemChooseTemplate', 'Template'); ?></label>
-                <?= Html::dropDownList('templateId', null, $allowedTemplateSelection, ['id' => 'templateSelection', 'class' => 'form-control']) ?>
+                <?= Html::dropDownList('templateId', null, $allowedTemplateSelection, ['id' => 'templateSelection', 'class' => 'form-control', 'data-ui-select2' => '1']) ?>
             </div>
         </div>
         <div class="modal-footer">

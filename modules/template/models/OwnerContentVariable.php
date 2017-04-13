@@ -8,6 +8,10 @@ class OwnerContentVariable extends Model
 {
     
     public $options = [];
+    
+    /**
+     * @var OwnerContent 
+     */
     public $ownerContent;
     
     public function getLabel()
@@ -28,6 +32,11 @@ class OwnerContentVariable extends Model
     public function getEmpty()
     {
         return $this->ownerContent->isEmpty();
+    }
+    
+    public function getContent()
+    {
+        return $this->ownerContent->instance;
     }
     
     public function render($editMode = false)

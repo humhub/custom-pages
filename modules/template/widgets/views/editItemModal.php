@@ -13,7 +13,8 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(['action' => $action, 'enableClientValidation' => false]); ?>
         <div class="modal-body media-body template-edit-multiple">  
             
-            <?= $form->field($model, 'title')->textInput(['class' => 'form-control template-edit-multiple-title']); ?>
+            <?= $form->field($model, 'title')->textInput(['class' => 'form-control template-edit-multiple-title', 'placeholder' => Yii::t('CustomPagesModule.base', 'Item name')])->label(false); ?>
+            
             <?php $counter = 0 ?>
             <?php foreach ($model->contentMap as $key => $contentItem) : ?>
 
@@ -21,7 +22,10 @@ use yii\widgets\ActiveForm;
 
                 <div class="panel panel-default">
                     <div class="template-edit-multiple-tab panel-heading" tabindex="0">
-                        <strong class="">#<?= Html::encode($contentItem->ownerContent->element_name) ?>&nbsp;<i class="switchIcon fa fa-caret-down" aria-hidden="true"></i></strong>
+                        <strong>
+                            <?= Html::encode($model->getElement($contentItem->ownerContent->element_name)->getTitle()) ?>&nbsp;
+                            <i class="switchIcon fa fa-caret-down" aria-hidden="true"></i>
+                        </strong>
                         <small class="pull-right">
                             <span class="label label-success"><?= $contentItem->ownerContent->label ?></span>
                         </small>

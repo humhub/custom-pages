@@ -140,7 +140,6 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
         if (this.isActiveItem(element)) {
             this.activeItem = undefined;
             this.clearExcept();
-            debugger;
             newElement.data('isActiveItem', true);
             this.setActivateElement($content);
             newElement.startInlineEdit(true);
@@ -173,9 +172,10 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
 
         var hasRootOwner = element.owner === "humhub\\modules\\custom_pages\\modules\\template\\models\\TemplateInstance";
         var isActiveCotnainerItemContent = this.activeItem && this.activeItem.isParentOf(element);
+        var isEmptyContainer = element.$.is('.emptyContainerBlock');
 
         // Only activate direct root elements or elements within the current activeItem or containerItems itself.
-        if (hasRootOwner || element.isContainerItem || isActiveCotnainerItemContent) {
+        if (isEmptyContainer || hasRootOwner || element.isContainerItem || isActiveCotnainerItemContent) {
             this.setSelection(element);
             element.activate();
             this.activeElements.push(element);
@@ -223,6 +223,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
 
     module.initOnPjaxLoad = true;
     var init = function () {
+        $('.editMenu, .elementMenu').remove();
         if ($('#templatePageRoot').length && require('ui.view').getState().action !== 'edit-source') {
             module.editor = Widget.instance('#templatePageRoot');
             _initEvents();

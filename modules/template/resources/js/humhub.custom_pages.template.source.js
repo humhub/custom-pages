@@ -87,7 +87,6 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
     TemplateSourceEditor.prototype.deleteElementSubmit = function (evt) {
         var that = this;
         client.post(evt).then(function (response) {
-            debugger;
             if (response.success) {
                 that.removeElement(response.id);
             }

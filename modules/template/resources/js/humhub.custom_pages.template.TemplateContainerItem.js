@@ -15,10 +15,10 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
         TemplateElement.call(this, node, options);
         this.itemId = this.data('template-item');
         this.parent = this.getParent();
-        this.name = this.data('template-item-title');
+        this.name = this.title = this.data('template-item-title');
         this.inline = this.$.hasClass('inline');
         if (!this.name) {
-            this.name = this.getParent().name + ':' + this.$.index();
+            this.name = this.title = this.getParent().name + ':' + this.$.index();
         }
 
         this.editTemplateUrl = this.data('template-edit-url');
@@ -28,6 +28,15 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
     };
 
     object.inherits(TemplateContainerItem, TemplateElement);
+
+    TemplateContainerItem.prototype.getName = function() {
+        var name = this.$.children('[data-title]').data('title');
+        if(!name || !name.length) {
+            name = this.data('template-item-title');
+        }
+        
+        return name;
+    }
 
     TemplateContainerItem.prototype.isFirst = function () {
         return this.$.index() === 0;
@@ -43,7 +52,11 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
         }
 
         var that = this;
-        var items = [this.createContainerToggle()];
+        var items = [];
+        
+        if(this.options.allowInlineActivation) {
+            items.push(this.createContainerToggle());
+        }
 
         if (!this.isFirst()) {
             items.push(this.createMoveButton(-1));

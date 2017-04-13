@@ -90,7 +90,7 @@ class ContainerContentController extends \humhub\components\Controller
         // If the ContentContainerDefinition only allows one specific template, we skip the template selection.
         if ($ownerContent->instance->isSingleAllowedTemplate()) {
             return $this->runAction('edit-add-item', [
-                        'templateId' => $ownerContent->instance->allowedTemplates[0],
+                        'templateId' => $ownerContent->instance->allowedTemplates[0]->id,
                         'ownerContent' => $ownerContent,
                         'sguid' => $sguid
             ]);
@@ -208,7 +208,7 @@ class ContainerContentController extends \humhub\components\Controller
 
         return $this->asJson([
                     'output' => EditContainerItemModal::widget(['model' => $form,
-                        'title' => Yii::t('CustomPagesModule.controllers_AdminController', '<strong>Edit</strong> container item')])
+                        'title' => Yii::t('CustomPagesModule.controllers_AdminController', '<strong>Edit</strong> item')])
         ]);
     }
 

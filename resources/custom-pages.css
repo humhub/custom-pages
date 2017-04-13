@@ -22,10 +22,6 @@
     box-shadow: 1px 1px 1px 1px rgba(210, 210, 210, 0.5);
 }
 
-.previewContainer {
-    text-align: center;
-}
-
 .imageLoader {
     position: absolute;
     z-index: 2000;
@@ -97,7 +93,7 @@ div[data-template-item].highlightEdit {
 div[data-template-element] {
     border: 1px solid rgba(210, 210, 210, 0.5);
     position:relative;
-    overflow:auto;
+    overflow:hidden;
     box-sizing:border-box;
     z-index:0;
 }
@@ -109,7 +105,8 @@ div[data-template-element].highlightEdit {
 div[data-template-element] .emptyBlock {
     background-color:silver;
     border:1px solid orange;
-    min-height:200px;
+    min-height:150px;
+    width:100%;
 }
 
 div[data-template-element] .emptyBlock.text {
@@ -218,7 +215,8 @@ div[data-template-element].highlightAdd {
 .template-edit-multiple .panel-heading {
     background-color: #f5f5f5 !important;
     border: 2px solid #f5f5f5 !important;
-    padding: 8px !important;
+    padding: 5px !important;
+    border-radius: 0px !important;
     box-sizing: border-box !important;
 }
 
@@ -290,4 +288,12 @@ div[data-template-element].highlightAdd {
 
 body.modal-open {
     overflow:hidden;
+}
+
+.file-upload-container {
+    padding: 10px;
+}
+
+.cp-file-upload-preview {
+    display: inline-block;
 }

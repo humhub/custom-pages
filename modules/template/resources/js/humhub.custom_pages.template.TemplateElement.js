@@ -30,6 +30,8 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
         this.deleteUrl = this.editor.options.elementDeleteUrl;
 
         this.name = this.options.templateElement;
+    
+        this.title = this.options.templateElementTitle || this.name;
         this.content = this.options.templateContent;
         this.contentId = this.options.templateContentId;
         this.owner = this.options.templateOwner;
@@ -189,7 +191,7 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
         this.$menu = (!this.$menu) ? $(string.template(TemplateElement.template.menu, {cssClass : options.cssClass})) : this.$menu;
 
         if (this.name) {
-            this.$menu.append($('<span>#' + this.name + '</span>'));
+            this.$menu.append($('<span>' + this.title + '</span>'));
         } 
         
         if(this.label) {

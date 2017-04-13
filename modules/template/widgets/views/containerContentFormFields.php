@@ -18,7 +18,8 @@ $disableDefinition = !$isAdminEdit && !$model->definition->isNewRecord;
 
 <div class="form-group field-templateelement-name">
     <label class="control-label" for="templateelement-name"><?= $model->getAttributeLabel('allowedTemplates') ?></label>
-    <?= Html::dropDownList($model->formName() . '[definitionPostData][allowedTemplateSelection][]', $model->definition->allowedTemplateSelection, Template::getSelection(['type' => Template::TYPE_CONTAINER]), ['class' => 'form-control multiselect_dropdown', 'disabled' => $disableDefinition, 'style' => 'style="width: 100%"', 'multiple' => '', 'size' => 4]); ?>
+    <?= Html::dropDownList($model->formName() . '[definitionPostData][allowedTemplateSelection][]', $model->definition->allowedTemplateSelection, Template::getSelection(['type' => Template::TYPE_CONTAINER]), 
+            ['class' => 'form-control multiselect_dropdown', 'disabled' => $disableDefinition, 'style' => 'style="width: 100%"', 'multiple' => '', 'size' => 4]); ?>
 </div>
 <p class="help-block">
     <?= Yii::t('CustomPagesModule.base', 'An empty allowed template selection will allow all container templates for this container.'); ?>

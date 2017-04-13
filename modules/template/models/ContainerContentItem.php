@@ -6,6 +6,10 @@ use yii\helpers\Url;
 
 /**
  * This is the model class for table "custom_pages_template_container_content_item".
+ * 
+ * @var $template_id int
+ * @var $container_content_id int
+ * @var $title string
  */
 class ContainerContentItem extends \humhub\components\ActiveRecord implements TemplateContentOwner
 {
@@ -18,6 +22,9 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
         return 'custom_pages_template_container_content_item';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
@@ -27,6 +34,9 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
         ];
     }
     
+    /**
+     * @inheritdoc
+     */
     public function afterDelete()
     {
         OwnerContent::deleteByOwner($this);
@@ -69,7 +79,7 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
             return $this->wrap($this->template->render($this, $editMode), $inline);
         }
 
-        return $this->template->render($this, $editMode);
+        return $this->template->render($this, $editMode, $this);
     }
 
     public function wrap($content, $inline)
@@ -79,6 +89,7 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
             'content' => $content,
             'options' => [
                 'class' => ($inline) ? 'inline' : '',
+                'data-allow-inline-activation' => $this->template->allow_inline_activation,
                 'data-template-item' => $this->id,
                 'data-template-edit-url' => Url::to(['/custom_pages/template/container-admin/edit-source', 'id' => $this->template_id]),
                 'data-template-item-title' => $this->title,
@@ -97,5 +108,4 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
     {
         return self::find()->where(['template_id' => $templateId]);
     }
-
 }

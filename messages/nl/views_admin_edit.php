@@ -17,14 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Next' => '',
-    '<strong>Create</strong> page' => '<strong>Maak</strong> pagina',
-    '<strong>Edit</strong> page' => '<strong>Bewerk</strong> pagina',
-    'Content' => 'Inhoud',
-    'Default sort orders scheme: 100, 200, 300, ...' => 'Standaard sorteervolgorde: 100, 200, 300, ...',
-    'Delete' => 'Verwijder',
-    'Page title' => 'Paginatitel',
     'Save' => 'Bewaar',
-    'Sort Order' => 'Sorteervolgorde',
-    'URL' => 'URL',
 ];

@@ -17,5 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Add</strong> new page' => '',
+    'Add new {pageType}' => '',
+    'Create new template' => '',
+    'Edit template' => '',
 ];

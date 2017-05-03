@@ -83,6 +83,26 @@ class Events extends \yii\base\Object
         }
     }
 
+    public static function onDirectoryMenuInit($event)
+    {
+        foreach (Page::findAll(['navigation_class' => Page::NAV_CLASS_DIRECTORY]) as $page) {
+            // Admin only
+            if ($page->admin_only == 1 && !Yii::$app->user->isAdmin()) {
+                continue;
+            }
+            
+            $event->sender->addItem(array(
+                'label' => $page->title,
+                'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
+                'group' => 'directory',
+                'target' => ($page->in_new_window) ? '_blank' : null,
+                'icon' => '<i class="fa ' . $page->icon . '"></i>',
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' && Yii::$app->controller->id == 'view' && Yii::$app->request->get('id') == $page->id),
+                'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
+            ));
+        }
+    }    
+
     public static function onTopMenuInit($event)
     {
         foreach (Page::findAll(['navigation_class' => Page::NAV_CLASS_TOPNAV]) as $page) {

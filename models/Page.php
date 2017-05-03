@@ -32,6 +32,7 @@ class Page extends ActiveRecord implements CustomContentContainer
     const NAV_CLASS_TOPNAV = 'TopMenuWidget';
     const NAV_CLASS_ACCOUNTNAV = 'AccountMenuWidget';
     const NAV_CLASS_EMPTY = 'WithOutMenu';
+    const NAV_CLASS_DIRECTORY = 'DirectoryMenu'; //in humhub\modules\directory\widgets\Menu
 
     /**
      * @inhritdoc
@@ -96,6 +97,7 @@ class Page extends ActiveRecord implements CustomContentContainer
         return [
             self::NAV_CLASS_TOPNAV => Yii::t('CustomPagesModule.base', 'Top Navigation'),
             self::NAV_CLASS_ACCOUNTNAV => Yii::t('CustomPagesModule.base', 'User Account Menu (Settings)'),
+            self::NAV_CLASS_DIRECTORY => Yii::t('CustomPagesModule.base', 'Directory Menu'),
             self::NAV_CLASS_EMPTY => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)'),
         ];
     }

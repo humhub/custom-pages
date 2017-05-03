@@ -54,6 +54,10 @@ class ViewController extends Controller
             $this->subLayout = "@humhub/modules/user/views/account/_layout";
         }
         
+        if ($page->navigation_class == Page::NAV_CLASS_DIRECTORY) {
+            $this->subLayout = "@humhub/modules/custom_pages/views/layouts/_directory_layout";
+        }
+        
         $this->getView()->pageTitle = $page->title;
 
         if ($page->type == Container::TYPE_HTML) {

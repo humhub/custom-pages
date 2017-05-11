@@ -282,6 +282,7 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
     {
         $config = \HTMLPurifier_Config::createDefault();
         $config->set('HTML.Attr.Name.UseCDATA', true);
+        $config->set('Attr.AllowedFrameTargets', ['_blank']);
 
         return \yii\helpers\HtmlPurifier::process($content, $config);
     }

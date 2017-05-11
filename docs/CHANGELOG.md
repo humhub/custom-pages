@@ -1,3 +1,9 @@
+0.7.9:
+- Enh: Allow target _blank links in richtext
+
+0.7.8: 
+- Enh: Added directory menu pages
+
 0.7.7:
 - Enh: Added file download content + download item/download list template
 - Enh: Usability enhancements

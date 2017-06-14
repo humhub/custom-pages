@@ -7,21 +7,25 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 <style>
     #iframepage {
         border: none;
+        margin-top: 0px;
         background: url('<?= Yii::$app->moduleManager->getModule('custom_pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
     }
 </style>
 
 <script>
-    $(document).on('humhub:ready', function() {
-        setSize();
-    });
-    
+    function setSize() {
+        $('#iframepage').css('height', (window.innerHeight - $('#iframepage').position().top - 15) + 'px');
+    }
+
     window.onresize = function (evt) {
         setSize();
     };
 
-    function setSize() {
-
-        $('#iframepage').css('height', window.innerHeight - 170 + 'px');
-    }
+    debugger;
+    $(document).on('humhub:ready', function () {
+        debugger;
+        $('#iframepage').load(function () {
+            setSize();
+        });
+    });
 </script>

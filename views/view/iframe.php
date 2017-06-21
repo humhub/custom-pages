@@ -1,11 +1,14 @@
 <?php
+use \humhub\modules\custom_pages\models\Page;
+
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
+$margin = $navigationClass == Page::NAV_CLASS_TOPNAV ? -15 : 0;
 ?>
 
 <style>
     #iframepage {
         border: none;
-        margin-top: -15px;
+        <?= $margin ? 'margin-top:'.$margin.'px;' : ''?>        
         background: url('<?= Yii::$app->moduleManager->getModule('custom_pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
     }
 </style>
@@ -15,7 +18,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 
 <script>
     function setSize() {
-        $('#iframepage').css('height', (window.innerHeight - $('#iframepage').position().top - 15 ) + 'px');
+        $('#iframepage').css('height', (window.innerHeight - $('#iframepage').position().top - <?=$margin?> - 15) + 'px');
     }
 
     window.onresize = function (evt) {

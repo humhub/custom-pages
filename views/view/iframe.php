@@ -20,6 +20,10 @@ $margin = $navigationClass == Page::NAV_CLASS_TOPNAV ? -15 : 0;
     function setSize() {
         $('#iframepage').css('height', (window.innerHeight - $('#iframepage').position().top - <?=$margin?> - 15) + 'px');
     }
+    
+    // execute setSize in the beginning, else dynamically loaded content in the 
+    // Iframe gets the wrong size to work with
+    setSize();
 
     window.onresize = function (evt) {
         setSize();

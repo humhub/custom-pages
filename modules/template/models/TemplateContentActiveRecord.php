@@ -42,6 +42,11 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
     public $fileList = [];
 
     /**
+     * @var bool prevents multiple attach files calls
+     */
+    public $filesSaved = false;
+
+    /**
      * @return string rendered content type by means of the given $options.
      */
     abstract public function render($options = []);
@@ -223,7 +228,10 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        $this->saveFiles();
+        if(!$this->filesSaved) {
+            $this->filesSaved = true;
+            $this->saveFiles();
+        }
     }
 
     /**

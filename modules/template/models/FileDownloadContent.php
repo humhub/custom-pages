@@ -121,7 +121,7 @@ class FileDownloadContent extends TemplateContentActiveRecord
     {
         $file = $this->getFile();
         if($file) {
-            return Url::to(['/file/file/download', 'guid' => $file->guid, 'download' => '1']);
+            return Url::to(['/file/file/download', 'guid' => $file->guid]);
         }
     }
     
@@ -144,6 +144,7 @@ class FileDownloadContent extends TemplateContentActiveRecord
                 'href' => $this->getDownloadUrl(),
                 'style' => Html::encode($this->style),
                 'class' => Html::encode($this->cssClass),
+                'target' => '_blank',
                 'data-pjax-prevent' => '1'
             ];
             

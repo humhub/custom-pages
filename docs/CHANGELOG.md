@@ -1,3 +1,7 @@
+0.7.13:
+- Fix: Error with FileManager afterSave logic
+- Enh: Open FileDownload items in new window
+
 0.7.9:
 - Enh: Allow target _blank links in richtext
 

@@ -75,7 +75,9 @@ class ContentFormItem extends \yii\base\Model
         }
 
         if ($this->ownerContent->isDefault() && !$this->editDefault) {
+            $fileList = $this->content->fileList;
             $this->content = $this->content->copy();
+            $this->content->fileList = $fileList;
         }
         
         if ($this->content->isNewRecord) {

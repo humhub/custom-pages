@@ -1,3 +1,6 @@
+0.7.15:
+- Fix #73: Richtext uploads not attached on initial edit;
+- 
 0.7.13:
 - Fix: Error with FileManager afterSave logic
 - Enh: Open FileDownload items in new window

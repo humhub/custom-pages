@@ -17,23 +17,24 @@ class CreateTemplatePageCest
         $I->see('Overview');
         
         $I->click('Create new layout'); // Add Markdown button
-        
+
+        $I->waitForElementVisible('#template-name');
+
         $I->fillField('Template[name]', 'MyTestTemplate');
         $I->fillField('Template[description]', 'Test Content');
         $I->jsClick('#template-allow_for_spaces');
         $I->click('Save');
-        $I->wait(3);
         
         $I->expectTo('see the edit source view');
-        $I->seeElement('#template-form-source');
+        $I->waitForElementVisible('#template-form-source');
         
         $I->amGoingTo('add a text element');
         $this->clickAddElement($I, 'Text');
         $I->expectTo('see the add text element view');
         $I->fillField('TemplateElement[name]', 'text');
         $I->fillField('TextContent[content]', 'This is my test text!');
-        $I->click('#editTemplateSubmit');
-        $I->waitForElementNotVisible('#editTemplateSubmit');
+        $I->click('.btn-primary', '#globalModal');
+        $I->waitForElementNotVisible('#globalModal');
         $I->expectTo('see the new element added to the source');
         $I->seeInField('#template-form-source', '{{ text }}');
         
@@ -41,23 +42,24 @@ class CreateTemplatePageCest
         $this->clickAddElement($I, 'Richtext');
         $I->fillField('TemplateElement[name]', 'richtext');
         $I->jsFillField('RichtextContent[content]', '<p>Richtext Test</p>');
-        $I->click('#editTemplateSubmit');
-        $I->waitForElementNotVisible('#editTemplateSubmit');
+        $I->click('.btn-primary', '#globalModal');
+        $I->waitForElementNotVisible('#globalModal');
         
         $I->amGoingTo('add a image element');
         $this->clickAddElement($I, 'Image');
         $I->fillField('TemplateElement[name]', 'image');
         //Workaround
         $I->jsShow('.uploadElementImage', 'type');
-        $I->attachFile('.uploadElementImage', 'test.jpg');
+        #$I->wait(20);
+        $I->attachFile('files[]', 'test.jpg');
         $I->click('.collapsableTrigger'); //Show more
         $I->wait(2);
         $I->fillField('ImageContent[definitionPostData][height]', '100');
         $I->fillField('ImageContent[definitionPostData][width]', '100');
         $I->fillField('ImageContent[definitionPostData][style]', 'border:1px solid black');
         $I->fillField('ImageContent[alt]', 'This is my test alt text');
-        $I->click('#editTemplateSubmit');
-        $I->waitForElementNotVisible('#editTemplateSubmit');
+        $I->click('Save', '#globalModal');
+        $I->waitForElementNotVisible('#globalModal');
         
         $I->amGoingTo('add a file element');
         $this->clickAddElement($I, 'File');
@@ -65,10 +67,11 @@ class CreateTemplatePageCest
         
         //Workaround
         $I->jsShow('.uploadElementImage', 'type');
-        $I->attachFile('.uploadElementFile', 'test.jpg');
+
+        $I->attachFile('files[]', 'test.jpg');
         $I->wait(2);
-        $I->click('#editTemplateSubmit');
-        $I->waitForElementNotVisible('#editTemplateSubmit');
+        $I->click('Save', '#globalModal');
+        $I->waitForElementNotVisible('#globalModal');
 
         $I->click('Save');
        
@@ -84,7 +87,7 @@ class CreateTemplatePageCest
         $I->wait(1);
         
         $I->click($type);
-        $I->waitForElementVisible('#editTemplateSubmit');
+        $I->waitForElementVisible('#templateelement-name');
         
     }
 }

@@ -8,13 +8,19 @@
 
 namespace humhub\modules\custom_pages\components;
 
+use humhub\modules\custom_pages\models\forms\SettingsForm;
+use humhub\modules\file\libs\FileHelper;
 use Yii;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use yii\helpers\Html;
+use yii\web\HttpException;
 
 /**
- * Description of AbstractContainer
+ * The Container Behavior is used by custom page containers as pages and snippets and does provide some common
+ * logic as default labels and rules as well as helper functions for special container types as template or php based
+ * containers.
  *
  * @author buddha
  */
@@ -26,10 +32,21 @@ class Container extends Behavior
     const TYPE_IFRAME = '3';
     const TYPE_MARKDOWN = '4';
     const TYPE_TEMPLATE = '5';
+    const TYPE_PHP = '6';
 
+    /**
+     * @var ActiveRecord|null the owner of this behavior
+     */
+    public $owner;
+
+    /**
+     * @var integer special field for template based pages specifying the layout id
+     */
     public $templateId;
-    public $contentProp = 'content';
 
+    /**
+     * @inheritdoc
+     */
     public function events()
     {
         return [
@@ -39,6 +56,37 @@ class Container extends Behavior
         ];
     }
 
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function defaultAttributeLabels()
+    {
+        if($this->isType(Container::TYPE_PHP)) {
+            $contentLabel = Yii::t('CustomPagesModule.models_Page', 'View');
+        } else {
+            $contentLabel = Yii::t('CustomPagesModule.components_Container', 'Content');
+        }
+
+        return [
+            'id' => Yii::t('CustomPagesModule.components_Container', 'ID'),
+            'type' => Yii::t('CustomPagesModule.components_Container', 'Type'),
+            'title' => Yii::t('CustomPagesModule.components_Container', 'Title'),
+            'icon' => Yii::t('CustomPagesModule.components_Container', 'Icon'),
+            'cssClass' => Yii::t('CustomPagesModule.components_Container', 'Style Class'),
+            'content' => $contentLabel,
+            'sort_order' => Yii::t('CustomPagesModule.components_Container', 'Sort Order'),
+            'targetUrl' => Yii::t('CustomPagesModule.components_Container', 'Target Url'),
+            'templateId' => Yii::t('CustomPagesModule.components_Container', 'Template Layout'),
+            'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins')
+        ];
+    }
+
+
+    /**
+     * Returns the default validation rules of a container, this may be overwritten or extended by subclasses.
+     *
+     * @return array
+     */
     public function defaultRules()
     {
         return [
@@ -48,34 +96,116 @@ class Container extends Behavior
             [['icon'], 'string', 'max' => 100],
             [['templateId'], 'safe'],
             ['type', 'validateTemplateType'],
+            ['type', 'validatePhpType'],
         ];
     }
 
+    /**
+     * Validates the templateId value for template based pages.
+     *
+     * @param $attribute
+     * @param $params
+     */
     public function validateTemplateType($attribute, $params)
     {
-        if ($this->owner->isNewRecord && $this->owner->type == self::TYPE_TEMPLATE && $this->owner->templateId == null) {
+        if ($this->isType(self::TYPE_TEMPLATE) && $this->owner->isNewRecord && !$this->owner->templateId) {
             $this->owner->addError('templateId', Yii::t('CustomPagesModule.components_Container', 'Invalid template selection!'));
         }
     }
 
     /**
-     * @return array customized attribute labels (name=>label)
+     * Additional validator for php based pages.
+     *
+     * @param $attribute
+     * @param $params
      */
-    public function defaultAttributeLabels()
+    public function validatePhpType($attribute, $params)
     {
-        return [
-            'id' => Yii::t('CustomPagesModule.components_Container', 'ID'),
-            'type' => Yii::t('CustomPagesModule.components_Container', 'Type'),
-            'title' => Yii::t('CustomPagesModule.components_Container', 'Title'),
-            'icon' => Yii::t('CustomPagesModule.components_Container', 'Icon'),
-            'cssClass' => Yii::t('CustomPagesModule.components_Container', 'Style Class'),
-            'content' => Yii::t('CustomPagesModule.components_Container', 'Content'),
-            'templateId' => Yii::t('CustomPagesModule.components_Container', 'Template Layout'),
-            'sort_order' => Yii::t('CustomPagesModule.components_Container', 'Sort Order'),
-            'targetUrl' => Yii::t('CustomPagesModule.components_Container', 'Target Url'),
-            'templateId' => Yii::t('CustomPagesModule.components_Container', 'Template Layout'),
-            'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins')
-        ];
+        if($this->isType(self::TYPE_PHP)) {
+            $settigns = new SettingsForm();
+            if($this->owner->isNewRecord && !$settigns->phpPagesActive) {
+                throw new HttpException(403);
+            }
+
+            if(!$this->validatePhpViewFile()) {
+                $this->owner->addError($this->owner->getPageContentProperty(), Yii::t('CustomPagesModule.components_Container', 'Invalid view file selection!'));
+            }
+        }
+    }
+
+
+    /**
+     * Validates the view file setting for php based pages.
+     *
+     * @return bool
+     */
+    public function validatePhpViewFile()
+    {
+        $allowedFiles = $this->getAllowedPhpViewFileSelection();
+        return array_key_exists(Html::getAttributeValue($this->owner, $this->owner->getPageContentProperty()), $allowedFiles);
+    }
+
+    /**
+     * Returns the actual view file path for a php based page.
+     *
+     * @return bool|null|string
+     */
+    public function getPhpViewFilePath()
+    {
+        if($this->isType(self::TYPE_PHP)) {
+            $viewFiles = $this->getAllowedPhpViewFileSelection(true);
+            $viewName = Html::getAttributeValue($this->owner, $this->owner->getPageContentProperty());
+
+            if(array_key_exists($viewName, $viewFiles)) {
+                return $this->getPhpViewPath(basename($viewFiles[$viewName]), true);
+            }
+        }
+
+        return null;
+    }
+
+    public function hasAllowedPhpViews()
+    {
+        return count($this->getAllowedPhpViewFileSelection()) > 0;
+    }
+
+    /**
+     * Returns all allowed view files as associative array in the form of
+     *
+     *  [basename => file path] if $path = true
+     *
+     * or
+     *
+     *  [basename => basename] if $path = false
+     *
+     * @return string[]
+     */
+    public function getAllowedPhpViewFileSelection($path = false)
+    {
+        $files = FileHelper::findFiles($this->getPhpViewPath(), [
+            'only' => ['*.php'],
+            'recursive' => false
+        ]);
+
+        $result = [];
+        foreach ($files as $file) {
+            $baseName = basename($file, '.php');
+            $result[$baseName] = ($path) ? $file : $baseName;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns the php view path.
+     * @param string $view
+     * @param bool $alias
+     * @return bool|string
+     */
+    public function getPhpViewPath($view = '', $alias = false)
+    {
+        $path = rtrim($this->owner->getPhpViewPath(), '/') . '/'.$view;
+        return ($alias) ? $path : Yii::getAlias($path);
     }
 
     public function afterSave()
@@ -119,6 +249,7 @@ class Container extends Behavior
             Container::TYPE_MARKDOWN => Yii::t('CustomPagesModule.base', 'MarkDown'),
             Container::TYPE_IFRAME => Yii::t('CustomPagesModule.base', 'IFrame'),
             Container::TYPE_TEMPLATE => Yii::t('CustomPagesModule.base', 'Template'),
+            Container::TYPE_PHP => Yii::t('CustomPagesModule.base', 'PHP'),
         ];
     }
     
@@ -131,10 +262,10 @@ class Container extends Behavior
             Container::TYPE_HTML => 'html',
             Container::TYPE_MARKDOWN => 'markdown',
             Container::TYPE_IFRAME => 'iframe',
-            Container::TYPE_TEMPLATE => 'template'
+            Container::TYPE_TEMPLATE => 'template',
+            Container::TYPE_PHP => 'php'
         ];
     }
-
     public function getTemplateId()
     {
         if($this->templateId == null) {

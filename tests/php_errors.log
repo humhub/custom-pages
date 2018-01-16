@@ -1,0 +1,35 @@
+[12-Jan-2018 07:49:08 UTC] PHP Fatal error:  Uncaught RuntimeException: Command Did Not Finish Properly in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php:101
+Stack trace:
+#0 [internal function]: Codeception\Subscriber\ErrorHandler->shutdownHandler()
+#1 {main}
+  thrown in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php on line 101
+[12-Jan-2018 10:13:59 UTC] PHP Fatal error:  Uncaught RuntimeException: Command Did Not Finish Properly in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php:101
+Stack trace:
+#0 [internal function]: Codeception\Subscriber\ErrorHandler->shutdownHandler()
+#1 {main}
+  thrown in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php on line 101
+[12-Jan-2018 10:14:28 UTC] PHP Fatal error:  Uncaught RuntimeException: Command Did Not Finish Properly in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php:101
+Stack trace:
+#0 [internal function]: Codeception\Subscriber\ErrorHandler->shutdownHandler()
+#1 {main}
+  thrown in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php on line 101
+[12-Jan-2018 10:17:47 UTC] PHP Fatal error:  Uncaught RuntimeException: Command Did Not Finish Properly in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php:101
+Stack trace:
+#0 [internal function]: Codeception\Subscriber\ErrorHandler->shutdownHandler()
+#1 {main}
+  thrown in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php on line 101
+[12-Jan-2018 10:18:34 UTC] PHP Fatal error:  Uncaught RuntimeException: Command Did Not Finish Properly in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php:101
+Stack trace:
+#0 [internal function]: Codeception\Subscriber\ErrorHandler->shutdownHandler()
+#1 {main}
+  thrown in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php on line 101
+[12-Jan-2018 10:19:03 UTC] PHP Fatal error:  Uncaught RuntimeException: Command Did Not Finish Properly in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php:101
+Stack trace:
+#0 [internal function]: Codeception\Subscriber\ErrorHandler->shutdownHandler()
+#1 {main}
+  thrown in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php on line 101
+[12-Jan-2018 10:27:56 UTC] PHP Fatal error:  Uncaught RuntimeException: Command Did Not Finish Properly in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php:101
+Stack trace:
+#0 [internal function]: Codeception\Subscriber\ErrorHandler->shutdownHandler()
+#1 {main}
+  thrown in E:\codebase\humhub\humhub\protected\vendor\codeception\codeception\src\Codeception\Subscriber\ErrorHandler.php on line 101

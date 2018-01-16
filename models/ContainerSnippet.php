@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\models;
 
+use humhub\modules\custom_pages\models\forms\SettingsForm;
 use Yii;
 use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\modules\template\models\Template;
@@ -46,6 +47,13 @@ class ContainerSnippet extends ContainerPage
     /**
      * @inheritdoc
      */
+    public function getPageContentProperty() {
+        return 'page_content';
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getContentName()
     {
         return 'Snippet';
@@ -68,6 +76,7 @@ class ContainerSnippet extends ContainerPage
             Container::TYPE_MARKDOWN,
             Container::TYPE_IFRAME,
             Container::TYPE_TEMPLATE,
+            Container::TYPE_PHP,
         ];
     }
 
@@ -87,4 +96,12 @@ class ContainerSnippet extends ContainerPage
         return Template::getSelection(['type' => Template::TYPE_SNIPPED_LAYOUT, 'allow_for_spaces' => 1]);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getPhpViewPath()
+    {
+        $settings = new SettingsForm();
+        return $settings->phpContainerSnippetPath;
+    }
 }

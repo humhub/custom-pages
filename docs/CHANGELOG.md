@@ -1,6 +1,10 @@
-0.7.15:
+0.8:
 - Fix #73: Richtext uploads not attached on initial edit;
-- 
+- Fix #33: fixed strict access for global pages
+- Fix #68: wrong translation key
+- Enh: Added page type PHP
+- Enh: Added module setting page
+
 0.7.13:
 - Fix: Error with FileManager afterSave logic
 - Enh: Open FileDownload items in new window

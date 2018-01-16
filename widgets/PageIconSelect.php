@@ -8,12 +8,12 @@
 
 namespace humhub\modules\custom_pages\widgets;
 
+use humhub\components\Widget;
+
 /**
- * User Administration Menu
- *
- * @author Basti
+ * PageIconSelect widget renders a icon selection for a given $page
  */
-class PageIconSelect extends \humhub\widgets\BaseMenu
+class PageIconSelect extends Widget
 {
 
     public $page;

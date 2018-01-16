@@ -10,7 +10,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
     <?= \humhub\modules\custom_pages\widgets\AdminMenu::widget(); ?>
 
     <div class="panel-body">
-        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('base', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default pull-right')); ?>
+        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default pull-right')); ?>
         <?php if ($model->isNewRecord): ?>
             <h4><?= Yii::t('CustomPagesModule.modules_template_views_admin_edit', 'Create new {type}', ['type' => $model->type]); ?></h4>
         <?php else: ?>

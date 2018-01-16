@@ -86,6 +86,7 @@ class EditMultipleElementsForm extends \yii\base\Model
         
         // If one of the content was loaded we expect a successful form submit
         foreach ($this->contentMap as $key => $contentItem) {
+            /** @var $contentItem ContentFormItem */
             if($contentItem->load($data)) {
                 $result = true;
             }
@@ -119,9 +120,11 @@ class EditMultipleElementsForm extends \yii\base\Model
         }
         
         $transaction = Template::getDb()->beginTransaction();
-        
+
+
         try {
             foreach ($this->contentMap as $key => $contentItem) {
+                /** @var $contentItem ContentFormItem */
                 $contentItem->save($this->owner);
             }
             $transaction->commit();

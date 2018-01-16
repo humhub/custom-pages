@@ -2,8 +2,9 @@
 
 namespace tests\codeception\unit\modules\custom_page\template;
 
+use humhub\modules\custom_pages\modules\template\models\ContainerContentTemplate;
+use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use tests\codeception\_support\HumHubDbTestCase;
-use Codeception\Specify;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\Template;
@@ -15,18 +16,9 @@ use humhub\modules\custom_pages\modules\template\models\ContainerContentDefiniti
 
 class ContainerContentTest extends HumHubDbTestCase
 {
-
-    use Specify;
-
     public $owner2;
     public $owner1;
     public $page;
-
-    public function setUp()
-    {
-        parent::setUp();
-       
-    }
     
     public function testDeleteContainerItem()
     {
@@ -118,6 +110,7 @@ class ContainerContentTest extends HumHubDbTestCase
     
     public function testDeleteAll()
     {
+
         Page::findOne(['id' => 2])->delete();
         Page::findOne(['id' => 1])->delete();
         
@@ -129,13 +122,14 @@ class ContainerContentTest extends HumHubDbTestCase
         
         $this->assertEquals(0, ContainerContentDefinition::find()->count());
         
-        Template::findOne(['id' => 1])->delete();
-        Template::findOne(['id' => 2])->delete();
-        Template::findOne(['id' => 3])->delete();
-        Template::findOne(['id' => 4])->delete();
-        
+        $this->assertEquals(1, Template::findOne(['id' => 1])->delete());
+        $this->assertEquals(1, Template::findOne(['id' => 2])->delete());
+
+        $this->assertEquals(1, Template::findOne(['id' => 3])->delete());
+        $this->assertEquals(1, Template::findOne(['id' => 4])->delete());
+
         $this->assertEquals(0, RichtextContent::find()->count());
-        $this->assertEquals(0, \humhub\modules\custom_pages\modules\template\models\TemplateElement::find()->count());
+        $this->assertEquals(0, TemplateElement::find()->count());
         
 
     }

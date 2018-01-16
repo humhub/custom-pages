@@ -3,6 +3,7 @@
 namespace humhub\modules\custom_pages\controllers;
 
 use Yii;
+use yii\base\ViewNotFoundException;
 use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\modules\custom_pages\models\Page;
@@ -16,18 +17,22 @@ use humhub\modules\custom_pages\components\TemplateViewBehavior;
  */
 class ViewController extends Controller
 {
+
+    public function getAccessRules()
+    {
+        return [
+            ['strict'],
+            ['login' => ['edit']]
+        ];
+    }
     /**
      * @inhritdoc
      */
     public function behaviors()
     {
-        return [
-            ['class' => TemplateViewBehavior::className()],
-            'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::className(),
-                'guestAllowedActions' => ['index', 'view']
-            ]
-        ];
+        $result = parent::behaviors();
+        $result [] = ['class' => TemplateViewBehavior::className()];
+        return $result;
     }
     
       /**
@@ -35,8 +40,8 @@ class ViewController extends Controller
      * 
      * This action expects an page id as request parameter.
      * 
-     * @return type
-     * @throws HttpException if the page was not found
+     * @return string
+       * @throws HttpException if the page was not found
      */
     public function actionIndex()
     {
@@ -61,28 +66,31 @@ class ViewController extends Controller
         $this->getView()->pageTitle = $page->title;
 
         if ($page->type == Container::TYPE_HTML) {
-            return $this->render('html', array('page' => $page, 'html' => $page->content, 'title' => $page->title));
+            return $this->render('html', ['page' => $page, 'html' => $page->content, 'title' => $page->title]);
         } elseif ($page->type == Container::TYPE_IFRAME) {
-            return $this->render('iframe', array('page' => $page, 'url' => $page->content, 'navigationClass' => $page->navigation_class));
+            return $this->render('iframe', ['page' => $page, 'url' => $page->content, 'navigationClass' => $page->navigation_class]);
         } elseif ($page->type == Container::TYPE_LINK) {
             return $this->redirect($page->content);
         } elseif ($page->type == Container::TYPE_TEMPLATE) {
             return $this->viewTemplatePage($page);
         } elseif ($page->type == Container::TYPE_MARKDOWN) {
-            return $this->render('markdown', array(
+            return $this->render('markdown', [
                 'page' => $page,
                 'md' => $page->content,
                 'navigationClass' => $page->navigation_class,
                 'title' => $page->title
-            ));
-        } else {
+            ]);
+        } elseif ($page->type == Container::TYPE_PHP) {
+                return $this->render('php', ['page' => $page]);
+        } elseif ($page->type == Container::TYPE_IFRAME) {
+        }  else {
             throw new HttpException('500', 'Invalid page type!');
         }
     }
     
     /**
      * This redirect is needed within some common views shared with container page logic.
-     * @return type
+     * @return string
      */
     public function actionView()
     {
@@ -91,7 +99,7 @@ class ViewController extends Controller
     
     /**
      * This redirect is needed within some common views shared with container page logic.
-     * @return type
+     * @return string
      */
     public function actionEdit($id)
     {

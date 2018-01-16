@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\models;
 
+use humhub\modules\custom_pages\models\forms\SettingsForm;
 use Yii;
 use humhub\components\ActiveRecord;
 use humhub\modules\custom_pages\components\Container;
@@ -44,6 +45,13 @@ class Snippet extends ActiveRecord implements CustomContentContainer
     public static function tableName()
     {
         return 'custom_pages_snippet';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPageContentProperty() {
+        return 'content';
     }
 
     /**
@@ -91,6 +99,7 @@ class Snippet extends ActiveRecord implements CustomContentContainer
             Container::TYPE_MARKDOWN,
             Container::TYPE_IFRAME,
             Container::TYPE_TEMPLATE,
+            Container::TYPE_PHP,
         ];
     }
 
@@ -116,6 +125,15 @@ class Snippet extends ActiveRecord implements CustomContentContainer
     public function getPageContent()
     {
         return $this->content;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPhpViewPath()
+    {
+        $settings = new SettingsForm();
+        return $settings->phpGlobalSnippetPath;
     }
 
 }

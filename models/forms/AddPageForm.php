@@ -2,12 +2,14 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
+ *
  */
 
-namespace humhub\modules\custom_pages\models;
+namespace humhub\modules\custom_pages\models\forms;
 
+use humhub\modules\custom_pages\components\Container;
 use Yii;
 use yii\base\Model;
 
@@ -21,19 +23,19 @@ class AddPageForm extends Model
 
     /**
      * Defines the page content type to be created (Markdown,Template,...)
-     * @var type 
+     * @var integer
      */
     public $type;
     
     /**
      * Defines the page type to be created (Page,Snippet,ContainerPage,...).
-     * @var type 
+     * @var string
      */
     public $class;
     
     /**
      * Singleton page instance used for retrieving some page data as the page label.
-     * @var type 
+     * @var mixed
      */
     private $_instance;
 
@@ -42,10 +44,17 @@ class AddPageForm extends Model
      */
     public function rules()
     {
-        return array(
-            ['type', 'in', 'range' => array_values($this->getPageInstance()->getContentTypes())],
+        return [
+            ['type', 'validateType'],
             ['type', 'required'],
-        );
+        ];
+    }
+
+    public function validateType($attribute, $params)
+    {
+        if(!$this->isAllowedType($this->type)) {
+            $this->addError('type', Yii::t('CustomPagesModule.base', 'Invalid type selection'));
+        }
     }
     
     /**
@@ -61,11 +70,18 @@ class AddPageForm extends Model
     /**
      * Tests if the given type is allowed for the given page class.
      * 
-     * @param type $type
+     * @param integer $type
      * @return boolean
      */
     public function isAllowedType($type)
     {
+        if($type === Container::TYPE_PHP) {
+            $settings = new SettingsForm();
+            if(!$settings->phpPagesActive) {
+                return false;
+            }
+        }
+
         return in_array($type ,$this->getPageInstance()->getContentTypes());
     }
     
@@ -82,7 +98,7 @@ class AddPageForm extends Model
     /**
      * Returns the singleton page instance.
      * 
-     * @return type
+     * @return integer
      */
     public function getPageInstance()
     {
@@ -90,6 +106,11 @@ class AddPageForm extends Model
             $this->_instance = Yii::createObject($this->class);
         }
         return $this->_instance;
+    }
+
+    public function hasPHPFiles()
+    {
+        return $this->getPageInstance()->hasAllowedPhpViews();
     }
 
 }

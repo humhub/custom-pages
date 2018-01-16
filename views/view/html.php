@@ -1,4 +1,7 @@
 <?php
+/** @var $page \humhub\modules\custom_pages\models\Page */
+/** @var $html string */
+
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 ?>
 
@@ -7,7 +10,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 
         <div class="col-md-12">
 
-            <?php echo $html; ?>
+            <?= $html; ?>
 
         </div>
     </div>

@@ -2,12 +2,14 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
+use humhub\modules\custom_pages\widgets\ContainerPageMenu;
+use humhub\modules\file\models\File;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\components\Container;
-use humhub\modules\custom_pages\models\AddPageForm;
+use humhub\modules\custom_pages\models\forms\AddPageForm;
 use humhub\modules\custom_pages\components\TemplateViewBehavior;
 
 /**
@@ -69,6 +71,8 @@ class ContainerController extends ContentContainerController
             return $this->render('markdown', array('page' => $page, 'md' => $page->page_content));
         } elseif ($page->type == Container::TYPE_TEMPLATE) {
             return $this->viewTemplatePage($page);
+        } elseif ($page->type == Container::TYPE_PHP) {
+            return $this->render('php', ['page' => $page]);
         } else {
             throw new HttpException('500', 'Invalid page type!');
         }
@@ -86,7 +90,7 @@ class ContainerController extends ContentContainerController
         return $this->render('@custom_pages/views/common/list', [
                     'pages' => $pages,
                     'label' => Yii::createObject($this->getPageClassName())->getLabel(),
-                    'subNav' => \humhub\modules\custom_pages\widgets\ContainerPageMenu::widget()
+                    'subNav' => ContainerPageMenu::widget()
         ]);
     }
 
@@ -117,7 +121,7 @@ class ContainerController extends ContentContainerController
 
         return $this->render('@custom_pages/views/common/add', [
                     'model' => $model,
-                    'subNav' => \humhub\modules\custom_pages\widgets\ContainerPageMenu::widget()]);
+                    'subNav' => ContainerPageMenu::widget()]);
     }
 
     /**
@@ -145,7 +149,7 @@ class ContainerController extends ContentContainerController
 
         $page = $this->findPageById($id);
 
-        if ($page === null) {
+        if (!$page) {
             $page = Yii::createObject($this->getPageClassName());
             $page->type = $type;
             $page->content->container = $this->contentContainer;
@@ -155,7 +159,7 @@ class ContainerController extends ContentContainerController
 
         if ($page->load(Yii::$app->request->post()) && $page->save()) {
             if ($page->type == Container::TYPE_MARKDOWN) {
-                \humhub\modules\file\models\File::attachPrecreated($page, Yii::$app->request->post('fileUploaderHiddenGuidField'));
+                File::attachPrecreated($page, Yii::$app->request->post('fileUploaderHiddenGuidField'));
             }
 
             return $this->redirect($this->contentContainer->createUrl('list'));
@@ -164,7 +168,7 @@ class ContainerController extends ContentContainerController
         return $this->render('@custom_pages/views/common/edit', [
                     'page' => $page,
                     'sguid' => $this->space->guid,
-                    'subNav' => \humhub\modules\custom_pages\widgets\ContainerPageMenu::widget()]);
+                    'subNav' => ContainerPageMenu::widget()]);
     }
 
     /**

@@ -13,13 +13,13 @@ $indexUrl = Url::to(['index' , 'sguid' => Yii::$app->request->get('sguid')]);
 
 ?>
 <div class="panel panel-default">
-    <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
+    <div class="panel-heading"><?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
 
     <?= $subNav ?>
 
     <div class="panel-body">
         <div class="clearfix">
-            <?php echo Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('base', 'Back to overview'), $indexUrl, ['data-ui-loader' => '', 'class' => 'btn btn-default pull-right']); ?>
+            <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), $indexUrl, ['data-ui-loader' => '', 'class' => 'btn btn-default pull-right']); ?>
             <h4><?= Yii::t('CustomPagesModule.views_admin_add', 'Add new {pageType}', ['pageType' => $model->getPageLabel()]) ?></h4>
             <div class="help-block">
                 <?= Yii::t('CustomPagesModule.base', 'Please choose one of the following content types. The content type defines how your content is embeded to your site.') ?>  
@@ -71,6 +71,16 @@ $indexUrl = Url::to(['index' , 'sguid' => Yii::$app->request->get('sguid')]);
                         'label' => Yii::t('CustomPagesModule.base', 'Html'),
                         'description' => Yii::t('CustomPagesModule.base', 'Adds plain HTML content to your site.'),
                         'hide' => !$model->isAllowedType(Container::TYPE_HTML)
+                    ])
+                    ?>
+
+                    <?=
+                    AddContentTypeRow::widget([
+                        'type' => Container::TYPE_PHP,
+                        'label' => Yii::t('CustomPagesModule.base', 'PHP'),
+                        'description' => Yii::t('CustomPagesModule.base', 'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.'),
+                        'hide' => !$model->isAllowedType(Container::TYPE_PHP),
+                        'disabled' => !$model->hasPHPFiles()
                     ])
                     ?>
                 </tbody>

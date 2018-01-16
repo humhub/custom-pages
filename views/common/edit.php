@@ -1,5 +1,7 @@
 <?php
 
+use humhub\modules\custom_pages\widgets\PageIconSelect;
+use humhub\widgets\MarkdownEditor;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -9,12 +11,14 @@ use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\models\ContainerSnippet;
 
+/** @var  $page mixed */
+/** @var  $subNav string */
+
 $sguid = Yii::$app->request->get('sguid');
 
 $indexUrl = Url::to(['index', 'sguid' => $sguid]);
 $deleteUrl = Url::to(['delete', 'id' => $page->id, 'sguid' => $sguid]);
 
-$contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
 ?>
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -25,7 +29,7 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
 
     <div class="panel-body">
 
-        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('base', 'Back to overview'), $indexUrl, ['data-ui-loader' => '', 'class' => 'btn btn-default pull-right']); ?>
+        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), $indexUrl, ['data-ui-loader' => '', 'class' => 'btn btn-default pull-right']); ?>
 
         <h4><?= Yii::t('CustomPagesModule.views_common_edit', 'Configuration'); ?></h4>
 
@@ -41,10 +45,10 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
 
         <?= $form->field($page, 'title') ?>
         
-        <?= \humhub\modules\custom_pages\widgets\PageIconSelect::widget(['page' => $page]) ?>
+        <?= PageIconSelect::widget(['page' => $page]) ?>
 
         <?php if ($page->isType(Container::TYPE_LINK) || $page->isType(Container::TYPE_IFRAME)): ?>
-            <?= $form->field($page, $contentProp)->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('targetUrl')); ?>
+            <?= $form->field($page, $page->getPageContentProperty())->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('targetUrl')); ?>
             <div class="help-block">
                 <?= Yii::t('CustomPagesModule.views_common_edit', 'e.g. http://www.example.de') ?>
             </div>
@@ -58,12 +62,14 @@ $contentProp = ($page instanceOf ContainerPage) ? 'page_content' : 'content';
         <?php endif; ?>
 
         <?php if ($page->isType(Container::TYPE_HTML)): ?>
-            <?= $form->field($page, $contentProp)->textarea(['id' => 'html_content', 'class' => 'form-control', 'rows' => '15']); ?>
+            <?= $form->field($page, $page->getPageContentProperty())->textarea(['id' => 'html_content', 'class' => 'form-control', 'rows' => '15']); ?>
         <?php elseif ($page->isType(Container::TYPE_TEMPLATE)): ?>
             <?= $form->field($page, 'templateId')->dropDownList($page->getAllowedTemplateSelection(), ['value' => $page->getTemplateId(), 'disabled' => !$page->isNewRecord]) ?>
         <?php elseif ($page->isType(Container::TYPE_MARKDOWN)): ?>
-            <?= $form->field($page, $contentProp)->textarea(['id' => 'markdownField', 'class' => 'form-control', 'rows' => '15']); ?>
-            <?= \humhub\widgets\MarkdownEditor::widget(['fieldId' => 'markdownField']); ?>
+            <?= $form->field($page, $page->getPageContentProperty())->textarea(['id' => 'markdownField', 'class' => 'form-control', 'rows' => '15']); ?>
+            <?= MarkdownEditor::widget(['fieldId' => 'markdownField']); ?>
+        <?php elseif ($page->isType(Container::TYPE_PHP)): ?>
+            <?=  $form->field($page, $page->getPageContentProperty())->dropDownList($page->getAllowedPhpViewFileSelection()) ?>
         <?php endif; ?>
 
         <?php if ($page instanceof Page) : ?> 

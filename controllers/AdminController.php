@@ -2,11 +2,16 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
+use humhub\modules\admin\components\Controller;
+use humhub\modules\custom_pages\models\forms\SettingsForm;
+use humhub\modules\custom_pages\widgets\AdminMenu;
 use Yii;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\components\Container;
-use humhub\modules\custom_pages\models\AddPageForm;
+use humhub\modules\custom_pages\models\forms\AddPageForm;
 use humhub\modules\file\models\File;
+use yii\data\Pagination;
+use yii\web\HttpException;
 
 /**
  * AdminController used to manage global (non container) pages of type humhub\modules\custom_pages\models\Page.
@@ -21,7 +26,7 @@ use humhub\modules\file\models\File;
  * 
  * @author luke, buddha
  */
-class AdminController extends \humhub\modules\admin\components\Controller
+class AdminController extends Controller
 {
 
     /**
@@ -32,18 +37,39 @@ class AdminController extends \humhub\modules\admin\components\Controller
      */
     public function actionIndex()
     {
+        $model = new SettingsForm();
+
+        if($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->view->saved();
+        }
+
+        return $this->render('settings', [
+            'model' => $model,
+            'subNav' => AdminMenu::widget()
+        ]);
+    }
+
+    /**
+     * Returns a view which lists all available pages of a given type.
+     *
+     * @see getPageClassName() which returns the actual page type.
+     * @return string view
+     */
+    public function actionPages()
+    {
         return $this->render('@custom_pages/views/common/list', [
-                    'pages' => $this->findAll(),
-                    'label' => Yii::createObject($this->getPageClassName())->getLabel(),
-                    'subNav' => \humhub\modules\custom_pages\widgets\AdminMenu::widget()
+            'pages' => $this->findAll(),
+            'label' => Yii::createObject($this->getPageClassName())->getLabel(),
+            'subNav' => AdminMenu::widget()
         ]);
     }
 
     /**
      * This action is used to add a new page of a given type.
      * After selecting a page content type the user is redirected to an edit page view.
-     * 
+     *
      * @see getPageClassName() which returns the actual page type.
+     * @param integer $type
      * @return string view
      */
     public function actionAdd($type = null)
@@ -56,7 +82,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         return $this->render('@custom_pages/views/common/add', [
                     'model' => $model,
-                    'subNav' => \humhub\modules\custom_pages\widgets\AdminMenu::widget()
+                    'subNav' => AdminMenu::widget()
         ]);
     }
 
@@ -65,16 +91,16 @@ class AdminController extends \humhub\modules\admin\components\Controller
      * creating new pages of a given content type.
      * 
      * @see getPageClassName() which returns the actual page type.
-     * @param type $type
-     * @param type $id
-     * @return type
+     * @param integer $type
+     * @param integer $id
+     * @return string
      */
     public function actionEdit($type = null, $id = null)
     {   
         $page = $this->findByid($id);
 
         if($page == null && $type == null) {
-            throw new \yii\web\HttpException(400, 'Invalid request data!');
+            throw new HttpException(400, 'Invalid request data!');
         }
         
         // If no pageId was given, we create a new page with the given type.
@@ -88,20 +114,20 @@ class AdminController extends \humhub\modules\admin\components\Controller
                 File::attachPrecreated($page, Yii::$app->request->post('fileUploaderHiddenGuidField'));
             }
 
-            return $this->redirect(['index']);
+            return $this->redirect(['pages']);
         }
 
         return $this->render('@custom_pages/views/common/edit', [
                     'page' => $page,
-                    'subNav' => \humhub\modules\custom_pages\widgets\AdminMenu::widget()
+                    'subNav' => AdminMenu::widget()
         ]);
     }
 
     /**
      * Deltes the page with a given $id.
      * 
-     * @param type $id page id
-     * @return type
+     * @param integer $id page id
+     * @return string
      */
     public function actionDelete($id)
     {
@@ -118,7 +144,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
      * Returns all page instances. This method has to be overwritten by subclasses
      * supporting another page type.
      * 
-     * @return type
+     * @return Page[]
      */
     protected function findAll()
     {
@@ -131,7 +157,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
      * 
      * This method has to be overwritten by subclasses supporting another page type.
      * 
-     * @return type
+     * @return string
      */
     protected function getPageClassName()
     {
@@ -141,7 +167,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
     /**
      * Returns a page by a given $id.
      * 
-     * @param type $id page id.
+     * @param integer $id page id.
      * @return Page
      */
     protected function findById($id)

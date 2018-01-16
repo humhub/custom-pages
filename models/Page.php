@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\models;
 
+use humhub\modules\custom_pages\models\forms\SettingsForm;
 use Yii;
 use humhub\components\ActiveRecord;
 use humhub\modules\custom_pages\components\Container;
@@ -51,6 +52,13 @@ class Page extends ActiveRecord implements CustomContentContainer
     {
         return 'custom_pages_page';
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPageContentProperty() {
+        return 'content';
+    }
     
     /**
      * @inerhitdoc
@@ -60,7 +68,10 @@ class Page extends ActiveRecord implements CustomContentContainer
     {
         $result = $this->defaultAttributeLabels();
         $result['in_new_window'] = Yii::t('CustomPagesModule.models_Page', 'Open in new window');
-        $result['content'] = Yii::t('CustomPagesModule.models_Page', 'Content');
+
+
+
+
         $result['navigation_class'] = Yii::t('CustomPagesModule.models_Page','Navigation');
         $result['url'] = Yii::t('CustomPagesModule.models_Page','Url shortcut');
         return $result;
@@ -74,8 +85,8 @@ class Page extends ActiveRecord implements CustomContentContainer
         $rules = $this->defaultRules();
         $rules[] = ['navigation_class', 'required'];
         $rules[] = [['in_new_window', 'admin_only'], 'integer'];
-        $rules[] = [['content', 'url'], 'safe'];
         $rules[] = [['url'], 'unique', 'skipOnEmpty' => 'true'];
+        $rules[] = [['content', 'url'], 'safe'];
         return $rules;
     }
 
@@ -104,7 +115,7 @@ class Page extends ActiveRecord implements CustomContentContainer
 
     /**
      * Returns an array of all allowed conten types for this container type.
-     * @return type
+     * @return integer[]
      */
     public function getContentTypes()
     {
@@ -114,6 +125,7 @@ class Page extends ActiveRecord implements CustomContentContainer
             Container::TYPE_MARKDOWN,
             Container::TYPE_IFRAME,
             Container::TYPE_TEMPLATE,
+            Container::TYPE_PHP,
         ];
     }
 
@@ -133,4 +145,12 @@ class Page extends ActiveRecord implements CustomContentContainer
         return Template::getSelection(['type' => Template::TYPE_LAYOUT]);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getPhpViewPath()
+    {
+        $settings = new SettingsForm();
+        return $settings->phpGlobalPagePath;
+    }
 }

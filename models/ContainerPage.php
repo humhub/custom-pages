@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\models;
 
+use humhub\modules\custom_pages\models\forms\SettingsForm;
 use Yii;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\interfaces\Searchable;
@@ -11,9 +12,8 @@ use humhub\modules\custom_pages\models\CustomContentContainer;
 /**
  * This is the model class for table "custom_pages_container_page".
  *
- * A container page is a custom page cotnainer, which can be added to a spaces.
- * 
- * The followings are the available columns in table 'custom_pages_container_page':
+ * A container page is space related custom page container.
+ *
  * @property integer $id
  * @property integer $type
  * @property string $title
@@ -47,7 +47,7 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
     public function behaviors()
     {
         return [
-            ['class' => \humhub\modules\custom_pages\components\Container::className()],
+            ['class' => Container::className()],
         ];
     }
 
@@ -78,7 +78,14 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
     {
         $result = $this->defaultAttributeLabels();
         $result['in_new_window'] = Yii::t('CustomPagesModule.models_ContainerPage', 'Open in new window');
-        $result['page_content'] = Yii::t('CustomPagesModule.models_ContainerPage', 'Content');
+
+        if($this->isType(Container::TYPE_PHP)) {
+            $contentLabel = Yii::t('CustomPagesModule.models_Page', 'View');
+        } else {
+            $contentLabel = Yii::t('CustomPagesModule.components_Container', 'Content');
+        }
+
+        $result['page_content'] = $contentLabel;
         $result['admin_only'] = Yii::t('CustomPagesModule.models_ContainerPage', 'Only visible for space admins');
         return $result;
     }
@@ -94,6 +101,13 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
     /**
      * @inheritdoc
      */
+    public function getPageContentProperty() {
+        return 'page_content';
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getContentDescription()
     {
         return $this->title;
@@ -104,10 +118,10 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
      */
     public function getSearchAttributes()
     {
-        return array(
+        return [
             'title' => $this->title,
             'content' => $this->page_content,
-        );
+        ];
     }
 
     /**
@@ -128,6 +142,7 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
             Container::TYPE_LINK,
             Container::TYPE_IFRAME,
             Container::TYPE_TEMPLATE,
+            Container::TYPE_PHP
         ];
     }
 
@@ -153,6 +168,15 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
     public function getAllowedTemplateSelection()
     {
         return Template::getSelection(['type' => Template::TYPE_LAYOUT, 'allow_for_spaces' => 1]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPhpViewPath()
+    {
+        $settings = new SettingsForm();
+        return $settings->phpContainerPagePath;
     }
 
 }

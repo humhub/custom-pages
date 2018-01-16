@@ -9,7 +9,7 @@ use yii\helpers\Url;
     <?= \humhub\modules\custom_pages\widgets\AdminMenu::widget([]); ?>
 
     <div class="panel-body">
-        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('base', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default pull-right')); ?>
+        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default pull-right')); ?>
         <?php if ($model->isNewRecord): ?>
             <h4><?= Yii::t('CustomPagesModule.views_admin_add', 'Create new template'); ?></h4>
         <?php else: ?>

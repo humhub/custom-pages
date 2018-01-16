@@ -4,6 +4,8 @@ namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\modules\custom_pages\lib\templates\TemplateEngineFactory;
 use humhub\components\ActiveRecord;
+use yii\db\ActiveQuery;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for all templates.
@@ -145,7 +147,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
     
     /**
      * Checks if this template is a root layout template.
-     * @return type
+     * @return boolean
      */
     public function isLayout()
     {
@@ -164,7 +166,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
 
     /**
      * Returns all TemplateElement definitions for this template.
-     * @return yii\db\ActiveQuery 
+     * @return ActiveQuery
      */
     public function getElements()
     {
@@ -267,7 +269,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
      * Returns all templates of a given type as ActiveQuery.
      * 
      * @param string $type
-     * @return yii\db\ActiveQuery 
+     * @return ActiveQuery
      */
     public static function findByType($type)
     {
@@ -294,7 +296,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
      */
     public static function getSelection($condition = [])
     {
-        return \yii\helpers\ArrayHelper::map(self::find()->where($condition)->all(), 'id', 'name');
+        return ArrayHelper::map(self::find()->where($condition)->all(), 'id', 'name');
     }
 
     public function getTemplateId()

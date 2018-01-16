@@ -13,7 +13,7 @@ use yii\web\HttpException;
  * @author buddha
  */
 class SnippetController extends AdminController
-{   
+{
     /**
      * @inhritdoc
      */
@@ -23,11 +23,16 @@ class SnippetController extends AdminController
         $result[] = ['class' => TemplateViewBehavior::className()];
         return $result;
     }
+
+    public function actionIndex()
+    {
+        return parent::actionPages();
+    }
     
     /**
      * Action for viewing the snippet inline edit view.
      * 
-     * @return type
+     * @return string
      * @throws HttpException if snippet could not be found.
      */
     public function actionEditSnippet()
@@ -38,11 +43,10 @@ class SnippetController extends AdminController
             throw new HttpException(404, 'Snippet not found!');
         }
         
-        return $this->render('@custom_pages/views/admin/edit_snippet', [
+        return $this->render('edit_snippet', [
             'snippet' => $snippet,
             'html' => $this->renderTemplate($snippet, true)
         ]);
-        
     }
     
     /**
@@ -60,9 +64,10 @@ class SnippetController extends AdminController
     {
         return Snippet::className();
     }
-    
+
     /**
-     * @inhritdoc
+     * @param int $id integer
+     * @return Snippet
      */
     protected function findById($id)
     {

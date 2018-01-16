@@ -18,6 +18,11 @@ interface CustomContentContainer
      * Returns the database content field. Note this does not render the any content.
      */
     public function getPageContent();
+
+    /**
+     * Returns the database content field. Note this does not render the any content.
+     */
+    public function getPageContentProperty();
     
     /**
      * Returns all allowed templates for a page container class.
@@ -26,6 +31,13 @@ interface CustomContentContainer
     
     /**
      * Returns the page container class label.
+     * @return string
      */
     public function getLabel();
+
+    /**
+     * Returns the view file path for PHP based content.
+     * @return string
+     */
+    public function getPhpViewPath();
 }

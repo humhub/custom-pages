@@ -11,7 +11,7 @@ use yii\base\ViewNotFoundException;
 use yii\helpers\Url;
 
 try {
-    $content = $this->renderFile($model->getPhpViewFilePath());
+    $content = $this->renderFile($model->getPhpViewFilePath(), ['contentContainer' => $contentContainer]);
 } catch (ViewNotFoundException $vnfe) {
     $content = Yii::t('CustomPagesModule.view_php', 'View not found');
 }

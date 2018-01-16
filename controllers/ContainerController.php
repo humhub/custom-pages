@@ -72,7 +72,9 @@ class ContainerController extends ContentContainerController
         } elseif ($page->type == Container::TYPE_TEMPLATE) {
             return $this->viewTemplatePage($page);
         } elseif ($page->type == Container::TYPE_PHP) {
-            return $this->render('php', ['page' => $page]);
+            return $this->render('php', [
+                'page' => $page,
+                'contentContainer' => $this->contentContainer]);
         } else {
             throw new HttpException('500', 'Invalid page type!');
         }

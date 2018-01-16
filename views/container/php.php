@@ -10,6 +10,7 @@ use yii\base\ViewNotFoundException;
 
 /** @var $page \humhub\modules\custom_pages\models\Page */
 /** @var $this \humhub\components\View */
+/** @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord*/
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 ?>
@@ -20,7 +21,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 
         <div class="col-md-12">
             <?php try { ?>
-                <?= $this->renderFile($page->getPhpViewFilePath()) ?>
+                <?= $this->renderFile($page->getPhpViewFilePath(), ['contentContainer' => $contentContainer]) ?>
             <?php } catch (ViewNotFoundException $vnfe) { ?>
                 <?= Yii::t('CustomPagesModule.view_php', 'View not found') ?>
             <?php } ?>

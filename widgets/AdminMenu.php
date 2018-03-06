@@ -25,20 +25,12 @@ class AdminMenu extends \humhub\widgets\BaseMenu
     public function init()
     {
         $this->addItem([
-            'label' => Yii::t('CustomPagesModule.base', 'Settings'),
-            'url' => Url::to(['/custom_pages/admin/']),
-            'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages'
-                && Yii::$app->controller->id == 'admin' && Yii::$app->controller->action->id == 'index'),
-        ]);
-
-        $this->addItem([
             'label' => Yii::t('CustomPagesModule.base', 'Pages'),
             'url' => Url::to(['/custom_pages/admin/pages']),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' 
                     && Yii::$app->controller->id == 'admin'
-                    && Yii::$app->controller->action->id != 'index')
+                    && Yii::$app->controller->action->id == 'pages')
         ]);
         
         
@@ -57,6 +49,14 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'sortOrder' => 300,
             
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template'),
+        ]);
+
+        $this->addItem([
+            'label' => Yii::t('CustomPagesModule.base', 'Settings'),
+            'url' => Url::to(['/custom_pages/admin/settings']),
+            'sortOrder' => 400,
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages'
+                && Yii::$app->controller->id == 'admin' && Yii::$app->controller->action->id == 'settings'),
         ]);
         
         parent::init();

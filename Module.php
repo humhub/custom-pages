@@ -25,7 +25,7 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
      */
     public function getConfigUrl()
     {
-        return Url::to(['/custom_pages/admin']);
+        return Url::to(['/custom_pages/admin/settings']);
     }
 
     /**

@@ -29,13 +29,12 @@ use yii\web\HttpException;
 class AdminController extends Controller
 {
 
-    /**
-     * Returns a view which lists all available pages of a given type.
-     * 
-     * @see getPageClassName() which returns the actual page type.
-     * @return string view
-     */
     public function actionIndex()
+    {
+        return $this->runAction('pages');
+    }
+
+    public function actionSettings()
     {
         $model = new SettingsForm();
 
@@ -144,7 +143,7 @@ class AdminController extends Controller
      * Returns all page instances. This method has to be overwritten by subclasses
      * supporting another page type.
      * 
-     * @return Page[]
+     * @return array|Page[]
      */
     protected function findAll()
     {

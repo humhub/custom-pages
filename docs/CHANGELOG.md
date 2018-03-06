@@ -1,3 +1,6 @@
+0.8.2:
+- Chg: Use  of 'Pages' overview as first admin page
+
 0.8:
 - Fix #73: Richtext uploads not attached on initial edit;
 - Fix #33: fixed strict access for global pages

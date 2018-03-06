@@ -9,5 +9,5 @@ return array (
   'Page title' => 'Titre de la page',
   'Save' => 'Enregistrer',
   'Sort Order' => 'Ordre de tri',
-  'URL' => 'Url',
+  'URL' => 'URL',
 );

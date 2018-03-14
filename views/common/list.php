@@ -9,7 +9,8 @@ use humhub\modules\custom_pages\components\Container;
 /* @var $label string */
 /* @var $subNav string */
 
-$sguid = Yii::$app->request->get('sguid');
+// Todo: use new ContentContainerHelper class prior to 1.3
+$sguid = Yii::$app->request->get('sguid') ? Yii::$app->request->get('sguid') : Yii::$app->request->get('cguid');
 
 ?>
 <div class="panel panel-default">
@@ -17,7 +18,7 @@ $sguid = Yii::$app->request->get('sguid');
     <?= $subNav ?>
     <div class="panel-body">
         <div class="clearfix">
-            <?php echo Html::a('<i class="fa fa-plus"></i> ' . Yii::t('CustomPagesModule.views_common_list', 'Create new {label}', ['label' => $label]), Url::to(['add', 'sguid' => $sguid]), ['data-ui-loader' => '', 'class' => 'pull-right btn btn-success']); ?>
+            <?= Html::a('<i class="fa fa-plus"></i> ' . Yii::t('CustomPagesModule.views_common_list', 'Create new {label}', ['label' => $label]), Url::to(['add', 'sguid' => $sguid]), ['data-ui-loader' => '', 'class' => 'pull-right btn btn-success']); ?>
             <h4><?= Yii::t('CustomPagesModule.base', 'Overview') ?></h4>
             <div class="help-block">
                 <?= Yii::t('CustomPagesModule.views_common_list', 'This page lists all available {label} entries.', ['label' => $label]); ?>

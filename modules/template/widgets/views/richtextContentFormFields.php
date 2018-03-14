@@ -11,7 +11,10 @@ $id .= ($model->id == null) ? preg_replace( "/(\[|\])/","", $model->formName() )
 $csrfTokenName = Yii::$app->request->csrfParam;
 $csrfToken = Yii::$app->request->csrfToken;
 
-$uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', 'sguid' => Yii::$app->request->get('sguid')]);
+
+// Todo: use new ContentContainerHelper class prior to 1.3
+$sguid = Yii::$app->request->get('sguid') ? Yii::$app->request->get('sguid') : Yii::$app->request->get('cguid');
+$uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', 'sguid' => $sguid]);
 
 ?>
 

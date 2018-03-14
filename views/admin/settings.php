@@ -6,7 +6,7 @@
  *
  */
 
-use humhub\widgets\Button;
+// use humhub\widgets\Button;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
@@ -48,7 +48,8 @@ use yii\helpers\Html;
 
         <hr>
 
-        <?= Button::save()->submit() ?>
+        <?php // Button::save()->submit() ?>
+        <button class="btn btn-primary" data-ui-loader><?= Yii::t('base', 'Save') ?></button>
 
         <?php ActiveForm::end() ?>
     </div>

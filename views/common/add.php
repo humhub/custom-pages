@@ -8,8 +8,9 @@ use humhub\modules\custom_pages\widgets\AddContentTypeRow;
 /* @var $model humhub\modules\custom_pages\models\AddPageForm */
 /* @var $subNav string */
 
-
-$indexUrl = Url::to(['index' , 'sguid' => Yii::$app->request->get('sguid')]);
+// Todo: use new ContentContainerHelper class prior to 1.3
+$sguid = Yii::$app->request->get('sguid') ? Yii::$app->request->get('sguid') : Yii::$app->request->get('cguid');
+$indexUrl = Url::to(['index' , 'sguid' => $sguid]);
 
 ?>
 <div class="panel panel-default">

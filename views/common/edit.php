@@ -14,7 +14,8 @@ use humhub\modules\custom_pages\models\ContainerSnippet;
 /** @var  $page mixed */
 /** @var  $subNav string */
 
-$sguid = Yii::$app->request->get('sguid');
+// Todo: use new ContentContainerHelper class prior to 1.3
+$sguid = Yii::$app->request->get('sguid') ? Yii::$app->request->get('sguid') : Yii::$app->request->get('cguid');
 
 $indexUrl = Url::to(['index', 'sguid' => $sguid]);
 $deleteUrl = Url::to(['delete', 'id' => $page->id, 'sguid' => $sguid]);

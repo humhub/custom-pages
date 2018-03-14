@@ -1,5 +1,9 @@
+0.8.3:
+- Fix: 1.3 compatibility
+- Fix: 1.2.0 compatibility
+
 0.8.2:
-- Chg: Use  of 'Pages' overview as first admin page
+- Chg: Use of 'Pages' overview as first admin page
 
 0.8:
 - Fix #73: Richtext uploads not attached on initial edit;

@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Allows to add pages (markdown, iframe or links) to the space navigation' => 'Autorise à ajouter des pages (markdown, iframe ou liens) dans le menu des espaces',
+  'Allows to add pages (markdown, iframe or links) to the space navigation' => 'Ce module permet d\'ajouter des pages personnalisées (Markdown, HTML, iframe ou liens) dans cet espace.',
   'Create new Page' => 'Créer une nouvelle page',
   'Custom Pages' => 'Pages personnalisées',
   'Custom pages' => 'Pages personnalisées',

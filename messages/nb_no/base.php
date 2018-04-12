@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Allows to add pages (markdown, iframe or links) to the space navigation' => '',
+  'Allows to add pages (markdown, iframe or links) to the space navigation' => 'Tillater å legge til sider (markdown, iframe or links) til gruppenavigasjon',
   'Create new Page' => 'Lag en ny Side',
-  'Custom Pages' => '',
-  'Custom pages' => '',
+  'Custom Pages' => 'Egne sider',
+  'Custom pages' => 'Egne sider',
   'HTML' => 'HTML',
   'IFrame' => '',
   'Link' => 'Link',

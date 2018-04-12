@@ -17,14 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Create</strong> page' => '',
-    '<strong>Edit</strong> page' => '',
-    'Content' => '',
-    'Default sort orders scheme: 100, 200, 300, ...' => '',
-    'Next' => '',
-    'Page title' => '',
-    'Sort Order' => '',
-    'URL' => '',
-    'Delete' => '删除',
     'Save' => '保存',
 ];

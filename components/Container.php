@@ -77,7 +77,8 @@ class Container extends Behavior
             'sort_order' => Yii::t('CustomPagesModule.components_Container', 'Sort Order'),
             'targetUrl' => Yii::t('CustomPagesModule.components_Container', 'Target Url'),
             'templateId' => Yii::t('CustomPagesModule.components_Container', 'Template Layout'),
-            'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins')
+            'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins'),
+            'logged_in_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for logged on users')
         ];
     }
 

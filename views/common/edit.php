@@ -91,6 +91,10 @@ $deleteUrl = Url::to(['delete', 'id' => $page->id, 'sguid' => $sguid]);
             <?= $form->field($page, 'admin_only')->checkbox() ?>
         <?php endif; ?>
 
+        <?php if ($page->hasAttribute('logged_in_only')) : ?>
+            <?= $form->field($page, 'logged_in_only')->checkbox() ?>
+        <?php endif; ?>        
+        
         <?php if ($page->hasAttribute('in_new_window')) : ?> 
             <?= $form->field($page, 'in_new_window')->checkbox() ?>
         <?php endif; ?>

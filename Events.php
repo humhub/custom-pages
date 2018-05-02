@@ -37,7 +37,7 @@ class Events extends \yii\base\Object
         if ($space->isModuleEnabled('custom_pages')) {
             $pages = ContainerPage::find()->contentContainer($space)->all();
             foreach ($pages as $page) {
-                if($page->admin_only && !modules\template\models\TemplatePagePermission::canEdit()) {
+                if(($page->admin_only && !modules\template\models\TemplatePagePermission::canEdit())  || ($page->logged_in_only == 1 && Yii::$app->user->isGuest)) {
                     continue;
                 }
             
@@ -107,8 +107,8 @@ class Events extends \yii\base\Object
     {
         foreach (Page::findAll(['navigation_class' => Page::NAV_CLASS_TOPNAV]) as $page) {
 
-            // Admin only
-            if ($page->admin_only == 1 && !Yii::$app->user->isAdmin()) {
+            // Admin only OR logged in only
+            if (($page->admin_only == 1 && !Yii::$app->user->isAdmin()) || ($page->logged_in_only == 1 && Yii::$app->user->isGuest)) {
                 continue;
             }
 
@@ -120,6 +120,7 @@ class Events extends \yii\base\Object
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' && Yii::$app->controller->id == 'view' && Yii::$app->request->get('id') == $page->id),
                 'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
             ));
+         
         }
     }
 
@@ -127,7 +128,7 @@ class Events extends \yii\base\Object
     {
         foreach (Page::findAll(['navigation_class' => Page::NAV_CLASS_ACCOUNTNAV]) as $page) {
             // Admin only
-            if ($page->admin_only == 1 && !Yii::$app->user->isAdmin()) {
+            if (($page->admin_only == 1 && !Yii::$app->user->isAdmin()) ||($page->logged_in_only == 1 && Yii::$app->user->isGuest)) {
                 continue;
             }
 

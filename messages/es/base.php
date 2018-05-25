@@ -9,8 +9,7 @@ return array (
   'Allows to add pages (markdown, iframe or links) to the space navigation' => 'Permite añadir páginas (markdown, iframe o enlaces) a la navegación del espacio',
   'Allows you to add content in MarkDown syntax.' => 'Le permite agregar contenido con la sintaxis de MarkDown.',
   'Alternate text' => 'Texto alternativo',
-  'Always make a backup of your view files outside of your production environment!' => '
-Siempre haga una copia de seguridad de sus archivos de visualización fuera del entorno de producción.',
+  'Always make a backup of your view files outside of your production environment!' => 'Siempre haga una copia de seguridad de sus archivos de visualización fuera del entorno de producción.',
   'An empty allowed template selection will allow all container templates for this container.' => '',
   'Back' => 'Volver',
   'Back to dashboard' => 'Volver al panel',
@@ -22,7 +21,7 @@ Siempre haga una copia de seguridad de sus archivos de visualización fuera del 
   'Configuration' => 'Configuración',
   'Containers' => '',
   'Content' => 'Contenido',
-  'Create new {type}' => 'Crea un(a) nuevo(a) ',
+  'Create new {type}' => 'Crear nuevo(a)',
   'Css Class' => '',
   'Custom Pages' => 'Páginas personalizadas',
   'Custom pages' => 'Páginas personalizadas',

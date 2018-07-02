@@ -8,8 +8,8 @@
 
 namespace humhub\modules\custom_pages\components;
 
+use yii\base\Component;
 use yii\web\UrlRuleInterface;
-use yii\base\Object;
 use humhub\modules\custom_pages\models\Page;
 
 /**
@@ -17,7 +17,7 @@ use humhub\modules\custom_pages\models\Page;
  *
  * @author luke
  */
-class PageUrlRule extends Object implements UrlRuleInterface
+class PageUrlRule extends Component implements UrlRuleInterface
 {
 
     /**

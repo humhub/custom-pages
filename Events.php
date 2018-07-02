@@ -16,7 +16,7 @@ use humhub\modules\custom_pages\models\Snippet;
  *
  * @author luke
  */
-class Events extends \yii\base\Object
+class Events
 {
 
     public static function onAdminMenuInit($event)

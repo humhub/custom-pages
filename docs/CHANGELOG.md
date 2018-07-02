@@ -1,4 +1,10 @@
-0.8.3:
+0.8.4  (July 2, 2018)
+---------------------
+- Fix: PHP 7.2 compatibility issues
+
+
+0.8.3
+-----
 - Fix: 1.3 compatibility
 - Fix: 1.2.0 compatibility
 

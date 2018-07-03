@@ -68,7 +68,7 @@ return array (
   'Template' => 'Vorlage',
   'Templates' => 'Vorlagen',
   'Templates allow you to define combinable page fragments with inline edit functionality.' => 'Mit Vorlagen kannst du kombinierbare Seitenfragmente mit Inline-Bearbeitungsfunktionalität definieren.',
-  'This action requires an ownerContentId or ownerContent instance!' => 'Diese Aktion erfordert eine ownerContentID oder eine ownerContent Instanz',
+  'This action requires an ownerContentId or ownerContent instance!' => 'Diese Aktion erfordert eine ownerContentID oder eine ownerContent Instanz!',
   'This action requires an templateId or template instance!' => 'Diese Aktion erfordert eine Vorlagen ID oder eine Vorlagen Instanz',
   'This container does not allow any further items!' => 'Dieser Container lässt keine weiteren Elemente zu!',
   'Title' => 'Titel',

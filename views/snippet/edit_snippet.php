@@ -11,7 +11,7 @@ $editUrl = Url::to(['edit', 'id' => $snippet->id]);
 
 ?>
 
-<div class="col-md-12 layout-content-container">
+<div>
     <?php TemplatePage::begin(['page' => $snippet, 'canEdit' => true, 'editMode' => true]) ?>
         <div class="panel panel default">
             <div class="panel-body">

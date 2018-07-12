@@ -1,7 +1,11 @@
+0.8.5  (July 12, 2018)
+---------------------
+- Fix: added check for php page active in php file count check
+- Fix: edit snippet not working in addition with footer nav
+
 0.8.4  (July 2, 2018)
 ---------------------
 - Fix: PHP 7.2 compatibility issues
-
 
 0.8.3
 -----

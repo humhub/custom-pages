@@ -182,6 +182,11 @@ class Container extends Behavior
      */
     public function getAllowedPhpViewFileSelection($path = false)
     {
+        $settings = new SettingsForm();
+        if(!$settings->phpPagesActive) {
+            return [];
+        }
+
         $files = FileHelper::findFiles($this->getPhpViewPath(), [
             'only' => ['*.php'],
             'recursive' => false

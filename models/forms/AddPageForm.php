@@ -110,7 +110,8 @@ class AddPageForm extends Model
 
     public function hasPHPFiles()
     {
-        return $this->getPageInstance()->hasAllowedPhpViews();
+        $settings = new SettingsForm();
+        return  $settings->phpPagesActive && $this->getPageInstance()->hasAllowedPhpViews();
     }
 
 }

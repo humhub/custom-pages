@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use humhub\modules\custom_pages\modules\template\widgets\TemplatePage;
 ?>
-<div class="col-md-12 layout-content-container">
+<div>
     <?php TemplatePage::begin(['page' => $snippet, 'canEdit' => true, 'editMode' => true, 'contentContainer' => $contentContainer]) ?>
     <div class="panel panel default">
         <div class="panel-heading">

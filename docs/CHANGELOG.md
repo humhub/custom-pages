@@ -1,3 +1,7 @@
+0.8.6  (July 13, 2018)
+---------------------
+- Fix: added missing custom directories
+
 0.8.5  (July 12, 2018)
 ---------------------
 - Fix: added check for php page active in php file count check

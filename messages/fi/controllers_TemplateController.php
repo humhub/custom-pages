@@ -1,11 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: 001101
- * Date: 25.01.2017
- * Time: 02:18
- */
 
-return array (
+return [
+    '<strong>Edit</strong> {type} element' => '',
+    'Access denied!' => '',
+    'Empty content elements cannot be delted!' => '',
+    'You are not allowed to delete default content!' => '',
     'Invalid request data!' => 'Virheelinen pyyntö!',
-);
+];

@@ -1,16 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: 001101
- * Date: 25.01.2017
- * Time: 01:21
- */
-return array (
 
+return [
+    'Invalid template selection!' => '',
+    'Invalid view file selection!' => '',
+    'Sort Order' => '',
+    'Target Url' => '',
+    'Template Layout' => '',
+    'Content' => 'Sisältö',
     'ID' => 'ID',
-    'Type' => 'Tyyppi',
-    'Title' => 'Otsikko',
     'Icon' => 'Iconi',
     'Style Class' => 'Tyyli luokka',
-    'Content' => 'Sisältö',
-);
+    'Title' => 'Otsikko',
+    'Type' => 'Tyyppi',
+];

@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'Empty <br />Container' => '',
-];
+return array (
+  'Empty <br />Container' => 'ባዶ <br /> ማዕቀፍ',
+);

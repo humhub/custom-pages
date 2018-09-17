@@ -1,7 +1,6 @@
 <?php
-
-return [
-    'Height' => '',
-    'Style' => '',
-    'Width' => '',
-];
+return array (
+  'Height' => 'ቁመት',
+  'Style' => 'ቅጥ',
+  'Width' => 'ስፋት',
+);

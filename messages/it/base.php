@@ -25,7 +25,7 @@ return array (
   'Css Class' => '',
   'Custom Pages' => 'Pagine personalizzate',
   'Custom pages' => '',
-  'Dashboard' => '',
+  'Dashboard' => 'Bacheca',
   'Default' => '',
   'Default Content' => '',
   'Delete' => '',

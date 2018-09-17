@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Add new {pageType}' => '',
-    'Create new template' => '',
-    'Edit template' => '',
-    'Settings' => '',
-];
+return array (
+  'Add new {pageType}' => 'አዲስ {pageType} ያክሉ',
+  'Create new template' => 'አዲስ አብነት ይፍጠሩ',
+  'Edit template' => 'አብነቱን ያርትዑ',
+  'Settings' => 'ማስተካከያዎች',
+);

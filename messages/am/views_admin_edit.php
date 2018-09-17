@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'Save' => '',
-];
+return array (
+  'Save' => 'አስቀምጥ',
+);

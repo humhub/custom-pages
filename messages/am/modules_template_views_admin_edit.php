@@ -1,7 +1,6 @@
 <?php
-
-return [
-    'Create new {type}' => '',
-    'Edit template \'{templateName}\'' => '',
-    'Save' => '',
-];
+return array (
+  'Create new {type}' => 'አዲስ {type} ይፍጠሩ',
+  'Edit template \'{templateName}\'' => 'የ\'{templateName}\' አብነትን አስተካክል',
+  'Save' => 'አስቀምጥ',
+);

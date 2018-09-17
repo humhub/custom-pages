@@ -1,6 +1,6 @@
 <?php
 return array (
   'Content' => 'Contenu',
-  'Sidebar' => '',
-  'snippet' => '',
+  'Sidebar' => 'Barre latérale',
+  'snippet' => 'fragment de page',
 );

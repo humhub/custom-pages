@@ -1,6 +1,5 @@
 <?php
-
-return [
-    'Display Empty Content' => '',
-    'Update' => '',
-];
+return array (
+  'Display Empty Content' => 'የሚታየው ባዶ ይዘት ነው',
+  'Update' => 'አዘምን',
+);

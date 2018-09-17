@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'snippet' => '',
-];
+return array (
+  'snippet' => 'ቁንፅልመረጃ',
+);

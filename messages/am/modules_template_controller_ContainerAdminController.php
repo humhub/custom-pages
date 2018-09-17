@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'Here you can manage your template container elements.' => '',
-];
+return array (
+  'Here you can manage your template container elements.' => 'የአብነትዎን የማዕቀፍ አካላትን እዚህ ማስተካከል ይችላሉ።',
+);

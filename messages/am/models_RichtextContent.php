@@ -1,6 +1,5 @@
 <?php
-
-return [
-    'Empty Richtext' => '',
-    'Empty Text' => '',
-];
+return array (
+  'Empty Richtext' => 'ባዶ @Richtext@',
+  'Empty Text' => 'ባዶ ፅሁፍ',
+);

@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'Use empty content' => '',
-];
+return array (
+  'Use empty content' => 'ባዶ ይዘት ተጠቀም',
+);

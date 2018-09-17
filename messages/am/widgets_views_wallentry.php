@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'Open page...' => '',
-];
+return array (
+  'Open page...' => 'ገፁ እየተከፈተ ነው',
+);

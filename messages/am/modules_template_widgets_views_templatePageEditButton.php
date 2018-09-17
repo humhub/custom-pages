@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'Edit Page' => '',
-];
+return array (
+  'Edit Page' => 'ገፁን ያርትዑ',
+);

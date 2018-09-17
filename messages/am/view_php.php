@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'View not found' => '',
-];
+return array (
+  'View not found' => 'የሚታይ ነገር አልተገኘም',
+);

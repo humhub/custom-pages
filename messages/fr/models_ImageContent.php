@@ -1,4 +1,4 @@
 <?php
 return array (
-  'Empty Image' => 'Image vide',
+  'Empty Image' => 'Pas d\'image',
 );

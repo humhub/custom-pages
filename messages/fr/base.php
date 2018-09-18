@@ -30,7 +30,7 @@ return array (
   'Default Content' => 'Contenu par défaut',
   'Delete' => 'Supprimer',
   'Directory' => 'Annuaire',
-  'Directory Menu' => 'Menu de l\'annuaire',
+  'Directory Menu' => 'Annuaire',
   'Edit' => 'Modifier',
   'Edit Page' => 'Modifier la page',
   'Empty' => 'Vide',

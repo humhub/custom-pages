@@ -6,5 +6,5 @@ return array (
   'Here you can configure the general settings of your {label}.' => 'Vous pouvez configurer ici les paramètres généraux de {label}.',
   'Inline Editor' => 'Editeur en ligne',
   'Save' => 'Enregistrer',
-  'e.g. http://www.example.de' => 'par ex. http://www.exemple.net',
+  'e.g. http://www.example.de' => 'p.ex. http://www.exemple.net',
 );

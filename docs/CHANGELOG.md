@@ -1,3 +1,7 @@
+0.8.7  (September 18, 2018)
+---------------------
+- Fix: Use of deprecated jQuery load instead of .on('load')
+
 0.8.6  (July 13, 2018)
 ---------------------
 - Fix: added missing custom directories

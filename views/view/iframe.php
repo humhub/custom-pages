@@ -30,7 +30,7 @@ $margin = $navigationClass == Page::NAV_CLASS_TOPNAV ? -15 : 0;
     };
 
     $(document).on('humhub:ready', function () {
-        $('#iframepage').load(function () {
+        $('#iframepage').on('load',function () {
             setSize();
         });
     });

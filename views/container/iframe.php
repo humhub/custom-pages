@@ -21,10 +21,9 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
         setSize();
     };
 
-    debugger;
     $(document).on('humhub:ready', function () {
         debugger;
-        $('#iframepage').load(function () {
+        $('#iframepage').on('load', function () {
             setSize();
         });
     });

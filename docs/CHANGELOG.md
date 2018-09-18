@@ -1,4 +1,4 @@
-0.8.7  (September 18, 2018)
+0.8.8  (September 18, 2018)
 ---------------------
 - Fix: Use of deprecated jQuery load instead of .on('load')
 

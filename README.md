@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/humhub/humhub-modules-custom-pages.svg?branch=master)](https://travis-ci.org/humhub/humhub-modules-custom-pages)
+
 ## Description
 Allows admins to create custom pages (html or markdown) or external links to various navigations (e.g. top navigation, account menu).
 

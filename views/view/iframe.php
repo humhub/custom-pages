@@ -18,7 +18,10 @@ $margin = $navigationClass == Page::NAV_CLASS_TOPNAV ? -15 : 0;
 
 <script>
     function setSize() {
-        $('#iframepage').css('height', (window.innerHeight - $('#iframepage').position().top - <?=$margin?> - 15) + 'px');
+        $('#iframepage').css( {
+            height: (window.innerHeight - $('#iframepage').position().top - 15) + 'px',
+            background: 'inherit'
+        });
     }
     
     // execute setSize in the beginning, else dynamically loaded content in the 

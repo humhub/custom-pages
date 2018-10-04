@@ -1,3 +1,7 @@
+0.8.9  (October 04, 2018)
+---------------------
+- Fix: Iframe loader not removed
+
 0.8.8  (September 18, 2018)
 ---------------------
 - Fix: Use of deprecated jQuery load instead of .on('load')

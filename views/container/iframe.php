@@ -7,14 +7,17 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 <style>
     #iframepage {
         border: none;
-        margin-top: 0px;
+        margin-top: 0;
         background: url('<?= Yii::$app->moduleManager->getModule('custom_pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
     }
 </style>
 
 <script>
     function setSize() {
-        $('#iframepage').css('height', (window.innerHeight - $('#iframepage').position().top - 15) + 'px');
+        $('#iframepage').css( {
+            height: (window.innerHeight - $('#iframepage').position().top - 15) + 'px',
+            background: 'inherit'
+        });
     }
 
     window.onresize = function (evt) {

@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>Add</strong> new {type} element' => '<strong>Aggiungi</strong> un nuovo {type} elemento',
-  '<strong>Edit</strong> element {name}' => '<strong>Modifica </strong> {name} elemento',
+  '<strong>Add</strong> new {type} element' => '<strong>Aggiungi</strong> un nuovo elemento {type}',
+  '<strong>Edit</strong> element {name}' => '<strong>Modifica </strong> elemento {name}',
   '<strong>Edit</strong> elements of {templateName}' => '<strong>Modifica</strong> elementi di {templateName}',
   '<strong>Edit</strong> {templateName}' => '<strong>Modifica</strong> {templateName}',
   'Template not found!' => 'Modello non trovato!',

@@ -1,3 +1,7 @@
+0.8.10  (October 27, 2018)
+---------------------
+- Enh: Translation updates
+
 0.8.9  (October 04, 2018)
 ---------------------
 - Fix: Iframe loader not removed

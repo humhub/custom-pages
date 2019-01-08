@@ -1,14 +1,14 @@
 <?php
 return array (
   'Content' => 'Tartalom',
-  'ID' => 'ID',
+  'ID' => 'Azonosító',
   'Icon' => 'Ikon',
-  'Invalid template selection!' => 'Érvénytelen kiválasztott téma!',
-  'Invalid view file selection!' => '',
+  'Invalid template selection!' => 'Érvénytelen sablonválasztás!',
+  'Invalid view file selection!' => 'Érvénytelen megtekintési fájl választás!',
   'Sort Order' => 'Rendezési sorrend',
-  'Style Class' => '',
+  'Style Class' => 'Stílus osztály',
   'Target Url' => 'Cél hivatkozás (URL)',
-  'Template Layout' => '',
+  'Template Layout' => 'Sablon elrendezés',
   'Title' => 'Cím',
   'Type' => 'Típus',
 );

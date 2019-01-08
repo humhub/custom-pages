@@ -2,5 +2,5 @@
 return array (
   'Content' => 'Tartalom',
   'Sidebar' => 'Oldalmenü',
-  'snippet' => '',
+  'snippet' => 'kódrészlet (snippet)',
 );

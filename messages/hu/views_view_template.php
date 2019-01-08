@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Edit Template' => 'Téma Szerkesztése',
+  'Edit Template' => 'Sablon Szerkesztése',
   'Edit elements' => 'Elemek szerkesztése',
-  'Edit template' => 'Téma szerkesztése',
+  'Edit template' => 'Sablon szerkesztése',
   'Page configuration' => 'Oldal konfiguráció',
   'Turn edit off' => 'Szerkesztés kikapcsolása',
 );

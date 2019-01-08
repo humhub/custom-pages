@@ -1,7 +1,6 @@
 <?php
-
-return [
-    '<strong>Template</strong> Infos' => '',
-    'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => '',
-    'This template systems uses {twigLink} as template engine.<br /><br /> You can add elements as Richtexts or Images into your template by using the \'Add Element\' dropdown menu.<br />After adding an element, the elements placeholder is automatically inserted to your template.<br />You can change the position of your elements anytime. The element for an block with the name \'content\' will be represented as \'{{ content }}\' within your template.<br /><br /> The name of your block hast to start with an alphanumeric letter and cannot contain any special signs except an \'_\'. Each element provides additional placeholder for rendering the default content or edit links. These additions can be inserted adding for example {{ content.default }} to your template.' => '',
-];
+return array (
+  '<strong>Template</strong> Infos' => '<strong>Sablon</strong> információk',
+  'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'További információ a twig szintaxisról <strong><a href="twig_tmpl_url%7D">itt</a></strong> érhető el',
+  'This template systems uses {twigLink} as template engine.<br /><br /> You can add elements as Richtexts or Images into your template by using the \'Add Element\' dropdown menu.<br />After adding an element, the elements placeholder is automatically inserted to your template.<br />You can change the position of your elements anytime. The element for an block with the name \'content\' will be represented as \'{{ content }}\' within your template.<br /><br /> The name of your block hast to start with an alphanumeric letter and cannot contain any special signs except an \'_\'. Each element provides additional placeholder for rendering the default content or edit links. These additions can be inserted adding for example {{ content.default }} to your template.' => '',
+);

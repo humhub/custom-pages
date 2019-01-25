@@ -1,6 +1,6 @@
 <?php
 return array (
   'Content' => 'Innhold',
-  'Sidebar' => '',
+  'Sidebar' => 'Sidebar',
   'snippet' => 'infobokser',
 );

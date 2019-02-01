@@ -1,3 +1,8 @@
+0.8.11  (February 01, 2019)
+---------------------
+- Enh: Updated translations
+- Fix #89: XSS vulnerability
+
 0.8.10  (October 27, 2018)
 ---------------------
 - Enh: Translation updates

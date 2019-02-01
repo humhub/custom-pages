@@ -11,7 +11,7 @@ class CreatePhpSnippetCest
     public function testCreateMarkdownPageOnTopMenu(AcceptanceTester $I)
     {
         $I->amAdmin();
-        $I->amOnPage('index-test.php?r=custom_pages/admin');
+        $I->amOnPage('index-test.php?r=custom_pages/admin/settings');
 
         $I->click('[for="phpPagesActive"]');
 

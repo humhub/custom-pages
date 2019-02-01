@@ -12,6 +12,7 @@ return [
         'richtextContent' => 'tests\codeception\fixtures\modules\custom_pages\template\RichtextContentFixture',
         'ownerContent' => 'tests\codeception\fixtures\modules\custom_pages\template\OwnerContentFixture',
         'containerContentDefinition' => 'tests\codeception\fixtures\modules\custom_pages\template\ContainerContentDefinitionFixture',
+        'containerContentTemplate' => \tests\codeception\fixtures\modules\custom_pages\template\ContainerContentTemplateFixture::class,
         'containerContentItem' => 'tests\codeception\fixtures\modules\custom_pages\template\ContainerContentItemFixture',
         'page' => 'tests\codeception\fixtures\modules\custom_pages\template\PageFixture',
         'snippet' => 'tests\codeception\fixtures\modules\custom_pages\template\SnippetFixture',

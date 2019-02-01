@@ -114,7 +114,7 @@ class ContainerContentTest extends HumHubDbTestCase
         Page::findOne(['id' => 2])->delete();
         Page::findOne(['id' => 1])->delete();
         
-        $this->assertEquals(0, OwnerContent::find()->where(['not', ['owner_model' => Template::className()]])->count());
+        $this->assertEquals(0, OwnerContent::find()->where(['not', ['owner_model' => Template::class]])->count());
         $this->assertEquals(0, TemplateInstance::find()->count());
         $this->assertEquals(1, RichtextContent::find()->count());
         $this->assertEquals(0, ContainerContentItem::find()->count());

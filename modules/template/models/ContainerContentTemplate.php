@@ -27,11 +27,11 @@ namespace humhub\modules\custom_pages\modules\template\models;
     
     public function getTemplate()
     {
-        return $this->hasOne(Template::className(), ['id' => 'template_id']);
+        return $this->hasOne(Template::class, ['id' => 'template_id']);
     }
     
     public function getContent()
     {
-        return $this->hasOne(ContainerContent::className(), ['id' => 'definition_id']);
+        return $this->hasOne(ContainerContent::class, ['id' => 'definition_id']);
     }
 }

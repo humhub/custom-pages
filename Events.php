@@ -3,6 +3,7 @@
 namespace humhub\modules\custom_pages;
 
 use Yii;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\components\Container;
@@ -62,9 +63,9 @@ class Events
             $page = ContainerPage::find()->contentContainer(Yii::$app->controller->contentContainer)->where(['custom_pages_container_page.id' => Yii::$app->request->get('id')])->one();
 
             if ($page->type == Container::TYPE_TEMPLATE) {
-                $event->sender->addWidget(modules\template\widgets\TemplatePageEditButton::className(), [], ['sortOrder' => 500]);
+                $event->sender->addWidget(modules\template\widgets\TemplatePageEditButton::class, [], ['sortOrder' => 500]);
             } else {
-                $event->sender->addWidget(modules\template\widgets\PageConfigurationButton::className(), [], ['sortOrder' => 500]);
+                $event->sender->addWidget(modules\template\widgets\PageConfigurationButton::class, [], ['sortOrder' => 500]);
             }
         }
     }
@@ -92,11 +93,11 @@ class Events
             }
             
             $event->sender->addItem(array(
-                'label' => $page->title,
+                'label' => Html::encode($page->title),
                 'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                 'group' => 'directory',
                 'target' => ($page->in_new_window) ? '_blank' : null,
-                'icon' => '<i class="fa ' . $page->icon . '"></i>',
+                'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' && Yii::$app->controller->id == 'view' && Yii::$app->request->get('id') == $page->id),
                 'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
             ));
@@ -113,10 +114,10 @@ class Events
             }
 
             $event->sender->addItem(array(
-                'label' => $page->title,
+                'label' => Html::encode($page->title),
                 'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                 'target' => ($page->in_new_window) ? '_blank' : null,
-                'icon' => '<i class="fa ' . $page->icon . '"></i>',
+                'icon' => '<i class="fa ' .Html::encode($page->icon) . '"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' && Yii::$app->controller->id == 'view' && Yii::$app->request->get('id') == $page->id),
                 'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
             ));
@@ -132,10 +133,10 @@ class Events
             }
 
             $event->sender->addItem(array(
-                'label' => $page->title,
+                'label' => Html::encode($page->title),
                 'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                 'target' => ($page->in_new_window) ? '_blank' : '',
-                'icon' => '<i class="fa ' . $page->icon . '"></i>',
+                'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' && Yii::$app->controller->id == 'view' && Yii::$app->request->get('id') == $page->id),
                 'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
             ));
@@ -154,7 +155,7 @@ class Events
             if($snippet->admin_only && !$canEdit) {
                 continue;
             }
-            $event->sender->addWidget(SnippetWidget::className(), ['model' => $snippet, 'canEdit' => $canEdit], ['sortOrder' => $snippet->sort_order]);
+            $event->sender->addWidget(SnippetWidget::class, ['model' => $snippet, 'canEdit' => $canEdit], ['sortOrder' => $snippet->sort_order]);
         }
     }
     
@@ -170,7 +171,7 @@ class Events
             if($snippet->admin_only && !$canEdit) {
                 continue;
             }
-            $event->sender->addWidget(SnippetWidget::className(), ['model' => $snippet, 'canEdit' => $canEdit], ['sortOrder' => $snippet->sort_order]);
+            $event->sender->addWidget(SnippetWidget::class, ['model' => $snippet, 'canEdit' => $canEdit], ['sortOrder' => $snippet->sort_order]);
         }
     }
 
@@ -188,7 +189,7 @@ class Events
                 if($snippet->admin_only && !$canEdit) {
                     continue;
                 }
-                $event->sender->addWidget(SnippetWidget::className(), ['model' => $snippet, 'canEdit' => $canEdit], ['sortOrder' => $snippet->sort_order]);
+                $event->sender->addWidget(SnippetWidget::class, ['model' => $snippet, 'canEdit' => $canEdit], ['sortOrder' => $snippet->sort_order]);
             }
         }
     }

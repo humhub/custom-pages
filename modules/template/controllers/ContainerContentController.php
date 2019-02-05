@@ -42,7 +42,7 @@ class ContainerContentController extends \humhub\components\Controller
      * @param integer $ownerContentId
      * @return array
      */
-    public function actionCreateContainer($ownerModel, $ownerId, $ownerContentId, $sguid = null)
+    public function actionCreateContainer($ownerModel, $ownerId, $ownerContentId, $cguid = null)
     {
         // Load actual owner and default content
         $owner = OwnerContent::getOwnerModel($ownerModel, $ownerId);
@@ -64,7 +64,7 @@ class ContainerContentController extends \humhub\components\Controller
             $ownerContent->save();
         }
 
-        return $this->runAction('add-item', ['ownerContentId' => $ownerContent->id, 'ownerContent' => $ownerContent, 'sguid' => $sguid]);
+        return $this->runAction('add-item', ['ownerContentId' => $ownerContent->id, 'ownerContent' => $ownerContent, 'cguid' => $cguid]);
     }
 
     /**
@@ -76,10 +76,9 @@ class ContainerContentController extends \humhub\components\Controller
      * 
      * @param integer $ownerContentId id of actual ownerContent
      * @param OwnerContent $ownerContent actual (non default) ownerContent instance
-     * @return array
      * @throws \yii\web\HttpException
      */
-    public function actionAddItem($ownerContentId, $ownerContent = null, $sguid = null)
+    public function actionAddItem($ownerContentId, $ownerContent = null, $cguid = null)
     {
         $ownerContent = (!$ownerContent) ? OwnerContent::findOne(['id' => $ownerContentId]) : $ownerContent;
 
@@ -92,14 +91,14 @@ class ContainerContentController extends \humhub\components\Controller
             return $this->runAction('edit-add-item', [
                         'templateId' => $ownerContent->instance->allowedTemplates[0]->id,
                         'ownerContent' => $ownerContent,
-                        'sguid' => $sguid
+                        'cguid' => $cguid
             ]);
         }
 
         return $this->asJson([
                     'output' => $this->renderAjax('addItemChooseTemplateModal', [
                         'allowedTemplateSelection' => $this->getAllowedTemplateSelection($ownerContent->instance),
-                        'action' => Url::to(['edit-add-item', 'ownerContentId' => $ownerContentId, 'sguid' => $sguid])
+                        'action' => Url::to(['edit-add-item', 'ownerContentId' => $ownerContentId, 'cguid' => $cguid])
                     ])
         ]);
     }
@@ -135,10 +134,9 @@ class ContainerContentController extends \humhub\components\Controller
      * @param type $ownerContent instance of the actual OwnerContent.
      * @param integer $templateId item template id.
      * @param type $itemTemplate Template instance of the itemt template.
-     * @return array
      * @throws \yii\web\HttpException
      */
-    public function actionEditAddItem($ownerContentId = null, $ownerContent = null, $templateId = null, $itemTemplate = null, $sguid = null)
+    public function actionEditAddItem($ownerContentId = null, $ownerContent = null, $templateId = null, $itemTemplate = null, $cguid = null)
     {
         // First do some validation of the given data
         if ($ownerContentId == null && $ownerContent == null) {
@@ -180,15 +178,14 @@ class ContainerContentController extends \humhub\components\Controller
                     'output' => EditContainerItemModal::widget([
                         'model' => $form,
                         'title' => Yii::t('CustomPagesModule.controllers_AdminController', '<strong>Add</strong> {templateName} item', ['templateName' => $form->template->name]),
-                        'action' => Url::to(['edit-add-item', 'ownerContentId' => $ownerContent->id, 'templateId' => $itemTemplate->id, 'sguid' => $sguid])
+                        'action' => Url::to(['edit-add-item', 'ownerContentId' => $ownerContent->id, 'templateId' => $itemTemplate->id, 'cguid' => $cguid])
                     ])
         ]);
     }
 
     /**
      * This action is used to edit an container item.
-     * 
-     * @return type
+     *
      * @throws \yii\web\HttpException
      */
     public function actionEditItem($itemId)
@@ -200,6 +197,7 @@ class ContainerContentController extends \humhub\components\Controller
         if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
             $ownerContent = OwnerContent::findByContent($form->owner->container);
             TemplateCache::flushByOwnerContent($ownerContent);
+
             return $this->asJson([
                         'success' => true,
                         'output' => $form->owner->render(true, $form->owner->container->definition->is_inline)
@@ -214,10 +212,6 @@ class ContainerContentController extends \humhub\components\Controller
 
     /**
      * This action is used to delete container items.
-     * 
-     * @param type $itemId item id
-     * @param type $ownerContentId content owner id for renderint the new result
-     * @return type
      */
     public function actionDeleteItem()
     {
@@ -239,11 +233,6 @@ class ContainerContentController extends \humhub\components\Controller
 
     /**
      * Action for moving an containeritem position.
-     * 
-     * @param type $ownerContentId
-     * @param type $itemId
-     * @param type $step
-     * @return type
      * @throws \yii\web\HttpException
      */
     public function actionMoveItem($ownerContentId, $itemId, $step)

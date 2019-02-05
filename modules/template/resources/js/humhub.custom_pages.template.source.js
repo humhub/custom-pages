@@ -4,7 +4,7 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
     var Widget = require('ui.widget').Widget;
     var object = require('util').object;
 
-    TemplateSourceEditor = function (node, options) {
+    var TemplateSourceEditor = function (node, options) {
         Widget.call(this, node, options);
     };
 
@@ -157,7 +157,7 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
         return 0;
     };
 
-    TemplateSourcePreview = function (node, options) {
+    var TemplateSourcePreview = function (node, options) {
         Widget.call(this, node, options);
     };
 

@@ -1,3 +1,8 @@
+0.8.11  (February 05, 2019)
+---------------------
+- Fix: Space admin can't add template components
+- Chng: Updated min version to 1.3.0
+
 0.8.11  (February 01, 2019)
 ---------------------
 - Enh: Updated translations

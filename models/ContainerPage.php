@@ -2,13 +2,13 @@
 
 namespace humhub\modules\custom_pages\models;
 
-use humhub\modules\custom_pages\models\forms\SettingsForm;
 use Yii;
+use humhub\modules\custom_pages\models\forms\SettingsForm;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\models\CustomContentContainer;
+
 /**
  * This is the model class for table "custom_pages_container_page".
  *
@@ -47,7 +47,7 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
     public function behaviors()
     {
         return [
-            ['class' => Container::className()],
+            ['class' => Container::class],
         ];
     }
 
@@ -179,4 +179,27 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
         return $settings->phpContainerPagePath;
     }
 
+    /**
+     * @return string returns the title of this container
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getIcon()
+    {
+        return $this->icon;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEditUrl()
+    {
+        // TODO: Implement getEditUrl() method.
+    }
 }

@@ -4,7 +4,7 @@ namespace humhub\modules\custom_pages;
 
 use Yii;
 use yii\helpers\Html;
-use yii\helpers\Url;
+use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\models\ContainerPage;
@@ -24,10 +24,10 @@ class Events
     {
         $event->sender->addItem([
             'label' => Yii::t('CustomPagesModule.base', 'Custom Pages'),
-            'url' => Url::to(['/custom_pages/admin']),
+            'url' => Url::toPageOverview(),
             'group' => 'manage',
             'icon' => '<i class="fa fa-file-text-o"></i>',
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' && Yii::$app->controller->id == 'admin'),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' && (Yii::$app->controller->id == 'page' || Yii::$app->controller->id == 'config')),
             'sortOrder' => 300,
         ]);
     }

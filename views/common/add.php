@@ -1,15 +1,15 @@
 <?php
 
-use yii\helpers\Html;
-use yii\helpers\Url;
+use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\widgets\AddContentTypeRow;
+use humhub\widgets\Button;
 
-/* @var $model humhub\modules\custom_pages\models\AddPageForm */
+/* @var $model \humhub\modules\custom_pages\models\forms\AddPageForm */
 /* @var $subNav string */
 
 // Todo: use new ContentContainerHelper class prior to 1.3
-$sguid = Yii::$app->request->get('sguid') ? Yii::$app->request->get('sguid') : Yii::$app->request->get('cguid');
+
 $indexUrl = Url::to(['index' , 'sguid' => $sguid]);
 
 ?>
@@ -20,7 +20,7 @@ $indexUrl = Url::to(['index' , 'sguid' => $sguid]);
 
     <div class="panel-body">
         <div class="clearfix">
-            <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), $indexUrl, ['data-ui-loader' => '', 'class' => 'btn btn-default pull-right']); ?>
+            <?= Button::back($model->getBackUrl(), Yii::t('CustomPagesModule.base', 'Back to overview'))->sm();?>
             <h4><?= Yii::t('CustomPagesModule.views_admin_add', 'Add new {pageType}', ['pageType' => $model->getPageLabel()]) ?></h4>
             <div class="help-block">
                 <?= Yii::t('CustomPagesModule.base', 'Please choose one of the following content types. The content type defines how your content is embeded to your site.') ?>  

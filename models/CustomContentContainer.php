@@ -10,6 +10,16 @@ namespace humhub\modules\custom_pages\models;
 interface CustomContentContainer
 {
     /**
+     * @return string returns the title of this container
+     */
+    public function getTitle();
+
+    /**
+     * @return string
+     */
+    public function getIcon();
+
+    /**
      * Returns all allowed content types for a page container class.
      */
     public function getContentTypes();
@@ -40,4 +50,9 @@ interface CustomContentContainer
      * @return string
      */
     public function getPhpViewPath();
+
+    /**
+     * @return string
+     */
+    public function getEditUrl();
 }

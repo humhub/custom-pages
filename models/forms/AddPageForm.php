@@ -10,6 +10,12 @@
 namespace humhub\modules\custom_pages\models\forms;
 
 use humhub\modules\custom_pages\components\Container;
+use humhub\modules\custom_pages\helpers\Url;
+use humhub\modules\custom_pages\models\ContainerPage;
+use humhub\modules\custom_pages\models\ContainerSnippet;
+use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\Snippet;
+use humhub\modules\custom_pages\models\Target;
 use Yii;
 use yii\base\Model;
 
@@ -20,6 +26,11 @@ use yii\base\Model;
  */
 class AddPageForm extends Model
 {
+    /**
+     * Defines the target of the page content e.g. Navigation
+     * @var Target
+     */
+    public $target;
 
     /**
      * Defines the page content type to be created (Markdown,Template,...)
@@ -82,7 +93,7 @@ class AddPageForm extends Model
             }
         }
 
-        return in_array($type ,$this->getPageInstance()->getContentTypes());
+        return in_array($type ,$this->getPageInstance()->getContentTypes()) && $this->target->isAllowedContentType($type);
     }
     
     /**
@@ -112,6 +123,20 @@ class AddPageForm extends Model
     {
         $settings = new SettingsForm();
         return  $settings->phpPagesActive && $this->getPageInstance()->hasAllowedPhpViews();
+    }
+
+    public function getBackUrl()
+    {
+        switch ($this->class) {
+            case Page::class:
+            case ContainerPage::class:
+                return Url::toPageOverview($this->target->container);
+            case Snippet::class:
+            case ContainerSnippet::class:
+                return Url::toSnippetOverview($this->target->container);
+        }
+
+        return null;
     }
 
 }

@@ -3,7 +3,7 @@
 namespace humhub\modules\custom_pages;
 
 use Yii;
-use yii\helpers\Url;
+use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\space\models\Space;
@@ -25,7 +25,7 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
      */
     public function getConfigUrl()
     {
-        return Url::to(['/custom_pages/admin/settings']);
+        return Url::toModuleConfig();
     }
 
     /**

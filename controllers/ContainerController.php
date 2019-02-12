@@ -32,7 +32,7 @@ class ContainerController extends ContentContainerController
     public function behaviors()
     {
         return [
-            ['class' => TemplateViewBehavior::className()],
+            ['class' => TemplateViewBehavior::class],
         ];
     }
 
@@ -43,6 +43,22 @@ class ContainerController extends ContentContainerController
     public function actionIndex()
     {
         return $this->redirect($this->contentContainer->createUrl('list'));
+    }
+
+    /**
+     * Provides an overview over all available ContainerPages.
+     * @return type
+     */
+    public function actionList()
+    {
+        $this->adminOnly();
+
+        $pages = $this->findAll();
+        return $this->render('@custom_pages/views/common/list', [
+            'pages' => $pages,
+            'label' => Yii::createObject($this->getPageClassName())->getLabel(),
+            'subNav' => ContainerPageMenu::widget()
+        ]);
     }
 
     /**
@@ -78,22 +94,6 @@ class ContainerController extends ContentContainerController
         } else {
             throw new HttpException('500', 'Invalid page type!');
         }
-    }
-
-    /**
-     * Provides an overview over all available ContainerPages.
-     * @return type
-     */
-    public function actionList()
-    {
-        $this->adminOnly();
-
-        $pages = $this->findAll();
-        return $this->render('@custom_pages/views/common/list', [
-                    'pages' => $pages,
-                    'label' => Yii::createObject($this->getPageClassName())->getLabel(),
-                    'subNav' => ContainerPageMenu::widget()
-        ]);
     }
 
     /**
@@ -134,7 +134,7 @@ class ContainerController extends ContentContainerController
      */
     protected function getPageClassName()
     {
-        return ContainerPage::className();
+        return ContainerPage::class;
     }
 
     /**

@@ -10,9 +10,11 @@ use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\models\ContainerSnippet;
+use humhub\widgets\Button;
 
 /** @var  $page mixed */
 /** @var  $subNav string */
+/** @var  $navigation \humhub\modules\custom_pages\models\Target */
 
 // Todo: use new ContentContainerHelper class prior to 1.3
 $sguid = Yii::$app->request->get('sguid') ? Yii::$app->request->get('sguid') : Yii::$app->request->get('cguid');
@@ -29,8 +31,7 @@ $deleteUrl = Url::to(['delete', 'id' => $page->id, 'sguid' => $sguid]);
     <?= $subNav ?>
 
     <div class="panel-body">
-
-        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), $indexUrl, ['data-ui-loader' => '', 'class' => 'btn btn-default pull-right']); ?>
+        <?= Button::back($navigation->getEditBackUrl(), Yii::t('CustomPagesModule.base', 'Back to overview'))->sm(); ?>
 
         <h4><?= Yii::t('CustomPagesModule.views_common_edit', 'Configuration'); ?></h4>
 

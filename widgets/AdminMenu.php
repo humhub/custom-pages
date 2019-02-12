@@ -29,7 +29,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'url' => Url::to(['/custom_pages/admin/pages']),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' 
-                    && Yii::$app->controller->id == 'admin'
+                    && Yii::$app->controller->id == 'page'
                     && Yii::$app->controller->action->id == 'pages')
         ]);
         
@@ -56,7 +56,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
             'url' => Url::to(['/custom_pages/admin/settings']),
             'sortOrder' => 400,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages'
-                && Yii::$app->controller->id == 'admin' && Yii::$app->controller->action->id == 'settings'),
+                && Yii::$app->controller->id == 'config'),
         ]);
         
         parent::init();

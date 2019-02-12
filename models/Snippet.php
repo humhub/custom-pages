@@ -35,7 +35,7 @@ class Snippet extends ActiveRecord implements CustomContentContainer
     public function behaviors()
     {
         return [
-            ['class' => Container::className()],
+            ['class' => Container::class],
         ];
     }
 
@@ -136,4 +136,27 @@ class Snippet extends ActiveRecord implements CustomContentContainer
         return $settings->phpGlobalSnippetPath;
     }
 
+    /**
+     * @return string returns the title of this container
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getIcon()
+    {
+        return $this->icon;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEditUrl()
+    {
+        // TODO: Implement getEditUrl() method.
+    }
 }

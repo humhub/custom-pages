@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\models;
 
+use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
 use Yii;
 use humhub\components\ActiveRecord;
@@ -41,7 +42,7 @@ class Page extends ActiveRecord implements CustomContentContainer
     public function behaviors()
     {
         return [
-            ['class' => Container::className()],
+            ['class' => Container::class],
         ];
     }
 
@@ -152,5 +153,29 @@ class Page extends ActiveRecord implements CustomContentContainer
     {
         $settings = new SettingsForm();
         return $settings->phpGlobalPagePath;
+    }
+
+    /**
+     * @return string returns the title of this container
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getIcon()
+    {
+        return $this->icon;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEditUrl()
+    {
+        return Url::toEditPage($this->id);
     }
 }

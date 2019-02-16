@@ -55,11 +55,11 @@ class ViewController extends Controller
             throw new HttpException(403, 'Access denied!');
         }
 
-        if ($page->navigation_class == Page::NAV_CLASS_ACCOUNTNAV) {
+        if ($page->hasTarget(Page::NAV_CLASS_ACCOUNTNAV)) {
             $this->subLayout = "@humhub/modules/user/views/account/_layout";
         }
         
-        if ($page->navigation_class == Page::NAV_CLASS_DIRECTORY) {
+        if ($page->hasTarget(Page::NAV_CLASS_DIRECTORY)) {
             $this->subLayout = "@humhub/modules/custom_pages/views/layouts/_directory_layout";
         }
         
@@ -68,7 +68,7 @@ class ViewController extends Controller
         if ($page->type == Container::TYPE_HTML) {
             return $this->render('html', ['page' => $page, 'html' => $page->content, 'title' => $page->title]);
         } elseif ($page->type == Container::TYPE_IFRAME) {
-            return $this->render('iframe', ['page' => $page, 'url' => $page->content, 'navigationClass' => $page->navigation_class]);
+            return $this->render('iframe', ['page' => $page, 'url' => $page->content, 'navigationClass' => $page->getTargetId()]);
         } elseif ($page->type == Container::TYPE_LINK) {
             return $this->redirect($page->content);
         } elseif ($page->type == Container::TYPE_TEMPLATE) {
@@ -76,8 +76,8 @@ class ViewController extends Controller
         } elseif ($page->type == Container::TYPE_MARKDOWN) {
             return $this->render('markdown', [
                 'page' => $page,
-                'md' => $page->content,
-                'navigationClass' => $page->navigation_class,
+                'md' => $page->page_content,
+                'navigationClass' => $page->getTargetId(),
                 'title' => $page->title
             ]);
         } elseif ($page->type == Container::TYPE_PHP) {

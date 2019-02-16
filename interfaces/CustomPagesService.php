@@ -2,13 +2,17 @@
 
 namespace humhub\modules\custom_pages\interfaces;
 
+use http\Exception\InvalidArgumentException;
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\models\ContainerPage;
+use humhub\modules\custom_pages\models\ContainerSnippet;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\models\Target;
+use humhub\modules\space\models\Space;
 use yii\base\Component;
 use yii\db\ActiveQuery;
 
@@ -44,6 +48,8 @@ class CustomPagesService extends Component
 
         $this->trigger(self::EVENT_FETCH_TARGETS, $event);
 
+
+
         return static::$targetCache[$containerKey] = $event->getTargets();
     }
 
@@ -55,20 +61,25 @@ class CustomPagesService extends Component
                     foreach (Page::getNavigationClasses() as $targetId => $name) {
                         $event->addTarget(['id' => $targetId, 'name' => $name]);
                     }
+                } else if($event->container instanceof Space) {
+                    foreach (ContainerPage::getNavigationClasses() as $targetId => $name) {
+                        $event->addTarget(['id' => $targetId, 'name' => $name]);
+                    }
                 }
                 break;
         }
     }
 
     /**
-     * @param $targetId
+     * @param string $targetId
+     * @param string $type
      * @param ContentContainerActiveRecord|null $container
      * @return mixed|null
      */
-    public function getTargetById($targetId, ContentContainerActiveRecord $container = null)
+    public function getTargetById($targetId, $type, ContentContainerActiveRecord $container = null)
     {
-        $availableNavs = $this->getTargets($container);
-        return array_key_exists($targetId, $availableNavs) ? $availableNavs[$targetId] : null;
+        $availableTargets = $this->getTargets($type, $container);
+        return array_key_exists($targetId, $availableTargets) ? $availableTargets[$targetId] : null;
     }
 
     /**
@@ -79,19 +90,25 @@ class CustomPagesService extends Component
      * @return ActiveQuery
      * @throws \yii\base\Exception
      */
-    public function findPagesByTarget($targetId, ContentContainerActiveRecord $container = null)
+    public function findContentByTarget($targetId, $type, ContentContainerActiveRecord $container = null)
     {
         if ($targetId instanceof Target) {
             $container = $targetId->container;
             $targetId = $targetId->id;
         }
 
+        if(PageType::Page === $type) {
+            $query = ($container) ?  ContainerPage::find() : Page::find();
+        } else if(PageType::Snippet === $type) {
+            $query = ($container) ?  ContainerSnippet::find() : Snippet::find();
+        } else {
+            throw new InvalidArgumentException('Invalid page type selection in findContentByTarget()');
+        }
 
-        $query = $container ? ContainerPage::find() : Page::find();
-        $query->where(['navigation_class' => $targetId]);
+        $query->where(['target' => $targetId]);
 
         if ($query instanceof ActiveQueryContent && $container) {
-            $query->readable()->contentContainer($container);
+            //$query->readable();
         }
 
         return $query->orderBy('sort_order');

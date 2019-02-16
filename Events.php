@@ -74,19 +74,19 @@ class Events
     {
         $space = $event->sender->space;
         if ($space->isModuleEnabled('custom_pages') && $space->isAdmin() && $space->isMember()) {
-            $event->sender->addItem(array(
+            $event->sender->addItem([
                 'label' => Yii::t('CustomPagesModule.base', 'Custom Pages'),
                 'group' => 'admin',
-                'url' => $space->createUrl('/custom_pages/container/list'),
+                'url' => Url::toPageOverview($space),
                 'icon' => '<i class="fa fa-file-text-o"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' && Yii::$app->controller->id == 'container' && Yii::$app->controller->action->id != 'view'),
-            ));
+            ]);
         }
     }
 
     public static function onDirectoryMenuInit($event)
     {
-        foreach (Page::findAll(['navigation_class' => Page::NAV_CLASS_DIRECTORY]) as $page) {
+        foreach (Page::findAll(['target' => Page::NAV_CLASS_DIRECTORY]) as $page) {
             // Admin only
             if ($page->admin_only == 1 && !Yii::$app->user->isAdmin()) {
                 continue;
@@ -106,7 +106,7 @@ class Events
 
     public static function onTopMenuInit($event)
     {
-        foreach (Page::findAll(['navigation_class' => Page::NAV_CLASS_TOPNAV]) as $page) {
+        foreach (Page::findAll(['target' => Page::NAV_CLASS_TOPNAV]) as $page) {
 
             // Admin only
             if ($page->admin_only == 1 && !Yii::$app->user->isAdmin()) {
@@ -126,7 +126,7 @@ class Events
 
     public static function onAccountMenuInit($event)
     {
-        foreach (Page::findAll(['navigation_class' => Page::NAV_CLASS_ACCOUNTNAV]) as $page) {
+        foreach (Page::findAll(['target' => Page::NAV_CLASS_ACCOUNTNAV]) as $page) {
             // Admin only
             if ($page->admin_only == 1 && !Yii::$app->user->isAdmin()) {
                 continue;
@@ -149,7 +149,7 @@ class Events
             return;
         }
 
-        $snippets = Snippet::findAll(['sidebar' => Snippet::SIDEBAR_DASHBOARD]);
+        $snippets = Snippet::findAll(['target' => Snippet::SIDEBAR_DASHBOARD]);
         $canEdit = modules\template\models\TemplatePagePermission::canEdit();
         foreach ($snippets as $snippet) {
             if($snippet->admin_only && !$canEdit) {
@@ -165,7 +165,7 @@ class Events
             return;
         }
 
-        $snippets = Snippet::findAll(['sidebar' => Snippet::SIDEBAR_DIRECTORY]);
+        $snippets = Snippet::findAll(['target' => Snippet::SIDEBAR_DIRECTORY]);
         $canEdit = modules\template\models\TemplatePagePermission::canEdit();
         foreach ($snippets as $snippet) {
             if($snippet->admin_only && !$canEdit) {

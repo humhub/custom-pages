@@ -13,9 +13,13 @@ use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\ContainerSnippet;
+use humhub\modules\custom_pages\models\ContentType;
+use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\PhpType;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\models\Target;
+use humhub\modules\custom_pages\models\TemplateType;
 use Yii;
 use yii\base\Model;
 
@@ -57,7 +61,7 @@ class AddPageForm extends Model
     {
         return [
             ['type', 'validateType'],
-            ['type', 'required'],
+            [['type', 'target'], 'required'],
         ];
     }
 
@@ -81,11 +85,15 @@ class AddPageForm extends Model
     /**
      * Tests if the given type is allowed for the given page class.
      * 
-     * @param integer $type
+     * @param integer|ContentType $type
      * @return boolean
      */
     public function isAllowedType($type)
     {
+        if($type instanceof ContentType) {
+            $type = $type->getId();
+        }
+
         if($type === Container::TYPE_PHP) {
             $settings = new SettingsForm();
             if(!$settings->phpPagesActive) {
@@ -94,6 +102,22 @@ class AddPageForm extends Model
         }
 
         return in_array($type ,$this->getPageInstance()->getContentTypes()) && $this->target->isAllowedContentType($type);
+    }
+
+    public function isDisabledType($type)
+    {
+        if($type instanceof ContentType) {
+            $type = $type->getId();
+        }
+
+        switch ($type) {
+            case TemplateType::ID:
+                return !$this->showTemplateType();
+            case PhpType::ID:
+                return !$this->hasPHPFiles();
+        }
+
+        return false;
     }
     
     /**
@@ -109,7 +133,7 @@ class AddPageForm extends Model
     /**
      * Returns the singleton page instance.
      * 
-     * @return integer
+     * @return CustomContentContainer
      */
     public function getPageInstance()
     {

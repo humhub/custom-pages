@@ -19,6 +19,11 @@ class TargetPageList extends Widget
     /**
      * @var string
      */
+    public $pageType;
+
+    /**
+     * @var string
+     */
     public $pageTypeLabel;
 
     /**
@@ -41,9 +46,9 @@ class TargetPageList extends Widget
         $pages =
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $this->customPagesService->findPagesByTarget($this->target->id, $this->target->container),
+            'query' => $this->customPagesService->findContentByTarget($this->target->id, $this->pageType, $this->target->container),
             'pagination' => [
-                'pageSize' => 20
+                'pageSize' => 5
             ]
         ]);
 

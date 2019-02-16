@@ -33,7 +33,7 @@ class CreatePhpPageCest
 
         $I->fillField('Page[title]', 'PHP title');
         $I->selectOption('Page[content]', ['value' => 'test_page']);
-        $I->selectOption('Page[navigation_class]', 'TopMenuWidget');
+        $I->selectOption('Page[target]', 'TopMenuWidget');
         $I->fillField('Page[sort_order]', '400');
         $I->selectOption('Page[icon]',  ['value' => 'fa-adn']);
         $I->click('Save');

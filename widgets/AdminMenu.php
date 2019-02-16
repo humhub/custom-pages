@@ -8,8 +8,8 @@
 
 namespace humhub\modules\custom_pages\widgets;
 
+use humhub\modules\custom_pages\helpers\Url;
 use Yii;
-use yii\helpers\Url;
 
 /**
  * User Administration Menu
@@ -25,22 +25,12 @@ class AdminMenu extends \humhub\widgets\BaseMenu
     public function init()
     {
         $this->addItem([
-            'label' => Yii::t('CustomPagesModule.base', 'Pages'),
-            'url' => Url::to(['/custom_pages/admin/pages']),
+            'label' => Yii::t('CustomPagesModule.base', 'Overview'),
+            'url' => Url::toPageOverview(),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' 
-                    && Yii::$app->controller->id == 'page'
-                    && Yii::$app->controller->action->id == 'pages')
+                    && Yii::$app->controller->id == 'page')
         ]);
-        
-        
-        $this->addItem([
-            'label' => Yii::t('CustomPagesModule.base', 'Snippets'),
-            'url' => Url::to(['/custom_pages/snippet']),
-            'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages' 
-                    && Yii::$app->controller->id == 'snippet'),
-        ]);  
         
         
         $this->addItem([

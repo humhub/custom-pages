@@ -5,6 +5,7 @@ namespace humhub\modules\custom_pages\models;
 
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\custom_pages\helpers\Url;
 use yii\base\Model;
 
 /**
@@ -22,6 +23,11 @@ class Target extends Model
      * @var string
      */
     public $name;
+
+    /**
+     * @var
+     */
+    public $icon;
 
     /**
      * @var ContentContainerActiveRecord
@@ -69,6 +75,6 @@ class Target extends Model
             return $this->editBackUrl;
         }
 
-        return $this->container ? $this->container->createUrl(['/custom_pages/container/list']) : Url::to(['/custom_pages/admin/index']);
+        return $this->container ? $this->container->createUrl('/custom_pages/container/list') : Url::to(['/custom_pages/admin/index']);
     }
 }

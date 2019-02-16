@@ -297,3 +297,17 @@ body.modal-open {
 .cp-file-upload-preview {
     display: inline-block;
 }
+
+.target-page-list .grid-view {
+    padding:0;
+}
+
+.target-page-list-head {
+    margin-top:15px;
+    background-color:#F1F1F1;
+    padding:10px;
+    margin-bottom:0;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    font-weight: bold;
+}

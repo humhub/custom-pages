@@ -22,7 +22,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->page = new Page(['type' => '5', 'title' => 'test2', 'navigation_class' => 'TopMenuWidget']);
+        $this->page = new Page(['type' => '5', 'title' => 'test2', 'target' => 'TopMenuWidget']);
         //Don't validate since we are missing a valid template id...
         $this->page->save(false);
         

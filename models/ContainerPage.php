@@ -3,8 +3,8 @@
 namespace humhub\modules\custom_pages\models;
 
 use Yii;
+use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\modules\template\models\Template;
@@ -14,18 +14,12 @@ use humhub\modules\custom_pages\modules\template\models\Template;
  *
  * A container page is space related custom page container.
  *
- * @property integer $id
- * @property integer $type
- * @property string $title
- * @property string $icon
- * @property string $page_content
- * @property integer $in_new_window
- * @property integer $sort_order
- * @property integer $admin_only
- * @property string $cssClass
  */
-class ContainerPage extends ContentActiveRecord implements Searchable, CustomContentContainer
+class ContainerPage extends Page implements Searchable
 {
+
+    const NAV_CLASS_SPACE_NAV = 'Space Navigation';
+
     /**
      * @inheritdoc
      */
@@ -48,6 +42,17 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
     {
         return [
             ['class' => Container::class],
+        ];
+    }
+
+    /**
+     * Returns a navigation selection for all navigations this page can be added.
+     * @return array
+     */
+    public static function getNavigationClasses()
+    {
+        return [
+            self::NAV_CLASS_SPACE_NAV => Yii::t('CustomPagesModule.base', 'Space Navigation')
         ];
     }
 
@@ -79,7 +84,7 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
         $result = $this->defaultAttributeLabels();
         $result['in_new_window'] = Yii::t('CustomPagesModule.models_ContainerPage', 'Open in new window');
 
-        if($this->isType(Container::TYPE_PHP)) {
+        if(PhpType::isType($this->getContentType())) {
             $contentLabel = Yii::t('CustomPagesModule.models_Page', 'View');
         } else {
             $contentLabel = Yii::t('CustomPagesModule.components_Container', 'Content');
@@ -88,29 +93,6 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
         $result['page_content'] = $contentLabel;
         $result['admin_only'] = Yii::t('CustomPagesModule.models_ContainerPage', 'Only visible for space admins');
         return $result;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getContentName()
-    {
-        return 'Page';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getPageContentProperty() {
-        return 'page_content';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getContentDescription()
-    {
-        return $this->title;
     }
 
     /**
@@ -149,22 +131,6 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
     /**
      * @inheritdoc
      */
-    public function getLabel()
-    {
-        return Yii::t('CustomPagesModule.models_ContainerPage', 'page');
-    }
-    
-    /**
-     * @inheritdoc
-     */
-    public function getPageContent()
-    {
-        return $this->page_content;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getAllowedTemplateSelection()
     {
         return Template::getSelection(['type' => Template::TYPE_LAYOUT, 'allow_for_spaces' => 1]);
@@ -180,26 +146,10 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
     }
 
     /**
-     * @return string returns the title of this container
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getIcon()
-    {
-        return $this->icon;
-    }
-
-    /**
      * @return string
      */
     public function getEditUrl()
     {
-        // TODO: Implement getEditUrl() method.
+        return Url::toEditPage($this->id, $this->content->container);
     }
 }

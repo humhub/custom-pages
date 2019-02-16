@@ -8,6 +8,9 @@
 
 namespace humhub\modules\custom_pages\widgets;
 
+use humhub\modules\custom_pages\models\ContentType;
+use humhub\modules\custom_pages\models\Target;
+
 /**
  * Content Type Row for adding a new Page/Snippet of a certain type
  *
@@ -16,10 +19,16 @@ namespace humhub\modules\custom_pages\widgets;
 class AddContentTypeRow extends \yii\base\Widget
 {
 
-    public $type;
-    public $label;
-    public $description;
+    /**
+     * @var ContentType
+     */
+    public $contentType;
     public $disabled = false;
+
+    /**
+     * @var Target
+     */
+    public $target;
     
     public $hide = false;
     
@@ -27,9 +36,8 @@ class AddContentTypeRow extends \yii\base\Widget
     {
         if(!$this->hide) {
             return $this->render('addContentTypeRow', [
-                'type' => $this->type,
-                'label' => $this->label,
-                'description' => $this->description,
+                'target' => $this->target,
+                'contentType' => $this->contentType,
                 'disabled' => $this->disabled
             ]);
         }

@@ -47,13 +47,6 @@ class ContainerSnippet extends ContainerPage
     /**
      * @inheritdoc
      */
-    public function getPageContentProperty() {
-        return 'page_content';
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getContentName()
     {
         return 'Snippet';

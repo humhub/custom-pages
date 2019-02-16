@@ -38,7 +38,7 @@ class ContainerController extends ContentContainerController
 
     /**
      * Redirects to actionList.
-     * @return type
+     * @return ContainerController|\yii\console\Response|\yii\web\Response
      */
     public function actionIndex()
     {
@@ -47,7 +47,10 @@ class ContainerController extends ContentContainerController
 
     /**
      * Provides an overview over all available ContainerPages.
-     * @return type
+     * @return string
+     * @throws HttpException
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionList()
     {
@@ -63,11 +66,12 @@ class ContainerController extends ContentContainerController
 
     /**
      * Is used to view/render a ContainerPage of a certain page content type.
-     * 
+     *
      * This action expects an page id as request parameter.
-     * 
-     * @return type
+     *
+     * @return string
      * @throws HttpException if the page was not found
+     * @throws \yii\base\Exception
      */
     public function actionView()
     {
@@ -99,6 +103,7 @@ class ContainerController extends ContentContainerController
     /**
      * Returns all available ContainerPage models.
      * @return array
+     * @throws \yii\base\Exception
      */
     protected function findAll()
     {
@@ -108,8 +113,9 @@ class ContainerController extends ContentContainerController
     /**
      * Action for adding new ContainerPages.
      * This function can be redelcared by subclasses for supporting other container page types.
-     * 
-     * @return type
+     *
+     * @return string
+     * @throws HttpException
      */
     public function actionAdd($type = null)
     {
@@ -140,10 +146,11 @@ class ContainerController extends ContentContainerController
     /**
      * Action for editing ContainerPage models.
      * This action expects either an page id or a content type for creating new pages of a given content type.
-     * 
-     * @param type $type
-     * @param type $id
-     * @return type
+     *
+     * @param string $type
+     * @param integer $id
+     * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionEdit($type = null, $id = null)
     {
@@ -175,9 +182,11 @@ class ContainerController extends ContentContainerController
 
     /**
      * Action for deleting ContainerPage models with a given $id.
-     * 
-     * @param type $id page id
-     * @return type
+     *
+     * @param int $id page id
+     * @return string
+     * @throws HttpException
+     * @throws \yii\base\Exception
      */
     public function actionDelete($id)
     {
@@ -195,9 +204,10 @@ class ContainerController extends ContentContainerController
     /**
      * Searches for a ContainerPage with the given $id.
      * This action expects either an page id or a content type for creating new pages of a given content type.
-     * 
-     * @param type $id
-     * @return type
+     *
+     * @param int $id
+     * @return string
+     * @throws \yii\base\Exception
      */
     protected function findPageById($id = null)
     {

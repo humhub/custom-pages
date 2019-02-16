@@ -37,6 +37,7 @@ class AdminController extends Controller
      *
      * @see getPageClassName() which returns the actual page type.
      * @return string view
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionPages()
     {
@@ -54,6 +55,7 @@ class AdminController extends Controller
      * @see getPageClassName() which returns the actual page type.
      * @param integer $type
      * @return string view
+     * @throws \Exception
      */
     public function actionAdd($type = null)
     {

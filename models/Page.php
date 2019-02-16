@@ -2,10 +2,9 @@
 
 namespace humhub\modules\custom_pages\models;
 
+use Yii;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
-use Yii;
-use humhub\components\ActiveRecord;
 use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\modules\template\models\Template;
 
@@ -20,15 +19,15 @@ use humhub\modules\custom_pages\modules\template\models\Template;
  * @property integer $type
  * @property string $title
  * @property string $icon
- * @property string $content
+ * @property string $page_content
  * @property integer $sort_order
  * @property integer $admin_only
  * @property integer $in_new_window
- * @property string $navigation_class
+ * @property string $target
  * @property string $cssClass
  * @property string $url
  */
-class Page extends ActiveRecord implements CustomContentContainer
+class Page extends CustomContentContainer
 {
 
     const NAV_CLASS_TOPNAV = 'TopMenuWidget';
@@ -53,13 +52,6 @@ class Page extends ActiveRecord implements CustomContentContainer
     {
         return 'custom_pages_page';
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getPageContentProperty() {
-        return 'content';
-    }
     
     /**
      * @inerhitdoc
@@ -69,7 +61,7 @@ class Page extends ActiveRecord implements CustomContentContainer
     {
         $result = $this->defaultAttributeLabels();
         $result['in_new_window'] = Yii::t('CustomPagesModule.models_Page', 'Open in new window');
-        $result['navigation_class'] = Yii::t('CustomPagesModule.models_Page','Navigation');
+        $result['target'] = Yii::t('CustomPagesModule.models_Page','Navigation');
         $result['url'] = Yii::t('CustomPagesModule.models_Page','Url shortcut');
         return $result;
     }
@@ -80,11 +72,27 @@ class Page extends ActiveRecord implements CustomContentContainer
     public function rules()
     {
         $rules = $this->defaultRules();
-        $rules[] = ['navigation_class', 'required'];
+        $rules[] = ['target', 'required'];
         $rules[] = [['in_new_window', 'admin_only'], 'integer'];
         $rules[] = [['url'], 'unique', 'skipOnEmpty' => 'true'];
-        $rules[] = [['content', 'url'], 'safe'];
+        $rules[] = [['page_content', 'url'], 'safe'];
         return $rules;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getContentName()
+    {
+        return 'Page';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getContentDescription()
+    {
+        return $this->title;
     }
 
     /**
@@ -131,7 +139,7 @@ class Page extends ActiveRecord implements CustomContentContainer
      */
     public function getPageContent()
     {
-        return $this->content;
+        return $this->page_content;
     }
     
     /**
@@ -173,5 +181,21 @@ class Page extends ActiveRecord implements CustomContentContainer
     public function getEditUrl()
     {
         return Url::toEditPage($this->id);
+    }
+
+    /**
+     * @return ContentType
+     */
+    public function getContentType()
+    {
+        return ContentType::getById($this->type);
+    }
+
+    /**
+     * @return string
+     */
+    public function getPageType()
+    {
+        return PageType::Page;
     }
 }

@@ -23,7 +23,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
  * @property integer $admin_only
  * @property string $cssClass
  */
-class Snippet extends ActiveRecord implements CustomContentContainer
+class Snippet extends CustomContentContainer
 {
 
     const SIDEBAR_DASHBOARD = 'Dasboard';
@@ -49,20 +49,13 @@ class Snippet extends ActiveRecord implements CustomContentContainer
 
     /**
      * @inheritdoc
-     */
-    public function getPageContentProperty() {
-        return 'content';
-    }
-
-    /**
-     * @inheritdoc
      * @return array
      */
     public function rules()
     {
         $rules = $this->defaultRules();
         $rules[] = ['content', 'safe'];
-        $rules[] = ['sidebar', 'required'];
+        $rules[] = ['target', 'required'];
         return $rules;
     }
 
@@ -74,7 +67,7 @@ class Snippet extends ActiveRecord implements CustomContentContainer
     {
         $result = $this->defaultAttributeLabels();
         $result['content'] = Yii::t('CustomPagesModule.models_Snippet', 'Content');
-        $result['sidebar'] = Yii::t('CustomPagesModule.models_Snippet', 'Sidebar');
+        $result['target'] = Yii::t('CustomPagesModule.models_Snippet', 'Sidebar');
         return $result;
     }
 
@@ -158,5 +151,13 @@ class Snippet extends ActiveRecord implements CustomContentContainer
     public function getEditUrl()
     {
         // TODO: Implement getEditUrl() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getPageType()
+    {
+        // TODO: Implement getPageType() method.
     }
 }

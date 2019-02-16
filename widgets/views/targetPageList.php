@@ -14,49 +14,54 @@ use humhub\widgets\Button;
 /* @var $target \humhub\modules\custom_pages\models\Target */
 /* @var $pageTypelabel string */
 
-
 ?>
 
-<h1 style="margin-top:15px;">
-    <?= Html::encode($target->name) ?>
-    <?= Button::success()->icon('fa-plus')->right()->link(Url::toCreatePage($target->id, $target->container))->xs()?>
-</h1>
-
-<?php if (!empty($pages)) : ?>
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            [
-                'class' => DataColumn::class,
-                'label' => Yii::t('CustomPagesModule.base', 'Title'),
-                'value' => function ($data) {
-                    /*  @var $data CustomContentContainer */
-                    return Link::to(Html::encode($data->getTitle()), $data->getEditUrl())->icon(Html::encode($data->getIcon()));
-                }
-            ],
-            'navigation_class',
-            'type',
-            [
-                'header' => 'Actions',
-                'class' => ActionColumn::class,
-                'options' => ['width' => '80px'],
-                'buttons' => [
-                    'update' => function ($url, $model) {
-                        /*  @var $model CustomContentContainer */
-                        return Link::primary()->icon('fa-pencil')->link($model->getEditUrl());
-                    },
-                    'view' => function () {
-                        return;
-                    },
-                    'delete' => function () {
-                        return;
-                    },
-                ],
-            ],
-        ]
-    ]) ?>
-<?php else: ?>
-    <div class="alert alert-info" role="alert" style="margin-bottom:0">
-        <?= Yii::t('CustomPagesModule.views_common_list', 'No {label} entry created yet!', ['label' => $pageTypelabel]); ?>
+<div class="target-page-list">
+    <div class="target-page-list-head">
+        <strong><?= Html::encode($target->name) ?></strong>
+        <?= Button::success()->icon('fa-plus')->right()->link(Url::toChooseContentType($target->id, $target->container))->xs() ?>
     </div>
-<?php endif; ?>
+    <div style="padding:0 10px;border: 1px solid #F1F1F1">
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'layout' => '{items}{pager}',
+            'columns' => [
+                [
+                    'class' => DataColumn::class,
+                    'label' => Yii::t('CustomPagesModule.base', 'Title'),
+                    'format' => 'raw',
+                    'value' => function ($data) {
+                        /*  @var $data CustomContentContainer */
+                        return Link::to(Html::encode($data->getTitle()), $data->getEditUrl())->icon(Html::encode($data->getIcon()));
+                    }
+                ],
+                [
+                    'class' => DataColumn::class,
+                    'label' => Yii::t('CustomPagesModule.base', 'Type'),
+                    'headerOptions' => ['style' => 'width:10%'],
+                    'value' => function ($data) {
+                        /*  @var $data CustomContentContainer */
+                        return $data->getContentType()->getLabel();
+                    }
+                ],
+                [
+                    //'header' => 'Actions',
+                    'class' => ActionColumn::class,
+                    'options' => ['width' => '80px'],
+                    'buttons' => [
+                        'update' => function ($url, $model) {
+                            /*  @var $model CustomContentContainer */
+                            return Link::primary()->icon('fa-pencil')->link($model->getEditUrl())->xs()->right();
+                        },
+                        'view' => function () {
+                            return;
+                        },
+                        'delete' => function () {
+                            return;
+                        },
+                    ],
+                ],
+            ]
+        ]) ?>
+    </div>
+</div>

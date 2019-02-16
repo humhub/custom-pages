@@ -20,7 +20,7 @@ class CreateAdminPageCest
         $I->waitForText('Configuration');
         $I->fillField('Page[title]', 'Test title');
         $I->fillField('Page[content]', 'Test Content');
-        $I->selectOption('Page[navigation_class]', 'TopMenuWidget');
+        $I->selectOption('Page[target]', 'TopMenuWidget');
         $I->fillField('Page[sort_order]', '400');
         $I->selectOption('Page[icon]',  ['value' => 'fa-adn']);
         $I->click('Save');
@@ -47,7 +47,7 @@ class CreateAdminPageCest
         $I->waitForText('Configuration');
         $I->fillField('Page[title]', 'Test link');
         $I->fillField('Page[content]', 'index-test.php?r=dashboard/dashboard');
-        $I->selectOption('Page[navigation_class]', 'AccountMenuWidget');
+        $I->selectOption('Page[target]', 'AccountMenuWidget');
         $I->fillField('Page[sort_order]', '400');
         $I->selectOption('Page[icon]', ['value' => 'fa-adn']);
         $I->click('Save');
@@ -77,7 +77,7 @@ class CreateAdminPageCest
         $I->waitForText('Configuration');
         $I->fillField('Page[title]', 'Test html');
         $I->fillField('Page[content]', '<div id="testDiv">My test div</div>');
-        $I->selectOption('Page[navigation_class]', 'TopMenuWidget');
+        $I->selectOption('Page[target]', 'TopMenuWidget');
         $I->fillField('Page[sort_order]', '400');
         $I->selectOption('Page[icon]', ['value' => 'fa-adn']);
         $I->click('Save');

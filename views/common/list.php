@@ -4,7 +4,6 @@ use humhub\modules\custom_pages\widgets\OverviewSubMenu;
 use humhub\modules\custom_pages\widgets\TargetPageList;
 
 /* @var $targets \humhub\modules\custom_pages\models\Target[] */
-/* @var $label string */
 /* @var $subNav string */
 /* @var $pageType string */
 
@@ -29,7 +28,7 @@ use humhub\modules\custom_pages\widgets\TargetPageList;
 
     <div class="panel-body">
         <?php foreach ($targets as $target) : ?>
-            <?= TargetPageList::widget(['target' => $target, 'pageTypeLabel' => $label, 'pageType' => $pageType])?>
+            <?= TargetPageList::widget(['target' => $target, 'pageType' => $pageType])?>
         <?php endforeach; ?>
     </div>
 </div>

@@ -3,6 +3,7 @@
 namespace humhub\modules\custom_pages\helpers;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\models\Target;
 use yii\helpers\Url as BaseUrl;
 
@@ -15,8 +16,18 @@ class Url extends BaseUrl
 
     const ROUTE_EDIT_SNIPPET = '/custom_pages/snippet/edit';
     const ROUTE_PAGE_OVERVIEW = '/custom_pages/page';
+
     const ROUTE_PAGE_ADD = '/custom_pages/page/add';
+    const ROUTE_SNIPPET_ADD = '/custom_pages/snippet/add';
+
     const ROUTE_SNIPPET_OVERVIEW = '/custom_pages/snippet';
+
+    const ROUTE_TEMPLATE_LAYOUT_ADMIN = '/custom_pages/template/layout-admin';
+
+    public static function toTemplateLayoutAdmin()
+    {
+        return static::toRoute(static::ROUTE_TEMPLATE_LAYOUT_ADMIN);
+    }
 
     private static function create($route, $params = [], ContentContainerActiveRecord $container = null)
     {
@@ -35,34 +46,40 @@ class Url extends BaseUrl
         return static::toRoute(static::ROUTE_CONFIG);
     }
 
-    public static function toCreatePage($targetId, $contentType = null, ContentContainerActiveRecord $container = null)
+    public static function toCreatePage($targetId, $pageType, $contentType = null, ContentContainerActiveRecord $container = null)
     {
         if($targetId instanceof Target) {
             $container = $targetId->container;
             $targetId = $targetId->id;
         }
 
-        return static::create(static::ROUTE_EDIT_PAGE, ['targetId' => $targetId, 'type' => $contentType], $container);
+        $route = ($pageType === PageType::Page) ? static::ROUTE_EDIT_PAGE : static::ROUTE_EDIT_SNIPPET;
+
+        return static::create($route, ['targetId' => $targetId, 'type' => $contentType], $container);
     }
 
-    public static function toChooseContentType($targetId, ContentContainerActiveRecord $container = null)
+    public static function toChooseContentType($targetId, $pageType, ContentContainerActiveRecord $container = null)
     {
         if($targetId instanceof Target) {
             $container = $targetId->container;
             $targetId = $targetId->id;
         }
 
-        return static::create(static::ROUTE_PAGE_ADD, ['targetId' => $targetId], $container);
+        $route = ($pageType === PageType::Page) ? static::ROUTE_PAGE_ADD : static::ROUTE_SNIPPET_ADD;
+
+        return static::create($route, ['targetId' => $targetId], $container);
     }
 
-    public static function toAddContentType($targetId, $contentType, ContentContainerActiveRecord $container = null)
+    public static function toAddContentType($targetId, $pageType, $contentType, ContentContainerActiveRecord $container = null)
     {
         if($targetId instanceof Target) {
             $container = $targetId->container;
             $targetId = $targetId->id;
         }
 
-        return static::create(static::ROUTE_PAGE_ADD, ['targetId' => $targetId, 'type' => $contentType], $container);
+        $route = ($pageType === PageType::Page) ? static::ROUTE_PAGE_ADD : static::ROUTE_SNIPPET_ADD;
+
+        return static::create($route, ['targetId' => $targetId, 'type' => $contentType], $container);
     }
 
 
@@ -71,9 +88,20 @@ class Url extends BaseUrl
         return static::create(static::ROUTE_EDIT_PAGE, ['id' => $id], $container);
     }
 
+    public static function toEditSnippet($id,  ContentContainerActiveRecord $container = null)
+    {
+        return static::create(static::ROUTE_EDIT_SNIPPET, ['id' => $id], $container);
+    }
+
     public static function toPageOverview(ContentContainerActiveRecord $container = null)
     {
-        return static::create(static::ROUTE_PAGE_OVERVIEW, [], $container);
+        return static::toOverview(PageType::Page, $container);
+    }
+
+    public static function toOverview($pageType, ContentContainerActiveRecord $container = null)
+    {
+        $route = ($pageType === PageType::Page) ? static::ROUTE_PAGE_OVERVIEW : static::ROUTE_SNIPPET_OVERVIEW;
+        return static::create($route, [], $container);
     }
 
     public static function toSnippetOverview(ContentContainerActiveRecord $container = null)
@@ -88,4 +116,6 @@ class Url extends BaseUrl
        }
         return static::create(static::ROUTE_PAGE_DELETE, ['id' => $pageId], $container);
     }
+
+
 }

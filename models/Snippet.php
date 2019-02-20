@@ -2,9 +2,9 @@
 
 namespace humhub\modules\custom_pages\models;
 
-use humhub\modules\custom_pages\models\forms\SettingsForm;
 use Yii;
-use humhub\components\ActiveRecord;
+use humhub\modules\custom_pages\helpers\Url;
+use humhub\modules\custom_pages\models\forms\SettingsForm;
 use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\modules\template\models\Template;
 
@@ -54,7 +54,7 @@ class Snippet extends CustomContentContainer
     public function rules()
     {
         $rules = $this->defaultRules();
-        $rules[] = ['content', 'safe'];
+        $rules[] = ['page_content', 'safe'];
         $rules[] = ['target', 'required'];
         return $rules;
     }
@@ -66,7 +66,7 @@ class Snippet extends CustomContentContainer
     public function attributeLabels()
     {
         $result = $this->defaultAttributeLabels();
-        $result['content'] = Yii::t('CustomPagesModule.models_Snippet', 'Content');
+        $result['page_content'] = Yii::t('CustomPagesModule.models_Snippet', 'Content');
         $result['target'] = Yii::t('CustomPagesModule.models_Snippet', 'Sidebar');
         return $result;
     }
@@ -117,7 +117,7 @@ class Snippet extends CustomContentContainer
      */
     public function getPageContent()
     {
-        return $this->content;
+        return $this->page_content;
     }
 
     /**
@@ -150,7 +150,7 @@ class Snippet extends CustomContentContainer
      */
     public function getEditUrl()
     {
-        // TODO: Implement getEditUrl() method.
+        return Url::toEditSnippet($this->id);
     }
 
     /**
@@ -158,6 +158,6 @@ class Snippet extends CustomContentContainer
      */
     public function getPageType()
     {
-        // TODO: Implement getPageType() method.
+       return PageType::Snippet;
     }
 }

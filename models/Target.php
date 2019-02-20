@@ -68,13 +68,4 @@ class Target extends Model
     {
         return empty($this->contentTypes) || in_array($type, $this->contentTypes);
     }
-
-    public function getEditBackUrl()
-    {
-        if($this->editBackUrl) {
-            return $this->editBackUrl;
-        }
-
-        return $this->container ? $this->container->createUrl('/custom_pages/container/list') : Url::to(['/custom_pages/admin/index']);
-    }
 }

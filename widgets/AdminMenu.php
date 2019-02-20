@@ -35,15 +35,14 @@ class AdminMenu extends \humhub\widgets\BaseMenu
         
         $this->addItem([
             'label' => Yii::t('CustomPagesModule.base', 'Templates'),
-            'url' => Url::to(['/custom_pages/template/layout-admin']),
+            'url' => Url::toTemplateLayoutAdmin(),
             'sortOrder' => 300,
-            
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template'),
         ]);
 
         $this->addItem([
             'label' => Yii::t('CustomPagesModule.base', 'Settings'),
-            'url' => Url::to(['/custom_pages/admin/settings']),
+            'url' => Url::toModuleConfig(),
             'sortOrder' => 400,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages'
                 && Yii::$app->controller->id == 'config'),

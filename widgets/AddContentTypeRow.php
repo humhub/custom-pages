@@ -29,6 +29,11 @@ class AddContentTypeRow extends \yii\base\Widget
      * @var Target
      */
     public $target;
+
+    /**
+     * @var string
+     */
+    public $pageType;
     
     public $hide = false;
     
@@ -37,6 +42,7 @@ class AddContentTypeRow extends \yii\base\Widget
         if(!$this->hide) {
             return $this->render('addContentTypeRow', [
                 'target' => $this->target,
+                'pageType' => $this->pageType,
                 'contentType' => $this->contentType,
                 'disabled' => $this->disabled
             ]);

@@ -6,6 +6,7 @@ namespace humhub\modules\custom_pages\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
+use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\models\Target;
 use yii\data\ActiveDataProvider;
 
@@ -20,11 +21,6 @@ class TargetPageList extends Widget
      * @var string
      */
     public $pageType;
-
-    /**
-     * @var string
-     */
-    public $pageTypeLabel;
 
     /**
      * @var CustomPagesService
@@ -52,7 +48,7 @@ class TargetPageList extends Widget
             ]
         ]);
 
-        return $this->render('targetPageList', ['target' => $this->target, 'dataProvider' => $dataProvider, 'pageTypelabel' => $this->pageTypeLabel]);
+        return $this->render('targetPageList', ['target' => $this->target, 'dataProvider' => $dataProvider, 'pageType' => $this->pageType]);
     }
 
 }

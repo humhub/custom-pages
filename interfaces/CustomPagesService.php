@@ -2,9 +2,7 @@
 
 namespace humhub\modules\custom_pages\interfaces;
 
-use http\Exception\InvalidArgumentException;
 use humhub\modules\content\components\ActiveQueryContent;
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\ContainerSnippet;
@@ -14,6 +12,7 @@ use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\models\Target;
 use humhub\modules\space\models\Space;
 use yii\base\Component;
+use yii\base\InvalidArgumentException;
 use yii\db\ActiveQuery;
 
 /**
@@ -48,8 +47,6 @@ class CustomPagesService extends Component
 
         $this->trigger(self::EVENT_FETCH_TARGETS, $event);
 
-
-
         return static::$targetCache[$containerKey] = $event->getTargets();
     }
 
@@ -67,6 +64,16 @@ class CustomPagesService extends Component
                     }
                 }
                 break;
+            case PageType::Snippet:
+                if(!$event->container) {
+                    foreach (Snippet::getSidebarSelection() as $targetId => $name) {
+                        $event->addTarget(['id' => $targetId, 'name' => $name]);
+                    }
+                } else {
+                    foreach (ContainerSnippet::getSidebarSelection() as $targetId => $name) {
+                        $event->addTarget(['id' => $targetId, 'name' => $name]);
+                    }
+                }
         }
     }
 
@@ -88,7 +95,6 @@ class CustomPagesService extends Component
      * @param string|Target $targetId
      * @param ContentContainerActiveRecord|null $container
      * @return ActiveQuery
-     * @throws \yii\base\Exception
      */
     public function findContentByTarget($targetId, $type, ContentContainerActiveRecord $container = null)
     {

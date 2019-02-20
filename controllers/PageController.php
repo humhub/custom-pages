@@ -25,7 +25,6 @@ use yii\web\HttpException;
  *
  * The following functions have to be redeclared in order to support another page type:
  *
- *  - findAll()
  *  - getPageClassName()
  *  - findById()
  *
@@ -85,14 +84,12 @@ class PageController extends ContentContainerController
      *
      * @see getPageClassName() which returns the actual page type.
      * @return string view
-     * @throws \yii\base\InvalidConfigException
      * @throws \Exception
      */
     public function actionOverview()
     {
         return $this->render('@custom_pages/views/common/list', [
-            'targets' => $this->customPagesService->getTargets(PageType::Page, $this->contentContainer),
-            'label' => Yii::createObject($this->getPageClassName())->getLabel(),
+            'targets' => $this->customPagesService->getTargets($this->getPageType(), $this->contentContainer),
             'pageType' => $this->getPageType(),
             'subNav' => $this->getSubNav()
         ]);
@@ -128,12 +125,13 @@ class PageController extends ContentContainerController
         $model = new AddPageForm(['class' => $this->getPageClassName(), 'target' => $target, 'type' => $type]);
 
         if ($model->validate()) {
-            return $this->redirect(Url::toCreatePage($targetId, $type));
+            return $this->redirect(Url::toCreatePage($targetId, $this->getPageType(), $type));
         }
 
         return $this->render('@custom_pages/views/common/add', [
             'model' => $model,
             'target' => $target,
+            'pageType' => $this->getPageType(),
             'subNav' => $this->getSubNav()
         ]);
     }
@@ -148,12 +146,11 @@ class PageController extends ContentContainerController
      * @param integer $id
      * @return string
      * @throws HttpException
-     * @throws \yii\base\InvalidConfigException
      */
     public function actionEdit($targetId = null, $type = null, $id = null)
     {
         /* @var CustomContentContainer $page*/
-        $page = $this->findByid($id);
+       $page = $this->findByid($id);
 
         if (!$page && (!$type || !$targetId)) {
             throw new HttpException(400, 'Invalid request data!');
@@ -171,6 +168,7 @@ class PageController extends ContentContainerController
 
         return $this->render('@custom_pages/views/common/edit', [
             'page' => $page,
+            'pageType' => $this->getPageType(),
             'subNav' => $this->getSubNav()
         ]);
     }
@@ -180,9 +178,14 @@ class PageController extends ContentContainerController
      *
      * @param integer $id page id
      * @return string
+     * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {
+        $this->forcePostRequest();
+
         $page = $this->findByid($id);
 
         if ($page !== null) {
@@ -190,17 +193,6 @@ class PageController extends ContentContainerController
         }
 
         return $this->redirect(['index']);
-    }
-
-    /**
-     * Returns all page instances. This method has to be overwritten by subclasses
-     * supporting another page type.
-     *
-     * @return array|Page[]
-     */
-    protected function findAll()
-    {
-        return Page::find()->all();
     }
 
     /**
@@ -225,11 +217,11 @@ class PageController extends ContentContainerController
      * Returns a page by a given $id.
      *
      * @param integer $id page id.
-     * @return Page
+     * @return CustomContentContainer
      */
     protected function findById($id)
     {
-        return Page::findOne(['id' => $id]);
+        return call_user_func($this->getPageClassName().'::findOne', ['id' => $id]);
     }
 
 }

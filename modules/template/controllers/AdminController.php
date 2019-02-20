@@ -7,8 +7,15 @@
  */
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
-
 use Yii;
+
+use humhub\modules\custom_pages\modules\template\models\ContainerContent;
+use humhub\modules\custom_pages\modules\template\models\FileContent;
+use humhub\modules\custom_pages\modules\template\models\FileDownloadContent;
+use humhub\modules\custom_pages\modules\template\models\ImageContent;
+use humhub\modules\custom_pages\modules\template\models\RichtextContent;
+use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
+use humhub\modules\custom_pages\modules\template\models\TextContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
@@ -34,24 +41,24 @@ class AdminController extends \humhub\modules\admin\components\Controller
     /**
      * Defines the template type this controller should manage.
      * 
-     * @var type 
+     * @var string
      */
     public $type;
 
     /**
      * Defines the index help text for the given template type.
-     * @var type 
+     * @var string
      */
     public $indexHelp;
 
     /**
      * Returns a searchable gridview with all avialable templates of the given type.
      * 
-     * @return type
+     * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new \humhub\modules\custom_pages\modules\template\models\TemplateSearch(['type' => $this->type]);
+        $searchModel = new TemplateSearch(['type' => $this->type]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('@custom_pages/modules/template/views/admin/index', [
@@ -90,7 +97,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
     /**
      * Used to edit the source of a template.
      * 
-     * @return type
+     * @return string
      * @throws \yii\web\HttpException
      */
     public function actionEditSource()
@@ -118,25 +125,26 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
     /**
      * Returns a selection of all available template content types.
-     * @return type
+     * @return []
      */
     private function getContentTypes()
     {
         return [
-            \humhub\modules\custom_pages\modules\template\models\TextContent::$label => \humhub\modules\custom_pages\modules\template\models\TextContent::className(),
-            \humhub\modules\custom_pages\modules\template\models\RichtextContent::$label => \humhub\modules\custom_pages\modules\template\models\RichtextContent::className(),
-            \humhub\modules\custom_pages\modules\template\models\ImageContent::$label => \humhub\modules\custom_pages\modules\template\models\ImageContent::className(),
-            \humhub\modules\custom_pages\modules\template\models\ContainerContent::$label => \humhub\modules\custom_pages\modules\template\models\ContainerContent::className(),
-            \humhub\modules\custom_pages\modules\template\models\FileContent::$label => \humhub\modules\custom_pages\modules\template\models\FileContent::className(),
-            \humhub\modules\custom_pages\modules\template\models\FileDownloadContent::$label => \humhub\modules\custom_pages\modules\template\models\FileDownloadContent::className(),
+            TextContent::$label => TextContent::class,
+            RichtextContent::$label => RichtextContent::class,
+            ImageContent::$label => ImageContent::class,
+            ContainerContent::$label => ContainerContent::class,
+            FileContent::$label => FileContent::class,
+            FileDownloadContent::$label => FileDownloadContent::class,
         ];
     }
 
     /**
      * Used to add elements to a template.
-     * 
-     * @return type
+     *
+     * @return string
      * @throws \yii\web\HttpException
+     * @throws \Exception
      */
     public function actionAddElement($templateId, $type)
     {
@@ -161,11 +169,12 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
     /**
      * Used to edit the element of a template.
-     * 
+     *
      * This controller expects an id request parameter.
-     * 
-     * @return type
+     *
+     * @return string
      * @throws \yii\web\HttpException if no template id was given.
+     * @throws \Exception
      */
     public function actionEditElement($id)
     {
@@ -190,8 +199,11 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
     /**
      * This action will reset the default content of a given TemplateElement
-     * @param type $id
-     * @return type
+     * @param int $id
+     * @return string
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     * @throws \yii\web\HttpException
      */
     public function actionResetElement($id)
     {
@@ -214,10 +226,10 @@ class AdminController extends \humhub\modules\admin\components\Controller
     /**
      * This action will render a preview of a given template.
      * 
-     * @param type $id
-     * @param type $editView
-     * @param type $reload
-     * @return type
+     * @param int $id
+     * @param string $editView
+     * @param bool $reload
+     * @return string
      */
     public function actionPreview($id, $editView = null, $reload = null)
     {
@@ -245,7 +257,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
      * @param boolean $success defines if the process was successfull e.g. saving an element
      * @param mixed $content content result
      * @param mixed $form Form model
-     * @return type
+     * @return string
      */
     private function getJsonEditElementResult($success, $content, $form)
     {
@@ -259,8 +271,11 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
     /**
      * Will delete a given template model instance.
-     * 
-     * @return type
+     *
+     * @param $id
+     * @return string
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDeleteTemplate($id)
     {
@@ -275,11 +290,13 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
     /**
      * Will delete an template element model instance.
-     * 
+     *
      * This action requres a confirmation.
-     * 
-     * @return type
-     * @throws \yii\web\HttpException
+     *
+     * @param $id
+     * @return string
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDeleteElement($id)
     {
@@ -295,9 +312,10 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
     /**
      * This action is used to edit multiple elements.
-     * 
-     * @return type
-     * @throws \yii\web\HttpException
+     *
+     * @param $id
+     * @return string
+     * @throws \Exception
      */
     public function actionEditMultiple($id)
     {
@@ -323,7 +341,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
     /**
      * Returns an info text view.
-     * @return type
+     * @return string
      */
     public function actionInfo()
     {

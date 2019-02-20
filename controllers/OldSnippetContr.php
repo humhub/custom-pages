@@ -3,9 +3,8 @@
 namespace humhub\modules\custom_pages\controllers;
 
 use Yii;
-use humhub\modules\custom_pages\models\ContainerSnippet;
-use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\models\Snippet;
+use humhub\modules\custom_pages\components\TemplateViewBehavior;
 use yii\web\HttpException;
 
 /**
@@ -13,18 +12,23 @@ use yii\web\HttpException;
  *
  * @author buddha
  */
-class SnippetController extends PageController
+class oldSnippetContr extends PageController
 {
     /**
      * @inhritdoc
      */
-    /*public function behaviors()
+    public function behaviors()
     {
         $result = parent::behaviors();
         $result[] = ['class' => TemplateViewBehavior::class];
         return $result;
-    }*/
+    }
 
+    public function actionIndex()
+    {
+        return parent::actionPages();
+    }
+    
     /**
      * Action for viewing the snippet inline edit view.
      * 
@@ -44,6 +48,22 @@ class SnippetController extends PageController
             'html' => $this->renderTemplate($snippet, true)
         ]);
     }
+    
+    /**
+     * @inhritdoc
+     */
+    protected function findAll()
+    {
+        return Snippet::find()->all();
+    }
+
+    /**
+     * @inhritdoc
+     */
+    protected function getPageClassName()
+    {
+        return Snippet::class;
+    }
 
     /**
      * @param int $id integer
@@ -52,15 +72,5 @@ class SnippetController extends PageController
     protected function findById($id)
     {
         return Snippet::findOne(['id' => $id]);
-    }
-
-    protected function getPageClassName()
-    {
-        return $this->contentContainer ? ContainerSnippet::class : Snippet::class;
-    }
-
-    protected function getPageType()
-    {
-        return PageType::Snippet;
     }
 }

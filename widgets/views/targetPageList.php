@@ -12,14 +12,14 @@ use humhub\widgets\Button;
 /* @var $this \humhub\components\View */
 /* @var $dataProvider \yii\data\ActiveDataProvider */
 /* @var $target \humhub\modules\custom_pages\models\Target */
-/* @var $pageTypelabel string */
+/* @var $pageType string */
 
 ?>
 
-<div class="target-page-list">
+<div class="target-page-list <?= Html::encode($target->id) ?>">
     <div class="target-page-list-head">
         <strong><?= Html::encode($target->name) ?></strong>
-        <?= Button::success()->icon('fa-plus')->right()->link(Url::toChooseContentType($target->id, $target->container))->xs() ?>
+        <?= Button::success()->icon('fa-plus')->right()->link(Url::toChooseContentType($target, $pageType))->xs(); ?>
     </div>
     <div style="padding:0 10px;border: 1px solid #F1F1F1">
         <?= GridView::widget([

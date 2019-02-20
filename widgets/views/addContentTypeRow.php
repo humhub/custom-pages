@@ -7,6 +7,7 @@ use humhub\modules\content\helpers\ContentContainerHelper;
 
 /** @var \humhub\modules\custom_pages\models\Target $target */
 /** @var \humhub\modules\custom_pages\models\ContentType $contentType*/
+/** @var string $pageType */
 /** @var bool $disabled*/
 
 $contentContainer = ContentContainerHelper::getCurrent();
@@ -23,8 +24,8 @@ $contentContainer = ContentContainerHelper::getCurrent();
     </td>
     <td>
         <?= Button::success(Yii::t('CustomPagesModule.base', 'Add'))
-            ->link(Url::toAddContentType($target, $contentType->getId(), $contentContainer))
-            ->icon('fa-plus')->sm()->id('add-'.$contentType->getId())
+            ->link(Url::toAddContentType($target, $pageType,  $contentType->getId(), $contentContainer))
+            ->icon('fa-plus')->sm()->id('add-content-type-'.$contentType->getId())
             ->cssClass(($disabled ? 'disabled' : '')) ?>
     </td>
 </tr>

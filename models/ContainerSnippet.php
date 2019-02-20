@@ -25,6 +25,8 @@ use humhub\modules\custom_pages\modules\template\models\Template;
 class ContainerSnippet extends ContainerPage
 {
 
+    const SIDEEBAR_STREAM = 'stream';
+
     /**
      * @return string the associated database table name
      */
@@ -70,6 +72,13 @@ class ContainerSnippet extends ContainerPage
             Container::TYPE_IFRAME,
             Container::TYPE_TEMPLATE,
             Container::TYPE_PHP,
+        ];
+    }
+
+    public static function getSidebarSelection()
+    {
+        return [
+            self::SIDEEBAR_STREAM => Yii::t('CustomPagesModule.base', 'Stream'),
         ];
     }
 

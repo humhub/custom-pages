@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\ContentType;
 use humhub\modules\custom_pages\widgets\AddContentTypeRow;
 use humhub\widgets\Button;
@@ -7,6 +8,7 @@ use humhub\widgets\Button;
 /* @var $model \humhub\modules\custom_pages\models\forms\AddPageForm */
 /* @var $target \humhub\modules\custom_pages\models\Target */
 /* @var $subNav string */
+/* @var $pageType string */
 
 ?>
 <div class="panel panel-default">
@@ -16,7 +18,7 @@ use humhub\widgets\Button;
 
     <div class="panel-body">
         <div class="clearfix">
-            <?= Button::back($model->target->getEditBackUrl(), Yii::t('CustomPagesModule.base', 'Back to overview'))->sm(); ?>
+            <?= Button::back(Url::toOverview($pageType, $model->target->container), Yii::t('CustomPagesModule.base', 'Back to overview'))->sm(); ?>
             <h4><?= Yii::t('CustomPagesModule.views_admin_add', 'Add new {pageType}', ['pageType' => $model->getPageLabel()]) ?></h4>
             <div class="help-block">
                 <?= Yii::t('CustomPagesModule.base', 'Please choose one of the following content types. The content type defines how your content is embedded to your site.') ?>
@@ -31,6 +33,7 @@ use humhub\widgets\Button;
                     <?= AddContentTypeRow::widget([
                         'contentType' => $contentType,
                         'target' => $target,
+                        'pageType' => $pageType,
                         'hide' => !$model->isAllowedType($contentType),
                         'disabled' => $model->isDisabledType($contentType)
                     ]); ?>

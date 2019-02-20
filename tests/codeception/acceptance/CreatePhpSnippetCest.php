@@ -11,7 +11,7 @@ class CreatePhpSnippetCest
     public function testCreateMarkdownPageOnTopMenu(AcceptanceTester $I)
     {
         $I->amAdmin();
-        $I->amOnPage('index-test.php?r=custom_pages/admin/settings');
+        $I->amOnPage('index-test.php?r=custom_pages/config');
 
         $I->click('[for="phpPagesActive"]');
 
@@ -24,16 +24,21 @@ class CreatePhpSnippetCest
 
         $I->wantToTest('the creation of a php based snippet');
         $I->amGoingTo('add a new snippet');
-        $I->amOnPage('index-test.php?r=custom_pages/snippet/add');
-        $I->expectTo('see the add new snippet site');
-        $I->see('Add new snippet');
+        $I->amOnPage('index-test.php?r=custom_pages/snippet');
+        $I->expectTo('see the add new page site');
+        $I->see('Overview');
 
-        $I->click('#add-6'); // Add Markdown button
+        $I->seeElement('.target-page-list.Dasboard');
+        $I->click('.btn-success', '.target-page-list.Dasboard');
+
+        $I->waitForText('Add new snippet');
+
+        $I->click('#add-content-type-6');
+
         $I->waitForText('Configuration');
 
         $I->fillField('Snippet[title]', 'PHP snippet');
-        $I->selectOption('Snippet[content]', ['value' => 'test_snippet']);
-        $I->selectOption('Snippet[sidebar]', ['value' => 'Dasboard']);
+        $I->selectOption('Snippet[page_content]', ['value' => 'test_snippet']);
         $I->selectOption('Snippet[icon]',  ['value' => 'fa-adn']);
         $I->click('Save');
         $I->wait(1);

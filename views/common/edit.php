@@ -2,6 +2,7 @@
 
 use humhub\modules\custom_pages\widgets\PageIconSelect;
 use humhub\modules\ui\form\widgets\Markdown;
+use humhub\widgets\Link;
 use humhub\widgets\MarkdownEditor;
 use yii\helpers\Html;
 use humhub\modules\custom_pages\helpers\Url;
@@ -20,6 +21,7 @@ use humhub\modules\custom_pages\models\PhpType;
 
 /** @var  $page \humhub\modules\custom_pages\models\CustomContentContainer */
 /** @var  $subNav string */
+/** @var  $pageType string */
 
 $indexUrl = Url::to(['index', 'sguid' => null]);
 $deleteUrl = Url::to(['delete', 'id' => $page->id, 'sguid' => null]);
@@ -37,7 +39,7 @@ $contentType = $page->getContentType();
     <?= $subNav ?>
 
     <div class="panel-body">
-        <?= Button::back($target->getEditBackUrl(), Yii::t('CustomPagesModule.base', 'Back to overview'))->sm(); ?>
+        <?= Button::back(Url::toChooseContentType($target, $pageType), Yii::t('CustomPagesModule.base', 'Back'))->sm(); ?>
 
         <h4><?= Yii::t('CustomPagesModule.views_common_edit', 'Configuration'); ?></h4>
 
@@ -46,6 +48,7 @@ $contentType = $page->getContentType();
         </div>
 
         <?php $form = ActiveForm::begin(); ?>
+            <?= $form->field($page, 'title') ?>
 
             <div class="form-group">
                 <?= Html::textInput('type', $contentType->getLabel(), ['class' => 'form-control', 'disabled' => '1']); ?>
@@ -54,8 +57,6 @@ $contentType = $page->getContentType();
             <div class="form-group">
                 <?= Html::textInput('target', $target->name, ['class' => 'form-control', 'disabled' => '1']); ?>
             </div>
-
-            <?= $form->field($page, 'title') ?>
 
             <?= PageIconSelect::widget(['page' => $page]) ?>
 
@@ -78,9 +79,9 @@ $contentType = $page->getContentType();
             <?php elseif (TemplateType::isType($contentType)): ?>
                 <?= $form->field($page, 'templateId')->dropDownList($page->getAllowedTemplateSelection(), ['value' => $page->getTemplateId(), 'disabled' => !$page->isNewRecord]) ?>
             <?php elseif (MarkdownType::isType($contentType)) : ?>
-                <?= $form->field($page, $page->getPageContentProperty())->textarea(['id' => 'markdownField', 'class' => 'form-control', 'rows' => '15'])->widget(Markdown::class ); ?>
+                <?= $form->field($page, $page->getPageContentProperty())->textarea(['id' => 'markdownField', 'class' => 'form-control', 'rows' => '15'])->widget(Markdown::class); ?>
             <?php elseif (PhpType::isType($contentType)): ?>
-                <?=  $form->field($page, $page->getPageContentProperty())->dropDownList($page->getAllowedPhpViewFileSelection()) ?>
+                <?= $form->field($page, $page->getPageContentProperty())->dropDownList($page->getAllowedPhpViewFileSelection()) ?>
             <?php endif; ?>
 
             <?= $form->field($page, 'sort_order')->textInput(); ?>
@@ -100,11 +101,11 @@ $contentType = $page->getContentType();
             <?= Button::save()->submit() ?>
 
             <?php if (!$page->isNewRecord) : ?>
-                <?= Button::danger(Yii::t('CustomPagesModule.views_common_edit', 'Delete'))->link(Url::toDeletePage($page), $target->container)->pjax(false)?>
+                <?= Link::danger(Yii::t('CustomPagesModule.views_common_edit', 'Delete'))->post(Url::toDeletePage($page, $target->container))->pjax(false)->confirm() ?>
             <?php endif; ?>
 
             <?php if (TemplateType::isType($contentType) && !$page->isNewRecord): ?>
-                <?= Button::success(Yii::t('CustomPagesModule.views_common_edit', 'Inline Editor'))->link( $page->getEditUrl() )->right()->icon('fa-pencil')?>
+                <?= Button::success(Yii::t('CustomPagesModule.views_common_edit', 'Inline Editor'))->link($page->getEditUrl())->right()->icon('fa-pencil') ?>
             <?php endif; ?>
         <?php ActiveForm::end(); ?>
     </div>

@@ -47,7 +47,7 @@ class CreateTemplatePageCest
         
         $I->amGoingTo('add a image element');
         $this->clickAddElement($I, 'Image');
-        $I->fillField('TemplateElement[name]', 'image');
+        $I->fillField('TemplateElement[name]', 'tmplimage');
         //Workaround
         $I->jsShow('.uploadElementImage', 'type');
         #$I->wait(20);
@@ -74,11 +74,13 @@ class CreateTemplatePageCest
         $I->waitForElementNotVisible('#globalModal');
 
         $I->click('Save');
-       
+
+        $I->wait(1);
+
         $I->expectTo('see the new element added to the element row');
         $I->see('#text');
         $I->see('#richtext');
-        $I->see('#image');
+        $I->see('#tmplimage');
         $I->see('#file');
     }
     

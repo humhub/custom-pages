@@ -37,7 +37,7 @@ class CreateAdminPageCest
     public function testCreateLinkPageOnAccountMenu(AcceptanceTester $I)
     {
         $I->amAdmin();
-        $I->wantToTest('the creation of a markdown page');
+        $I->wantToTest('the creation of a link page');
         $I->amGoingTo('add a new page');
         $I->amOnPage('index-test.php?r=custom_pages/admin/add');
         $I->expectTo('see the add new page site');
@@ -67,7 +67,7 @@ class CreateAdminPageCest
     public function testCreateHtmlPage(AcceptanceTester $I)
     {
         $I->amAdmin();
-        $I->wantToTest('the creation of a markdown page');
+        $I->wantToTest('the creation of a html page');
         $I->amGoingTo('add a new page');
         $I->amOnPage('index-test.php?r=custom_pages/admin/add');
         $I->expectTo('see the add new page site');

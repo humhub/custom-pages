@@ -47,7 +47,7 @@ $sguid = Yii::$app->request->get('sguid') ? Yii::$app->request->get('sguid') : Y
                             <td><?= $classes[$page->navigation_class]; ?></td>
                         <?php endif; ?>
                         <td><?= Container::getLabel($page->type); ?></td>
-                        <td><?= $page->sort_order; ?></td>
+                        <td><?= Html::encode($page->sort_order); ?></td>
                         <td><?= Html::a('<i class="fa fa-pencil"></i>', $editUrl, ['class' => 'btn btn-primary btn-xs pull-right']); ?></td>
                     </tr>
 
@@ -55,7 +55,7 @@ $sguid = Yii::$app->request->get('sguid') ? Yii::$app->request->get('sguid') : Y
             </table>
 
         <?php else: ?>
-            <div class="alert alert-info" role="alert" style="margin-bottom:0px;">
+            <div class="alert alert-info" role="alert" style="margin-bottom:0;">
                 <?= Yii::t('CustomPagesModule.views_common_list', 'No {label} entry created yet!', ['label' => $label]); ?>
             </div>
         <?php endif; ?>

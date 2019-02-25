@@ -1,4 +1,8 @@
-0.8.11  (February 05, 2019)
+0.8.13  (February 25, 2019)
+---------------------
+- Fixed xss vulnerability issue
+
+0.8.12  (February 05, 2019)
 ---------------------
 - Fix: Space admin can't add template components
 - Chng: Updated min version to 1.3.0

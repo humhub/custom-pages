@@ -5,7 +5,11 @@ namespace humhub\modules\custom_pages\modules\template\assets;
 use yii\web\AssetBundle;
 
 class InlineEditorAsset extends AssetBundle
-{    
+{
+    public $publishOptions = [
+        'forceCopy' => false
+    ];
+
     public $jsOptions = ['position' => \yii\web\View::POS_END];
     public $js = [
         'js/humhub.custom_pages.template.editor.js',

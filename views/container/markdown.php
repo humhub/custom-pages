@@ -1,8 +1,10 @@
 <?php
-    $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass :  'custom-pages-page';
+use yii\helpers\Html;
+
+$cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass :  'custom-pages-page';
 ?>
-<div class="panel panel-default <?= $cssClass ?>">
+<div class="panel panel-default <?= Html::encode($cssClass) ?>">
     <div class="panel-body">
-        <?php echo humhub\widgets\MarkdownView::widget(['markdown' => $md]); ?>
+        <?= humhub\widgets\MarkdownView::widget(['markdown' => $md]); ?>
     </div>
 </div>

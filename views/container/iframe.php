@@ -1,8 +1,10 @@
 <?php
+use yii\helpers\Html;
+
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 ?>
 
-<iframe class="<?= $cssClass ?>" id="iframepage" style="width:100%; height: 100%;" src="<?php echo \yii\helpers\Html::encode($url); ?>"></iframe>
+<iframe class="<?= Html::encode($cssClass) ?>" id="iframepage" style="width:100%; height: 100%;" src="<?= Html::encode($url); ?>"></iframe>
 
 <style>
     #iframepage {

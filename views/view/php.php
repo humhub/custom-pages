@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\Html;
 use yii\base\ViewNotFoundException;
 
 /** @var $page \humhub\modules\custom_pages\models\Page */
@@ -10,7 +11,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 
 
 
-<div class="<?= $cssClass ?>">
+<div class="<?= Html::encode($cssClass) ?>">
     <?php try { ?>
         <?= $this->renderFile($page->getPhpViewFilePath()) ?>
     <?php } catch(ViewNotFoundException $vnfe) { ?>

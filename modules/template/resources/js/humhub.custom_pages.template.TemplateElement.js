@@ -191,11 +191,11 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
         this.$menu = (!this.$menu) ? $(string.template(TemplateElement.template.menu, {cssClass : options.cssClass})) : this.$menu;
 
         if (this.name) {
-            this.$menu.append($('<span>' + this.title + '</span>'));
+            this.$menu.append($('<span>' + string.encode(this.title) + '</span>'));
         } 
         
         if(this.label) {
-            this.$menu.append($('<span class="label label-warning">' + this.label + '</span>'));
+            this.$menu.append($('<span class="label label-warning">' + string.encode(this.label) + '</span>'));
         }
         
         this.$menu.append(options.items);

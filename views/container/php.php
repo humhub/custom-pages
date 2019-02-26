@@ -7,6 +7,7 @@
  */
 
 use yii\base\ViewNotFoundException;
+use yii\helpers\Html;
 
 /** @var $page \humhub\modules\custom_pages\models\Page */
 /** @var $this \humhub\components\View */
@@ -16,7 +17,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 ?>
 
 
-<div class="container <?= $cssClass ?>">
+<div class="container <?= Html::encode($cssClass) ?>">
     <div class="row">
 
         <div class="col-md-12">

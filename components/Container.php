@@ -8,7 +8,11 @@
 
 namespace humhub\modules\custom_pages\components;
 
+use humhub\modules\custom_pages\models\ContentType;
+use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
+use humhub\modules\custom_pages\models\Target;
+use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\file\libs\FileHelper;
 use Yii;
 use yii\base\Behavior;
@@ -35,7 +39,7 @@ class Container extends Behavior
     const TYPE_PHP = '6';
 
     /**
-     * @var ActiveRecord|null the owner of this behavior
+     * @var CustomContentContainer the owner of this behavior
      */
     public $owner;
 
@@ -43,6 +47,7 @@ class Container extends Behavior
      * @var integer special field for template based pages specifying the layout id
      */
     public $templateId;
+
 
     /**
      * @inheritdoc
@@ -89,15 +94,64 @@ class Container extends Behavior
      */
     public function defaultRules()
     {
-        return [
+        $result = [
             [['type', 'title'], 'required'],
-            [['type', 'sort_order', 'admin_only'], 'integer'],
-            [['title', 'cssClass'], 'string', 'max' => 255],
-            [['icon'], 'string', 'max' => 100],
-            [['templateId'], 'safe'],
-            ['type', 'validateTemplateType'],
-            ['type', 'validatePhpType'],
+            [['type'], 'integer'],
+            [['title'], 'string', 'max' => 255],
         ];
+
+        $result = array_merge($result, $this->getRulesByTarget());
+        return array_merge($result, $this->getRulesByContentType());
+    }
+
+    private function getRulesByContentType()
+    {
+        $result = [];
+        $type = $this->owner->getContentType();
+
+        if(!$type) {
+            return $result;
+        }
+
+        if(TemplateType::isType($type)) {
+            $result[] = [['templateId'], 'safe'];
+            $result[] = ['type', 'validateTemplateType'];
+            $result[] = ['type', 'validatePhpType'];
+        }
+
+        if($type->hasContent()) {
+            $result[] =  [['page_content'], 'safe'];
+        }
+
+        return $result;
+    }
+
+    private function getRulesByTarget()
+    {
+        $result = [];
+        $target = $this->owner->getTargetModel();
+
+        if(!$target) {
+            return $result;
+        }
+
+        if($target->isAllowedField('admin_only')) {
+            $result[] = [['admin_only'], 'integer'];
+        }
+
+        if($target->isAllowedField('sort_order')) {
+            $result[] = [['sort_order'], 'integer'];
+        }
+
+        if($target->isAllowedField('icon')) {
+            $result[] = [['icon'], 'string', 'max' => 100];
+        }
+
+        if($target->isAllowedField('cssClass')) {
+            $result[] =  [[ 'cssClass'], 'string', 'max' => 255];
+        }
+
+        return $result;
     }
 
     /**
@@ -118,6 +172,7 @@ class Container extends Behavior
      *
      * @param $attribute
      * @param $params
+     * @throws HttpException
      */
     public function validatePhpType($attribute, $params)
     {

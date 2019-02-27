@@ -1,3 +1,10 @@
+1.0.0  (February 25, 2019)
+---------------------
+- Enh: Added integration layer
+- Enh: New template content type HumHub Richtext
+- Enh: Use Markdown Richtext as Markdown editor
+- Chng: Aliged CustomContentContainer tables and controller logic
+
 0.8.13  (February 25, 2019)
 ---------------------
 - Fixed xss vulnerability issue

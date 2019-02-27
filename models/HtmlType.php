@@ -31,4 +31,8 @@ class HtmlType extends ContentType
         return Yii::t('CustomPagesModule.base', 'Adds plain HTML content to your site.');
     }
 
+    public function render(CustomContentContainer $content, $options = [])
+    {
+        // TODO: Implement getRender() method.
+    }
 }

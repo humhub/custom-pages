@@ -6,6 +6,7 @@ use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\ContainerSnippet;
+use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\models\Snippet;
@@ -14,6 +15,7 @@ use humhub\modules\space\models\Space;
 use yii\base\Component;
 use yii\base\InvalidArgumentException;
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * Class CustomPagesService
@@ -43,7 +45,6 @@ class CustomPagesService extends Component
 
         $event = new CustomPagesTargetEvent(['type' => $type, 'container' => $container]);
         $this->addDefaultTargets($event);
-
 
         $this->trigger(self::EVENT_FETCH_TARGETS, $event);
 
@@ -81,7 +82,7 @@ class CustomPagesService extends Component
      * @param string $targetId
      * @param string $type
      * @param ContentContainerActiveRecord|null $container
-     * @return mixed|null
+     * @return CustomContentContainer|null
      */
     public function getTargetById($targetId, $type, ContentContainerActiveRecord $container = null)
     {
@@ -94,7 +95,8 @@ class CustomPagesService extends Component
      *
      * @param string|Target $targetId
      * @param ContentContainerActiveRecord|null $container
-     * @return ActiveQuery
+     * @return ActiveQueryContent
+     * @throws \yii\base\Exception
      */
     public function findContentByTarget($targetId, $type, ContentContainerActiveRecord $container = null)
     {
@@ -103,21 +105,47 @@ class CustomPagesService extends Component
             $targetId = $targetId->id;
         }
 
+
+        $contentClass = $this->getContentClass($type, $container);
+
+        $query = call_user_func($contentClass.'::find');
+
+        $query->where(['target' => $targetId])->contentContainer($container);
+
+        return $query->orderBy('sort_order')->orderBy('id DESC');
+    }
+
+    /**
+     * @param $type
+     * @param ContentContainerActiveRecord|null $container
+     * @return string
+     */
+    private function getContentClass($type, ContentContainerActiveRecord $container = null)
+    {
         if(PageType::Page === $type) {
-            $query = ($container) ?  ContainerPage::find() : Page::find();
+            return ($container) ?  ContainerPage::class : Page::class;
         } else if(PageType::Snippet === $type) {
-            $query = ($container) ?  ContainerSnippet::find() : Snippet::find();
+           return ($container) ?  ContainerSnippet::class : Snippet::class;
         } else {
             throw new InvalidArgumentException('Invalid page type selection in findContentByTarget()');
         }
+    }
 
-        $query->where(['target' => $targetId]);
-
-        if ($query instanceof ActiveQueryContent && $container) {
-            //$query->readable();
-        }
-
-        return $query->orderBy('sort_order');
+    /**
+     * Should be called to search for a single custom content with a given id.
+     *
+     * @param $id
+     * @param $targetId
+     * @param $type
+     * @param ContentContainerActiveRecord|null $container
+     * @return CustomContentContainer
+     * @throws \yii\base\Exception
+     */
+    public function getSingleContent($id, $targetId, $type, ContentContainerActiveRecord $container = null)
+    {
+        $contentClass = $this->getContentClass($type, $container);
+        $tableName = call_user_func($contentClass.'::tableName');
+        return $this->findContentByTarget($targetId, $type, $container)->where([$tableName.'.id' => $id])->one();
     }
 
 }

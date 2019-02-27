@@ -25,7 +25,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
 class ContainerSnippet extends ContainerPage
 {
 
-    const SIDEEBAR_STREAM = 'stream';
+    const SIDEEBAR_STREAM = 'SpaceStreamSidebar';
 
     /**
      * @return string the associated database table name

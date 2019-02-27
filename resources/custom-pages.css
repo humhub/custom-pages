@@ -311,3 +311,7 @@ body.modal-open {
     border-top-right-radius: 4px;
     font-weight: bold;
 }
+
+.content-edit .ProseMirror {
+    min-height: 150px !important;
+}

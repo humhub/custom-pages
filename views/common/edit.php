@@ -1,23 +1,20 @@
 <?php
 
 use humhub\modules\custom_pages\widgets\PageIconSelect;
-use humhub\modules\ui\form\widgets\Markdown;
 use humhub\widgets\Link;
-use humhub\widgets\MarkdownEditor;
+use humhub\modules\content\widgets\richtext\RichTextField;
 use yii\helpers\Html;
 use humhub\modules\custom_pages\helpers\Url;
 use yii\widgets\ActiveForm;
 use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\models\ContainerPage;
-use humhub\modules\custom_pages\components\Container;
-use humhub\modules\custom_pages\models\Snippet;
-use humhub\modules\custom_pages\models\ContainerSnippet;
 use humhub\widgets\Button;
 use humhub\modules\custom_pages\models\LinkType;
 use humhub\modules\custom_pages\models\HtmlType;
 use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\custom_pages\models\MarkdownType;
 use humhub\modules\custom_pages\models\PhpType;
+
+\humhub\modules\custom_pages\assets\Assets::register($this);
 
 /** @var  $page \humhub\modules\custom_pages\models\CustomContentContainer */
 /** @var  $subNav string */
@@ -31,7 +28,7 @@ $target = $page->getTargetModel();
 $contentType = $page->getContentType();
 
 ?>
-<div class="panel panel-default">
+<div class="panel panel-default content-edit">
     <div class="panel-heading">
         <?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?>
     </div>
@@ -44,7 +41,7 @@ $contentType = $page->getContentType();
         <h4><?= Yii::t('CustomPagesModule.views_common_edit', 'Configuration'); ?></h4>
 
         <div class="help-block">
-            <?= Yii::t('CustomPagesModule.views_common_edit', 'Here you can configure the general settings of your {label}.', ['label' => $page->getLabel()]) ?>
+            <?= Yii::t('CustomPagesModule.views_common_edit', 'Here you can configure the general settings of your {pageLabel}.', ['pageLabel' => $page->getLabel()]) ?>
         </div>
 
         <?php $form = ActiveForm::begin(); ?>
@@ -58,7 +55,9 @@ $contentType = $page->getContentType();
                 <?= Html::textInput('target', $target->name, ['class' => 'form-control', 'disabled' => '1']); ?>
             </div>
 
-            <?= PageIconSelect::widget(['page' => $page]) ?>
+            <?php if($target->isAllowedField('icon')) : ?>
+                <?= PageIconSelect::widget(['page' => $page]) ?>
+            <?php endif; ?>
 
             <?php if ($contentType->isUrlContent()): ?>
                 <?= $form->field($page, $page->getPageContentProperty())->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('targetUrl')); ?>
@@ -79,23 +78,29 @@ $contentType = $page->getContentType();
             <?php elseif (TemplateType::isType($contentType)): ?>
                 <?= $form->field($page, 'templateId')->dropDownList($page->getAllowedTemplateSelection(), ['value' => $page->getTemplateId(), 'disabled' => !$page->isNewRecord]) ?>
             <?php elseif (MarkdownType::isType($contentType)) : ?>
-                <?= $form->field($page, $page->getPageContentProperty())->textarea(['id' => 'markdownField', 'class' => 'form-control', 'rows' => '15'])->widget(Markdown::class); ?>
+                <?= $form->field($page, $page->getPageContentProperty())->widget(RichTextField::class, [ 'pluginOptions' => ['maxHeight' => '500px']])?>
             <?php elseif (PhpType::isType($contentType)): ?>
                 <?= $form->field($page, $page->getPageContentProperty())->dropDownList($page->getAllowedPhpViewFileSelection()) ?>
             <?php endif; ?>
 
-            <?= $form->field($page, 'sort_order')->textInput(); ?>
+            <?php if($target->isAllowedField('sort_order')) : ?>
+                <?= $form->field($page, 'sort_order')->textInput(); ?>
+            <?php endif; ?>
 
             <?php if ($page->hasAttribute('cssClass') && LinkType::isType($contentType)) : ?>
                 <?= $form->field($page, 'cssClass'); ?>
             <?php endif; ?>
 
-            <?php if ($page->hasAttribute('admin_only')) : ?>
-                <?= $form->field($page, 'admin_only')->checkbox() ?>
+            <?php if($target->isAllowedField('admin_only')) : ?>
+                <?php if ($page->hasAttribute('admin_only')) : ?>
+                    <?= $form->field($page, 'admin_only')->checkbox() ?>
+                <?php endif; ?>
             <?php endif; ?>
 
-            <?php if ($page->hasAttribute('in_new_window')) : ?>
-                <?= $form->field($page, 'in_new_window')->checkbox() ?>
+            <?php if($target->isAllowedField('in_new_window')) : ?>
+                <?php if ($page->hasAttribute('in_new_window')) : ?>
+                    <?= $form->field($page, 'in_new_window')->checkbox() ?>
+                <?php endif; ?>
             <?php endif; ?>
 
             <?= Button::save()->submit() ?>
@@ -105,7 +110,7 @@ $contentType = $page->getContentType();
             <?php endif; ?>
 
             <?php if (TemplateType::isType($contentType) && !$page->isNewRecord): ?>
-                <?= Button::success(Yii::t('CustomPagesModule.views_common_edit', 'Inline Editor'))->link($page->getEditUrl())->right()->icon('fa-pencil') ?>
+                <?= Button::success(Yii::t('CustomPagesModule.views_common_edit', 'Inline Editor'))->link(Url::toInlineEdit($page, $target->container))->right()->icon('fa-pencil') ?>
             <?php endif; ?>
         <?php ActiveForm::end(); ?>
     </div>

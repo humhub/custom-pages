@@ -7,6 +7,7 @@
  */
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
+use humhub\modules\custom_pages\modules\template\models\HumHubRichtextContent;
 use Yii;
 
 use humhub\modules\custom_pages\modules\template\models\ContainerContent;
@@ -132,6 +133,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         return [
             TextContent::$label => TextContent::class,
             RichtextContent::$label => RichtextContent::class,
+            HumHubRichtextContent::$label => HumHubRichtextContent::class,
             ImageContent::$label => ImageContent::class,
             ContainerContent::$label => ContainerContent::class,
             FileContent::$label => FileContent::class,

@@ -3,8 +3,11 @@
 namespace humhub\modules\custom_pages\helpers;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\models\Target;
+use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use yii\helpers\Url as BaseUrl;
 
 class Url extends BaseUrl
@@ -23,6 +26,23 @@ class Url extends BaseUrl
     const ROUTE_SNIPPET_OVERVIEW = '/custom_pages/snippet';
 
     const ROUTE_TEMPLATE_LAYOUT_ADMIN = '/custom_pages/template/layout-admin';
+
+    const ROUTE_PAGE_INLINE_EDIT = '/custom_pages/view/view';
+    const ROUTE_CONTAINER_PAGE_INLINE_EDIT = '/custom_pages/container/view';
+
+    const ROUTE_SNIPPET_INLINE_EDIT = '/custom_pages/snippet/edit-snippet';
+    const ROUTE_CONTAINER_SNIPPET_INLINE_EDIT = '/custom_pages/cotnainer-snippet/edit-snippet';
+
+    public static function toInlineEdit(CustomContentContainer $content, ContentContainerActiveRecord $container = null)
+    {
+        if($content->getPageType() === PageType::Snippet) {
+            $route = $container ? static::ROUTE_CONTAINER_SNIPPET_INLINE_EDIT : static::ROUTE_SNIPPET_INLINE_EDIT;
+            return static::create($route, ['id' => $content->id], $container);
+        } else {
+            $route = $container ? static::ROUTE_CONTAINER_PAGE_INLINE_EDIT : static::ROUTE_PAGE_INLINE_EDIT;
+            return static::create($route, ['id' => $content->id, 'editMode' => 1], $container);
+        }
+    }
 
     public static function toTemplateLayoutAdmin()
     {
@@ -51,6 +71,11 @@ class Url extends BaseUrl
         if($targetId instanceof Target) {
             $container = $targetId->container;
             $targetId = $targetId->id;
+        }
+
+        if($contentType instanceof ContentContainerActiveRecord) {
+            $container = $contentType;
+            $contentType = null;
         }
 
         $route = ($pageType === PageType::Page) ? static::ROUTE_EDIT_PAGE : static::ROUTE_EDIT_SNIPPET;

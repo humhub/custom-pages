@@ -18,7 +18,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
 class ContainerPage extends Page implements Searchable
 {
 
-    const NAV_CLASS_SPACE_NAV = 'Space Navigation';
+    const NAV_CLASS_SPACE_NAV = 'SpaceMenu';
 
     /**
      * @inheritdoc
@@ -104,14 +104,6 @@ class ContainerPage extends Page implements Searchable
             'title' => $this->title,
             'content' => $this->page_content,
         ];
-    }
-
-    /**
-     * Returns the view url of this page.
-     */
-    public function getUrl()
-    {
-        return $this->content->container->createUrl('/custom_pages/container/view', ['id' => $this->id]);
     }
 
     /**

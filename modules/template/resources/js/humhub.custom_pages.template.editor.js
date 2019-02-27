@@ -3,6 +3,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     var object = require('util').object;
     var client = require('client');
     var modal = require('ui.modal');
+    var additions = require('ui.additions');
 
     TemplateInlineEditor = function (node, options) {
         Widget.call(this, node, options);
@@ -85,6 +86,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
                     that.replaceElement(that.currentElement, $result);
                 }
                 modal.global.close();
+                additions.applyTo(that.$);
             } else {
                 modal.global.setDialog(response);
             }

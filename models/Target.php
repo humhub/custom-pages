@@ -45,6 +45,11 @@ class Target extends Model
     public $contentTypes = [];
 
     /**
+     * @var string used to create the access url
+     */
+    public $accessRoute = '/custom_pages/container/view';
+
+    /**
      * [
      * 'sortOrder' => ['value' => 0, 'hidden' => true],
      * 'icon' => ['value' => 'adjust', 'readonly' => true],
@@ -53,6 +58,19 @@ class Target extends Model
      * @var array
      */
     public $fieldSettings = [];
+
+    /**
+     * Returns the url for accessing this content. Targets can change the access url by overwriting the default
+     * [[accessRoute]].
+     * @param CustomContentContainer $content
+     * @return string
+     */
+    public function getContentUrl(CustomContentContainer $content)
+    {
+        return $content->content->container
+            ? $content->content->container->createUrl($this->accessRoute, ['id' => $content->id])
+            : Url::toRoute([$this->accessRoute, 'id' => $content->id]);
+    }
 
     /**
      * @inheritdoc
@@ -66,6 +84,37 @@ class Target extends Model
 
     public function isAllowedContentType($type)
     {
+        if($type instanceof ContentType) {
+            $type = $type->getId();
+        }
         return empty($this->contentTypes) || in_array($type, $this->contentTypes);
     }
+
+    /**
+     * @param $field string
+     * @param $setting array|bool
+     */
+    public function setFieldSetting($field, $setting)
+    {
+        $this->fieldSettings[$field] = $setting;
+    }
+
+    /**
+     * @param $field string
+     * @param $setting array|bool
+     * @return bool
+     */
+    public function isAllowedField($field)
+    {
+        if(!isset($this->fieldSettings[$field])) {
+            return true;
+        }
+
+        if($this->fieldSettings[$field] === false) {
+            return false;
+        }
+
+        return true;
+    }
+
 }

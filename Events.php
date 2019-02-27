@@ -11,6 +11,7 @@ use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\ContainerSnippet;
 use humhub\modules\custom_pages\widgets\SnippetWidget;
 use humhub\modules\custom_pages\models\Snippet;
+use humhub\modules\custom_pages\modules\template\models\TemplatePagePermission;
 
 /**
  * CustomPagesEvents
@@ -36,9 +37,9 @@ class Events
     {
         $space = $event->sender->space;
         if ($space->isModuleEnabled('custom_pages')) {
-            $pages = ContainerPage::find()->contentContainer($space)->all();
+            $pages = ContainerPage::find()->contentContainer($space)->andWhere(['target' => ContainerPage::NAV_CLASS_SPACE_NAV])->all();
             foreach ($pages as $page) {
-                if($page->admin_only && !modules\template\models\TemplatePagePermission::canEdit()) {
+                if($page->admin_only && !TemplatePagePermission::canEdit()) {
                     continue;
                 }
             

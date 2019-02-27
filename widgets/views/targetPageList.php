@@ -18,7 +18,7 @@ use humhub\widgets\Button;
 
 <div class="target-page-list <?= Html::encode($target->id) ?>">
     <div class="target-page-list-head">
-        <strong><?= Html::encode($target->name) ?></strong>
+        <strong><?= $target->icon ? '<i class="fa '.Html::encode($target->icon).'"></i> ' : '' ?><?= Html::encode($target->name) ?></strong>
         <?= Button::success()->icon('fa-plus')->right()->link(Url::toChooseContentType($target, $pageType))->xs(); ?>
     </div>
     <div style="padding:0 10px;border: 1px solid #F1F1F1">
@@ -32,7 +32,7 @@ use humhub\widgets\Button;
                     'format' => 'raw',
                     'value' => function ($data) {
                         /*  @var $data CustomContentContainer */
-                        return Link::to(Html::encode($data->getTitle()), $data->getEditUrl())->icon(Html::encode($data->getIcon()));
+                        return Link::to(Html::encode($data->getTitle()), $data->getUrl())->icon(Html::encode($data->getIcon()));
                     }
                 ],
                 [
@@ -53,8 +53,10 @@ use humhub\widgets\Button;
                             /*  @var $model CustomContentContainer */
                             return Link::primary()->icon('fa-pencil')->link($model->getEditUrl())->xs()->right();
                         },
-                        'view' => function () {
+                        'view' => function ($url, $model) {
                             return;
+                        /*  @var $model CustomContentContainer */
+                            return Link::primary()->icon('fa-eye')->link($model->getUrl())->xs()->right();
                         },
                         'delete' => function () {
                             return;

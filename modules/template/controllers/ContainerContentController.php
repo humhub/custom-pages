@@ -33,14 +33,15 @@ class ContainerContentController extends \humhub\components\Controller
 
     /**
      * This action is used for empty ContainerContent instances, which means there is only a default CotnainerContent for the given owner.
-     * 
+     *
      * This action accepts an $ownerContentId, which is the id of the default OwnerContent instance,
      * and an owner definition ($ownerModel, $ownerId), which defines the actual owner of the element.
-     * 
+     *
      * @param string $ownerModel
      * @param integer $ownerId
      * @param integer $ownerContentId
      * @return array
+     * @throws \yii\base\InvalidRouteException
      */
     public function actionCreateContainer($ownerModel, $ownerId, $ownerContentId, $cguid = null)
     {
@@ -69,14 +70,16 @@ class ContainerContentController extends \humhub\components\Controller
 
     /**
      * This action is used to add new ContainerContentItems to an element.
-     * 
+     *
      * This action accepts either an $ownerContentId or an $ownerContent instance of type OwnerContent.
-     * 
+     *
      * Note: The given ownerContent has to be the actual OwnerContent and not a default OwnerContent.
-     * 
+     *
      * @param integer $ownerContentId id of actual ownerContent
      * @param OwnerContent $ownerContent actual (non default) ownerContent instance
+     * @return mixed|\yii\web\Response
      * @throws \yii\web\HttpException
+     * @throws \yii\base\InvalidRouteException
      */
     public function actionAddItem($ownerContentId, $ownerContent = null, $cguid = null)
     {
@@ -123,17 +126,18 @@ class ContainerContentController extends \humhub\components\Controller
     /**
      * This action handles the second step of the add item process and is responsible
      * for rendering and handling the item edit form.
-     * 
-     * This function requires an 
-     * 
+     *
+     * This function requires an
+     *
      * - OwnerContent - provided either as $ownerContentId or $ownerContent instance.
      * - Template - provided as post/get templateId or as $itemTemplate instance.
-     * 
-     * 
+     *
+     *
      * @param integer $ownerContentId id of the actual OwnerContent instance.
      * @param type $ownerContent instance of the actual OwnerContent.
      * @param integer $templateId item template id.
      * @param type $itemTemplate Template instance of the itemt template.
+     * @return \yii\web\Response
      * @throws \yii\web\HttpException
      */
     public function actionEditAddItem($ownerContentId = null, $ownerContent = null, $templateId = null, $itemTemplate = null, $cguid = null)
@@ -186,7 +190,7 @@ class ContainerContentController extends \humhub\components\Controller
     /**
      * This action is used to edit an container item.
      *
-     * @throws \yii\web\HttpException
+     * @throws \Exception
      */
     public function actionEditItem($itemId)
     {

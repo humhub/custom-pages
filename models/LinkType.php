@@ -34,4 +34,9 @@ class LinkType extends ContentType
     {
        return  Yii::t('CustomPagesModule.base', 'Will redirect requests to a given (relative or absolute) url.');
     }
+
+    public function render(CustomContentContainer $content, $options = [])
+    {
+        // TODO: Implement render() method.
+    }
 }

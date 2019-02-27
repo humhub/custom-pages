@@ -71,13 +71,18 @@ class Page extends CustomContentContainer
      */
     public function rules()
     {
+
         $rules = $this->defaultRules();
         $rules[] = ['target', 'required'];
-        $rules[] = [['in_new_window', 'admin_only'], 'integer'];
-        $rules[] = [['url'], 'unique', 'skipOnEmpty' => 'true'];
-        $rules[] = [['page_content', 'url'], 'safe'];
+
+        $target = $this->getTargetModel();
+        if($target && $target->isAllowedField('in_new_window')) {
+            $rules[] = [['in_new_window'], 'integer'];
+        }
+
         return $rules;
     }
+
 
     /**
      * @inheritdoc
@@ -181,14 +186,6 @@ class Page extends CustomContentContainer
     public function getEditUrl()
     {
         return Url::toEditPage($this->id);
-    }
-
-    /**
-     * @return ContentType
-     */
-    public function getContentType()
-    {
-        return ContentType::getById($this->type);
     }
 
     /**

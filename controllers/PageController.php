@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
+use humhub\modules\custom_pages\models\TemplateType;
 use Yii;
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\PageType;
@@ -101,7 +102,7 @@ class PageController extends ContentContainerController
      */
     private function getSubNav()
     {
-        return $this->contentContainer ? ContainerPageMenu::widget() : AdminMenu::widget();
+        return $this->contentContainer ? '' : AdminMenu::widget();
     }
 
     /**
@@ -125,7 +126,7 @@ class PageController extends ContentContainerController
         $model = new AddPageForm(['class' => $this->getPageClassName(), 'target' => $target, 'type' => $type]);
 
         if ($model->validate()) {
-            return $this->redirect(Url::toCreatePage($targetId, $this->getPageType(), $type));
+            return $this->redirect(Url::toCreatePage($targetId, $this->getPageType(), $type, $this->contentContainer));
         }
 
         return $this->render('@custom_pages/views/common/add', [
@@ -146,24 +147,29 @@ class PageController extends ContentContainerController
      * @param integer $id
      * @return string
      * @throws HttpException
+     * @throws \yii\base\InvalidRouteException
      */
     public function actionEdit($targetId = null, $type = null, $id = null)
     {
         /* @var CustomContentContainer $page*/
        $page = $this->findByid($id);
+       $isNew = false;
 
-        if (!$page && (!$type || !$targetId)) {
+        if (!$page && !$targetId) {
             throw new HttpException(400, 'Invalid request data!');
         }
 
         // If no pageId was given, we create a new page with the given type.
         if (!$page) {
+            $isNew = true;
             $pageClass = $this->getPageClassName();
-            $page = new $pageClass( ['type' => $type, 'target' => $targetId]);
+            $page = new $pageClass($this->contentContainer, ['type' => $type, 'target' => $targetId]);
         }
 
         if ($page->load(Yii::$app->request->post()) && $page->save()) {
-            return $this->redirect(['overview']);
+            return (TemplateType::isType($type) && $isNew)
+                ? $this->redirect(Url::toInlineEdit($page, $this->contentContainer))
+                : $this->runAction('overview');
         }
 
         return $this->render('@custom_pages/views/common/edit', [
@@ -192,7 +198,7 @@ class PageController extends ContentContainerController
             $page->delete();
         }
 
-        return $this->redirect(['index']);
+        return $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));
     }
 
     /**

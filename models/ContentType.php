@@ -36,6 +36,8 @@ abstract class ContentType extends Model
 
     public abstract function getLabel();
 
+    public abstract function render(CustomContentContainer $content, $options = []);
+
     public abstract function getDescription();
 
     /**
@@ -59,9 +61,13 @@ abstract class ContentType extends Model
      */
     public function afterSave($page, $insert, $changedAttributes) {}
 
+    /**
+     * @param $id int|ContentType
+     * @return bool
+     */
     public static function isType($id)
     {
-        if($id instanceof ContentType) {
+        if($id instanceof self) {
             $id = $id->getId();
         }
 

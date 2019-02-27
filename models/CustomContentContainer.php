@@ -4,6 +4,7 @@ namespace humhub\modules\custom_pages\models;
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
+use humhub\modules\custom_pages\widgets\WallEntry;
 
 /**
  * This abstract class is used by all custom content container types as pages and snippets.
@@ -38,7 +39,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
     /**
      * @inheritdoc
      */
-    public $wallEntryClass = 'humhub\modules\custom_pages\widgets\WallEntry';
+    public $wallEntryClass = WallEntry::class;
 
     /**
      * @var Target cached target
@@ -46,22 +47,28 @@ abstract class CustomContentContainer extends ContentActiveRecord
     private $_target;
 
     /**
-     * Returns all allowed content types for a page container class.
-     */
-    public abstract function getContentTypes();
-
-    /**
      * @return string
      */
     public abstract function getPageType();
 
     /**
+     * Returns the view url of this page.
+     */
+    public function getUrl()
+    {
+        return $this->getTargetModel()->getContentUrl($this);
+    }
+
+    /**
+     * Returns all allowed content types for a page container class.
+     *
      * @return ContentType
      */
     public function getContentType()
     {
         return ContentType::getById($this->type);
     }
+
 
     /**
      * @return Target
@@ -73,6 +80,11 @@ abstract class CustomContentContainer extends ContentActiveRecord
         }
 
         return $this->_target;
+    }
+
+    public function render()
+    {
+        return $this->getContentType()->render($this);
     }
 
     public function getTargetId()

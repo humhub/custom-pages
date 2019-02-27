@@ -15,7 +15,6 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
         this.$form = $('#sourceForm');
         this.$elements = $('#templateElementTable');
         this.initEvents();
-
     };
 
     TemplateSourceEditor.prototype.initEvents = function () {

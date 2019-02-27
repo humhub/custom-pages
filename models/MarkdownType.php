@@ -9,6 +9,8 @@
 namespace humhub\modules\custom_pages\models;
 
 
+use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\content\widgets\richtext\RichTextField;
 use Yii;
 use humhub\modules\file\models\File;
 
@@ -26,11 +28,11 @@ class MarkdownType extends ContentType
      * @param CustomContentContainer $page
      * @param bool $insert
      * @param array $changedAttributes
+     * @throws \Exception
      */
     public function afterSave($page, $insert, $changedAttributes) {
         // TODO: test non deprecation
-        //$page->content->fileManager->attach( Yii::$app->request->post('fileUploaderHiddenGuidField'));
-        File::attachPrecreated($page, Yii::$app->request->post('fileUploaderHiddenGuidField'));
+        RichText::postProcess($page->page_content, $page);
 }
 
     function getLabel()
@@ -41,5 +43,10 @@ class MarkdownType extends ContentType
     function getDescription()
     {
        return Yii::t('CustomPagesModule.base', 'Allows you to add content in MarkDown syntax.');
+    }
+
+    public function render(CustomContentContainer $content, $options = [])
+    {
+        return RichText::output($content->page_content);
     }
 }

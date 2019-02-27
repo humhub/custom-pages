@@ -11,6 +11,9 @@ namespace humhub\modules\custom_pages\components;
 use humhub\modules\custom_pages\models\ContentType;
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
+use humhub\modules\custom_pages\models\HtmlType;
+use humhub\modules\custom_pages\models\LinkType;
+use humhub\modules\custom_pages\models\MarkdownType;
 use humhub\modules\custom_pages\models\Target;
 use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\file\libs\FileHelper;
@@ -111,6 +114,10 @@ class Container extends Behavior
 
         if(!$type) {
             return $result;
+        }
+
+        if(LinkType::isType($type) || HtmlType::isType($type) || MarkdownType::isType($type)) {
+            $result[] = ['page_content', 'required'];
         }
 
         if(TemplateType::isType($type)) {

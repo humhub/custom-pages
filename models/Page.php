@@ -113,13 +113,14 @@ class Page extends CustomContentContainer
      * Returns a navigation selection for all navigations this page can be added.
      * @return array
      */
-    public static function getNavigationClasses()
+    public static function getDefaultTargets()
     {
+        $result = [];
         return [
-            self::NAV_CLASS_TOPNAV => Yii::t('CustomPagesModule.base', 'Top Navigation'),
-            self::NAV_CLASS_ACCOUNTNAV => Yii::t('CustomPagesModule.base', 'User Account Menu (Settings)'),
-            self::NAV_CLASS_DIRECTORY => Yii::t('CustomPagesModule.base', 'Directory Menu'),
-            self::NAV_CLASS_EMPTY => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)'),
+            ['id' => self::NAV_CLASS_TOPNAV, 'name' => Yii::t('CustomPagesModule.base', 'Top Navigation')],
+            ['id' => self::NAV_CLASS_ACCOUNTNAV, 'name' => Yii::t('CustomPagesModule.base', 'User Account Menu (Settings)'), 'subLayout' => '@humhub/modules/user/views/account/_layout'],
+            ['id' => self::NAV_CLASS_DIRECTORY, 'name' => Yii::t('CustomPagesModule.base', 'Directory Menu'), 'subLayout' => '@humhub/modules/custom_pages/views/layouts/_directory_layout'],
+            ['id' => self::NAV_CLASS_EMPTY, 'name' => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)')]
         ];
     }
 
@@ -185,7 +186,7 @@ class Page extends CustomContentContainer
      */
     public function getEditUrl()
     {
-        return Url::toEditPage($this->id);
+        return Url::toEditPage($this->id, $this->content->container);
     }
 
     /**

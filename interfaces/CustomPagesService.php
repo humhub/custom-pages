@@ -56,13 +56,9 @@ class CustomPagesService extends Component
         switch ($event->type) {
             case PageType::Page:
                 if (!$event->container) {
-                    foreach (Page::getNavigationClasses() as $targetId => $name) {
-                        $event->addTarget(['id' => $targetId, 'name' => $name]);
-                    }
+                    $event->addTargets(Page::getDefaultTargets());
                 } else if($event->container instanceof Space) {
-                    foreach (ContainerPage::getNavigationClasses() as $targetId => $name) {
-                        $event->addTarget(['id' => $targetId, 'name' => $name]);
-                    }
+                    $event->addTargets(ContainerPage::getDefaultTargets());
                 }
                 break;
             case PageType::Snippet:

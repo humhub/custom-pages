@@ -19,8 +19,8 @@ class m190213_135902_align_page_types extends Migration
         $this->renameColumn('custom_pages_page', 'navigation_class', 'target');
         $this->renameColumn('custom_pages_snippet', 'sidebar', 'target');
 
-        $this->addColumn('custom_pages_container_page', 'target', 'varchar(255) NOT NULL DEFAULT SpaceMenu');
-        $this->addColumn('custom_pages_container_snippet', 'target', 'varchar(255) NOT NULL DEFAULT SpaceStreamSidebar');
+        $this->addColumn('custom_pages_container_page', 'target', 'varchar(255) NOT NULL DEFAULT "SpaceMenu"');
+        $this->addColumn('custom_pages_container_snippet', 'target', 'varchar(255) NOT NULL DEFAULT "SpaceStreamSidebar"');
     }
 
     /**

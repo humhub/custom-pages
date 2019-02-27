@@ -58,8 +58,8 @@ img.preview {
 
 div#overlay {
     position:fixed;
-    top:0px;
-    left:0px;
+    top:0;
+    left:0;
     width: 100%;
     height: 100%;
     z-index: 1027;
@@ -314,4 +314,13 @@ body.modal-open {
 
 .content-edit .ProseMirror {
     min-height: 150px !important;
+}
+
+.target-pate-list-grid {
+    border: 1px solid #F1F1F1;
+    border-radius: 4px;
+}
+
+.target-pate-list-grid .grid-view table tbody tr td:first-of-type, .target-page-list-grid .grid-view table thead tr th:first-of-type {
+    padding-left:10px;
 }

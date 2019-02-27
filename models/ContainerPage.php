@@ -49,10 +49,10 @@ class ContainerPage extends Page implements Searchable
      * Returns a navigation selection for all navigations this page can be added.
      * @return array
      */
-    public static function getNavigationClasses()
+    public static function getDefaultTargets()
     {
         return [
-            self::NAV_CLASS_SPACE_NAV => Yii::t('CustomPagesModule.base', 'Space Navigation')
+            ['id' => self::NAV_CLASS_SPACE_NAV , 'name' => Yii::t('CustomPagesModule.base', 'Space Navigation')]
         ];
     }
 

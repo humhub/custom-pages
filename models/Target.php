@@ -47,7 +47,12 @@ class Target extends Model
     /**
      * @var string used to create the access url
      */
-    public $accessRoute = '/custom_pages/container/view';
+    public $accessRoute = '/custom_pages/view';
+
+    /**
+     * @var string defines a sublayout used when rendering an entry
+     */
+    public $subLayout;
 
     /**
      * [
@@ -115,6 +120,11 @@ class Target extends Model
         }
 
         return true;
+    }
+
+    public function getSubLayout()
+    {
+        return $this->subLayout;
     }
 
 }

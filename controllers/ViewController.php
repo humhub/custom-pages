@@ -7,6 +7,7 @@ use humhub\modules\custom_pages\models\HtmlType;
 use humhub\modules\custom_pages\models\IframeType;
 use humhub\modules\custom_pages\models\LinkType;
 use humhub\modules\custom_pages\models\MarkdownType;
+use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\models\PhpType;
 use humhub\modules\custom_pages\models\TemplateType;
 use Yii;
@@ -22,16 +23,19 @@ use humhub\modules\custom_pages\components\TemplateViewBehavior;
  *
  * @author buddha
  */
-class ViewController extends Controller
+class ViewController extends AbstractPageController
 {
 
+    /**
+     * @inhritdoc
+     */
     public function getAccessRules()
     {
         return [
-            ['strict'],
-            ['login' => ['edit']]
+            ['strict']
         ];
     }
+
     /**
      * @inhritdoc
      */
@@ -41,55 +45,92 @@ class ViewController extends Controller
         $result [] = ['class' => TemplateViewBehavior::class];
         return $result;
     }
-    
-      /**
-     * Is used to view/render a Page of a certain page content type.
-     * 
-     * This action expects an page id as request parameter.
-     * 
-     * @return string
-       * @throws HttpException if the page was not found
-     */
-    public function actionIndex()
-    {
-        $page = Page::findOne(['id' => Yii::$app->request->get('id')]);
 
-        if ($page === null) {
+    /**
+     * @param $id
+     * @return PageController|string|\yii\console\Response|\yii\web\Response
+     * @throws HttpException
+     */
+    public function actionIndex($id)
+    {
+        $page = Page::findOne(['id' => $id]);
+
+        if (!$page) {
             throw new HttpException('404', 'Could not find requested page');
         }
 
-        if ($page->admin_only == 1 && !Yii::$app->user->isAdmin()) {
-            throw new HttpException(403, 'Access denied!');
+        if ($page->admin_only) {
+            $this->adminOnly();
         }
 
-        if ($page->hasTarget(Page::NAV_CLASS_ACCOUNTNAV)) {
-            $this->subLayout = "@humhub/modules/user/views/account/_layout";
-        }
-        
-        if ($page->hasTarget(Page::NAV_CLASS_DIRECTORY)) {
-            $this->subLayout = "@humhub/modules/custom_pages/views/layouts/_directory_layout";
-        }
-        
-        $this->getView()->pageTitle = $page->title;
+        $sub = ($page->getTargetModel()->getSubLayout())
+            ? $page->getTargetModel()->getSubLayout()
+            : $this->subLayout;
 
+        $this->view->pageTitle = $page->title;
+
+        if(!$page->getTargetModel()->isAllowedContentType($page->type)) {
+            throw new HttpException(404);
+        }
+
+        return $this->renderView($page);
+
+
+    }
+
+    /**
+     * @param $page
+     * @return PageController|string|\yii\console\Response|\yii\web\Response
+     * @throws HttpException
+     */
+    public function renderView($page)
+    {
+        if($this->contentContainer) {
+            return $this->renderContainerView($page);
+        }
+
+        return $this->renderGlobalView($page);
+    }
+
+
+    public function renderContainerView($page)
+    {
         switch ($page->type) {
-            case HtmlType::ID:
-                return $this->render('html', ['page' => $page, 'html' => $page->page_content, 'title' => $page->title]);
             case IframeType::ID:
-                return $this->render('iframe', ['page' => $page, 'url' => $page->page_content, 'navigationClass' => $page->getTargetId()]);
+                return $this->render('@custom_pages/views/container/iframe', ['page' => $page, 'url' => $page->page_content]);
             case TemplateType::ID:
                 return $this->viewTemplatePage($page);
             case LinkType::ID:
                 return $this->redirect($page->page_content);
             case MarkdownType::ID:
-                return $this->render('markdown', [
+                return $this->render('@custom_pages/views/container/markdown', ['page' => $page, 'md' => $page->page_content]);
+            case PhpType::ID:
+                return $this->render('@custom_pages/views/container/php', ['page' => $page, 'contentContainer' => $this->contentContainer]);
+            default:
+                throw new HttpException('500', 'Invalid page type!');
+        }
+    }
+
+    public function renderGlobalView($page)
+    {
+        switch ($page->type) {
+            case HtmlType::ID:
+                return $this->render('@custom_pages/views/global/html', ['page' => $page, 'html' => $page->page_content, 'title' => $page->title]);
+            case IframeType::ID:
+                return $this->render('@custom_pages/views/global/iframe', ['page' => $page, 'url' => $page->page_content, 'navigationClass' => $page->getTargetId()]);
+            case TemplateType::ID:
+                return $this->viewTemplatePage($page);
+            case LinkType::ID:
+                return $this->redirect($page->page_content);
+            case MarkdownType::ID:
+                return $this->render('@custom_pages/views/global/markdown', [
                     'page' => $page,
                     'md' => $page->page_content,
                     'navigationClass' => $page->getTargetId(),
                     'title' => $page->title
                 ]);
             case PhpType::ID:
-                return $this->render('php', ['page' => $page]);
+                return $this->render('@custom_pages/views/global/php', ['page' => $page]);
             default:
                 throw new HttpException('500', 'Invalid page type!');
         }
@@ -103,14 +144,5 @@ class ViewController extends Controller
     public function actionView()
     {
         return $this->actionIndex();
-    }
-    
-    /**
-     * This redirect is needed within some common views shared with container page logic.
-     * @return string
-     */
-    public function actionEdit($id)
-    {
-        return $this->redirect(\yii\helpers\Url::to(['/custom_pages/admin/edit', 'id' => $id]));
     }
 }

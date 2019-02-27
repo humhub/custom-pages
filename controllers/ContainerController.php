@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
+use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\widgets\ContainerPageMenu;
 use humhub\modules\file\models\File;
 use Yii;
@@ -76,28 +77,7 @@ class ContainerController extends ContentContainerController
     public function actionView()
     {
         $page = ContainerPage::find()->contentContainer($this->contentContainer)->where(['custom_pages_container_page.id' => Yii::$app->request->get('id')])->one();
-
-        if ($page === null) {
-            throw new HttpException('404', 'Could not find requested page');
-        }
-        
-        $this->getView()->pageTitle = $page->title;
-
-        if ($page->type == Container::TYPE_IFRAME) {
-            return $this->render('iframe', array('page' => $page, 'url' => $page->page_content));
-        } elseif ($page->type == Container::TYPE_LINK) {
-            return $this->redirect($page->page_content);
-        } elseif ($page->type == Container::TYPE_MARKDOWN) {
-            return $this->render('markdown', array('page' => $page, 'md' => $page->page_content));
-        } elseif ($page->type == Container::TYPE_TEMPLATE) {
-            return $this->viewTemplatePage($page);
-        } elseif ($page->type == Container::TYPE_PHP) {
-            return $this->render('php', [
-                'page' => $page,
-                'contentContainer' => $this->contentContainer]);
-        } else {
-            throw new HttpException('500', 'Invalid page type!');
-        }
+        return $this->redirect($page->getUrl());
     }
 
     /**

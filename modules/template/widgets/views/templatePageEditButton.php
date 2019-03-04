@@ -1,5 +1,8 @@
 <?php
-use yii\helpers\Url;
+use humhub\modules\custom_pages\helpers\Url;
+use humhub\modules\content\helpers\ContentContainerHelper;
+
+/* @var int $pageId */
 ?>
 
 <?php if ($editMode) : ?>
@@ -10,7 +13,7 @@ use yii\helpers\Url;
         </button>
         <ul class="dropdown-menu">
             <li>
-                <a target="_blank"  href="<?= Url::to(['edit', 'id' => $pageId, 'sguid' => $sguid]) ?>">
+                <a target="_blank"  href="<?= Url::toEditPage($pageId, ContentContainerHelper::getCurrent()) ?>">
                     <?= Yii::t('CustomPagesModule.views_view_template', 'Page configuration') ?>
                 </a>
             </li>

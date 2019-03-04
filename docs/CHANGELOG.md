@@ -4,6 +4,7 @@
 - Enh: New template content type HumHub Richtext
 - Enh: Use Markdown Richtext as Markdown editor
 - Chng: Aliged CustomContentContainer tables and controller logic
+- Enh: Added blank system template
 
 0.8.13  (February 25, 2019)
 ---------------------

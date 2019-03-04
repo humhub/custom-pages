@@ -41,9 +41,9 @@ class ViewController extends AbstractCustomContainerController
      * @throws \Throwable
      * @throws \yii\base\Exception
      */
-    public function actionIndex($id)
+    public function actionIndex()
     {
-        $page = $this->findById($id);
+        $page = $this->findById(Yii::$app->request->get('id'));
 
         if (!$page) {
             throw new HttpException('404', 'Could not find requested page');

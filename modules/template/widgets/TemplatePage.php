@@ -51,7 +51,7 @@ class TemplatePage extends \humhub\widgets\JsWidget
     /**
      * fast
      */
-    public $fadeIn = 'slow';
+    //public $fadeIn = 'slow';
 
     /**
      * @inheritdoc

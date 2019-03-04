@@ -8,24 +8,32 @@
 
 namespace humhub\modules\custom_pages\modules\template\models;
 
+use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\space\models\Space;
 use Yii;
 
 /**
  * This is the model class for table "custom_pages_template".
  */
-class TemplatePagePermission
+class PagePermission
 {
     public static function canEdit()
     {
-        if(isset(Yii::$app->controller->contentContainer)) {
-            return Yii::$app->controller->contentContainer->isAdmin();
-        } else {
-            return !Yii::$app->user->isGuest && Yii::$app->user->getIdentity()->isSystemAdmin();
+        if(Yii::$app->user->isGuest) {
+            return false;
         }
+
+        $container = ContentContainerHelper::getCurrent();
+        if($container instanceof Space) {
+            return $container->isAdmin();
+        }
+
+        return Yii::$app->user->isAdmin();
     }
+
     public static function canTemplate()
     {
-        return !Yii::$app->user->isGuest && Yii::$app->user->getIdentity()->isSystemAdmin();
+        return !Yii::$app->user->isGuest && Yii::$app->user->isAdmin();
     }
     
 }

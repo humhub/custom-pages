@@ -3,8 +3,14 @@
 namespace humhub\modules\custom_pages\models;
 
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\custom_pages\components\PhpPageContainer;
+use humhub\modules\custom_pages\components\TemplatePageContainer;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
-use humhub\modules\custom_pages\widgets\WallEntry;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\modules\space\models\Space;
+use LogicException;
+use Yii;
 
 /**
  * This abstract class is used by all custom content container types as pages and snippets.
@@ -26,6 +32,9 @@ use humhub\modules\custom_pages\widgets\WallEntry;
  */
 abstract class CustomContentContainer extends ContentActiveRecord
 {
+    use PhpPageContainer;
+    use TemplatePageContainer;
+
     /**
      * @inheritdoc
      */
@@ -36,10 +45,6 @@ abstract class CustomContentContainer extends ContentActiveRecord
      */
     public $autoAddToWall = false;
 
-    /**
-     * @inheritdoc
-     */
-    public $wallEntryClass = WallEntry::class;
 
     /**
      * @var Target cached target
@@ -47,9 +52,249 @@ abstract class CustomContentContainer extends ContentActiveRecord
     private $_target;
 
     /**
+     * @var integer special field for template based pages specifying the layout template id
+     */
+    public $templateId;
+
+    /**
+     * @var bool field only used in edit form
+     */
+    public $isPublic;
+
+    public function afterFind()
+    {
+        parent::afterFind();
+        $this->isPublic = $this->content->visibility;
+    }
+
+    /**
+     * Returns the database content field. Note this does not render the any content.
+     */
+    public abstract function getPageContent();
+
+    /**
+     * Returns the database content field. Note this does not render the any content.
+     */
+    public function getPageContentProperty() {
+        return 'page_content';
+    }
+
+    /**
+     * Returns all allowed templates for a page container class.
+     */
+    public abstract function getAllowedTemplateSelection();
+
+    /**
+     * Returns the page container class label.
+     * @return string
+     */
+    public abstract function getLabel();
+
+    /**
+     * Returns the view file path for PHP based content.
+     * @return string
+     */
+    public abstract function getPhpViewPath();
+
+    /**
+     * @return string
+     */
+    public abstract function getEditUrl();
+
+    /**
      * @return string
      */
     public abstract function getPageType();
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function defaultAttributeLabels()
+    {
+        return [
+            'id' => Yii::t('CustomPagesModule.components_Container', 'ID'),
+            'type' => Yii::t('CustomPagesModule.components_Container', 'Type'),
+            'title' => Yii::t('CustomPagesModule.components_Container', 'Title'),
+            'icon' => Yii::t('CustomPagesModule.components_Container', 'Icon'),
+            'cssClass' => Yii::t('CustomPagesModule.components_Container', 'Style Class'),
+            'content' => $this->getContentType() ?  $this->getContentType()->getLabel() : null ,
+            'sort_order' => Yii::t('CustomPagesModule.components_Container', 'Sort Order'),
+            'targetUrl' => Yii::t('CustomPagesModule.components_Container', 'Target Url'),
+            'templateId' => Yii::t('CustomPagesModule.components_Container', 'Template Layout'),
+            'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins')
+        ];
+    }
+
+
+    /**
+     * Returns the default validation rules of a container, this may be overwritten or extended by subclasses.
+     *
+     * @return array
+     */
+    public function defaultRules()
+    {
+        $result = [
+            [['type', 'title', 'target'], 'required'],
+            [['type'], 'integer'],
+            ['target', 'validateTarget'],
+            [['type'], 'validateContentType'],
+            [['title', 'target'], 'string', 'max' => 255],
+        ];
+
+        $result = array_merge($result, $this->getRulesByTarget());
+        return array_merge($result, $this->getRulesByContentType());
+    }
+
+    public function validateTarget()
+    {
+        $target = $this->getTargetModel();
+        if(!$target) {
+            $this->addError('target', 'Target not available for this page container.');
+        }
+    }
+
+    public function validateContentType()
+    {
+        $target = $this->getTargetModel();
+        if($target && !$target->isAllowedContentType($this->type)) {
+            $this->addError('target', 'The selected content type is not allowed for this target.');
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getContentName()
+    {
+        $target = $this->getTargetModel();
+        if($target && $target->contentName) {
+            return $target->contentName;
+        }
+
+        return PageType::getContentName($this->getPageType());
+    }
+
+    private function getRulesByContentType()
+    {
+        $result = [];
+        $type = $this->getContentType();
+
+        if(!$type) {
+            return $result;
+        }
+
+        if(LinkType::isType($type) || HtmlType::isType($type) || MarkdownType::isType($type)) {
+            $result[] = ['page_content', 'required'];
+        }
+
+        if(TemplateType::isType($type)) {
+            $result[] = [['templateId'], 'safe'];
+            $result[] = ['type', 'validateTemplateType'];
+            $result[] = ['type', 'validatePhpType'];
+        }
+
+        if($type->hasContent()) {
+            $result[] =  [['page_content'], 'safe'];
+        }
+
+        return $result;
+    }
+
+    private function getRulesByTarget()
+    {
+        $result = [];
+        $target = $this->getTargetModel();
+
+        if (!$target) {
+            return $result;
+        }
+
+        if ($target->isAllowedField('admin_only')) {
+            $result[] = [['admin_only'], 'integer'];
+        }
+
+        if ($target->isAllowedField('sort_order')) {
+            $result[] = [['sort_order'], 'integer'];
+        }
+
+        if ($target->isAllowedField('icon')) {
+            $result[] = [['icon'], 'string', 'max' => 100];
+        }
+
+        if ($target->isAllowedField('cssClass') && !LinkType::isType($this->getContentType())) {
+            $result[] = [['cssClass'], 'string', 'max' => 255];
+        }
+
+        return $result;
+    }
+
+    public function canView() {
+        if($this->admin_only && !$this->canSeeAdminOnlyContent()) {
+            return false;
+        }
+
+        return $this->content->canView();
+    }
+
+    public function canSeeAdminOnlyContent()
+    {
+        $container = $this->content->container;
+        if($container && $container instanceof Space) {
+            return $container->isAdmin();
+        }
+
+        return Yii::$app->user->isAdmin();
+    }
+
+
+    /**
+     * @param $field string
+     * @return bool
+     */
+    public function isAllowedField($field)
+    {
+        $target = $this->getTargetModel();
+
+        if(!$target->isAllowedField($field)) {
+            return false;
+        }
+
+        $rules = $this->rules();
+
+        foreach ($rules as $rule) {
+            if(!is_array($rule) || !isset($rule[0])) {
+                continue;
+            }
+
+            $firstItem = $rule[0];
+
+            if(is_string($firstItem) && $firstItem === $field) {
+                return true;
+            }
+
+            if(is_array($firstItem) && isset($firstItem[0]) && $firstItem[0] === $field) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function setTemplateId($value)
+    {
+        return $this->templateId = $value;
+    }
+
+    public function getTemplateId()
+    {
+        if(!$this->templateId) {
+            $templateInstance = TemplateInstance::findByOwner($this);
+            if($templateInstance) {
+                $this->templateId = $templateInstance->template_id;
+            }
+        }
+        return $this->templateId;
+    }
 
     /**
      * Returns the view url of this page.
@@ -109,51 +354,68 @@ abstract class CustomContentContainer extends ContentActiveRecord
      * @return string|null
      */
     public function getIcon() {
-        if($this->hasAttribute('icon')) {
+        if($this->hasAttribute('icon') && $this->icon) {
             return $this->icon;
+        }
+
+        $target = $this->getTargetModel();
+        if($target) {
+            return $target->getIcon();
         }
 
         return null;
     }
 
+    /**
+     * @param $insert
+     * @return bool
+     * @throws \yii\base\Exception
+     */
+    public function beforeSave($insert)
+    {
+        if($this->checkAbstract() && !$this->admin_only) {
+            $this->streamChannel = 'default';
+        } else {
+            $this->streamChannel = null;
+        }
+
+        return parent::beforeSave($insert);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function checkAbstract()
+    {
+        return $this->isAllowedField('abstract')
+            && $this->hasAttribute('abstract')
+            && !empty($this->abstract);
+    }
+
+    /**
+     * @param $insert
+     * @param $changedAttributes
+     * @throws \yii\base\InvalidConfigException
+     */
     public function afterSave($insert, $changedAttributes)
     {
+        if(!$this->getContentType()->afterSave($this, $insert, $changedAttributes)) {
+            throw new LogicException('Could not save content type'.$this->getContentType()->getLabel());
+        }
+
+        if($this->checkAbstract()) {
+            RichText::postProcess($this->abstract, $this);
+        }
+
         parent::afterSave($insert, $changedAttributes);
-        $this->getContentType()->afterSave($this, $insert, $changedAttributes);
     }
 
-
     /**
-     * Returns the database content field. Note this does not render the any content.
+     *
      */
-    public abstract function getPageContent();
-
-    /**
-     * Returns the database content field. Note this does not render the any content.
-     */
-    public function getPageContentProperty() {
-        return 'page_content';
+    public function afterDelete()
+    {
+        $this->getContentType()->afterDelete($this);
+        parent::afterDelete();
     }
-    
-    /**
-     * Returns all allowed templates for a page container class.
-     */
-    public abstract function getAllowedTemplateSelection();
-    
-    /**
-     * Returns the page container class label.
-     * @return string
-     */
-    public abstract function getLabel();
-
-    /**
-     * Returns the view file path for PHP based content.
-     * @return string
-     */
-    public abstract function getPhpViewPath();
-
-    /**
-     * @return string
-     */
-    public abstract function getEditUrl();
 }

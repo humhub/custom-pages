@@ -6,44 +6,17 @@ use Yii;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
 use humhub\modules\search\interfaces\Searchable;
-use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\modules\template\models\Template;
 
 /**
  * This is the model class for table "custom_pages_container_page".
  *
  * A container page is space related custom page container.
- *
  */
 class ContainerPage extends Page implements Searchable
 {
 
     const NAV_CLASS_SPACE_NAV = 'SpaceMenu';
-
-    /**
-     * @inheritdoc
-     */
-    public $streamChannel = null;
-
-    /**
-     * @inheritdoc
-     */
-    public $autoAddToWall = false;
-
-    /**
-     * @inheritdoc
-     */
-    public $wallEntryClass = 'humhub\modules\custom_pages\widgets\WallEntry';
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            ['class' => Container::class],
-        ];
-    }
 
     /**
      * Returns a navigation selection for all navigations this page can be added.
@@ -62,18 +35,6 @@ class ContainerPage extends Page implements Searchable
     public static function tableName()
     {
         return 'custom_pages_container_page';
-    }
-
-    /**
-     * @inheritdoc
-     * @return string
-     */
-    public function rules()
-    {
-        $rules = $this->defaultRules();
-        $rules[] = ['in_new_window', 'integer'];
-        $rules[] = [['page_content'], 'safe'];
-        return $rules;
     }
 
     /**
@@ -112,11 +73,11 @@ class ContainerPage extends Page implements Searchable
     public function getContentTypes()
     {
         return [
-            Container::TYPE_MARKDOWN,
-            Container::TYPE_LINK,
-            Container::TYPE_IFRAME,
-            Container::TYPE_TEMPLATE,
-            Container::TYPE_PHP
+            MarkdownType::ID,
+            LinkType::ID,
+            IframeType::ID,
+            TemplateType::ID,
+            PhpType::ID
         ];
     }
 

@@ -11,7 +11,7 @@ namespace humhub\modules\custom_pages\modules\template\widgets;
 use Yii;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\modules\template\models\TemplatePagePermission;
+use humhub\modules\custom_pages\modules\template\models\PagePermission;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 
 /**
@@ -34,7 +34,7 @@ class PageConfigurationButton extends \humhub\components\Widget
         $space = (isset(Yii::$app->controller->contentContainer)) ? Yii::$app->controller->contentContainer : null;
         
         $sguid = ($space != null) ? $space->guid : null;
-        $canEdit = TemplatePagePermission::canEdit();
+        $canEdit = PagePermission::canEdit();
         
         $ownerModel = ($space != null) ? ContainerPage::className() : Page::className();   
         

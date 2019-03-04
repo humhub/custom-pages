@@ -19,7 +19,7 @@ class ContainerContentTest extends HumHubDbTestCase
     public $owner2;
     public $owner1;
     public $page;
-    
+
     public function testDeleteContainerItem()
     {
         
@@ -91,7 +91,7 @@ class ContainerContentTest extends HumHubDbTestCase
         
         $page = Page::findOne(['id' => 2]);
         
-        $page->delete();
+        $this->assertNotFalse($page->delete());
         
         $this->assertNull(ContainerContentItem::findOne(['id' => 2]));
         $this->assertNull(ContainerContentItem::findOne(['id' => 3]));

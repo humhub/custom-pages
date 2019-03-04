@@ -13,6 +13,7 @@ modules:
       - tests\codeception\_support\TestHelper
       - tests\codeception\_support\DynamicFixtureHelper
       - tests\codeception\_support\HumHubHelper
+      - tests\codeception\_support\WebHelper
       - custom_pages\CustomPagesHelper
     config:
         Yii2:

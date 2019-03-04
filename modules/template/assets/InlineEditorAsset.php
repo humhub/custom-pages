@@ -6,10 +6,11 @@ use yii\web\AssetBundle;
 
 class InlineEditorAsset extends AssetBundle
 {
+    public $sourcePath = '@custom_pages/modules/template/resources';
+
     public $publishOptions = [
         'forceCopy' => false
     ];
-
     public $jsOptions = ['position' => \yii\web\View::POS_END];
     public $js = [
         'js/humhub.custom_pages.template.editor.js',
@@ -21,11 +22,4 @@ class InlineEditorAsset extends AssetBundle
         'humhub\modules\custom_pages\modules\template\assets\TemplateCoreAsset',
         'humhub\modules\custom_pages\modules\template\assets\SwitchAssetBundle'
     ];
-
-    public function init()
-    {
-        $this->sourcePath = dirname(dirname(__FILE__)) . '/resources';
-        parent::init();
-    }
-
 }

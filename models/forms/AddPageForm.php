@@ -9,7 +9,6 @@
 
 namespace humhub\modules\custom_pages\models\forms;
 
-use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\ContainerSnippet;
@@ -65,28 +64,35 @@ class AddPageForm extends Model
         ];
     }
 
+    /**
+     * @param $attribute
+     * @param $params
+     * @throws \yii\base\InvalidConfigException
+     */
     public function validateType($attribute, $params)
     {
         if(!$this->isAllowedType($this->type)) {
             $this->addError('type', Yii::t('CustomPagesModule.base', 'Invalid type selection'));
         }
     }
-    
+
     /**
      * Helper function used by views.
-     * 
+     *
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public function getPageLabel()
     {
         return $this->getPageInstance()->getLabel();
     }
-    
+
     /**
      * Tests if the given type is allowed for the given page class.
-     * 
+     *
      * @param integer|ContentType $type
      * @return boolean
+     * @throws \yii\base\InvalidConfigException
      */
     public function isAllowedType($type)
     {
@@ -94,7 +100,7 @@ class AddPageForm extends Model
             $type = $type->getId();
         }
 
-        if($type === Container::TYPE_PHP) {
+        if(PhpType::isType($type)) {
             $settings = new SettingsForm();
             if(!$settings->phpPagesActive) {
                 return false;
@@ -104,6 +110,11 @@ class AddPageForm extends Model
         return in_array($type ,$this->getPageInstance()->getContentTypes()) && $this->target->isAllowedContentType($type);
     }
 
+    /**
+     * @param $type
+     * @return bool
+     * @throws \yii\base\InvalidConfigException
+     */
     public function isDisabledType($type)
     {
         if($type instanceof ContentType) {
@@ -119,21 +130,23 @@ class AddPageForm extends Model
 
         return false;
     }
-    
+
     /**
      * Checks if there are allowed templates available for the given page class.
-     * 
+     *
      * @return boolean
+     * @throws \yii\base\InvalidConfigException
      */
     public function showTemplateType()
     {
         return count($this->getPageInstance()->getAllowedTemplateSelection()) > 0;
     }
-    
+
     /**
      * Returns the singleton page instance.
-     * 
+     *
      * @return CustomContentContainer
+     * @throws \yii\base\InvalidConfigException
      */
     public function getPageInstance()
     {

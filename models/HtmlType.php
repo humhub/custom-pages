@@ -10,6 +10,7 @@ namespace humhub\modules\custom_pages\models;
 
 
 use Yii;
+use yii\widgets\ActiveForm;
 
 class HtmlType extends ContentType
 {
@@ -34,5 +35,15 @@ class HtmlType extends ContentType
     public function render(CustomContentContainer $content, $options = [])
     {
         // TODO: Implement getRender() method.
+    }
+
+    public function getViewName()
+    {
+        return 'html';
+    }
+
+    public function renderFormField(ActiveForm $form, CustomContentContainer $page)
+    {
+        return $form->field($page, $page->getPageContentProperty())->textarea(['id' => 'html_content', 'class' => 'form-control', 'rows' => '15']);
     }
 }

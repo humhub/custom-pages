@@ -316,11 +316,14 @@ body.modal-open {
     min-height: 150px !important;
 }
 
-.target-pate-list-grid {
+.target-page-list-grid {
     border: 1px solid #F1F1F1;
-    border-radius: 4px;
 }
 
-.target-pate-list-grid .grid-view table tbody tr td:first-of-type, .target-page-list-grid .grid-view table thead tr th:first-of-type {
+.target-page-list-grid .grid-view table tbody tr td:first-of-type, .target-page-list-grid .grid-view table thead tr th:first-of-type {
     padding-left:10px;
+}
+
+.target-page-list-grid .pagination {
+    margin-left:10px;
 }

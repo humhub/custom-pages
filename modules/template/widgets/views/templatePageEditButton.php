@@ -14,7 +14,7 @@ use yii\helpers\Url;
                     <?= Yii::t('CustomPagesModule.views_view_template', 'Page configuration') ?>
                 </a>
             </li>
-            <?php if(humhub\modules\custom_pages\modules\template\models\TemplatePagePermission::canTemplate()): ?>
+            <?php if(humhub\modules\custom_pages\modules\template\models\PagePermission::canTemplate()): ?>
                 <li>
                     <a target="_blank"  href="<?= Url::to(['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid]) ?>">
                         <?= Yii::t('CustomPagesModule.views_view_template', 'Edit template') ?>

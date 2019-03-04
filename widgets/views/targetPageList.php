@@ -21,7 +21,7 @@ use humhub\widgets\Button;
         <strong><?= $target->icon ? '<i class="fa '.Html::encode($target->icon).'"></i> ' : '' ?><?= Html::encode($target->name) ?></strong>
         <?= Button::success()->icon('fa-plus')->right()->link(Url::toChooseContentType($target, $pageType))->xs(); ?>
     </div>
-    <div class="target-pate-list-grid">
+    <div class="target-page-list-grid">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'layout' => '{items}{pager}',
@@ -32,7 +32,7 @@ use humhub\widgets\Button;
                     'format' => 'raw',
                     'value' => function ($data) {
                         /*  @var $data CustomContentContainer */
-                        return Link::to(Html::encode($data->getTitle()), $data->getUrl())->icon(Html::encode($data->getIcon()));
+                        return Link::to(Html::encode($data->getTitle()), $data->getUrl())->icon(Html::encode($data->icon));
                     }
                 ],
                 [

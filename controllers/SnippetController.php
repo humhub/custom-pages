@@ -16,42 +16,28 @@ use yii\web\HttpException;
 class SnippetController extends PageController
 {
     /**
-     * @inhritdoc
-     */
-    /*public function behaviors()
-    {
-        $result = parent::behaviors();
-        $result[] = ['class' => TemplateViewBehavior::class];
-        return $result;
-    }*/
-
-    /**
      * Action for viewing the snippet inline edit view.
      * 
      * @return string
      * @throws HttpException if snippet could not be found.
      */
-    public function actionEditSnippet()
+    public function actionEditSnippet($id)
     {   
-        $snippet = $this->findById(Yii::$app->request->get('id'));
+        $snippet = $this->findById(['id' => $id]);
         
-        if($snippet == null) {
+        if(!$snippet) {
             throw new HttpException(404, 'Snippet not found!');
         }
+
+        $view = $this->contentContainer
+            ? '@custom_pages/views/container/edit_snippet'
+            : '@custom_pages/views/global/edit_snippet';
         
-        return $this->render('edit_snippet', [
+        return $this->render($view, [
             'snippet' => $snippet,
+            'contentContainer' => $this->contentContainer,
             'html' => $this->renderTemplate($snippet, true)
         ]);
-    }
-
-    /**
-     * @param int $id integer
-     * @return Snippet
-     */
-    protected function findById($id)
-    {
-        return Snippet::findOne(['id' => $id]);
     }
 
     protected function getPageClassName()

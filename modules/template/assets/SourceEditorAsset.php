@@ -6,7 +6,8 @@ use yii\web\AssetBundle;
 
 class SourceEditorAsset extends AssetBundle
 {
-    
+    public $sourcePath = '@custom_pages/modules/template/resources';
+
     public $jsOptions = ['position' => \yii\web\View::POS_END];
     
     public $js = [
@@ -17,11 +18,4 @@ class SourceEditorAsset extends AssetBundle
         'humhub\modules\custom_pages\modules\template\assets\TemplateCoreAsset',
         'humhub\modules\custom_pages\assets\CkEditorAssetBundle',
     ];
-
-    public function init()
-    {
-        $this->sourcePath = dirname(dirname(__FILE__)) . '/resources';
-        parent::init();
-    }
-
 }

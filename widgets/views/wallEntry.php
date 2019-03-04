@@ -1,19 +1,17 @@
 <?php
 
-use humhub\libs\Helpers;
-use humhub\widgets\MarkdownView;
-use humhub\modules\custom_pages\components\Container;
+use humhub\modules\content\widgets\richtext\RichText;
+use humhub\widgets\Button;
+
+/* @var $page \humhub\modules\custom_pages\models\Page */
+
 ?>
 <div class="media">
     <div class="media-body">
-        <h4 class="media-heading"><a href="<?php echo $page->getUrl(); ?>"><?php echo $page->title; ?></a></h4>
+        <div data-ui-show-more>
+            <?= RichText::output($page->abstract)?>
+        </div>
 
-        <?php if ($page->type == Container::TYPE_MARKDOWN) : ?>
-            <div class="markdown-render">
-                <?php echo MarkdownView::widget(['markdown' => Helpers::truncateText($page->page_content, 500)]); ?>
-            </div>
-        <?php endif; ?>
-
-        <a href="<?php echo $page->getUrl(); ?>"><?php echo Yii::t('CustomPagesModule.widgets_views_wallentry', 'Open page...'); ?></a>
+        <?= Button::primary(Yii::t('CustomPagesModule.widgets_views_wallentry', 'Open page'))->link($page->getUrl())->sm()->right() ?>
     </div>
 </div>

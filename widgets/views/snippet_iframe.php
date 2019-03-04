@@ -1,21 +1,18 @@
 <?php
-use yii\helpers\Url;
+use humhub\modules\custom_pages\widgets\SnippetContent;
+
+/* @var $model \humhub\modules\custom_pages\models\CustomContentContainer */
+/* @var $canEdit bool */
 
 $iframeId = 'iframesnippet-' . $model->id;
 
-if ($contentContainer != null) {
-    $editUrl = $contentContainer->createUrl('/custom_pages/container-snippet/edit', ['id' => $model->id]);
-} else {
-    $editUrl = Url::to(['/custom_pages/snippet/edit', 'id' => $model->id]);
-}
-
 $navigation = (!$canEdit) ? [] : [
-    '<a href="'.$editUrl.'" class="panel-collapse"><i class="fa fa-pencil"></i>' . Yii::t('CustomPagesModule.base', 'Edit') . '</a>'
+    '<a href="'.$model->getEditUrl().'" class="panel-collapse"><i class="fa fa-pencil"></i>' . Yii::t('CustomPagesModule.base', 'Edit') . '</a>'
 ];
 ?>
 
 <?=
-\humhub\modules\custom_pages\widgets\SnippetContent::widget([
+SnippetContent::widget([
     'model' => $model,
     'content' => '<iframe id="' . $iframeId . '" style="border:0px;width:100%;" src="' . \yii\helpers\Html::encode($model->getPageContent()) . '"></iframe>',
     'navigation' => $navigation

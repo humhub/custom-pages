@@ -5,7 +5,6 @@ namespace humhub\modules\custom_pages\models;
 use Yii;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
-use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\modules\template\models\Template;
 
 /**
@@ -30,16 +29,6 @@ class Snippet extends CustomContentContainer
     const SIDEBAR_DIRECTORY = 'Directory';
 
     /**
-     * @inhritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            ['class' => Container::class],
-        ];
-    }
-
-    /**
      * @return string the associated database table name
      */
     public static function tableName()
@@ -53,10 +42,7 @@ class Snippet extends CustomContentContainer
      */
     public function rules()
     {
-        $rules = $this->defaultRules();
-        $rules[] = ['page_content', 'safe'];
-        $rules[] = ['target', 'required'];
-        return $rules;
+        return $this->defaultRules();
     }
 
     /**
@@ -75,11 +61,11 @@ class Snippet extends CustomContentContainer
      * Returns a sidebar selection for all sidebars this page can be added.
      * @return array
      */
-    public static function getSidebarSelection()
+    public static function getDefaultTargets()
     {
         return [
-            self::SIDEBAR_DASHBOARD => Yii::t('CustomPagesModule.base', 'Dashboard'),
-            self::SIDEBAR_DIRECTORY => Yii::t('CustomPagesModule.base', 'Directory'),
+            ['id' => static::SIDEBAR_DASHBOARD, 'name' => Yii::t('CustomPagesModule.base', 'Dashboard'), 'accessRoute' => '/dashboard'],
+            ['id' => static::SIDEBAR_DIRECTORY, 'name' => Yii::t('CustomPagesModule.base', 'Directory'), 'accessRoute' => '/directory/directory']
         ];
     }
 
@@ -89,10 +75,10 @@ class Snippet extends CustomContentContainer
     public function getContentTypes()
     {
         return [
-            Container::TYPE_MARKDOWN,
-            Container::TYPE_IFRAME,
-            Container::TYPE_TEMPLATE,
-            Container::TYPE_PHP,
+            MarkdownType::ID,
+            IframeType::ID,
+            TemplateType::ID,
+            PhpType::ID,
         ];
     }
 
@@ -130,27 +116,11 @@ class Snippet extends CustomContentContainer
     }
 
     /**
-     * @return string returns the title of this container
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getIcon()
-    {
-        return $this->icon;
-    }
-
-    /**
      * @return string
      */
     public function getEditUrl()
     {
-        return Url::toEditSnippet($this->id);
+        return Url::toEditSnippet($this->id, $this->content->container);
     }
 
     /**

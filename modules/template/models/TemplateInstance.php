@@ -7,6 +7,12 @@ use humhub\components\ActiveRecord;
 /**
  * A TemplateInstance represents an acutal instantiation of an Template model.
  * The TemplateInstance can be for example a Page or Snippet related by the PolymorphicRelation behaviour.
+ *
+ * @property int $id
+ * @property string object_model
+ * @property int object_id
+ * @property int template_id
+ *
  */
 class TemplateInstance extends ActiveRecord implements TemplateContentOwner
 {
@@ -86,17 +92,18 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
         return $this->template_id;
     }
 
-    public static function findByOwner(\yii\db\ActiveRecord $owner)
+    public static function findByOwner(ActiveRecord $owner)
     {
-        return self::findOne(['object_model' => $owner->className(), 'object_id' => $owner->getPrimaryKey()]);
+        return self::findOne(['object_model' => get_class($owner), 'object_id' => $owner->getPrimaryKey()]);
     }
 
-    public static function deleteByOwner(\yii\db\ActiveRecord $owner)
+    public static function deleteByOwner(ActiveRecord $owner)
     {
-        $container = self::findOne(['object_model' => $owner->className(), 'object_id' => $owner->getPrimaryKey()]);
-        if ($container != null) {
-            $container->delete();
+        $container = self::findOne(['object_model' => get_class($owner), 'object_id' => $owner->getPrimaryKey()]);
+        if ($container) {
+            return $container->delete();
         }
+        return false;
     }
 
 }

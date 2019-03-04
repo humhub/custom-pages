@@ -6,6 +6,7 @@ namespace humhub\modules\custom_pages\models;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\helpers\Url;
+use humhub\modules\custom_pages\Module;
 use yii\base\Model;
 
 /**
@@ -25,9 +26,14 @@ class Target extends Model
     public $name;
 
     /**
+     * @var string
+     */
+    public $contentName;
+
+    /**
      * @var
      */
-    public $icon;
+    public $icon = Module::ICON;
 
     /**
      * @var ContentContainerActiveRecord
@@ -85,6 +91,11 @@ class Target extends Model
         return [
             [['id', 'name'], 'required']
         ];
+    }
+
+    public function getIcon()
+    {
+        return $this->icon;
     }
 
     public function isAllowedContentType($type)

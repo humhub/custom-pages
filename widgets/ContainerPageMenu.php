@@ -8,6 +8,8 @@
 
 namespace humhub\modules\custom_pages\widgets;
 
+use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\widgets\BaseMenu;
 use Yii;
 use yii\helpers\Url;
 
@@ -16,7 +18,7 @@ use yii\helpers\Url;
  *
  * @author Basti
  */
-class ContainerPageMenu extends \humhub\widgets\BaseMenu
+class ContainerPageMenu extends BaseMenu
 {
 
     public $template = "@humhub/widgets/views/tabMenu";
@@ -24,21 +26,25 @@ class ContainerPageMenu extends \humhub\widgets\BaseMenu
 
     public function init()
     {
-        $space = Yii::$app->controller->contentContainer;
+        $space = ContentContainerHelper::getCurrent();
+
+        if(!$space) {
+            return;
+        }
         
         $this->addItem([
             'label' => Yii::t('CustomPagesModule.base', 'Pages'),
-            'url' => $space->createUrl('/custom_pages/container/list'),
+            'url' => $space->createUrl('/custom_pages/page/list'),
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->id == 'container'),
+            'isActive' => (Yii::$app->controller->id === 'page'),
         ]);  
         
         
         $this->addItem([
             'label' => Yii::t('CustomPagesModule.base', 'Snippets'),
-            'url' => $space->createUrl('/custom_pages/container-snippet/list'),
+            'url' => $space->createUrl('/custom_pages/snippet/list'),
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->id == 'container-snippet'),
+            'isActive' => (Yii::$app->controller->id === 'snippet'),
         ]);  
         
         parent::init();

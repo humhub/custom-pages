@@ -4,7 +4,7 @@ namespace custom_pages\acceptance;
 
 use custom_pages\AcceptanceTester;
 
-class CreateAdminPageCest
+class CreateGlobalPageCest
 {
     
     public function testCreateMarkdownPageOnTopMenu(AcceptanceTester $I)
@@ -29,7 +29,7 @@ class CreateAdminPageCest
         $I->seeInField('input[name="target"][disabled]', 'Top Navigation');
 
         $I->fillField('Page[title]', 'Test title');
-        $I->fillField('Page[page_content]', 'Test Content');
+        $I->fillField('#page-page_content .humhub-ui-richtext', 'Test Content');
         $I->fillField('Page[sort_order]', '400');
         $I->selectOption('Page[icon]',  ['value' => 'fa-adn']);
 

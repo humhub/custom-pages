@@ -1,24 +1,22 @@
 <?php
 
-use yii\helpers\Url;
+use humhub\modules\custom_pages\widgets\SnippetContent;
+use humhub\modules\custom_pages\controllers\ViewController;
 
-$controller = new \humhub\modules\custom_pages\controllers\ViewController(null, null);
+/* @var $model \humhub\modules\custom_pages\models\CustomContentContainer */
+/* @var $canEdit bool */
+
+$controller = new ViewController(null, null);
 $content = $controller->renderTemplate($model);
 $canEdit = $controller->isCanEdit();
 
-if($contentContainer != null) {
-    $editUrl = $contentContainer->createUrl('/custom_pages/container-snippet/edit-snippet', ['id' => $model->id]);
-} else {
-    $editUrl = Url::to(['/custom_pages/snippet/edit-snippet', 'id' => $model->id]);
-}
-
 $navigation = (!$canEdit) ? [] : [
-    '<a href="'.$editUrl.'" class="panel-collapse"><i class="fa fa-pencil"></i>' . Yii::t('CustomPagesModule.base', 'Edit') . '</a>'
+    '<a href="'.$model->getEditUrl().'" class="panel-collapse"><i class="fa fa-pencil"></i>' . Yii::t('CustomPagesModule.base', 'Edit') . '</a>'
 ];
 ?>
 
 <?=
-\humhub\modules\custom_pages\widgets\SnippetContent::widget([
+SnippetContent::widget([
     'model' => $model,
     'content' => $content,
     'navigation' => $navigation

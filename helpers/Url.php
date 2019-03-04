@@ -15,7 +15,9 @@ class Url extends BaseUrl
 
     const ROUTE_CONFIG = '/custom_pages/config';
     const ROUTE_EDIT_PAGE = '/custom_pages/page/edit';
+
     const ROUTE_PAGE_DELETE = '/custom_pages/page/delete';
+    const ROUTE_SNIPPET_DELETE = '/custom_pages/snippet/delete';
 
     const ROUTE_EDIT_SNIPPET = '/custom_pages/snippet/edit';
     const ROUTE_PAGE_OVERVIEW = '/custom_pages/page';
@@ -27,20 +29,16 @@ class Url extends BaseUrl
 
     const ROUTE_TEMPLATE_LAYOUT_ADMIN = '/custom_pages/template/layout-admin';
 
-    const ROUTE_PAGE_INLINE_EDIT = '/custom_pages/view/view';
-    const ROUTE_CONTAINER_PAGE_INLINE_EDIT = '/custom_pages/container/view';
+    const ROUTE_PAGE_INLINE_EDIT = '/custom_pages/view';
 
     const ROUTE_SNIPPET_INLINE_EDIT = '/custom_pages/snippet/edit-snippet';
-    const ROUTE_CONTAINER_SNIPPET_INLINE_EDIT = '/custom_pages/cotnainer-snippet/edit-snippet';
 
     public static function toInlineEdit(CustomContentContainer $content, ContentContainerActiveRecord $container = null)
     {
         if($content->getPageType() === PageType::Snippet) {
-            $route = $container ? static::ROUTE_CONTAINER_SNIPPET_INLINE_EDIT : static::ROUTE_SNIPPET_INLINE_EDIT;
-            return static::create($route, ['id' => $content->id], $container);
+            return static::create(static::ROUTE_SNIPPET_INLINE_EDIT, ['id' => $content->id], $container);
         } else {
-            $route = $container ? static::ROUTE_CONTAINER_PAGE_INLINE_EDIT : static::ROUTE_PAGE_INLINE_EDIT;
-            return static::create($route, ['id' => $content->id, 'editMode' => 1], $container);
+            return static::create(static::ROUTE_PAGE_INLINE_EDIT, ['id' => $content->id, 'editMode' => 1], $container);
         }
     }
 
@@ -134,12 +132,10 @@ class Url extends BaseUrl
         return static::create(static::ROUTE_SNIPPET_OVERVIEW, [], $container);
     }
 
-    public static function toDeletePage($pageId, ContentContainerActiveRecord $container = null)
+    public static function toDeletePage(CustomContentContainer $page, ContentContainerActiveRecord $container = null)
     {
-       if(!is_numeric($pageId)) {
-           $pageId = $pageId->id;
-       }
-        return static::create(static::ROUTE_PAGE_DELETE, ['id' => $pageId], $container);
+        $route = ($page->getPageType() === PageType::Page) ? static::ROUTE_PAGE_DELETE : static::ROUTE_SNIPPET_DELETE;
+        return static::create($route, ['id' => $page->id], $container);
     }
 
 

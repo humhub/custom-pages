@@ -11,7 +11,9 @@ use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\models\Target;
+use humhub\modules\custom_pages\modules\template\models\PagePermission;
 use humhub\modules\space\models\Space;
+use Yii;
 use yii\base\Component;
 use yii\base\InvalidArgumentException;
 use yii\db\ActiveQuery;
@@ -26,7 +28,8 @@ class CustomPagesService extends Component
 
     const EVENT_FETCH_TARGETS = 'fetchTargets';
 
-    private static $targetCache = [];
+    private static $pageTargetCache = [];
+    private static $snippetTargetCache = [];
 
     /**
      * Fetches all available navigations for a given container.
@@ -37,10 +40,11 @@ class CustomPagesService extends Component
      */
     public function getTargets($type, ContentContainerActiveRecord $container = null)
     {
-        $containerKey = ($container) ? $container->contentcontainer_id : 'global';
+        $containerKey = $container ? $container->contentcontainer_id : 'global';
+        $cache = ($type === PageType::Page) ? static::$pageTargetCache : static::$snippetTargetCache;
 
-        if (isset(static::$targetCache[$containerKey])) {
-            return static::$targetCache[$containerKey];
+        if (isset($cache[$containerKey])) {
+            return $cache[$containerKey];
         }
 
         $event = new CustomPagesTargetEvent(['type' => $type, 'container' => $container]);
@@ -48,7 +52,7 @@ class CustomPagesService extends Component
 
         $this->trigger(self::EVENT_FETCH_TARGETS, $event);
 
-        return static::$targetCache[$containerKey] = $event->getTargets();
+        return $cache[$containerKey] = $event->getTargets();
     }
 
     public function addDefaultTargets(CustomPagesTargetEvent $event)
@@ -63,13 +67,9 @@ class CustomPagesService extends Component
                 break;
             case PageType::Snippet:
                 if(!$event->container) {
-                    foreach (Snippet::getSidebarSelection() as $targetId => $name) {
-                        $event->addTarget(['id' => $targetId, 'name' => $name]);
-                    }
+                    $event->addTargets(Snippet::getDefaultTargets());
                 } else {
-                    foreach (ContainerSnippet::getSidebarSelection() as $targetId => $name) {
-                        $event->addTarget(['id' => $targetId, 'name' => $name]);
-                    }
+                    $event->addTargets(ContainerSnippet::getDefaultTargets());
                 }
         }
     }
@@ -78,12 +78,56 @@ class CustomPagesService extends Component
      * @param string $targetId
      * @param string $type
      * @param ContentContainerActiveRecord|null $container
-     * @return CustomContentContainer|null
+     * @return Target
      */
     public function getTargetById($targetId, $type, ContentContainerActiveRecord $container = null)
     {
         $availableTargets = $this->getTargets($type, $container);
         return array_key_exists($targetId, $availableTargets) ? $availableTargets[$targetId] : null;
+    }
+
+    /**
+     * Deletes all target pages of the given type and container.
+     *
+     * Note: This will only delete global pages if no container is given, use [[deleteAllByTarget()]] in order
+     * to remove all pages and snippets of a given target.
+     *
+     * @param $targetId
+     * @param $type
+     * @param ContentContainerActiveRecord|null $container
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     * @throws \yii\db\StaleObjectException
+     */
+    public function deleteByTarget($targetId, $type, ContentContainerActiveRecord $container = null)
+    {
+        foreach ($this->findContentByTarget($targetId, $type, $container)->all() as $content) {
+            $content->delete();
+        }
+    }
+
+    /**
+     * Deletes all pages and snippets related to a given target.
+     *
+     * @param $targetId
+     */
+    public function deleteAllByTarget($targetId)
+    {
+        foreach (Page::find()->where(['target' => $targetId]) as $content) {
+            $content->delete();
+        }
+
+        foreach (ContainerPage::find()->where(['target' => $targetId]) as $content) {
+            $content->delete();
+        }
+
+        foreach (Snippet::find()->where(['target' => $targetId]) as $content) {
+            $content->delete();
+        }
+
+        foreach (ContainerSnippet::find()->where(['target' => $targetId]) as $content) {
+            $content->delete();
+        }
     }
 
     /**
@@ -101,12 +145,24 @@ class CustomPagesService extends Component
             $targetId = $targetId->id;
         }
 
-
         $contentClass = $this->getContentClass($type, $container);
 
+        /* @var $query ActiveQueryContent */
         $query = call_user_func($contentClass.'::find');
 
-        $query->where(['target' => $targetId])->contentContainer($container);
+        $query->where(['target' => $targetId]);
+
+        if($container) {
+            $query->contentContainer($container);
+        }
+
+        $query->readable();
+
+        /* @var $instance CustomContentContainer */
+        $instance = call_user_func($contentClass.'::instance');
+        if(!$instance->canSeeAdminOnlyContent()) {
+            $query->andWhere(['admin_only' => 0]);
+        }
 
         return $query->orderBy('sort_order')->orderBy('id DESC');
     }

@@ -2,7 +2,10 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
-use humhub\modules\custom_pages\models\ContentType;
+use Yii;
+use yii\helpers\Html;
+use yii\web\HttpException;
+use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\HtmlType;
 use humhub\modules\custom_pages\models\IframeType;
 use humhub\modules\custom_pages\models\LinkType;
@@ -10,20 +13,15 @@ use humhub\modules\custom_pages\models\MarkdownType;
 use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\models\PhpType;
 use humhub\modules\custom_pages\models\TemplateType;
-use Yii;
-use yii\base\ViewNotFoundException;
-use yii\web\HttpException;
-use humhub\components\Controller;
-use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\components\Container;
-use humhub\modules\custom_pages\components\TemplateViewBehavior;
+use humhub\modules\custom_pages\modules\template\components\TemplateRenderer;
+
 
 /**
  * Controller for viewing Pages.
  *
  * @author buddha
  */
-class ViewController extends AbstractPageController
+class ViewController extends AbstractCustomContainerController
 {
 
     /**
@@ -37,37 +35,29 @@ class ViewController extends AbstractPageController
     }
 
     /**
-     * @inhritdoc
-     */
-    public function behaviors()
-    {
-        $result = parent::behaviors();
-        $result [] = ['class' => TemplateViewBehavior::class];
-        return $result;
-    }
-
-    /**
      * @param $id
      * @return PageController|string|\yii\console\Response|\yii\web\Response
      * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\base\Exception
      */
     public function actionIndex($id)
     {
-        $page = Page::findOne(['id' => $id]);
+        $page = $this->findById($id);
 
         if (!$page) {
             throw new HttpException('404', 'Could not find requested page');
         }
 
-        if ($page->admin_only) {
-            $this->adminOnly();
+        if (!$page->canView()) {
+            throw new HttpException(403);
         }
 
-        $sub = ($page->getTargetModel()->getSubLayout())
+        $this->subLayout = ($page->getTargetModel()->getSubLayout())
             ? $page->getTargetModel()->getSubLayout()
             : $this->subLayout;
 
-        $this->view->pageTitle = $page->title;
+        $this->view->pageTitle = Html::encode($page->title);
 
         if(!$page->getTargetModel()->isAllowedContentType($page->type)) {
             throw new HttpException(404);
@@ -99,7 +89,7 @@ class ViewController extends AbstractPageController
             case IframeType::ID:
                 return $this->render('@custom_pages/views/container/iframe', ['page' => $page, 'url' => $page->page_content]);
             case TemplateType::ID:
-                return $this->viewTemplatePage($page);
+                return $this->viewTemplatePage($page, '@custom_pages/views/container/template');
             case LinkType::ID:
                 return $this->redirect($page->page_content);
             case MarkdownType::ID:
@@ -119,7 +109,7 @@ class ViewController extends AbstractPageController
             case IframeType::ID:
                 return $this->render('@custom_pages/views/global/iframe', ['page' => $page, 'url' => $page->page_content, 'navigationClass' => $page->getTargetId()]);
             case TemplateType::ID:
-                return $this->viewTemplatePage($page);
+                return $this->viewTemplatePage($page, '@custom_pages/views/global/template');
             case LinkType::ID:
                 return $this->redirect($page->page_content);
             case MarkdownType::ID:
@@ -137,6 +127,31 @@ class ViewController extends AbstractPageController
     }
 
     /**
+     * @param CustomContentContainer $page
+     * @param $view
+     * @return string rendered template page
+     * @throws HttpException in case the page is protected from non admin access
+     */
+    public function viewTemplatePage(CustomContentContainer $page, $view)
+    {
+        $editMode = Yii::$app->request->get('editMode');
+        $canEdit = $page->content->canEdit();
+
+        if($editMode && !$canEdit) {
+            throw new HttpException(403);
+        }
+
+        $html = TemplateRenderer::render($page, $editMode);
+
+        return $this->owner->render($view, [
+            'page' => $page,
+            'editMode' => $editMode,
+            'canEdit' => $canEdit,
+            'html' => $html
+        ]);
+    }
+
+    /**
      * This redirect is needed within some common views shared with container page logic.
      * @return string
      * @throws HttpException
@@ -144,5 +159,13 @@ class ViewController extends AbstractPageController
     public function actionView()
     {
         return $this->actionIndex();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getPageType()
+    {
+        return PageType::Page;
     }
 }

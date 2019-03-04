@@ -2,23 +2,15 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
-use humhub\modules\custom_pages\models\HtmlType;
-use humhub\modules\custom_pages\models\IframeType;
-use humhub\modules\custom_pages\models\LinkType;
-use humhub\modules\custom_pages\models\MarkdownType;
-use humhub\modules\custom_pages\models\PhpType;
 use humhub\modules\custom_pages\models\TemplateType;
 use Yii;
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
-use humhub\modules\custom_pages\models\ContainerPage;
-use humhub\modules\custom_pages\widgets\ContainerPageMenu;
 use humhub\components\access\ControllerAccess;
 use humhub\modules\content\components\ContentContainerControllerAccess;
 use humhub\modules\space\models\Space;
-use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\custom_pages\widgets\AdminMenu;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\forms\AddPageForm;
@@ -36,13 +28,8 @@ use yii\web\HttpException;
  *
  * @author luke, buddha
  */
-class PageController extends ContentContainerController
+class PageController extends AbstractCustomContainerController
 {
-    /**
-     * @inheritdoc
-     */
-    public $requireContainer = false;
-
     /**
      * @var CustomPagesService
      */
@@ -152,14 +139,14 @@ class PageController extends ContentContainerController
      * @param integer $id
      * @return string
      * @throws HttpException
-     * @throws \yii\base\InvalidRouteException
      * @throws \yii\base\Exception
+     * @throws \Exception
+     * @throws \Throwable
      */
     public function actionEdit($targetId = null, $type = null, $id = null)
     {
         /* @var CustomContentContainer $page*/
        $page = $this->findByid($id);
-       $isNew = false;
 
         if (!$page && !$targetId) {
             throw new HttpException(400, 'Invalid request data!');
@@ -167,17 +154,12 @@ class PageController extends ContentContainerController
 
         // If no pageId was given, we create a new page with the given type.
         if (!$page) {
-            $isNew = true;
-            $pageClass = $this->getPageClassName();
-            $page = new $pageClass(['type' => $type, 'target' => $targetId]);
-            if($this->contentContainer) {
-                $page->content->setContainer($this->contentContainer);
-            }
+            $page = $this->createNewPage($type, $targetId);
         }
 
-        $test = $page->type;
+        $isNew = $page->isNewRecord;
 
-        if ($page->load(Yii::$app->request->post()) && $page->save()) {
+        if($this->savePage($page)) {
             return (TemplateType::isType($type) && $isNew)
                 ? $this->redirect(Url::toInlineEdit($page, $this->contentContainer))
                 : $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));
@@ -190,11 +172,46 @@ class PageController extends ContentContainerController
         ]);
     }
 
-    public function adminOnly()
+    /**
+     * @param $page CustomContentContainer
+     * @return bool
+     * @throws \Throwable
+     * @throws \yii\db\Exception
+     */
+    protected function savePage($page)
     {
-        if(!!Yii::$app->user->isAdmin()) {
-            throw new HttpException(403);
+        if(!$page->load(Yii::$app->request->post())) {
+            return false;
         }
+        $transaction = Page::getDb()->beginTransaction();
+
+        try {
+            $saved = $page->save();
+            $transaction->commit();
+        } catch(\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        } catch(\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
+
+        return $saved;
+    }
+
+    /**
+     * @param $type
+     * @param $targetId
+     * @return CustomContentContainer
+     */
+    private function createNewPage($type, $targetId)
+    {
+        $pageClass = $this->getPageClassName();
+        $page = new $pageClass(['type' => $type, 'target' => $targetId]);
+        if($this->contentContainer) {
+            $page->content->setContainer($this->contentContainer);
+        }
+        return $page;
     }
 
     /**
@@ -212,7 +229,7 @@ class PageController extends ContentContainerController
 
         $page = $this->findByid($id);
 
-        if ($page !== null) {
+        if ($page) {
             $page->delete();
         }
 
@@ -220,32 +237,10 @@ class PageController extends ContentContainerController
     }
 
     /**
-     * Returns the class name of the supported page type.
-     * Default page class is humhub\modules\custom_pages\models\Page.
-     *
-     * This method has to be overwritten by subclasses supporting another page type.
-     *
-     * @return string
+     * @inheritdoc
      */
-    protected function getPageClassName()
-    {
-        return $this->contentContainer ? ContainerPage::class : Page::class;
-    }
-
     protected function getPageType()
     {
         return PageType::Page;
     }
-
-    /**
-     * Returns a page by a given $id.
-     *
-     * @param integer $id page id.
-     * @return CustomContentContainer
-     */
-    protected function findById($id)
-    {
-        return call_user_func($this->getPageClassName().'::findOne', ['id' => $id]);
-    }
-
 }

@@ -9,6 +9,7 @@ use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use yii\base\Exception;
 
 class Module extends \humhub\modules\content\components\ContentContainerModule
 {
@@ -19,13 +20,13 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
     
     public function init()
     {
-        $this->checkOldGlobalContent();
         self::loadTwig();
         parent::init();
     }
 
     public function checkOldGlobalContent()
     {
+
         if(!$this->settings->get(static::SETTING_MIGRATION_KEY, 0)) {
             foreach (Page::find()->all() as $page) {
                 $page->content->save();

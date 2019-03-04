@@ -76,6 +76,7 @@ $contentType = $page->getContentType();
                 <?= PageIconSelect::widget(['page' => $page]) ?>
             <?php endif; ?>
 
+
             <?php if($page->isAllowedField('sort_order')) : ?>
                 <?= $form->field($page, 'sort_order')->textInput(); ?>
             <?php endif; ?>

@@ -3,6 +3,7 @@
 namespace humhub\modules\custom_pages\models;
 
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\custom_pages\components\PhpPageContainer;
 use humhub\modules\custom_pages\components\TemplatePageContainer;
@@ -121,7 +122,8 @@ abstract class CustomContentContainer extends ContentActiveRecord
             'sort_order' => Yii::t('CustomPagesModule.components_Container', 'Sort Order'),
             'targetUrl' => Yii::t('CustomPagesModule.components_Container', 'Target Url'),
             'templateId' => Yii::t('CustomPagesModule.components_Container', 'Template Layout'),
-            'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins')
+            'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins'),
+            'isPublic' => Yii::t('CustomPagesModule.models_Page','Is Public')
         ];
     }
 
@@ -378,6 +380,8 @@ abstract class CustomContentContainer extends ContentActiveRecord
         } else {
             $this->streamChannel = null;
         }
+
+        $this->content->visibility = $this->admin_only ? Content::VISIBILITY_PRIVATE : Content::VISIBILITY_PUBLIC;
 
         return parent::beforeSave($insert);
     }

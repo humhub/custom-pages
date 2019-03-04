@@ -41,6 +41,7 @@ class Page extends CustomContentContainer
     const NAV_CLASS_EMPTY = 'WithOutMenu';
     const NAV_CLASS_DIRECTORY = 'DirectoryMenu';
 
+
     /**
      * @return string the associated database table name
      */

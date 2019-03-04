@@ -30,6 +30,12 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
 
     private $_canEdit;
 
+    public function init()
+    {
+        Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
+        parent::init();
+    }
+
     /**
      * @return string
      * @see PageType

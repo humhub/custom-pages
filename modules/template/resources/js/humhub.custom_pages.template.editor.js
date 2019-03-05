@@ -7,6 +7,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
 
     TemplateInlineEditor = function (node, options) {
         Widget.call(this, node, options);
+        additions.observe(this.$);
     };
 
     object.inherits(TemplateInlineEditor, Widget);

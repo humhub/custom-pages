@@ -128,6 +128,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             \humhub\modules\custom_pages\modules\template\models\ImageContent::$label => \humhub\modules\custom_pages\modules\template\models\ImageContent::className(),
             \humhub\modules\custom_pages\modules\template\models\ContainerContent::$label => \humhub\modules\custom_pages\modules\template\models\ContainerContent::className(),
             \humhub\modules\custom_pages\modules\template\models\FileContent::$label => \humhub\modules\custom_pages\modules\template\models\FileContent::className(),
+            \humhub\modules\custom_pages\modules\template\models\HumHubRichtextContent::$label => \humhub\modules\custom_pages\modules\template\models\HumHubRichtextContent::className(),
             \humhub\modules\custom_pages\modules\template\models\FileDownloadContent::$label => \humhub\modules\custom_pages\modules\template\models\FileDownloadContent::className(),
         ];
     }

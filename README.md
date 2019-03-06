@@ -77,7 +77,8 @@ Most content types provide the following setting which may vary between differen
 The custom pages module provides a simple template mechanism based on [twig](https://twig.symfony.com/).
 Templates can be maintained under `Administration -> Templates`.
 
-> Note: In order to use template based pages on space level, you'll have to allow the layout for spaces within 
+> Note: In order to use template based pages or snippets on space level, you'll have to allow the layout for spaces within the general settings
+of the template.
 
 ### Layouts
 

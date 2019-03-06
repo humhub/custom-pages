@@ -149,7 +149,7 @@ Another container example with a figure and floating text based upon a **image**
 </figure>
 <figcaption>{{ figcaption }}</figcaption>
 
-<p> {{ text }}
+<p> {{ text }}</p>
 ```
 
 

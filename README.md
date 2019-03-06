@@ -104,7 +104,7 @@ A very simple layout could look like the following:
 <style>
 
 <div class="row">
-	<div class="col-md-12">
+    <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 {{ headline }}
@@ -118,7 +118,7 @@ A very simple layout could look like the following:
                 </div>
             </div>
         </div>
-	</div>
+    </div>
 </div>
 ```
 

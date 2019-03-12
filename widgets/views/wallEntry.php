@@ -12,6 +12,6 @@ use humhub\widgets\Button;
             <?= RichText::output($page->abstract)?>
         </div>
 
-        <?= Button::primary(Yii::t('CustomPagesModule.widgets_views_wallentry', 'Open page'))->link($page->getUrl())->sm()->right() ?>
+        <?= Button::primary(Yii::t('CustomPagesModule.widgets_views_wallentry', 'Open page'))->link($page->getUrl())->sm() ?>
     </div>
 </div>

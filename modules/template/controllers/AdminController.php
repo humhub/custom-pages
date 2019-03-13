@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
+use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
 use Yii;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
@@ -51,7 +52,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
      */
     public function actionIndex()
     {
-        $searchModel = new \humhub\modules\custom_pages\modules\template\models\TemplateSearch(['type' => $this->type]);
+        $searchModel = new TemplateSearch(['type' => $this->type]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('@custom_pages/modules/template/views/admin/index', [

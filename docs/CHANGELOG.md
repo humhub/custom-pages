@@ -6,6 +6,8 @@
 - Chng: Aliged CustomContentContainer tables and controller logic
 - Enh: Added blank system template
 - Chng: Content are public by default if admin_only is not enabled
+- Enh: Added codemirror editor
+- Enh: Order templates by name
 
 0.8.13  (February 25, 2019)
 ---------------------

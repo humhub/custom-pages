@@ -76,6 +76,7 @@ class TemplateSearch extends Template
 
         $query->andFilterWhere(['id' => $this->id]);
         $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->orderBy('name');
         return $dataProvider;
     }
 

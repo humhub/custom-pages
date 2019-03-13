@@ -39,8 +39,6 @@ class TargetPageList extends Widget
      */
     public function run()
     {
-        $pages =
-
         $dataProvider = new ActiveDataProvider([
             'query' => $this->customPagesService->findContentByTarget($this->target->id, $this->pageType, $this->target->container),
             'pagination' => [

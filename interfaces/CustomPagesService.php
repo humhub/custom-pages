@@ -164,7 +164,7 @@ class CustomPagesService extends Component
             $query->andWhere(['admin_only' => 0]);
         }
 
-        return $query->orderBy('sort_order')->orderBy('id DESC');
+        return $query->orderBy('sort_order, id DESC');
     }
 
     /**

@@ -44,6 +44,7 @@ class HtmlType extends ContentType
 
     public function renderFormField(ActiveForm $form, CustomContentContainer $page)
     {
-        return $form->field($page, $page->getPageContentProperty())->textarea(['id' => 'html_content', 'class' => 'form-control', 'rows' => '15']);
+        $field = $form->field($page, $page->getPageContentProperty())->textarea(['id' => 'html_content', 'class' => 'form-control', 'rows' => '15']);
+        return $field;
     }
 }

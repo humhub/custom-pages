@@ -4,7 +4,8 @@ use humhub\compat\CActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-humhub\modules\custom_pages\modules\template\assets\SourceEditorAsset::register($this);
+\humhub\modules\custom_pages\modules\template\assets\SourceEditorAsset::register($this);
+\humhub\modules\custom_pages\assets\CodeMirrorAssetBundle::register($this);
 
 /* @var $model humhub\modules\custom_pages\modules\template\models\Template */
 
@@ -49,6 +50,22 @@ $this->registerJsConfig('custom_pages.template.source', [
         <?php $form = CActiveForm::begin(['enableClientValidation' => false, 'options' => ['id' => 'sourceForm']]); ?>
 
         <?= $form->field($model, 'source')->textarea(['id' => 'template-form-source', 'rows' => 15, "spellcheck" => "false", 'class' => 'form-control autosize'])->label(false); ?>
+
+        <script>
+            $(document).one("humhub:ready", function () {
+                    if (!$("#template-form-source").length) {
+                        return;
+                    }
+                    setTimeout(function () {
+                        CodeMirror.fromTextArea($("#template-form-source")[0], {
+                            lineNumbers: true,
+                            mode: "text/html",
+                            extraKeys: {"Ctrl-Space": "autocomplete"}
+                        })
+                    }, 50);
+                }
+            );
+        </script>
 
         <div class="clearfix">
             <?= Html::submitButton(Yii::t('CustomPagesModule.base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>

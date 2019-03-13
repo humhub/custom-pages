@@ -28,6 +28,3 @@ class CodeMirrorAssetBundle extends AssetBundle
     ];
 
 }
-{
-
-}

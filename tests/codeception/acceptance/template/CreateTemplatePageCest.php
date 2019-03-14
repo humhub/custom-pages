@@ -26,7 +26,7 @@ class CreateTemplatePageCest
         $I->click('Save');
         
         $I->expectTo('see the edit source view');
-        $I->waitForElementVisible('#template-form-source');
+        $I->waitForElementVisible('.CodeMirror');
         
         $I->amGoingTo('add a text element');
         $this->clickAddElement($I, 'Text');

@@ -1,6 +1,6 @@
 <?php
 
-use humhub\compat\CActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -47,25 +47,9 @@ $this->registerJsConfig('custom_pages.template.source', [
 
     <div class="panel-body">
 
-        <?php $form = CActiveForm::begin(['enableClientValidation' => false, 'options' => ['id' => 'sourceForm']]); ?>
+        <?php $form = ActiveForm::begin(['enableClientValidation' => false, 'options' => ['id' => 'sourceForm']]); ?>
 
         <?= $form->field($model, 'source')->textarea(['id' => 'template-form-source', 'rows' => 15, "spellcheck" => "false", 'class' => 'form-control autosize'])->label(false); ?>
-
-        <script>
-            $(document).one("humhub:ready", function () {
-                    if (!$("#template-form-source").length) {
-                        return;
-                    }
-                    setTimeout(function () {
-                        CodeMirror.fromTextArea($("#template-form-source")[0], {
-                            lineNumbers: true,
-                            mode: "text/html",
-                            extraKeys: {"Ctrl-Space": "autocomplete"}
-                        })
-                    }, 50);
-                }
-            );
-        </script>
 
         <div class="clearfix">
             <?= Html::submitButton(Yii::t('CustomPagesModule.base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
@@ -91,7 +75,7 @@ $this->registerJsConfig('custom_pages.template.source', [
             </div>
         </div>
         <br />
-        <?php CActiveForm::end(); ?>
+        <?php ActiveForm::end(); ?>
 
         <?= \humhub\modules\custom_pages\modules\template\widgets\TemplateContentTable::widget(['template' => $model]) ?>
     </div>

@@ -41,11 +41,6 @@ abstract class CustomContentContainer extends ContentActiveRecord
      */
     public $streamChannel = null;
 
-    /**
-     * @inheritdoc
-     */
-    public $autoAddToWall = false;
-
 
     /**
      * @var Target cached target
@@ -122,8 +117,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
             'sort_order' => Yii::t('CustomPagesModule.components_Container', 'Sort Order'),
             'targetUrl' => Yii::t('CustomPagesModule.components_Container', 'Target Url'),
             'templateId' => Yii::t('CustomPagesModule.components_Container', 'Template Layout'),
-            'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins'),
-            'isPublic' => Yii::t('CustomPagesModule.models_Page','Is Public')
+            'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins')
         ];
     }
 

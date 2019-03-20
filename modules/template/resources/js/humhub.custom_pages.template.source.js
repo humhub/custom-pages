@@ -124,9 +124,10 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
     };
 
     TemplateSourceEditor.prototype.reset = function (evt) {
+        var that = this;
         client.post(evt).then(function(response) {
             if (response.success) {
-                this.updateElement(response);
+                that.updateElement(response);
                 modal.global.close();
             }
         }).catch(function(e) {

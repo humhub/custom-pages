@@ -56,7 +56,9 @@ class TextContent extends TemplateContentActiveRecord
 
         $scenarios[self::SCENARIO_CREATE][] = 'inline_text';
         $scenarios[self::SCENARIO_EDIT_ADMIN][] = 'inline_text';
-        $scenarios[self::SCENARIO_EDIT][] = 'inline_text';
+
+        // We disallow editing this field in page editor
+        //$scenarios[self::SCENARIO_EDIT][] = 'inline_text';
 
         return $scenarios;
     }

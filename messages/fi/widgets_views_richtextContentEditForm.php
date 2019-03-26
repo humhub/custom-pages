@@ -1,6 +1,5 @@
 <?php
-
-return [
-    'less' => '',
-    'more' => '',
-];
+return array (
+  'less' => 'vähemmän',
+  'more' => 'lisää',
+);

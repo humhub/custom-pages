@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Empty' => '',
-    'Inline' => '',
-    'Multiple' => '',
-    'This template does not contain any elements yet.' => '',
-];
+return array (
+  'Empty' => 'Tyhjä',
+  'Inline' => '',
+  'Multiple' => '',
+  'This template does not contain any elements yet.' => '',
+);

@@ -98,7 +98,7 @@ $deleteUrl = Url::to(['delete', 'id' => $page->id, 'sguid' => $sguid]);
         <?= Html::submitButton(Yii::t('CustomPagesModule.views_common_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
         <?php if (!$page->isNewRecord) : ?>
-            <?= Html::a(Yii::t('CustomPagesModule.views_common_edit', 'Delete'), $deleteUrl, ['class' => 'btn btn-danger', 'data-ui-loader' => '', 'data-pjax-prevent' => '']); ?>
+            <?= Html::a(Yii::t('CustomPagesModule.views_common_edit', 'Delete'), $deleteUrl, ['class' => 'btn btn-danger', 'data-ui-loader' => '', 'data-pjax-prevent' => '', 'data-confirm' => Yii::t('CustomPagesModule.views_common_edit', 'Are you sure you want to delete this page?')]); ?>
         <?php endif; ?>
 
         <?php if ($page->isType(Container::TYPE_TEMPLATE) && !$page->isNewRecord): ?>

@@ -7,4 +7,5 @@ return array (
   'Inline Editor' => 'Inline-Editor',
   'Save' => 'Speichern',
   'e.g. http://www.example.de' => 'z.B. http://www.example.de',
+  'Are you sure you want to delete this page?' => 'Willst du diese Seite wirklich löschen?'
 );

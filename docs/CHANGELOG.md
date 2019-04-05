@@ -1,3 +1,8 @@
+0.8.14  (April 5, 2019)
+---------------------
+- Fix: Missed confirm box on page deletion
+
+
 0.8.13  (February 25, 2019)
 ---------------------
 - Fixed xss vulnerability issue

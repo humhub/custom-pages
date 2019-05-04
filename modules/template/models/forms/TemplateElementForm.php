@@ -83,8 +83,10 @@ class TemplateElementForm extends \yii\base\Model
             $result = $result || $this->content->load($data, $formName);
         }
 
+        $elementLoaded = $this->element->load($data, $formName);
+
         // Note, only the template element loading is mandatory.
-        return $result || $this->element->load($data, $formName);
+        return $result || $elementLoaded;
     }
 
     public function validate($attributeNames = NULL, $clearErrors = true)

@@ -9,6 +9,8 @@
 - Enh: Added codemirror editor
 - Enh: Order templates by name
 - Fix: onBeforeUnload not working with pjax
+- Fix: default data reset throws error
+- Enh: Added inline_text flag to text content
 
 0.8.13  (February 25, 2019)
 ---------------------

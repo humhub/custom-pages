@@ -27,6 +27,10 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
     public function checkOldGlobalContent()
     {
 
+        if(!Yii::$app->user->isAdmin()) {
+            return;
+        }
+
         if(!$this->settings->get(static::SETTING_MIGRATION_KEY, 0)) {
             foreach (Page::find()->all() as $page) {
                 $page->content->save();

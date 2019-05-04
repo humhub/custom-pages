@@ -27,6 +27,9 @@ class ContainerController extends ContentContainerController
     public function actionView($id)
     {
         $page = ContainerPage::find()->contentContainer($this->contentContainer)->where(['custom_pages_container_page.id' => $id])->one();
+        if(!$page) {
+            throw new HttpException(404);
+        }
         return $this->redirect($page->getUrl());
     }
 }

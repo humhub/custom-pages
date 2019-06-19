@@ -1,4 +1,4 @@
 <?php
 return array (
-  'snippet' => 'fragment',
+  'snippet' => 'fragmentu',
 );

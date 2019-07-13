@@ -78,6 +78,6 @@ return array (
   'User Account Menu (Settings)' => 'Kullanıcı Hesap Menüsü (Ayarlar)',
   'Will embed the the result of a given url as an iframe element.' => '',
   'Will redirect requests to a given (relative or absolute) url.' => '',
-  'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => '',
+  'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'PHP tabanlı sayfaları ile dosya sisteminde görünüm dosyaları vasıtasıyla özel sayfalar oluşturabilirsiniz. Daha fazla bilgi için lütfen modül yapılandırmasını kontrol edin.',
   'Without adding to navigation (Direct link)' => 'Navigasyon eklemeden (Doğrudan bağlantı)',
 );

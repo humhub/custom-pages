@@ -1,15 +1,14 @@
 <?php
-
-return [
-    'Invalid template selection!' => '',
-    'Invalid view file selection!' => '',
-    'Sort Order' => '',
-    'Target Url' => '',
-    'Template Layout' => '',
-    'Content' => 'Sisältö',
-    'ID' => 'ID',
-    'Icon' => 'Iconi',
-    'Style Class' => 'Tyyli luokka',
-    'Title' => 'Otsikko',
-    'Type' => 'Tyyppi',
-];
+return array (
+  'Content' => 'Sisältö',
+  'ID' => 'ID',
+  'Icon' => 'Iconi',
+  'Invalid template selection!' => '',
+  'Invalid view file selection!' => '',
+  'Sort Order' => 'Lajittelujärjestys',
+  'Style Class' => 'Tyyli luokka',
+  'Target Url' => '',
+  'Template Layout' => '',
+  'Title' => 'Otsikko',
+  'Type' => 'Tyyppi',
+);

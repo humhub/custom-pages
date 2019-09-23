@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Navigation' => '',
+  'Navigation' => 'Navigation',
   'Only visible for admins' => 'Endast synligt för admin',
   'Open in new window' => 'Öppna i nytt fönster',
   'Url shortcut' => '',

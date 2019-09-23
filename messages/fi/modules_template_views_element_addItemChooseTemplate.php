@@ -1,6 +1,5 @@
 <?php
-
-return [
-    'Choose a template' => '',
-    'Template' => '',
-];
+return array (
+  'Choose a template' => '',
+  'Template' => 'Malli',
+);

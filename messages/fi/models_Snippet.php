@@ -1,7 +1,6 @@
 <?php
-
-return [
-    'Content' => '',
-    'Sidebar' => '',
-    'snippet' => '',
-];
+return array (
+  'Content' => 'Sisältö',
+  'Sidebar' => '',
+  'snippet' => '',
+);

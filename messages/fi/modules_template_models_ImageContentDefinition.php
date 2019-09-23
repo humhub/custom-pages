@@ -1,7 +1,6 @@
 <?php
-
-return [
-    'Height' => '',
-    'Style' => '',
-    'Width' => '',
-];
+return array (
+  'Height' => 'Korkeus',
+  'Style' => 'Tyyli',
+  'Width' => 'Leveys',
+);

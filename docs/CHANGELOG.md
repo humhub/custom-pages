@@ -1,4 +1,4 @@
-1.0.1  (February 25, 2019)
+1.0.1
 ---------------------
 - Enh: 1.4 nonce compatibility
 

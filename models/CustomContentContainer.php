@@ -179,7 +179,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
             return $result;
         }
 
-        if(LinkType::isType($type) || HtmlType::isType($type) || MarkdownType::isType($type)) {
+        if(LinkType::isType($type) || HtmlType::isType($type) || MarkdownType::isType($type) || IframeType::isType($type)) {
             $result[] = ['page_content', 'required'];
         }
 

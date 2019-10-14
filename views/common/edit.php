@@ -118,7 +118,7 @@ $contentType = $page->getContentType();
                 lineNumbers: true,
                 extraKeys: {"Ctrl-Space": "autocomplete"}
             })
-        }, 50);
+        }, 60);
         }
     );
 JS

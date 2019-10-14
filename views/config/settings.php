@@ -6,9 +6,8 @@
  *
  */
 
-// use humhub\widgets\Button;
 use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
+use humhub\libs\Html;
 
 /* @var $this \humhub\components\View */
 /* @var $subNav string */
@@ -58,7 +57,7 @@ use yii\helpers\Html;
 
 </div>
 
-<script>
+<?= Html::script(<<<JS
     var checkPhpPagesActive = function() {
         if($('#phpPagesActive').is(':checked')) {
             $('#phpPageSettings').find('input').prop('disabled', false);
@@ -72,4 +71,5 @@ use yii\helpers\Html;
     });
 
     checkPhpPagesActive();
-</script>
+JS
+) ?>

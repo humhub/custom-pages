@@ -1,5 +1,5 @@
 <?php
-use humhub\modules\custom_pages\widgets\SnippetContent;
+use humhub\libs\Html;use humhub\modules\custom_pages\widgets\SnippetContent;
 
 /* @var $model \humhub\modules\custom_pages\models\CustomContentContainer */
 /* @var $canEdit bool */
@@ -26,10 +26,10 @@ SnippetContent::widget([
     }
 </style>
 
-<script>
+<?= Html::beginTag('script') ?>
     var $frame = $('#<?= $iframeId ?>');
     $frame.on('load', function () {
         var height = $(this.contentWindow.document.body).outerHeight() + 20;
         $(this).height(height);
     })
-</script>
+<?= Html::endTag('script') ?>

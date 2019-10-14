@@ -1,3 +1,7 @@
+1.0.1  (February 25, 2019)
+---------------------
+- Enh: 1.4 nonce compatibility
+
 1.0.0  (February 25, 2019)
 ---------------------
 - Enh: Added integration layer

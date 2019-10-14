@@ -105,7 +105,6 @@ class CreateGlobalPageCest
         $I->seeInField('input[name="target"][disabled]', 'Directory Menu');
 
         $I->fillField('Page[title]', 'Test html');
-        //$I->fillField('Page[page_content]', '<div id="testDiv">My test div</div>');
 
         $I->executeJS('$(".CodeMirror:visible")[0].CodeMirror.getDoc().setValue("<div id=\"testDiv\">My test div</div>")');
         $I->executeJS('$(".CodeMirror:visible")[0].CodeMirror.save()');

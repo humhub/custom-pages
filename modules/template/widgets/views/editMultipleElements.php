@@ -1,11 +1,12 @@
 <?php
 
+use humhub\widgets\ModalDialog;
 use yii\widgets\ActiveForm;
-use yii\helpers\Html;
+use humhub\libs\Html;
 
 /* @var $model humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElementsForm */
 ?>
-<?php \humhub\widgets\ModalDialog::begin(['size' => (empty($model->contentMap)) ? 'normal' : 'large', 'header' => $title])?>
+<?php ModalDialog::begin(['size' => (empty($model->contentMap)) ? 'normal' : 'large', 'header' => $title])?>
     <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
         <?= Html::hiddenInput('editMultipleElements', true); ?>
 
@@ -67,11 +68,9 @@ use yii\helpers\Html;
             <?php endif; ?>
         </div>
     <?php ActiveForm::end(); ?>
-<?php \humhub\widgets\ModalDialog::end(); ?>
+<?php ModalDialog::end(); ?>
 
-<script type="text/javascript">
-    $('.template-edit-multiple-tab:first').focus();
-</script>
+<?= Html::script(' $(\'.template-edit-multiple-tab:first\').focus();')?>
 
 <style>
     /**

@@ -3,7 +3,7 @@
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\widgets\PageIconSelect;
 use humhub\widgets\Link;
-use yii\helpers\Html;
+use humhub\libs\Html;
 use humhub\modules\custom_pages\helpers\Url;
 use yii\widgets\ActiveForm;
 use humhub\modules\custom_pages\models\Page;
@@ -107,21 +107,22 @@ $contentType = $page->getContentType();
             <?= Button::success(Yii::t('CustomPagesModule.views_common_edit', 'Inline Editor'))->link(Url::toInlineEdit($page, $target->container))->right()->icon('fa-pencil') ?>
         <?php endif; ?>
 
-        <script>
-            $(document).one("humhub:ready", function () {
-                if (!$("#html_content").length) {
-                    return;
-                }
-                setTimeout(function () {
-                    CodeMirror.fromTextArea($("#html_content")[0], {
-                        mode: "text/html",
-                        lineNumbers: true,
-                        extraKeys: {"Ctrl-Space": "autocomplete"}
-                    })
-                }, 50);
-                }
-            );
-        </script>
+<?= Html::script(<<<JS
+    $(document).one("humhub:ready", function () {
+        if (!$("#html_content").length) {
+            return;
+        }
+        setTimeout(function () {
+            CodeMirror.fromTextArea($("#html_content")[0], {
+                mode: "text/html",
+                lineNumbers: true,
+                extraKeys: {"Ctrl-Space": "autocomplete"}
+            })
+        }, 50);
+        }
+    );
+JS
+); ?>
         <?php ActiveForm::end(); ?>
     </div>
 </div>

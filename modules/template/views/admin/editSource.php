@@ -1,10 +1,11 @@
 <?php
 
-use humhub\compat\CActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-humhub\modules\custom_pages\modules\template\assets\SourceEditorAsset::register($this);
+\humhub\modules\custom_pages\modules\template\assets\SourceEditorAsset::register($this);
+\humhub\modules\custom_pages\assets\CodeMirrorAssetBundle::register($this);
 
 /* @var $model humhub\modules\custom_pages\modules\template\models\Template */
 
@@ -46,7 +47,7 @@ $this->registerJsConfig('custom_pages.template.source', [
 
     <div class="panel-body">
 
-        <?php $form = CActiveForm::begin(['enableClientValidation' => false, 'options' => ['id' => 'sourceForm']]); ?>
+        <?php $form = ActiveForm::begin(['enableClientValidation' => false, 'options' => ['id' => 'sourceForm']]); ?>
 
         <?= $form->field($model, 'source')->textarea(['id' => 'template-form-source', 'rows' => 15, "spellcheck" => "false", 'class' => 'form-control autosize'])->label(false); ?>
 
@@ -74,7 +75,7 @@ $this->registerJsConfig('custom_pages.template.source', [
             </div>
         </div>
         <br />
-        <?php CActiveForm::end(); ?>
+        <?php ActiveForm::end(); ?>
 
         <?= \humhub\modules\custom_pages\modules\template\widgets\TemplateContentTable::widget(['template' => $model]) ?>
     </div>

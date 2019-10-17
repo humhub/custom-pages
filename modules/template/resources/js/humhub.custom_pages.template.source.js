@@ -15,12 +15,19 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
         this.$form = $('#sourceForm');
         this.$elements = $('#templateElementTable');
         this.initEvents();
-
     };
 
     TemplateSourceEditor.prototype.initEvents = function () {
         var that = this;
-        this.$sourceInput.on('change', function () {
+
+        this.codeMirror = CodeMirror.fromTextArea($("#template-form-source")[0], {
+            lineNumbers: true,
+            mode: "text/html",
+            extraKeys: {"Ctrl-Space": "autocomplete"}
+        });
+
+        this.codeMirror.on('change', function () {
+            console.log('changed');
             that.$sourceInput.data('changed', true);
         });
 
@@ -35,25 +42,15 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
             }
         });
 
-        $(document).on('keydown.custom_pages', '#template-form-source', function (e) {
-            var keyCode = e.keyCode || e.which;
-
-            if (keyCode === 9) {
-                e.preventDefault();
-
-                var $this = $(this);
-                var start = $this.get(0).selectionStart;
-                var end = $this.get(0).selectionEnd;
-
-                // set textarea value to: text before caret + tab + text after caret
-                $(this).val($(this).val().substring(0, start)
-                        + "\t"
-                        + $this.val().substring(end));
-
-                // put caret at right position again
-                $this.get(0).selectionStart = $this.get(0).selectionEnd = start + 1;
+        $(document).on('pjax:beforeSend', function(evt) {
+            if (that.$sourceInput.data('changed') && !window.confirm(module.text('warning.beforeunload'))) {
+                evt.preventDefault();
+                return;
             }
-        });
+
+            that.$sourceInput.data('changed', false);
+        })
+
     };
 
     TemplateSourceEditor.prototype.editElementSubmit = function (evt) {
@@ -117,18 +114,20 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
     };
 
     TemplateSourceEditor.prototype.insertPlaceholder = function (txt) {
-        var textarea = this.$sourceInput[0];
-        var currentPos = _getCaret(textarea);
-        var strLeft = textarea.value.substring(0, currentPos);
-        var strRight = textarea.value.substring(currentPos, textarea.value.length);
-        textarea.value = strLeft + txt + strRight;
-        $(textarea).trigger('change');
+        codeMirror = this.getCodeMirror();
+        codeMirror.getDoc().replaceSelection(txt);
+        codeMirror.save();
+    };
+
+    TemplateSourceEditor.prototype.getCodeMirror = function () {
+        return $(".CodeMirror:visible")[0].CodeMirror;
     };
 
     TemplateSourceEditor.prototype.reset = function (evt) {
+        var that = this;
         client.post(evt).then(function(response) {
             if (response.success) {
-                this.updateElement(response);
+                that.updateElement(response);
                 modal.global.close();
             }
         }).catch(function(e) {
@@ -211,6 +210,7 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
     var unload = function () {
         $(document).off('.custom_pages');
         $(window).off('.custom_pages');
+        $(document).on('pjax:beforeSend');
     };
 
     module.export({

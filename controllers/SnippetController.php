@@ -3,8 +3,9 @@
 namespace humhub\modules\custom_pages\controllers;
 
 use Yii;
+use humhub\modules\custom_pages\models\ContainerSnippet;
+use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\models\Snippet;
-use humhub\modules\custom_pages\components\TemplateViewBehavior;
 use yii\web\HttpException;
 
 /**
@@ -12,65 +13,40 @@ use yii\web\HttpException;
  *
  * @author buddha
  */
-class SnippetController extends AdminController
+class SnippetController extends PageController
 {
-    /**
-     * @inhritdoc
-     */
-    public function behaviors()
-    {
-        $result = parent::behaviors();
-        $result[] = ['class' => TemplateViewBehavior::className()];
-        return $result;
-    }
-
-    public function actionIndex()
-    {
-        return parent::actionPages();
-    }
-    
     /**
      * Action for viewing the snippet inline edit view.
      * 
      * @return string
      * @throws HttpException if snippet could not be found.
      */
-    public function actionEditSnippet()
+    public function actionEditSnippet($id)
     {   
-        $snippet = $this->findById(Yii::$app->request->get('id'));
+        $snippet = $this->findById(['id' => $id]);
         
-        if($snippet == null) {
+        if(!$snippet) {
             throw new HttpException(404, 'Snippet not found!');
         }
+
+        $view = $this->contentContainer
+            ? '@custom_pages/views/container/edit_snippet'
+            : '@custom_pages/views/global/edit_snippet';
         
-        return $this->render('edit_snippet', [
+        return $this->render($view, [
             'snippet' => $snippet,
+            'contentContainer' => $this->contentContainer,
             'html' => $this->renderTemplate($snippet, true)
         ]);
     }
-    
-    /**
-     * @inhritdoc
-     */
-    protected function findAll()
-    {
-        return Snippet::find()->all();
-    }
 
-    /**
-     * @inhritdoc
-     */
     protected function getPageClassName()
     {
-        return Snippet::className();
+        return $this->contentContainer ? ContainerSnippet::class : Snippet::class;
     }
 
-    /**
-     * @param int $id integer
-     * @return Snippet
-     */
-    protected function findById($id)
+    protected function getPageType()
     {
-        return Snippet::findOne(['id' => $id]);
+        return PageType::Snippet;
     }
 }

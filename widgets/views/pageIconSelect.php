@@ -1,9 +1,11 @@
 <?php
 
+use humhub\libs\Html;
+use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\models\ContainerSnippet;
 use \humhub\modules\custom_pages\models\Snippet;
 
-\humhub\modules\custom_pages\assets\Assets::register($this);
+Assets::register($this);
 
 $faIcons = [
     'fa-adjust' => '&#xf042',
@@ -608,7 +610,8 @@ if ($page instanceof Snippet || $page instanceof ContainerSnippet) {
     </select>
 </div>
 
-<script>
+
+<?= Html::script(<<<JS
     var formatState = function(state) {
         if (!state.id) {
             return state.text;
@@ -622,4 +625,5 @@ if ($page instanceof Snippet || $page instanceof ContainerSnippet) {
         templateResult: formatState,
         templateSelection: formatState
     });
-</script>
+JS
+) ?>

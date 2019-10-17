@@ -18,6 +18,6 @@
  * GNU Affero General Public License for more details.
  */
 return [
-    ['id' => 1, 'type' => '5', 'title' => 'test', 'navigation_class' => 'TopMenuWidget'],
-    ['id' => 2, 'type' => '5', 'title' => 'test2', 'navigation_class' => 'TopMenuWidget']
+    ['id' => 1, 'type' => '5', 'title' => 'test', 'target' => 'TopMenuWidget'],
+    ['id' => 2, 'type' => '5', 'title' => 'test2', 'target' => 'TopMenuWidget']
 ];

@@ -3,14 +3,18 @@
 namespace humhub\modules\custom_pages;
 
 use Yii;
-use yii\helpers\Url;
+use humhub\modules\custom_pages\models\Snippet;
+use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use yii\base\Exception;
 
 class Module extends \humhub\modules\content\components\ContentContainerModule
 {
+    const ICON = 'fa-file-text-o';
+    const SETTING_MIGRATION_KEY = 'global_pages_migrated';
 
     public $resourcesPath = 'resources';
     
@@ -20,12 +24,32 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
         parent::init();
     }
 
+    public function checkOldGlobalContent()
+    {
+
+        if(!Yii::$app->user->isAdmin()) {
+            return;
+        }
+
+        if(!$this->settings->get(static::SETTING_MIGRATION_KEY, 0)) {
+            foreach (Page::find()->all() as $page) {
+                $page->content->save();
+            }
+
+            foreach (Snippet::find()->all() as $page) {
+                $page->content->save();
+            }
+
+            $this->settings->set(static::SETTING_MIGRATION_KEY, 1);
+        }
+    }
+
     /**
      * @inheritdoc
      */
     public function getConfigUrl()
     {
-        return Url::to(['/custom_pages/admin/settings']);
+        return Url::toModuleConfig();
     }
 
     /**
@@ -58,7 +82,7 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
     public function getContentContainerTypes()
     {
         return [
-            Space::className(),
+            Space::class,
         ];
     }
 

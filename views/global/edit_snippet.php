@@ -1,14 +1,22 @@
 <?php
 
-use yii\helpers\Url;
+use humhub\modules\custom_pages\helpers\Url;
 use yii\helpers\Html;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\modules\template\widgets\TemplatePage;
 
-$backUrl = ($snippet->sidebar == Snippet::SIDEBAR_DASHBOARD) ? Url::to(['/dashboard/dashboard']) :  Url::to(['/directory/directory']);
-$backText = ($snippet->sidebar == Snippet::SIDEBAR_DASHBOARD) ?Yii::t('CustomPagesModule.base', 'Back to dashboard') : Yii::t('CustomPagesModule.base', 'Back to directory');
-$editUrl = Url::to(['edit', 'id' => $snippet->id]);
+/* @var $snippet \humhub\modules\custom_pages\models\CustomContentContainer */
+/* @var $html string */
 
+$backUrl = ($snippet->target === Snippet::SIDEBAR_DASHBOARD)
+    ? Url::to(['/dashboard/dashboard'])
+    :  Url::to(['/directory/directory']);
+
+$backText = ($snippet->target === Snippet::SIDEBAR_DASHBOARD)
+    ? Yii::t('CustomPagesModule.base', 'Back to dashboard')
+    : Yii::t('CustomPagesModule.base', 'Back to directory');
+
+$editUrl = Url::toEditSnippet($snippet, $snippet->content->container);
 ?>
 
 <div>
@@ -25,7 +33,7 @@ $editUrl = Url::to(['edit', 'id' => $snippet->id]);
                                 <a id="snippet-config-button" href="<?= $editUrl ?>" title="<?= Yii::t('CustomPagesModule.base', 'Configuration'); ?>" target="_blank" class="pull-right"><i class="fa fa-pencil"></i></a>
                             </div>
                             <div class="panel-body">
-                                <?php echo $html; ?>
+                                <?= $html; ?>
                             </div>
                         </div>
                     </div>

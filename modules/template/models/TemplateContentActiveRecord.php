@@ -124,10 +124,11 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
      */
     public function load($data, $formName = null)
     {
-        parent::load($data, $formName);
+        $result = parent::load($data, $formName);
         if ($this->isDefinitionContent() && $this->definitionPostData != null) {
             $this->definition->load(['content' => $this->definitionPostData], 'content');
         }
+        return $result;
     }
 
     /**

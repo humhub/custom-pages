@@ -6,17 +6,17 @@ use yii\web\AssetBundle;
 
 class Assets extends AssetBundle
 {
+    public $sourcePath = '@custom_pages/resources';
+
+    public $publishOptions = [
+        'forceCopy' => false
+    ];
+
 
     public $css = [
         'custom-pages.css'
     ];
     
     public $js = [];
-
-    public function init()
-    {
-        $this->sourcePath = dirname(dirname(__FILE__)) . '/resources';
-        parent::init();
-    }
 
 }

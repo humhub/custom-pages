@@ -6,6 +6,8 @@ use yii\web\AssetBundle;
 
 class SwitchAssetBundle extends AssetBundle
 {
+    public $sourcePath = '@custom_pages/modules/template/resources/js/switch';
+
     public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
 
     public $css = [
@@ -19,11 +21,4 @@ class SwitchAssetBundle extends AssetBundle
     public $depends = [
         'humhub\assets\AppAsset'
     ];
-
-    public function init()
-    {
-        $this->sourcePath = dirname(dirname(__FILE__)) . '/resources/js/switch';
-        parent::init();
-    }
-
 }

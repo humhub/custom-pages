@@ -2,10 +2,10 @@
 
 namespace humhub\modules\custom_pages\models;
 
-use humhub\modules\custom_pages\models\forms\SettingsForm;
+use humhub\modules\custom_pages\widgets\WallEntry;
 use Yii;
-use humhub\components\ActiveRecord;
-use humhub\modules\custom_pages\components\Container;
+use humhub\modules\custom_pages\helpers\Url;
+use humhub\modules\custom_pages\models\forms\SettingsForm;
 use humhub\modules\custom_pages\modules\template\models\Template;
 
 /**
@@ -19,31 +19,28 @@ use humhub\modules\custom_pages\modules\template\models\Template;
  * @property integer $type
  * @property string $title
  * @property string $icon
- * @property string $content
+ * @property string $page_content
  * @property integer $sort_order
  * @property integer $admin_only
  * @property integer $in_new_window
- * @property string $navigation_class
+ * @property string $target
  * @property string $cssClass
  * @property string $url
+ * @property string $abstract
+ * @method string viewTemplatePage(CustomContentContainer $page)
  */
-class Page extends ActiveRecord implements CustomContentContainer
+class Page extends CustomContentContainer
 {
+    /**
+     * @inheritdoc
+     */
+    public $wallEntryClass = WallEntry::class;
 
     const NAV_CLASS_TOPNAV = 'TopMenuWidget';
     const NAV_CLASS_ACCOUNTNAV = 'AccountMenuWidget';
     const NAV_CLASS_EMPTY = 'WithOutMenu';
-    const NAV_CLASS_DIRECTORY = 'DirectoryMenu'; //in humhub\modules\directory\widgets\Menu
+    const NAV_CLASS_DIRECTORY = 'DirectoryMenu';
 
-    /**
-     * @inhritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            ['class' => Container::className()],
-        ];
-    }
 
     /**
      * @return string the associated database table name
@@ -54,13 +51,6 @@ class Page extends ActiveRecord implements CustomContentContainer
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getPageContentProperty() {
-        return 'content';
-    }
-    
-    /**
      * @inerhitdoc
      * @return array
      */
@@ -68,7 +58,8 @@ class Page extends ActiveRecord implements CustomContentContainer
     {
         $result = $this->defaultAttributeLabels();
         $result['in_new_window'] = Yii::t('CustomPagesModule.models_Page', 'Open in new window');
-        $result['navigation_class'] = Yii::t('CustomPagesModule.models_Page','Navigation');
+        $result['abstract'] = Yii::t('CustomPagesModule.models_Page', 'Abstract');
+        $result['target'] = Yii::t('CustomPagesModule.models_Page','Navigation');
         $result['url'] = Yii::t('CustomPagesModule.models_Page','Url shortcut');
         return $result;
     }
@@ -79,11 +70,29 @@ class Page extends ActiveRecord implements CustomContentContainer
     public function rules()
     {
         $rules = $this->defaultRules();
-        $rules[] = ['navigation_class', 'required'];
-        $rules[] = [['in_new_window', 'admin_only'], 'integer'];
-        $rules[] = [['url'], 'unique', 'skipOnEmpty' => 'true'];
-        $rules[] = [['content', 'url'], 'safe'];
+
+        $target = $this->getTargetModel();
+        if($target && $target->isAllowedField('in_new_window')) {
+            $rules[] = [['in_new_window'], 'integer'];
+        }
+
+        if($target && $target->isAllowedField('abstract')) {
+            $rules[] = [['abstract'], 'string'];
+        }
+
+        if($target && $target->isAllowedField('url')) {
+            $rules[] = [['url'], 'string'];
+        }
+
         return $rules;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getContentDescription()
+    {
+        return $this->title;
     }
 
     /**
@@ -99,13 +108,13 @@ class Page extends ActiveRecord implements CustomContentContainer
      * Returns a navigation selection for all navigations this page can be added.
      * @return array
      */
-    public static function getNavigationClasses()
+    public static function getDefaultTargets()
     {
         return [
-            self::NAV_CLASS_TOPNAV => Yii::t('CustomPagesModule.base', 'Top Navigation'),
-            self::NAV_CLASS_ACCOUNTNAV => Yii::t('CustomPagesModule.base', 'User Account Menu (Settings)'),
-            self::NAV_CLASS_DIRECTORY => Yii::t('CustomPagesModule.base', 'Directory Menu'),
-            self::NAV_CLASS_EMPTY => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)'),
+            ['id' => self::NAV_CLASS_TOPNAV, 'name' => Yii::t('CustomPagesModule.base', 'Top Navigation')],
+            ['id' => self::NAV_CLASS_ACCOUNTNAV, 'name' => Yii::t('CustomPagesModule.base', 'User Account Menu (Settings)'), 'subLayout' => '@humhub/modules/user/views/account/_layout'],
+            ['id' => self::NAV_CLASS_DIRECTORY, 'name' => Yii::t('CustomPagesModule.base', 'Directory Menu'), 'subLayout' => '@humhub/modules/custom_pages/views/layouts/_directory_layout'],
+            ['id' => self::NAV_CLASS_EMPTY, 'name' => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)')]
         ];
     }
 
@@ -116,12 +125,12 @@ class Page extends ActiveRecord implements CustomContentContainer
     public function getContentTypes()
     {
         return [
-            Container::TYPE_LINK,
-            Container::TYPE_HTML,
-            Container::TYPE_MARKDOWN,
-            Container::TYPE_IFRAME,
-            Container::TYPE_TEMPLATE,
-            Container::TYPE_PHP,
+            LinkType::ID,
+            HtmlType::ID,
+            MarkdownType::ID,
+            IframeType::ID,
+            TemplateType::ID,
+            PhpType::ID
         ];
     }
 
@@ -130,7 +139,7 @@ class Page extends ActiveRecord implements CustomContentContainer
      */
     public function getPageContent()
     {
-        return $this->content;
+        return $this->page_content;
     }
     
     /**
@@ -146,7 +155,24 @@ class Page extends ActiveRecord implements CustomContentContainer
      */
     public function getPhpViewPath()
     {
-        $settings = new SettingsForm();
-        return $settings->phpGlobalPagePath;
+        return (new SettingsForm())->phpGlobalPagePath;
+    }
+
+
+
+    /**
+     * @return string
+     */
+    public function getEditUrl()
+    {
+        return Url::toEditPage($this->id, $this->content->container);
+    }
+
+    /**
+     * @return string
+     */
+    public function getPageType()
+    {
+        return PageType::Page;
     }
 }

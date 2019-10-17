@@ -3,7 +3,7 @@
 /* @var $form humhub\compat\CActiveForm */
 
 use yii\helpers\Url;
-use yii\helpers\Html;
+use humhub\libs\Html;
 
 $id = 'ckeditor_' . $model->id;
 $id .= ($model->id == null) ? preg_replace( "/(\[|\])/","", $model->formName() )   : $model->id;
@@ -24,7 +24,7 @@ $uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', 'sgu
     <?= Html::hiddenInput($model->formName().'[fileList][]', $file); ?>
 <?php endforeach; ?>
 
-<script>
+<?= Html::beginTag('script') ?>
     var ckeditorAddUploadedFile = function (guid) {
         var form = $(CKEDITOR.currentInstance.container.$).closest('form');
         var modelFormName = $(CKEDITOR.currentInstance.element.$).data('form-name');
@@ -121,4 +121,4 @@ $uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', 'sgu
 
         initBasicEditor(id);
     })();
-</script>
+<?= Html::endTag('script') ?>

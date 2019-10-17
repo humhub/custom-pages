@@ -40,7 +40,7 @@ class TemplateCache
      * Flushes all cache entries related to a given $ownerContent instance.
      * 
      * @param OwnerContent $ownerContent
-     * @return type
+     * @return null
      */
     public static function flushByOwnerContent(OwnerContent $ownerContent)
     {
@@ -78,13 +78,13 @@ class TemplateCache
      */
     public static function getKey(TemplateInstance $owner)
     {
-        return $owner->className() . $owner->getPrimaryKey();
+        return get_class($owner) . $owner->getPrimaryKey();
     }
 
     /**
      * Checks for an existing cache entrie for a given $owner instance exists.
-     * @param type $owner
-     * @return type
+     * @param TemplateInstance $owner
+     * @return bool
      */
     public static function exists($owner)
     {
@@ -93,8 +93,8 @@ class TemplateCache
 
     /**
      * Retrieves the cached content for a given $owner instnance.
-     * @param type $owner
-     * @return type
+     * @param TemplateInstance $owner
+     * @return string
      */
     public static function get($owner)
     {
@@ -104,9 +104,9 @@ class TemplateCache
     /**
      * Sets the cache entry for a given $owner instance.
      * 
-     * @param type $owner
-     * @param type $content
-     * @return type
+     * @param TemplateInstance $owner
+     * @param string $content
+     * @return bool
      */
     public static function set($owner, $content)
     {

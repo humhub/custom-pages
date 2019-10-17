@@ -1,30 +1,31 @@
 <?php
 
-//use humhub\widgets\Button;
-use yii\helpers\Url;
- 
-$contentContainer = property_exists(Yii::$app->controller, 'contentContainer') ? Yii::$app->controller->contentContainer : null;
+use humhub\widgets\Button;
+use humhub\modules\custom_pages\helpers\Url;
+use yii\helpers\Html;
+use humhub\modules\content\helpers\ContentContainerHelper;
 
-if($contentContainer == null) {
-    $addUrl = Url::to(['add', 'type' => $type]);
-} else {
-     $addUrl = $contentContainer->createUrl('add', ['type' => $type]);
-}
- 
- $buttonClass = 'btn btn-sm btn-success pull-right';
- 
- if($disabled) {
-     $buttonClass .= ' disabled';
- }
+/** @var \humhub\modules\custom_pages\models\Target $target */
+/** @var \humhub\modules\custom_pages\models\ContentType $contentType*/
+/** @var string $pageType */
+/** @var bool $disabled*/
+
+$contentContainer = ContentContainerHelper::getCurrent();
  
 ?>
 <tr>
-    <td><?= $label ?></td>
-    <td><p class="help-block"><?= $description ?></p></td>
     <td>
-        <?php //Todo: after min version 1.2.2: Button::success(Yii::t('CustomPagesModule.base', 'Add'))->icon('fa-plus')->link($addUrl)->sm()->id('add-'.$type) ?>
-        <a id="add-<?= $type ?>" href="<?= $addUrl ?>" data-ui-loader class="<?= $buttonClass ?>">
-            <i class="fa fa-plus"></i>  <?=  Yii::t('CustomPagesModule.base', 'Add') ?>
-        </a>
+        <?= Html::encode($contentType->getLabel()) ?>
+    </td>
+    <td>
+        <p class="help-block">
+            <?= Html::encode($contentType->getDescription()) ?>
+        </p>
+    </td>
+    <td>
+        <?= Button::success(Yii::t('CustomPagesModule.base', 'Add'))
+            ->link(Url::toAddContentType($target, $pageType,  $contentType->getId(), $contentContainer))
+            ->icon('fa-plus')->sm()->id('add-content-type-'.$contentType->getId())
+            ->cssClass(($disabled ? 'disabled' : '')) ?>
     </td>
 </tr>

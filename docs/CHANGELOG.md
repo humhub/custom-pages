@@ -1,3 +1,21 @@
+1.0.1
+---------------------
+- Enh: 1.4 nonce compatibility
+
+1.0.0  (February 25, 2019)
+---------------------
+- Enh: Added integration layer
+- Enh: New template content type HumHub Richtext
+- Enh: Use Markdown Richtext as Markdown editor
+- Chng: Aliged CustomContentContainer tables and controller logic
+- Enh: Added blank system template
+- Chng: Content are public by default if admin_only is not enabled
+- Enh: Added codemirror editor
+- Enh: Order templates by name
+- Fix: onBeforeUnload not working with pjax
+- Fix: default data reset throws error
+- Enh: Added inline_text flag to text content
+
 0.8.14  (April 5, 2019)
 ---------------------
 - Fix: Missed confirm box on page deletion

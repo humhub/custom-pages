@@ -1,9 +1,14 @@
 <?php
 
+/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $defaultState boolean */
+/* @var $closeText string */
+/* @var $openText string */
 
 $text = ($defaultState) ?  $closeText : $openText;
 $contentStyle = ($defaultState) ? '' : 'display:none;';
-?>
+
+use humhub\libs\Html; ?>
 
 <hr class="hr-text collapsableTrigger" data-content="<?= $text ?>" tabindex="0" />
 
@@ -11,7 +16,7 @@ $contentStyle = ($defaultState) ? '' : 'display:none;';
     <?= $content ?>
 </div>
 
-<script>
+<?= Html::beginTag('script') ?>
     $('.collapsableTrigger').off('click').on('click', function() {
         var $this = $(this);
         var $content = $this.next();
@@ -43,4 +48,5 @@ $contentStyle = ($defaultState) ? '' : 'display:none;';
                 break;
         }
     });
-</script>
+<?= Html::endTag('script') ?>
+?>

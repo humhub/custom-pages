@@ -26,11 +26,14 @@ use yii\helpers\ArrayHelper;
  *  - Layout: Root template which is not combinable with other templates.
  *  - Container: Template which is combinable with other templates.
  * 
- * @var $id int
- * @var $name string
- * @var $source string
- * @var $allow_for_spaces boolean
- * @var $allow_inline_activation boolean
+ * @property $id int
+ * @property $name string
+ * @property $source string
+ * @property $engine string
+ * @property $description string
+ * @property $type string
+ * @property $allow_for_spaces boolean
+ * @property $allow_inline_activation boolean
  */
 class Template extends ActiveRecord implements TemplateContentOwner
 {

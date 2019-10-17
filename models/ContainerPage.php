@@ -2,52 +2,30 @@
 
 namespace humhub\modules\custom_pages\models;
 
-use humhub\modules\custom_pages\models\forms\SettingsForm;
 use Yii;
-use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\custom_pages\helpers\Url;
+use humhub\modules\custom_pages\models\forms\SettingsForm;
 use humhub\modules\search\interfaces\Searchable;
-use humhub\modules\custom_pages\components\Container;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\models\CustomContentContainer;
+
 /**
  * This is the model class for table "custom_pages_container_page".
  *
  * A container page is space related custom page container.
- *
- * @property integer $id
- * @property integer $type
- * @property string $title
- * @property string $icon
- * @property string $page_content
- * @property integer $in_new_window
- * @property integer $sort_order
- * @property integer $admin_only
- * @property string $cssClass
  */
-class ContainerPage extends ContentActiveRecord implements Searchable, CustomContentContainer
+class ContainerPage extends Page implements Searchable
 {
-    /**
-     * @inheritdoc
-     */
-    public $streamChannel = null;
+
+    const NAV_CLASS_SPACE_NAV = 'SpaceMenu';
 
     /**
-     * @inheritdoc
+     * Returns a navigation selection for all navigations this page can be added.
+     * @return array
      */
-    public $autoAddToWall = false;
-
-    /**
-     * @inheritdoc
-     */
-    public $wallEntryClass = 'humhub\modules\custom_pages\widgets\WallEntry';
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
+    public static function getDefaultTargets()
     {
         return [
-            ['class' => Container::className()],
+            ['id' => self::NAV_CLASS_SPACE_NAV , 'name' => Yii::t('CustomPagesModule.base', 'Space Navigation')]
         ];
     }
 
@@ -60,18 +38,6 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
     }
 
     /**
-     * @inheritdoc
-     * @return string
-     */
-    public function rules()
-    {
-        $rules = $this->defaultRules();
-        $rules[] = ['in_new_window', 'integer'];
-        $rules[] = [['page_content'], 'safe'];
-        return $rules;
-    }
-
-    /**
      * @return array customized attribute labels (name=>label)
      */
     public function attributeLabels()
@@ -79,7 +45,7 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
         $result = $this->defaultAttributeLabels();
         $result['in_new_window'] = Yii::t('CustomPagesModule.models_ContainerPage', 'Open in new window');
 
-        if($this->isType(Container::TYPE_PHP)) {
+        if(PhpType::isType($this->getContentType())) {
             $contentLabel = Yii::t('CustomPagesModule.models_Page', 'View');
         } else {
             $contentLabel = Yii::t('CustomPagesModule.components_Container', 'Content');
@@ -88,29 +54,6 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
         $result['page_content'] = $contentLabel;
         $result['admin_only'] = Yii::t('CustomPagesModule.models_ContainerPage', 'Only visible for space admins');
         return $result;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getContentName()
-    {
-        return 'Page';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getPageContentProperty() {
-        return 'page_content';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getContentDescription()
-    {
-        return $this->title;
     }
 
     /**
@@ -125,41 +68,17 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
     }
 
     /**
-     * Returns the view url of this page.
-     */
-    public function getUrl()
-    {
-        return $this->content->container->createUrl('/custom_pages/container/view', ['id' => $this->id]);
-    }
-
-    /**
      * @inheritdoc
      */
     public function getContentTypes()
     {
         return [
-            Container::TYPE_MARKDOWN,
-            Container::TYPE_LINK,
-            Container::TYPE_IFRAME,
-            Container::TYPE_TEMPLATE,
-            Container::TYPE_PHP
+            MarkdownType::ID,
+            LinkType::ID,
+            IframeType::ID,
+            TemplateType::ID,
+            PhpType::ID
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getLabel()
-    {
-        return Yii::t('CustomPagesModule.models_ContainerPage', 'page');
-    }
-    
-    /**
-     * @inheritdoc
-     */
-    public function getPageContent()
-    {
-        return $this->page_content;
     }
 
     /**
@@ -179,4 +98,11 @@ class ContainerPage extends ContentActiveRecord implements Searchable, CustomCon
         return $settings->phpContainerPagePath;
     }
 
+    /**
+     * @return string
+     */
+    public function getEditUrl()
+    {
+        return Url::toEditPage($this->id, $this->content->container);
+    }
 }

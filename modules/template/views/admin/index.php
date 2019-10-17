@@ -5,27 +5,30 @@
  * @copyright Copyright (c) 2016 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
-use yii\helpers\Html;
+
+use humhub\modules\custom_pages\modules\template\widgets\TemplateAdminMenu;
+use humhub\modules\custom_pages\widgets\AdminMenu;
+use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use yii\helpers\Url;
+
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
-    <?= \humhub\modules\custom_pages\widgets\AdminMenu::widget([]); ?>
+    <?= AdminMenu::widget([]); ?>
     <div class="panel-body">
         <h4><?= Yii::t('CustomPagesModule.base', 'Overview', ['type' => $type]) ?></h4>
         <div class="help-block">
             <?= $helpText ?>
         </div>
     </div>
-   
-    <?= \humhub\modules\custom_pages\modules\template\widgets\TemplateAdminMenu::widget(); ?>
-    
+
+    <?= TemplateAdminMenu::widget(); ?>
+
     <div class="panel-body">
-        
-         <?= Html::a('<i class="fa fa-plus"></i> ' . Yii::t('CustomPagesModule.base', 'Create new {type}', ['type' => $type]), ['edit'], ['class' => 'pull-right btn btn-success', 'data-ui-loader']); ?>
-    
-        
+        <?= Button::success(Yii::t('CustomPagesModule.base', 'Create new {type}', ['type' => $type]))->icon('fa-plus')->right()->link(['edit'])->sm()?>
+
+
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
@@ -34,9 +37,9 @@ use yii\helpers\Url;
                     'attribute' => 'id',
                     'options' => ['style' => 'width:40px;'],
                     'format' => 'raw',
-                    'value' => function($data) {
-                return $data->id;
-            },
+                    'value' => function ($data) {
+                        return $data->id;
+                    },
                 ],
                 'name',
                 [
@@ -44,19 +47,19 @@ use yii\helpers\Url;
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['style' => 'width:80px; min-width:80px;'],
                     'buttons' => [
-                        'view' => function($url, $model) {
+                        'view' => function ($url, $model) {
                             return null;
                         },
-                        'update' => function($url, $model) {
-                            return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(['edit-source', 'id' => $model->id]), ['class' => 'btn btn-primary btn-xs tt']);
+                        'update' => function ($url, $model) {
+                            return Button::primary()->icon('fa-pencil')->link(Url::toRoute(['edit-source', 'id' => $model->id]))->xs();
                         },
-                                'delete' => function($url, $model) {
-                            return Html::a('<i class="fa fa-times"></i>', Url::toRoute(['delete-template', 'id' => $model->id]), ['class' => 'btn btn-danger btn-xs tt']);
+                        'delete' => function ($url, $model) {
+                            return Button::danger()->icon('fa-times')->link(Url::toRoute(['delete-template', 'id' => $model->id]))->xs()->confirm();
                         }
-                            ],
-                        ],
                     ],
-                ]);
-                ?>
+                ],
+            ],
+        ]);
+        ?>
     </div>
 </div>

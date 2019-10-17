@@ -3,10 +3,12 @@
 use humhub\compat\CActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use humhub\modules\custom_pages\widgets\AdminMenu;
+
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
-    <?= \humhub\modules\custom_pages\widgets\AdminMenu::widget([]); ?>
+    <?= AdminMenu::widget([]); ?>
 
     <div class="panel-body">
         <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default pull-right')); ?>

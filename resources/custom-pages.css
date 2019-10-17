@@ -58,8 +58,8 @@ img.preview {
 
 div#overlay {
     position:fixed;
-    top:0px;
-    left:0px;
+    top:0;
+    left:0;
     width: 100%;
     height: 100%;
     z-index: 1027;
@@ -296,4 +296,34 @@ body.modal-open {
 
 .cp-file-upload-preview {
     display: inline-block;
+}
+
+.target-page-list .grid-view {
+    padding:0;
+}
+
+.target-page-list-head {
+    margin-top:15px;
+    background-color:#F1F1F1;
+    padding:10px;
+    margin-bottom:0;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    font-weight: bold;
+}
+
+.content-edit .ProseMirror {
+    min-height: 150px !important;
+}
+
+.target-page-list-grid {
+    border: 1px solid #F1F1F1;
+}
+
+.target-page-list-grid .grid-view table tbody tr td:first-of-type, .target-page-list-grid .grid-view table thead tr th:first-of-type {
+    padding-left:10px;
+}
+
+.target-page-list-grid .pagination {
+    margin-left:10px;
 }

@@ -2,13 +2,27 @@
 
 namespace humhub\modules\custom_pages\modules\template\models;
 
+use humhub\libs\Html;
 use Yii;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 
+/**
+ * Class TextContent
+ * @property bool $inline_text
+ * @property string content
+ */
 class TextContent extends TemplateContentActiveRecord
 {
 
     public static $label = 'Text';
+
+    public function init()
+    {
+        parent::init();
+        if($this->isNewRecord) {
+            $this->inline_text = 1;
+        }
+    }
 
     /**
      * @return string the associated database table name
@@ -24,8 +38,8 @@ class TextContent extends TemplateContentActiveRecord
     public function rules()
     {
         $result = parent::rules();
-        $result[] = ['content', 'required'];
         $result[] = ['content', 'trim'];
+        $result[] = ['inline_text', 'boolean'];
         $result[] = ['content', 'string', 'length' => [1, 255]];
         return $result;
     }
@@ -39,6 +53,13 @@ class TextContent extends TemplateContentActiveRecord
         $scenarios[self::SCENARIO_CREATE][] = 'content';
         $scenarios[self::SCENARIO_EDIT_ADMIN][] = 'content';
         $scenarios[self::SCENARIO_EDIT][] = 'content';
+
+        $scenarios[self::SCENARIO_CREATE][] = 'inline_text';
+        $scenarios[self::SCENARIO_EDIT_ADMIN][] = 'inline_text';
+
+        // We disallow editing this field in page editor
+        //$scenarios[self::SCENARIO_EDIT][] = 'inline_text';
+
         return $scenarios;
     }
 
@@ -49,6 +70,7 @@ class TextContent extends TemplateContentActiveRecord
     {
         return [
             'content' => 'Content',
+            'inline_text' => 'Is inline text',
         ];
     }
 
@@ -67,6 +89,7 @@ class TextContent extends TemplateContentActiveRecord
     {
         $clone = new TextContent();
         $clone->content = $this->content;
+        $clone->inline_text = $this->inline_text;
         return $clone;
     }
 
@@ -75,11 +98,13 @@ class TextContent extends TemplateContentActiveRecord
      */
     public function render($options = [])
     {
-        if ($this->isEditMode($options)) {
-            return $this->wrap('span', $this->purify($this->content), $options);
+        $result = $this->inline_text ? $this->purify($this->content) : Html::encode($this->content);
+
+        if ($this->isEditMode($options) && $this->inline_text) {
+            return $this->wrap('span', $result, $options);
         }
 
-        return $this->purify($this->content);
+        return $result;
     }
 
     /**
@@ -87,8 +112,12 @@ class TextContent extends TemplateContentActiveRecord
      */
     public function renderEmpty($options = [])
     {
-        $options['class'] = 'emptyBlock text';
-        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_RichtextContent', 'Empty Text'), $options);
+        if($this->inline_text) {
+            $options['class'] = 'emptyBlock text';
+            return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_RichtextContent', 'Empty Text'), $options);
+        }
+
+        return '';
     }
 
     /**

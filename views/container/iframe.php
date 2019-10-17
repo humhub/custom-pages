@@ -1,5 +1,5 @@
 <?php
-use yii\helpers\Html;
+use humhub\libs\Html;
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 ?>
@@ -14,7 +14,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
     }
 </style>
 
-<script>
+<?= Html::script(<<<JS
     function setSize() {
         $('#iframepage').css( {
             height: (window.innerHeight - $('#iframepage').position().top - 15) + 'px',
@@ -31,4 +31,5 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
             setSize();
         });
     });
-</script>
+JS
+) ?>

@@ -12,6 +12,16 @@ use humhub\components\Controller;
  */
 class UploadController extends Controller
 {
+    /*public $enableCsrfValidation = false;
+
+    public function beforeAction($action)
+    {
+
+            $this->enableCsrfValidation = false;
+
+
+        return parent::beforeAction($action);
+    }*/
 
     /**
      * @inheritdoc
@@ -26,8 +36,11 @@ class UploadController extends Controller
     }
 
     /**
-     * Used as adapter action for ckeditor file 
-     * @return type
+     * Used as adapter action for ckeditor file
+     * @param $CKEditorFuncNum
+     * @return string
+     * @throws \yii\base\InvalidRouteException
+     * @throws \yii\console\Exception
      */
     public function actionUploadCkeditorFile($CKEditorFuncNum)
     {

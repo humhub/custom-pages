@@ -73,6 +73,7 @@ $uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', 'sgu
                 'skin': 'bootstrapck',
                 'removeButtons': 'Flash',
                 'filebrowserUploadUrl': '<?= $uploadUrl ?>',
+                'filebrowserUploadMethod': 'form',
                  toolbarGroups: toolbars
             });
 
@@ -101,6 +102,7 @@ $uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', 'sgu
         };
 
         $(document).off('click', '.cke_dialog_tabs a:visible:eq(2)').on('click', '.cke_dialog_tabs a:visible:eq(2)', function () {
+debugger;
             var $form = $('.cke_dialog_ui_input_file:visible iframe').contents().find('form');
             var csrfName = '<?= $csrfTokenName ?>';
             var token = '<?= $csrfToken ?>';

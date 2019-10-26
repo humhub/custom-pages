@@ -1,3 +1,10 @@
+Changelog
+=========
+
+1.0.2 
+---------------------
+- Enh: Update Ckeditor to v4.13.0
+
 1.0.1
 ---------------------
 - Enh: 1.4 nonce compatibility

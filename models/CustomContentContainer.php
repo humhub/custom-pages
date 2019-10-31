@@ -121,7 +121,6 @@ abstract class CustomContentContainer extends ContentActiveRecord
         ];
     }
 
-
     /**
      * Returns the default validation rules of a container, this may be overwritten or extended by subclasses.
      *

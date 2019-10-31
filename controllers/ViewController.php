@@ -155,6 +155,8 @@ class ViewController extends AbstractCustomContainerController
      * This redirect is needed within some common views shared with container page logic.
      * @return string
      * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\base\Exception
      */
     public function actionView()
     {

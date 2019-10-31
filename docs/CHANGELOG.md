@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.3 
+---------------------
+- Fix: Use of wrong content visibility in page migration
+
 1.0.2 
 ---------------------
 - Enh: Update Ckeditor to v4.13.0

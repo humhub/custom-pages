@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
+use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\models\TemplateType;
 use Yii;
 use humhub\modules\custom_pages\models\CustomContentContainer;
@@ -210,6 +211,9 @@ class PageController extends AbstractCustomContainerController
         $page = new $pageClass(['type' => $type, 'target' => $targetId]);
         if($this->contentContainer) {
             $page->content->setContainer($this->contentContainer);
+            if(!$this->contentContainer) {
+                $page->content->visibility = Content::VISIBILITY_PUBLIC;
+            }
         }
         return $page;
     }

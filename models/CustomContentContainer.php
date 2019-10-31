@@ -121,7 +121,6 @@ abstract class CustomContentContainer extends ContentActiveRecord
         ];
     }
 
-
     /**
      * Returns the default validation rules of a container, this may be overwritten or extended by subclasses.
      *
@@ -227,6 +226,11 @@ abstract class CustomContentContainer extends ContentActiveRecord
     public function canView() {
         if($this->admin_only && !$this->canSeeAdminOnlyContent()) {
             return false;
+        }
+
+        // Todo: Workaround for bug present prior to HumHub v1.3.18
+        if(Yii::$app->user->isGuest && !$this->content->container && $this->content->isPublic()) {
+            return true;
         }
 
         return $this->content->canView();

@@ -140,7 +140,6 @@ class Events
 
         foreach (Page::findAll(['target' => Page::NAV_CLASS_TOPNAV]) as $page) {
 
-            // Admin only
             if (!$page->canView()) {
                 continue;
             }

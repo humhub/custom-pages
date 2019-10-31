@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages;
 
+use humhub\modules\content\models\Content;
 use Yii;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\helpers\Url;
@@ -14,7 +15,7 @@ use yii\base\Exception;
 class Module extends \humhub\modules\content\components\ContentContainerModule
 {
     const ICON = 'fa-file-text-o';
-    const SETTING_MIGRATION_KEY = 'global_pages_migrated';
+    const SETTING_MIGRATION_KEY = 'global_pages_migrated_visibility';
 
     public $resourcesPath = 'resources';
     
@@ -33,11 +34,13 @@ class Module extends \humhub\modules\content\components\ContentContainerModule
 
         if(!$this->settings->get(static::SETTING_MIGRATION_KEY, 0)) {
             foreach (Page::find()->all() as $page) {
+                $page->content->visibility = $page->admin_only ? Content::VISIBILITY_PRIVATE : Content::VISIBILITY_PUBLIC;
                 $page->content->save();
             }
 
-            foreach (Snippet::find()->all() as $page) {
-                $page->content->save();
+            foreach (Snippet::find()->all() as $snippet) {
+                $snippet->content->visibility = $snippet->admin_only ? Content::VISIBILITY_PRIVATE : Content::VISIBILITY_PUBLIC;
+                $snippet->content->save();
             }
 
             $this->settings->set(static::SETTING_MIGRATION_KEY, 1);

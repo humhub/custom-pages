@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.3 
+1.0.3 (Octrober 31, 2019)
 ---------------------
 - Fix: Use of wrong content visibility in page migration
 - Fix: Guest access for public global pages

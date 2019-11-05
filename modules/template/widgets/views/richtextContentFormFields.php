@@ -51,18 +51,20 @@ $uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', 'sgu
         var initFullEditor = function (id) {
             $('#' + id).data('preset', 'full');
             return initCkEditor(id, [
-                {name: 'document', groups: ['mode', 'document', 'doctools']},
-                {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
-                {name: 'links'},
-                {name: 'insert'},
-                {name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi']},
-                {name: 'styles'},
-                {name: 'colors'},
-                {name: 'clipboard', groups: ['clipboard', 'undo']},
-                {name: 'editing', groups: ['find', 'selection', 'spellchecker']},
-                {name: 'forms'},
-                {name: 'tools'},
-                {name: 'others'},
+                { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+                { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+                { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+                { name: 'forms', groups: [ 'forms' ] },
+                '/',
+                { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+                { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+                { name: 'links', groups: [ 'links' ] },
+                { name: 'insert', groups: [ 'insert' ] },
+                '/',
+                { name: 'styles', groups: [ 'styles' ] },
+                { name: 'colors', groups: [ 'colors' ] },
+                { name: 'tools', groups: [ 'tools' ] },
+                { name: 'others', groups: [ 'others' ] },
                 {name: 'showmore'}
             ], '<?= Yii::t('CustomPagesModule.widgets_views_richtextContentEditForm', 'less'); ?>');
         };
@@ -102,7 +104,6 @@ $uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', 'sgu
         };
 
         $(document).off('click', '.cke_dialog_tabs a:visible:eq(2)').on('click', '.cke_dialog_tabs a:visible:eq(2)', function () {
-debugger;
             var $form = $('.cke_dialog_ui_input_file:visible iframe').contents().find('form');
             var csrfName = '<?= $csrfTokenName ?>';
             var token = '<?= $csrfToken ?>';

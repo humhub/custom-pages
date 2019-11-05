@@ -1,7 +1,11 @@
 Changelog
 =========
 
-1.0.3 (Octrober 31, 2019)
+1.0.4 (November 05, 2019)
+---------------------
+- Fix: Added missing ckeditor plugins
+
+1.0.3 (October 31, 2019)
 ---------------------
 - Fix: Use of wrong content visibility in page migration
 - Fix: Guest access for public global pages

@@ -137,6 +137,7 @@ class CustomPagesService extends Component
      * @param ContentContainerActiveRecord|null $container
      * @return ActiveQueryContent
      * @throws \yii\base\Exception
+     * @throws \Throwable
      */
     public function findContentByTarget($targetId, $type, ContentContainerActiveRecord $container = null)
     {
@@ -154,9 +155,10 @@ class CustomPagesService extends Component
 
         if($container) {
             $query->contentContainer($container);
-        }
 
-        $query->readable();
+            // See https://github.com/humhub/humhub/issues/3784 this does not work for global content
+            $query->readable();
+        }
 
         /* @var $instance CustomContentContainer */
         $instance = call_user_func($contentClass.'::instance');

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.0.5 (December 10, 2019)
+---------------------
+- Fix #105: Global page overview only shows pages created by user (https://github.com/humhub/humhub/issues/3784)
+- Fix #107: Open in new window setting ignored
+
 1.0.4 (November 05, 2019)
 ---------------------
 - Fix: Added missing ckeditor plugins

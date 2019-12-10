@@ -57,7 +57,10 @@ class Events
                 $event->sender->addItem([
                     'label' => Html::encode($page->title),
                     'group' => 'modules',
-                    'target' => ($page->in_new_window) ? '_blank' : null,
+                    'htmlOptions' => [
+                        'target' => ($page->in_new_window) ? '_blank' : '',
+                        'data-pjax-prevent' => 1
+                    ],
                     'url' => $page->getUrl(),
                     'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
                     'isActive' => (Yii::$app->controller->module
@@ -124,7 +127,7 @@ class Events
                 'label' => Html::encode($page->title),
                 'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                 'group' => 'directory',
-                'target' => ($page->in_new_window) ? '_blank' : null,
+                'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
                 'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
                 'isActive' => (Yii::$app->controller->module
                     && Yii::$app->controller->module->id === 'custom_pages'
@@ -147,7 +150,7 @@ class Events
             $event->sender->addItem(array(
                 'label' => Html::encode($page->title),
                 'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
-                'target' => ($page->in_new_window) ? '_blank' : null,
+                'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
                 'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
                 'isActive' => (Yii::$app->controller->module
                     && Yii::$app->controller->module->id === 'custom_pages'
@@ -170,7 +173,7 @@ class Events
             $event->sender->addItem([
                 'label' => Html::encode($page->title),
                 'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
-                'target' => ($page->in_new_window) ? '_blank' : '',
+                'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
                 'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
                 'isActive' => (Yii::$app->controller->module
                     && Yii::$app->controller->module->id === 'custom_pages'

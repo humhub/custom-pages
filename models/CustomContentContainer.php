@@ -60,7 +60,12 @@ abstract class CustomContentContainer extends ContentActiveRecord
     public function afterFind()
     {
         parent::afterFind();
-        $this->isPublic = $this->content->visibility;
+
+        if($this->content->visibility) {
+            $this->isPublic = $this->content->visibility;
+        } else {
+            $this->isPublic = !$this->admin_only;
+        }
     }
 
     /**

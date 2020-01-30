@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Content' => '',
+  'Content' => 'Conținut',
   'ID' => 'ID',
   'Icon' => '',
   'Invalid template selection!' => '',

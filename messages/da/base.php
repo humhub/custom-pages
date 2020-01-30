@@ -14,7 +14,7 @@ return array (
   'Back' => 'Tilbage',
   'Back to dashboard' => 'Tilbage til dashboard',
   'Back to directory' => '',
-  'Back to overview' => '',
+  'Back to overview' => 'Tilbage til oversigten',
   'Back to space' => '',
   'Cancel' => 'Afbryd',
   'Close' => 'Luk',

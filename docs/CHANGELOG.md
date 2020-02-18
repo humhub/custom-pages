@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.6 (February 18, 2020)
+---------------------
+- Fix #113: Double collapse menu item in snippet context menu
+
 1.0.5 (December 10, 2019)
 ---------------------
 - Fix #105: Global page overview only shows pages created by user (https://github.com/humhub/humhub/issues/3784)

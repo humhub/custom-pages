@@ -19,7 +19,7 @@ try {
 }
 
 $navigation = (!$canEdit) ? [] : [
-    '<a href="' . $model->getEditUrl() . '" class="panel-collapse"><i class="fa fa-pencil"></i>' . Yii::t('CustomPagesModule.base', 'Edit') . '</a>'
+    '<a href="' . $model->getEditUrl() . '"><i class="fa fa-pencil"></i>' . Yii::t('CustomPagesModule.base', 'Edit') . '</a>'
 ];
 
 ?>

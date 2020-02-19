@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.0.6 (February 18, 2020)
+1.0.6 (February 19, 2020)
 ---------------------
 - Fix #113: Double collapse menu item in snippet context menu
 - Fix #112: Markdown snippet does not use Richtext output format
+- Enh #44: Improved snippet and page visibility
 
 1.0.5 (December 10, 2019)
 ---------------------

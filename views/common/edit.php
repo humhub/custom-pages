@@ -5,7 +5,7 @@ use humhub\modules\custom_pages\widgets\PageIconSelect;
 use humhub\widgets\Link;
 use humhub\libs\Html;
 use humhub\modules\custom_pages\helpers\Url;
-use yii\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\custom_pages\models\Page;
 use humhub\widgets\Button;
 use humhub\modules\custom_pages\models\TemplateType;
@@ -85,11 +85,8 @@ $contentType = $page->getContentType();
             <?= $form->field($page, 'cssClass'); ?>
         <?php endif; ?>
 
-        <?php if ($page->isAllowedField('admin_only')) : ?>
-            <?php if ($page->hasAttribute('admin_only')) : ?>
-                <?= $form->field($page, 'admin_only')->checkbox() ?>
-            <?php endif; ?>
-        <?php endif; ?>
+
+        <?= $form->field($page, 'visibility')->radioList($page->getVisibilitySelection()) ?>
 
         <?php if ($page->isAllowedField('in_new_window')) : ?>
             <?php if ($page->hasAttribute('in_new_window')) : ?>
@@ -108,10 +105,13 @@ $contentType = $page->getContentType();
         <?php endif; ?>
 
 <?= Html::script(<<<JS
+
     $(document).one("humhub:ready", function () {
+          
         if (!$("#html_content").length) {
             return;
         }
+        
         setTimeout(function () {
             CodeMirror.fromTextArea($("#html_content")[0], {
                 mode: "text/html",

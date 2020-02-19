@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\models;
 
+use humhub\modules\space\models\Space;
 use Yii;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
@@ -104,5 +105,23 @@ class ContainerPage extends Page implements Searchable
     public function getEditUrl()
     {
         return Url::toEditPage($this->id, $this->content->container);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getVisibilitySelection()
+    {
+        $result = [
+            static::VISIBILITY_ADMIN_ONLY => Yii::t('CustomPagesModule.visibility', 'Admin only'),
+            static::VISIBILITY_PRIVATE => Yii::t('CustomPagesModule.visibility', 'Space Members only'),
+        ];
+
+        $container = $this->content->container;
+        if($container->visibility === Space::VISIBILITY_ALL) {
+            $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'Public');
+        }
+
+        return $result;
     }
 }

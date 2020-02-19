@@ -99,7 +99,7 @@ class InterfaceTest extends HumHubDbTestCase
         $p1->load([
             'Page' => [
                 'icon' => 'fa-pencil',
-                'admin_only' => 1,
+                'visibility' => Page::VISIBILITY_PUBLIC,
                 'sort_order' => 300,
                 'cssClass' => 'testCss'
             ]
@@ -130,7 +130,7 @@ class InterfaceTest extends HumHubDbTestCase
         $p1->load([
             'Page' => [
                 'icon' => 'fa-pencil',
-                'admin_only' => 1,
+                'visibility' => Page::VISIBILITY_ADMIN_ONLY,
                 'sort_order' => 300,
                 'cssClass' => 'testCss'
             ]

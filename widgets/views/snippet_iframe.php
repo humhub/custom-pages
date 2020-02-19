@@ -7,7 +7,7 @@ use humhub\libs\Html;use humhub\modules\custom_pages\widgets\SnippetContent;
 $iframeId = 'iframesnippet-' . $model->id;
 
 $navigation = (!$canEdit) ? [] : [
-    '<a href="'.$model->getEditUrl().'" class="panel-collapse"><i class="fa fa-pencil"></i>' . Yii::t('CustomPagesModule.base', 'Edit') . '</a>'
+    '<a href="'.$model->getEditUrl().'"><i class="fa fa-pencil"></i>' . Yii::t('CustomPagesModule.base', 'Edit') . '</a>'
 ];
 ?>
 

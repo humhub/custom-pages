@@ -36,6 +36,10 @@ abstract class CustomContentContainer extends ContentActiveRecord
     use PhpPageContainer;
     use TemplatePageContainer;
 
+    const VISIBILITY_ADMIN_ONLY = 3;
+    const VISIBILITY_PRIVATE = 0;
+    const VISIBILITY_PUBLIC = 1;
+
     /**
      * @inheritdoc
      */
@@ -55,16 +59,18 @@ abstract class CustomContentContainer extends ContentActiveRecord
     /**
      * @var bool field only used in edit form
      */
-    public $isPublic;
+    public $visibility;
 
     public function afterFind()
     {
         parent::afterFind();
 
-        if($this->content->visibility) {
-            $this->isPublic = $this->content->visibility;
+        if($this->admin_only) {
+            $this->visibility = static::VISIBILITY_ADMIN_ONLY;
+        } else if($this->content->isPublic()) {
+            $this->visibility = static::VISIBILITY_PUBLIC;
         } else {
-            $this->isPublic = !$this->admin_only;
+            $this->visibility = static::VISIBILITY_PRIVATE;
         }
     }
 
@@ -108,6 +114,41 @@ abstract class CustomContentContainer extends ContentActiveRecord
     public abstract function getPageType();
 
     /**
+     * @return array
+     */
+    public function getVisibilitySelection() {
+        $result = [
+            static::VISIBILITY_ADMIN_ONLY => Yii::t('CustomPagesModule.visibility', 'Admin only')
+        ];
+
+        if($this->isGuestAccessEnabled()) {
+            $result[static::VISIBILITY_PRIVATE] = Yii::t('CustomPagesModule.visibility', 'Members only');
+            $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'Members & Guests');
+        } else {
+            $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'All Members');
+        }
+
+        return $result;
+    }
+
+    /**
+     * Helper function can be replaced with AuthHelper::isGuestAccessEnabled() after min-version 1.4
+     *
+     * @return boolean
+     */
+    protected function isGuestAccessEnabled()
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        if ($module->settings->get('auth.allowGuestAccess')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @return array customized attribute labels (name=>label)
      */
     public function defaultAttributeLabels()
@@ -138,6 +179,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
             [['type'], 'integer'],
             ['target', 'validateTarget'],
             [['type'], 'validateContentType'],
+            [['visibility'], 'integer', 'min' => static::VISIBILITY_PRIVATE, 'max' => static::VISIBILITY_ADMIN_ONLY],
             [['title', 'target'], 'string', 'max' => 255],
         ];
 
@@ -235,6 +277,11 @@ abstract class CustomContentContainer extends ContentActiveRecord
 
         // Todo: Workaround for bug present prior to HumHub v1.3.18
         if(Yii::$app->user->isGuest && !$this->content->container && $this->content->isPublic()) {
+            return true;
+        }
+
+        // Todo: Workaround for global content visibility bug present prior to HumHub v1.5
+        if(empty($this->content->contentcontainer_id) && !Yii::$app->user->isGuest) {
             return true;
         }
 
@@ -384,7 +431,20 @@ abstract class CustomContentContainer extends ContentActiveRecord
             $this->streamChannel = null;
         }
 
-        $this->content->visibility = $this->admin_only ? Content::VISIBILITY_PRIVATE : Content::VISIBILITY_PUBLIC;
+        switch($this->visibility) {
+            case static::VISIBILITY_ADMIN_ONLY:
+                $this->admin_only = 1;
+                $this->content->visibility = Content::VISIBILITY_PRIVATE;
+                break;
+            case static::VISIBILITY_PUBLIC:
+                $this->admin_only = 0;
+                $this->content->visibility = Content::VISIBILITY_PUBLIC;
+                break;
+            default:
+                $this->admin_only = 0;
+                $this->content->visibility = Content::VISIBILITY_PRIVATE;
+                break;
+        }
 
         return parent::beforeSave($insert);
     }

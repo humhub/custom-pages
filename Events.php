@@ -147,7 +147,7 @@ class Events
                 continue;
             }
 
-            $event->sender->addItem(array(
+            $event->sender->addItem([
                 'label' => Html::encode($page->title),
                 'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                 'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
@@ -156,7 +156,7 @@ class Events
                     && Yii::$app->controller->module->id === 'custom_pages'
                     && Yii::$app->controller->id === 'view' && Yii::$app->request->get('id') == $page->id),
                 'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
-            ));
+            ]);
         }
     }
 
@@ -165,7 +165,6 @@ class Events
         Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
         foreach (Page::findAll(['target' => Page::NAV_CLASS_ACCOUNTNAV]) as $page) {
-            // Admin only
             if (!$page->canView()) {
                 continue;
             }
@@ -187,10 +186,6 @@ class Events
     {
         Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-        if (Yii::$app->user->isGuest) {
-            return;
-        }
-
         $snippets = Snippet::findAll(['target' => Snippet::SIDEBAR_DASHBOARD]);
         $canEdit = PagePermission::canEdit();
         foreach ($snippets as $snippet) {
@@ -205,10 +200,6 @@ class Events
     {
         Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-        if (Yii::$app->user->isGuest) {
-            return;
-        }
-
         $snippets = Snippet::findAll(['target' => Snippet::SIDEBAR_DIRECTORY]);
         $canEdit = PagePermission::canEdit();
         foreach ($snippets as $snippet) {
@@ -222,10 +213,6 @@ class Events
     public static function onSpaceSidebarInit($event)
     {
         Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
-
-        if (Yii::$app->user->isGuest) {
-            return;
-        }
 
         $space = $event->sender->space;
         $canEdit = PagePermission::canEdit();

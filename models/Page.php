@@ -2,8 +2,8 @@
 
 namespace humhub\modules\custom_pages\models;
 
-use humhub\modules\custom_pages\widgets\WallEntry;
 use Yii;
+use humhub\modules\custom_pages\widgets\WallEntry;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
 use humhub\modules\custom_pages\modules\template\models\Template;

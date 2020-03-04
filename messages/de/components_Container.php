@@ -7,7 +7,7 @@ return array (
   'Invalid view file selection!' => 'Ungültige View-Dateiauswahl!',
   'Sort Order' => 'Sortierung',
   'Style Class' => 'Style Klasse',
-  'Target Url' => 'Ziel URL',
+  'Target Url' => 'Ziel-URL',
   'Template Layout' => 'Vorlagen Layout',
   'Title' => 'Titel',
   'Type' => 'Typ',

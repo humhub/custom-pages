@@ -1,11 +1,11 @@
 <?php
 return array (
-  '<strong>Custom</strong> Pages' => '',
-  '<strong>Edit</strong> snippet' => '',
-  'Add' => '',
-  'Add a file icon before the title' => '',
-  'Adds plain HTML content to your site.' => '',
-  'Advanced' => '',
+  '<strong>Custom</strong> Pages' => 'Trang <strong>Tùy chỉnh</strong>',
+  '<strong>Edit</strong> snippet' => '<strong>Sửa</strong> snippet',
+  'Add' => 'Thêm',
+  'Add a file icon before the title' => 'Thêm một biểu tượng file vào trước tiêu đề',
+  'Adds plain HTML content to your site.' => 'Thêm plain HTML vào website của bạn',
+  'Advanced' => 'Nâng cao',
   'Allows to add pages (markdown, iframe or links) to the space navigation' => '',
   'Allows you to add content in MarkDown syntax.' => '',
   'Alternate text' => '',

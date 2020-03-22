@@ -1,6 +1,6 @@
 <?php
 return array (
   'Content' => 'Nội dung',
-  'Sidebar' => '',
-  'snippet' => '',
+  'Sidebar' => 'Thanh bên',
+  'snippet' => 'snippet',
 );

@@ -9,7 +9,8 @@ use humhub\libs\Html;
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 ?>
 
-<?php if ($page->hasTarget(Page::NAV_CLASS_ACCOUNTNAV)): ?>
+<?php if ($page->hasTarget(Page::NAV_CLASS_ACCOUNTNAV) ||
+          $page->hasTarget(Page::NAV_CLASS_DIRECTORY)): ?>
     <div class="panel panel-default <?= Html::encode($cssClass) ?>">
         <div class="panel-body">
             <?= RichText::output($md)?>

@@ -5,6 +5,7 @@ Changelog
 --------------------
 - Chg: Added 1.5 defer compatibility
 - Fix: Fixed "unreachable code after return statement" in humhub.custom_pages.template.TemplateElement.js
+- Enh: Improved event handler exception handling
 
 1.0.6 (February 19, 2020)
 ---------------------

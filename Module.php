@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages;
 
+use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\models\Content;
 use Yii;
 use humhub\modules\custom_pages\models\Snippet;
@@ -12,7 +13,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\base\Exception;
 
-class Module extends \humhub\modules\content\components\ContentContainerModule
+class Module extends ContentContainerModule
 {
     const ICON = 'fa-file-text-o';
     const SETTING_MIGRATION_KEY = 'global_pages_migrated_visibility';

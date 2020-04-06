@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.0.7 (April, 06, 2020)
+--------------------
+- Chg: Added 1.5 defer compatibility
+- Fix: Fixed "unreachable code after return statement" in humhub.custom_pages.template.TemplateElement.js
+
 1.0.6 (February 19, 2020)
 ---------------------
 - Fix #113: Double collapse menu item in snippet context menu

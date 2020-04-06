@@ -296,12 +296,6 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
 
     TemplateElement.prototype.getUniqueId = function ($element) {
         return this.$.attr('id');
-        if (!$element) {
-            return;
-        }
-
-        return $element.data('template-empty') ? Date.now().toString() :
-                $element.data('template-content') + ':' + $element.data('template-content-id');
     };
     
     TemplateElement.prototype.loader = function (show) {

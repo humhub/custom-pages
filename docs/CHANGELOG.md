@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.8 (Unreleased)
+--------------------
+- Fix: Removed redundant twig class loading
+
 1.0.7 (April, 06, 2020)
 --------------------
 - Chg: Added 1.5 defer compatibility

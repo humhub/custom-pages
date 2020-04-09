@@ -16,15 +16,10 @@ use yii\base\Exception;
 class Module extends ContentContainerModule
 {
     const ICON = 'fa-file-text-o';
+
     const SETTING_MIGRATION_KEY = 'global_pages_migrated_visibility';
 
     public $resourcesPath = 'resources';
-    
-    public function init()
-    {
-        self::loadTwig();
-        parent::init();
-    }
 
     public function checkOldGlobalContent()
     {
@@ -120,12 +115,4 @@ class Module extends ContentContainerModule
             $page->delete();
         }
     }
-
-    public static function loadTwig()
-    {
-        $autoloader = Yii::getAlias('@custom_pages/vendors/Twig/Autoloader.php');
-        require_once $autoloader;
-        \Twig_Autoloader::register();
-    }
-
 }

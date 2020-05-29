@@ -1,15 +1,18 @@
 Changelog
 =========
 
-1.0.8 (Unreleased)
+1.0.8 (May 29, 2020)
 --------------------
 - Fix: Removed redundant twig class loading
+- Fix: Custom Page visibility selection to "Public" broken
 
-1.0.7 (April, 06, 2020)
+
+1.0.7 (April 06, 2020)
 --------------------
 - Chg: Added 1.5 defer compatibility
 - Fix: Fixed "unreachable code after return statement" in humhub.custom_pages.template.TemplateElement.js
 - Enh: Improved event handler exception handling
+
 
 1.0.6 (February 19, 2020)
 ---------------------

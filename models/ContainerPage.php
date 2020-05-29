@@ -118,7 +118,7 @@ class ContainerPage extends Page implements Searchable
         ];
 
         $container = $this->content->container;
-        if($container->visibility === Space::VISIBILITY_ALL) {
+        if($container->visibility != Space::VISIBILITY_NONE) {
             $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'Public');
         }
 

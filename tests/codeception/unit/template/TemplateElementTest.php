@@ -39,7 +39,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $this->assertContains('<p>Default</p>', $result);
         $this->assertContains('data-template-element="test_content"', $result);
-        $this->assertContains('data-template-owner="' . $this->owner->className() . '"', $result);
+        $this->assertContains('data-template-owner="' . get_class($this->owner) . '"', $result);
         $this->assertContains('data-template-content="' . RichtextContent::class . '"', $result);
         $this->assertContains('data-template-empty="0"', $result);
     }
@@ -55,7 +55,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $this->assertContains('<p>Non Default</p>', $result);
         $this->assertContains('data-template-element="test_content"', $result);
-        $this->assertContains('data-template-owner="' . $this->owner->className() . '"', $result);
+        $this->assertContains('data-template-owner="' . get_class($this->owner) . '"', $result);
         $this->assertContains('data-template-content="' . RichtextContent::class . '"', $result);
         $this->assertContains('data-template-empty="0"', $result);
         // Test empty element

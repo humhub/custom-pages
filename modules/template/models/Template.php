@@ -199,7 +199,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
             $options = [
                 'editMode' => $editMode,
                 'element_title' => $this->getElementTitle($contentElement->element_name),
-                'owner_model' => $owner->className(),
+                'owner_model' => get_class($owner),
                 'owner_id' => $owner->id,
                 'item' => $containerItem
             ];

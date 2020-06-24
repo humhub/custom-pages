@@ -210,7 +210,7 @@ class OwnerContent extends ActiveRecord
         if ($ownerClass instanceof \yii\db\ActiveRecord) {
             $elementName = $ownerId;
             $ownerId = $ownerClass->getPrimaryKey();
-            $ownerClass = $ownerClass->className();
+            $ownerClass = get_class($ownerClass);
         }
 
         $query = self::find()->where(['owner_model' => $ownerClass, 'owner_id' => $ownerId]);
@@ -241,7 +241,7 @@ class OwnerContent extends ActiveRecord
     {
         if ($contentType instanceof \yii\db\ActiveRecord) {
             $contentId = $contentType->getPrimaryKey();
-            $contentType = $contentType->className();
+            $contentType = get_class($contentType);
         }
 
         return self::findOne(['content_type' => $contentType, 'content_id' => $contentId]);

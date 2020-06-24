@@ -44,7 +44,7 @@ class TemplateContentTest extends HumHubDbTestCase
        $this->assertContains('<p>Test</p>', $result);
        $this->assertContains('data-template-element="test"', $result);
        $this->assertContains('data-template-owner="'.get_class($this->owner).'"', $result);
-       $this->assertContains('data-template-content="'.$content->className().'"', $result);
+       $this->assertContains('data-template-content="'. get_class($content) .'"', $result);
        $this->assertContains('data-template-empty="0"', $result);
 
     }

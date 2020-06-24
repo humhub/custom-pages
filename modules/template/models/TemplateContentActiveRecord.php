@@ -16,12 +16,12 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
     const SCENARIO_EDIT_ADMIN = 'edit-admin';
 
     /**
-     * @var string the formname of this model used for loading form data. 
+     * @var string the formname of this model used for loading form data.
      */
     private $formName;
 
     /**
-     * @var ContainerContentDefinition instance of this template 
+     * @var ContainerContentDefinition instance of this template
      */
     private $definitionInstance;
 
@@ -32,12 +32,12 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
     public $definitionPostData;
 
     /**
-     * @var string definition model class used by content types with definition 
+     * @var string definition model class used by content types with definition
      */
     public $definitionModel;
 
     /**
-     * @var array attached files used when creating/saving the record 
+     * @var array attached files used when creating/saving the record
      */
     public $fileList = [];
 
@@ -59,7 +59,7 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
     /**
      * Copies the values of this content type instance.
      * This function can initiate the copy by using `createCopy`.
-     * 
+     *
      * @see TemplateContentActiveRecord::createCopy()
      * @return TemplateContentActiveRecord instance copy.
      */
@@ -97,7 +97,7 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
      */
     protected function createCopy()
     {
-        $copy = Yii::createObject($this->className());
+        $copy = Yii::createObject(get_class($this));
         if ($this->isDefinitionContent()) {
             $copy->definition_id = $this->definition_id;
         }
@@ -156,7 +156,7 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
      * Returns the ContainerContentDefinition instance of this instance. +
      * This function will create an empty definition instance if this content type has an definitionModel and
      * does not have an related definition_id.
-     * 
+     *
      * @return ContainerContentDefinition the definition instance.
      */
     public function getDefinition()

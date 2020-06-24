@@ -26,12 +26,12 @@ class TemplateEditorElement extends \humhub\widgets\JsWidget
     public $templateContent;
 
     /**
-     * @var array render options for this editor element. 
+     * @var array render options for this editor element.
      */
     public $renderOptions = [];
-    
+
     /**
-     * @var array render html attributes. 
+     * @var array render html attributes.
      */
     public $renderAttributes = [];
 
@@ -59,10 +59,10 @@ class TemplateEditorElement extends \humhub\widgets\JsWidget
           'template-default'  => $this->_getOption($this->renderOptions, 'default', '0'),
           'template-empty'  => $this->_getOption($this->renderOptions, 'empty', '0'),
           'template-label' => $this->templateContent->getLabel(),
-          'template-content'  => $this->templateContent->className(),
+          'template-content'  => get_class($this->templateContent),
         ];
     }
-    
+
     private function _getOption($options, $key, $default = null)
     {
         if (isset($options[$key])) {
@@ -76,7 +76,7 @@ class TemplateEditorElement extends \humhub\widgets\JsWidget
         }
         return isset($options[$key]) ? strval($options[$key]) : $default;
     }
-    
+
     /**
      * @inheritdoc
      */

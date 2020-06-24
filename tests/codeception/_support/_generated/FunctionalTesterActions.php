@@ -12,7 +12,7 @@ trait FunctionalTesterActions
      */
     abstract protected function getScenario();
 
-    
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -26,7 +26,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Condition('amInPath', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -48,7 +48,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('openFile', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -67,7 +67,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('deleteFile', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -86,7 +86,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('deleteDir', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -106,7 +106,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('copyDir', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -149,7 +149,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeInThisFile', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -192,7 +192,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeNumberNewLines', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -217,7 +217,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeThisFileMatches', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -262,7 +262,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeFileContentsEqual', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -301,7 +301,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeInThisFile', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -312,7 +312,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('deleteThisFile', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -353,7 +353,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeFileFound', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -380,7 +380,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeFileFound', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -399,7 +399,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('cleanDir', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -413,7 +413,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('writeToFile', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -439,7 +439,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Condition('amLoggedInAs', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -449,9 +449,9 @@ trait FunctionalTesterActions
      * ```php
      * <?php
      * $I->haveFixtures([
-     *     'posts' => PostsFixture::className(),
+     *     'posts' => PostsFixture::class,
      *     'user' => [
-     *         'class' => UserFixture::className(),
+     *         'class' => UserFixture::class,
      *         'dataFile' => '@tests/_data/models/user.php',
      *      ],
      * ]);
@@ -465,7 +465,7 @@ trait FunctionalTesterActions
      * public function _fixtures(){
      *     return [
      *         'user' => [
-     *             'class' => UserFixture::className(),
+     *             'class' => UserFixture::class,
      *             'dataFile' => codecept_data_dir() . 'user.php'
      *         ]
      *     ];
@@ -481,7 +481,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('haveFixtures', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -496,7 +496,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('grabFixtures', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -506,7 +506,7 @@ trait FunctionalTesterActions
      *
      * ```php
      * <?php
-     * $I->haveFixtures(['users' => UserFixture::className()]);
+     * $I->haveFixtures(['users' => UserFixture::class]);
      *
      * $users = $I->grabFixture('users');
      *
@@ -524,7 +524,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('grabFixture', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -546,7 +546,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('haveRecord', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -583,7 +583,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeRecord', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -620,7 +620,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeRecord', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -640,7 +640,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('grabRecord', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -656,7 +656,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Condition('amOnRoute', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -676,7 +676,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('grabComponent', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -723,7 +723,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeEmailIsSent', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -748,7 +748,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeEmailIsSent', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -772,7 +772,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('grabSentEmails', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -791,7 +791,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('grabLastSentEmail', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -804,7 +804,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('getInternalDomains', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -818,7 +818,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('setCookie', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -831,7 +831,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('createAndSetCsrfCookie', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -845,7 +845,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Condition('amHttpAuthenticated', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -880,7 +880,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('haveHttpHeader', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -905,7 +905,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('deleteHeader', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -926,7 +926,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Condition('amOnPage', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -965,7 +965,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('click', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1042,7 +1042,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('see', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1115,7 +1115,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSee', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1152,7 +1152,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeInSource', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1189,7 +1189,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeInSource', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1232,7 +1232,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeLink', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1275,7 +1275,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeLink', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1318,7 +1318,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeInCurrentUrl', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1355,7 +1355,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeInCurrentUrl', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1396,7 +1396,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeCurrentUrlEquals', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1437,7 +1437,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeCurrentUrlEquals', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1476,7 +1476,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeCurrentUrlMatches', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1515,7 +1515,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeCurrentUrlMatches', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1538,7 +1538,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('grabFromCurrentUrl', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1579,7 +1579,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeCheckboxIsChecked', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1618,7 +1618,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeCheckboxIsChecked', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1669,7 +1669,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeInField', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1720,7 +1720,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeInField', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1857,7 +1857,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeInFormFields', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -1954,7 +1954,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeInFormFields', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2133,7 +2133,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('submitForm', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2154,7 +2154,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('fillField', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2193,7 +2193,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('selectOption', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2212,7 +2212,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('checkOption', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2231,7 +2231,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('uncheckOption', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2252,7 +2252,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('attachFile', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2269,7 +2269,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('sendAjaxGetRequest', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2297,7 +2297,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('sendAjaxPostRequest', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2323,7 +2323,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('sendAjaxRequest', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2348,7 +2348,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('grabTextFrom', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2372,7 +2372,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('grabAttributeFrom', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2404,7 +2404,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('grabMultiple', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2417,7 +2417,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('grabValueFrom', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2434,7 +2434,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('grabCookie', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2449,7 +2449,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('grabPageSource', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2492,7 +2492,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeCookie', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2525,7 +2525,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeCookie', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2542,7 +2542,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('resetCookie', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2597,7 +2597,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeElement', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2644,7 +2644,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeElement', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2683,7 +2683,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeNumberOfElements', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2726,7 +2726,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeOptionIsSelected', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2769,7 +2769,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeOptionIsSelected', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2790,7 +2790,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seePageNotFound', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2831,7 +2831,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeResponseCodeIs', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2858,7 +2858,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeResponseCodeIsBetween', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2897,7 +2897,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeResponseCodeIs', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2918,7 +2918,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeResponseCodeIsSuccessful', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2939,7 +2939,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeResponseCodeIsRedirection', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2960,7 +2960,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeResponseCodeIsClientError', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -2981,7 +2981,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeResponseCodeIsServerError', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -3022,7 +3022,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('seeInTitle', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -3051,7 +3051,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Assertion('dontSeeInTitle', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -3075,7 +3075,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('switchToIframe', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -3088,7 +3088,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('moveBack', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -3099,7 +3099,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('globalFixtures', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -3110,7 +3110,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('fixtures', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -3124,7 +3124,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('loadFixtures', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -3136,7 +3136,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('initFixtures', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -3153,7 +3153,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('createFixtures', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -3164,7 +3164,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('fetchInviteToken', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -3175,7 +3175,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('inviteUserByEmail', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -3186,7 +3186,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('assertMailSent', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -3197,7 +3197,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('assertEqualsLastEmailSubject', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
@@ -3208,7 +3208,7 @@ trait FunctionalTesterActions
         return $this->getScenario()->runStep(new \Codeception\Step\Action('grapLastEmailText', func_get_args()));
     }
 
- 
+
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *

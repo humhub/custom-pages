@@ -8,7 +8,14 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
+use humhub\modules\custom_pages\modules\template\models\ContainerContent;
+use humhub\modules\custom_pages\modules\template\models\FileContent;
+use humhub\modules\custom_pages\modules\template\models\FileDownloadContent;
+use humhub\modules\custom_pages\modules\template\models\HumHubRichtextContent;
+use humhub\modules\custom_pages\modules\template\models\ImageContent;
+use humhub\modules\custom_pages\modules\template\models\RichtextContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
+use humhub\modules\custom_pages\modules\template\models\TextContent;
 use Yii;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
@@ -124,13 +131,13 @@ class AdminController extends \humhub\modules\admin\components\Controller
     private function getContentTypes()
     {
         return [
-            \humhub\modules\custom_pages\modules\template\models\TextContent::$label => \humhub\modules\custom_pages\modules\template\models\TextContent::className(),
-            \humhub\modules\custom_pages\modules\template\models\RichtextContent::$label => \humhub\modules\custom_pages\modules\template\models\RichtextContent::className(),
-            \humhub\modules\custom_pages\modules\template\models\HumHubRichtextContent::$label => \humhub\modules\custom_pages\modules\template\models\HumHubRichtextContent::className(),
-            \humhub\modules\custom_pages\modules\template\models\ImageContent::$label => \humhub\modules\custom_pages\modules\template\models\ImageContent::className(),
-            \humhub\modules\custom_pages\modules\template\models\FileContent::$label => \humhub\modules\custom_pages\modules\template\models\FileContent::className(),
-            \humhub\modules\custom_pages\modules\template\models\FileDownloadContent::$label => \humhub\modules\custom_pages\modules\template\models\FileDownloadContent::className(),
-            \humhub\modules\custom_pages\modules\template\models\ContainerContent::$label => \humhub\modules\custom_pages\modules\template\models\ContainerContent::className(),
+            TextContent::$label => TextContent::class,
+            RichtextContent::$label => RichtextContent::class,
+            HumHubRichtextContent::$label => HumHubRichtextContent::class,
+            ImageContent::$label => ImageContent::class,
+            FileContent::$label => FileContent::class,
+            FileDownloadContent::$label => FileDownloadContent::class,
+            ContainerContent::$label => ContainerContent::class,
         ];
     }
 

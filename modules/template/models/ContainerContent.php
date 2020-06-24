@@ -21,7 +21,7 @@ class ContainerContent extends TemplateContentActiveRecord
      */
     public function init()
     {
-        $this->definitionModel = ContainerContentDefinition::className();
+        $this->definitionModel = ContainerContentDefinition::class;
     }
 
     /**
@@ -111,7 +111,7 @@ class ContainerContent extends TemplateContentActiveRecord
     {
         $options['jsWidget'] = 'custom_pages.template.TemplateContainer';
         return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_Container', 'Empty <br />Container'), $options, [
-            'class' => 'emptyContainerBlock', 
+            'class' => 'emptyContainerBlock',
             'data-template-multiple' => $this->definition->allow_multiple
          ]);
     }
@@ -184,7 +184,7 @@ class ContainerContent extends TemplateContentActiveRecord
 
     public function getItems()
     {
-        return $this->hasMany(ContainerContentItem::className(), ['container_content_id' => 'id'])->orderBy('sort_order ASC');
+        return $this->hasMany(ContainerContentItem::class, ['container_content_id' => 'id'])->orderBy('sort_order ASC');
     }
 
     public function canAddItem()

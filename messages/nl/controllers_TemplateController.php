@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Edit</strong> {type} element' => ' {type} element <strong>bewerken</ strong>',
+  '<strong>Edit</strong> {type} element' => ' {type} element <strong>bewerken</strong>',
   'Access denied!' => 'Toegang geweigerd!',
   'Empty content elements cannot be delted!' => 'Lege inhoudselementen kunnen niet worden verwijderd!',
   'Invalid request data!' => 'Ongeldige requestgegevens!',

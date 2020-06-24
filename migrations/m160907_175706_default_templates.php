@@ -13,111 +13,111 @@ class m160907_175706_default_templates extends Migration
     public function up()
     {
         /**
-         * 
+         *
          * Two column template
-         * 
+         *
          */
         $twoColumnTemplateId = $this->insertTwoColumnTemplate();
         // Insert elements
-        $this->insertTemplateElement($twoColumnTemplateId, 'content', ContainerContent::className());
-        $this->insertTemplateElement($twoColumnTemplateId, 'sidebar_container', ContainerContent::className());
-        
+        $this->insertTemplateElement($twoColumnTemplateId, 'content', ContainerContent::class);
+        $this->insertTemplateElement($twoColumnTemplateId, 'sidebar_container', ContainerContent::class);
+
         // Insert default container definition for content container
         $this->insertSilent('custom_pages_template_container_content_definition', ['allow_multiple' => 1, 'is_inline' => 0, 'is_default' => 1]);
         $this->insertSilent('custom_pages_template_container_content', ['definition_id' => $this->db->getLastInsertID()]);
         $this->insertSilent('custom_pages_template_owner_content', [
                 'element_name' => 'content',
-                'owner_model' => Template::className(),
+                'owner_model' => Template::class,
                 'owner_id' => $twoColumnTemplateId,
-                'content_type' => ContainerContent::className(),
+                'content_type' => ContainerContent::class,
                 'content_id' => $this->db->getLastInsertID()
             ]);
-        
+
         // Insert default content for sidebar container
         $this->insertSilent('custom_pages_template_container_content_definition', ['allow_multiple' => 1, 'is_inline' => 0, 'is_default' => 1]);
         $this->insertSilent('custom_pages_template_container_content', ['definition_id' => $this->db->getLastInsertID()]);
         $this->insertSilent('custom_pages_template_owner_content', [
                 'element_name' => 'sidebar_container',
-                'owner_model' => Template::className(),
+                'owner_model' => Template::class,
                 'owner_id' => $twoColumnTemplateId,
-                'content_type' => ContainerContent::className(),
-                'content_id' => $this->db->getLastInsertID()
-            ]);
-        
-        /**
-         * 
-         * One Column Template
-         * 
-         */
-        $oneColumnTemplateId = $this->insertOneColumnTemplate();
-        
-        // Insert elements
-        $this->insertTemplateElement($oneColumnTemplateId, 'content', ContainerContent::className());
-        
-        // Insert default content definition
-        $this->insertSilent('custom_pages_template_container_content_definition', ['allow_multiple' => 1, 'is_inline' => 0, 'is_default' => 1]);
-        $this->insertSilent('custom_pages_template_container_content', ['definition_id' => $this->db->getLastInsertID()]);  
-        $this->insertSilent('custom_pages_template_owner_content', [
-                'element_name' => 'content',
-                'owner_model' => Template::className(),
-                'owner_id' => $oneColumnTemplateId,
-                'content_type' => ContainerContent::className(),
+                'content_type' => ContainerContent::class,
                 'content_id' => $this->db->getLastInsertID()
             ]);
 
         /**
-         * 
+         *
+         * One Column Template
+         *
+         */
+        $oneColumnTemplateId = $this->insertOneColumnTemplate();
+
+        // Insert elements
+        $this->insertTemplateElement($oneColumnTemplateId, 'content', ContainerContent::class);
+
+        // Insert default content definition
+        $this->insertSilent('custom_pages_template_container_content_definition', ['allow_multiple' => 1, 'is_inline' => 0, 'is_default' => 1]);
+        $this->insertSilent('custom_pages_template_container_content', ['definition_id' => $this->db->getLastInsertID()]);
+        $this->insertSilent('custom_pages_template_owner_content', [
+                'element_name' => 'content',
+                'owner_model' => Template::class,
+                'owner_id' => $oneColumnTemplateId,
+                'content_type' => ContainerContent::class,
+                'content_id' => $this->db->getLastInsertID()
+            ]);
+
+        /**
+         *
          * Headline Container
-         * 
+         *
          */
         $headlineTmplId = $this->insertHeadLineTemplate();
         // Insert elements
         $this->insertTextTemplateElement($headlineTmplId, 'heading', 'My Headline');
         $this->insertTextTemplateElement($headlineTmplId, 'subheading', 'My Subheadline');
-        $this->insertTemplateElement($headlineTmplId, 'background', FileContent::className());
-        
+        $this->insertTemplateElement($headlineTmplId, 'background', FileContent::class);
+
         /**
-         * 
+         *
          * Article Container
-         * 
+         *
          */
         $articlelineTmplId = $this->insertArticleTemplate();
         // Insert elements
         $this->insertRichtextTemplateElement($articlelineTmplId, 'content', $this->getDefaultArticleRichtext());
-        
+
         /**
-         * 
+         *
          * Snippet Layout Template
-         * 
+         *
          */
         $snippetLayoutTemplateId = $this->insertSnippetLayoutTemplate();
-        
+
         // Insert elements
-        $this->insertTemplateElement($snippetLayoutTemplateId, 'heading', ContainerContent::className());
-        
+        $this->insertTemplateElement($snippetLayoutTemplateId, 'heading', ContainerContent::class);
+
         // Insert default content definition
         $this->insertSilent('custom_pages_template_container_content_definition', ['allow_multiple' => 0, 'is_inline' => 0, 'is_default' => 1]);
         $definitionId = $this->db->getLastInsertID();
         $this->insertSilent('custom_pages_template_container_content_template', ['template_id' => $headlineTmplId, 'definition_id' => $definitionId]);
-        $this->insertSilent('custom_pages_template_container_content', ['definition_id' => $definitionId]);  
+        $this->insertSilent('custom_pages_template_container_content', ['definition_id' => $definitionId]);
         $this->insertSilent('custom_pages_template_owner_content', [
                 'element_name' => 'heading',
-                'owner_model' => Template::className(),
+                'owner_model' => Template::class,
                 'owner_id' => $snippetLayoutTemplateId,
-                'content_type' => ContainerContent::className(),
+                'content_type' => ContainerContent::class,
                 'content_id' => $this->db->getLastInsertID()
             ]);
-        
+
         $this->insertRichtextTemplateElement($snippetLayoutTemplateId, 'content', '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>');
     }
-    
+
     public function insertSnippetLayoutTemplate()
     {
         $this->insertSilent('custom_pages_template', [
             'name' => 'system_simple_snippet_layout',
             'engine' => 'twig',
             'description' => 'Simple snippet layout with head container and richtext.',
-            'source' => $this->getSnippetLayoutSource(), 
+            'source' => $this->getSnippetLayoutSource(),
             'type' => Template::TYPE_SNIPPED_LAYOUT,
             'created_at' => new \yii\db\Expression('NOW()')]);
 
@@ -130,20 +130,20 @@ class m160907_175706_default_templates extends Migration
             'name' => 'system_two_column_layout',
             'engine' => 'twig',
             'description' => 'Simple two column layout.',
-            'source' => $this->getTwoColumnSource(), 
+            'source' => $this->getTwoColumnSource(),
             'type' => Template::TYPE_LAYOUT,
             'created_at' => new \yii\db\Expression('NOW()')]);
 
         return $this->db->getLastInsertID();
     }
-    
+
     public function insertOneColumnTemplate()
     {
         $this->insertSilent('custom_pages_template', [
             'name' => 'system_one_column_layout',
             'engine' => 'twig',
             'description' => 'Simple one column layout.',
-            'source' => $this->getOneColumnSource(), 
+            'source' => $this->getOneColumnSource(),
             'type' => Template::TYPE_LAYOUT,
             'created_at' => new \yii\db\Expression('NOW()')]);
 
@@ -161,7 +161,7 @@ class m160907_175706_default_templates extends Migration
 
     public function insertTextTemplateElement($tmplid, $name, $default = null)
     {
-        $this->insertTemplateElement($tmplid, $name, TextContent::className());
+        $this->insertTemplateElement($tmplid, $name, TextContent::class);
 
         if ($default != null) {
             $this->insertSilent('custom_pages_template_text_content', [
@@ -170,17 +170,17 @@ class m160907_175706_default_templates extends Migration
 
             $this->insertSilent('custom_pages_template_owner_content', [
                 'element_name' => $name,
-                'owner_model' => Template::className(),
+                'owner_model' => Template::class,
                 'owner_id' => $tmplid,
-                'content_type' => TextContent::className(),
+                'content_type' => TextContent::class,
                 'content_id' => $this->db->getLastInsertID()
             ]);
         }
     }
-    
+
     public function insertRichTextTemplateElement($tmplid, $name, $default = null)
     {
-        $this->insertTemplateElement($tmplid, $name, RichtextContent::className());
+        $this->insertTemplateElement($tmplid, $name, RichtextContent::class);
 
         if ($default != null) {
             $this->insertSilent('custom_pages_template_richtext_content', [
@@ -189,9 +189,9 @@ class m160907_175706_default_templates extends Migration
 
             $this->insertSilent('custom_pages_template_owner_content', [
                 'element_name' => $name,
-                'owner_model' => Template::className(),
+                'owner_model' => Template::class,
                 'owner_id' => $tmplid,
-                'content_type' => RichtextContent::className(),
+                'content_type' => RichtextContent::class,
                 'content_id' => $this->db->getLastInsertID()
             ]);
         }
@@ -203,26 +203,26 @@ class m160907_175706_default_templates extends Migration
             'name' => 'system_headline_container',
             'engine' => 'twig',
             'description' => 'Simple headline row with background image.',
-            'source' => $this->getHeadLineSource(), 
+            'source' => $this->getHeadLineSource(),
             'type' => Template::TYPE_CONTAINER,
             'created_at' => new \yii\db\Expression('NOW()')]);
 
         return $this->db->getLastInsertID();
     }
-    
+
     public function insertArticleTemplate()
     {
         $this->insertSilent('custom_pages_template', [
             'name' => 'system_article_container',
             'engine' => 'twig',
             'description' => 'Simple richtext article.',
-            'source' => $this->getArticleSource(), 
+            'source' => $this->getArticleSource(),
             'type' => Template::TYPE_CONTAINER,
             'created_at' => new \yii\db\Expression('NOW()')]);
 
         return $this->db->getLastInsertID();
     }
-    
+
     public function getOneColumnSource()
     {
         return <<< EOT
@@ -237,7 +237,7 @@ class m160907_175706_default_templates extends Migration
 </div>
 EOT;
     }
-    
+
     public function getDefaultArticleRichtext()
     {
         return <<< EOT
@@ -248,7 +248,7 @@ EOT;
 
 EOT;
     }
-    
+
     public function getTwoColumnSource()
     {
         return <<< EOT
@@ -265,12 +265,12 @@ EOT;
 			<div class="panel-body">
 				{{ sidebar_container }}
 			</div>
-		</div>	
+		</div>
 	</div>
 </div>
 EOT;
     }
-    
+
     public function getSnippetLayoutSource()
     {
         return <<< EOT
@@ -282,8 +282,8 @@ EOT;
 </div>
 EOT;
     }
-    
-    
+
+
      public function getArticleSource()
     {
         return <<< EOT
@@ -294,7 +294,7 @@ EOT;
 </div>
 EOT;
     }
-    
+
 
     public function getHeadLineSource()
     {

@@ -190,7 +190,7 @@ class TemplateElement extends ActiveRecord
      */
     public function getOwnerContent(ActiveRecord $owner)
     {
-        return OwnerContent::findByOwner($owner::class, $owner->getPrimaryKey(), $this->name)->one();
+        return OwnerContent::findByOwner(get_class($owner), $owner->getPrimaryKey(), $this->name)->one();
     }
 
     /**

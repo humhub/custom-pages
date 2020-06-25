@@ -12,9 +12,9 @@ class TemplateContentTest extends HumHubDbTestCase
 {
 
     use Specify;
-    
+
     public $owner;
-    
+
     public function setUp()
     {
        parent::setUp();
@@ -23,29 +23,29 @@ class TemplateContentTest extends HumHubDbTestCase
 
     public function testRenderHtml()
     {
-        
+
        $content = new \humhub\modules\custom_pages\modules\template\models\RichtextContent();
        $content->content = '<p>Test</p>';
        $content->save();
-       
+
        $pageContent = new OwnerContent();
        $pageContent->setOwner($this->owner);
        $pageContent->setContent($content);
        $pageContent->save();
-       
+
        $result = $pageContent->render([
            'empty' => false,
            'editMode' => true,
            'element_name' => 'test',
-           'owner_model' => $this->owner->className(),
+           'owner_model' => get_class($this->owner),
            'owner_id' => $this->owner->id
        ]);
-       
+
        $this->assertContains('<p>Test</p>', $result);
        $this->assertContains('data-template-element="test"', $result);
-       $this->assertContains('data-template-owner="'.$this->owner->className().'"', $result);
-       $this->assertContains('data-template-content="'.$content->className().'"', $result);
+       $this->assertContains('data-template-owner="'.get_class($this->owner).'"', $result);
+       $this->assertContains('data-template-content="'. get_class($content) .'"', $result);
        $this->assertContains('data-template-empty="0"', $result);
-       
+
     }
 }

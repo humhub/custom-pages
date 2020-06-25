@@ -12,26 +12,26 @@ class m170413_085114_download_link_template extends Migration
     {
         //Create Download Item
         $downloadItemTemplateId = $this->insertDownloadItemTemplate();
-        $this->insertTemplateElement($downloadItemTemplateId, 'file_download', 'File', FileDownloadContent::className());
-        
+        $this->insertTemplateElement($downloadItemTemplateId, 'file_download', 'File', FileDownloadContent::class);
+
         //Create Download List
         $downloadListTemplateId = $this->insertDownloadListTemplate();
-        $this->insertTemplateElement($downloadListTemplateId, 'download_list', 'File List', ContainerContent::className());
-        
+        $this->insertTemplateElement($downloadListTemplateId, 'download_list', 'File List', ContainerContent::class);
+
         //Create container definition for download_list container
         $this->insertSilent('custom_pages_template_container_content_definition', ['allow_multiple' => 1, 'is_inline' => 0, 'is_default' => 1]);
-        
+
         $contentDefinitionId = $this->db->getLastInsertID();
-        
+
         $this->insertSilent('custom_pages_template_container_content', ['definition_id' => $contentDefinitionId]);
         $this->insertSilent('custom_pages_template_owner_content', [
                 'element_name' => 'download_list',
-                'owner_model' => Template::className(),
+                'owner_model' => Template::class,
                 'owner_id' => $downloadListTemplateId,
-                'content_type' => ContainerContent::className(),
+                'content_type' => ContainerContent::class,
                 'content_id' => $this->db->getLastInsertID()
             ]);
-        
+
         // Create allowed templates setting for download_list definition
         $this->insertSilent('custom_pages_template_container_content_template', [
             'definition_id' => $contentDefinitionId,
@@ -56,20 +56,20 @@ class m170413_085114_download_link_template extends Migration
     {
     }
     */
-    
+
     public function insertDownloadItemTemplate()
     {
         $this->insertSilent('custom_pages_template', [
             'name' => 'system_download_item',
             'engine' => 'twig',
             'description' => 'Single download item.',
-            'source' => $this->getDownloadItemContent(), 
+            'source' => $this->getDownloadItemContent(),
             'type' => Template::TYPE_CONTAINER,
             'created_at' => new \yii\db\Expression('NOW()')]);
 
         return $this->db->getLastInsertID();
     }
-    
+
     public function getDownloadItemContent()
     {
         return <<< EOT
@@ -78,20 +78,20 @@ class m170413_085114_download_link_template extends Migration
 </div>
 EOT;
     }
-    
+
     public function insertDownloadListTemplate()
     {
         $this->insertSilent('custom_pages_template', [
             'name' => 'system_download_list',
             'engine' => 'twig',
             'description' => 'File download list.',
-            'source' => $this->getDownloadListContent(), 
+            'source' => $this->getDownloadListContent(),
             'type' => Template::TYPE_CONTAINER,
             'created_at' => new \yii\db\Expression('NOW()')]);
 
         return $this->db->getLastInsertID();
     }
-    
+
     public function getDownloadListContent()
     {
         return <<< EOT
@@ -100,7 +100,7 @@ EOT;
 </div>
 EOT;
     }
-    
+
     public function insertTemplateElement($tmplid, $name, $title, $contentType)
     {
         $this->insertSilent('custom_pages_template_element', [

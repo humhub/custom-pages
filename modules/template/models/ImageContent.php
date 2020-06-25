@@ -8,12 +8,12 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
  class ImageContent extends FileContent
 {
     public static $label = 'Image';
-    
+
     public function init()
     {
-        $this->definitionModel = ImageContentDefinition::className();
+        $this->definitionModel = ImageContentDefinition::class;
     }
-     
+
     /**
      * @return string the associated database table name
      */
@@ -21,7 +21,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
     {
         return 'custom_pages_template_image_content';
     }
-    
+
     public function rules()
     {
         $result = [];
@@ -33,7 +33,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
         $result[] = [['alt', 'file_guid'], 'safe'];
         return $result;
     }
-        
+
     public function scenarios()
     {
         $scenarios = parent::scenarios();
@@ -42,7 +42,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
         $scenarios[self::SCENARIO_EDIT][] = 'alt';
         return $scenarios;
     }
-    
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -53,7 +53,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
             'alt' =>  Yii::t('CustomPagesModule.base', 'Alternate text')
         ];
     }
-    
+
     public function copy() {
         $clone = parent::copy();
         $clone->alt = $this->alt;
@@ -61,7 +61,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
     }
 
     public function render($options = [])
-    {   
+    {
         if($this->hasFile() != null) {
             $options['htmlOptions'] = [
                 'src' => $this->getFile()->getUrl(),
@@ -79,10 +79,10 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
             $options['empty'] = true;
             return $this->renderEmpty($options);
         }
-        
+
         return '';
     }
-    
+
     public function renderEmpty($options = [])
     {
         return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_ImageContent', 'Empty Image'), $options);

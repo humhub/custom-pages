@@ -45,7 +45,7 @@ class ContainerContentDefinition extends ContentDefinition
 
         parent::afterSave($insert, $changedAttributes);
     }
-    
+
     public function saveAllowedTemplateSelection()
     {
         if (!empty($this->allowedTemplateSelection)) {
@@ -64,7 +64,7 @@ class ContainerContentDefinition extends ContentDefinition
         ContainerContentTemplate::deleteAll(['definition_id' => $this->id]);
         return parent::beforeDelete();
     }
-    
+
     public function getAllowedTemplates()
     {
         if (empty($this->templates)) {
@@ -86,7 +86,7 @@ class ContainerContentDefinition extends ContentDefinition
     protected function getAllowedTemplateArray($actualSelection = true)
     {
         $selectionTemplates = ($actualSelection) ? $this->templates : $this->allowedTemplates;
-        
+
         $result = [];
         foreach ($selectionTemplates as $allowedTemplate) {
             $result[] = $allowedTemplate->id;
@@ -97,12 +97,12 @@ class ContainerContentDefinition extends ContentDefinition
 
     public function getContentTemplates()
     {
-        return $this->hasMany(ContainerContentTemplate::className(), ['definition_id' => 'id']);
+        return $this->hasMany(ContainerContentTemplate::class, ['definition_id' => 'id']);
     }
 
     public function getTemplates()
     {
-        return $this->hasMany(Template::className(), ['id' => 'template_id'])
+        return $this->hasMany(Template::class, ['id' => 'template_id'])
                         ->via('contentTemplates')->all();
     }
 }

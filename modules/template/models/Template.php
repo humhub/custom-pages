@@ -9,23 +9,23 @@ use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for all templates.
- * 
+ *
  * Every template has an unique template name, which is used by the template engine to identify the template.
- * 
+ *
  * A template can be related to multiple TemplateElements, which define the content type and name of the template placeholders.
- * 
+ *
  * The template can define a default content for each placeholder, by creating an OwnerContent with the
  * given placeholder name.
- * 
+ *
  * If no default content is given, and a TemplateContentOwner does not define an own OwnerContent for the placeholder, the placeholder is
- * either rendered empty if not in editmode or as default(empty) block if the edit mode is activated.  
- * 
- * 
+ * either rendered empty if not in editmode or as default(empty) block if the edit mode is activated.
+ *
+ *
  * There are different types of templates:
- * 
+ *
  *  - Layout: Root template which is not combinable with other templates.
  *  - Container: Template which is combinable with other templates.
- * 
+ *
  * @property $id int
  * @property $name string
  * @property $source string
@@ -42,12 +42,12 @@ class Template extends ActiveRecord implements TemplateContentOwner
     const TYPE_SNIPPED_LAYOUT = 'snipped-layout';
     const TYPE_NAVIGATION = 'navigation';
     const TYPE_CONTAINER = 'container';
-    
+
     /**
      * @var TemplateElement[] all template elements used for the rendering process.
      */
     private $_elements;
-    
+
     /**
      * @inheritdoc
      */
@@ -95,7 +95,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
             [['source'], 'required', 'on' => ['source']],
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -106,7 +106,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
         $scenarios['source'] = ['source'];
         return $scenarios;
     }
-    
+
     /**
      * Validates the template type against allowed types.
      * @param type $attribute
@@ -127,7 +127,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
         if(!parent::beforeDelete()) {
             return false;
         }
-        
+
         // We just allow the template deletion if there are template owner relations.
         if(!$this->isInUse()) {
             foreach ($this->elements as $element) {
@@ -135,10 +135,10 @@ class Template extends ActiveRecord implements TemplateContentOwner
             }
             return true;
         }
-        
+
         return false;
     }
-    
+
     public function isInUse()
     {
         if($this->isLayout()) {
@@ -147,7 +147,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
             return ContainerContentTemplate::find()->where(['template_id' => $this->id])->count() > 0;
         }
     }
-    
+
     /**
      * Checks if this template is a root layout template.
      * @return boolean
@@ -173,23 +173,23 @@ class Template extends ActiveRecord implements TemplateContentOwner
      */
     public function getElements()
     {
-        return $this->hasMany(TemplateElement::className(), ['template_id' => 'id']);
+        return $this->hasMany(TemplateElement::class, ['template_id' => 'id']);
     }
 
     /**
      * Renders the template for the given $owner or with all default content if
      * no $owner was given.
-     * 
+     *
      * This is done by merging all default OwnerContent instances with the overwritten
      * OwnerContent instances defined by the TemplateContentOwner $owner.
-     * 
+     *
      * @param ActiveRecord $owner
      * @return string
      */
     public function render(ActiveRecord $owner = null, $editMode = false, $containerItem = null)
     {
         $contentElements = $this->getContentElements($owner);
-        
+
         if($owner == null) {
             $owner = $this;
         }
@@ -199,16 +199,16 @@ class Template extends ActiveRecord implements TemplateContentOwner
             $options = [
                 'editMode' => $editMode,
                 'element_title' => $this->getElementTitle($contentElement->element_name),
-                'owner_model' => $owner->className(),
+                'owner_model' => get_class($owner),
                 'owner_id' => $owner->id,
                 'item' => $containerItem
             ];
-            
+
             $content[$contentElement->element_name] = new OwnerContentVariable(['ownerContent' => $contentElement, 'options' => $options]);
         }
-        
+
         $content['assets'] = new AssetVariable();
-        
+
         if($containerItem) {
             //$content['item'] = new ContainerItemVariable(['item' => $containerItem]);
         }
@@ -217,16 +217,16 @@ class Template extends ActiveRecord implements TemplateContentOwner
         $result = $engine->render($this->name, $content);
         return $result;
     }
-    
+
     /**
      * Merges the default OwnerContent instances with the OwnerContent instances of the given $owner.
      * If there is no default OwnerContent and no OwnerContent for the given $owner this function will create an
      * empty dummy content for the given placeholder.
-     * 
+     *
      * If no $owner is given, this function will just return default OwnerContent of this template and empty OwnerContent instances.
-     * 
+     *
      * @param ActiveRecord $owner the template owner
-     * @return array 
+     * @return array
      */
     public function getContentElements(ActiveRecord $owner = null)
     {
@@ -254,23 +254,23 @@ class Template extends ActiveRecord implements TemplateContentOwner
 
         return $result;
     }
-    
+
     private function getElementTitle($element_name)
     {
         if(!$this->_elements) {
             $this->_elements = $this->getElements()->all();
         }
-        
+
         foreach ($this->_elements as $element) {
             if($element->name === $element_name) {
                 return $element->getTitle();
             }
         }
     }
-    
+
     /**
      * Returns all templates of a given type as ActiveQuery.
-     * 
+     *
      * @param string $type
      * @return ActiveQuery
      */
@@ -278,13 +278,13 @@ class Template extends ActiveRecord implements TemplateContentOwner
     {
         return self::find()->where(['type' => $type]);
     }
-    
-    
+
+
     /**
      * Returns all templates of a given type as array.
-     * 
+     *
      * @param string $type
-     * @return array 
+     * @return array
      */
     public static function findAllByType($type)
     {
@@ -293,7 +293,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
 
     /**
      * Prepares a template selection array for the given query condition.
-     * 
+     *
      * @param array $condition query condition
      * @return array selection array with template id as keys and template name as values.
      */

@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>Custom</strong> Pages' => 'Páginas <strong> Personalizadas </ strong>',
-  '<strong>Edit</strong> snippet' => '<strong> Editar </ strong> snippet',
+  '<strong>Custom</strong> Pages' => 'Páginas <strong> Personalizadas </strong>',
+  '<strong>Edit</strong> snippet' => '<strong> Editar </strong> snippet',
   'Add' => 'Adicionar',
   'Add a file icon before the title' => 'Adicione um ícone de arquivo antes do título',
   'Adds plain HTML content to your site.' => 'Adiciona conteúdo HTML simples ao seu site.',

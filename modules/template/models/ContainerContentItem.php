@@ -6,7 +6,7 @@ use yii\helpers\Url;
 
 /**
  * This is the model class for table "custom_pages_template_container_content_item".
- * 
+ *
  * @var $template_id int
  * @var $container_content_id int
  * @var $title string
@@ -33,7 +33,7 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
             ['title', 'safe']
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -47,17 +47,17 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
     {
         self::updateAllCounters(['sort_order' => 1], ['and', ['>=', 'sort_order', $index], ['container_content_id' => $cotnainerId]]);
     }
-    
+
     public static function incrementBetween($cotnainerId, $start, $end)
     {
         self::updateAllCounters(['sort_order' => 1], ['and', ['>=', 'sort_order', $start], ['<=', 'sort_order', $end], ['container_content_id' => $cotnainerId]]);
     }
-    
+
     public static function decrementIndex($cotnainerId, $index)
     {
         self::updateAllCounters(['sort_order' => -1], ['and', ['<=', 'sort_order', $index], ['container_content_id' => $cotnainerId]]);
     }
-    
+
     public static function decrementBetween($cotnainerId, $start, $end)
     {
         self::updateAllCounters(['sort_order' => -1], ['and', ['>=', 'sort_order', $start], ['<=', 'sort_order', $end], ['container_content_id' => $cotnainerId]]);
@@ -65,12 +65,12 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
 
     public function getTemplate()
     {
-        return $this->hasOne(Template::className(), ['id' => 'template_id']);
+        return $this->hasOne(Template::class, ['id' => 'template_id']);
     }
 
     public function getContainer()
     {
-        return $this->hasOne(ContainerContent::className(), ['id' => 'container_content_id']);
+        return $this->hasOne(ContainerContent::class, ['id' => 'container_content_id']);
     }
 
     public function render($editMode, $inline = false)
@@ -93,7 +93,7 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
                 'data-template-item' => $this->id,
                 'data-template-edit-url' => Url::to(['/custom_pages/template/container-admin/edit-source', 'id' => $this->template_id]),
                 'data-template-item-title' => $this->title,
-                'data-template-owner' => ContainerContent::className(),
+                'data-template-owner' => ContainerContent::class,
                 'data-template-owner-id' => $this->container_content_id
             ]
         ]);
@@ -103,7 +103,7 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
     {
         return $this->template_id;
     }
-    
+
     public static function findByTemplateId($templateId)
     {
         return self::find()->where(['template_id' => $templateId]);

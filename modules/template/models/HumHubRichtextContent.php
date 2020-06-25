@@ -14,7 +14,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
  class HumHubRichtextContent extends TemplateContentActiveRecord
 {
     public static $label = 'HumHub Richtext';
-     
+
     /**
      * @return string the associated database table name
      */
@@ -22,15 +22,15 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
     {
         return 'custom_pages_template_hh_richtext_content';
     }
-    
+
     public function rules()
     {
         $result = parent::rules();
         $result[] = ['content', 'required'];
         return $result;
     }
-    
-        
+
+
     public function scenarios()
     {
         $scenarios = parent::scenarios();
@@ -39,7 +39,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
         $scenarios[self::SCENARIO_EDIT][] = 'content';
         return $scenarios;
     }
-    
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -49,22 +49,22 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
             'content' => 'Content',
         ];
     }
-    
+
     public function getLabel()
     {
         return self::$label;
     }
-    
+
     public function copy() {
-        return new HumHubRichtextContent(['content' => $this->content]);;
+        return new HumHubRichtextContent(['content' => $this->content]);
     }
 
     public function render($options = [])
-    {   
+    {
         if($this->isEditMode($options)) {
             return $this->wrap('div', Richtext::output($this->content), $options);
-        } 
-        
+        }
+
         return Richtext::output($this->content);
     }
 
@@ -72,7 +72,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
      {
          Richtext::postProcess($this->content, $this);
      }
-    
+
     public function renderEmpty($options = [])
     {
         return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_RichtextContent', 'Empty HumHub Richtext'), $options);

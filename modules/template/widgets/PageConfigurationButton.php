@@ -30,17 +30,17 @@ class PageConfigurationButton extends \humhub\components\Widget
     {
         $editMode = Yii::$app->request->get('editMode');
         $pageId = Yii::$app->request->get('id');
-        
+
         $space = (isset(Yii::$app->controller->contentContainer)) ? Yii::$app->controller->contentContainer : null;
-        
+
         $sguid = ($space != null) ? $space->guid : null;
         $canEdit = PagePermission::canEdit();
-        
-        $ownerModel = ($space != null) ? ContainerPage::className() : Page::className();   
-        
-        
+
+        $ownerModel = ($space != null) ? ContainerPage::class : Page::class;
+
+
         $templateInstance = TemplateInstance::findOne(['object_model' => $ownerModel ,'object_id' => $pageId]);
-        
+
         return $this->render('pageConfigurationButton', [
             'canEdit' => $canEdit,
             'sguid' => $sguid,

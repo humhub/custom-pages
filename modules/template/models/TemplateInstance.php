@@ -24,8 +24,8 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
-                'mustBeInstanceOf' => [ActiveRecord::className()]
+                'class' => \humhub\components\behaviors\PolymorphicRelation::class,
+                'mustBeInstanceOf' => [ActiveRecord::class]
             ]
         ];
     }
@@ -61,7 +61,7 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
 
     /**
      * Returns the default element of the element identified by $elementName of the given TemplateInstance identified by $id.
-     * 
+     *
      * @param \humhub\modules\custom_pages\modules\template\models\TemplateInstance|integer $id
      * @param string $elementName
      * @return type
@@ -84,7 +84,7 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
 
     public function getTemplate()
     {
-        return $this->hasOne(Template::className(), ['id' => 'template_id']);
+        return $this->hasOne(Template::class, ['id' => 'template_id']);
     }
 
     public function getTemplateId()

@@ -47,7 +47,7 @@ class TemplatePageEditButton extends \humhub\components\Widget
 
         $space = (isset(Yii::$app->controller->contentContainer)) ? Yii::$app->controller->contentContainer : null;
         $sguid = ($space) ? $space->guid : null;
-        $ownerModel = ($space) ? ContainerPage::className() : Page::className();
+        $ownerModel = ($space) ? ContainerPage::class : Page::class;
 
         $templateInstance = TemplateInstance::findOne(['object_model' => $ownerModel, 'object_id' => $this->page->id]);
 

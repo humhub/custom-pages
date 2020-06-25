@@ -7,14 +7,14 @@ use humhub\components\ActiveRecord;
 
 /**
  * This is the model class for table "custom_pages_template_content".
- * 
+ *
  * An OwnerContent instance is used to assign a content to a template placeholder.
  * The owner of the content can either be a Template (default content) or an TemplateContentOwner (e.g. TemplateInstance, ContainerContentItem).
  */
 class OwnerContent extends ActiveRecord
-{   
+{
     private $ownerInstance;
-    
+
     /**
      * @inheritdoc
      */
@@ -22,8 +22,8 @@ class OwnerContent extends ActiveRecord
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
-                'mustBeInstanceOf' => [TemplateContentActiveRecord::className()],
+                'class' => \humhub\components\behaviors\PolymorphicRelation::class,
+                'mustBeInstanceOf' => [TemplateContentActiveRecord::class],
                 'classAttribute' => 'content_type',
                 'pkAttribute' => 'content_id'
             ]
@@ -55,17 +55,17 @@ class OwnerContent extends ActiveRecord
     {
         if ($this->getInstance() != null) {
             $this->getInstance()->delete();
-        } 
+        }
 
         return parent::beforeDelete();
     }
 
     /**
      * Returns the underlying TemplateContentActiveRecord instance.
-     * 
+     *
      * If $createDummy is set to true, this function will return a empty dummy
      * object of this content_type.
-     * 
+     *
      * @param type $createDummy
      * @return TemplateContentActiveRecord
      */
@@ -90,10 +90,10 @@ class OwnerContent extends ActiveRecord
 
     /**
      * Sets the owner model of this content.
-     * 
+     *
      * This function either accepts an TemplateContentOwner instance or an owner_model className
      * and id.
-     * 
+     *
      * @param TemplateContentOwner $owner
      * @param type $id
      */
@@ -103,10 +103,10 @@ class OwnerContent extends ActiveRecord
         $this->owner_id = ($id == null) ? $owner->id : $id;
         $this->ownerInstance = null;
     }
-    
+
     /**
      * Returns the content owner.
-     * 
+     *
      * @return TemplateContentOwner
      */
     public function getOwner()
@@ -114,18 +114,18 @@ class OwnerContent extends ActiveRecord
         if($this->ownerInstance == null) {
             $this->ownerInstance = self::getOwnerModel($this->owner_model, $this->owner_id);
         }
-        
+
         return $this->ownerInstance;
     }
-    
+
     public static function getOwnerModel($model, $id)
     {
         return call_user_func($model."::findOne", ['id' => $id]);
     }
-    
+
     /**
      * Sets the object_model and object_id by means of the given $content instance.
-     * 
+     *
      * @param TemplateContentActiveRecord $content
      */
     public function setContent(TemplateContentActiveRecord $content)
@@ -133,7 +133,7 @@ class OwnerContent extends ActiveRecord
         $this->content_type = get_class($content);
         $this->content_id = $content->id;
     }
-    
+
     public function copy()
     {
         $copy = new OwnerContent();
@@ -145,7 +145,7 @@ class OwnerContent extends ActiveRecord
 
     /**
      * Returns a copy of the related content instance.
-     * 
+     *
      * @return \humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord
      */
     public function copyContent()
@@ -155,10 +155,10 @@ class OwnerContent extends ActiveRecord
 
     /**
      * Renders the related content instance.
-     * 
+     *
      * If $contentOnly is set to false the content is rendered with it's container.
      * The container's attributes can be set by means of the $options array.
-     * 
+     *
      * @param boolean $contentOnly
      * @param array $optoins
      * @return string
@@ -166,40 +166,40 @@ class OwnerContent extends ActiveRecord
     public function render($options = [])
     {
         if($this->use_default) {
-            return ($this->isDefault()) 
-                    ? $this->renderEmpty($options) 
+            return ($this->isDefault())
+                    ? $this->renderEmpty($options)
                     : $this->defaultContent->render($options);
         }
-        
+
         $instance = $this->getInstance();
         if($instance != null) {
             return $instance->render($options);
         }
     }
-    
+
     public function renderEmpty($options = [])
     {
         return Yii::createObject($this->content_type)->renderEmpty($options);
     }
-    
+
     public function isEmpty()
     {
         return $this->getInstance() == null;
     }
-    
+
     public function isDefault()
     {
-        return $this->owner_model === Template::className();
+        return $this->owner_model === Template::class;
     }
-    
+
     public function getDefaultContent()
     {
-        return self::findByOwner(Template::className(), $this->owner->getTemplateId(), $this->element_name)->one();
+        return self::findByOwner(Template::class, $this->owner->getTemplateId(), $this->element_name)->one();
     }
 
     /**
      * Find all OwnerContent instances of the given owner.
-     * 
+     *
      * @param type $ownerClass
      * @param type $ownerId
      * @param type $elementName
@@ -210,7 +210,7 @@ class OwnerContent extends ActiveRecord
         if ($ownerClass instanceof \yii\db\ActiveRecord) {
             $elementName = $ownerId;
             $ownerId = $ownerClass->getPrimaryKey();
-            $ownerClass = $ownerClass->className();
+            $ownerClass = get_class($ownerClass);
         }
 
         $query = self::find()->where(['owner_model' => $ownerClass, 'owner_id' => $ownerId]);
@@ -224,7 +224,7 @@ class OwnerContent extends ActiveRecord
 
     /**
      * Deletes all OwnerContent instances of the given owner.
-     * 
+     *
      * @param type $ownerClass
      * @param type $ownerId
      * @param type $elementName
@@ -236,16 +236,16 @@ class OwnerContent extends ActiveRecord
             $instance->delete();
         }
     }
-    
+
      public static function findByContent($contentType, $contentId = null)
     {
         if ($contentType instanceof \yii\db\ActiveRecord) {
             $contentId = $contentType->getPrimaryKey();
-            $contentType = $contentType->className();
+            $contentType = get_class($contentType);
         }
 
         return self::findOne(['content_type' => $contentType, 'content_id' => $contentId]);
     }
-    
-    
+
+
 }

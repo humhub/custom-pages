@@ -27,9 +27,9 @@ class TemplateElementTest extends HumHubDbTestCase
         $this->template = Template::findOne(['id' => 1]);
         $this->element = TemplateElement::findOne(['id' => 1]);
         $this->element2 = TemplateElement::findOne(['id' => 2]);
-        
+
         $this->defaultContent1 = RichtextContent::findOne(['id' => 1]);
-        
+
         $this->owner = TemplateInstance::findOne(['id' => 1]);
     }
 
@@ -39,8 +39,8 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $this->assertContains('<p>Default</p>', $result);
         $this->assertContains('data-template-element="test_content"', $result);
-        $this->assertContains('data-template-owner="' . $this->owner->className() . '"', $result);
-        $this->assertContains('data-template-content="' . RichtextContent::className() . '"', $result);
+        $this->assertContains('data-template-owner="' . get_class($this->owner) . '"', $result);
+        $this->assertContains('data-template-content="' . RichtextContent::class . '"', $result);
         $this->assertContains('data-template-empty="0"', $result);
     }
 
@@ -55,8 +55,8 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $this->assertContains('<p>Non Default</p>', $result);
         $this->assertContains('data-template-element="test_content"', $result);
-        $this->assertContains('data-template-owner="' . $this->owner->className() . '"', $result);
-        $this->assertContains('data-template-content="' . RichtextContent::className() . '"', $result);
+        $this->assertContains('data-template-owner="' . get_class($this->owner) . '"', $result);
+        $this->assertContains('data-template-content="' . RichtextContent::class . '"', $result);
         $this->assertContains('data-template-empty="0"', $result);
         // Test empty element
         $this->assertContains('data-template-empty="1"', $result);
@@ -114,7 +114,7 @@ class TemplateElementTest extends HumHubDbTestCase
         $newElement = new TemplateElement();
         $newElement->scenario = 'create';
         $newElement->name = 'test_content';
-        $newElement->content_type = RichtextContent::className();
+        $newElement->content_type = RichtextContent::class;
         $newElement->template_id = $this->template->id;
         $newElement->save();
 
@@ -146,13 +146,13 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $this->assertNull(OwnerContent::findOne(['id' => $defaultContent->id]));
         $this->assertNull(RichtextContent::findOne(['id' => $content->id]));
-        
+
         $this->assertNotNull(RichtextContent::findOne(['id' => $content2->id]));
-        
+
         $this->assertNull($this->template->getElement('test_content'));
         $this->assertNotNull($this->template->getElement('test_text'));
     }
-    
+
     public function testDeleteTemplate()
     {
         $content = new RichtextContent();
@@ -169,13 +169,13 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $this->element->saveInstance($this->owner, $content);
         $this->element2->saveInstance($this->owner, $content2);
-        
+
         $this->assertFalse($this->template->delete());
 
         $this->owner->delete();
-        
+
         $this->assertEquals('1', $this->template->delete());
-        
+
         $this->assertNull(OwnerContent::findOne(['id' => $defaultContent->id]));
         $this->assertNull(RichtextContent::findOne(['id' => $content->id]));
     }

@@ -7,6 +7,7 @@ Changelog
 - Fix #138: Admin only restriction does not include space admin
 - Fix #129: Snippet visibility selection to "Public" broken
 - Fix #130: Menu item of space page not activated
+- Fix #124: one- and two column layout broken on space page
 
 1.0.8 (May 29, 2020)
 --------------------

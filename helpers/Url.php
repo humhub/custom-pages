@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\helpers;
 
+use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\PageType;
@@ -108,11 +109,19 @@ class Url extends BaseUrl
 
     public static function toEditPage($id, ContentContainerActiveRecord $container = null)
     {
+        if($id instanceof ActiveRecord) {
+            $id = $id->id;
+        }
+
         return static::create(static::ROUTE_EDIT_PAGE, ['id' => $id], $container);
     }
 
     public static function toEditSnippet($id,  ContentContainerActiveRecord $container = null)
     {
+        if($id instanceof ActiveRecord) {
+            $id = $id->id;
+        }
+
         return static::create(static::ROUTE_EDIT_SNIPPET, ['id' => $id], $container);
     }
 

@@ -27,8 +27,8 @@ trait PhpPageContainer
     public function validatePhpType($attribute, $params)
     {
         if(PhpType::isType($this->type)) {
-            $settigns = new SettingsForm();
-            if($this->isNewRecord && !$settigns->phpPagesActive) {
+            $settings = new SettingsForm();
+            if($this->isNewRecord && !$settings->phpPagesActive) {
                 throw new HttpException(403);
             }
 

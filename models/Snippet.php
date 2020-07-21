@@ -93,6 +93,14 @@ class Snippet extends CustomContentContainer
     /**
      * @inheritdoc
      */
+    public function getContentDescription()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getAllowedTemplateSelection()
     {
         return Template::getSelection(['type' => Template::TYPE_SNIPPED_LAYOUT]);

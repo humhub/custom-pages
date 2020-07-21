@@ -160,9 +160,7 @@ class CustomPagesService extends Component
             $query->readable();
         }
 
-        /* @var $instance CustomContentContainer */
-        $instance = call_user_func($contentClass.'::instance');
-        if(!$instance->canSeeAdminOnlyContent()) {
+        if(!CustomContentContainer::canSeeAdminOnlyContent($container)) {
             $query->andWhere(['admin_only' => 0]);
         }
 

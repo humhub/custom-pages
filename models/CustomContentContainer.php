@@ -3,6 +3,7 @@
 namespace humhub\modules\custom_pages\models;
 
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\custom_pages\components\PhpPageContainer;
@@ -10,6 +11,7 @@ use humhub\modules\custom_pages\components\TemplatePageContainer;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use LogicException;
 use Yii;
 
@@ -271,7 +273,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
     }
 
     public function canView() {
-        if($this->admin_only && !$this->canSeeAdminOnlyContent()) {
+        if($this->admin_only && !static::canSeeAdminOnlyContent($this->content->container)) {
             return false;
         }
 
@@ -288,14 +290,25 @@ abstract class CustomContentContainer extends ContentActiveRecord
         return $this->content->canView();
     }
 
-    public function canSeeAdminOnlyContent()
+    public static function canSeeAdminOnlyContent(ContentContainerActiveRecord $container = null)
     {
-        $container = $this->content->container;
-        if($container && $container instanceof Space) {
+        if(Yii::$app->user->isGuest) {
+            return false;
+        }
+
+        if(!$container) {
+            return Yii::$app->user->isAdmin();
+        }
+
+        if($container instanceof Space) {
             return $container->isAdmin();
         }
 
-        return Yii::$app->user->isAdmin();
+        if($container instanceof User) {
+            $container->is(Yii::$app->user->getIdentity());
+        }
+
+        return false;
     }
 
 

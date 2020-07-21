@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.9 (Unreleased)
+--------------------
+- Fix #139: Missing `parent::init()` in admin controller throws error in HumHub 1.6.beta1
+
 1.0.8 (May 29, 2020)
 --------------------
 - Fix: Removed redundant twig class loading

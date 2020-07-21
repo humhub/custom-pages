@@ -7,6 +7,7 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
+use humhub\components\access\StrictAccess;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\ContainerSnippet;
@@ -29,6 +30,12 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
     public $requireContainer = false;
 
     private $_canEdit;
+
+    /**
+     * Default access used when $requireContainer = false and no container is given.
+     * @var string
+     */
+    public $access = StrictAccess::class;
 
     public function init()
     {

@@ -23,6 +23,7 @@ class SnippedLayoutAdminController extends AdminController
     public function init() {
         $this->indexHelp = Yii::t('CustomPagesModule.modules_template_controller_SnippedTemplateAdminController', 
                 'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.');
+        parent::init();
     }
     
 }

@@ -6,6 +6,7 @@ Changelog
 - Fix #139: Missing `parent::init()` in admin controller throws error in HumHub 1.6.beta1
 - Fix #138: Admin only restriction does not include space admin
 - Fix #129: Snippet visibility selection to "Public" broken
+- Fix #130: Menu item of space page not activated
 
 1.0.8 (May 29, 2020)
 --------------------

@@ -70,8 +70,8 @@ class Events
                         'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
                         'isActive' => (Yii::$app->controller->module
                             && Yii::$app->controller->module->id === 'custom_pages'
-                            && Yii::$app->controller->id === 'container'
-                            && Yii::$app->controller->action->id === 'view' && Yii::$app->request->get('id') == $page->id),
+                            && Yii::$app->controller->id === 'view'
+                            && Yii::$app->controller->action->id === 'index' && Yii::$app->request->get('id') == $page->id),
                         'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
                     ]);
                 }

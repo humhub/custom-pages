@@ -227,14 +227,17 @@ abstract class CustomContentContainer extends ContentActiveRecord
             return $result;
         }
 
-        if(LinkType::isType($type) || HtmlType::isType($type) || MarkdownType::isType($type) || IframeType::isType($type)) {
+        if(PhpType::isType($type) || LinkType::isType($type) || HtmlType::isType($type) || MarkdownType::isType($type) || IframeType::isType($type)) {
             $result[] = ['page_content', 'required'];
+        }
+
+        if(PhpType::isType($type)) {
+            $result[] = ['type', 'validatePhpType'];
         }
 
         if(TemplateType::isType($type)) {
             $result[] = [['templateId'], 'safe'];
             $result[] = ['type', 'validateTemplateType'];
-            $result[] = ['type', 'validatePhpType'];
         }
 
         if($type->hasContent()) {

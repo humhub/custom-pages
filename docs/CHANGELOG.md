@@ -9,6 +9,7 @@ Changelog
 - Fix #130: Menu item of space page not activated
 - Fix #124: one- and two column layout broken on space page
 - Fix: Snippet notification content description missing
+- Fix #118: Added missing required view file validation
 
 1.0.8 (May 29, 2020)
 --------------------

@@ -9,7 +9,7 @@
 use yii\bootstrap\ActiveForm;
 use humhub\libs\Html;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $subNav string */
 /* @var $model \humhub\modules\custom_pages\models\forms\SettingsForm */
 

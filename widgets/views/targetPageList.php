@@ -9,7 +9,7 @@ use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\widgets\Button;
 
-/* @var $this \humhub\components\View */
+/* @var $this \humhub\modules\ui\view\components\View */
 /* @var $dataProvider \yii\data\ActiveDataProvider */
 /* @var $target \humhub\modules\custom_pages\models\Target */
 /* @var $pageType string */

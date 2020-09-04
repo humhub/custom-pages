@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.10 (Unreleased)
+--------------------
+- Fix #142: Codemirror editor does not initialize correctly when accessing by pjax
+
 1.0.9 (July 21, 2020)
 --------------------
 - Fix #139: Missing `parent::init()` in admin controller throws error in HumHub 1.6.beta1

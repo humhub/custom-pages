@@ -31,6 +31,11 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
             that.$sourceInput.data('changed', true);
         });
 
+        // Fixes an issue in which the editor is not rendered correctly on init
+        setTimeout(function () {
+            that.codeMirror.refresh();
+        }, 500);
+
         this.$form.on('submit', function () {
             that.$sourceInput.data('changed', false);
         });
@@ -42,7 +47,7 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
             }
         });
 
-        $(document).on('pjax:beforeSend', function(evt) {
+        $(document).on('pjax:beforeSend', function (evt) {
             if (that.$sourceInput.data('changed') && !window.confirm(module.text('warning.beforeunload'))) {
                 evt.preventDefault();
                 return;
@@ -125,12 +130,12 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
 
     TemplateSourceEditor.prototype.reset = function (evt) {
         var that = this;
-        client.post(evt).then(function(response) {
+        client.post(evt).then(function (response) {
             if (response.success) {
                 that.updateElement(response);
                 modal.global.close();
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             module.log.error(e, true);
         });
     };
@@ -201,8 +206,6 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
          $(document).on('contentResetSuccess', function(evt, result) {
          
          });*/
-
-
 
 
     };

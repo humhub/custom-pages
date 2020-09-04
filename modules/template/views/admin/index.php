@@ -6,12 +6,15 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\modules\custom_pages\assets\CodeMirrorAssetBundle;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateAdminMenu;
 use humhub\modules\custom_pages\widgets\AdminMenu;
 use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use yii\helpers\Url;
 
+// We preload the bundle here, so its immediately available on edit
+CodeMirrorAssetBundle::register($this);
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>

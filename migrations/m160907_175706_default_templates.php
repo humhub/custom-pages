@@ -119,7 +119,7 @@ class m160907_175706_default_templates extends Migration
             'description' => 'Simple snippet layout with head container and richtext.',
             'source' => $this->getSnippetLayoutSource(),
             'type' => Template::TYPE_SNIPPED_LAYOUT,
-            'created_at' => new \yii\db\Expression('NOW()')]);
+            'created_at' => date('Y-m-d G:i:s')]);
 
         return $this->db->getLastInsertID();
     }
@@ -132,7 +132,7 @@ class m160907_175706_default_templates extends Migration
             'description' => 'Simple two column layout.',
             'source' => $this->getTwoColumnSource(),
             'type' => Template::TYPE_LAYOUT,
-            'created_at' => new \yii\db\Expression('NOW()')]);
+            'created_at' => date('Y-m-d G:i:s')]);
 
         return $this->db->getLastInsertID();
     }
@@ -145,7 +145,7 @@ class m160907_175706_default_templates extends Migration
             'description' => 'Simple one column layout.',
             'source' => $this->getOneColumnSource(),
             'type' => Template::TYPE_LAYOUT,
-            'created_at' => new \yii\db\Expression('NOW()')]);
+            'created_at' => date('Y-m-d G:i:s')]);
 
         return $this->db->getLastInsertID();
     }
@@ -205,7 +205,7 @@ class m160907_175706_default_templates extends Migration
             'description' => 'Simple headline row with background image.',
             'source' => $this->getHeadLineSource(),
             'type' => Template::TYPE_CONTAINER,
-            'created_at' => new \yii\db\Expression('NOW()')]);
+            'created_at' => date('Y-m-d G:i:s')]);
 
         return $this->db->getLastInsertID();
     }
@@ -218,7 +218,7 @@ class m160907_175706_default_templates extends Migration
             'description' => 'Simple richtext article.',
             'source' => $this->getArticleSource(),
             'type' => Template::TYPE_CONTAINER,
-            'created_at' => new \yii\db\Expression('NOW()')]);
+            'created_at' => date('Y-m-d G:i:s')]);
 
         return $this->db->getLastInsertID();
     }

@@ -20,7 +20,7 @@ class m190213_135905_blank_template extends Migration
             'description' => 'Simple container layout.',
             'source' => $this->getSourceSource(),
             'type' => Template::TYPE_LAYOUT,
-            'created_at' => new \yii\db\Expression('NOW()')]);
+            'created_at' => date('Y-m-d G:i:s')]);
 
         $tempalteId = $this->db->getLastInsertID();
 

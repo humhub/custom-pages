@@ -65,7 +65,7 @@ class m170413_085114_download_link_template extends Migration
             'description' => 'Single download item.',
             'source' => $this->getDownloadItemContent(),
             'type' => Template::TYPE_CONTAINER,
-            'created_at' => new \yii\db\Expression('NOW()')]);
+            'created_at' => date('Y-m-d G:i:s')]);
 
         return $this->db->getLastInsertID();
     }
@@ -87,7 +87,7 @@ EOT;
             'description' => 'File download list.',
             'source' => $this->getDownloadListContent(),
             'type' => Template::TYPE_CONTAINER,
-            'created_at' => new \yii\db\Expression('NOW()')]);
+            'created_at' => date('Y-m-d G:i:s')]);
 
         return $this->db->getLastInsertID();
     }

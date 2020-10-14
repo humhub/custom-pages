@@ -23,9 +23,9 @@ class Assets extends AssetBundle
 
 
     public $css = [
-        'custom-pages.css'
+        'css/custom-pages.css'
     ];
-    
+
     public $js = [];
 
 }

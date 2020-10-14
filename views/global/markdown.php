@@ -7,6 +7,7 @@ use humhub\libs\Html;
 /* @var $page Page*/
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
+\humhub\modules\custom_pages\assets\Assets::register($this);
 ?>
 
 <?php if ($page->hasTarget(Page::NAV_CLASS_ACCOUNTNAV) ||

@@ -3,11 +3,14 @@
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\libs\Html;
+use humhub\modules\custom_pages\widgets\CustomPageInlineStyle;
 
 /* @var $page Page*/
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 ?>
+
+<?= CustomPageInlineStyle::widget(['theme' => $this->theme]); ?>
 
 <?php if ($page->hasTarget(Page::NAV_CLASS_ACCOUNTNAV) ||
           $page->hasTarget(Page::NAV_CLASS_DIRECTORY)): ?>

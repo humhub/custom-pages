@@ -1,10 +1,17 @@
 Changelog
 =========
 
+
+1.0.11 (Unreleased)
+-------------------
+- Fix #121: Link color in markdown pages have same color as text
+
+
 1.0.10 (September 19, 2020)
 --------------------
 - Fix #142: Codemirror editor does not initialize correctly when accessing by pjax
 - Fix Delete by target error https://github.com/humhub-contrib/blog/issues/3
+
 
 1.0.9 (July 21, 2020)
 --------------------

@@ -2,9 +2,11 @@ Changelog
 =========
 
 
-1.0.11 (Unreleased)
+1.1.0 (Unreleased)
 -------------------
 - Fix #121: Link color in markdown pages have same color as text
+- Chg: Changed HumHub min version to 1.7
+- Chg: 1.7 wall stream entry migration
 
 
 1.0.10 (September 19, 2020)

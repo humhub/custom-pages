@@ -75,7 +75,7 @@ class SettingsForm extends Model
 
     public function validateViewPath($attribute, $params)
     {
-        if(!is_dir(Yii::getAlias($this->$attribute))) {
+        if(!is_dir(Yii::getAlias($this->$attribute)) && $this->phpPagesActive) {
             $this->addError($attribute, Yii::t('CustomPagesModule.models_SettignsForm', 'The given view file path does not exist.'));
         }
     }

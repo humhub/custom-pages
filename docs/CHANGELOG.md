@@ -5,7 +5,13 @@ Changelog
 1.0.11 (Unreleased)
 -------------------
 - Fix #121: Link color in markdown pages have same color as text
-
+- Fix #143: Global PHP page lost on update. The folder views/custom was deleted and the path to php custom pages changed
+            Needed manually create this directories for PHP custom pages:
+                    php-pages/container_pages/
+                    php-pages/container_snippets/
+                    php-pages/global_pages/
+                    php-pages/global_snippets/ 
+            As recommendation please consider to put these directories in protected/modules/module_data/custom_pages/ 
 
 1.0.10 (September 19, 2020)
 --------------------

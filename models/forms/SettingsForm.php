@@ -14,10 +14,10 @@ use yii\base\Model;
 
 class SettingsForm extends Model
 {
-    const DEFAULT_VIEW_PATH_PAGES = '@custom_pages/views/custom/global_pages/';
-    const DEFAULT_VIEW_PATH_SNIPPETS = '@custom_pages/views/custom/global_snippets/';
-    const DEFAULT_VIEW_PATH_CONTAINER_PAGES = '@custom_pages/views/custom/container_pages/';
-    const DEFAULT_VIEW_PATH_CONTAINER_SNIPPETS = '@custom_pages/views/custom/container_snippets/';
+    const DEFAULT_VIEW_PATH_PAGES = '@webroot/php-pages/global_pages/';
+    const DEFAULT_VIEW_PATH_SNIPPETS = '@webroot/php-pages/global_snippets/';
+    const DEFAULT_VIEW_PATH_CONTAINER_PAGES = '@webroot/php-pages/container_pages/';
+    const DEFAULT_VIEW_PATH_CONTAINER_SNIPPETS = '@webroot/php-pages/container_snippets/';
 
     /**
      * @var integer
@@ -75,7 +75,7 @@ class SettingsForm extends Model
 
     public function validateViewPath($attribute, $params)
     {
-        if(!is_dir(Yii::getAlias($this->$attribute))) {
+        if(!is_dir(Yii::getAlias($this->$attribute)) && $this->phpPagesActive) {
             $this->addError($attribute, Yii::t('CustomPagesModule.models_SettignsForm', 'The given view file path does not exist.'));
         }
     }

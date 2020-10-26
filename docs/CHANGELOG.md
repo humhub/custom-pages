@@ -4,7 +4,12 @@ Changelog
 
 1.1.0 (Unreleased)
 -------------------
+
+The default folders for PHP custom pages were changed.
+New defaults: php-pages/container_pages/, php-pages/container_snippets/, php-pages/global_pages/, php-pages/global_snippets/ 
+
 - Fix #121: Link color in markdown pages have same color as text
+- Fix #143: (Global) PHP pages were lost on module updates
 - Chg: Changed HumHub min version to 1.7
 - Chg: 1.7 wall stream entry migration
 

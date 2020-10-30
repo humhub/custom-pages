@@ -1,9 +1,12 @@
 <?php
-return array (
-  'Navigation' => 'Navigacija',
-  'Only visible for admins' => '',
-  'Open in new window' => '',
-  'Url shortcut' => '',
-  'View' => 'Vidi',
-  'page' => '',
-);
+
+return [
+    'Navigation' => 'Navigacija',
+    'View' => 'Vidi',
+    'Abstract' => '',
+    'Only visible for admins' => '',
+    'Open in new window' => '',
+    'Page' => '',
+    'Url shortcut' => '',
+    'page' => '',
+];

@@ -1,4 +1,6 @@
 <?php
-return array (
-  'snippet' => 'απόσπασμα',
-);
+
+return [
+    'snippet' => 'απόσπασμα',
+    'Snippet' => '',
+];

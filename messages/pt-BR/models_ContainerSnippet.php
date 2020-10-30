@@ -1,4 +1,6 @@
 <?php
-return array (
-  'snippet' => 'trecho',
-);
+
+return [
+    'snippet' => 'trecho',
+    'Snippet' => '',
+];

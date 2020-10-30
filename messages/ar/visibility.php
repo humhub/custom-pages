@@ -1,10 +1,9 @@
 <?php
-
-return [
-    'Admin only' => '',
-    'All Members' => '',
-    'Members & Guests' => '',
-    'Members only' => '',
-    'Public' => '',
-    'Space Members only' => '',
-];
+return array (
+  'Admin only' => '',
+  'All Members' => '',
+  'Members & Guests' => '',
+  'Members only' => '',
+  'Public' => 'عام',
+  'Space Members only' => '',
+);

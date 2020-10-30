@@ -1,6 +1,5 @@
 <?php
-
-return [
-    'Url' => '',
-    'View' => '',
-];
+return array (
+  'Url' => 'الرابط',
+  'View' => 'عرض',
+);

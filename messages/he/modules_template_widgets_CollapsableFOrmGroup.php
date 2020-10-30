@@ -1,6 +1,5 @@
 <?php
-
-return [
-    'Show less' => '',
-    'Show more' => '',
-];
+return array (
+  'Show less' => 'הצג פחות',
+  'Show more' => 'הצג יותר',
+);

@@ -7,7 +7,7 @@ use yii\web\AssetBundle;
 class TemplateCoreAsset extends AssetBundle
 {
     public $publishOptions = [
-        'forceCopy' => true
+        'forceCopy' => false
     ];
 
     public $sourcePath = '@custom_pages/modules/template/resources';

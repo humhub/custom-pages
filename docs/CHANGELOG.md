@@ -2,9 +2,8 @@ Changelog
 =========
 
 
-1.1.0 (Unreleased)
--------------------
-
+1.1.0 (November 3, 2020)
+------------------------
 The default folders for PHP custom pages were changed.
 New defaults: php-pages/container_pages/, php-pages/container_snippets/, php-pages/global_pages/, php-pages/global_snippets/ 
 

@@ -1,6 +1,6 @@
 <?php
 return array (
   'Height' => 'Alto',
-  'Style' => '',
+  'Style' => 'Estilo',
   'Width' => 'Ancho',
 );

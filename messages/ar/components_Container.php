@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Content' => '',
+  'Content' => 'المحتوى',
   'ID' => '@ID@',
   'Icon' => '',
   'Invalid template selection!' => '',
@@ -10,5 +10,5 @@ return array (
   'Target Url' => '',
   'Template Layout' => '',
   'Title' => 'العنوان',
-  'Type' => '',
+  'Type' => 'نوع',
 );

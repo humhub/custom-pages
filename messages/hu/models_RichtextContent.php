@@ -1,5 +1,7 @@
 <?php
-return array (
-  'Empty Richtext' => 'Üres Richtext',
-  'Empty Text' => 'Üres szöveg',
-);
+
+return [
+    'Empty Richtext' => 'Üres Richtext',
+    'Empty Text' => 'Üres szöveg',
+    'Empty HumHub Richtext' => '',
+];

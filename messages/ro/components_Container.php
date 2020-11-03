@@ -10,5 +10,5 @@ return array (
   'Target Url' => '',
   'Template Layout' => '',
   'Title' => 'Titlul',
-  'Type' => '',
+  'Type' => 'Tip',
 );

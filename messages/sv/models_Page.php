@@ -1,9 +1,12 @@
 <?php
-return array (
-  'Navigation' => 'Navigation',
-  'Only visible for admins' => 'Endast synligt för admin',
-  'Open in new window' => 'Öppna i nytt fönster',
-  'Url shortcut' => '',
-  'View' => 'Visa',
-  'page' => 'sida',
-);
+
+return [
+    'Navigation' => 'Navigation',
+    'Only visible for admins' => 'Endast synligt för admin',
+    'Open in new window' => 'Öppna i nytt fönster',
+    'View' => 'Visa',
+    'page' => 'sida',
+    'Abstract' => '',
+    'Page' => '',
+    'Url shortcut' => '',
+];

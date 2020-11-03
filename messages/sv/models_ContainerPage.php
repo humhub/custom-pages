@@ -1,6 +1,6 @@
 <?php
-return array (
-  'Only visible for space admins' => '',
-  'Open in new window' => 'Öppna i nytt fönster',
-  'page' => 'sida',
-);
+
+return [
+    'Open in new window' => 'Öppna i nytt fönster',
+    'Only visible for space admins' => '',
+];

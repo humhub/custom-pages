@@ -1,5 +1,7 @@
 <?php
-return array (
-  'Empty Richtext' => 'ባዶ @Richtext@',
-  'Empty Text' => 'ባዶ ፅሁፍ',
-);
+
+return [
+    'Empty Richtext' => 'ባዶ @Richtext@',
+    'Empty Text' => 'ባዶ ፅሁፍ',
+    'Empty HumHub Richtext' => '',
+];

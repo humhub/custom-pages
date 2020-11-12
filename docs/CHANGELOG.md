@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-1.1.1 (Unreleased)
-------------------------
+1.1.1 (November 12, 2020)
+-------------------------
 - Fix #151: Avoid error on creating of custom php page with not existing directory from old settings
 
 

@@ -2,6 +2,11 @@ Changelog
 =========
 
 
+1.1.1 (Unreleased)
+------------------------
+- Fix #151: Avoid error on creating of custom php page with not existing directory from old settings
+
+
 1.1.0 (November 3, 2020)
 ------------------------
 The default folders for PHP custom pages were changed.

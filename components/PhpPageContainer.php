@@ -92,7 +92,12 @@ trait PhpPageContainer
             return [];
         }
 
-        $files = FileHelper::findFiles($this->getPhpViewPathByView(), [
+        $dirPath = $this->getPhpViewPathByView();
+        if (!is_dir($dirPath)) {
+            return [];
+        }
+
+        $files = FileHelper::findFiles($dirPath, [
             'only' => ['*.php'],
             'recursive' => false
         ]);

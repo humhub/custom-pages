@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Display Empty Content' => '',
+  'Display Empty Content' => 'Mostrar contenido vacío',
   'Update' => 'Actualizar',
 );

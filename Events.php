@@ -2,7 +2,7 @@
 
 namespace humhub\modules\custom_pages;
 
-use humhub\modules\custom_pages\models\TemplateType;
+use humhub\modules\custom_pages\permissions\ManagePages;
 use Yii;
 use yii\helpers\Html;
 use humhub\modules\custom_pages\helpers\Url;
@@ -26,7 +26,8 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            if (!Yii::$app->user->isAdmin()) {
+            $canManageCustomPages = Yii::$app->user->can(new ManagePages());
+            if (!$canManageCustomPages) {
                 return;
             }
 
@@ -39,6 +40,7 @@ class Events
                     && Yii::$app->controller->module->id === 'custom_pages'
                     && (Yii::$app->controller->id === 'page' || Yii::$app->controller->id === 'config')),
                 'sortOrder' => 300,
+                'isVisible' => $canManageCustomPages,
             ]);
         } catch (\Throwable $e) {
             Yii::error($e);

@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\space\widgets\Menu;
+use humhub\modules\stream\actions\Stream;
 use humhub\modules\user\widgets\AccountMenu;
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\widgets\BaseMenu;
@@ -30,6 +31,8 @@ return [
         ['class' => 'humhub\modules\dashboard\widgets\Sidebar', 'event' => BaseMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onDashboardSidebarInit']],
         ['class' => 'humhub\modules\directory\widgets\Sidebar', 'event' => BaseMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onDirectorySidebarInit']],
         ['class' => 'humhub\modules\space\widgets\Sidebar', 'event' => BaseMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onSpaceSidebarInit']],
+
+        ['class' => Stream::class, 'event' => Stream::EVENT_AFTER_APPLY_FILTERS, 'callback' => ['humhub\modules\custom_pages\Events', 'onStreamAfterApplyFilters']],
     ],
 ];
 ?>

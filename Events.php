@@ -2,9 +2,9 @@
 
 namespace humhub\modules\custom_pages;
 
-use humhub\modules\custom_pages\models\TemplateType;
 use Yii;
 use yii\helpers\Html;
+use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\ContainerPage;
@@ -12,6 +12,7 @@ use humhub\modules\custom_pages\models\ContainerSnippet;
 use humhub\modules\custom_pages\widgets\SnippetWidget;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
+use humhub\modules\dashboard\components\actions\DashboardStreamAction;
 
 /**
  * CustomPagesEvents
@@ -242,6 +243,25 @@ class Events
         } catch (\Throwable $e) {
             Yii::error($e);
         }
+    }
+
+    public static function onStreamAfterApplyFilters($event)
+    {
+        try {
+            if (Yii::$app->user->isGuest &&
+                isset($event->sender) &&
+                $event->sender instanceof DashboardStreamAction) {
+                // Force public access("Members & Guests") to custom page type "User Account Menu (Settings)":
+                $event->sender->getStreamQuery()->query()
+                    ->leftJoin('custom_pages_page cppv', 'content.object_id = cppv.id')
+                    ->andWhere('cppv.target != :account_menu OR ( content.visibility = :visibility_public AND 0)',
+                    [':visibility_public' => Content::VISIBILITY_PUBLIC, ':account_menu' => Page::NAV_CLASS_ACCOUNTNAV]
+                );
+            }
+        } catch (\Throwable $e) {
+            Yii::error($e);
+        }
+
     }
 
 }

@@ -156,6 +156,11 @@ class PageController extends AbstractCustomContainerController
         // If no pageId was given, we create a new page with the given type.
         if (!$page) {
             $page = $this->createNewPage($type, $targetId);
+        } else if($page->getTargetId() == Page::NAV_CLASS_ACCOUNTNAV &&
+            $page->visibility == CustomContentContainer::VISIBILITY_PUBLIC) {
+            // Force visibility access "Members & Guests" to "Members only" for
+            // page type "User Account Menu (Settings)"
+            $page->visibility = CustomContentContainer::VISIBILITY_PRIVATE;
         }
 
         $isNew = $page->isNewRecord;

@@ -9,12 +9,13 @@
 namespace humhub\modules\custom_pages\permissions;
 
 use Yii;
+use humhub\modules\admin\components\BaseAdminPermission;
 use humhub\modules\user\models\User;
 
 /**
- * ManageFiles Permissions
+ * ManagePages Permissions
  */
-class ManagePages extends \humhub\libs\BasePermission
+class ManagePages extends BaseAdminPermission
 {
 
     /**

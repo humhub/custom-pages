@@ -10,6 +10,7 @@ use humhub\modules\custom_pages\components\PhpPageContainer;
 use humhub\modules\custom_pages\components\TemplatePageContainer;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use LogicException;
@@ -300,7 +301,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
         }
 
         if(!$container) {
-            return Yii::$app->user->isAdmin();
+            return Yii::$app->user->isAdmin() || Yii::$app->user->can(ManagePages::class);
         }
 
         if($container instanceof Space) {

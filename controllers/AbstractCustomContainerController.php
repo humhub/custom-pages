@@ -18,6 +18,7 @@ use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
+use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\space\models\Space;
 use Yii;
 use yii\web\HttpException;
@@ -136,7 +137,7 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
             return $this->contentContainer->isAdmin();
         }
 
-        return Yii::$app->user->isAdmin();
+        return Yii::$app->user->isAdmin() || Yii::$app->user->can(ManagePages::class);
     }
 
     public function isCanEdit() {

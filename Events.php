@@ -2,9 +2,9 @@
 
 namespace humhub\modules\custom_pages;
 
-use humhub\modules\custom_pages\permissions\ManagePages;
 use Yii;
 use yii\helpers\Html;
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\ContainerPage;
@@ -12,6 +12,7 @@ use humhub\modules\custom_pages\models\ContainerSnippet;
 use humhub\modules\custom_pages\widgets\SnippetWidget;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
+use humhub\modules\custom_pages\permissions\ManagePages;
 
 /**
  * CustomPagesEvents
@@ -26,21 +27,22 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
+            $canManageModules = Yii::$app->user->can(new ManageModules());
             $canManageCustomPages = Yii::$app->user->can(new ManagePages());
-            if (!$canManageCustomPages) {
+            if (!$canManageModules && !$canManageCustomPages) {
                 return;
             }
 
             $event->sender->addItem([
                 'label' => Yii::t('CustomPagesModule.base', 'Custom Pages'),
-                'url' => Url::toPageOverview(),
+                'url' => $canManageCustomPages ? Url::toPageOverview() : Url::toTemplateLayoutAdmin(),
                 'group' => 'manage',
                 'icon' => '<i class="fa fa-file-text-o"></i>',
                 'isActive' => (Yii::$app->controller->module
                     && Yii::$app->controller->module->id === 'custom_pages'
                     && (Yii::$app->controller->id === 'page' || Yii::$app->controller->id === 'config')),
                 'sortOrder' => 300,
-                'isVisible' => $canManageCustomPages,
+                'isVisible' => $canManageModules || $canManageCustomPages,
             ]);
         } catch (\Throwable $e) {
             Yii::error($e);
@@ -113,8 +115,7 @@ class Events
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
             foreach (Page::findAll(['target' => Page::NAV_CLASS_DIRECTORY]) as $page) {
-                // Admin only
-                if ($page->admin_only == 1 && !Yii::$app->user->isAdmin()) {
+                if (!$page->canView()) {
                     continue;
                 }
 

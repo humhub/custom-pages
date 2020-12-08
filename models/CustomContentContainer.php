@@ -125,7 +125,9 @@ abstract class CustomContentContainer extends ContentActiveRecord
 
         if($this->isGuestAccessEnabled()) {
             $result[static::VISIBILITY_PRIVATE] = Yii::t('CustomPagesModule.visibility', 'Members only');
-            $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'Members & Guests');
+            if ($this->getTargetId() != Page::NAV_CLASS_ACCOUNTNAV) {
+                $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'Members & Guests');
+            }
         } else {
             $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'All Members');
         }

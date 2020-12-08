@@ -2,7 +2,6 @@
 
 namespace humhub\modules\custom_pages;
 
-use humhub\modules\custom_pages\models\TemplateType;
 use Yii;
 use yii\helpers\Html;
 use humhub\modules\custom_pages\helpers\Url;

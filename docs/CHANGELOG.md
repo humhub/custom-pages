@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.2 (Unreleased)
+-------------------------
+- Fix #57: Deny public/guest access to custom page with type "User Account Menu (Settings)"
+
 
 1.1.1 (November 12, 2020)
 -------------------------

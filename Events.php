@@ -27,22 +27,20 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            $canManageModules = Yii::$app->user->can(new ManageModules());
-            $canManageCustomPages = Yii::$app->user->can(new ManagePages());
-            if (!$canManageModules && !$canManageCustomPages) {
+            if (!Yii::$app->user->can([ManageModules::class, ManagePages::class])) {
                 return;
             }
 
             $event->sender->addItem([
                 'label' => Yii::t('CustomPagesModule.base', 'Custom Pages'),
-                'url' => $canManageCustomPages ? Url::toPageOverview() : Url::toTemplateLayoutAdmin(),
+                'url' => Url::toPageOverview(),
                 'group' => 'manage',
                 'icon' => '<i class="fa fa-file-text-o"></i>',
                 'isActive' => (Yii::$app->controller->module
                     && Yii::$app->controller->module->id === 'custom_pages'
                     && (Yii::$app->controller->id === 'page' || Yii::$app->controller->id === 'config')),
                 'sortOrder' => 300,
-                'isVisible' => $canManageModules || $canManageCustomPages,
+                'isVisible' => true,
             ]);
         } catch (\Throwable $e) {
             Yii::error($e);

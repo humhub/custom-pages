@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\models;
 
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
@@ -301,7 +302,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
         }
 
         if(!$container) {
-            return Yii::$app->user->isAdmin() || Yii::$app->user->can(ManagePages::class);
+            return Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageModules::class, ManagePages::class]);
         }
 
         if($container instanceof Space) {

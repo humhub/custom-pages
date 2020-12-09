@@ -8,6 +8,7 @@
 namespace humhub\modules\custom_pages\controllers;
 
 use humhub\components\access\StrictAccess;
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\ContainerSnippet;
@@ -137,7 +138,7 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
             return $this->contentContainer->isAdmin();
         }
 
-        return Yii::$app->user->isAdmin() || Yii::$app->user->can(ManagePages::class);
+        return Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageModules::class, ManagePages::class]);
     }
 
     public function isCanEdit() {

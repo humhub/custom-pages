@@ -26,7 +26,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
 
     public function init()
     {
-        if (Yii::$app->user->can(ManagePages::class)) {
+        if (Yii::$app->user->can([ManageModules::class, ManagePages::class])) {
             $this->addItem([
                 'label' => Yii::t('CustomPagesModule.base', 'Overview'),
                 'url' => Url::toPageOverview(),

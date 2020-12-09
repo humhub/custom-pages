@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\custom_pages\permissions\ManagePages;
@@ -61,7 +62,7 @@ class PageController extends AbstractCustomContainerController
         }
 
         return [
-            ['permissions' => ManagePages::class]
+            ['permissions' => [ManageModules::class, ManagePages::class]]
         ];
     }
 

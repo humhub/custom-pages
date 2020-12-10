@@ -10,7 +10,6 @@ namespace humhub\modules\custom_pages\permissions;
 
 use Yii;
 use humhub\modules\admin\components\BaseAdminPermission;
-use humhub\modules\user\models\User;
 
 /**
  * ManagePages Permissions
@@ -21,18 +20,12 @@ class ManagePages extends BaseAdminPermission
     /**
      * @inheritdoc
      */
-    public $defaultAllowedGroups = [
-        User::USERGROUP_FRIEND,
-        User::USERGROUP_USER,
-        User::USERGROUP_SELF,
-    ];
+    public $defaultAllowedGroups = [];
 
     /**
      * @inheritdoc
      */
-    protected $fixedGroups = [
-        User::USERGROUP_GUEST
-    ];
+    protected $fixedGroups = [];
 
     /**
      * @inheritdoc

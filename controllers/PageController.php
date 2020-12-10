@@ -168,6 +168,10 @@ class PageController extends AbstractCustomContainerController
                 : $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));
         }
 
+        // Select a proper option on the edit form for old stored page
+        // if its visibility is not allowed for its page type:
+        $page->fixVisibility();
+
         return $this->render('@custom_pages/views/common/edit', [
             'page' => $page,
             'pageType' => $this->getPageType(),

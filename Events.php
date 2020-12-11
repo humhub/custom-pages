@@ -187,6 +187,14 @@ class Events
         }
     }
 
+    public static function onAccountTopMenuInit($event)
+    {
+        if (!Yii::$app->user->isAdmin() &&
+            version_compare(Yii::$app->version, '1.8', '<')) {
+            static::onAdminMenuInit($event);
+        }
+    }
+
     public static function onDashboardSidebarInit($event)
     {
         try {

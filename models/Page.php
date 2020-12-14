@@ -98,7 +98,7 @@ class Page extends CustomContentContainer
     }
 
     /**
-     * Fix visibility to proper value if current cannot be used depending on other attributes
+     * @inheritdoc
      */
     public function fixVisibility()
     {

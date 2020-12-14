@@ -503,4 +503,11 @@ abstract class CustomContentContainer extends ContentActiveRecord
         $this->getContentType()->afterDelete($this);
         parent::afterDelete();
     }
+
+    /**
+     * Fix visibility to proper value if current cannot be used depending on other attributes
+     */
+    public function fixVisibility()
+    {
+    }
 }

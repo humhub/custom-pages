@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages;
 
+use humhub\modules\admin\widgets\AdminMenu;
 use Yii;
 use yii\helpers\Html;
 use humhub\modules\admin\permissions\ManageModules;
@@ -190,7 +191,9 @@ class Events
     public static function onAccountTopMenuInit($event)
     {
         if (!Yii::$app->user->isAdmin() &&
-            version_compare(Yii::$app->version, '1.8', '<')) {
+            version_compare(Yii::$app->version, '1.8', '<') &&
+            !AdminMenu::canAccess()
+        ) {
             static::onAdminMenuInit($event);
         }
     }

@@ -2,8 +2,10 @@
 
 namespace humhub\modules\custom_pages;
 
+use humhub\modules\admin\widgets\AdminMenu;
 use Yii;
 use yii\helpers\Html;
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\ContainerPage;
@@ -11,6 +13,7 @@ use humhub\modules\custom_pages\models\ContainerSnippet;
 use humhub\modules\custom_pages\widgets\SnippetWidget;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
+use humhub\modules\custom_pages\permissions\ManagePages;
 
 /**
  * CustomPagesEvents
@@ -25,7 +28,7 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            if (!Yii::$app->user->isAdmin()) {
+            if (!Yii::$app->user->can([ManageModules::class, ManagePages::class])) {
                 return;
             }
 
@@ -38,6 +41,7 @@ class Events
                     && Yii::$app->controller->module->id === 'custom_pages'
                     && (Yii::$app->controller->id === 'page' || Yii::$app->controller->id === 'config')),
                 'sortOrder' => 300,
+                'isVisible' => true,
             ]);
         } catch (\Throwable $e) {
             Yii::error($e);
@@ -110,8 +114,7 @@ class Events
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
             foreach (Page::findAll(['target' => Page::NAV_CLASS_DIRECTORY]) as $page) {
-                // Admin only
-                if ($page->admin_only == 1 && !Yii::$app->user->isAdmin()) {
+                if (!$page->canView()) {
                     continue;
                 }
 
@@ -182,6 +185,16 @@ class Events
             }
         } catch (\Throwable $e) {
             Yii::error($e);
+        }
+    }
+
+    public static function onAccountTopMenuInit($event)
+    {
+        if (!Yii::$app->user->isAdmin() &&
+            version_compare(Yii::$app->version, '1.8', '<') &&
+            !AdminMenu::canAccess()
+        ) {
+            static::onAdminMenuInit($event);
         }
     }
 

@@ -2,8 +2,10 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\models\TemplateType;
+use humhub\modules\custom_pages\permissions\ManagePages;
 use Yii;
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\PageType;
@@ -60,7 +62,7 @@ class PageController extends AbstractCustomContainerController
         }
 
         return [
-            [ControllerAccess::RULE_ADMIN_ONLY]
+            ['permissions' => [ManageModules::class, ManagePages::class]]
         ];
     }
 

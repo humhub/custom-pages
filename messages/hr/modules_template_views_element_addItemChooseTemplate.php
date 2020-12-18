@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Choose a template' => '',
-  'Template' => '',
+  'Choose a template' => 'Odaberite predložak',
+  'Template' => 'Predložak',
 );

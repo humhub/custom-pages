@@ -1,5 +1,5 @@
 <?php
 return array (
   'Snippet' => 'Isječak',
-  'snippet' => '',
+  'snippet' => 'isječak',
 );

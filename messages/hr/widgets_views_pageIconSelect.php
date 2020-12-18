@@ -1,4 +1,4 @@
 <?php
 return array (
-  'none' => '',
+  'none' => 'nijedan/na',
 );

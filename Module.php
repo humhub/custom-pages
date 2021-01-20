@@ -124,7 +124,7 @@ class Module extends ContentContainerModule
     {
         if (!$contentContainer) {
             return [
-                new permissions\ManagePages(['contentContainer' => $contentContainer]),
+                new permissions\ManagePages(),
             ];
         }
 

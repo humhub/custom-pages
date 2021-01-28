@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\custom_pages\widgets\CustomPageInlineStyle;
+use humhub\modules\file\widgets\ShowFiles;
 use yii\helpers\Html;
 
 /** @var $page \humhub\modules\custom_pages\models\Page */
@@ -17,6 +18,8 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
         <div class="col-md-12">
 
             <?= $html; ?>
+
+            <?= ShowFiles::widget(['object' => $page]); ?>
 
         </div>
     </div>

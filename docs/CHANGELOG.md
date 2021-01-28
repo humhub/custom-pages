@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.1 (Unreleased)
+-------------------------
+- Enh #163: Attachments for HTML pages
+
 1.2.0 (December 12, 2020)
 -------------------------
 - Enh #57: New group permission "Can manage custom pages"

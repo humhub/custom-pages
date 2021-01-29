@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Custom</strong> Pages' => '<strong>Eigene</strong> Seiten',
-  '<strong>Edit</strong> snippet' => 'Schnipsel <strong>bearbeiten</strong>',
+  '<strong>Edit</strong> snippet' => 'Snippet <strong>bearbeiten</strong>',
   'Add' => 'Hinzufügen',
   'Add a file icon before the title' => 'Dateisymbol vor dem Titel hinzufügen',
   'Adds plain HTML content to your site.' => 'Fügt deiner Seite einfachen HTML-Inhalt hinzu.',
@@ -57,8 +57,8 @@ return array (
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => '',
   'Settings' => 'Einstellungen',
   'Show additional file information (size)' => 'Zusätzliche Dateiinformationen anzeigen (Größe)',
-  'Snipped-Layouts' => 'Schnipsel-Layouts',
-  'Snippets' => 'Schnipsel',
+  'Snipped-Layouts' => 'Snippet-Layouts',
+  'Snippets' => 'Snippet',
   'Source' => 'Quellcode',
   'Space Navigation' => '',
   'Stream' => 'Stream',

@@ -76,6 +76,8 @@ return [
     'Will redirect requests to a given (relative or absolute) url.' => 'Θα ανακατευθύνει τα αιτήματα σε μια δοσμένη (σχετική ή απόλυτη) διεύθυνση URL.',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'Με τις σελίδες που βασίζονται σε PHP μπορείτε να δημιουργήσετε προσαρμοσμένες σελίδες μέσω αρχείων προβολής στο σύστημα αρχείων σας. Παρακαλώ ελέγξτε τις ρυθμίσεις της μονάδας για περισσότερες πληροφορίες.',
     'Without adding to navigation (Direct link)' => 'Χωρίς προσθήκη στην πλοήγηση (Άμεσος σύνδεσμος)',
+    'Allows the user to manage custom pages.' => '',
+    'Can manage custom pages' => '',
     'Please choose one of the following content types. The content type defines how your content is embedded to your site.' => '',
     'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => '',
     'Space Navigation' => '',

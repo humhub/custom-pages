@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\models;
 
+use humhub\modules\content\models\Content;
 use Yii;
 use humhub\modules\custom_pages\widgets\WallEntry;
 use humhub\modules\custom_pages\helpers\Url;
@@ -85,6 +86,32 @@ class Page extends CustomContentContainer
         }
 
         return $rules;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        $this->fixVisibility();
+        return parent::beforeSave($insert);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function fixVisibility()
+    {
+        // Force visibility access "Members & Guests" to "Members only" for
+        // page type "User Account Menu (Settings)"
+        if ($this->getTargetId() == Page::NAV_CLASS_ACCOUNTNAV) {
+            if ($this->visibility == CustomContentContainer::VISIBILITY_PUBLIC) {
+                $this->visibility = CustomContentContainer::VISIBILITY_PRIVATE;
+            }
+            if ($this->content->visibility == Content::VISIBILITY_PUBLIC) {
+                $this->content->visibility = Content::VISIBILITY_PRIVATE;
+            }
+        }
     }
 
     /**

@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Admin only' => '',
-  'All Members' => '',
-  'Members & Guests' => '',
-  'Members only' => '',
+  'Admin only' => 'Samo za administratora',
+  'All Members' => 'Svi članovi',
+  'Members & Guests' => 'Članovi i gosti',
+  'Members only' => 'Samo za članove',
   'Public' => 'Javno',
-  'Space Members only' => '',
+  'Space Members only' => 'Samo članovi prostora',
 );

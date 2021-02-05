@@ -1,6 +1,16 @@
 Changelog
 =========
 
+1.2.0 (December 12, 2020)
+-------------------------
+- Enh #57: New group permission "Can manage custom pages"
+- Fix #57: Deny public/guest access to custom page with type "User Account Menu (Settings)"
+
+
+1.1.1 (November 12, 2020)
+-------------------------
+- Fix #151: Avoid error on creating of custom php page with not existing directory from old settings
+
 
 1.1.0 (November 3, 2020)
 ------------------------

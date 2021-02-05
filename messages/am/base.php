@@ -76,6 +76,8 @@ return [
     'Will redirect requests to a given (relative or absolute) url.' => 'የቀረቡት ጥያቆዎች ወደ(አማራጭ ወይም ትክክለኛ) url የሚዛወሩ ይሆናል።',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'መሰረታቸውን PHP ባደረጉ ገፃች በፋይል መሰደሪያዎ ላይ ፋይሉን በመመልከት ብጁ ገፃችን መፍጠር ይችላሉ። ለተጨማሪ መረጃ እባክዎን የሞዱሌ ማዋቀሪያውን ይመልከቱ።',
     'Without adding to navigation (Direct link)' => 'ወደማውጫ ቁልፉ ሳያስገቡ (ቀጥተኛ ማስፈንጠሪያ)',
+    'Allows the user to manage custom pages.' => '',
+    'Can manage custom pages' => '',
     'Please choose one of the following content types. The content type defines how your content is embedded to your site.' => '',
     'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => '',
     'Space Navigation' => '',

@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Create new {type}' => '',
-  'Edit template \'{templateName}\'' => '',
+  'Create new {type}' => 'Kreiraj novi/u {type}',
+  'Edit template \'{templateName}\'' => 'Uredi predložak \'{templateName}\'',
   'Save' => 'Spremi',
 );

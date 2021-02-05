@@ -4,6 +4,7 @@ namespace humhub\modules\custom_pages;
 
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\models\Content;
+use humhub\modules\user\models\User;
 use Yii;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\helpers\Url;
@@ -114,5 +115,19 @@ class Module extends ContentContainerModule
         foreach (models\ContainerSnippet::find()->contentContainer($container)->all() as $page) {
             $page->delete();
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPermissions($contentContainer = null)
+    {
+        if (!$contentContainer) {
+            return [
+                new permissions\ManagePages(),
+            ];
+        }
+
+        return [];
     }
 }

@@ -2,8 +2,10 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\models\TemplateType;
+use humhub\modules\custom_pages\permissions\ManagePages;
 use Yii;
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\PageType;
@@ -60,7 +62,7 @@ class PageController extends AbstractCustomContainerController
         }
 
         return [
-            [ControllerAccess::RULE_ADMIN_ONLY]
+            ['permissions' => [ManageModules::class, ManagePages::class]]
         ];
     }
 
@@ -165,6 +167,10 @@ class PageController extends AbstractCustomContainerController
                 ? $this->redirect(Url::toInlineEdit($page, $this->contentContainer))
                 : $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));
         }
+
+        // Select a proper option on the edit form for old stored page
+        // if its visibility is not allowed for its page type:
+        $page->fixVisibility();
 
         return $this->render('@custom_pages/views/common/edit', [
             'page' => $page,

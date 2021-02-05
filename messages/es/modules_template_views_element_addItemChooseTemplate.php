@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Choose a template' => '',
+  'Choose a template' => 'Elije una plantilla',
   'Template' => 'Plantilla',
 );

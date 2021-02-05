@@ -1,6 +1,6 @@
 <?php
 return array (
   'Content' => 'Sadržaj',
-  'Sidebar' => '',
-  'snippet' => '',
+  'Sidebar' => 'Bočna traka',
+  'snippet' => 'isječak',
 );

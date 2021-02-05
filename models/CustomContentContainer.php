@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\models;
 
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
@@ -10,6 +11,7 @@ use humhub\modules\custom_pages\components\PhpPageContainer;
 use humhub\modules\custom_pages\components\TemplatePageContainer;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use LogicException;
@@ -125,7 +127,9 @@ abstract class CustomContentContainer extends ContentActiveRecord
 
         if($this->isGuestAccessEnabled()) {
             $result[static::VISIBILITY_PRIVATE] = Yii::t('CustomPagesModule.visibility', 'Members only');
-            $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'Members & Guests');
+            if ($this->getTargetId() != Page::NAV_CLASS_ACCOUNTNAV) {
+                $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'Members & Guests');
+            }
         } else {
             $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'All Members');
         }
@@ -300,7 +304,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
         }
 
         if(!$container) {
-            return Yii::$app->user->isAdmin();
+            return Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageModules::class, ManagePages::class]);
         }
 
         if($container instanceof Space) {
@@ -500,5 +504,12 @@ abstract class CustomContentContainer extends ContentActiveRecord
     {
         $this->getContentType()->afterDelete($this);
         parent::afterDelete();
+    }
+
+    /**
+     * Fix visibility to proper value if current cannot be used depending on other attributes
+     */
+    public function fixVisibility()
+    {
     }
 }

@@ -8,7 +8,9 @@
 
 namespace humhub\modules\custom_pages\modules\template\models;
 
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\space\models\Space;
 use Yii;
 
@@ -28,7 +30,7 @@ class PagePermission
             return $container->isAdmin();
         }
 
-        return Yii::$app->user->isAdmin();
+        return Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageModules::class, ManagePages::class]);
     }
 
     public static function canTemplate()

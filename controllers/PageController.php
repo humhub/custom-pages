@@ -4,6 +4,7 @@ namespace humhub\modules\custom_pages\controllers;
 
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\models\ContentContainer;
 use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use Yii;
@@ -55,7 +56,7 @@ class PageController extends AbstractCustomContainerController
      */
     public function getAccessRules()
     {
-        if ($this->contentContainer) {
+        if ($this->getContainerFromRequest() instanceof Space) {
             return [
                 [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_ADMIN]],
             ];
@@ -64,6 +65,24 @@ class PageController extends AbstractCustomContainerController
         return [
             ['permissions' => [ManageModules::class, ManagePages::class]]
         ];
+    }
+
+    /**
+     * This is a patch for https://github.com/humhub/humhub/issues/4844
+     * @return mixed|\yii\db\ActiveRecord|null
+     * @throws \yii\db\IntegrityException
+     */
+    private function getContainerFromRequest()
+    {
+        $guid = Yii::$app->request->get('cguid', Yii::$app->request->get('sguid', Yii::$app->request->get('uguid')));
+        if (!empty($guid)) {
+            $contentContainerModel = ContentContainer::findOne(['guid' => $guid]);
+            if ($contentContainerModel !== null) {
+                return $contentContainerModel->getPolymorphicRelation();
+            }
+        }
+
+        return null;
     }
 
     /**

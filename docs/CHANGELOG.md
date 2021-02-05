@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.1 (February 05, 2021)
+-------------------------
+- Fix #166 Only system admin can access custom pages space settings
+
 1.2.0 (December 12, 2020)
 -------------------------
 - Enh #57: New group permission "Can manage custom pages"

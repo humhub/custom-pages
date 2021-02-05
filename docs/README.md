@@ -1,6 +1,6 @@
 # Custom Pages
 
-[![Build Status](https://travis-ci.org/humhub/humhub-modules-custom-pages.svg?branch=master)](https://travis-ci.org/humhub/humhub-modules-custom-pages)
+[![Test Status](https://github.com/humhub/humhub-modules-custom-pages/workflows/PHP%20Codeception%20Tests/badge.svg)](https://github.com/humhub/humhub-modules-custom-pages/actions)
 
 The custom pages modules allows the creation of customized **pages** and **snippets** (sidebar elements) as well as on space and on 
 global level. 

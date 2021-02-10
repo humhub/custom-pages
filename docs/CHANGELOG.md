@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.2 (Unreleased)
+-------------------------
+- Fix #168: Add edit button to markdown pages
+
 1.2.1 (February 05, 2021)
 -------------------------
 - Fix #166 Only system admin can access custom pages space settings

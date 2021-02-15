@@ -1,14 +1,14 @@
 <?php
 return array (
-  'Content' => '',
+  'Content' => 'Conteúdo',
   'ID' => 'ID',
   'Icon' => '',
   'Invalid template selection!' => '',
   'Invalid view file selection!' => '',
-  'Sort Order' => '',
+  'Sort Order' => 'Ordenação',
   'Style Class' => '',
   'Target Url' => '',
   'Template Layout' => '',
   'Title' => 'Título',
-  'Type' => '',
+  'Type' => 'Tipo',
 );

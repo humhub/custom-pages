@@ -3,6 +3,7 @@
 namespace humhub\modules\custom_pages\assets;
 
 use yii\web\AssetBundle;
+use yii\web\View;
 
 class CkEditorAssetBundle extends AssetBundle
 {
@@ -15,8 +16,12 @@ class CkEditorAssetBundle extends AssetBundle
      */
     public $defer = true;
 
-    public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
+    public $jsOptions = ['position' => View::POS_HEAD];
     public $sourcePath = '@custom_pages/resources/ckeditor';
+
+    public $publishOptions = [
+        'forceCopy' => false,
+        ];
 
     public $js = [
         'ckeditor.js'

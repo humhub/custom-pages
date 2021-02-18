@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.3.0 (February 18, 2021)
+-------------------------
+- Fix #88: Text alignment resets when reloading ckeditor input
+- Chng: Removed ckeditor show more toolbar item due to content filter issues
+- Chng: Updated ckeditor to 4.16.0
+
 1.2.1 (February 05, 2021)
 -------------------------
 - Fix #166 Only system admin can access custom pages space settings

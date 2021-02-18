@@ -18,9 +18,19 @@ class Assets extends AssetBundle
     public $sourcePath = '@custom_pages/resources';
 
     public $publishOptions = [
-        'forceCopy' => false
+        'forceCopy' => false,
+        'only' => [
+            'bgImage1.jpg',
+            'bgImage2.jpg',
+            'bootstrap-select.css.map',
+            'bootstrap-select.min.css',
+            'bootstrap-select.js.map',
+            'bootstrap-select.min.js',
+            'custom-pages.css',
+            'loader.gif',
+            'module_image.png',
+        ]
     ];
-
 
     public $css = [
         'custom-pages.css'

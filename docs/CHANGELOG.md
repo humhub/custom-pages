@@ -6,6 +6,7 @@ Changelog
 - Fix #88: Text alignment resets when reloading ckeditor input
 - Chng: Removed ckeditor show more toolbar item due to content filter issues
 - Chng: Updated ckeditor to 4.16.0
+- Fix #168: Add edit button to markdown pages
 
 1.2.1 (February 05, 2021)
 -------------------------

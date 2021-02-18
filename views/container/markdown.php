@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\custom_pages\modules\template\widgets\PageConfigurationButton;
 use humhub\modules\custom_pages\widgets\CustomPageInlineStyle;
 use yii\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichText;
@@ -10,6 +11,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 
 <?= CustomPageInlineStyle::widget(['theme' => $this->theme]); ?>
 
+<?= PageConfigurationButton::widget() ?>
 <div class="panel panel-default <?= Html::encode($cssClass) ?>">
     <div class="panel-body">
         <?= RichText::output($md)?>

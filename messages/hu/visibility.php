@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Admin only' => '',
-  'All Members' => '',
-  'Members & Guests' => '',
-  'Members only' => '',
+  'Admin only' => 'Csak admin',
+  'All Members' => 'Minden Felhasználó',
+  'Members & Guests' => 'Felhasználó és Vendég',
+  'Members only' => 'Csak Felhasználó',
   'Public' => 'Nyilvános',
-  'Space Members only' => '',
+  'Space Members only' => 'Csak Space Felhasználó',
 );

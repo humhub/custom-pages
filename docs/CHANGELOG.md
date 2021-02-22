@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.3.0 (February 18, 2021)
+1.3.0 (February 22, 2021)
 -------------------------
 - Fix #88: Text alignment resets when reloading ckeditor input
 - Chng: Removed ckeditor show more toolbar item due to content filter issues

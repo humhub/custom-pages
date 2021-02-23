@@ -1,7 +1,7 @@
 <?php
 return array (
-  'Add new {pageType}' => '',
-  'Create new template' => '',
-  'Edit template' => '',
+  'Add new {pageType}' => 'Adicionar novo {pageType}',
+  'Create new template' => 'Criar novo modelo',
+  'Edit template' => 'Editar modelo',
   'Settings' => 'Definições',
 );

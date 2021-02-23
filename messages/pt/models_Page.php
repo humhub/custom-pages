@@ -1,11 +1,11 @@
 <?php
 return array (
-  'Abstract' => '',
-  'Navigation' => '',
-  'Only visible for admins' => '',
-  'Open in new window' => '',
-  'Page' => '',
-  'Url shortcut' => '',
+  'Abstract' => 'Resumo',
+  'Navigation' => 'Navegação',
+  'Only visible for admins' => 'Visível apenas para a administração',
+  'Open in new window' => 'Abrir em nova janela',
+  'Page' => 'Página',
+  'Url shortcut' => 'Atalho URL',
   'View' => 'Ver',
-  'page' => '',
+  'page' => 'página',
 );

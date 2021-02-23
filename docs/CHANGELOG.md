@@ -4,6 +4,7 @@ Changelog
 1.3.1 (February 23, 2021)
 -------------------------
 - Fix: Stream Channel was set for AdminOnly pages
+- Enh: Add info regarding "Admin Only" pages without Stream support
 
 
 1.3.0 (February 22, 2021)

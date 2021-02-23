@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.3.1 (February 23, 2021)
+-------------------------
+- Fix: Stream Channel was set for AdminOnly pages
+
+
 1.3.0 (February 22, 2021)
 -------------------------
 - Fix #88: Text alignment resets when reloading ckeditor input

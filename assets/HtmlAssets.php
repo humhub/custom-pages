@@ -8,20 +8,20 @@
 namespace humhub\modules\custom_pages\assets;
 
 use humhub\modules\ui\view\components\View;
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 
 class HtmlAssets extends AssetBundle
 {
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@custom_pages/resources';
+    public $sourcePath = '@custom_pages/resources/js';
 
     /**
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.custom_pages.html.js'
+        'humhub.custom_pages.html.js'
     ];
 
     /**

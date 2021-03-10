@@ -105,7 +105,7 @@ $contentType = $page->getContentType();
         <?php endif; ?>
 
 <?= Html::script(<<<JS
-
+    var htmlContentCodeMirror; // Used in /resources/js/humhub.custom_pages.html.js
     $(document).one("humhub:ready", function () {
           
         if (!$("#html_content").length) {
@@ -113,7 +113,7 @@ $contentType = $page->getContentType();
         }
         
         setTimeout(function () {
-            CodeMirror.fromTextArea($("#html_content")[0], {
+            htmlContentCodeMirror = CodeMirror.fromTextArea($("#html_content")[0], {
                 mode: "text/html",
                 lineNumbers: true,
                 extraKeys: {"Ctrl-Space": "autocomplete"}

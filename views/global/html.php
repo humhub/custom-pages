@@ -19,8 +19,6 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 
             <?= $html; ?>
 
-            <?= ShowFiles::widget(['object' => $page]); ?>
-
         </div>
     </div>
 </div>

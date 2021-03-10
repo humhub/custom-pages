@@ -27,11 +27,9 @@ class CreateContainerPageCest
 
         $I->waitForText('Configuration');
 
-        $I->seeInField('input[name="type"][disabled]', 'MarkDown');
-        $I->seeInField('input[name="target"][disabled]', 'Space Navigation');
-
         $I->fillField('ContainerPage[title]', 'Space Markdown Page');
         $I->fillField('#containerpage-page_content .humhub-ui-richtext', 'Space Test Content');
+        $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->fillField('ContainerPage[sort_order]', '400');
         $I->selectOption('ContainerPage[icon]',  ['value' => 'fa-adn']);
 

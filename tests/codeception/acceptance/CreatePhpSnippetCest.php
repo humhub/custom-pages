@@ -42,6 +42,7 @@ class CreatePhpSnippetCest
 
         $I->fillField('Snippet[title]', 'PHP snippet');
         $I->selectOption('Snippet[page_content]', ['value' => 'test_snippet']);
+        $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->selectOption('Snippet[icon]',  ['value' => 'fa-adn']);
         $I->click('Save');
         $I->wait(1);

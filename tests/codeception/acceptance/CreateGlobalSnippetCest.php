@@ -27,11 +27,9 @@ class CreateGlobalSnippetCest
 
         $I->waitForText('Configuration');
 
-        $I->seeInField('input[name="type"][disabled]', 'MarkDown');
-        $I->seeInField('input[name="target"][disabled]', 'Dashboard');
-
         $I->fillField('Snippet[title]', 'Test title');
         $I->fillField('#snippet-page_content .humhub-ui-richtext', 'Test Snippet Content');
+        $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->fillField('Snippet[sort_order]', '400');
         $I->selectOption('Snippet[icon]',  ['value' => 'fa-adn']);
         $I->fillField('Snippet[cssClass]',  'myDashboardWidget');
@@ -64,6 +62,7 @@ class CreateGlobalSnippetCest
 
         $I->fillField('Snippet[title]', 'Iframe Snippet');
         $I->fillField('Snippet[page_content]', 'https://www.humhub.org');
+        $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->selectOption('Snippet[icon]',  ['value' => 'fa-adn']);
         $I->fillField('Snippet[cssClass]',  'myDirectoryWidget');
 

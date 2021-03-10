@@ -135,18 +135,6 @@ $contentType = $page->getContentType();
                             $(".infoAdminOnly").hide();
                         }
                     });
-
-                    if (!$("#html_content").length) {
-                        return;
-                    }
-
-                    setTimeout(function () {
-                        CodeMirror.fromTextArea($("#html_content")[0], {
-                            mode: "text/html",
-                            lineNumbers: true,
-                            extraKeys: {"Ctrl-Space": "autocomplete"}
-                        })
-                    }, 60);
                 }
             );
         </script>

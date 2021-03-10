@@ -1,5 +1,5 @@
 <?php
 return array (
   'Snippet' => 'Widget',
-  'snippet' => 'Schnipsel',
+  'snippet' => 'Snippet',
 );

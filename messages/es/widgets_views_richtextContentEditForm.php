@@ -1,5 +1,5 @@
 <?php
 return array (
-  'less' => '',
+  'less' => 'menos',
   'more' => 'más',
 );

@@ -88,6 +88,11 @@ $contentType = $page->getContentType();
 
         <?= $form->field($page, 'visibility')->radioList($page->getVisibilitySelection()) ?>
 
+        <div class="alert alert-info infoAdminOnly"
+             <?php if ($page->visibility != Page::VISIBILITY_ADMIN_ONLY): ?>style="display:none"<?php endif; ?>>
+            <?= Yii::t('CustomPagesModule.views_common_edit', '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!'); ?>
+        </div>
+
         <?php if ($page->isAllowedField('in_new_window')) : ?>
             <?php if ($page->hasAttribute('in_new_window')) : ?>
                 <?= $form->field($page, 'in_new_window')->checkbox() ?>
@@ -104,25 +109,47 @@ $contentType = $page->getContentType();
             <?= Button::success(Yii::t('CustomPagesModule.views_common_edit', 'Inline Editor'))->link(Url::toInlineEdit($page, $target->container))->right()->icon('fa-pencil') ?>
         <?php endif; ?>
 
-<?= Html::script(<<<JS
-    var htmlContentCodeMirror; // Used in /resources/js/humhub.custom_pages.html.js
-    $(document).one("humhub:ready", function () {
-          
-        if (!$("#html_content").length) {
-            return;
-        }
-        
-        setTimeout(function () {
-            htmlContentCodeMirror = CodeMirror.fromTextArea($("#html_content")[0], {
-                mode: "text/html",
-                lineNumbers: true,
-                extraKeys: {"Ctrl-Space": "autocomplete"}
-            })
-        }, 60);
-        }
-    );
-JS
-); ?>
+        <script <?= Html::nonce(); ?>>
+            var htmlContentCodeMirror; // Used in /resources/js/humhub.custom_pages.html.js
+            $(document).one("humhub:ready", function () {
+
+                if (!$("#html_content").length) {
+                    return;
+                }
+
+                setTimeout(function () {
+                    htmlContentCodeMirror = CodeMirror.fromTextArea($("#html_content")[0], {
+                        mode: "text/html",
+                        lineNumbers: true,
+                        extraKeys: {"Ctrl-Space": "autocomplete"}
+                    })
+                }, 60);
+                }
+            );
+      
+            $(document).one("humhub:ready", function () {
+                    $('input[type="radio"][name="ContainerPage[visibility]"]').click(function () {
+                        if ($(this).attr("value") == <?= Page::VISIBILITY_ADMIN_ONLY ?>) {
+                            $(".infoAdminOnly").show();
+                        } else {
+                            $(".infoAdminOnly").hide();
+                        }
+                    });
+
+                    if (!$("#html_content").length) {
+                        return;
+                    }
+
+                    setTimeout(function () {
+                        CodeMirror.fromTextArea($("#html_content")[0], {
+                            mode: "text/html",
+                            lineNumbers: true,
+                            extraKeys: {"Ctrl-Space": "autocomplete"}
+                        })
+                    }, 60);
+                }
+            );
+        </script>
         <?php ActiveForm::end(); ?>
     </div>
 </div>

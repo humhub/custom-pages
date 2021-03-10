@@ -36,6 +36,7 @@ $uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', 'sgu
         var $input = $('#' + id);
 
         var initBasicEditor = function (id) {
+            return initFullEditor(id);
             $('#' + id).data('preset', 'basic');
             return initCkEditor(id, [
                 {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
@@ -96,11 +97,11 @@ $uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', 'sgu
                 }
             });
 
-            instance.ui.addButton('show_more', {// add new button and bind our command
+           /* instance.ui.addButton('show_more', {// add new button and bind our command
                 label: buttonLabel,
                 command: 'show_more',
                 toolbar: 'showmore',
-            });
+            }); */
         };
 
         $(document).off('click', '.cke_dialog_tabs a:visible:eq(2)').on('click', '.cke_dialog_tabs a:visible:eq(2)', function () {

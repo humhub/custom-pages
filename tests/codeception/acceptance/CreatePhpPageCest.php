@@ -8,7 +8,7 @@
 
 class CreatePhpPageCest
 {
-    public function testCreateMarkdownPageOnTopMenu(AcceptanceTester $I)
+    public function testCreatePhpPageOnTopMenu(AcceptanceTester $I)
     {
         $I->amAdmin();
         $I->amOnPage('index-test.php?r=custom_pages/config');
@@ -17,7 +17,10 @@ class CreatePhpPageCest
 
         $I->wait(1);
 
-        $I->fillField('SettingsForm[phpGlobalPagePath]', '@custom_pages/tests/codeception/_data/views/');
+        $I->fillField('SettingsForm[phpGlobalPagePath]', '@custom_pages/tests/codeception/_data/views/global_pages');
+        $I->fillField('SettingsForm[phpGlobalSnippetPath]', '@custom_pages/tests/codeception/_data/views/global_snippets');
+        $I->fillField('SettingsForm[phpContainerSnippetPath]', '@custom_pages/tests/codeception/_data/views/container_snippets');
+        $I->fillField('SettingsForm[phpContainerPagePath]', '@custom_pages/tests/codeception/_data/views/container_pages');
         $I->click('Save');
 
         $I->seeSuccess('Saved');

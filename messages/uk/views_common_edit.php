@@ -1,6 +1,7 @@
 <?php
 
 return [
+    '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!' => '',
     'By setting an url shortcut value, you can create a better readable url for your page. If <b>URL Rewriting</b> is enabled on your site, the value \'mypage\' will result in an url \'www.example.de/p/mypage\'.' => '',
     'Configuration' => '',
     'Delete' => '',

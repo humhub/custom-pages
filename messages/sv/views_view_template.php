@@ -1,8 +1,8 @@
 <?php
 return array (
   'Edit Template' => 'Redigera Mall',
-  'Edit elements' => '',
+  'Edit elements' => 'Redigera element',
   'Edit template' => 'Redigera Mall',
-  'Page configuration' => '',
-  'Turn edit off' => '',
+  'Page configuration' => 'Konfigurera sida',
+  'Turn edit off' => 'Slå av möjligheten att redigera',
 );

@@ -445,12 +445,6 @@ abstract class CustomContentContainer extends ContentActiveRecord
      */
     public function beforeSave($insert)
     {
-        if($this->checkAbstract() && !$this->admin_only) {
-            $this->streamChannel = 'default';
-        } else {
-            $this->streamChannel = null;
-        }
-
         switch($this->visibility) {
             case static::VISIBILITY_ADMIN_ONLY:
                 $this->admin_only = 1;
@@ -464,6 +458,12 @@ abstract class CustomContentContainer extends ContentActiveRecord
                 $this->admin_only = 0;
                 $this->content->visibility = Content::VISIBILITY_PRIVATE;
                 break;
+        }
+
+        if($this->checkAbstract() && !$this->admin_only) {
+            $this->streamChannel = 'default';
+        } else {
+            $this->streamChannel = null;
         }
 
         return parent::beforeSave($insert);

@@ -1,6 +1,6 @@
 <?php
 return array (
   'Content' => 'Innehåll',
-  'Sidebar' => '',
-  'snippet' => '',
+  'Sidebar' => 'Sidovyn',
+  'snippet' => 'snippet',
 );

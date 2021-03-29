@@ -49,4 +49,3 @@ use humhub\libs\Html; ?>
         }
     });
 <?= Html::endTag('script') ?>
-?>

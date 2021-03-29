@@ -6,6 +6,7 @@ Changelog
 - Enh #163: Attachments for HTML pages
 - Enh: HumHub min. version increased to 1.8
 - Enh: Improved page edit form with beginCollapsibleFields
+- Fix #177: Remove extraneous ?>
 
 
 1.3.1 (February 23, 2021)

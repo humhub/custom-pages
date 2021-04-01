@@ -42,11 +42,9 @@ class CreatePhpPageCest
 
         $I->waitForText('Configuration');
 
-        $I->seeInField('input[name="type"][disabled]', 'PHP');
-        $I->seeInField('input[name="target"][disabled]', 'Top Navigation');
-
         $I->fillField('Page[title]', 'PHP title');
         $I->selectOption('Page[page_content]', ['value' => 'test_page']);
+        $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->fillField('Page[sort_order]', '400');
         $I->selectOption('Page[icon]',  ['value' => 'fa-adn']);
         $I->click('Save');

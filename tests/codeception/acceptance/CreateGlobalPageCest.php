@@ -25,11 +25,9 @@ class CreateGlobalPageCest
 
         $I->waitForText('Configuration');
 
-        $I->seeInField('input[name="type"][disabled]', 'MarkDown');
-        $I->seeInField('input[name="target"][disabled]', 'Top Navigation');
-
         $I->fillField('Page[title]', 'Test title');
         $I->fillField('#page-page_content .humhub-ui-richtext', 'Test Content');
+        $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->fillField('Page[sort_order]', '400');
         $I->selectOption('Page[icon]',  ['value' => 'fa-adn']);
 
@@ -62,11 +60,9 @@ class CreateGlobalPageCest
 
         $I->waitForText('Configuration');
 
-        $I->seeInField('input[name="type"][disabled]', 'Link');
-        $I->seeInField('input[name="target"][disabled]', 'User Account Menu (Settings)');
-
         $I->fillField('Page[title]', 'Test link');
         $I->fillField('Page[page_content]', 'index-test.php?r=dashboard/dashboard');
+        $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->fillField('Page[sort_order]', '400');
         $I->selectOption('Page[icon]', ['value' => 'fa-adn']);
         $I->click('Save');
@@ -101,14 +97,12 @@ class CreateGlobalPageCest
 
         $I->waitForText('Configuration');
 
-        $I->seeInField('input[name="type"][disabled]', 'Html');
-        $I->seeInField('input[name="target"][disabled]', 'Directory Menu');
-
         $I->fillField('Page[title]', 'Test html');
 
         $I->executeJS('$(".CodeMirror:visible")[0].CodeMirror.getDoc().setValue("<div id=\"testDiv\">My test div</div>")');
         $I->executeJS('$(".CodeMirror:visible")[0].CodeMirror.save()');
 
+        $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->fillField('Page[sort_order]', '400');
         $I->selectOption('Page[icon]', ['value' => 'fa-adn']);
         $I->click('Save');

@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.4.0 (Unreleased)
+-------------------------
+- Enh #163: Attachments for HTML pages
+- Enh: HumHub min. version increased to 1.8
+- Enh: Improved page edit form with beginCollapsibleFields
+- Fix #177: Remove extraneous ?>
+
+
 1.3.1 (February 23, 2021)
 -------------------------
 - Fix: Stream Channel was set for AdminOnly pages
@@ -14,9 +22,11 @@ Changelog
 - Chng: Updated ckeditor to 4.16.0
 - Fix #168: Add edit button to markdown pages
 
+
 1.2.1 (February 05, 2021)
 -------------------------
 - Fix #166 Only system admin can access custom pages space settings
+
 
 1.2.0 (December 12, 2020)
 -------------------------

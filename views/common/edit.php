@@ -12,7 +12,6 @@ use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\content\widgets\richtext\RichTextField;
 
 \humhub\modules\custom_pages\assets\Assets::register($this);
-\humhub\modules\custom_pages\assets\CodeMirrorAssetBundle::register($this);
 
 /** @var  $page \humhub\modules\custom_pages\models\CustomContentContainer */
 /** @var  $subNav string */
@@ -119,23 +118,6 @@ $contentType = $page->getContentType();
         <?php endif; ?>
 
         <script <?= Html::nonce(); ?>>
-            var htmlContentCodeMirror; // Used in /resources/js/humhub.custom_pages.html.js
-            $(document).one("humhub:ready", function () {
-
-                    if (!$("#html_content").length) {
-                        return;
-                    }
-
-                    setTimeout(function () {
-                        htmlContentCodeMirror = CodeMirror.fromTextArea($("#html_content")[0], {
-                            mode: "text/html",
-                            lineNumbers: true,
-                            extraKeys: {"Ctrl-Space": "autocomplete"}
-                        })
-                    }, 60);
-                }
-            );
-
             $(document).one("humhub:ready", function () {
                     $('input[type="radio"][name="ContainerPage[visibility]"]').click(function () {
                         if ($(this).attr("value") == <?= Page::VISIBILITY_ADMIN_ONLY ?>) {

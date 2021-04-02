@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.0 (Unreleased)
+-------------------------
+- Enh: Use composer CoreMirror asset from core
+
 1.4.0 (Unreleased)
 -------------------------
 - Enh #163: Attachments for HTML pages

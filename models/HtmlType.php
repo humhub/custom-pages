@@ -13,6 +13,7 @@ use humhub\modules\custom_pages\assets\HtmlAssets;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\UploadProgress;
+use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
 use Yii;
 use yii\widgets\ActiveForm;
 
@@ -50,7 +51,7 @@ class HtmlType extends ContentType
     {
         HtmlAssets::register(Yii::$app->getView());
 
-        $field = $form->field($page, $page->getPageContentProperty())->textarea(['id' => 'html_content', 'class' => 'form-control', 'rows' => '15']);
+        $field = $form->field($page, $page->getPageContentProperty())->widget(CodeMirrorInputWidget::class, ['id' => 'html_content']);
 
         $field .= '<div class="form-group">'
             . UploadButton::widget([

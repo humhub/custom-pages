@@ -1,11 +1,11 @@
 <?php
 
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 \humhub\modules\custom_pages\modules\template\assets\SourceEditorAsset::register($this);
-\humhub\modules\custom_pages\assets\CodeMirrorAssetBundle::register($this);
 
 /* @var $model humhub\modules\custom_pages\modules\template\models\Template */
 
@@ -49,7 +49,7 @@ $this->registerJsConfig('custom_pages.template.source', [
 
         <?php $form = ActiveForm::begin(['enableClientValidation' => false, 'options' => ['id' => 'sourceForm']]); ?>
 
-        <?= $form->field($model, 'source')->textarea(['id' => 'template-form-source', 'rows' => 15, "spellcheck" => "false", 'class' => 'form-control autosize'])->label(false); ?>
+        <?= $form->field($model, 'source')->widget(CodeMirrorInputWidget::class, ['id' => 'template-form-source', 'spellcheck' => 'false', 'inputClass' => 'form-control autosize'])->label(false); ?>
 
         <div class="clearfix">
             <?= Html::submitButton(Yii::t('CustomPagesModule.base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>

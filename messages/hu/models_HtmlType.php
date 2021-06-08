@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'Attach Files' => '',
-];
+return array (
+  'Attach Files' => 'Csatolt fájlok',
+);

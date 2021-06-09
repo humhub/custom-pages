@@ -21,7 +21,7 @@ class TemplateElementTest extends HumHubDbTestCase
     public $element2;
     public $defaultContent1;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->template = Template::findOne(['id' => 1]);

@@ -15,7 +15,7 @@ class TemplateContentTest extends HumHubDbTestCase
 
     public $owner;
 
-    public function setUp()
+    public function setUp(): void
     {
        parent::setUp();
        $this->owner = TemplateInstance::findOne(['id' => 1]);

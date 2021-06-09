@@ -11,7 +11,7 @@ class CreateGlobalSnippetCest
     public function testCreateMarkdownSnippetOnDashboard(AcceptanceTester $I)
     {
         $I->amAdmin();
-        $I->wantToTest('the creation of a markdown page');
+        $I->wantToTest('the creation of a markdown page on Dashboard');
         $I->amGoingTo('add a new page');
         $I->amOnPage('index-test.php?r=custom_pages/snippet');
         $I->expectTo('see the add new page site');
@@ -43,10 +43,13 @@ class CreateGlobalSnippetCest
         $I->see('Test Snippet Content', '.myDashboardWidget');
     }
 
+    /**
+     * @skip Directory left menu was deprecated in new People/Space Directory views
+     */
     public function testCreateIframeSnippetOnDirectory(AcceptanceTester $I)
     {
         $I->amAdmin();
-        $I->wantToTest('the creation of a markdown page');
+        $I->wantToTest('the creation of a markdown page on Directory');
         $I->amGoingTo('add a new page');
         $I->amOnPage('index-test.php?r=custom_pages/snippet');
         $I->expectTo('see the add new page site');

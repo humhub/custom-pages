@@ -21,7 +21,7 @@ class TemplateElementTest extends HumHubDbTestCase
     public $element2;
     public $defaultContent1;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->template = Template::findOne(['id' => 1]);
@@ -37,11 +37,11 @@ class TemplateElementTest extends HumHubDbTestCase
     {
         $result = $this->template->render($this->owner, true);
 
-        $this->assertContains('<p>Default</p>', $result);
-        $this->assertContains('data-template-element="test_content"', $result);
-        $this->assertContains('data-template-owner="' . get_class($this->owner) . '"', $result);
-        $this->assertContains('data-template-content="' . RichtextContent::class . '"', $result);
-        $this->assertContains('data-template-empty="0"', $result);
+        $this->assertStringContainsString('<p>Default</p>', $result);
+        $this->assertStringContainsString('data-template-element="test_content"', $result);
+        $this->assertStringContainsString('data-template-owner="' . get_class($this->owner) . '"', $result);
+        $this->assertStringContainsString('data-template-content="' . RichtextContent::class . '"', $result);
+        $this->assertStringContainsString('data-template-empty="0"', $result);
     }
 
     public function testOverwriteDefaultContent()
@@ -53,13 +53,13 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $result = $this->template->render($this->owner, true);
 
-        $this->assertContains('<p>Non Default</p>', $result);
-        $this->assertContains('data-template-element="test_content"', $result);
-        $this->assertContains('data-template-owner="' . get_class($this->owner) . '"', $result);
-        $this->assertContains('data-template-content="' . RichtextContent::class . '"', $result);
-        $this->assertContains('data-template-empty="0"', $result);
+        $this->assertStringContainsString('<p>Non Default</p>', $result);
+        $this->assertStringContainsString('data-template-element="test_content"', $result);
+        $this->assertStringContainsString('data-template-owner="' . get_class($this->owner) . '"', $result);
+        $this->assertStringContainsString('data-template-content="' . RichtextContent::class . '"', $result);
+        $this->assertStringContainsString('data-template-empty="0"', $result);
         // Test empty element
-        $this->assertContains('data-template-empty="1"', $result);
+        $this->assertStringContainsString('data-template-empty="1"', $result);
     }
 
     public function testOverwriteEmptyDefaultContent()
@@ -71,9 +71,9 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $result = $this->template->render($this->owner, true);
 
-        $this->assertContains('<p>Non Default2</p>', $result);
-        $this->assertContains('data-template-element="test_text"', $result);
-        $this->assertNotContains('data-template-empty="1"', $result);
+        $this->assertStringContainsString('<p>Non Default2</p>', $result);
+        $this->assertStringContainsString('data-template-element="test_text"', $result);
+        $this->assertStringNotContainsString('data-template-empty="1"', $result);
     }
 
     public function testOverwriteOldContent()
@@ -91,7 +91,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $result = $this->template->render($this->owner, true);
 
-        $this->assertContains('<p>Non Default New</p>', $result);
+        $this->assertStringContainsString('<p>Non Default New</p>', $result);
         $this->assertNull(RichtextContent::findOne(['id' => $content->id]));
     }
 
@@ -104,7 +104,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $result = $this->template->render($this->owner, true);
 
-        $this->assertContains('<p>Default2</p>', $result);
+        $this->assertStringContainsString('<p>Default2</p>', $result);
         // Get sure the old default content was removed
         $this->assertNull(RichtextContent::findOne(['id' => $this->defaultContent1->id]));
     }

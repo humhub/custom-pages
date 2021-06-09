@@ -78,7 +78,10 @@ class CreateGlobalPageCest
         $I->wait(2);
         $I->seeInCurrentUrl('dashboard/dashboard');
     }
-    
+
+    /**
+     * @skip Directory left menu was deprecated in new People/Space Directory views
+     */
     public function testCreateHtmlPageOnDirectoryMenu(AcceptanceTester $I)
     {
         $I->amAdmin();

@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'This page lists all available custom content entries.' => '',
-];
+return array (
+  'This page lists all available custom content entries.' => 'หน้านี้แสดงรายการเนื้อหาแบบกำหนดเองที่มีอยู่ทั้งหมด',
+);

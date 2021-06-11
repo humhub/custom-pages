@@ -24,10 +24,12 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 <?php else: ?>
     <div class="container <?= Html::encode($cssClass) ?>">
         <div class="row">
-            <?= PageConfigurationButton::widget() ?>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <?= RichText::output($md)?>
+            <div class="col-md-12">
+                <?= PageConfigurationButton::widget() ?>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <?= RichText::output($md)?>
+                    </div>
                 </div>
             </div>
         </div>

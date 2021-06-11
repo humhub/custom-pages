@@ -29,5 +29,5 @@ jobs:
         run: |
           curl --fail \
           -F "key=${{secrets.MARKETPLACE_API_KEY}}" \
-          -F "ModuleVersionUpload[zipFile]=custom_pages.zip" \
+          -F "ModuleVersionUpload[zipFile]=@custom_pages.zip" \
           https://api.humhub.com/v1/marketplace/upload?moduleId=custom_pages

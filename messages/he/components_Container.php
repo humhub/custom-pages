@@ -9,6 +9,6 @@ return array (
   'Style Class' => '',
   'Target Url' => '',
   'Template Layout' => '',
-  'Title' => '',
+  'Title' => 'כותרת',
   'Type' => '',
 );

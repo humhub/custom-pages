@@ -20,7 +20,7 @@ return array (
   'Can manage custom pages' => '',
   'Cancel' => 'Отменить',
   'Close' => 'Закрыть',
-  'Configuration' => '',
+  'Configuration' => 'Конфигурация',
   'Containers' => '',
   'Content' => 'Контент',
   'Create new {type}' => '',

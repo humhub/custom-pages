@@ -103,10 +103,9 @@ $contentType = $page->getContentType();
                         If no abstract is given or the page is only visible for admins, no stream entry will be created.') ?>
             </div>
             <?= $form->endCollapsibleFields(); ?>
-
-            <?= $form->field($page, 'visibility')->radioList($page->getVisibilitySelection()) ?>
-
         <?php endif; ?>
+
+        <?= $form->field($page, 'visibility')->radioList($page->getVisibilitySelection()) ?>
 
         <?= Button::save()->submit() ?>
 

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.4.3 (Unreleased)
+---------------------
+- Fix #187: Fix lost visibility options for snippets
+
+
 1.4.2 (June 11, 2021)
 ---------------------
 - Enh #163: Attachments for HTML pages

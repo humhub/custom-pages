@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.4.3 (Unreleased)
+1.4.3 (June 18, 2021)
 ---------------------
 - Fix #187: Fix lost visibility options for snippets
 

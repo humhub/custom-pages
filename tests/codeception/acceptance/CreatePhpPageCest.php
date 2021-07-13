@@ -6,12 +6,16 @@
  *
  */
 
+namespace custom_pages\acceptance;
+
+use custom_pages\AcceptanceTester;
+
 class CreatePhpPageCest
 {
     public function testCreatePhpPageOnTopMenu(AcceptanceTester $I)
     {
         $I->amAdmin();
-        $I->amOnPage('/custom_pages/config');
+        $I->amOnRoute(['/custom_pages/config']);
 
         $I->click('[for="phpPagesActive"]');
 
@@ -28,7 +32,7 @@ class CreatePhpPageCest
         $I->wantToTest('the creation of a php based page');
         $I->amGoingTo('add a new page');
 
-        $I->amOnPage('/custom_pages/page');
+        $I->amOnRoute(['/custom_pages/page']);
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('Top Navigation');

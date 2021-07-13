@@ -1,7 +1,6 @@
 <?php
 namespace custom_pages\acceptance;
 
-
 use custom_pages\AcceptanceTester;
 
 class CreateGlobalPageCest
@@ -12,7 +11,7 @@ class CreateGlobalPageCest
         $I->amAdmin();
         $I->wantToTest('the creation of a markdown page');
         $I->amGoingTo('add a new page');
-        $I->amOnPage('/custom_pages/page');
+        $I->amOnRoute(['/custom_pages/page']);
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('Top Navigation');
@@ -47,7 +46,7 @@ class CreateGlobalPageCest
         $I->amAdmin();
         $I->wantToTest('the creation of a link page');
         $I->amGoingTo('add a new page');
-        $I->amOnPage('/custom_pages/page');
+        $I->amOnRoute(['/custom_pages/page']);
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('User Account Menu');
@@ -67,7 +66,7 @@ class CreateGlobalPageCest
         $I->selectOption('Page[icon]', ['value' => 'fa-adn']);
         $I->click('Save');
         $I->wait(1);
-        $I->amOnPage('/user/account/edit');
+        $I->amOnRoute(['/user/account/edit']);
         $I->expectTo('see my new page in the user account setting menu');
 
         $I->waitForElementVisible('.left-navigation .fa-adn');
@@ -87,7 +86,7 @@ class CreateGlobalPageCest
         $I->amAdmin();
         $I->wantToTest('the creation of a html page');
         $I->amGoingTo('add a new page');
-        $I->amOnPage('/custom_pages/page');
+        $I->amOnRoute(['/custom_pages/page']);
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('Directory Menu');

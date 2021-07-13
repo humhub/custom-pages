@@ -12,7 +12,7 @@ class CreateGlobalPageCest
         $I->amAdmin();
         $I->wantToTest('the creation of a markdown page');
         $I->amGoingTo('add a new page');
-        $I->amOnPage('index-test.php?r=custom_pages/page');
+        $I->amOnPage('/custom_pages/page');
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('Top Navigation');
@@ -47,7 +47,7 @@ class CreateGlobalPageCest
         $I->amAdmin();
         $I->wantToTest('the creation of a link page');
         $I->amGoingTo('add a new page');
-        $I->amOnPage('index-test.php?r=custom_pages/page');
+        $I->amOnPage('/custom_pages/page');
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('User Account Menu');
@@ -61,13 +61,13 @@ class CreateGlobalPageCest
         $I->waitForText('Configuration');
 
         $I->fillField('Page[title]', 'Test link');
-        $I->fillField('Page[page_content]', 'index-test.php?r=dashboard/dashboard');
+        $I->fillField('Page[page_content]', '/dashboard/dashboard');
         $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->fillField('Page[sort_order]', '400');
         $I->selectOption('Page[icon]', ['value' => 'fa-adn']);
         $I->click('Save');
         $I->wait(1);
-        $I->amOnPage('index-test.php?r=user/account/edit');
+        $I->amOnPage('/user/account/edit');
         $I->expectTo('see my new page in the user account setting menu');
 
         $I->waitForElementVisible('.left-navigation .fa-adn');
@@ -87,7 +87,7 @@ class CreateGlobalPageCest
         $I->amAdmin();
         $I->wantToTest('the creation of a html page');
         $I->amGoingTo('add a new page');
-        $I->amOnPage('index-test.php?r=custom_pages/page');
+        $I->amOnPage('/custom_pages/page');
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('Directory Menu');

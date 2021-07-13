@@ -11,7 +11,7 @@ class CreatePhpSnippetCest
     public function testCreateMarkdownPageOnTopMenu(AcceptanceTester $I)
     {
         $I->amAdmin();
-        $I->amOnPage('index-test.php?r=custom_pages/config');
+        $I->amOnPage('/custom_pages/config');
 
         $I->click('[for="phpPagesActive"]');
 
@@ -27,7 +27,7 @@ class CreatePhpSnippetCest
 
         $I->wantToTest('the creation of a php based snippet');
         $I->amGoingTo('add a new snippet');
-        $I->amOnPage('index-test.php?r=custom_pages/snippet');
+        $I->amOnPage('/custom_pages/snippet');
         $I->expectTo('see the add new page site');
         $I->see('Overview');
 
@@ -47,7 +47,7 @@ class CreatePhpSnippetCest
         $I->click('Save');
         $I->wait(1);
 
-        $I->amOnPage('index-test.php?r=dashboard/dashboard');
+        $I->amOnPage('/dashboard/dashboard');
 
         $I->expectTo('see no my new page content');
 

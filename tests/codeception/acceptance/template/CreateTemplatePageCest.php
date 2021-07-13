@@ -12,7 +12,7 @@ class CreateTemplatePageCest
         $I->amAdmin();
         $I->wantToTest('the creation of a template page');
         $I->amGoingTo('add a new layout template');
-        $I->amOnPage('index-test.php?r=custom_pages/template/layout-admin');
+        $I->amOnPage('/custom_pages/template/layout-admin');
         $I->expectTo('see the overview site');
         $I->see('Overview');
         

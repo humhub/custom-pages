@@ -11,7 +11,7 @@ class CreatePhpPageCest
     public function testCreatePhpPageOnTopMenu(AcceptanceTester $I)
     {
         $I->amAdmin();
-        $I->amOnPage('index-test.php?r=custom_pages/config');
+        $I->amOnPage('/custom_pages/config');
 
         $I->click('[for="phpPagesActive"]');
 
@@ -28,7 +28,7 @@ class CreatePhpPageCest
         $I->wantToTest('the creation of a php based page');
         $I->amGoingTo('add a new page');
 
-        $I->amOnPage('index-test.php?r=custom_pages/page');
+        $I->amOnPage('/custom_pages/page');
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('Top Navigation');

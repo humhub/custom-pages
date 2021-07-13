@@ -13,7 +13,7 @@ class CreateGlobalSnippetCest
         $I->amAdmin();
         $I->wantToTest('the creation of a markdown page on Dashboard');
         $I->amGoingTo('add a new page');
-        $I->amOnPage('index-test.php?r=custom_pages/snippet');
+        $I->amOnPage('/custom_pages/snippet');
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('Dashboard', '.target-page-list');
@@ -51,7 +51,7 @@ class CreateGlobalSnippetCest
         $I->amAdmin();
         $I->wantToTest('the creation of a markdown page on Directory');
         $I->amGoingTo('add a new page');
-        $I->amOnPage('index-test.php?r=custom_pages/snippet');
+        $I->amOnPage('/custom_pages/snippet');
         $I->expectTo('see the add new page site');
 
         $I->seeElement('.target-page-list.'.Snippet::SIDEBAR_DIRECTORY);

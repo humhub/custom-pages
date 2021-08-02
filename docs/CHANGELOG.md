@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.4.4 (Unreleased)
+1.5.0 (Unreleased)
 ---------------------
 - Fix #192: Remove "Directory" pages and sidebar widgets
 

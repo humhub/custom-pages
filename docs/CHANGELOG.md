@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.4.4 (Unreleased)
+---------------------
+- Fix #192: Remove "Directory" pages and sidebar widgets
+
+
 1.4.3 (June 18, 2021)
 ---------------------
 - Fix #187: Fix lost visibility options for snippets

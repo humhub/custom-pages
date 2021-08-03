@@ -108,33 +108,6 @@ class Events
         }
     }
 
-    public static function onDirectoryMenuInit($event)
-    {
-        try {
-            Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
-
-            foreach (Page::findAll(['target' => Page::NAV_CLASS_DIRECTORY]) as $page) {
-                if (!$page->canView()) {
-                    continue;
-                }
-
-                $event->sender->addItem([
-                    'label' => Html::encode($page->title),
-                    'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
-                    'group' => 'directory',
-                    'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
-                    'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
-                    'isActive' => (Yii::$app->controller->module
-                        && Yii::$app->controller->module->id === 'custom_pages'
-                        && Yii::$app->controller->id === 'view' && Yii::$app->request->get('id') == $page->id),
-                    'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
-                ]);
-            }
-        } catch (\Throwable $e) {
-            Yii::error($e);
-        }
-    }
-
     public static function onTopMenuInit($event)
     {
         try {
@@ -204,24 +177,6 @@ class Events
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
             $snippets = Snippet::findAll(['target' => Snippet::SIDEBAR_DASHBOARD]);
-            $canEdit = PagePermission::canEdit();
-            foreach ($snippets as $snippet) {
-                if (!$snippet->canView()) {
-                    continue;
-                }
-                $event->sender->addWidget(SnippetWidget::class, ['model' => $snippet, 'canEdit' => $canEdit], ['sortOrder' => $snippet->sort_order]);
-            }
-        } catch (\Throwable $e) {
-            Yii::error($e);
-        }
-    }
-
-    public static function onDirectorySidebarInit($event)
-    {
-        try {
-            Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
-
-            $snippets = Snippet::findAll(['target' => Snippet::SIDEBAR_DIRECTORY]);
             $canEdit = PagePermission::canEdit();
             foreach ($snippets as $snippet) {
                 if (!$snippet->canView()) {

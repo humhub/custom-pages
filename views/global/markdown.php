@@ -13,8 +13,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 
 <?= CustomPageInlineStyle::widget(['theme' => $this->theme]); ?>
 
-<?php if ($page->hasTarget(Page::NAV_CLASS_ACCOUNTNAV) ||
-          $page->hasTarget(Page::NAV_CLASS_DIRECTORY)): ?>
+<?php if ($page->hasTarget(Page::NAV_CLASS_ACCOUNTNAV)): ?>
     <div class="panel panel-default <?= Html::encode($cssClass) ?>">
         <div class="panel-body">
             <?= PageConfigurationButton::widget() ?>

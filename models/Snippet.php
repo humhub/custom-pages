@@ -10,7 +10,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
 /**
  * This is the model class for table "custom_pages_container_snipped".
  *
- * Snippets are custom sidebar panels which can be added to the directory/dashboard sidebar.
+ * Snippets are custom sidebar panels which can be added to the dashboard sidebar.
  * 
  * The followings are the available columns in table 'custom_pages_container_page':
  * @property integer $id
@@ -26,7 +26,6 @@ class Snippet extends CustomContentContainer
 {
 
     const SIDEBAR_DASHBOARD = 'Dasboard';
-    const SIDEBAR_DIRECTORY = 'Directory';
 
     /**
      * @return string the associated database table name
@@ -65,7 +64,6 @@ class Snippet extends CustomContentContainer
     {
         return [
             ['id' => static::SIDEBAR_DASHBOARD, 'name' => Yii::t('CustomPagesModule.base', 'Dashboard'), 'accessRoute' => '/dashboard'],
-            ['id' => static::SIDEBAR_DIRECTORY, 'name' => Yii::t('CustomPagesModule.base', 'Directory'), 'accessRoute' => '/directory/directory']
         ];
     }
 

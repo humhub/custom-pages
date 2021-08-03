@@ -18,13 +18,11 @@ By default the module supports the following **targets** for global pages:
 
 - Top Navigation
 - User Account Menu (Account Settings)
-- Directory Menu
 - No Specific target (Direct link)
 
 and global Snippets:
 
 - Dashboard
-- Directory
 
 On space level the following page targets are supported by default:
 

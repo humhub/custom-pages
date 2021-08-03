@@ -77,48 +77,4 @@ class CreateGlobalPageCest
         $I->wait(2);
         $I->seeInCurrentUrl('dashboard/dashboard');
     }
-
-    /**
-     * @skip Directory left menu was deprecated in new People/Space Directory views
-     */
-    public function testCreateHtmlPageOnDirectoryMenu(AcceptanceTester $I)
-    {
-        $I->amAdmin();
-        $I->wantToTest('the creation of a html page');
-        $I->amGoingTo('add a new page');
-        $I->amOnRoute(['/custom_pages/page']);
-        $I->expectTo('see the add new page site');
-        $I->see('Overview');
-        $I->see('Directory Menu');
-        $I->seeElement('.target-page-list.DirectoryMenu');
-
-        $I->click('.btn-success', '.target-page-list.DirectoryMenu');
-
-        $I->waitForText('Add new page');
-        $I->click('#add-content-type-2');
-
-        $I->waitForText('Configuration');
-
-        $I->fillField('Page[title]', 'Test html');
-
-        $I->executeJS('$(".CodeMirror:visible")[0].CodeMirror.getDoc().setValue("<div id=\"testDiv\">My test div</div>")');
-        $I->executeJS('$(".CodeMirror:visible")[0].CodeMirror.save()');
-
-        $I->jsShow('.form-collapsible-fields.closed fieldset');
-        $I->fillField('Page[sort_order]', '400');
-        $I->selectOption('Page[icon]', ['value' => 'fa-adn']);
-        $I->click('Save');
-
-        $I->waitForText('Overview');
-        $I->wait(1);
-
-        $I->amOnDirectory();
-
-        $I->see('Test html', '.left-navigation');
-        $I->click('Test html', '.left-navigation');
-
-        $I->waitForText('My test div');
-        $I->seeElement('#testDiv');
-    }
-   
 }

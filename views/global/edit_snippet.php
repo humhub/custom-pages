@@ -2,19 +2,13 @@
 
 use humhub\modules\custom_pages\helpers\Url;
 use yii\helpers\Html;
-use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\modules\template\widgets\TemplatePage;
 
 /* @var $snippet \humhub\modules\custom_pages\models\CustomContentContainer */
 /* @var $html string */
 
-$backUrl = ($snippet->target === Snippet::SIDEBAR_DASHBOARD)
-    ? Url::to(['/dashboard/dashboard'])
-    :  Url::to(['/directory/directory']);
-
-$backText = ($snippet->target === Snippet::SIDEBAR_DASHBOARD)
-    ? Yii::t('CustomPagesModule.base', 'Back to dashboard')
-    : Yii::t('CustomPagesModule.base', 'Back to directory');
+$backUrl = Url::to(['/dashboard/dashboard']);
+$backText = Yii::t('CustomPagesModule.base', 'Back to dashboard');
 
 $editUrl = Url::toEditSnippet($snippet, $snippet->content->container);
 ?>

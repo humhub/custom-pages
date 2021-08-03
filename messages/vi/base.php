@@ -79,7 +79,9 @@ return [
     'Without adding to navigation (Direct link)' => 'Without adding to navigation (Direct link)',
     'Allows the user to manage custom pages.' => '',
     'Can manage custom pages' => '',
+    'Menu settings' => '',
     'Please choose one of the following content types. The content type defines how your content is embedded to your site.' => '',
     'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => '',
     'Space Navigation' => '',
+    'Stream options' => '',
 ];

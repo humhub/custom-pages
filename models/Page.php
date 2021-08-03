@@ -40,7 +40,6 @@ class Page extends CustomContentContainer
     const NAV_CLASS_TOPNAV = 'TopMenuWidget';
     const NAV_CLASS_ACCOUNTNAV = 'AccountMenuWidget';
     const NAV_CLASS_EMPTY = 'WithOutMenu';
-    const NAV_CLASS_DIRECTORY = 'DirectoryMenu';
 
 
     /**
@@ -140,7 +139,6 @@ class Page extends CustomContentContainer
         return [
             ['id' => self::NAV_CLASS_TOPNAV, 'name' => Yii::t('CustomPagesModule.base', 'Top Navigation')],
             ['id' => self::NAV_CLASS_ACCOUNTNAV, 'name' => Yii::t('CustomPagesModule.base', 'User Account Menu (Settings)'), 'subLayout' => '@humhub/modules/user/views/account/_layout'],
-            ['id' => self::NAV_CLASS_DIRECTORY, 'name' => Yii::t('CustomPagesModule.base', 'Directory Menu'), 'subLayout' => '@humhub/modules/custom_pages/views/layouts/_directory_layout'],
             ['id' => self::NAV_CLASS_EMPTY, 'name' => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)')]
         ];
     }

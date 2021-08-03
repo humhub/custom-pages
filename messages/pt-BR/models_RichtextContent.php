@@ -1,7 +1,6 @@
 <?php
-
-return [
-    'Empty Richtext' => 'Richtext vazio',
-    'Empty Text' => 'Texto vazio',
-    'Empty HumHub Richtext' => '',
-];
+return array (
+  'Empty HumHub Richtext' => 'Richtext HumHub vazio',
+  'Empty Richtext' => 'Richtext vazio',
+  'Empty Text' => 'Texto vazio',
+);

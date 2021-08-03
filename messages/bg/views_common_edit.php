@@ -1,5 +1,6 @@
 <?php
 return array (
+  '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!' => '<strong>Информация:</strong> Страниците, маркирани като „Само за администратор“, не се показват в потока!',
   'By setting an url shortcut value, you can create a better readable url for your page. If <b>URL Rewriting</b> is enabled on your site, the value \'mypage\' will result in an url \'www.example.de/p/mypage\'.' => 'Чрез задаване на стойност за бърз достъп до URL можете да създадете по-добре четим URL за вашата страница. Ако на вашия сайт е активирана опрцията <b>Пренаписване на URL адреси</b>, стойността "моя страница" ще доведе до URL адрес "www.example.de/p/mypage".',
   'Configuration' => 'Конфигурация',
   'Delete' => 'Изтрий',

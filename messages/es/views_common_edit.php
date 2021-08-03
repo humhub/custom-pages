@@ -1,5 +1,6 @@
 <?php
 return array (
+  '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!' => '<strong>Informacion: </strong> Las páginas marcadas como "Solo administrador" no se muestran en el inicio.',
   'By setting an url shortcut value, you can create a better readable url for your page. If <b>URL Rewriting</b> is enabled on your site, the value \'mypage\' will result in an url \'www.example.de/p/mypage\'.' => 'Configurando un atajo de URL puedes crear URLs más legibles en tu página. Si tu servidor web tiene habilitada la <b>reescritura de URL</b>, el valor \'mipagina\' funcionará como URL: \'www.ejemplo.com/mipagina\'.',
   'Configuration' => 'Configuración',
   'Delete' => 'Borrar',

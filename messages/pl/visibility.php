@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Admin only' => '',
-  'All Members' => '',
-  'Members & Guests' => '',
-  'Members only' => '',
+  'Admin only' => 'Tylko Administrator',
+  'All Members' => 'Wszyscy Członkowie',
+  'Members & Guests' => 'Członkowie i Goście',
+  'Members only' => 'Tylko Członkowie',
   'Public' => 'Publiczne',
-  'Space Members only' => '',
+  'Space Members only' => 'Tylko Członkowie Strefy',
 );

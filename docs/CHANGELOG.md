@@ -3,14 +3,22 @@ Changelog
 
 1.5.0 (Unreleased)
 -------------------------
-- Enh: Use composer CoreMirror asset from core
+- Enh: Use composer CoreMirror asset from core (1.9+)
+- Fix #192: Remove "Directory" pages and sidebar widgets
 
-1.4.0 (Unreleased)
--------------------------
+
+1.4.3 (June 18, 2021)
+---------------------
+- Fix #187: Fix lost visibility options for snippets
+
+
+1.4.2 (June 11, 2021)
+---------------------
 - Enh #163: Attachments for HTML pages
 - Enh: HumHub min. version increased to 1.8
 - Enh: Improved page edit form with beginCollapsibleFields
 - Fix #177: Remove extraneous ?>
+- Fix #185: Fix markdown page width on mobile/small screens
 
 
 1.3.1 (February 23, 2021)

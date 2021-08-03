@@ -77,9 +77,11 @@ return [
     'Without adding to navigation (Direct link)' => 'Ilman lisäämistä mihinkään (Suora Linkki)',
     'Allows the user to manage custom pages.' => '',
     'Can manage custom pages' => '',
+    'Menu settings' => '',
     'Please choose one of the following content types. The content type defines how your content is embedded to your site.' => '',
     'Please keep in mind that php based pages are vulnerable to security issues, especially when handling user input. For more information, please have a look at <a href="{url}">Yii\'s Security best practices</a>.' => '',
     'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => '',
     'Space Navigation' => '',
+    'Stream options' => '',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => '',
 ];

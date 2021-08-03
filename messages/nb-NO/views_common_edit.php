@@ -6,6 +6,7 @@ return [
     'Delete' => 'Slett',
     'Inline Editor' => 'Inline editor',
     'e.g. http://www.example.de' => 'for eksempel http://www.hjemmeside.no',
+    '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!' => '',
     'Here you can configure the general settings of your {pageLabel}.' => '',
     'The abstract will be used as stream entry content to promote the actual page. 
                         If no abstract is given or the page is only visible for admins, no stream entry will be created.' => '',

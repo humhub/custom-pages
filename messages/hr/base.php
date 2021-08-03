@@ -82,4 +82,6 @@ return [
     'Without adding to navigation (Direct link)' => 'Bez dodavanja u navigaciju (izravna veza)',
     'Allows the user to manage custom pages.' => '',
     'Can manage custom pages' => '',
+    'Menu settings' => '',
+    'Stream options' => '',
 ];

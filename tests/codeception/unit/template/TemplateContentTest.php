@@ -15,7 +15,7 @@ class TemplateContentTest extends HumHubDbTestCase
 
     public $owner;
 
-    public function setUp()
+    public function setUp(): void
     {
        parent::setUp();
        $this->owner = TemplateInstance::findOne(['id' => 1]);
@@ -41,11 +41,11 @@ class TemplateContentTest extends HumHubDbTestCase
            'owner_id' => $this->owner->id
        ]);
 
-       $this->assertContains('<p>Test</p>', $result);
-       $this->assertContains('data-template-element="test"', $result);
-       $this->assertContains('data-template-owner="'.get_class($this->owner).'"', $result);
-       $this->assertContains('data-template-content="'. get_class($content) .'"', $result);
-       $this->assertContains('data-template-empty="0"', $result);
+       $this->assertStringContainsString('<p>Test</p>', $result);
+       $this->assertStringContainsString('data-template-element="test"', $result);
+       $this->assertStringContainsString('data-template-owner="'.get_class($this->owner).'"', $result);
+       $this->assertStringContainsString('data-template-content="'. get_class($content) .'"', $result);
+       $this->assertStringContainsString('data-template-empty="0"', $result);
 
     }
 }

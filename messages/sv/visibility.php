@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Admin only' => '',
-  'All Members' => '',
-  'Members & Guests' => '',
-  'Members only' => '',
+  'Admin only' => 'Endast administratör',
+  'All Members' => 'Alla medlemmar',
+  'Members & Guests' => 'Medlemmar &amp; gäster',
+  'Members only' => 'Endast medlemmar',
   'Public' => 'Publik',
-  'Space Members only' => '',
+  'Space Members only' => 'Endast nätverksmedlemmar',
 );

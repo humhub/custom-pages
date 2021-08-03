@@ -2,7 +2,8 @@ Changelog
 =========
 
 1.5.0 (Unreleased)
----------------------
+-------------------------
+- Enh: Use composer CoreMirror asset from core (1.9+)
 - Fix #192: Remove "Directory" pages and sidebar widgets
 
 

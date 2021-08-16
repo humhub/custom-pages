@@ -18,7 +18,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
     public $owner1;
     public $page;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

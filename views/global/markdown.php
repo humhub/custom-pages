@@ -13,8 +13,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 
 <?= CustomPageInlineStyle::widget(['theme' => $this->theme]); ?>
 
-<?php if ($page->hasTarget(Page::NAV_CLASS_ACCOUNTNAV) ||
-          $page->hasTarget(Page::NAV_CLASS_DIRECTORY)): ?>
+<?php if ($page->hasTarget(Page::NAV_CLASS_ACCOUNTNAV)): ?>
     <div class="panel panel-default <?= Html::encode($cssClass) ?>">
         <div class="panel-body">
             <?= PageConfigurationButton::widget() ?>
@@ -24,10 +23,12 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 <?php else: ?>
     <div class="container <?= Html::encode($cssClass) ?>">
         <div class="row">
-            <?= PageConfigurationButton::widget() ?>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <?= RichText::output($md)?>
+            <div class="col-md-12">
+                <?= PageConfigurationButton::widget() ?>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <?= RichText::output($md)?>
+                    </div>
                 </div>
             </div>
         </div>

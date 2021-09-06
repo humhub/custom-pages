@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.6.0 (Unreleased)
+---------------------
+- Enh #5274: Deprecate CompatModuleManager
+
+
 1.5.0 (Unreleased)
 -------------------------
 - Enh: Use composer CoreMirror asset from core (1.9+)

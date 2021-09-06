@@ -55,7 +55,7 @@ class Events
 
             /* @var $space \humhub\modules\space\models\Space */
             $space = $event->sender->space;
-            if ($space->isModuleEnabled('custom_pages')) {
+            if ($space->moduleManager->isEnabled('custom_pages')) {
                 $pages = ContainerPage::find()->contentContainer($space)->andWhere(['target' => ContainerPage::NAV_CLASS_SPACE_NAV])->all();
                 foreach ($pages as $page) {
                     if (!$page->canView()) {
@@ -91,7 +91,7 @@ class Events
 
             /* @var $space \humhub\modules\space\models\Space */
             $space = $event->sender->space;
-            if ($space->isModuleEnabled('custom_pages') && $space->isAdmin() && $space->isMember()) {
+            if ($space->moduleManager->isEnabled('custom_pages') && $space->isAdmin() && $space->isMember()) {
                 $event->sender->addItem([
                     'label' => Yii::t('CustomPagesModule.base', 'Custom Pages'),
                     'group' => 'admin',
@@ -196,7 +196,7 @@ class Events
 
             $space = $event->sender->space;
             $canEdit = PagePermission::canEdit();
-            if ($space->isModuleEnabled('custom_pages')) {
+            if ($space->moduleManager->isEnabled('custom_pages')) {
                 $snippets = ContainerSnippet::find()->contentContainer($space)->all();
                 foreach ($snippets as $snippet) {
                     if (!$snippet->canView()) {

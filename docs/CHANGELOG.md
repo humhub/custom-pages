@@ -1,15 +1,11 @@
 Changelog
 =========
 
-1.6.0 (Unreleased)
----------------------
-- Enh #5274: Deprecate CompatModuleManager
-
-
 1.5.0 (Unreleased)
 -------------------------
 - Enh: Use composer CoreMirror asset from core (1.9+)
 - Fix #192: Remove "Directory" pages and sidebar widgets
+- Enh #5274: Deprecate CompatModuleManager
 
 
 1.4.3 (June 18, 2021)

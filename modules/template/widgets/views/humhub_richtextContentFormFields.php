@@ -1,6 +1,6 @@
 <?php
 /* @var $model humhub\modules\custom_pages\modules\template\models\RichtextContent */
-/* @var $form humhub\compat\CActiveForm */
+/* @var $form \humhub\modules\ui\form\widgets\ActiveForm */
 
 use yii\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichTextField;

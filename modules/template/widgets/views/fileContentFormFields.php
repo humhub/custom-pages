@@ -1,6 +1,6 @@
 <?php
 /* @var $model humhub\modules\custom_pages\modules\template\models\template\FileContent */
-/* @var $form humhub\compat\CActiveForm */
+/* @var $form \humhub\modules\ui\form\widgets\ActiveForm */
 
 use yii\helpers\Url;
 
@@ -33,7 +33,7 @@ $id = 'fileContent-' . $model->id;
         'popoverPosition' => 'top',
         'items' => [$model->getFile()],
         'options' => ['style' => 'display:block;margin-left:150px']]) ?>
-    
+
     <?= humhub\modules\file\widgets\UploadProgress::widget(['id' => $id . '-progress', 'options' => ['style' => 'display:block;margin-left:150px;width:500px']]) ?>
 
 </div>

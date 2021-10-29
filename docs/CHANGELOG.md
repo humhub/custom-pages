@@ -6,8 +6,8 @@ Changelog
 - Enh: Use composer CoreMirror asset from core (1.9+)
 - Fix #192: Remove "Directory" pages and sidebar widgets
 - Enh #195: Deprecate CompatModuleManager
-- Enc #200: Removed CActiveForm, CHtml usages.
-
+- Enh #200: Removed CActiveForm, CHtml usages.
+- Enh #198: Avoid creating notifications on custom page creation
 
 1.4.3 (June 18, 2021)
 ---------------------

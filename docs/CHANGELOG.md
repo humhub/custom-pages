@@ -6,7 +6,7 @@ Changelog
 - Enh: Use composer CoreMirror asset from core (1.9+)
 - Fix #192: Remove "Directory" pages and sidebar widgets
 - Enh #5274: Deprecate CompatModuleManager
-- Enc #4823: Removed CActiveForm, CHtml usages.
+- Enc #200: Removed CActiveForm, CHtml usages.
 
 
 1.4.3 (June 18, 2021)

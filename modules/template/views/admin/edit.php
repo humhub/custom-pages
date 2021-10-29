@@ -1,6 +1,6 @@
 <?php
 
-use humhub\compat\CActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\custom_pages\widgets\AdminMenu;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -32,7 +32,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
         <div class="panel-body">
     <?php endif; ?>
 
-        <?php $form = CActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin(); ?>
 
         <?= $form->field($model, 'name'); ?>
         <?= $form->field($model, 'description')->textarea(['id' => 'template-form-description', 'rows' => 3]); ?>
@@ -47,7 +47,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
 
         <?= Html::submitButton(Yii::t('CustomPagesModule.modules_template_views_admin_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
-        <?php CActiveForm::end(); ?>
+        <?php $form::end(); ?>
         <?= Html::script(' $(\'#template-form-description\').autosize();') ?>
     </div>
 </div>

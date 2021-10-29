@@ -1,6 +1,6 @@
 <?php
 
-use humhub\compat\CActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Html;
 
 /* @var $model humhub\modules\custom_pages\modules\template\models\forms\TemplateElementForm */
@@ -8,7 +8,7 @@ use yii\helpers\Html;
 ?>
 <?php humhub\widgets\ModalDialog::begin(['header' => $title, 'size' => 'large']) ?>
 
-    <?php $form = CActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(); ?>
         <div class="modal-body">
             <div class="clearfix">
                 <?php if(!$model->element->isNewRecord) : ?>
@@ -29,7 +29,7 @@ use yii\helpers\Html;
             <?php endif; ?>
 
             <?= $form->field($model->element, 'title')->textInput(); ?>
-            
+
             <?php if(false) : ?>
                 <?= $form->field($model, 'use_default')->checkbox(['style' => 'margin: 100px']); ?>
             <?php endif; ?>
@@ -40,24 +40,24 @@ use yii\helpers\Html;
 
         </div>
         <div class="modal-footer">
-            
+
             <?php if(!$model->content->isNewRecord && $resetUrl != null) : ?>
                 <button class="btn btn-danger pull-left" style="background:transparent" ><?= Yii::t('CustomPagesModule.base', 'Reset'); ?></button>
             <?php endif; ?>
-                
+
             <button type="submit" data-action-click="editElementSubmit" data-action-target="#templatePageRoot" data-ui-loader class="btn btn-primary">
                 <?= Yii::t('CustomPagesModule.base', 'Save'); ?>
             </button>
-                
+
             <button class="btn btn-default" data-dismiss="modal"><?= Yii::t('CustomPagesModule.base', 'Cancel'); ?></button>
-            
+
             <?php if(!$model->content->isNewRecord && $resetUrl != null) : ?>
                 <button data-action-click="reset" data-action-url="<?= $resetUrl ?>" data-action-target="#templatePageRoot"  class="btn btn-danger pull-right" data-ui-loader>
                     <?= Yii::t('CustomPagesModule.base', 'Reset'); ?>
                 </button>
             <?php endif; ?>
-                
+
         </div>
-    <?php CActiveForm::end(); ?>
+    <?php $form::end(); ?>
 
 <?php humhub\widgets\ModalDialog::end() ?>

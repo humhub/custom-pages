@@ -1,6 +1,6 @@
 <?php
 /* @var $model humhub\modules\custom_pages\modules\template\models\template\ImageContent */
-/* @var $form humhub\compat\CActiveForm */
+/* @var $form \humhub\modules\ui\form\widgets\ActiveForm */
 
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -41,7 +41,7 @@ $id = 'imageContent-' . $model->id;
             'options' => ['class' => 'col-md-8 previewContainer']]) ?>
 
     </div>
-    
+
     <br />
 
     <?php CollapsableFormGroup::begin(['defaultState' => false]) ?>
@@ -54,9 +54,9 @@ $id = 'imageContent-' . $model->id;
                 <?= $form->field($model->definition, 'width')->textInput(['disabled' => $disableDefinition]); ?>
             </div>
         </div>
-    
-        <?= $form->field($model->definition, 'style')->textInput(['disabled' => $disableDefinition]); ?>    
+
+        <?= $form->field($model->definition, 'style')->textInput(['disabled' => $disableDefinition]); ?>
         <?= $form->field($model, 'alt')->textInput(); ?>
-    
+
     <?php CollapsableFormGroup::end() ?>
 </div>

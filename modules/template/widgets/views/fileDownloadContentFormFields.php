@@ -1,7 +1,7 @@
 <?php
 use humhub\modules\custom_pages\modules\template\widgets\CollapsableFormGroup;
 /* @var $model humhub\modules\custom_pages\modules\template\models\template\FileContent */
-/* @var $form humhub\compat\CActiveForm */
+/* @var $form \humhub\modules\ui\form\widgets\ActiveForm */
 
 use yii\helpers\Url;
 

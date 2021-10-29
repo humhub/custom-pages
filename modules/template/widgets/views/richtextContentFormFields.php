@@ -1,6 +1,6 @@
 <?php
 /* @var $model humhub\modules\custom_pages\modules\template\models\RichtextContent */
-/* @var $form humhub\compat\CActiveForm */
+/* @var $form \humhub\modules\ui\form\widgets\ActiveForm */
 
 use yii\helpers\Url;
 use humhub\libs\Html;
@@ -30,7 +30,7 @@ $uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', 'sgu
         var modelFormName = $(CKEDITOR.currentInstance.element.$).data('form-name');
         $(form).append('<input type="hidden" name="'+modelFormName+'[fileList][]" value="' + guid + '" />');
     };
-    
+
     (function () {
         var id = '<?= $id ?>';
         var $input = $('#' + id);

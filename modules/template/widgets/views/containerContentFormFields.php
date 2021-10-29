@@ -1,6 +1,6 @@
 <?php
 /* @var $model humhub\modules\custom_pages\modules\template\models\template\ContainerContent */
-/* @var $form humhub\compat\CActiveForm */
+/* @var $form \humhub\modules\ui\form\widgets\ActiveForm */
 
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -18,7 +18,7 @@ $disableDefinition = !$isAdminEdit && !$model->definition->isNewRecord;
 
 <div class="form-group field-templateelement-name">
     <label class="control-label" for="templateelement-name"><?= $model->getAttributeLabel('allowedTemplates') ?></label>
-    <?= Html::dropDownList($model->formName() . '[definitionPostData][allowedTemplateSelection][]', $model->definition->allowedTemplateSelection, Template::getSelection(['type' => Template::TYPE_CONTAINER]), 
+    <?= Html::dropDownList($model->formName() . '[definitionPostData][allowedTemplateSelection][]', $model->definition->allowedTemplateSelection, Template::getSelection(['type' => Template::TYPE_CONTAINER]),
             ['class' => 'form-control multiselect_dropdown', 'disabled' => $disableDefinition, 'style' => 'style="width: 100%"', 'multiple' => '', 'size' => 4]); ?>
 </div>
 <p class="help-block">

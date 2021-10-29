@@ -49,6 +49,10 @@ abstract class CustomContentContainer extends ContentActiveRecord
      */
     public $streamChannel = null;
 
+    /**
+     * @inheritdoc
+     */
+    public $silentContentCreation = true;
 
     /**
      * @var Target cached target

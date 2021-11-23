@@ -8,6 +8,7 @@ Changelog
 - Enh #195: Deprecate CompatModuleManager
 - Enh #200: Removed CActiveForm, CHtml usages.
 - Enh #198: Avoid creating notifications on custom page creation
+- Enh #196: Footer menu pages
 
 1.4.3 (June 18, 2021)
 ---------------------

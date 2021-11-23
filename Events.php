@@ -211,4 +211,24 @@ class Events
         }
     }
 
+    public static function onFooterMenuInit($event)
+    {
+        try {
+            foreach (Page::findAll(['target' => Page::NAV_CLASS_FOOTER]) as $page) {
+                if (!$page->canView()) {
+                    continue;
+                }
+
+                $event->sender->addItem([
+                    'label' => Html::encode($page->title),
+                    'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
+                    'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
+                    'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
+                ]);
+            }
+        } catch (\Throwable $e) {
+            Yii::error($e);
+        }
+    }
+
 }

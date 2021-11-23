@@ -5,6 +5,7 @@ use humhub\modules\user\widgets\AccountMenu;
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\user\widgets\AccountTopMenu;
 use humhub\widgets\BaseMenu;
+use humhub\widgets\FooterMenu;
 use humhub\widgets\TopMenu;
 
 return [
@@ -25,6 +26,7 @@ return [
         ['class' => AccountMenu::class, 'event' => AccountMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onAccountMenuInit']],
         ['class' => Menu::class, 'event' => Menu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onSpaceMenuInit']],
         ['class' => AccountTopMenu::class, 'event' => AccountTopMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onAccountTopMenuInit']],
+        ['class' => FooterMenu::class, 'event' => FooterMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onFooterMenuInit']],
 
         ['class' => 'humhub\modules\space\widgets\HeaderControlsMenu', 'event' => BaseMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onSpaceAdminMenuInit']],
 

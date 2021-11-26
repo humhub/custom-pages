@@ -81,4 +81,5 @@ return [
     'Will redirect requests to a given (relative or absolute) url.' => 'Przekieruje żądanie do podanej (relatywnej lub stałej) strony.',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'Możesz tworzyć niestandardowe strony oparte na PHP służące do przeglądania plików systemowych. Sprawdź moduł konfiguracji w celu uzyskania informacji.',
     'Without adding to navigation (Direct link)' => 'Bez dodawania do nawigacji (odnośnik bezpośredni)',
+    'Footer menu' => '',
 ];

@@ -79,6 +79,7 @@ return [
     'Will redirect requests to a given (relative or absolute) url.' => 'Átirányítja a kéréseket egy adott (relatív vagy abszolút) URL-re.',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'A PHP-alapú oldalakkal egyedi oldalakat hozhatsz létre a fájlrendszereden belüli nézetfájlok segítségével. További információkért tekintsd meg a modul konfigurációját.',
     'Without adding to navigation (Direct link)' => 'A navigációhoz való hozzáadás nélkül (közvetlen link)',
+    'Footer menu' => '',
     'Menu settings' => '',
     'Stream options' => '',
 ];

@@ -77,6 +77,7 @@ return [
     'Will redirect requests to a given (relative or absolute) url.' => 'Va rediriger la demande vers une url donnée (relative ou absolue).',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'Avec des pages en PHP vous pouvez créer des pages personnalisées au moyen de fichiers "view" dans votre système de fichiers. Merci de vérifier la configuration du module pour plus d\'information.',
     'Without adding to navigation (Direct link)' => 'Sans l\'ajouter au menu de navigation (lien direct)',
+    'Footer menu' => '',
     'Menu settings' => '',
     'Please choose one of the following content types. The content type defines how your content is embedded to your site.' => '',
     'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => '',

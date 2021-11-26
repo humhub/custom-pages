@@ -79,6 +79,7 @@ return [
     'Will redirect requests to a given (relative or absolute) url.' => 'Ще пренасочи заявките към даден (относителен или абсолютен) URL адрес.',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'С PHP базирани страници можете да създавате персонализирани страници посредством файлове за преглед във вашата файлова система. Моля, проверете конфигурацията на модула за повече информация.',
     'Without adding to navigation (Direct link)' => 'Без добавяне към навигация (директна връзка)',
+    'Footer menu' => '',
     'Menu settings' => '',
     'Stream options' => '',
 ];

@@ -59,6 +59,7 @@ return [
     'An empty allowed template selection will allow all container templates for this container.' => '',
     'Can manage custom pages' => '',
     'Create new {type}' => '',
+    'Footer menu' => '',
     'Invalid type selection' => '',
     'Menu settings' => '',
     'Off' => '',

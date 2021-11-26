@@ -41,6 +41,7 @@ return [
     'Default Content' => '',
     'Edit Page' => '',
     'Empty' => '',
+    'Footer menu' => '',
     'General' => '',
     'Html' => '',
     'Iframe' => '',

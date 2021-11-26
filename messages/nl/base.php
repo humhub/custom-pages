@@ -81,4 +81,5 @@ return [
     'Will redirect requests to a given (relative or absolute) url.' => 'Zend verzoeken om naar een opgegeven (relatieve of absolute) URL.',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'Met op PHP gebaseerde pagina\'s kunt u aangepaste pagina\'s maken door middel van view-bestanden in uw bestandssysteem. Controleer de moduleconfiguratie voor meer informatie.',
     'Without adding to navigation (Direct link)' => 'Zonder toevoeging aan navigatie (directe link)',
+    'Footer menu' => '',
 ];

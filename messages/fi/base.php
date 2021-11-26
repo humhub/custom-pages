@@ -74,6 +74,7 @@ return [
     'Without adding to navigation (Direct link)' => 'Ilman lisäämistä mihinkään (Suora Linkki)',
     'Allows the user to manage custom pages.' => '',
     'Can manage custom pages' => '',
+    'Footer menu' => '',
     'Menu settings' => '',
     'Please choose one of the following content types. The content type defines how your content is embedded to your site.' => '',
     'Please keep in mind that php based pages are vulnerable to security issues, especially when handling user input. For more information, please have a look at <a href="{url}">Yii\'s Security best practices</a>.' => '',

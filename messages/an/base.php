@@ -43,6 +43,7 @@ return [
     'Edit Page' => '',
     'Empty' => '',
     'File' => '',
+    'Footer menu' => '',
     'Html' => '',
     'Iframe' => '',
     'Invalid type selection' => '',

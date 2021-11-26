@@ -35,6 +35,7 @@ return [
     'Edit Page' => '',
     'Empty' => '',
     'File' => '',
+    'Footer menu' => '',
     'General' => '',
     'Html' => '',
     'Iframe' => '',

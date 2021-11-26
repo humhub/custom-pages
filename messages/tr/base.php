@@ -51,6 +51,7 @@ return [
     'Default Content' => '',
     'Edit Page' => '',
     'Empty' => '',
+    'Footer menu' => '',
     'Html' => '',
     'Iframe' => '',
     'Invalid type selection' => '',

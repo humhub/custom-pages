@@ -5,5 +5,5 @@ return array (
   'Members & Guests' => 'Medlemmar &amp; gäster',
   'Members only' => 'Endast medlemmar',
   'Public' => 'Publik',
-  'Space Members only' => 'Endast nätverksmedlemmar',
+  'Space Members only' => 'Endast forummedlemmar',
 );

@@ -1,6 +1,6 @@
 <?php
 return array (
   'Create new {type}' => 'Skapa ny {type}',
-  'Edit template \'{templateName}\'' => 'Edit mallen \'{templateName}\'',
+  'Edit template \'{templateName}\'' => 'Redigera mallen \'{templateName}\'',
   'Save' => 'Spara',
 );

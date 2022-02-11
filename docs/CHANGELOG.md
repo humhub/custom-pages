@@ -9,6 +9,8 @@ Changelog
 - Enh #200: Removed CActiveForm, CHtml usages.
 - Enh #198: Avoid creating notifications on custom page creation
 - Enh #196: Footer menu pages
+- Fix #191: For iframe pages in a container, better iframe height adjustment
+
 
 1.4.3 (June 18, 2021)
 ---------------------

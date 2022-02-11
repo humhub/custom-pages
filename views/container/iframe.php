@@ -1,10 +1,12 @@
 <?php
+
 use humhub\libs\Html;
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 ?>
 
-<iframe class="<?= Html::encode($cssClass) ?>" id="iframepage" style="width:100%; height: 100%;" src="<?= Html::encode($url); ?>"></iframe>
+<iframe class="<?= Html::encode($cssClass) ?>" id="iframepage" style="width:100%; height: 100%; min-height: 400px;"
+        src="<?= Html::encode($url); ?>"></iframe>
 
 <style>
     #iframepage {
@@ -17,7 +19,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 <?= Html::script(<<<JS
     function setSize() {
         $('#iframepage').css( {
-            height: (window.innerHeight - $('#iframepage').position().top - 15) + 'px',
+            height: ($(window).height() - $('#layout-content').position().top - 15) + 'px',
             background: 'inherit'
         });
     }

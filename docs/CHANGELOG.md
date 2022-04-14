@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.5.0 (Unreleased)
--------------------------
+1.5.0 (April 14, 2022)
+----------------------
 - Enh: Use composer CoreMirror asset from core (1.9+)
 - Fix #192: Remove "Directory" pages and sidebar widgets
 - Enh #195: Deprecate CompatModuleManager

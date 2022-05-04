@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.1 (Unreleased)
+----------------------
+- Fix #211: Fix duplicated template HTML source field
+
 1.5.0 (April 14, 2022)
 ----------------------
 - Enh: Use composer CoreMirror asset from core (1.9+)

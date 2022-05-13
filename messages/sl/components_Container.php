@@ -1,14 +1,17 @@
 <?php
-return array (
-  'Content' => 'Vsebina',
-  'ID' => '',
-  'Icon' => '',
-  'Invalid template selection!' => '',
-  'Invalid view file selection!' => '',
-  'Sort Order' => '',
-  'Style Class' => '',
-  'Target Url' => '',
-  'Template Layout' => '',
-  'Title' => 'Naslov',
-  'Type' => '',
-);
+
+return [
+    'Content' => 'Vsebina',
+    'Title' => 'Naslov',
+    'ID' => '',
+    'Icon' => '',
+    'Invalid permissions selection!' => '',
+    'Invalid template selection!' => '',
+    'Invalid view file selection!' => '',
+    'Permissions' => '',
+    'Sort Order' => '',
+    'Style Class' => '',
+    'Target Url' => '',
+    'Template Layout' => '',
+    'Type' => '',
+];

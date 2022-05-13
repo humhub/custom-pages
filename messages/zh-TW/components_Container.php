@@ -1,14 +1,17 @@
 <?php
-return array (
-  'Content' => '内容',
-  'ID' => '',
-  'Icon' => '',
-  'Invalid template selection!' => '',
-  'Invalid view file selection!' => '',
-  'Sort Order' => '',
-  'Style Class' => '',
-  'Target Url' => '',
-  'Template Layout' => '',
-  'Title' => '標題',
-  'Type' => '',
-);
+
+return [
+    'Content' => '内容',
+    'Title' => '標題',
+    'ID' => '',
+    'Icon' => '',
+    'Invalid permissions selection!' => '',
+    'Invalid template selection!' => '',
+    'Invalid view file selection!' => '',
+    'Permissions' => '',
+    'Sort Order' => '',
+    'Style Class' => '',
+    'Target Url' => '',
+    'Template Layout' => '',
+    'Type' => '',
+];

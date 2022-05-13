@@ -4,6 +4,7 @@ use humhub\libs\Html;
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 $margin = $navigationClass == Page::NAV_CLASS_TOPNAV ? -15 : 0;
+$allow_attribute = ($page->hasAttribute('allow_attribute') && !empty($page->allow_attribute)) ? $page->allow_attribute : '';
 ?>
 
 <style>
@@ -14,7 +15,8 @@ $margin = $navigationClass == Page::NAV_CLASS_TOPNAV ? -15 : 0;
     }
 </style>
 
-<iframe class="<?= Html::encode($cssClass) ?>" id="iframepage" style="width:100%;height: 100%" src="<?= Html::encode($url) ?>"></iframe>
+<iframe class="<?= Html::encode($cssClass) ?>" id="iframepage" style="width:100%;height: 100%"
+        src="<?= Html::encode($url) ?>" <?= !empty($allow_attribute) ? 'allow="' . Html::encode($allow_attribute) . '"' : ''; ?>></iframe>
 
 <?= Html::script(<<<JS
     function setSize() {

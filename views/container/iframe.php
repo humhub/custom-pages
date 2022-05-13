@@ -3,10 +3,11 @@
 use humhub\libs\Html;
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
+$allow_attribute = ($page->hasAttribute('allow_attribute') && !empty($page->allow_attribute)) ? $page->allow_attribute : '';
 ?>
 
 <iframe class="<?= Html::encode($cssClass) ?>" id="iframepage" style="width:100%; height: 100%; min-height: 400px;"
-        src="<?= Html::encode($url); ?>"></iframe>
+        src="<?= Html::encode($url); ?>" <?= !empty($allow_attribute) ? 'allow="' . Html::encode($allow_attribute) . '"' : ''; ?>></iframe>
 
 <style>
     #iframepage {

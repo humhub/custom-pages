@@ -7,6 +7,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\custom_pages\components\IframePageContainer;
 use humhub\modules\custom_pages\components\PhpPageContainer;
 use humhub\modules\custom_pages\components\TemplatePageContainer;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
@@ -34,9 +35,11 @@ use Yii;
  * @property string $target
  * @property string $cssClass
  * @property string $url
+ * @property string $allow_attribute
  */
 abstract class CustomContentContainer extends ContentActiveRecord
 {
+    use IframePageContainer;
     use PhpPageContainer;
     use TemplatePageContainer;
 
@@ -172,6 +175,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
             'content' => $this->getContentType() ?  $this->getContentType()->getLabel() : null ,
             'sort_order' => Yii::t('CustomPagesModule.components_Container', 'Sort Order'),
             'targetUrl' => Yii::t('CustomPagesModule.components_Container', 'Target Url'),
+            'allow_attribute' => Yii::t('CustomPagesModule.components_Container', 'Permissions'),
             'templateId' => Yii::t('CustomPagesModule.components_Container', 'Template Layout'),
             'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins')
         ];
@@ -237,6 +241,10 @@ abstract class CustomContentContainer extends ContentActiveRecord
 
         if(PhpType::isType($type) || LinkType::isType($type) || HtmlType::isType($type) || MarkdownType::isType($type) || IframeType::isType($type)) {
             $result[] = ['page_content', 'required'];
+        }
+
+        if(IframeType::isType($type)) {
+            $result[] = ['allow_attribute', 'validateIframeType'];
         }
 
         if(PhpType::isType($type)) {

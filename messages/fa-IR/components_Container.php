@@ -1,14 +1,17 @@
 <?php
-return array (
-  'Content' => 'محتوا',
-  'ID' => 'شناسه',
-  'Icon' => '',
-  'Invalid template selection!' => '',
-  'Invalid view file selection!' => '',
-  'Sort Order' => 'ترتیب مرتب‌سازی',
-  'Style Class' => '',
-  'Target Url' => '',
-  'Template Layout' => '',
-  'Title' => 'عنوان',
-  'Type' => 'تایپ',
-);
+
+return [
+    'Content' => 'محتوا',
+    'ID' => 'شناسه',
+    'Sort Order' => 'ترتیب مرتب‌سازی',
+    'Title' => 'عنوان',
+    'Type' => 'تایپ',
+    'Icon' => '',
+    'Invalid permissions selection!' => '',
+    'Invalid template selection!' => '',
+    'Invalid view file selection!' => '',
+    'Permissions' => '',
+    'Style Class' => '',
+    'Target Url' => '',
+    'Template Layout' => '',
+];

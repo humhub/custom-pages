@@ -1,14 +1,17 @@
 <?php
-return array (
-  'Content' => 'Contingut',
-  'ID' => 'ID',
-  'Icon' => '',
-  'Invalid template selection!' => '',
-  'Invalid view file selection!' => '',
-  'Sort Order' => 'Ordre de classificació',
-  'Style Class' => '',
-  'Target Url' => '',
-  'Template Layout' => '',
-  'Title' => 'Títol',
-  'Type' => 'Tipus',
-);
+
+return [
+    'Content' => 'Contingut',
+    'ID' => 'ID',
+    'Sort Order' => 'Ordre de classificació',
+    'Title' => 'Títol',
+    'Type' => 'Tipus',
+    'Icon' => '',
+    'Invalid permissions selection!' => '',
+    'Invalid template selection!' => '',
+    'Invalid view file selection!' => '',
+    'Permissions' => '',
+    'Style Class' => '',
+    'Target Url' => '',
+    'Template Layout' => '',
+];

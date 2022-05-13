@@ -1,14 +1,17 @@
 <?php
-return array (
-  'Content' => 'Příspěvky',
-  'ID' => 'ID',
-  'Icon' => '',
-  'Invalid template selection!' => '',
-  'Invalid view file selection!' => '',
-  'Sort Order' => 'Řazení',
-  'Style Class' => '',
-  'Target Url' => '',
-  'Template Layout' => '',
-  'Title' => 'Název',
-  'Type' => 'Typ',
-);
+
+return [
+    'Content' => 'Příspěvky',
+    'ID' => 'ID',
+    'Sort Order' => 'Řazení',
+    'Title' => 'Název',
+    'Type' => 'Typ',
+    'Icon' => '',
+    'Invalid permissions selection!' => '',
+    'Invalid template selection!' => '',
+    'Invalid view file selection!' => '',
+    'Permissions' => '',
+    'Style Class' => '',
+    'Target Url' => '',
+    'Template Layout' => '',
+];

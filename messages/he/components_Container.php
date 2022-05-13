@@ -1,14 +1,17 @@
 <?php
-return array (
-  'Content' => 'תוכן',
-  'ID' => '',
-  'Icon' => '',
-  'Invalid template selection!' => '',
-  'Invalid view file selection!' => '',
-  'Sort Order' => '',
-  'Style Class' => '',
-  'Target Url' => '',
-  'Template Layout' => '',
-  'Title' => 'כותרת',
-  'Type' => '',
-);
+
+return [
+    'Content' => 'תוכן',
+    'Title' => 'כותרת',
+    'ID' => '',
+    'Icon' => '',
+    'Invalid permissions selection!' => '',
+    'Invalid template selection!' => '',
+    'Invalid view file selection!' => '',
+    'Permissions' => '',
+    'Sort Order' => '',
+    'Style Class' => '',
+    'Target Url' => '',
+    'Template Layout' => '',
+    'Type' => '',
+];

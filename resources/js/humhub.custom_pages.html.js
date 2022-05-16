@@ -12,6 +12,7 @@ humhub.module('custom_pages.html', function (module, require, $) {
         }
 
         Widget.instance('#custom-page-html-file-upload').on('humhub:file:uploadEnd', function (evt, response) {
+            // TODO: Update for new TinyMCE editor instead of CodeMirror
             const htmlContentCodeMirror = $('#html_content[data-codemirror]').data('codemirror-instance');
             if (!(htmlContentCodeMirror instanceof CodeMirror) ||
                 !(response._response.result.files instanceof Array) ||

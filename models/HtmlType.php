@@ -9,11 +9,11 @@
 namespace humhub\modules\custom_pages\models;
 
 
+use dosamigos\tinymce\TinyMce;
 use humhub\modules\custom_pages\assets\HtmlAssets;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\UploadProgress;
-use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
 use Yii;
 use yii\widgets\ActiveForm;
 
@@ -51,7 +51,11 @@ class HtmlType extends ContentType
     {
         HtmlAssets::register(Yii::$app->getView());
 
-        $field = $form->field($page, $page->getPageContentProperty())->widget(CodeMirrorInputWidget::class, ['id' => 'html_content']);
+        $field = $form->field($page, $page->getPageContentProperty())->widget(TinyMce::class, [
+            'options' => ['rows' => 15],
+            'language' => Yii::$app->language
+            // TODO: Add source view
+        ]);
 
         $field .= '<div class="form-group">'
             . UploadButton::widget([

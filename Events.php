@@ -3,8 +3,6 @@
 namespace humhub\modules\custom_pages;
 
 use humhub\modules\admin\widgets\AdminMenu;
-use Yii;
-use yii\helpers\Html;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\Page;
@@ -14,6 +12,8 @@ use humhub\modules\custom_pages\widgets\SnippetWidget;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
 use humhub\modules\custom_pages\permissions\ManagePages;
+use Yii;
+use yii\helpers\Html;
 
 /**
  * CustomPagesEvents
@@ -22,6 +22,26 @@ use humhub\modules\custom_pages\permissions\ManagePages;
  */
 class Events
 {
+
+    public static function onBeforeRequest()
+    {
+        try {
+            static::registerAutoloader();
+        } catch (\Throwable $e) {
+            Yii::error($e);
+        }
+    }
+
+    /**
+     * Register composer autoloader
+     */
+    public static function registerAutoloader()
+    {
+        Yii::setAlias('@vendor/tinymce/tinymce', '@custom_pages/vendor/tinymce/tinymce');
+        Yii::setAlias('@vendor/2amigos/yii2-tinymce-widget/src/assets', '@custom_pages/vendor/2amigos/yii2-tinymce-widget/src/assets');
+
+        require Yii::getAlias('@custom_pages/vendor/autoload.php');
+    }
 
     public static function onAdminMenuInit($event)
     {
@@ -43,7 +63,7 @@ class Events
                 'sortOrder' => 300,
                 'isVisible' => true,
             ]);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Yii::error($e);
         }
     }
@@ -79,7 +99,7 @@ class Events
                     ]);
                 }
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Yii::error($e);
         }
     }
@@ -103,7 +123,7 @@ class Events
                         && Yii::$app->controller->action->id !== 'view'),
                 ]);
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Yii::error($e);
         }
     }
@@ -130,7 +150,7 @@ class Events
                     'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
                 ]);
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Yii::error($e);
         }
     }
@@ -156,7 +176,7 @@ class Events
                     'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
                 ]);
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Yii::error($e);
         }
     }
@@ -184,7 +204,7 @@ class Events
                 }
                 $event->sender->addWidget(SnippetWidget::class, ['model' => $snippet, 'canEdit' => $canEdit], ['sortOrder' => $snippet->sort_order]);
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Yii::error($e);
         }
     }
@@ -206,7 +226,7 @@ class Events
                     $event->sender->addWidget(SnippetWidget::class, ['model' => $snippet, 'canEdit' => $canEdit], ['sortOrder' => $snippet->sort_order]);
                 }
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Yii::error($e);
         }
     }
@@ -226,7 +246,7 @@ class Events
                     'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
                 ]);
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Yii::error($e);
         }
     }

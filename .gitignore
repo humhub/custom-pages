@@ -3,4 +3,4 @@ nbproject
 .idea/*
 .gitmodules
 /composer.lock
-
+/vendor/

@@ -1,13 +1,10 @@
 Changelog
 =========
 
-1.6.0 (Unreleased)
-----------------------
-- Enh #210: Use TinyMCE widget for HTML page editor
-
 1.5.1 (Unreleased)
 ----------------------
 - Fix #211: Fix duplicated template HTML source field
+- Enh #210: Use TinyMCE widget for HTML page editor
 
 1.5.0 (April 14, 2022)
 ----------------------

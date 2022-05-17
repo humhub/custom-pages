@@ -1,0 +1,12 @@
+{
+    "name": "humhub/custom_pages",
+    "description": "Custom Pages",
+    "type": "library",
+    "require": {
+        "2amigos/yii2-tinymce-widget": "^1.1"
+    },
+    "replace": {
+        "yiisoft/yii2": "*"
+    },
+    "minimum-stability": "dev"
+}

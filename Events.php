@@ -12,6 +12,7 @@ use humhub\modules\custom_pages\widgets\SnippetWidget;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
 use humhub\modules\custom_pages\permissions\ManagePages;
+use Throwable;
 use Yii;
 use yii\helpers\Html;
 
@@ -27,7 +28,7 @@ class Events
     {
         try {
             static::registerAutoloader();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Yii::error($e);
         }
     }

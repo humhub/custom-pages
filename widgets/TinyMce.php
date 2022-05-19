@@ -28,7 +28,8 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
 
         $this->clientOptions = ArrayHelper::merge([
             'plugins' => ['code', 'autolink', 'link', 'image', 'lists', 'fullscreen', 'table', 'wordcount'],
-            'toolbar' => 'undo redo | blocks | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | code'
+            'toolbar' => 'undo redo | blocks | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | code',
+            'content_style' => '.img-responsive {display:block;max-width:100%;height:auto}'
         ], $this->clientOptions);
     }
 }

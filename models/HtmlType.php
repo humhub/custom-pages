@@ -50,7 +50,7 @@ class HtmlType extends ContentType
     {
         HtmlAssets::register(Yii::$app->getView());
 
-        $field = $form->field($page, $page->getPageContentProperty())->widget(TinyMce::class);
+        $field = $form->field($page, $page->getPageContentProperty())->widget(TinyMce::class, ['options' => ['id' => 'html_content']]);
 
         $field .= '<div class="form-group">'
             . UploadButton::widget([

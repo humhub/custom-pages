@@ -12,28 +12,15 @@ humhub.module('custom_pages.html', function (module, require, $) {
         }
 
         Widget.instance('#custom-page-html-file-upload').on('humhub:file:uploadEnd', function (evt, response) {
-            // TODO: Update for new TinyMCE editor instead of CodeMirror
-            const htmlContentCodeMirror = $('#html_content[data-codemirror]').data('codemirror-instance');
-            if (!(htmlContentCodeMirror instanceof CodeMirror) ||
+            const htmlTinyMce = tinyMCE.get('html_content');
+            if (!htmlTinyMce ||
                 !(response._response.result.files instanceof Array) ||
                 !response._response.result.files.length) {
                 return;
             }
 
-            insertTextAtCursor(htmlContentCodeMirror, getFileHtmlTags(response._response.result.files));
+            htmlTinyMce.insertContent(getFileHtmlTags(response._response.result.files));
         });
-    }
-
-    const insertTextAtCursor = function (codeMirror, text) {
-        const valueLines = codeMirror.getValue().split('\n');
-        const cursor = codeMirror.getCursor();
-        const cursorLine = valueLines[cursor.line];
-        const cursorLineBeforeCursor = cursorLine.substring(0, cursor.ch);
-        const cursorLineAfterCursor  = cursorLine.substring(cursor.ch, cursorLine.length);
-
-        valueLines[cursor.line] = cursorLineBeforeCursor + text + cursorLineAfterCursor;
-
-        codeMirror.setValue(valueLines.join('\n'));
     }
 
     const getFileHtmlTags = function (files) {

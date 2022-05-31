@@ -28,11 +28,18 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
         $this->language = substr($this->language ?? Yii::$app->language, 0, 2);
 
         $tinyMcePluginsAssets = TinyMcePluginsAssets::register($this->getView());
+        $external_plugins = ['codemirror' => $tinyMcePluginsAssets->baseUrl . '/codemirror/plugin.min.js'];
+        $humhubTriggerToolbar = '';
+        if (isset($this->clientOptions['humhubTrigger'])) {
+            $external_plugins['humhubtrigger'] = $tinyMcePluginsAssets->baseUrl . '/humhubtrigger/plugin.min.js';
+            $humhubTriggerToolbar = ' | humhubtrigger';
+        }
+
         $this->clientOptions = ArrayHelper::merge([
             'plugins' => ['code', 'autolink', 'link', 'image', 'lists', 'fullscreen', 'table', 'wordcount'],
-            'toolbar' => 'undo redo | blocks | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | code',
+            'toolbar' => 'undo redo | blocks | bold italic | alignleft aligncenter alignright alignjustify' . $humhubTriggerToolbar . ' | removeformat | code',
             'content_style' => '.img-responsive {display:block;max-width:100%;height:auto}',
-            'external_plugins' => ['codemirror' => $tinyMcePluginsAssets->baseUrl . '/codemirror/plugin.min.js']
+            'external_plugins' => $external_plugins
         ], $this->clientOptions);
     }
 }

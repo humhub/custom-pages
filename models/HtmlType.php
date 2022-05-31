@@ -50,7 +50,17 @@ class HtmlType extends ContentType
     {
         HtmlAssets::register(Yii::$app->getView());
 
-        $field = $form->field($page, $page->getPageContentProperty())->widget(TinyMce::class, ['options' => ['id' => 'html_content']]);
+        $field = $form->field($page, $page->getPageContentProperty())->widget(TinyMce::class, [
+            'options' => ['id' => 'html_content'],
+            'clientOptions' => [
+                'humhubTrigger' => [
+                    'icon' => 'upload',
+                    'text' => Yii::t('CustomPagesModule.models_HtmlType', 'Attach Files'),
+                    'selector' => '#custom-page-html-file-upload',
+                    'event' => 'click'
+                ]
+            ]
+        ]);
 
         $field .= '<div class="form-group">'
             . UploadButton::widget([

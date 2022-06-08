@@ -123,13 +123,13 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     };
 
     TemplateInlineEditor.prototype._updateInputValue = function () {
-        if (tinyMCE) {
+        if (typeof tinyMCE === 'object' && typeof tinyMCE.triggerSave === 'function') {
             tinyMCE.triggerSave();
         }
     };
 
     TemplateInlineEditor.prototype._destroyInput = function () {
-        if (tinyMCE) {
+        if (typeof tinyMCE === 'object' && typeof tinyMCE.remove === 'function') {
             tinyMCE.remove();
         }
     };

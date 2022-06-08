@@ -145,13 +145,13 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
     };
 
     TemplateSourceEditor.prototype._updateInputValue = function () {
-        if (tinyMCE) {
+        if (typeof tinyMCE === 'object' && typeof tinyMCE.triggerSave === 'function') {
             tinyMCE.triggerSave();
         }
     };
 
     TemplateSourceEditor.prototype._destroyInput = function () {
-        if (tinyMCE) {
+        if (typeof tinyMCE === 'object' && typeof tinyMCE.remove === 'function') {
             tinyMCE.remove();
         }
     };

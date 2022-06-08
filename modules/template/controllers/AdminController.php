@@ -27,6 +27,7 @@ use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElemen
 use humhub\modules\custom_pages\modules\template\widgets\EditMultipleElementsModal;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentTable;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
+use yii\base\Response;
 
 /**
  * Admin controller for managing templates.
@@ -144,7 +145,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
     /**
      * Used to add elements to a template.
      *
-     * @return type
+     * @return Response
      * @throws \yii\web\HttpException
      */
     public function actionAddElement($templateId, $type)
@@ -159,11 +160,11 @@ class AdminController extends \humhub\modules\admin\components\Controller
             return $this->getJsonEditElementResult(true, TemplateElementAdminRow::widget(['form' => $form]), $form);
         }
 
-        $result = EditElementModal::widget([
+        $result = $this->renderAjaxPartial(EditElementModal::widget([
             'model' => $form,
             'isAdminEdit' => true,
             'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Add</strong> new {type} element', ['type' => $form->getLabel()])
-        ]);
+        ]));
 
         return $this->getJsonEditElementResult(false, $result, $form);
     }
@@ -173,7 +174,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
      *
      * This controller expects an id request parameter.
      *
-     * @return type
+     * @return Response
      * @throws \yii\web\HttpException if no template id was given.
      */
     public function actionEditElement($id)
@@ -187,12 +188,12 @@ class AdminController extends \humhub\modules\admin\components\Controller
             return $this->getJsonEditElementResult(true, TemplateElementAdminRow::widget(['form' => $form, 'saved' => true]), $form);
         }
 
-        $result = EditElementModal::widget([
+        $result = $this->renderAjaxPartial(EditElementModal::widget([
             'model' => $form,
             'isAdminEdit' => true,
             'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> element {name}', ['name' => $form->element->name]),
             'resetUrl' => \yii\helpers\Url::to(['reset-element', 'id' => $id])
-        ]);
+        ]));
 
         return $this->getJsonEditElementResult(false, $result, $form);
     }
@@ -254,7 +255,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
      * @param boolean $success defines if the process was successfull e.g. saving an element
      * @param mixed $content content result
      * @param mixed $form Form model
-     * @return type
+     * @return Response
      */
     private function getJsonEditElementResult($success, $content, $form)
     {
@@ -305,7 +306,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
     /**
      * This action is used to edit multiple elements.
      *
-     * @return type
+     * @return Response
      * @throws \yii\web\HttpException
      */
     public function actionEditMultiple($id)
@@ -323,16 +324,16 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         $this->asJson([
             'success' => false,
-            'output' => EditMultipleElementsModal::widget([
+            'output' => $this->renderAjaxPartial(EditMultipleElementsModal::widget([
                 'model' => $form,
                 'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> {templateName}', ['templateName' => $form->template->name])
-            ])
+            ]))
         ]);
     }
 
     /**
      * Returns an info text view.
-     * @return type
+     * @return string
      */
     public function actionInfo()
     {

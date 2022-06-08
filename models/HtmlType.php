@@ -8,7 +8,6 @@
 
 namespace humhub\modules\custom_pages\models;
 
-use humhub\modules\custom_pages\assets\HtmlAssets;
 use humhub\modules\custom_pages\widgets\TinyMce;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
@@ -48,8 +47,6 @@ class HtmlType extends ContentType
 
     public function renderFormField(ActiveForm $form, CustomContentContainer $page)
     {
-        HtmlAssets::register(Yii::$app->getView());
-
         $field = $form->field($page, $page->getPageContentProperty())->widget(TinyMce::class, [
             'options' => ['id' => 'html_content'],
             'clientOptions' => [

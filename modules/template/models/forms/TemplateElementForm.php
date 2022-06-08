@@ -80,7 +80,7 @@ class TemplateElementForm extends \yii\base\Model
 
         $result = false;
         if ($this->content != null) {
-            $result = $result || $this->content->load($data, $formName);
+            $result = $this->content->load($data, $formName);
         }
 
         $elementLoaded = $this->element->load($data, $formName);

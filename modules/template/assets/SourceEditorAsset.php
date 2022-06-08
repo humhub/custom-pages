@@ -2,7 +2,6 @@
 
 namespace humhub\modules\custom_pages\modules\template\assets;
 
-use humhub\modules\custom_pages\assets\CkEditorAssetBundle;
 use humhub\modules\ui\form\assets\CodeMirrorAssetBundle;
 use yii\web\AssetBundle;
 
@@ -18,7 +17,6 @@ class SourceEditorAsset extends AssetBundle
     
     public $depends = [
         CodeMirrorAssetBundle::class,
-        TemplateCoreAsset::class,
-        CkEditorAssetBundle::class
+        TemplateCoreAsset::class
     ];
 }

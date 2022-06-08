@@ -59,8 +59,10 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
     };
 
     TemplateSourceEditor.prototype.editElementSubmit = function (evt) {
+        this._updateInputValue();
         var that = this;
         client.submit(evt, {dataType: 'json'}).then(function (response) {
+            that._destroyInput();
             if (response.success) {
                 that.updateElement(response);
                 modal.global.close();
@@ -73,8 +75,10 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
     };
 
     TemplateSourceEditor.prototype.editMultipleElementsSubmit = function (evt) {
+        this._updateInputValue();
         var that = this;
         client.submit(evt).then(function (response) {
+            that._destroyInput();
             if (response.success) {
                 that.$elements.replaceWith(response.output);
                 modal.global.close();
@@ -138,6 +142,18 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
         }).catch(function (e) {
             module.log.error(e, true);
         });
+    };
+
+    TemplateSourceEditor.prototype._updateInputValue = function () {
+        if (tinyMCE) {
+            tinyMCE.triggerSave();
+        }
+    };
+
+    TemplateSourceEditor.prototype._destroyInput = function () {
+        if (tinyMCE) {
+            tinyMCE.remove();
+        }
     };
 
     var _getCaret = function (el) {

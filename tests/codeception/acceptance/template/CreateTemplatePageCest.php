@@ -87,6 +87,6 @@ class CreateTemplatePageCest
         $I->click('Add Element');
         $I->wait(1);
         $I->click($type);
-        $I->waitForText('Placeholder name');
+        $I->waitForElementVisible('#templateelement-name');
     }
 }

@@ -28,7 +28,10 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
         $this->language = substr($this->language ?? Yii::$app->language, 0, 2);
 
         $tinyMcePluginsAssets = TinyMcePluginsAssets::register($this->getView());
-        $external_plugins = ['codemirror' => $tinyMcePluginsAssets->baseUrl . '/codemirror/plugin.min.js'];
+        $external_plugins = [
+            'codemirror' => $tinyMcePluginsAssets->baseUrl . '/codemirror/plugin.min.js',
+            'wrapper' => $tinyMcePluginsAssets->baseUrl . '/wrapper/plugin.js',
+        ];
         $humhubTriggerToolbar = '';
         if (isset($this->clientOptions['humhubTrigger'])) {
             $external_plugins['humhubtrigger'] = $tinyMcePluginsAssets->baseUrl . '/humhubtrigger/plugin.min.js';
@@ -37,9 +40,10 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
 
         $this->clientOptions = ArrayHelper::merge([
             'plugins' => ['code', 'autolink', 'link', 'image', 'lists', 'fullscreen', 'table', 'wordcount'],
-            'toolbar' => 'undo redo | blocks | bold italic | alignleft aligncenter alignright alignjustify' . $humhubTriggerToolbar . ' | removeformat | code',
+            'toolbar' => 'undo redo | wrapper blocks | bold italic | alignleft aligncenter alignright alignjustify' . $humhubTriggerToolbar . ' | removeformat | code',
             'content_style' => '.img-responsive {display:block;max-width:100%;height:auto}',
-            'external_plugins' => $external_plugins
+            'external_plugins' => $external_plugins,
+            'wrapper' => ['tooltip' => Yii::t('CustomPagesModule.base', 'Wrap this HTML page with white panel')]
         ], $this->clientOptions);
     }
 }

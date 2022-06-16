@@ -13,13 +13,8 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 
 <div class="container <?= Html::encode($cssClass) ?>">
     <div class="row">
-
         <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <?= $html ?>
-                </div>
-            </div>
+            <?= $html ?>
         </div>
     </div>
 </div>

@@ -83,12 +83,10 @@ class CreateTemplatePageCest
         $I->see('#file');
     }
     
-    private function clickAddElement($I, $type) {
+    private function clickAddElement(AcceptanceTester $I, $type) {
         $I->click('Add Element');
         $I->wait(1);
-        
         $I->click($type);
-        $I->waitForElementVisible('#templateelement-name');
-        
+        $I->waitForText('Placeholder name');
     }
 }

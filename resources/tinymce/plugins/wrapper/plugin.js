@@ -38,6 +38,7 @@ tinymce.PluginManager.add('wrapper', function(editor, url) {
 
     editor.ui.registry.addToggleButton('wrapper', {
         icon: 'unselected',
+        text: config.text,
         tooltip: config.tooltip,
         onAction,
         onSetup: (btn) => {btn.setActive(isWrapped())}

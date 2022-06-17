@@ -30,7 +30,7 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
         $tinyMcePluginsAssets = TinyMcePluginsAssets::register($this->getView());
         $external_plugins = [
             'codemirror' => $tinyMcePluginsAssets->baseUrl . '/codemirror/plugin.min.js',
-            'wrapper' => $tinyMcePluginsAssets->baseUrl . '/wrapper/plugin.js',
+            'wrapper' => $tinyMcePluginsAssets->baseUrl . '/wrapper/plugin.min.js',
         ];
         $humhubTriggerToolbar = '';
         if (isset($this->clientOptions['humhubTrigger'])) {
@@ -43,7 +43,10 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
             'toolbar' => 'undo redo | wrapper blocks | bold italic | alignleft aligncenter alignright alignjustify' . $humhubTriggerToolbar . ' | removeformat | code',
             'content_style' => '.img-responsive {display:block;max-width:100%;height:auto}',
             'external_plugins' => $external_plugins,
-            'wrapper' => ['tooltip' => Yii::t('CustomPagesModule.base', 'Wrap this HTML page with white panel')]
+            'wrapper' => [
+                'text' => Yii::t('CustomPagesModule.base', 'Panel'),
+                'tooltip' => Yii::t('CustomPagesModule.base', 'Wrap this HTML page with white panel'),
+            ]
         ], $this->clientOptions);
     }
 }

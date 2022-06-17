@@ -42,6 +42,18 @@ class Page extends CustomContentContainer
     const NAV_CLASS_EMPTY = 'WithOutMenu';
     const NAV_CLASS_FOOTER = 'FooterMenuWidget';
 
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        if ($this->isNewRecord && $this->type == HtmlType::ID &&
+            ($this->page_content === null || $this->page_content === '')) {
+            $this->page_content = '<div class="panel panel-default"><div class="panel-body"></div></div>';
+        }
+    }
 
     /**
      * @return string the associated database table name

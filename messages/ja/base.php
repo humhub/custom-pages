@@ -60,7 +60,7 @@ return array (
   'Show additional file information (size)' => '',
   'Snipped-Layouts' => '',
   'Snippets' => '',
-  'Source' => '',
+  'Source' => 'ソース',
   'Space Navigation' => 'スペース・ナビゲーション',
   'Stream' => 'ストリーム',
   'Stream options' => '',

@@ -107,9 +107,17 @@ tinymce.PluginManager.add('wrapper', function(editor, url) {
 
     wrapper.cleanup = function () {
         const content = editor.getContent();
-        const paragraphSpace = '([\\r\\n]*<p>&nbsp;<\\/p>[\\r\\n]*)?';
-        const regexp = new RegExp('^' + paragraphSpace + '(' + this.regexp('.+?') + ')' + paragraphSpace + '$', 'is');
-        editor.setContent(content.replace(regexp, '$2'));
+        let emptyLine = '<p>&nbsp;<\\/p>';
+        if (!content.match(new RegExp(emptyLine, 'i'))) {
+            return;
+        }
+
+        emptyLine = '([\\r\\n]*' + emptyLine + '[\\r\\n]*)?';
+        const regexp = new RegExp('^' + emptyLine + '(' + this.regexp('.+?') + ')' + emptyLine + '$', 'is');
+        const cleanContent = content.replace(regexp, '$2');
+        if (cleanContent !== content) {
+            editor.setContent(cleanContent);
+        }
     }
 
     wrapper.initStyles = function () {

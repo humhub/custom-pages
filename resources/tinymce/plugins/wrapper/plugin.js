@@ -32,6 +32,7 @@ tinymce.PluginManager.add('wrapper', function(editor, url) {
             editor.setContent(wrapper.wrap(content));
             btn.setActive(true);
         }
+        editor.focus();
     }
 
     editor.ui.registry.addToggleButton('wrapper', {
@@ -56,6 +57,28 @@ tinymce.PluginManager.add('wrapper', function(editor, url) {
             editor.dom.is(nodes[0].childNodes[0], this.selector(1));
     }
 
+    wrapper.startTag = function (i) {
+        if (typeof this.items[i] === 'undefined') {
+            return '';
+        }
+
+        let html = '<' + this.items[i].tag;
+        if (this.items[i].class) {
+            html += ' class="' + this.items[i].class + '"';
+        }
+        html += '>';
+
+        return html;
+    }
+
+    wrapper.endTag = function (i) {
+        if (typeof this.items[i] === 'undefined') {
+            return '';
+        }
+
+        return '</' + this.items[i].tag + '>';
+    }
+
     wrapper.startHtml = function (separator) {
         if (typeof separator === 'undefined') {
             separator = '';
@@ -63,11 +86,7 @@ tinymce.PluginManager.add('wrapper', function(editor, url) {
 
         let html = '';
         for (let i = 0; i < this.items.length; i++) {
-            html += '<' + this.items[i].tag;
-            if (this.items[i].class) {
-                html += ' class="' + this.items[i].class + '"';
-            }
-            html += '>';
+            html += this.startTag(i);
             if (i < this.items.length - 1) {
                 html += separator;
             }
@@ -83,7 +102,7 @@ tinymce.PluginManager.add('wrapper', function(editor, url) {
 
         let html = '';
         for (let i = this.items.length - 1; i >=0; i--) {
-            html += '</' + this.items[i].tag + '>';
+            html += this.endTag(i);
             if (i > 0) {
                 html += separator;
             }
@@ -107,14 +126,22 @@ tinymce.PluginManager.add('wrapper', function(editor, url) {
 
     wrapper.cleanup = function () {
         const content = editor.getContent();
-        let emptyLine = '<p>&nbsp;<\\/p>';
-        if (!content.match(new RegExp(emptyLine, 'i'))) {
-            return;
+        let cleanContent = content;
+        const emptyLine = '<p>&nbsp;</p>';
+        const emptyBody = this.startTag(1) + '&nbsp;' + this.endTag(1);
+        const nl = '[\r\n]*';
+
+        if (cleanContent.match(new RegExp(emptyLine, 'i'))) {
+            const emptyLineRegexp = '(' + nl + emptyLine + nl + ')*';
+            cleanContent = cleanContent.replace(new RegExp('^' + emptyLineRegexp + '(' + this.regexp('.+?') + ')' + emptyLineRegexp + '$', 'is'), '$2');
         }
 
-        emptyLine = '([\\r\\n]*' + emptyLine + '[\\r\\n]*)?';
-        const regexp = new RegExp('^' + emptyLine + '(' + this.regexp('.+?') + ')' + emptyLine + '$', 'is');
-        const cleanContent = content.replace(regexp, '$2');
+        if (cleanContent.match(new RegExp(emptyBody, 'i'))) {
+            cleanContent = cleanContent
+                .replace(new RegExp(this.endTag(1) + nl + emptyBody, 'ig'), emptyLine + this.endTag(1))
+                .replace(new RegExp(this.startTag(0) + nl + emptyBody, 'ig'), this.startHtml() + emptyLine);
+        }
+
         if (cleanContent !== content) {
             editor.setContent(cleanContent);
         }

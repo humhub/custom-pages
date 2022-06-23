@@ -53,11 +53,11 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     };
 
     TemplateInlineEditor.prototype.editElementSubmit = function (evt) {
-        this._updateCkEditorInputValue();
+        this._updateInputValue();
 
         var that = this;
         client.submit(evt, {dataType: 'json'}).then(function (response) {
-            that._destroyCkEditorInput();
+            that._destroyInput();
             if (response.success) {
                 modal.global.close();
                 that.replaceElement(that.currentElement, response.output);
@@ -70,12 +70,12 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     };
 
     TemplateInlineEditor.prototype.editItemSubmit = function (evt) {
-        this._updateCkEditorInputValue();
+        this._updateInputValue();
         this._removeDisabledFields(evt.$form);
 
         var that = this;
         client.submit(evt, {dataType: 'json'}).then(function (response) {
-            that._destroyCkEditorInput();
+            that._destroyInput();
             if (response.success) {
                 var $result = $(response.output);
                 if ($result.is('[data-template-item]')) {
@@ -104,12 +104,12 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     };
 
     TemplateInlineEditor.prototype.editMultipleElementsSubmit = function (evt) {
-        this._updateCkEditorInputValue();
+        this._updateInputValue();
         this._removeDisabledFields(evt.$form);
 
         var that = this;
         client.submit(evt, {dataType: 'json'}).then(function (response) {
-            that._destroyCkEditorInput();
+            that._destroyInput();
             if (response.success) {
                 client.reload();
             } else {
@@ -122,16 +122,15 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
         return this.getElement($('[data-template-item="' + id + '"]'));
     };
 
-    TemplateInlineEditor.prototype._updateCkEditorInputValue = function () {
-        $('textarea.ckeditorInput').each(function () {
-            var $textarea = $(this);
-            $textarea.val(CKEDITOR.instances[$textarea.attr('id')].getData());
-        });
+    TemplateInlineEditor.prototype._updateInputValue = function () {
+        if (typeof tinyMCE === 'object' && typeof tinyMCE.triggerSave === 'function') {
+            tinyMCE.triggerSave();
+        }
     };
 
-    TemplateInlineEditor.prototype._destroyCkEditorInput = function () {
-        for (name in CKEDITOR.instances) {
-            CKEDITOR.instances[name].destroy(true);
+    TemplateInlineEditor.prototype._destroyInput = function () {
+        if (typeof tinyMCE === 'object' && typeof tinyMCE.remove === 'function') {
+            tinyMCE.remove();
         }
     };
 

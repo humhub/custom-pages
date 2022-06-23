@@ -41,7 +41,7 @@ You can add the following static elements to your layout:
 |  Type | Description  |
 |---|---|
 | Text  | A simple plain text element |
-| Richtext  | A Html richtext editor based on [CKEditor](https://ckeditor.com/) |
+| Richtext  | A Html richtext editor based on [TinyMCE](https://www.tiny.cloud/) |
 | HumHub Richtext  | The HumHub Richtext, can be used for mentionings, oembed etc. |
 | Image  | Image element |
 | File  | Renders a file url (no link etc) |

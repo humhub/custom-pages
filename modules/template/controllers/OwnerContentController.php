@@ -10,6 +10,7 @@ use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElementsForm;
 use humhub\modules\custom_pages\modules\template\widgets\EditMultipleElementsModal;
+use yii\base\Response;
 
 /**
  * This controller is used to manage OwnerContent instances for TemplateContentOwner.
@@ -50,7 +51,7 @@ class OwnerContentController extends \humhub\components\Controller
     /**
      * Edits the content of a specific OwnerContent for the given TemplateContentOwner.
      * 
-     * @return type
+     * @return Response
      * @throws \yii\web\HttpException
      */
     public function actionEdit($ownerModel, $ownerId, $name)
@@ -71,10 +72,10 @@ class OwnerContentController extends \humhub\components\Controller
         }
 
         return $this->asJson([
-            'output' => EditElementModal::widget([
+            'output' => $this->renderAjaxPartial(EditElementModal::widget([
                     'model' => $form,
                     'title' => Yii::t('CustomPagesModule.controllers_TemplateController', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()])
-            ])
+            ]))
         ]);
     }
 
@@ -152,7 +153,7 @@ class OwnerContentController extends \humhub\components\Controller
      * @param boolean $success defines if the process was successfull e.g. saving an element
      * @param mixed $content content result
      * @param mixed $form Form model
-     * @return type
+     * @return Response
      */
     private function getJsonEditElementResult($success, $content)
     {

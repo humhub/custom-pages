@@ -1,7 +1,6 @@
 <?php
 
 use humhub\modules\custom_pages\widgets\CustomPageInlineStyle;
-use humhub\modules\file\widgets\ShowFiles;
 use yii\helpers\Html;
 
 /** @var $page \humhub\modules\custom_pages\models\Page */
@@ -14,11 +13,8 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 
 <div class="container <?= Html::encode($cssClass) ?>">
     <div class="row">
-
         <div class="col-md-12">
-
-            <?= $html; ?>
-
+            <?= $html ?>
         </div>
     </div>
 </div>

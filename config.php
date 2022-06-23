@@ -1,5 +1,7 @@
 <?php
 
+use humhub\components\Application;
+use humhub\modules\custom_pages\Events;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\user\widgets\AccountMenu;
 use humhub\modules\admin\widgets\AdminMenu;
@@ -21,6 +23,7 @@ return [
     ],
     'namespace' => 'humhub\modules\custom_pages',
     'events' => [
+        ['class' => Application::class, 'event' => Application::EVENT_BEFORE_REQUEST, 'callback' => [Events::class, 'onBeforeRequest']],
         ['class' => AdminMenu::class, 'event' => AdminMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onAdminMenuInit']],
         ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onTopMenuInit']],
         ['class' => AccountMenu::class, 'event' => AccountMenu::EVENT_INIT, 'callback' => ['humhub\modules\custom_pages\Events', 'onAccountMenuInit']],

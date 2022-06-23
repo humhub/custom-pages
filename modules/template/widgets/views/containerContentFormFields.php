@@ -2,14 +2,8 @@
 /* @var $model humhub\modules\custom_pages\modules\template\models\template\ContainerContent */
 /* @var $form \humhub\modules\ui\form\widgets\ActiveForm */
 
-use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\modules\custom_pages\modules\template\models\Template;
-
-$csrfTokenName = Yii::$app->request->csrfParam;
-$csrfToken = Yii::$app->request->csrfToken;
-
-$uploadUrl = Url::to(['/custom_pages/template/upload/upload-ckeditor-file', $csrfTokenName => $csrfToken]);
 
 $model->definition->initAllowedTemplateSelection();
 

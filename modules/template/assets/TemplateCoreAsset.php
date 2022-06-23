@@ -19,7 +19,6 @@ class TemplateCoreAsset extends AssetBundle
     ];
     
     public $depends = [
-        'humhub\modules\custom_pages\assets\Assets',
-        'humhub\modules\custom_pages\assets\CkEditorAssetBundle'
+        'humhub\modules\custom_pages\assets\Assets'
     ];
 }

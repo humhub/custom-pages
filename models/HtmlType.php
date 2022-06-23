@@ -8,12 +8,10 @@
 
 namespace humhub\modules\custom_pages\models;
 
-
-use humhub\modules\custom_pages\assets\HtmlAssets;
+use humhub\modules\custom_pages\widgets\TinyMce;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\UploadProgress;
-use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
 use Yii;
 use yii\widgets\ActiveForm;
 
@@ -49,9 +47,17 @@ class HtmlType extends ContentType
 
     public function renderFormField(ActiveForm $form, CustomContentContainer $page)
     {
-        HtmlAssets::register(Yii::$app->getView());
-
-        $field = $form->field($page, $page->getPageContentProperty())->widget(CodeMirrorInputWidget::class, ['id' => 'html_content']);
+        $field = $form->field($page, $page->getPageContentProperty())->widget(TinyMce::class, [
+            'options' => ['id' => 'html_content'],
+            'clientOptions' => [
+                'humhubTrigger' => [
+                    'icon' => 'upload',
+                    'text' => Yii::t('CustomPagesModule.models_HtmlType', 'Attach Files'),
+                    'selector' => '#custom-page-html-file-upload',
+                    'event' => 'click'
+                ]
+            ]
+        ]);
 
         $field .= '<div class="form-group">'
             . UploadButton::widget([

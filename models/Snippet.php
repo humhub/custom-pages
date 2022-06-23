@@ -77,6 +77,7 @@ class Snippet extends CustomContentContainer
             IframeType::ID,
             TemplateType::ID,
             PhpType::ID,
+            HtmlType::ID,
         ];
     }
 

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.6.0 (June 23, 2022)
+1.6.1 (June 23, 2022)
 ---------------------
 - Fix #211: Fix duplicated template HTML source field
 - Enh #210: Added TinyMCE Editor for HTML Pages 

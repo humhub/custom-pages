@@ -1,10 +1,13 @@
 Changelog
 =========
 
-1.5.1 (Unreleased)
-----------------------
+1.6.0 (June 23, 2022)
+---------------------
 - Fix #211: Fix duplicated template HTML source field
-- Enh #210: Use TinyMCE widget for HTML page editor
+- Enh #210: Added TinyMCE Editor for HTML Pages 
+- Enh #210: Switched from CKEditor to TinyMCE
+- Enh #210: Also HTML Snippets
+
 
 1.5.0 (April 14, 2022)
 ----------------------

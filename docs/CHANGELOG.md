@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.6.2 (June 28, 2022)
+---------------------
+- Fix #217: TinyMCE not loading correctly on new template sites
+
 1.6.1 (June 23, 2022)
 ---------------------
 - Fix #211: Fix duplicated template HTML source field

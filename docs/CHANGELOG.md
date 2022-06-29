@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.6.3 (June 29, 2022)
+---------------------
+- Fix #221: Rendering of TinyMCE on edit richtext element of template
+
 1.6.2 (June 28, 2022)
 ---------------------
 - Fix #217: TinyMCE not loading correctly on new template sites

@@ -209,8 +209,10 @@ class ContainerContentController extends \humhub\components\Controller
         }
 
         return $this->asJson([
-                    'output' => EditContainerItemModal::widget(['model' => $form,
-                        'title' => Yii::t('CustomPagesModule.controllers_AdminController', '<strong>Edit</strong> item')])
+            'output' => $this->renderAjaxPartial(EditContainerItemModal::widget([
+                'model' => $form,
+                'title' => Yii::t('CustomPagesModule.controllers_AdminController', '<strong>Edit</strong> item')
+            ]))
         ]);
     }
 

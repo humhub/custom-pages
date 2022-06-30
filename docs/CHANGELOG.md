@@ -3,7 +3,7 @@ Changelog
 
 1.6.4 (Unreleased)
 ---------------------
-- Fix #220: Allow script tags in TinyMCE editor
+- Fix #220: Allow all HTML tags in TinyMCE editor
 
 1.6.3 (June 29, 2022)
 ---------------------

@@ -42,7 +42,7 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
             'plugins' => ['code', 'autolink', 'link', 'image', 'lists', 'fullscreen', 'table', 'wordcount'],
             'toolbar' => 'undo redo | wrapper blocks | bold italic | alignleft aligncenter alignright alignjustify' . $humhubTriggerToolbar . ' | removeformat | code',
             'content_style' => '.img-responsive {display:block;max-width:100%;height:auto}',
-            'extended_valid_elements' => 'script[src|async|defer|type|language|charset|id|crossorigin|fetchpriority|integrity|nomodule|nonce|referrerpolicy]',
+            'valid_elements' => '*[*]',
             'external_plugins' => $external_plugins,
             'wrapper' => [
                 'text' => Yii::t('CustomPagesModule.base', 'Panel'),

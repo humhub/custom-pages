@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.6.4 (Unreleased)
+1.6.4 (June 30, 2022)
 ---------------------
 - Fix #220: Allow all HTML tags in TinyMCE editor
 

@@ -4,6 +4,7 @@ Changelog
 1.6.5 (Unreleased)
 ------------------
 - Fix #223: Deleting attached files from template pages was broken 
+- Fix #218: Allow custom pages for "People" page
 
 1.6.4 (June 30, 2022)
 ---------------------

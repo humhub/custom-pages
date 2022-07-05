@@ -5,7 +5,13 @@ namespace humhub\modules\custom_pages\modules\template\models;
 use Yii;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 
- class RichtextContent extends TemplateContentActiveRecord
+/**
+ * Class RichtextContent
+ * @package humhub\modules\custom_pages\modules\template\models
+ *
+ * @property string $content
+ */
+class RichtextContent extends TemplateContentActiveRecord
 {
     public static $label = 'Richtext';
      
@@ -76,6 +82,15 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
             'form' => $form,
             'model' => $this
         ]);
+    }
+
+    /**
+     * @param null $user
+     * @return bool
+     */
+    public function canEdit($user = null): bool
+    {
+        return PagePermission::canEdit();
     }
 
 }

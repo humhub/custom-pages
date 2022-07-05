@@ -9,7 +9,7 @@ class CreateGlobalPageCest
     public function testCreateMarkdownPageOnTopMenu(AcceptanceTester $I)
     {
         $I->amAdmin();
-        $I->wantToTest('the creation of a markdown page');
+        $I->wantToTest('the creation of a markdown page on Top Navigation');
         $I->amGoingTo('add a new page');
         $I->amOnRoute(['/custom_pages/page']);
         $I->expectTo('see the add new page site');
@@ -44,7 +44,7 @@ class CreateGlobalPageCest
     public function testCreateLinkPageOnAccountMenu(AcceptanceTester $I)
     {
         $I->amAdmin();
-        $I->wantToTest('the creation of a link page');
+        $I->wantToTest('the creation of a link page on User Account Menu (Settings)');
         $I->amGoingTo('add a new page');
         $I->amOnRoute(['/custom_pages/page']);
         $I->expectTo('see the add new page site');
@@ -76,5 +76,42 @@ class CreateGlobalPageCest
         $I->expectTo('see the dashboard');
         $I->wait(2);
         $I->seeInCurrentUrl('dashboard/dashboard');
+    }
+
+    public function testCreateMarkdownPageOnPeopleHeadingButtons(AcceptanceTester $I)
+    {
+        $I->amAdmin();
+        $I->wantToTest('the creation of a markdown page');
+        $I->amGoingTo('add a new page');
+        $I->amOnRoute(['/custom_pages/page']);
+        $I->expectTo('see the add new page site');
+        $I->see('Overview');
+        $I->see('People Buttons');
+        $I->seeElement('.target-page-list.PeopleButtonsWidget');
+
+        $I->click('.btn-success', '.target-page-list.PeopleButtonsWidget');
+
+        $I->waitForText('Add new page');
+        $I->click('#add-content-type-4');
+
+        $I->waitForText('Configuration');
+
+        $I->fillField('Page[title]', 'Custom people page');
+        $I->fillField('#page-page_content .humhub-ui-richtext', 'Custom people page content');
+        $I->jsShow('.form-collapsible-fields.closed fieldset');
+        $I->fillField('Page[sort_order]', '200');
+        $I->selectOption('Page[icon]',  ['value' => 'fa-anchor']);
+
+        $I->click('Save');
+        $I->waitForText('People Buttons');
+        $I->see('Custom people page');
+        $I->amOnRoute('/people');
+        $I->waitForElementVisible('.container-people .panel-heading .fa-anchor');
+        $I->expectTo('see my new page in the people heading buttons');
+
+        $I->click('.container-people .panel-heading .fa-anchor');
+        $I->expectTo('see no my new page content');
+
+        $I->waitForText('Custom people page content');
     }
 }

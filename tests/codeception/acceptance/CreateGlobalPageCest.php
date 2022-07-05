@@ -81,7 +81,7 @@ class CreateGlobalPageCest
     public function testCreateMarkdownPageOnPeopleHeadingButtons(AcceptanceTester $I)
     {
         $I->amAdmin();
-        $I->wantToTest('the creation of a markdown page');
+        $I->wantToTest('the creation of a markdown page on People Heading Buttons');
         $I->amGoingTo('add a new page');
         $I->amOnRoute(['/custom_pages/page']);
         $I->expectTo('see the add new page site');

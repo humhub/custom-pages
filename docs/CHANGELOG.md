@@ -1,9 +1,10 @@
 Changelog
 =========
 
-1.6.5 (Unreleased)
-------------------
+1.7.0 (July 7. 2022)
+--------------------
 - Fix #223: Deleting attached files from template pages was broken 
+- Enh #218: Allow custom pages in "People" page as buttons
 
 1.6.4 (June 30, 2022)
 ---------------------

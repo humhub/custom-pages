@@ -41,6 +41,7 @@ class Page extends CustomContentContainer
     const NAV_CLASS_ACCOUNTNAV = 'AccountMenuWidget';
     const NAV_CLASS_EMPTY = 'WithOutMenu';
     const NAV_CLASS_FOOTER = 'FooterMenuWidget';
+    const NAV_CLASS_PEOPLE = 'PeopleButtonsWidget';
 
     /**
      * @inheritdoc
@@ -154,6 +155,7 @@ class Page extends CustomContentContainer
             ['id' => self::NAV_CLASS_ACCOUNTNAV, 'name' => Yii::t('CustomPagesModule.base', 'User Account Menu (Settings)'), 'subLayout' => '@humhub/modules/user/views/account/_layout'],
             ['id' => self::NAV_CLASS_EMPTY, 'name' => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)')],
             ['id' => self::NAV_CLASS_FOOTER, 'name' => Yii::t('CustomPagesModule.base', 'Footer menu')],
+            ['id' => self::NAV_CLASS_PEOPLE, 'name' => Yii::t('CustomPagesModule.base', 'People Buttons')],
         ];
     }
 

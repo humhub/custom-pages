@@ -12,6 +12,8 @@ use humhub\modules\custom_pages\widgets\SnippetWidget;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
 use humhub\modules\custom_pages\permissions\ManagePages;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\user\widgets\PeopleHeadingButtons;
 use Throwable;
 use Yii;
 use yii\helpers\Html;
@@ -246,6 +248,29 @@ class Events
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
                     'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
                 ]);
+            }
+        } catch (Throwable $e) {
+            Yii::error($e);
+        }
+    }
+
+    public static function onPeopleHeadingButtonsInit($event)
+    {
+        try {
+            /* @var PeopleHeadingButtons $peopleHeadingButtons */
+            $peopleHeadingButtons = $event->sender;
+            foreach (Page::findAll(['target' => Page::NAV_CLASS_PEOPLE]) as $page) {
+                if (!$page->canView()) {
+                    continue;
+                }
+
+                $peopleHeadingButtons->addEntry(new MenuLink([
+                    'label' => Html::encode($page->title),
+                    'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
+                    'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
+                    'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
+                    'icon' => $page->icon,
+                ]));
             }
         } catch (Throwable $e) {
             Yii::error($e);

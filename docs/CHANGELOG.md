@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.7.1 (July 12. 2022)
+--------------------
+- Fix #227: Fix using of `PeopleHeadingButtons` for old versions
+
 1.7.0 (July 7. 2022)
 --------------------
 - Fix #223: Deleting attached files from template pages was broken 

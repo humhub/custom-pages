@@ -9,7 +9,6 @@ use humhub\modules\space\widgets\Sidebar as SpaceSidebar;
 use humhub\modules\user\widgets\AccountMenu;
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\user\widgets\AccountTopMenu;
-use humhub\modules\user\widgets\PeopleHeadingButtons;
 use humhub\widgets\BaseMenu;
 use humhub\widgets\FooterMenu;
 use humhub\widgets\TopMenu;
@@ -34,7 +33,7 @@ return [
         ['class' => Menu::class, 'event' => Menu::EVENT_INIT, 'callback' => [Events::class, 'onSpaceMenuInit']],
         ['class' => AccountTopMenu::class, 'event' => AccountTopMenu::EVENT_INIT, 'callback' => [Events::class, 'onAccountTopMenuInit']],
         ['class' => FooterMenu::class, 'event' => FooterMenu::EVENT_INIT, 'callback' => [Events::class, 'onFooterMenuInit']],
-        ['class' => PeopleHeadingButtons::class, 'event' => PeopleHeadingButtons::EVENT_INIT, 'callback' => [Events::class, 'onPeopleHeadingButtonsInit']],
+        ['class' => 'humhub\modules\user\widgets\PeopleHeadingButtons', 'event' => 'init', 'callback' => [Events::class, 'onPeopleHeadingButtonsInit']],
 
         ['class' => HeaderControlsMenu::class, 'event' => BaseMenu::EVENT_INIT, 'callback' => [Events::class, 'onSpaceAdminMenuInit']],
 

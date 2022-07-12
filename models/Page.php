@@ -150,13 +150,18 @@ class Page extends CustomContentContainer
      */
     public static function getDefaultTargets()
     {
-        return [
+        $targets = [
             ['id' => self::NAV_CLASS_TOPNAV, 'name' => Yii::t('CustomPagesModule.base', 'Top Navigation')],
             ['id' => self::NAV_CLASS_ACCOUNTNAV, 'name' => Yii::t('CustomPagesModule.base', 'User Account Menu (Settings)'), 'subLayout' => '@humhub/modules/user/views/account/_layout'],
             ['id' => self::NAV_CLASS_EMPTY, 'name' => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)')],
             ['id' => self::NAV_CLASS_FOOTER, 'name' => Yii::t('CustomPagesModule.base', 'Footer menu')],
-            ['id' => self::NAV_CLASS_PEOPLE, 'name' => Yii::t('CustomPagesModule.base', 'People Buttons')],
         ];
+
+        if (class_exists('humhub\modules\user\widgets\PeopleHeadingButtons')) {
+            $targets[] = ['id' => self::NAV_CLASS_PEOPLE, 'name' => Yii::t('CustomPagesModule.base', 'People Buttons')];
+        }
+
+        return $targets;
     }
 
     /**

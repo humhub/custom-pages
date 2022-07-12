@@ -27,7 +27,7 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
 
         $this->language = substr($this->language ?? Yii::$app->language, 0, 2);
 
-        $tinyMcePluginsAssets = TinyMcePluginsAssets::register($this->getView());
+        $tinyMcePluginsAssets = TinyMcePluginsAssets::register($this->view);
         $external_plugins = [
             'codemirror' => $tinyMcePluginsAssets->baseUrl . '/codemirror/plugin.min.js',
             'wrapper' => $tinyMcePluginsAssets->baseUrl . '/wrapper/plugin.min.js',
@@ -49,5 +49,10 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
                 'tooltip' => Yii::t('CustomPagesModule.base', 'Wrap this HTML page with white panel'),
             ]
         ], $this->clientOptions);
+
+        // Fix issue with disabled inputs when it is loaded on modal window:
+        $this->view->registerJs('$(document).on("focusin", "[class^=tox-] input", function(e) {
+            e.stopImmediatePropagation();
+        })');
     }
 }

@@ -4,6 +4,7 @@ Changelog
 1.7.1 (July 12. 2022)
 --------------------
 - Fix #227: Fix using of `PeopleHeadingButtons` for old versions
+- Fix #228: Fix disabled inputs on edit image and links when editor is opened from modal window
 
 1.7.0 (July 7. 2022)
 --------------------

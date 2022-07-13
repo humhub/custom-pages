@@ -21,11 +21,13 @@ tinymce.PluginManager.add('humhubtrigger', function(editor, url) {
         }
     }
 
-    editor.ui.registry.addButton('humhubtrigger', {
+    const buttonParams = {
         icon: config.icon,
         text: config.text,
         onAction: callAttachFilesWindow
-    })
+    };
+    editor.ui.registry.addButton('humhubtrigger', buttonParams);
+    editor.ui.registry.addMenuItem('humhubtrigger', buttonParams);
 
     if (humhubFileUploadWidget()) {
         humhubFileUploadWidget().on('humhub:file:uploadEnd', function (evt, response) {

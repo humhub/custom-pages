@@ -7,7 +7,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
 <tr data-template-element-definition="<?= $model->id ?>" >
-    <td>
+    <td class="text-nowrap">
         #<strong><?= Html::encode($model->name) ?> </strong>
     </td>
     <td>

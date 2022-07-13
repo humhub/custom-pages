@@ -44,6 +44,7 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
             'toolbar' => 'undo redo | wrapper blocks | bold italic | alignleft aligncenter alignright alignjustify' . $humhubTriggerToolbar . ' | removeformat | code',
             'content_style' => '.img-responsive {display:block;max-width:100%;height:auto}',
             'valid_elements' => '*[*]',
+            'convert_urls' => false,
             'external_plugins' => $external_plugins,
             'wrapper' => [
                 'text' => Yii::t('CustomPagesModule.base', 'Panel'),

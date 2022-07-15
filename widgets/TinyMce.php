@@ -10,7 +10,6 @@ namespace humhub\modules\custom_pages\widgets;
 use humhub\modules\custom_pages\assets\TinyMcePluginsAssets;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
 
 class TinyMce extends \dosamigos\tinymce\TinyMce
 {

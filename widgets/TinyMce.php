@@ -10,6 +10,7 @@ namespace humhub\modules\custom_pages\widgets;
 use humhub\modules\custom_pages\assets\TinyMcePluginsAssets;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 class TinyMce extends \dosamigos\tinymce\TinyMce
 {
@@ -44,7 +45,8 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
             'toolbar' => 'undo redo | wrapper blocks | bold italic | alignleft aligncenter alignright alignjustify' . $humhubTriggerToolbar . ' | removeformat | code',
             'content_style' => '.img-responsive {display:block;max-width:100%;height:auto}',
             'valid_elements' => '*[*]',
-            'convert_urls' => false,
+            'relative_urls' => false,
+            'remove_script_host' => true,
             'external_plugins' => $external_plugins,
             'wrapper' => [
                 'text' => Yii::t('CustomPagesModule.base', 'Panel'),

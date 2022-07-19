@@ -1,6 +1,11 @@
 Changelog
 =========
 
+
+1.7.3 (July 19. 2022)
+--------------------
+- Fix #229: Fixed attached images in HTML Editor. Improved Placeholder Admin Alignment
+
 1.7.2 (July 12. 2022)
 --------------------
 - Fix #228: Fix disabled inputs on edit image and links when editor is opened from modal window

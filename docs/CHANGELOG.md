@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.8.0 (Unreleased)
+--------------------
+- Fix #232: Migrate to Twig 3 and compatible with PHP 8.1
 
 1.7.3 (July 19. 2022)
 --------------------

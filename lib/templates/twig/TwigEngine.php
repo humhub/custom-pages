@@ -9,6 +9,7 @@ namespace humhub\modules\custom_pages\lib\templates\twig;
 
 
 use \humhub\modules\custom_pages\lib\templates\TemplateEngine;
+use Twig\Environment;
 
 /**
  * The TwigEngine is the default template eninge of this module and is used to
@@ -28,7 +29,7 @@ class TwigEngine implements TemplateEngine
     public function render($template, $content)
     {
         $loader = new DatabaseTwigLoader();
-        $twig = new \Twig_Environment($loader, ['autoescape' => false, 'debug' => true]);
+        $twig = new Environment($loader, ['autoescape' => false, 'debug' => true]);
         return $twig->render($template ,$content);
     }
 

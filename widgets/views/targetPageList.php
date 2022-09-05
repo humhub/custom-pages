@@ -51,7 +51,9 @@ use humhub\widgets\Button;
                     'buttons' => [
                         'update' => function ($url, $model) {
                             /*  @var $model CustomContentContainer */
-                            return Link::primary()->icon('fa-pencil')->link($model->getEditUrl())->xs()->right();
+                            return $model->canEdit()
+                                ? Link::primary()->icon('fa-pencil')->link($model->getEditUrl())->xs()->right()
+                                : '';
                         },
                         'view' => function ($url, $model) {
                             return;

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.8.1 (September 6, 2022)
+1.8.2 (September 6, 2022)
 -------------------------
 - Enh #237: Enable anchor feature for TinyMCE editor
 

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.1 (Unreleased)
+---------------------
+- Enh #237: Enable anchor feature for TinyMCE editor
+
 1.8.0 (July 28, 2022)
 ---------------------
 - Fix #232: Migrate to Twig 3 and compatible with PHP 8.1

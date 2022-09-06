@@ -39,8 +39,8 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
         }
 
         $this->clientOptions = ArrayHelper::merge([
-            'plugins' => ['code', 'autolink', 'link', 'image', 'lists', 'fullscreen', 'table', 'wordcount'],
-            'menu' => ['insert' => ['title' => 'Insert', 'items' => 'image humhubtrigger link inserttable | hr']],
+            'plugins' => ['code', 'autolink', 'link', 'image', 'lists', 'fullscreen', 'table', 'wordcount', 'anchor'],
+            'menu' => ['insert' => ['title' => 'Insert', 'items' => 'image humhubtrigger link anchor inserttable | hr']],
             'toolbar' => 'undo redo | wrapper blocks | bold italic | alignleft aligncenter alignright alignjustify' . $humhubTriggerToolbar . ' | removeformat | code',
             'content_style' => '.img-responsive {display:block;max-width:100%;height:auto}',
             'valid_elements' => '*[*]',

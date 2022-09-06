@@ -10,4 +10,5 @@ jobs:
     uses: humhub/actions/.github/workflows/module-marketplace-upload.yml@main
     with:
       install-composer: true
+      module-id: custom_pages
     secrets: inherit

@@ -1,9 +1,13 @@
 Changelog
 =========
 
-1.8.1 (Unreleased)
+1.8.3 (Unreleased)
 ---------------------
 - Fix #238: Allow HTML Pages and Snippets only for global admins
+
+1.8.2 (September 6, 2022)
+-------------------------
+- Enh #237: Enable anchor feature for TinyMCE editor
 
 1.8.0 (July 28, 2022)
 ---------------------

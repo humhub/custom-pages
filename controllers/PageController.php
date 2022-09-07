@@ -7,17 +7,17 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\custom_pages\permissions\ManagePages;
-use Yii;
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
-use humhub\components\access\ControllerAccess;
 use humhub\modules\content\components\ContentContainerControllerAccess;
 use humhub\modules\space\models\Space;
 use humhub\modules\custom_pages\widgets\AdminMenu;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\forms\AddPageForm;
+use Yii;
+use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 
 /**
@@ -177,6 +177,10 @@ class PageController extends AbstractCustomContainerController
         // If no pageId was given, we create a new page with the given type.
         if (!$page) {
             $page = $this->createNewPage($type, $targetId);
+        }
+
+        if (!$page->canEdit()) {
+            throw new ForbiddenHttpException('You cannot manage the page!');
         }
 
         $isNew = $page->isNewRecord;

@@ -283,6 +283,16 @@ abstract class CustomContentContainer extends ContentActiveRecord
         return $result;
     }
 
+    public function canEdit(): bool
+    {
+        if (!($this->content->container instanceof Space && $this->content->container->isAdmin()) &&
+            !Yii::$app->user->can(ManagePages::class)) {
+            return false;
+        }
+
+        return $this->getTargetModel()->isAllowedContentType($this->type);
+    }
+
     public function canView() {
         if($this->admin_only && !static::canSeeAdminOnlyContent($this->content->container)) {
             return false;

@@ -285,7 +285,8 @@ abstract class CustomContentContainer extends ContentActiveRecord
 
     public function canEdit(): bool
     {
-        if (!Yii::$app->user->can(ManagePages::class)) {
+        if (!($this->content->container instanceof Space && $this->content->container->isAdmin()) &&
+            !Yii::$app->user->can(ManagePages::class)) {
             return false;
         }
 

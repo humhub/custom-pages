@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.8.3 (Unreleased)
----------------------
+1.8.3 (September 7, 2022)
+-------------------------
 - Fix #238: Allow HTML Pages and Snippets only for global admins
 
 1.8.2 (September 6, 2022)

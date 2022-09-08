@@ -7,7 +7,6 @@ namespace humhub\modules\custom_pages\models;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\Module;
-use Yii;
 use yii\base\Model;
 
 /**
@@ -103,10 +102,6 @@ class Target extends Model
     {
         if ($type instanceof ContentType) {
             $type = $type->getId();
-        }
-
-        if (HtmlType::isType($type) && !Yii::$app->user->isAdmin()) {
-            return false;
         }
 
         return empty($this->contentTypes) || in_array($type, $this->contentTypes);

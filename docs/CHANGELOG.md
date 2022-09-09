@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.4 (September 9, 2022)
+-------------------------
+- Fix #241: Fix access to view HTML pages
+
 1.8.3 (September 7, 2022)
 -------------------------
 - Fix #238: Allow HTML Pages and Snippets only for global admins

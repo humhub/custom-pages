@@ -9,6 +9,7 @@
 
 namespace humhub\modules\custom_pages\models\forms;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\ContainerSnippet;
@@ -25,6 +26,7 @@ use yii\base\Model;
 /**
  * AddPageForm selects a page type
  *
+ * @property-read CustomContentContainer $pageInstance
  * @author luke
  */
 class AddPageForm extends Model
@@ -107,7 +109,11 @@ class AddPageForm extends Model
             }
         }
 
-        return in_array($type ,$this->getPageInstance()->getContentTypes()) && $this->target->isAllowedContentType($type);
+        if (!$this->pageInstance->canEdit($type)) {
+            return false;
+        }
+
+        return in_array($type, $this->pageInstance->getContentTypes()) && $this->target->isAllowedContentType($type);
     }
 
     /**
@@ -151,7 +157,11 @@ class AddPageForm extends Model
     public function getPageInstance()
     {
         if($this->_instance == null) {
-            $this->_instance = Yii::createObject($this->class);
+            $params = [];
+            if ($this->target->container instanceof ContentContainerActiveRecord) {
+                $params[] = $this->target->container;
+            }
+            $this->_instance = Yii::createObject($this->class, $params);
         }
         return $this->_instance;
     }

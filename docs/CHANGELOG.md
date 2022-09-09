@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.8.4 (Unrelased)
+1.8.4 (September 9, 2022)
 -------------------------
 - Fix #241: Fix access to view HTML pages
 

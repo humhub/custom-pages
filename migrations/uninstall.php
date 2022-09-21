@@ -23,12 +23,14 @@ class uninstall extends Migration
         $this->dropTable('custom_pages_template_image_content_definition');
         $this->dropTable('custom_pages_template');
 
+        $this->dropTable('custom_pages_iframe_attr');
+
         $this->dropTable('custom_pages_page');
         $this->dropTable('custom_pages_container_page');
-        
+
         $this->dropTable('custom_pages_container_snippet');
         $this->dropTable('custom_pages_snippet');
-        
+
     }
 
     public function down()

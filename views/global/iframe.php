@@ -1,6 +1,9 @@
 <?php
-use \humhub\modules\custom_pages\models\Page;
+
 use humhub\libs\Html;
+use humhub\modules\custom_pages\models\Page;
+
+/** @var $page \humhub\modules\custom_pages\models\Page */
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 $margin = $navigationClass == Page::NAV_CLASS_TOPNAV ? -15 : 0;
@@ -9,12 +12,12 @@ $margin = $navigationClass == Page::NAV_CLASS_TOPNAV ? -15 : 0;
 <style>
     #iframepage {
         border: none;
-        <?= $margin ? 'margin-top:'.$margin.'px;' : ''?>        
-        background: url('<?= Yii::$app->moduleManager->getModule('custom_pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
+    <?= $margin ? 'margin-top:'.$margin.'px;' : ''?> background: url('<?= Yii::$app->moduleManager->getModule('custom_pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
     }
 </style>
 
-<iframe class="<?= Html::encode($cssClass) ?>" id="iframepage" style="width:100%;height: 100%" src="<?= Html::encode($url) ?>"></iframe>
+<iframe class="<?= Html::encode($cssClass) ?>" id="iframepage" <?= $page->iframeAttr ?? '' ?>
+        style="width:100%;height: 100%" src="<?= Html::encode($url) ?>"></iframe>
 
 <?= Html::script(<<<JS
     function setSize() {

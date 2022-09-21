@@ -1,15 +1,15 @@
 <?php
 
-use humhub\modules\custom_pages\models\ContainerPage;
-use humhub\modules\custom_pages\widgets\PageIconSelect;
-use humhub\widgets\Link;
 use humhub\libs\Html;
-use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\custom_pages\models\Page;
-use humhub\widgets\Button;
-use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\content\widgets\richtext\RichTextField;
+use humhub\modules\custom_pages\helpers\Url;
+use humhub\modules\custom_pages\models\ContainerPage;
+use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\TemplateType;
+use humhub\modules\custom_pages\widgets\PageIconSelect;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\Button;
+use humhub\widgets\Link;
 
 \humhub\modules\custom_pages\assets\Assets::register($this);
 

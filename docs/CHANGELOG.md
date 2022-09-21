@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Unreleased
+-------------------------
+- Enh #178: Ability to add attributes to iframe
+
 1.8.4 (September 9, 2022)
 -------------------------
 - Fix #241: Fix access to view HTML pages

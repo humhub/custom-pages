@@ -9,9 +9,7 @@
 namespace humhub\modules\custom_pages\models;
 
 
-use humhub\modules\admin\permissions\ManageModules;
 use Yii;
-use yii\base\InvalidConfigException;
 use yii\widgets\ActiveForm;
 
 class IframeType extends ContentType
@@ -53,14 +51,12 @@ class IframeType extends ContentType
             $form->field($page, $page->getPageContentProperty())->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('targetUrl'))
             . '<div class="help-block">' . Yii::t('CustomPagesModule.views_common_edit', 'e.g. http://www.example.de') . '</div>';
 
-        try {
-            if (Yii::$app->user->can(ManageModules::class)) {
-                $formField =
-                    $form->field($page, 'iframeAttr')->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('iframeAttr'))
-                    . '<div class="help-block">' . Yii::t('CustomPagesModule.views_common_edit', 'e.g. allowfullscreen allow="camera; microphone"') . '</div>';
-            }
-        } catch (InvalidConfigException|\Throwable $e) {
+        if (Yii::$app->user->isAdmin()) {
+            $formField =
+                $form->field($page, 'iframeAttr')->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('iframeAttr'))
+                . '<div class="help-block">' . Yii::t('CustomPagesModule.views_common_edit', 'e.g. allowfullscreen allow="camera; microphone"') . '</div>';
         }
+
         return $formField;
     }
 

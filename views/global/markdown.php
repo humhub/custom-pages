@@ -1,12 +1,12 @@
 <?php
 
-use humhub\modules\custom_pages\models\Page;
-use humhub\modules\content\widgets\richtext\RichText;
 use humhub\libs\Html;
+use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\modules\template\widgets\PageConfigurationButton;
 use humhub\modules\custom_pages\widgets\CustomPageInlineStyle;
 
-/* @var $page Page*/
+/* @var $page Page */
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 ?>
@@ -17,7 +17,9 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
     <div class="panel panel-default <?= Html::encode($cssClass) ?>">
         <div class="panel-body">
             <?= PageConfigurationButton::widget() ?>
-            <?= RichText::output($md)?>
+            <div class="markdown-render">
+                <?= RichText::output($md) ?>
+            </div>
         </div>
     </div>
 <?php else: ?>
@@ -27,7 +29,9 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
                 <?= PageConfigurationButton::widget() ?>
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <?= RichText::output($md)?>
+                        <div class="markdown-render">
+                            <?= RichText::output($md) ?>
+                        </div>
                     </div>
                 </div>
             </div>

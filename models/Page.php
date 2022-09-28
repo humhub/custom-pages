@@ -3,24 +3,25 @@
 namespace humhub\modules\custom_pages\models;
 
 use humhub\modules\content\models\Content;
-use Yii;
-use humhub\modules\custom_pages\widgets\WallEntry;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
 use humhub\modules\custom_pages\modules\template\models\Template;
+use humhub\modules\custom_pages\widgets\WallEntry;
+use Yii;
 
 /**
  * This is the model class for table "custom_pages_page".
  *
  * Pages are global custom page container which can be added to the main navigation or
  * user account setting navigation.
- * 
+ *
  * The followings are the available columns in table 'custom_pages_page':
  * @property integer $id
  * @property integer $type
  * @property string $title
  * @property string $icon
  * @property string $page_content
+ * @property string $iframe_attrs
  * @property integer $sort_order
  * @property integer $admin_only
  * @property integer $in_new_window
@@ -73,8 +74,8 @@ class Page extends CustomContentContainer
         $result = $this->defaultAttributeLabels();
         $result['in_new_window'] = Yii::t('CustomPagesModule.models_Page', 'Open in new window');
         $result['abstract'] = Yii::t('CustomPagesModule.models_Page', 'Abstract');
-        $result['target'] = Yii::t('CustomPagesModule.models_Page','Navigation');
-        $result['url'] = Yii::t('CustomPagesModule.models_Page','Url shortcut');
+        $result['target'] = Yii::t('CustomPagesModule.models_Page', 'Navigation');
+        $result['url'] = Yii::t('CustomPagesModule.models_Page', 'Url shortcut');
         return $result;
     }
 
@@ -86,15 +87,15 @@ class Page extends CustomContentContainer
         $rules = $this->defaultRules();
 
         $target = $this->getTargetModel();
-        if($target && $target->isAllowedField('in_new_window')) {
+        if ($target && $target->isAllowedField('in_new_window')) {
             $rules[] = [['in_new_window'], 'integer'];
         }
 
-        if($target && $target->isAllowedField('abstract')) {
+        if ($target && $target->isAllowedField('abstract')) {
             $rules[] = [['abstract'], 'string'];
         }
 
-        if($target && $target->isAllowedField('url')) {
+        if ($target && $target->isAllowedField('url')) {
             $rules[] = [['url'], 'string'];
         }
 
@@ -187,7 +188,7 @@ class Page extends CustomContentContainer
     {
         return $this->page_content;
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -203,7 +204,6 @@ class Page extends CustomContentContainer
     {
         return (new SettingsForm())->phpGlobalPagePath;
     }
-
 
 
     /**

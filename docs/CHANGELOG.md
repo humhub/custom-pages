@@ -4,6 +4,7 @@ Changelog
 Unreleased
 -------------------------
 - Fix #244: Add markdown-render class to Markdown text for Translator module to work
+- Enh #178: Ability to add attributes to iframe
 
 1.8.4 (September 9, 2022)
 -------------------------

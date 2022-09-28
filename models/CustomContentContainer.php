@@ -73,9 +73,9 @@ abstract class CustomContentContainer extends ContentActiveRecord
     {
         parent::afterFind();
 
-        if($this->admin_only) {
+        if ($this->admin_only) {
             $this->visibility = static::VISIBILITY_ADMIN_ONLY;
-        } else if($this->content->isPublic()) {
+        } else if ($this->content->isPublic()) {
             $this->visibility = static::VISIBILITY_PUBLIC;
         } else {
             $this->visibility = static::VISIBILITY_PRIVATE;
@@ -90,7 +90,8 @@ abstract class CustomContentContainer extends ContentActiveRecord
     /**
      * Returns the database content field. Note this does not render the any content.
      */
-    public function getPageContentProperty() {
+    public function getPageContentProperty()
+    {
         return 'page_content';
     }
 
@@ -124,12 +125,13 @@ abstract class CustomContentContainer extends ContentActiveRecord
     /**
      * @return array
      */
-    public function getVisibilitySelection() {
+    public function getVisibilitySelection()
+    {
         $result = [
             static::VISIBILITY_ADMIN_ONLY => Yii::t('CustomPagesModule.visibility', 'Admin only')
         ];
 
-        if($this->isGuestAccessEnabled()) {
+        if ($this->isGuestAccessEnabled()) {
             $result[static::VISIBILITY_PRIVATE] = Yii::t('CustomPagesModule.visibility', 'Members only');
             if ($this->getTargetId() != Page::NAV_CLASS_ACCOUNTNAV) {
                 $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'Members & Guests');
@@ -169,7 +171,8 @@ abstract class CustomContentContainer extends ContentActiveRecord
             'title' => Yii::t('CustomPagesModule.components_Container', 'Title'),
             'icon' => Yii::t('CustomPagesModule.components_Container', 'Icon'),
             'cssClass' => Yii::t('CustomPagesModule.components_Container', 'Style Class'),
-            'content' => $this->getContentType() ?  $this->getContentType()->getLabel() : null ,
+            'content' => $this->getContentType() ? $this->getContentType()->getLabel() : null,
+            'iframe_attrs' => Yii::t('CustomPagesModule.components_Container', 'Additional IFrame Attributes'),
             'sort_order' => Yii::t('CustomPagesModule.components_Container', 'Sort Order'),
             'targetUrl' => Yii::t('CustomPagesModule.components_Container', 'Target Url'),
             'templateId' => Yii::t('CustomPagesModule.components_Container', 'Template Layout'),
@@ -190,7 +193,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
             ['target', 'validateTarget'],
             [['type'], 'validateContentType'],
             [['visibility'], 'integer', 'min' => static::VISIBILITY_PRIVATE, 'max' => static::VISIBILITY_ADMIN_ONLY],
-            [['title', 'target'], 'string', 'max' => 255],
+            [['title', 'target', 'iframe_attrs'], 'string', 'max' => 255],
         ];
 
         $result = array_merge($result, $this->getRulesByTarget());
@@ -200,7 +203,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
     public function validateTarget()
     {
         $target = $this->getTargetModel();
-        if(!$target) {
+        if (!$target) {
             $this->addError('target', 'Target not available for this page container.');
         }
     }
@@ -208,7 +211,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
     public function validateContentType()
     {
         $target = $this->getTargetModel();
-        if($target && !$target->isAllowedContentType($this->type)) {
+        if ($target && !$target->isAllowedContentType($this->type)) {
             $this->addError('target', 'The selected content type is not allowed for this target.');
         }
     }
@@ -219,7 +222,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
     public function getContentName()
     {
         $target = $this->getTargetModel();
-        if($target && $target->contentName) {
+        if ($target && $target->contentName) {
             return $target->contentName;
         }
 
@@ -231,25 +234,25 @@ abstract class CustomContentContainer extends ContentActiveRecord
         $result = [];
         $type = $this->getContentType();
 
-        if(!$type) {
+        if (!$type) {
             return $result;
         }
 
-        if(PhpType::isType($type) || LinkType::isType($type) || HtmlType::isType($type) || MarkdownType::isType($type) || IframeType::isType($type)) {
+        if (PhpType::isType($type) || LinkType::isType($type) || HtmlType::isType($type) || MarkdownType::isType($type) || IframeType::isType($type)) {
             $result[] = ['page_content', 'required'];
         }
 
-        if(PhpType::isType($type)) {
+        if (PhpType::isType($type)) {
             $result[] = ['type', 'validatePhpType'];
         }
 
-        if(TemplateType::isType($type)) {
+        if (TemplateType::isType($type)) {
             $result[] = [['templateId'], 'safe'];
             $result[] = ['type', 'validateTemplateType'];
         }
 
-        if($type->hasContent()) {
-            $result[] =  [['page_content'], 'safe'];
+        if ($type->hasContent()) {
+            $result[] = [['page_content'], 'safe'];
         }
 
         return $result;
@@ -297,18 +300,19 @@ abstract class CustomContentContainer extends ContentActiveRecord
         return true;
     }
 
-    public function canView() {
-        if($this->admin_only && !static::canSeeAdminOnlyContent($this->content->container)) {
+    public function canView()
+    {
+        if ($this->admin_only && !static::canSeeAdminOnlyContent($this->content->container)) {
             return false;
         }
 
         // Todo: Workaround for bug present prior to HumHub v1.3.18
-        if(Yii::$app->user->isGuest && !$this->content->container && $this->content->isPublic()) {
+        if (Yii::$app->user->isGuest && !$this->content->container && $this->content->isPublic()) {
             return true;
         }
 
         // Todo: Workaround for global content visibility bug present prior to HumHub v1.5
-        if(empty($this->content->contentcontainer_id) && !Yii::$app->user->isGuest) {
+        if (empty($this->content->contentcontainer_id) && !Yii::$app->user->isGuest) {
             return true;
         }
 
@@ -317,19 +321,19 @@ abstract class CustomContentContainer extends ContentActiveRecord
 
     public static function canSeeAdminOnlyContent(ContentContainerActiveRecord $container = null)
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return false;
         }
 
-        if(!$container) {
+        if (!$container) {
             return Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageModules::class, ManagePages::class]);
         }
 
-        if($container instanceof Space) {
+        if ($container instanceof Space) {
             return $container->isAdmin();
         }
 
-        if($container instanceof User) {
+        if ($container instanceof User) {
             $container->is(Yii::$app->user->getIdentity());
         }
 
@@ -345,24 +349,24 @@ abstract class CustomContentContainer extends ContentActiveRecord
     {
         $target = $this->getTargetModel();
 
-        if(!$target->isAllowedField($field)) {
+        if (!$target->isAllowedField($field)) {
             return false;
         }
 
         $rules = $this->rules();
 
         foreach ($rules as $rule) {
-            if(!is_array($rule) || !isset($rule[0])) {
+            if (!is_array($rule) || !isset($rule[0])) {
                 continue;
             }
 
             $firstItem = $rule[0];
 
-            if(is_string($firstItem) && $firstItem === $field) {
+            if (is_string($firstItem) && $firstItem === $field) {
                 return true;
             }
 
-            if(is_array($firstItem) && isset($firstItem[0]) && $firstItem[0] === $field) {
+            if (is_array($firstItem) && isset($firstItem[0]) && $firstItem[0] === $field) {
                 return true;
             }
         }
@@ -377,9 +381,9 @@ abstract class CustomContentContainer extends ContentActiveRecord
 
     public function getTemplateId()
     {
-        if(!$this->templateId) {
+        if (!$this->templateId) {
             $templateInstance = TemplateInstance::findByOwner($this);
-            if($templateInstance) {
+            if ($templateInstance) {
                 $this->templateId = $templateInstance->template_id;
             }
         }
@@ -410,7 +414,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
      */
     public function getTargetModel()
     {
-        if(!$this->_target) {
+        if (!$this->_target) {
             $this->_target = (new CustomPagesService())->getTargetById($this->getTargetId(), $this->getPageType(), $this->content->container);
         }
 
@@ -443,13 +447,14 @@ abstract class CustomContentContainer extends ContentActiveRecord
     /**
      * @return string|null
      */
-    public function getIcon() {
-        if($this->hasAttribute('icon') && $this->icon) {
+    public function getIcon()
+    {
+        if ($this->hasAttribute('icon') && $this->icon) {
             return $this->icon;
         }
 
         $target = $this->getTargetModel();
-        if($target) {
+        if ($target) {
             return $target->getIcon();
         }
 
@@ -463,7 +468,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
      */
     public function beforeSave($insert)
     {
-        switch($this->visibility) {
+        switch ($this->visibility) {
             case static::VISIBILITY_ADMIN_ONLY:
                 $this->admin_only = 1;
                 $this->content->visibility = Content::VISIBILITY_PRIVATE;
@@ -478,7 +483,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
                 break;
         }
 
-        if($this->checkAbstract() && !$this->admin_only) {
+        if ($this->checkAbstract() && !$this->admin_only) {
             $this->streamChannel = 'default';
         } else {
             $this->streamChannel = null;
@@ -504,11 +509,11 @@ abstract class CustomContentContainer extends ContentActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if(!$this->getContentType()->afterSave($this, $insert, $changedAttributes)) {
-            throw new LogicException('Could not save content type'.$this->getContentType()->getLabel());
+        if (!$this->getContentType()->afterSave($this, $insert, $changedAttributes)) {
+            throw new LogicException('Could not save content type' . $this->getContentType()->getLabel());
         }
 
-        if($this->checkAbstract()) {
+        if ($this->checkAbstract()) {
             RichText::postProcess($this->abstract, $this);
         }
 

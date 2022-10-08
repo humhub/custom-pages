@@ -47,8 +47,12 @@ class IframeType extends ContentType
 
     public function renderFormField(ActiveForm $form, CustomContentContainer $page)
     {
-        $formField =
-            $form->field($page, $page->getPageContentProperty())->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('targetUrl'))->hint(Yii::t('CustomPagesModule.views_common_edit', 'e.g. http://www.example.de'));
+        $targetUrlField = $form->field($page, $page->getPageContentProperty())->label($page->getAttributeLabel('targetUrl'));
+        if ($page->iframe_attrs && !Yii::$app->user->isAdmin()) {
+            $formField = $targetUrlField->textInput(['class' => 'form-control', 'disabled' => 'disabled'])->hint(Yii::t('CustomPagesModule.views_common_edit', 'You need to be a system administrator to edit this URL'));
+        } else {
+            $formField = $targetUrlField->textInput(['class' => 'form-control'])->hint(Yii::t('CustomPagesModule.views_common_edit', 'e.g. http://www.example.de'));
+        }
 
         if (Yii::$app->user->isAdmin()) {
             $formField .=

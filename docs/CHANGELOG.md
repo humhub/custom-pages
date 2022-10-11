@@ -1,9 +1,11 @@
 Changelog
 =========
 
-Unreleased
+1.8.5 (October 11, 2022)
 -------------------------
 - Fix #244: Add markdown-render class to Markdown text for Translator module to work
+- Fix TypeError while opening Inline Editor
+
 
 1.8.4 (September 9, 2022)
 -------------------------

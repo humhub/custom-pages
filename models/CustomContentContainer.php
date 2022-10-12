@@ -193,23 +193,16 @@ abstract class CustomContentContainer extends ContentActiveRecord
             ['target', 'validateTarget'],
             [['type'], 'validateContentType'],
             [['visibility'], 'integer', 'min' => static::VISIBILITY_PRIVATE, 'max' => static::VISIBILITY_ADMIN_ONLY],
-            [['title', 'target', 'iframe_attrs'], 'string', 'max' => 255],
-            [['page_content', 'iframe_attrs'], 'validateIsAdmin']
+            [['title', 'target'], 'string', 'max' => 255],
         ];
+
+        if ($this->type === IframeType::ID && Yii::$app->user->isAdmin()) {
+            // Allow System Admins to modify the Iframe Attrs
+            $result[] = [['iframe_attrs'], 'string', 'max' => 255];
+        }
 
         $result = array_merge($result, $this->getRulesByTarget());
         return array_merge($result, $this->getRulesByContentType());
-    }
-
-    /**
-     * @param string $attribute
-     * @return void
-     */
-    public function validateIsAdmin($attribute)
-    {
-        if ($this->type === IframeType::ID && $this->iframe_attrs && !Yii::$app->user->isAdmin()) {
-            $this->addError($attribute, 'You need to be a system administrator to change this value!');
-        }
     }
 
     public function validateTarget()

@@ -5,7 +5,8 @@ use humhub\libs\Html;
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 ?>
 
-<iframe class="<?= Html::encode($cssClass) ?>" id="iframepage" style="width:100%; height: 100%; min-height: 400px;"
+<iframe class="<?= Html::encode($cssClass) ?>" id="iframepage" <?= $page->iframe_attrs ?? '' ?>
+        style="width:100%; height: 100%; min-height: 400px;"
         src="<?= Html::encode($url); ?>"></iframe>
 
 <style>

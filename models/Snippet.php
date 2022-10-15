@@ -2,22 +2,23 @@
 
 namespace humhub\modules\custom_pages\models;
 
-use Yii;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
 use humhub\modules\custom_pages\modules\template\models\Template;
+use Yii;
 
 /**
  * This is the model class for table "custom_pages_container_snipped".
  *
  * Snippets are custom sidebar panels which can be added to the dashboard sidebar.
- * 
+ *
  * The followings are the available columns in table 'custom_pages_container_page':
  * @property integer $id
  * @property integer $type
  * @property string $title
  * @property string $icon
  * @property string $page_content
+ * @property string $iframe_attrs
  * @property integer $sort_order
  * @property integer $admin_only
  * @property string $cssClass
@@ -135,6 +136,6 @@ class Snippet extends CustomContentContainer
      */
     public function getPageType()
     {
-       return PageType::Snippet;
+        return PageType::Snippet;
     }
 }

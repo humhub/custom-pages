@@ -9,8 +9,8 @@
 namespace humhub\modules\custom_pages\models;
 
 
-use yii\widgets\ActiveForm;
 use Yii;
+use yii\widgets\ActiveForm;
 
 class IframeType extends ContentType
 {
@@ -32,7 +32,7 @@ class IframeType extends ContentType
 
     function getDescription()
     {
-        return  Yii::t('CustomPagesModule.base', 'Will embed the the result of a given url as an iframe element.');
+        return Yii::t('CustomPagesModule.base', 'Will embed the the result of a given url as an iframe element.');
     }
 
     public function render(CustomContentContainer $content, $options = [])
@@ -47,7 +47,18 @@ class IframeType extends ContentType
 
     public function renderFormField(ActiveForm $form, CustomContentContainer $page)
     {
-        return $form->field($page, $page->getPageContentProperty())->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('targetUrl'))
-            .'<div class="help-block">'.Yii::t('CustomPagesModule.views_common_edit', 'e.g. http://www.example.de').'</div>';
+        $targetUrlField = $form->field($page, $page->getPageContentProperty())->label($page->getAttributeLabel('targetUrl'));
+        if ($page->iframe_attrs && !Yii::$app->user->isAdmin()) {
+            $formField = $targetUrlField->textInput(['class' => 'form-control', 'disabled' => 'disabled'])->hint(Yii::t('CustomPagesModule.views_common_edit', 'You need to be a system administrator to edit this URL'));
+        } else {
+            $formField = $targetUrlField->textInput(['class' => 'form-control'])->hint(Yii::t('CustomPagesModule.views_common_edit', 'e.g. http://www.example.de'));
+        }
+
+        if (Yii::$app->user->isAdmin()) {
+            $formField .=
+                $form->field($page, 'iframe_attrs')->textInput(['class' => 'form-control'])->hint(Yii::t('CustomPagesModule.views_common_edit', 'e.g. allowfullscreen allow="camera; microphone"'));
+        }
+
+        return $formField;
     }
 }

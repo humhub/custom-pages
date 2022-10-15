@@ -2,10 +2,10 @@
 
 namespace humhub\modules\custom_pages\models;
 
-use humhub\modules\space\models\Space;
-use Yii;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
 use humhub\modules\custom_pages\modules\template\models\Template;
+use humhub\modules\space\models\Space;
+use Yii;
 
 /**
  * This is the model class for table "custom_pages_container_snipped".
@@ -18,6 +18,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
  * @property string $title
  * @property string $icon
  * @property string $page_content
+ * @property string $iframe_attrs
  * @property integer $sort_order
  * @property integer $admin_only
  * @property string $cssClass
@@ -78,7 +79,7 @@ class ContainerSnippet extends Snippet
         ];
 
         $container = $this->content->container;
-        if($container->visibility != Space::VISIBILITY_NONE) {
+        if ($container->visibility != Space::VISIBILITY_NONE) {
             $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'Public');
         }
 

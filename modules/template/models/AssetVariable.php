@@ -44,7 +44,7 @@ class AssetVariable implements \ArrayAccess
         return true;
     }
 
-    public function offsetGet($offset): mixed
+    public function offsetGet($offset)
     {
         return $this->get($offset);
     }

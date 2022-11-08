@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.6 (Unreleased)
+-------------------------
+- Fix #251: Fix view page from template allowed in Space
+
 1.8.5 (October 11, 2022)
 -------------------------
 - Fix #244: Add markdown-render class to Markdown text for Translator module to work

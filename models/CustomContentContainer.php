@@ -298,7 +298,11 @@ abstract class CustomContentContainer extends ContentActiveRecord
             return false;
         }
 
-        if (HtmlType::isType($type ?? $this->type) && !Yii::$app->user->isAdmin()) {
+        if (!($type instanceof ContentType)) {
+            $type = $this->type;
+        }
+
+        if (HtmlType::isType($type) && !Yii::$app->user->isAdmin()) {
             return false;
         }
 

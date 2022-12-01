@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.8.6 (Unreleased)
--------------------------
+1.8.6 (December 1, 2022)
+------------------------
 - Fix #251: Fix view page from template allowed in Space
 
 1.8.5 (October 11, 2022)

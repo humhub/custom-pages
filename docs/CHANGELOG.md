@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.7 (TBA)
+------------------------
+- Enh: Translatable Titles
+
 1.8.6 (December 1, 2022)
 ------------------------
 - Fix #251: Fix view page from template allowed in Space

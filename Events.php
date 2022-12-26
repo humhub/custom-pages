@@ -143,7 +143,7 @@ class Events
                 }
 
                 $event->sender->addItem([
-                    'label' => Html::encode($page->title),
+                    'label' => Html::encode(Yii::t('CustomPagesModule.title', $page->title)),
                     'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
                     'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
@@ -169,7 +169,7 @@ class Events
                 }
 
                 $event->sender->addItem([
-                    'label' => Html::encode($page->title),
+                    'label' => Html::encode(Yii::t('CustomPagesModule.title', $page->title)),
                     'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
                     'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
@@ -243,7 +243,7 @@ class Events
                 }
 
                 $event->sender->addItem([
-                    'label' => Html::encode($page->title),
+                    'label' => Html::encode(Yii::t('CustomPagesModule.title', $page->title)),
                     'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
                     'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
@@ -265,7 +265,7 @@ class Events
                 }
 
                 $peopleHeadingButtons->addEntry(new MenuLink([
-                    'label' => Html::encode($page->title),
+                    'label' => Html::encode(Yii::t('CustomPagesModule.title', $page->title)),
                     'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
                     'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,

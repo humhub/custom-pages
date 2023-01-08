@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.8.7 (TBA)
-------------------------
+1.8.7 (January 8, 2023)
+-----------------------
 - Enh: Translatable Titles
 - Fix #254: Fix compatible with PHP 8.1
 

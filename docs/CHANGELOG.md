@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.8 (Unreleased)
+-----------------------
+- Fix #256: Fix richtext on template editor
+
 1.8.7 (January 8, 2023)
 -----------------------
 - Enh: Translatable Titles

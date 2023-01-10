@@ -217,7 +217,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         return $this->asJson([
             'success' => true,
             'id' => $id,
-            'output' => TemplateElementAdminRow::widget(['model' => $element, 'saved' => true])
+            'output' => $this->renderAjaxPartial(TemplateElementAdminRow::widget(['model' => $element, 'saved' => true]))
         ]);
     }
 
@@ -318,11 +318,11 @@ class AdminController extends \humhub\modules\admin\components\Controller
             TemplateCache::flushByTemplateId($id);
             return $this->asJson([
                 'success' => true,
-                'output' => TemplateContentTable::widget(['template' => $form->template, 'saved' => true])
+                'output' => $this->renderAjaxPartial(TemplateContentTable::widget(['template' => $form->template, 'saved' => true]))
             ]);
         }
 
-        $this->asJson([
+        return $this->asJson([
             'success' => false,
             'output' => $this->renderAjaxPartial(EditMultipleElementsModal::widget([
                 'model' => $form,

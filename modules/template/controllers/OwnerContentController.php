@@ -140,10 +140,10 @@ class OwnerContentController extends \humhub\components\Controller
         }
 
         return $this->asJson([
-            'output' => EditMultipleElementsModal::widget([
+            'output' => $this->renderAjaxPartial(EditMultipleElementsModal::widget([
                 'model' => $form,
                 'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> elements of {templateName}', ['templateName' => $form->template->name])
-            ])
+            ]))
         ]);
     }
 

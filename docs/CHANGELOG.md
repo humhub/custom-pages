@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.8.8 (Unreleased)
------------------------
+1.8.8 (February 2, 2023)
+------------------------
 - Fix #256: Fix richtext on template editor
 
 1.8.7 (January 8, 2023)

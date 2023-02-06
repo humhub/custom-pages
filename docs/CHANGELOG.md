@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.9 (February 6, 2023)
+------------------------
+- Fix #259: Rich Text in page editor broken
+
 1.8.8 (February 2, 2023)
 ------------------------
 - Fix #256: Fix richtext on template editor

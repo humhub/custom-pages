@@ -8,7 +8,6 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
-use Yii;
 use humhub\modules\custom_pages\modules\template\models\Template;
 
 /**
@@ -24,7 +23,6 @@ class EditMultipleElementsForm extends \yii\base\Model
     public $owner;
     public $template;
     public $contentMap = [];
-    public $ownerContentMap = [];
     public $scenario = 'edit';
 
     public function setOwnerTemplateId($templateId)
@@ -56,7 +54,7 @@ class EditMultipleElementsForm extends \yii\base\Model
     {
         $ownerContentArr = $this->template->getContentElements($this->owner);
 
-        foreach ($ownerContentArr as $ownerContent) {            
+        foreach ($ownerContentArr as $ownerContent) {
             $contentItem = new ContentFormItem([
                 'ownerContent' => $ownerContent, 
                 'element' => $this->getElement($ownerContent->element_name),
@@ -78,39 +76,41 @@ class EditMultipleElementsForm extends \yii\base\Model
     public function load($data, $formName = NULL)
     {
         // This prevents items without elements from beeing rejected
-        if(parent::load($data) && empty($this->contentMap)) {
+        if (parent::load($data) && empty($this->contentMap)) {
             return true;
         }
-        
+
         $result = false;
-        
+
         // If one of the content was loaded we expect a successful form submit
-        foreach ($this->contentMap as $key => $contentItem) {
-            /** @var $contentItem ContentFormItem */
-            if($contentItem->load($data)) {
+        foreach ($this->contentMap as $contentItem) {
+            /* @var $contentItem ContentFormItem */
+            if ($contentItem->load($data)) {
                 $result = true;
             }
         }
-        
+
         return $result;
     }
 
     public function validate($attributeNames = null, $clearErrors = true)
     {
-        // Default content is not mandatory
-        if($this->scenario === 'edit-admin') {
+        // Content is not mandatory from administration side
+        if ($this->scenario === 'edit-admin') {
             return true;
         }
-        
-        //Todo: implement multiedit content validation. Skip validation if no values are set. 
-        /*$result = true;
-        foreach ($this->contentMap as $key => $contentItem) {
-            if(!$contentItem->validate()) {
+
+        $result = true;
+
+        // If one of the content is not valid we cannot submit a form completely
+        foreach ($this->contentMap as $contentItem) {
+            /* @var $contentItem ContentFormItem */
+            if (!$contentItem->validate($attributeNames, $clearErrors)) {
                 $result = false;
             }
-        }*/
-        
-        return true;
+        }
+
+        return $result;
     }
 
     public function save()
@@ -121,10 +121,9 @@ class EditMultipleElementsForm extends \yii\base\Model
         
         $transaction = Template::getDb()->beginTransaction();
 
-
         try {
-            foreach ($this->contentMap as $key => $contentItem) {
-                /** @var $contentItem ContentFormItem */
+            foreach ($this->contentMap as $contentItem) {
+                /* @var $contentItem ContentFormItem */
                 $contentItem->save($this->owner);
             }
             $transaction->commit();
@@ -132,7 +131,7 @@ class EditMultipleElementsForm extends \yii\base\Model
             $transaction->rollBack();
             throw $e;
         }
-        
+
         return true;
     }
 }

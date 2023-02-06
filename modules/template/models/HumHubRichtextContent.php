@@ -26,7 +26,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
     public function rules()
     {
         $result = parent::rules();
-        $result[] = ['content', 'required'];
+        $result[] = ['content', 'safe'];
         return $result;
     }
 

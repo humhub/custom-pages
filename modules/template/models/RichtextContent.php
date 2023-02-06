@@ -26,7 +26,7 @@ class RichtextContent extends TemplateContentActiveRecord
     public function rules()
     {
         $result = parent::rules();
-        $result[] = ['content', 'required'];
+        $result[] = ['content', 'safe'];
         return $result;
     }
     

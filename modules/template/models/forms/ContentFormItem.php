@@ -49,14 +49,9 @@ class ContentFormItem extends \yii\base\Model
         return true;
     }
 
-    private function isEmptySubmit($values)
+    private function isEmptySubmit($values): bool
     {
-        foreach ($values as $key => $value) {
-            if (!empty($value)) {
-                return false;
-            }
-        }
-        return true;
+        return empty($values);
     }
 
     public function validate($attributeNames = null, $clearErrors = true)

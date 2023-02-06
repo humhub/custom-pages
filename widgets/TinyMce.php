@@ -53,9 +53,9 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
             ]
         ], $this->clientOptions);
 
-        // Fix issue with disabled inputs when it is loaded on modal window:
-        $this->view->registerJs('$(document).on("focusin", "[class^=tox-] input", function(e) {
-            e.stopImmediatePropagation();
-        })');
+        // Fix issue with disabled inputs when it is loaded on modal window
+        // Fix the editor initialization on second time loading by modal window(without browser page refreshing)
+        $this->view->registerJs('$(document).on("focusin", "[class^=tox-] input", function(e) {e.stopImmediatePropagation()});
+            tinymce.remove("#' . $this->options['id'] . '")');
     }
 }

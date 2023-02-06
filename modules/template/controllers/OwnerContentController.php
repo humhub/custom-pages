@@ -66,8 +66,10 @@ class OwnerContentController extends \humhub\components\Controller
                 $wrapper = new OwnerContentVariable(['ownerContent' => $form->ownerContent]);
                 return $this->getJsonEditElementResult(true, $wrapper->render(true));
             } else {
-                return $this->getJsonEditElementResult(false, EditElementModal::widget(['model' => $form,
-                    'title' => Yii::t('CustomPagesModule.controllers_TemplateController', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()])]));
+                return $this->getJsonEditElementResult(false, $this->renderAjaxPartial(EditElementModal::widget([
+                    'model' => $form,
+                    'title' => Yii::t('CustomPagesModule.controllers_TemplateController', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()])
+                ])));
             }
         }
 
@@ -81,8 +83,8 @@ class OwnerContentController extends \humhub\components\Controller
 
     /**
      * Used to delete owner content models.
-     * 
-     * @return type
+     *
+     * @return Response
      * @throws \yii\web\HttpException
      */
     public function actionDelete()
@@ -123,8 +125,8 @@ class OwnerContentController extends \humhub\components\Controller
     /**
      * Action for editing all owner content models for a given template instance in one view.
      * 
-     * @param type $id
-     * @return type
+     * @param int $id
+     * @return Response
      */
     public function actionEditMultiple($id)
     {
@@ -134,7 +136,7 @@ class OwnerContentController extends \humhub\components\Controller
         $form->editDefault = false;
         $form->setOwner($templateInstance, $templateInstance->template_id);
 
-        if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByTemplateInstance($templateInstance);
             return $this->asJson(['success' => true]);
         }

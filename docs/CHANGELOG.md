@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.8.10 (Unreleased)
+------------------------
+- Fix #261: Add list buttons in toolbar of RichText TinyMCE editor
+
 1.8.9 (February 6, 2023)
 ------------------------
 - Fix #259: Rich Text in page editor broken

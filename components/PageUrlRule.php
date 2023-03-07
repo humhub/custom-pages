@@ -35,6 +35,11 @@ class PageUrlRule extends Component implements UrlRuleInterface
      */
     public function createUrl($manager, $route, $params)
     {
+        // If in content container
+        if (isset($params['cguid'])) {
+            return false;
+        }
+
         if (in_array($route, $this->defaultRoutes) && isset($params['id'])) {
 
             $route = '';
@@ -80,7 +85,7 @@ class PageUrlRule extends Component implements UrlRuleInterface
 
     /**
      * Gets space url name by given guid
-     * 
+     *
      * @param string $guid
      * @return string|null the space url part
      */

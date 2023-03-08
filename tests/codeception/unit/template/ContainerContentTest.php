@@ -88,10 +88,9 @@ class ContainerContentTest extends HumHubDbTestCase
     
     public function testDeletePage()
     {
-        
         $page = Page::findOne(['id' => 2]);
         
-        $this->assertNotFalse($page->delete());
+        $this->assertNotFalse($page->hardDelete());
         
         $this->assertNull(ContainerContentItem::findOne(['id' => 2]));
         $this->assertNull(ContainerContentItem::findOne(['id' => 3]));
@@ -111,8 +110,8 @@ class ContainerContentTest extends HumHubDbTestCase
     public function testDeleteAll()
     {
 
-        Page::findOne(['id' => 2])->delete();
-        Page::findOne(['id' => 1])->delete();
+        Page::findOne(['id' => 2])->hardDelete();
+        Page::findOne(['id' => 1])->hardDelete();
         
         $this->assertEquals(0, OwnerContent::find()->where(['not', ['owner_model' => Template::class]])->count());
         $this->assertEquals(0, TemplateInstance::find()->count());

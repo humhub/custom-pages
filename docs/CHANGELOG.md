@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.9.0 (Unreleased)
+------------------------
+- Fix #265: Fix tests for core v1.14
+
 1.8.10 (Unreleased)
 ------------------------
 - Fix #261: Add list buttons in toolbar of RichText TinyMCE editor

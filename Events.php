@@ -79,7 +79,11 @@ class Events
             /* @var $space \humhub\modules\space\models\Space */
             $space = $event->sender->space;
             if ($space->moduleManager->isEnabled('custom_pages')) {
-                $pages = ContainerPage::find()->contentContainer($space)->andWhere(['target' => ContainerPage::NAV_CLASS_SPACE_NAV])->all();
+                $pages = ContainerPage::find()
+                    ->contentContainer($space)
+                    ->readable()
+                    ->andWhere(['target' => ContainerPage::NAV_CLASS_SPACE_NAV])
+                    ->all();
                 foreach ($pages as $page) {
                     if (!$page->canView()) {
                         continue;
@@ -136,8 +140,7 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            foreach (Page::findAll(['target' => Page::NAV_CLASS_TOPNAV]) as $page) {
-
+            foreach (self::findPagesByTarget(Page::NAV_CLASS_TOPNAV) as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -163,7 +166,7 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            foreach (Page::findAll(['target' => Page::NAV_CLASS_ACCOUNTNAV]) as $page) {
+            foreach (self::findPagesByTarget(Page::NAV_CLASS_ACCOUNTNAV) as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -237,7 +240,7 @@ class Events
     public static function onFooterMenuInit($event)
     {
         try {
-            foreach (Page::findAll(['target' => Page::NAV_CLASS_FOOTER]) as $page) {
+            foreach (self::findPagesByTarget(Page::NAV_CLASS_FOOTER) as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -259,7 +262,7 @@ class Events
         try {
             /* @var PeopleHeadingButtons $peopleHeadingButtons */
             $peopleHeadingButtons = $event->sender;
-            foreach (Page::findAll(['target' => Page::NAV_CLASS_PEOPLE]) as $page) {
+            foreach (self::findPagesByTarget(Page::NAV_CLASS_PEOPLE) as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -275,6 +278,18 @@ class Events
         } catch (Throwable $e) {
             Yii::error($e);
         }
+    }
+
+    /**
+     * @param string $target
+     * @return Page[]
+     */
+    private static function findPagesByTarget(string $target): array
+    {
+        return Page::find()
+            ->where(['target' => $target])
+            ->readable()
+            ->all();
     }
 
 }

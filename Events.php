@@ -79,6 +79,7 @@ class Events
             /* @var $space \humhub\modules\space\models\Space */
             $space = $event->sender->space;
             if ($space->moduleManager->isEnabled('custom_pages')) {
+                /* @var Page[] $pages */
                 $pages = ContainerPage::find()
                     ->contentContainer($space)
                     ->readable()
@@ -202,7 +203,8 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            $snippets = Snippet::findAll(['target' => Snippet::SIDEBAR_DASHBOARD]);
+            /* @var Snippet[] $snippets */
+            $snippets = Snippet::find()->where(['target' => Snippet::SIDEBAR_DASHBOARD])->readable()->all();
             $canEdit = PagePermission::canEdit();
             foreach ($snippets as $snippet) {
                 if (!$snippet->canView()) {
@@ -223,7 +225,8 @@ class Events
             $space = $event->sender->space;
             $canEdit = PagePermission::canEdit();
             if ($space->moduleManager->isEnabled('custom_pages')) {
-                $snippets = ContainerSnippet::find()->contentContainer($space)->all();
+                /* @var Snippet[] $snippets */
+                $snippets = ContainerSnippet::find()->contentContainer($space)->readable()->all();
                 foreach ($snippets as $snippet) {
                     if (!$snippet->canView()) {
                         continue;

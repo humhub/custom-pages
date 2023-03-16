@@ -6,9 +6,7 @@ use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\PageType;
-use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\models\Target;
-use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use yii\helpers\Url as BaseUrl;
 
 class Url extends BaseUrl
@@ -19,6 +17,9 @@ class Url extends BaseUrl
 
     const ROUTE_PAGE_DELETE = '/custom_pages/page/delete';
     const ROUTE_SNIPPET_DELETE = '/custom_pages/snippet/delete';
+
+    const ROUTE_PAGE_RESTORE = '/custom_pages/page/restore';
+    const ROUTE_SNIPPET_RESTORE = '/custom_pages/snippet/restore';
 
     const ROUTE_EDIT_SNIPPET = '/custom_pages/snippet/edit';
     const ROUTE_PAGE_OVERVIEW = '/custom_pages/page';
@@ -141,11 +142,27 @@ class Url extends BaseUrl
         return static::create(static::ROUTE_SNIPPET_OVERVIEW, [], $container);
     }
 
-    public static function toDeletePage(CustomContentContainer $page, ContentContainerActiveRecord $container = null)
+    public static function toDeletePage(CustomContentContainer $page, ContentContainerActiveRecord $container = null, bool $irrevocably = false)
     {
         $route = ($page->getPageType() === PageType::Page) ? static::ROUTE_PAGE_DELETE : static::ROUTE_SNIPPET_DELETE;
+
+        $params = ['id' => $page->id];
+        if ($irrevocably) {
+            $params['irrevocably'] = 1;
+        }
+
+        return static::create($route, $params, $container);
+    }
+
+    public static function toRestorePage(CustomContentContainer $page, ContentContainerActiveRecord $container = null)
+    {
+        $route = ($page->getPageType() === PageType::Page) ? static::ROUTE_PAGE_RESTORE : static::ROUTE_SNIPPET_RESTORE;
         return static::create($route, ['id' => $page->id], $container);
     }
 
+    public static function toDeletePageIrrevocably(CustomContentContainer $page, ContentContainerActiveRecord $container = null)
+    {
+        return static::toDeletePage($page, $container, true);
+    }
 
 }

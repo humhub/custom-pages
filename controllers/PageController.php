@@ -249,15 +249,16 @@ class PageController extends AbstractCustomContainerController
     }
 
     /**
-     * Deltes the page with a given $id.
+     * Deletes the page with a given $id.
      *
      * @param integer $id page id
+     * @param bool $irrevocably
      * @return string
      * @throws HttpException
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete($id, $irrevocably = false)
     {
         $this->forcePostRequest();
 
@@ -271,10 +272,46 @@ class PageController extends AbstractCustomContainerController
             throw new ForbiddenHttpException();
         }
 
-        if ($page->delete()) {
-            $this->view->success(Yii::t('CustomPagesModule.base', 'Deleted'));
+        if ($irrevocably && $page->hardDelete()) {
+            $this->view->success(Yii::t('CustomPagesModule.base', 'Deleted irrevocably!'));
+        } else if (!$irrevocably && $page->delete()) {
+            $this->view->success(Yii::t('CustomPagesModule.base', 'Deleted.'));
         } else {
             $this->view->error(Yii::t('CustomPagesModule.base', 'Cannot delete!'));
+        }
+
+        return $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));
+    }
+
+    /**
+     * Restore the page with a given $id.
+     *
+     * @param integer $id page id
+     * @return string
+     * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionRestore($id)
+    {
+        $this->forcePostRequest();
+
+        $page = $this->findByid($id);
+
+        if (!$page) {
+            throw new NotFoundHttpException();
+        }
+
+        if (!$page->content->canEdit()) {
+            throw new ForbiddenHttpException();
+        }
+
+        $page->content->setState(Content::STATE_PUBLISHED);
+
+        if ($page->content->save()) {
+            $this->view->success(Yii::t('CustomPagesModule.base', 'Restored.'));
+        } else {
+            $this->view->error(Yii::t('CustomPagesModule.base', 'Cannot restore!'));
         }
 
         return $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));

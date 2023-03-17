@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\widgets\PageIconSelect;
 use humhub\widgets\Link;

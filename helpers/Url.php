@@ -6,9 +6,7 @@ use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\PageType;
-use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\models\Target;
-use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use yii\helpers\Url as BaseUrl;
 
 class Url extends BaseUrl
@@ -146,6 +144,5 @@ class Url extends BaseUrl
         $route = ($page->getPageType() === PageType::Page) ? static::ROUTE_PAGE_DELETE : static::ROUTE_SNIPPET_DELETE;
         return static::create($route, ['id' => $page->id], $container);
     }
-
 
 }

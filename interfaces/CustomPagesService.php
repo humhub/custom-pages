@@ -11,13 +11,9 @@ use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\models\Target;
-use humhub\modules\custom_pages\modules\template\models\PagePermission;
 use humhub\modules\space\models\Space;
-use Yii;
 use yii\base\Component;
 use yii\base\InvalidArgumentException;
-use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
 
 /**
  * Class CustomPagesService
@@ -153,11 +149,14 @@ class CustomPagesService extends Component
 
         $query->where(['target' => $targetId]);
 
-        if($container) {
+        if ($container) {
             $query->contentContainer($container);
 
             // See https://github.com/humhub/humhub/issues/3784 this does not work for global content
             $query->readable();
+        } else {
+            $query->joinWith('content');
+            $query->andWhere($query->stateFilterCondition);
         }
 
         if(!CustomContentContainer::canSeeAdminOnlyContent($container)) {

@@ -1,6 +1,5 @@
 <?php
 
-use humhub\modules\content\widgets\StateBadge;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\widgets\Button;
@@ -33,8 +32,7 @@ use yii\helpers\Html;
                     'format' => 'raw',
                     'value' => function ($data) {
                         /*  @var $data CustomContentContainer */
-                        return Link::to(Html::encode($data->getTitle()), $data->getUrl())->icon(Html::encode($data->icon))
-                            . ' ' . StateBadge::widget(['model' => $data]);
+                        return Link::to(Html::encode($data->getTitle()), $data->getUrl())->icon(Html::encode($data->icon));
                     }
                 ],
                 [

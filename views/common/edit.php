@@ -110,12 +110,7 @@ $contentType = $page->getContentType();
         <?= Button::save()->submit() ?>
 
         <?php if (!$page->isNewRecord) : ?>
-            <?php if ($page->content->state === Content::STATE_DELETED) : ?>
-                <?= Link::warning(Yii::t('CustomPagesModule.base', 'Restore'))->post(Url::toRestorePage($page, $target->container))->icon('rotate-left')->pjax(false)->confirm() ?>
-            <?php else : ?>
-                <?= Link::danger(Yii::t('CustomPagesModule.views_common_edit', 'Delete'))->post(Url::toDeletePage($page, $target->container))->pjax(false)->confirm() ?>
-            <?php endif; ?>
-            <?= Link::danger(Yii::t('CustomPagesModule.base', 'Delete irrevocably'))->post(Url::toDeletePageIrrevocably($page, $target->container))->icon('warning')->pjax(false)->confirm() ?>
+            <?= Link::danger(Yii::t('CustomPagesModule.views_common_edit', 'Delete'))->post(Url::toDeletePage($page, $target->container))->pjax(false)->confirm() ?>
         <?php endif; ?>
 
         <?php if (TemplateType::isType($contentType) && !$page->isNewRecord): ?>

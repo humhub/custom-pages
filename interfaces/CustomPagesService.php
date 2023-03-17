@@ -4,7 +4,6 @@ namespace humhub\modules\custom_pages\interfaces;
 
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\ContainerSnippet;
 use humhub\modules\custom_pages\models\CustomContentContainer;
@@ -12,9 +11,7 @@ use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\models\Target;
-use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\space\models\Space;
-use Yii;
 use yii\base\Component;
 use yii\base\InvalidArgumentException;
 
@@ -150,17 +147,16 @@ class CustomPagesService extends Component
         /* @var $query ActiveQueryContent */
         $query = call_user_func($contentClass.'::find');
 
-        if ($this->canViewDeletedContent()) {
-            $query->stateFilterCondition[] = ['content.state' => Content::STATE_DELETED];
-        }
-
         $query->where(['target' => $targetId]);
 
-        if($container) {
+        if ($container) {
             $query->contentContainer($container);
 
             // See https://github.com/humhub/humhub/issues/3784 this does not work for global content
             $query->readable();
+        } else {
+            $query->joinWith('content');
+            $query->andWhere($query->stateFilterCondition);
         }
 
         if(!CustomContentContainer::canSeeAdminOnlyContent($container)) {
@@ -201,15 +197,6 @@ class CustomPagesService extends Component
         $contentClass = $this->getContentClass($type, $container);
         $tableName = call_user_func($contentClass.'::tableName');
         return $this->findContentByTarget($targetId, $type, $container)->where([$tableName.'.id' => $id])->one();
-    }
-
-    public function canViewDeletedContent(): bool
-    {
-        if (Yii::$app->user->isGuest) {
-            return false;
-        }
-
-        return Yii::$app->user->can(ManagePages::class);
     }
 
 }

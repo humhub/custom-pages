@@ -5,6 +5,7 @@ Changelog
 ------------------------
 - Fix #261: Add list buttons in toolbar of RichText TinyMCE editor
 - Fix #263: Conflicts if a page in a content container has the same ID as a global page
+- Fix #270: Don't wrap page type 
 
 1.8.9 (February 6, 2023)
 ------------------------

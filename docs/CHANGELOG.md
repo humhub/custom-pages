@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.8.10 (Unreleased)
-------------------------
+1.8.11 (March 28, 2023)
+-----------------------
 - Fix #261: Add list buttons in toolbar of RichText TinyMCE editor
 - Fix #263: Conflicts if a page in a content container has the same ID as a global page
+- Fix #271: Fix compatible `AssetVariable::offsetGet()` between different PHP versions 
 
 1.8.9 (February 6, 2023)
 ------------------------

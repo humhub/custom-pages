@@ -10,9 +10,9 @@ use Yii;
  * A OwnerContent instance is used to assign a TemplateElement to a specific
  * Content of a specific type.
  *
- * @warning Compatible only with PHP8.0+, Don't use for PHP versions <= 7.4!
+ * @deprecated Use this only for PHP7.4 and older versions
  */
-class AssetVariable implements \ArrayAccess
+class AssetVariablePhp74 implements \ArrayAccess
 {
     
     private $module;
@@ -46,7 +46,7 @@ class AssetVariable implements \ArrayAccess
         return true;
     }
 
-    public function offsetGet($offset): mixed
+    public function offsetGet($offset)
     {
         return $this->get($offset);
     }

@@ -207,7 +207,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
             $content[$contentElement->element_name] = new OwnerContentVariable(['ownerContent' => $contentElement, 'options' => $options]);
         }
 
-        $content['assets'] = new AssetVariable();
+        $content['assets'] = PHP_VERSION_ID >= 80000 ? new AssetVariable() : new AssetVariablePhp74();
 
         if($containerItem) {
             //$content['item'] = new ContainerItemVariable(['item' => $containerItem]);

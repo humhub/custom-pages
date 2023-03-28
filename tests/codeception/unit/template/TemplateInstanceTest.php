@@ -117,7 +117,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $this->assertFalse($richtext->isNewRecord);
         $this->assertFalse($ownerContent->isNewRecord);
 
-        $page->delete();
+        $page->hardDelete();
 
         $this->assertNull(TemplateInstance::findOne(['id' => $owner->id]));
         $this->assertNull(OwnerContent::findOne(['id' => $ownerContent->id]));

@@ -19,6 +19,7 @@ use humhub\modules\custom_pages\models\forms\AddPageForm;
 use Yii;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * PageController used to manage global (non container) pages of type humhub\modules\custom_pages\models\Page.
@@ -248,9 +249,10 @@ class PageController extends AbstractCustomContainerController
     }
 
     /**
-     * Deltes the page with a given $id.
+     * Deletes the page with a given $id.
      *
      * @param integer $id page id
+     * @param bool $irrevocably
      * @return string
      * @throws HttpException
      * @throws \Throwable
@@ -262,8 +264,18 @@ class PageController extends AbstractCustomContainerController
 
         $page = $this->findByid($id);
 
-        if ($page) {
-            $page->delete();
+        if (!$page) {
+            throw new NotFoundHttpException();
+        }
+
+        if (!$page->content->canEdit()) {
+            throw new ForbiddenHttpException();
+        }
+
+        if ($page->delete()) {
+            $this->view->success(Yii::t('CustomPagesModule.base', 'Deleted.'));
+        } else {
+            $this->view->error(Yii::t('CustomPagesModule.base', 'Cannot delete!'));
         }
 
         return $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));

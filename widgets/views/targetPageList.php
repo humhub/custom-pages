@@ -1,13 +1,13 @@
 <?php
 
-use yii\helpers\Html;
-use humhub\widgets\GridView;
-use yii\grid\DataColumn;
-use yii\grid\ActionColumn;
-use humhub\widgets\Link;
-use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\helpers\Url;
+use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\widgets\Button;
+use humhub\widgets\GridView;
+use humhub\widgets\Link;
+use yii\grid\ActionColumn;
+use yii\grid\DataColumn;
+use yii\helpers\Html;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $dataProvider \yii\data\ActiveDataProvider */
@@ -45,7 +45,6 @@ use humhub\widgets\Button;
                     }
                 ],
                 [
-                    //'header' => 'Actions',
                     'class' => ActionColumn::class,
                     'options' => ['width' => '80px'],
                     'buttons' => [
@@ -55,13 +54,11 @@ use humhub\widgets\Button;
                                 ? Link::primary()->icon('fa-pencil')->link($model->getEditUrl())->xs()->right()
                                 : '';
                         },
-                        'view' => function ($url, $model) {
-                            return;
-                        /*  @var $model CustomContentContainer */
-                            return Link::primary()->icon('fa-eye')->link($model->getUrl())->xs()->right();
+                        'view' => function () {
+                            return '';
                         },
                         'delete' => function () {
-                            return;
+                            return '';
                         },
                     ],
                 ],

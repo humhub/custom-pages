@@ -79,7 +79,12 @@ class Events
             /* @var $space \humhub\modules\space\models\Space */
             $space = $event->sender->space;
             if ($space->moduleManager->isEnabled('custom_pages')) {
-                $pages = ContainerPage::find()->contentContainer($space)->andWhere(['target' => ContainerPage::NAV_CLASS_SPACE_NAV])->all();
+                /* @var Page[] $pages */
+                $pages = ContainerPage::find()
+                    ->contentContainer($space)
+                    ->readable()
+                    ->andWhere(['target' => ContainerPage::NAV_CLASS_SPACE_NAV])
+                    ->all();
                 foreach ($pages as $page) {
                     if (!$page->canView()) {
                         continue;
@@ -136,8 +141,7 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            foreach (Page::findAll(['target' => Page::NAV_CLASS_TOPNAV]) as $page) {
-
+            foreach (self::findPagesByTarget(Page::NAV_CLASS_TOPNAV) as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -149,7 +153,7 @@ class Events
                     'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
                     'isActive' => (Yii::$app->controller->module
                         && Yii::$app->controller->module->id === 'custom_pages'
-                        && Yii::$app->controller->id === 'view' && Yii::$app->request->get('id') == $page->id),
+                        && Yii::$app->controller->id === 'view' && !Yii::$app->controller->contentContainer && Yii::$app->request->get('id') == $page->id),
                     'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
                 ]);
             }
@@ -163,7 +167,7 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            foreach (Page::findAll(['target' => Page::NAV_CLASS_ACCOUNTNAV]) as $page) {
+            foreach (self::findPagesByTarget(Page::NAV_CLASS_ACCOUNTNAV) as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -199,7 +203,8 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            $snippets = Snippet::findAll(['target' => Snippet::SIDEBAR_DASHBOARD]);
+            /* @var Snippet[] $snippets */
+            $snippets = Snippet::find()->where(['target' => Snippet::SIDEBAR_DASHBOARD])->readable()->all();
             $canEdit = PagePermission::canEdit();
             foreach ($snippets as $snippet) {
                 if (!$snippet->canView()) {
@@ -220,7 +225,8 @@ class Events
             $space = $event->sender->space;
             $canEdit = PagePermission::canEdit();
             if ($space->moduleManager->isEnabled('custom_pages')) {
-                $snippets = ContainerSnippet::find()->contentContainer($space)->all();
+                /* @var Snippet[] $snippets */
+                $snippets = ContainerSnippet::find()->contentContainer($space)->readable()->all();
                 foreach ($snippets as $snippet) {
                     if (!$snippet->canView()) {
                         continue;
@@ -237,7 +243,7 @@ class Events
     public static function onFooterMenuInit($event)
     {
         try {
-            foreach (Page::findAll(['target' => Page::NAV_CLASS_FOOTER]) as $page) {
+            foreach (self::findPagesByTarget(Page::NAV_CLASS_FOOTER) as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -259,7 +265,7 @@ class Events
         try {
             /* @var PeopleHeadingButtons $peopleHeadingButtons */
             $peopleHeadingButtons = $event->sender;
-            foreach (Page::findAll(['target' => Page::NAV_CLASS_PEOPLE]) as $page) {
+            foreach (self::findPagesByTarget(Page::NAV_CLASS_PEOPLE) as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -275,6 +281,18 @@ class Events
         } catch (Throwable $e) {
             Yii::error($e);
         }
+    }
+
+    /**
+     * @param string $target
+     * @return Page[]
+     */
+    private static function findPagesByTarget(string $target): array
+    {
+        return Page::find()
+            ->where(['target' => $target])
+            ->readable()
+            ->all();
     }
 
 }

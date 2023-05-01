@@ -14,7 +14,7 @@ $contentContainer = ContentContainerHelper::getCurrent();
  
 ?>
 <tr>
-    <td>
+    <td class="text-nowrap">
         <?= Html::encode($contentType->getLabel()) ?>
     </td>
     <td>

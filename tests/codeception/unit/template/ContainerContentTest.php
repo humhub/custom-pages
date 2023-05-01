@@ -85,34 +85,37 @@ class ContainerContentTest extends HumHubDbTestCase
         $this->assertNull(RichtextContent::findOne(['id' => 5])); 
 
     }
-    
+
     public function testDeletePage()
     {
-        
+        $this->becomeUser('Admin');
+        $page = Page::find()->where(['custom_pages_page.id' => 2])->readable()->one();
+
+        // Check after soft deletion the Page is not visible even for admin
+        $this->assertNotFalse($page->delete());// Soft deletion
+        $page = Page::find()->where(['custom_pages_page.id' => 2])->readable()->one();
+        $this->assertNull($page);
+
         $page = Page::findOne(['id' => 2]);
-        
-        $this->assertNotFalse($page->delete());
-        
+        $this->assertNotFalse($page->hardDelete());
+
         $this->assertNull(ContainerContentItem::findOne(['id' => 2]));
         $this->assertNull(ContainerContentItem::findOne(['id' => 3]));
         $this->assertNull(ContainerContentItem::findOne(['id' => 4]));
-        
+
         $this->assertNull(OwnerContent::findOne(['id' => 5]));
         $this->assertNull(OwnerContent::findOne(['id' => 6]));
         $this->assertNull(OwnerContent::findOne(['id' => 7]));
-        
 
         $this->assertNull(RichtextContent::findOne(['id' => 3]));
         $this->assertNull(RichtextContent::findOne(['id' => 4]));
-        $this->assertNull(RichtextContent::findOne(['id' => 5])); 
-
+        $this->assertNull(RichtextContent::findOne(['id' => 5]));
     }
-    
+
     public function testDeleteAll()
     {
-
-        Page::findOne(['id' => 2])->delete();
-        Page::findOne(['id' => 1])->delete();
+        Page::findOne(['id' => 2])->hardDelete();
+        Page::findOne(['id' => 1])->hardDelete();
         
         $this->assertEquals(0, OwnerContent::find()->where(['not', ['owner_model' => Template::class]])->count());
         $this->assertEquals(0, TemplateInstance::find()->count());
@@ -130,7 +133,5 @@ class ContainerContentTest extends HumHubDbTestCase
 
         $this->assertEquals(0, RichtextContent::find()->count());
         $this->assertEquals(0, TemplateElement::find()->count());
-        
-
     }
 }

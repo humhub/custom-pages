@@ -16,4 +16,8 @@ class PageFixture extends ActiveFixture
     public $modelClass = 'humhub\modules\custom_pages\models\Page';
     public $dataFile = '@custom_pages/tests/codeception/fixtures/data/page.php';
 
+    public $depends = [
+        ContentFixture::class
+    ];
+
 }

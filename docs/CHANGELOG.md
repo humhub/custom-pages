@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.9.1 (Unreleased)
+-----------------------
+- Fix #274: Hard delete records on disable module
+
 1.9.0 (March 28, 2023)
 -----------------------
 - Fix #261: Add list buttons in toolbar of RichText TinyMCE editor

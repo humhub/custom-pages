@@ -2,7 +2,8 @@ Changelog
 =========
 
 1.9.1 (Unreleased)
-------------------------
+-----------------------
+- Fix #274: Hard delete records on disable module
 - Fix #265: Fix tests for core v1.14
 
 1.9.0 (March 28, 2023)

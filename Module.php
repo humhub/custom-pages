@@ -58,19 +58,19 @@ class Module extends ContentContainerModule
     public function disable()
     {
         foreach (Page::find()->all() as $page) {
-            $page->delete();
+            $page->hardDelete();
         }
 
         foreach (ContainerPage::find()->all() as $page) {
-            $page->delete();
+            $page->hardDelete();
         }
-        
+
         foreach (models\Snippet::find()->all() as $page) {
-            $page->delete();
+            $page->hardDelete();
         }
-        
+
         foreach (models\ContainerSnippet::find()->all() as $page) {
-            $page->delete();
+            $page->hardDelete();
         }
 
         parent::disable();
@@ -109,11 +109,11 @@ class Module extends ContentContainerModule
         parent::disableContentContainer($container);
 
         foreach (ContainerPage::find()->contentContainer($container)->all() as $page) {
-            $page->delete();
+            $page->hardDelete();
         }
-        
+
         foreach (models\ContainerSnippet::find()->contentContainer($container)->all() as $page) {
-            $page->delete();
+            $page->hardDelete();
         }
     }
 

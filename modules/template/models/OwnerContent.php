@@ -2,8 +2,10 @@
 
 namespace humhub\modules\custom_pages\modules\template\models;
 
-use Yii;
 use humhub\components\ActiveRecord;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\models\Content;
+use Yii;
 
 /**
  * This is the model class for table "custom_pages_template_content".
@@ -53,8 +55,13 @@ class OwnerContent extends ActiveRecord
      */
     public function beforeDelete()
     {
-        if ($this->getInstance() != null) {
-            $this->getInstance()->delete();
+        $instance = $this->getInstance();
+        if ($instance !== null) {
+            if ($instance instanceof ContentActiveRecord || $instance instanceof Content) {
+                $instance->hardDelete();
+            } else {
+                $instance->delete();
+            }
         }
 
         return parent::beforeDelete();

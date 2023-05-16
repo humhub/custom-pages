@@ -16,7 +16,6 @@ use humhub\modules\custom_pages\modules\template\models\ImageContent;
 use humhub\modules\custom_pages\modules\template\models\RichtextContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
 use humhub\modules\custom_pages\modules\template\models\TextContent;
-use Yii;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
@@ -27,6 +26,7 @@ use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElemen
 use humhub\modules\custom_pages\modules\template\widgets\EditMultipleElementsModal;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentTable;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
+use Yii;
 use yii\base\Response;
 
 /**
@@ -276,8 +276,12 @@ class AdminController extends \humhub\modules\admin\components\Controller
     {
         $template = Template::findOne(['id' => $id]);
 
-        if (!$template->delete()) {
-            $this->view->error(Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'The template could not be deleted, please get sure that this template is not in use.'));
+        if ($template) {
+            if ($template->delete()) {
+                $this->view->success(Yii::t('CustomPagesModule.base', 'Deleted.'));
+            } else {
+                $this->view->error(Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'The template could not be deleted, please get sure that this template is not in use.'));
+            }
         }
 
         return $this->redirect(['index']);

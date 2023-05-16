@@ -3,6 +3,8 @@
 namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\content\models\Content;
+use yii\db\ActiveQuery;
 
 /**
  * A TemplateInstance represents an acutal instantiation of an Template model.
@@ -72,9 +74,18 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
         return $pageTemplate->template->getElement($elementName);
     }
 
-    public static function findByTemplateId($templateId)
+    public static function findByTemplateId($templateId, ?int $contentState = null): ActiveQuery
     {
-        return self::find()->where(['template_id' => $templateId]);
+        $query = self::find()->where(['template_id' => $templateId]);
+
+        if ($contentState !== null) {
+            $query->leftJoin(Content::tableName(),
+                Content::tableName() . '.object_model = ' . self::tableName() . '.object_model AND ' .
+                Content::tableName() . '.object_id = ' . self::tableName() . '.object_id')
+                ->andWhere([Content::tableName() . '.state' => $contentState]);
+        }
+
+        return $query;
     }
 
     public function render($editMode = false)

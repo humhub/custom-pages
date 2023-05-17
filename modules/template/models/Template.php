@@ -2,8 +2,9 @@
 
 namespace humhub\modules\custom_pages\modules\template\models;
 
-use humhub\modules\custom_pages\lib\templates\TemplateEngineFactory;
 use humhub\components\ActiveRecord;
+use humhub\modules\content\models\Content;
+use humhub\modules\custom_pages\lib\templates\TemplateEngineFactory;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
@@ -34,6 +35,8 @@ use yii\helpers\ArrayHelper;
  * @property $type string
  * @property $allow_for_spaces boolean
  * @property $allow_inline_activation boolean
+ *
+ * @property-read TemplateElement[] $elements
  */
 class Template extends ActiveRecord implements TemplateContentOwner
 {
@@ -124,12 +127,15 @@ class Template extends ActiveRecord implements TemplateContentOwner
      */
     public function beforeDelete()
     {
-        if(!parent::beforeDelete()) {
+        if (!parent::beforeDelete()) {
             return false;
         }
 
         // We just allow the template deletion if there are template owner relations.
-        if(!$this->isInUse()) {
+        if (!$this->isInUse()) {
+            foreach ($this->getContents()->all() as $content) {
+                $content->hardDelete();
+            }
             foreach ($this->elements as $element) {
                 $element->delete();
             }
@@ -141,10 +147,26 @@ class Template extends ActiveRecord implements TemplateContentOwner
 
     public function isInUse()
     {
-        if($this->isLayout()) {
-            return TemplateInstance::findByTemplateId($this->id)->count() > 0;
+        if ($this->isLayout()) {
+            return TemplateInstance::findByTemplateId($this->id, Content::STATE_PUBLISHED)->count() > 0;
         } else {
             return ContainerContentTemplate::find()->where(['template_id' => $this->id])->count() > 0;
+        }
+    }
+
+    public function getLinkedRecordsQuery(): ActiveQuery
+    {
+        if ($this->isLayout()) {
+            return $this->getContents()
+                ->andWhere([Content::tableName() . '.state' => Content::STATE_PUBLISHED]);
+        } else {
+            return Template::find()
+                ->leftJoin(OwnerContent::tableName(), Template::tableName() . '.id = ' . OwnerContent::tableName() . '.owner_id')
+                ->leftJoin(ContainerContent::tableName(), ContainerContent::tableName() . '.id = ' . OwnerContent::tableName() . '.content_id')
+                ->leftJoin(ContainerContentTemplate::tableName(), ContainerContentTemplate::tableName() . '.definition_id = ' . ContainerContent::tableName() . '.definition_id')
+                ->where([OwnerContent::tableName() . '.owner_model' => Template::class])
+                ->andWhere([OwnerContent::tableName() . '.content_type' => ContainerContent::class])
+                ->andWhere([ContainerContentTemplate::tableName() . '.template_id' => $this->id]);
         }
     }
 
@@ -174,6 +196,18 @@ class Template extends ActiveRecord implements TemplateContentOwner
     public function getElements()
     {
         return $this->hasMany(TemplateElement::class, ['template_id' => 'id']);
+    }
+
+    /**
+     * Returns all Contents linked with this Template.
+     * @return ActiveQuery
+     */
+    public function getContents(): ActiveQuery
+    {
+        return Content::find()->leftJoin(TemplateInstance::tableName(),
+                Content::tableName() . '.object_model = ' . TemplateInstance::tableName() . '.object_model AND ' .
+                Content::tableName() . '.object_id = ' . TemplateInstance::tableName() . '.object_id')
+            ->where([TemplateInstance::tableName() . '.template_id' => $this->id]);
     }
 
     /**

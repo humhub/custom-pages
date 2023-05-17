@@ -16,7 +16,6 @@ use humhub\modules\custom_pages\modules\template\models\ImageContent;
 use humhub\modules\custom_pages\modules\template\models\RichtextContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
 use humhub\modules\custom_pages\modules\template\models\TextContent;
-use Yii;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
@@ -27,7 +26,9 @@ use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElemen
 use humhub\modules\custom_pages\modules\template\widgets\EditMultipleElementsModal;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentTable;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
+use Yii;
 use yii\base\Response;
+use yii\data\ActiveDataProvider;
 
 /**
  * Admin controller for managing templates.
@@ -122,6 +123,30 @@ class AdminController extends \humhub\modules\admin\components\Controller
         return $this->render('@custom_pages/modules/template/views/admin/editSource', [
             'model' => $model,
             'contentTypes' => $this->getContentTypes()
+        ]);
+    }
+
+    /**
+     * Show pages/snippets/containers where the template is used in.
+     */
+    public function actionEditUsage()
+    {
+        $model = Template::findOne(['id' => Yii::$app->request->get('id')]);
+
+        if ($model == null) {
+            throw new \yii\web\HttpException(404, Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'Template not found!'));
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $model->getLinkedRecordsQuery(),
+            'pagination' => [
+                'pageSize' => 10
+            ]
+        ]);
+
+        return $this->render('@custom_pages/modules/template/views/admin/editUsage', [
+            'model' => $model,
+            'dataProvider' => $dataProvider
         ]);
     }
 
@@ -276,8 +301,12 @@ class AdminController extends \humhub\modules\admin\components\Controller
     {
         $template = Template::findOne(['id' => $id]);
 
-        if (!$template->delete()) {
-            $this->view->error(Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'The template could not be deleted, please get sure that this template is not in use.'));
+        if ($template) {
+            if ($template->delete()) {
+                $this->view->success(Yii::t('CustomPagesModule.base', 'Deleted.'));
+            } else {
+                $this->view->error(Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'The template could not be deleted, please get sure that this template is not in use.'));
+            }
         }
 
         return $this->redirect(['index']);

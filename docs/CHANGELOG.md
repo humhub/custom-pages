@@ -1,7 +1,11 @@
 Changelog
 =========
 
-1.9.1 (May 1, 2023)
+1.9.2 (Unreleased)
+-------------------
+- Fix #277: Delete not published linked content on delete template
+
+- 1.9.1 (May 1, 2023)
 -------------------
 - Fix #274: Hard delete records on disable module
 - Fix #265: Fix tests for core v1.14
@@ -320,4 +324,3 @@ New defaults: php-pages/container_pages/, php-pages/container_snippets/, php-pag
 - Enh: #56 Use of select2 dropdown as icon chooser
 - Fix: #40 Image/File upload ajax error handling
 - Fix: HumHub 1.2.beta.3 support
-

@@ -22,11 +22,14 @@ use humhub\modules\custom_pages\modules\template\models\Template;
     <?php if (!$model->isNewRecord): ?>
         </div>
         <ul class="nav nav-tabs tab-sub-menu" id="tabs">
-            <li class=" active">
+            <li class="active">
                 <?= Html::a(Yii::t('CustomPagesModule.base', 'General'), Url::to(['edit', 'id' => $model->id])); ?>
             </li>
-            <li class="">
+            <li>
                 <?= Html::a(Yii::t('CustomPagesModule.base', 'Source'), Url::to(['edit-source', 'id' => $model->id])); ?>
+            </li>
+            <li>
+                <?= Html::a(Yii::t('CustomPagesModule.base', 'Usage'), Url::to(['edit-usage', 'id' => $model->id])); ?>
             </li>
         </ul>
         <div class="panel-body">

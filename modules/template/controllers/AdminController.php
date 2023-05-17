@@ -28,6 +28,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentTable;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use Yii;
 use yii\base\Response;
+use yii\data\ActiveDataProvider;
 
 /**
  * Admin controller for managing templates.
@@ -122,6 +123,30 @@ class AdminController extends \humhub\modules\admin\components\Controller
         return $this->render('@custom_pages/modules/template/views/admin/editSource', [
             'model' => $model,
             'contentTypes' => $this->getContentTypes()
+        ]);
+    }
+
+    /**
+     * Show pages/snippets/containers where the template is used in.
+     */
+    public function actionEditUsage()
+    {
+        $model = Template::findOne(['id' => Yii::$app->request->get('id')]);
+
+        if ($model == null) {
+            throw new \yii\web\HttpException(404, Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'Template not found!'));
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $model->getLinkedRecordsQuery(),
+            'pagination' => [
+                'pageSize' => 10
+            ]
+        ]);
+
+        return $this->render('@custom_pages/modules/template/views/admin/editUsage', [
+            'model' => $model,
+            'dataProvider' => $dataProvider
         ]);
     }
 

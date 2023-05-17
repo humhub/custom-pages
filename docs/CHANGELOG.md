@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.9.2 (Unreleased)
--------------------
+1.9.2 (May 17, 2023)
+--------------------
 - Fix #277: Delete not published linked content on delete template
 
 - 1.9.1 (May 1, 2023)

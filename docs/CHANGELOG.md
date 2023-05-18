@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.9.3 (Unreleased)
+--------------------
+- Enh #277: Template usage: display content container and state
+
 1.9.2 (May 17, 2023)
 --------------------
 - Fix #277: Delete not published linked content on delete template

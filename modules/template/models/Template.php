@@ -157,8 +157,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
     public function getLinkedRecordsQuery(): ActiveQuery
     {
         if ($this->isLayout()) {
-            return $this->getContents()
-                ->andWhere([Content::tableName() . '.state' => Content::STATE_PUBLISHED]);
+            return $this->getContents();
         } else {
             return Template::find()
                 ->leftJoin(OwnerContent::tableName(), Template::tableName() . '.id = ' . OwnerContent::tableName() . '.owner_id')

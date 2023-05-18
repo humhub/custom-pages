@@ -1,6 +1,8 @@
 <?php
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\widgets\StateBadge;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\modules\template\models\Template;
@@ -45,50 +47,65 @@ $columnLabel = $model->type === Template::TYPE_CONTAINER ? Yii::t('CustomPagesMo
     </ul>
 
     <div class="panel-body">
-        <?= GridView::widget([
+        <?php
+        $columns = [
+            [
+                'class' => DataColumn::class,
+                'label' => $columnLabel,
+                'format' => 'raw',
+                'value' => function ($model) {
+                    if ($model instanceof Content) {
+                        /* @var $record CustomContentContainer */
+                        $record = $model->getPolymorphicRelation();
+                        return Link::to(Html::encode($record->getTitle()), $record->getUrl())->icon(Html::encode($record->icon)) . ' ' .
+                            StateBadge::widget(['model' => $record]);
+                    } else if ($model instanceof Template) {
+                        return $model->name;
+                    }
+                }
+            ]
+        ];
+        if ($model->type !== Template::TYPE_CONTAINER) {
+            $columns[] = [
+                'class' => DataColumn::class,
+                'label' => Yii::t('CustomPagesModule.base', 'Space'),
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return $model instanceof Content && $model->container instanceof ContentContainerActiveRecord
+                        ? \humhub\libs\Html::containerLink($model->container)
+                        : '';
+                }
+            ];
+        }
+        $columns[] = [
+            'class' => ActionColumn::class,
+            'options' => ['width' => '80px'],
+            'buttons' => [
+                'update' => function ($url, $model) {
+                    if ($model instanceof Content) {
+                        /* @var $record CustomContentContainer */
+                        $record = $model->getPolymorphicRelation();
+                        return $record->canEdit()
+                            ? Link::primary()->icon('fa-pencil')->link($record->getEditUrl())->xs()->right()
+                            : '';
+                    } else if ($model instanceof Template) {
+                        return Link::primary()->icon('fa-pencil')->link(Url::toRoute(['edit-source', 'id' => $model->id]))->xs();
+                    }
+                },
+                'view' => function () {
+                    return '';
+                },
+                'delete' => function ($url, $model) {
+                    if ($model instanceof Template) {
+                        return Link::danger()->icon('fa-times')->link(Url::toRoute(['delete-template', 'id' => $model->id]))->xs()->confirm();
+                    }
+                },
+            ],
+        ];
+        echo GridView::widget([
             'dataProvider' => $dataProvider,
             'layout' => '{items}{pager}',
-            'columns' => [
-                [
-                    'class' => DataColumn::class,
-                    'label' => $columnLabel,
-                    'format' => 'raw',
-                    'value' => function ($model) {
-                        if ($model instanceof Content) {
-                            /* @var $record CustomContentContainer */
-                            $record = $model->getPolymorphicRelation();
-                            return Link::to(Html::encode($record->getTitle()), $record->getUrl())->icon(Html::encode($record->icon));
-                        } else if ($model instanceof Template) {
-                            return $model->name;
-                        }
-                    }
-                ],
-                [
-                    'class' => ActionColumn::class,
-                    'options' => ['width' => '80px'],
-                    'buttons' => [
-                        'update' => function ($url, $model) {
-                            if ($model instanceof Content) {
-                                /* @var $record CustomContentContainer */
-                                $record = $model->getPolymorphicRelation();
-                                return $record->canEdit()
-                                    ? Link::primary()->icon('fa-pencil')->link($record->getEditUrl())->xs()->right()
-                                    : '';
-                            } else if ($model instanceof Template) {
-                                return Link::primary()->icon('fa-pencil')->link(Url::toRoute(['edit-source', 'id' => $model->id]))->xs();
-                            }
-                        },
-                        'view' => function () {
-                            return '';
-                        },
-                        'delete' => function ($url, $model) {
-                            if ($model instanceof Template) {
-                                return Link::danger()->icon('fa-times')->link(Url::toRoute(['delete-template', 'id' => $model->id]))->xs()->confirm();
-                            }
-                        },
-                    ],
-                ],
-            ]
+            'columns' => $columns
         ]) ?>
     </div>
 </div>

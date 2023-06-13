@@ -64,6 +64,7 @@ class HtmlType extends ContentType
                 'id' => 'custom-page-html-file-upload',
                 'label' => Yii::t('CustomPagesModule.models_HtmlType', 'Attach Files'),
                 'tooltip' => false,
+                'hideInStream' => true,
                 'progress' => '#custom-page-html-upload-progress',
                 'preview' => '#custom-page-html-upload-preview',
                 'cssButtonClass' => 'btn-default btn-sm',

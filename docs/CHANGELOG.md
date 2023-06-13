@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.9.3 (Unreleased)
---------------------
+1.9.3 (June 13, 2023)
+---------------------
 - Enh #277: Template usage: display content container and state
 - Fix #284: Hide files of HTML pages in stream wall entry
 

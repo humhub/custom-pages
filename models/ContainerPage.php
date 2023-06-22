@@ -26,7 +26,8 @@ class ContainerPage extends Page implements Searchable
     public static function getDefaultTargets()
     {
         return [
-            ['id' => self::NAV_CLASS_SPACE_NAV , 'name' => Yii::t('CustomPagesModule.base', 'Space Navigation')]
+            ['id' => self::NAV_CLASS_SPACE_NAV , 'name' => Yii::t('CustomPagesModule.base', 'Space Navigation')],
+            ['id' => self::NAV_CLASS_EMPTY, 'name' => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)')],
         ];
     }
 

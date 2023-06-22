@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.9.4 (Unreleased)
+---------------------
+- Enh #287: Add Support `Custom Pages Without adding to navigation` for Space
+
 1.9.3 (June 13, 2023)
 ---------------------
 - Enh #277: Template usage: display content container and state

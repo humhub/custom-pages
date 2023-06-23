@@ -169,6 +169,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
             'id' => Yii::t('CustomPagesModule.components_Container', 'ID'),
             'type' => Yii::t('CustomPagesModule.components_Container', 'Type'),
             'title' => Yii::t('CustomPagesModule.components_Container', 'Title'),
+            'page_content' => Yii::t('CustomPagesModule.components_Container', 'Page Content'),
             'icon' => Yii::t('CustomPagesModule.components_Container', 'Icon'),
             'cssClass' => Yii::t('CustomPagesModule.components_Container', 'Style Class'),
             'content' => $this->getContentType() ? $this->getContentType()->getLabel() : null,
@@ -176,7 +177,8 @@ abstract class CustomContentContainer extends ContentActiveRecord
             'sort_order' => Yii::t('CustomPagesModule.components_Container', 'Sort Order'),
             'targetUrl' => Yii::t('CustomPagesModule.components_Container', 'Target Url'),
             'templateId' => Yii::t('CustomPagesModule.components_Container', 'Template Layout'),
-            'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins')
+            'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins'),
+            'visibility' => Yii::t('CustomPagesModule.models_Page', 'Visibility')
         ];
     }
 

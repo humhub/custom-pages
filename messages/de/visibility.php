@@ -5,5 +5,5 @@ return array (
   'Members & Guests' => 'Mitglieder &amp; Gäste',
   'Members only' => 'Nur Mitglieder',
   'Public' => 'Öffentlich',
-  'Space Members only' => 'Nur für Mitglieder de Spaces',
+  'Space Members only' => 'Nur für Mitglieder des Spaces',
 );

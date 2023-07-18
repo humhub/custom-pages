@@ -1,6 +1,5 @@
 <?php
-
-return [
-    'Snippet' => '',
-    'snippet' => '',
-];
+return array (
+  'Snippet' => 'スニペット',
+  'snippet' => 'スニペット',
+);

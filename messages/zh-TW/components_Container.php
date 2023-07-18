@@ -5,10 +5,10 @@ return array (
   'Icon' => '',
   'Invalid template selection!' => '',
   'Invalid view file selection!' => '',
-  'Sort Order' => '',
+  'Sort Order' => '排列順序',
   'Style Class' => '',
   'Target Url' => '',
   'Template Layout' => '',
   'Title' => '標題',
-  'Type' => '',
+  'Type' => '類型',
 );

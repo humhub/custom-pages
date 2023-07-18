@@ -1,7 +1,6 @@
 <?php
-
-return [
-    '<strong>Template</strong> Infos' => '',
-    'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => '',
-    'This template systems uses {twigLink} as template engine.<br /><br /> You can add elements as Richtexts or Images into your template by using the \'Add Element\' dropdown menu.<br />After adding an element, the elements placeholder is automatically inserted to your template.<br />You can change the position of your elements anytime. The element for an block with the name \'content\' will be represented as {contentVar} within your template.<br /><br /> The name of your block hast to start with an alphanumeric letter and cannot contain any special signs except an \'_\'. Each element provides additional placeholder for rendering the default content or edit links. These additions can be inserted adding for example {contentDefaultVar} to your template.' => '',
-];
+return array (
+  '<strong>Template</strong> Infos' => '<strong>テンプレート</strong> 情報',
+  'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'twig 構文の詳細については、<strong><a href="{twig_tmpl_url}">こちら</a></strong>をご覧ください。',
+  'This template systems uses {twigLink} as template engine.<br /><br /> You can add elements as Richtexts or Images into your template by using the \'Add Element\' dropdown menu.<br />After adding an element, the elements placeholder is automatically inserted to your template.<br />You can change the position of your elements anytime. The element for an block with the name \'content\' will be represented as {contentVar} within your template.<br /><br /> The name of your block hast to start with an alphanumeric letter and cannot contain any special signs except an \'_\'. Each element provides additional placeholder for rendering the default content or edit links. These additions can be inserted adding for example {contentDefaultVar} to your template.' => 'このテンプレート システムは、テンプレート エンジンとして {twigLink} を使用します。<br><br> [要素の追加] ドロップダウン メニューを使用して、要素をリッチテキストまたは画像としてテンプレートに追加できます。<br>要素を追加した後、 要素のプレースホルダーがテンプレートに自動的に挿入されます。<br>要素の位置はいつでも変更できます。 「コンテンツ」という名前のブロックの要素はテンプレート内で {contentVar} として表されます。<br><br>ブロックの名前は英数字で始める必要があり、\'_\' 以外の特殊記号を含める事はできません。各要素は、デフォルトのコンテンツまたは編集リンクをレンダリングするための追加のプレースホルダーを提供します。これらの追加は例えば {contentDefaultVar} をテンプレートに追加して挿入できます。',
+);

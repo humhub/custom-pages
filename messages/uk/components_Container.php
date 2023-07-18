@@ -1,7 +1,7 @@
 <?php
 return array (
   'Content' => 'Зміст',
-  'ID' => '',
+  'ID' => 'ID',
   'Icon' => '',
   'Invalid template selection!' => '',
   'Invalid view file selection!' => '',

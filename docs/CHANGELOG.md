@@ -4,6 +4,7 @@ Changelog
 1.9.4 (Unreleased)
 ---------------------
 - Enh #287: Add Support `Custom Pages Without adding to navigation` for Space
+- Fix #291: Fix broken URL in email footer
 
 1.9.3 (June 13, 2023)
 ---------------------

@@ -250,7 +250,7 @@ class Events
 
                 $event->sender->addItem([
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
-                    'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
+                    'url' => Url::to(['/custom_pages/view', 'id' => $page->id], true),
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
                     'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
                 ]);

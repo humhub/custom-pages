@@ -2,17 +2,15 @@
 
 namespace humhub\modules\custom_pages;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\models\Content;
-use humhub\modules\user\models\User;
-use Yii;
-use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\ContainerPage;
+use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\space\models\Space;
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use yii\base\Exception;
+use Yii;
 
 class Module extends ContentContainerModule
 {
@@ -84,6 +82,14 @@ class Module extends ContentContainerModule
         return [
             Space::class,
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getContentClasses(): array
+    {
+        return [Page::class, ContainerPage::class];
     }
 
     /**

@@ -1,7 +1,7 @@
 {
     "id": "custom_pages",
     "name": "Custom Pages",
-    "description": "Allows admins to create custom pages (html or markdown) or external links to various navigations (e.g. top navigation, account menu).",
+    "description": "Create custom pages and widgets and share them with your users. Take advantage of a wide range of editing options, including HTML and Markdown.",
     "keywords": ["pages", "custom", "iframe", "markdown", "link", "navigation", "spaces"],
     "version": "1.9.4",
     "homepage": "https://github.com/humhub/custom-pages",

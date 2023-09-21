@@ -6,6 +6,7 @@ Changelog
 - Enh #287: Add Support `Custom Pages Without adding to navigation` for Space
 - Fix #291: Fix broken URL in email footer
 - Fix #293: Initialize module content class
+- Enh #301: Tests for `next` version
 
 1.9.3 (June 13, 2023)
 ---------------------

@@ -115,4 +115,9 @@ use humhub\modules\file\models\File;
         ]);
     }
 
+    public function canEdit($user = null): bool
+    {
+        return PagePermission::canEdit();
+    }
+
 }

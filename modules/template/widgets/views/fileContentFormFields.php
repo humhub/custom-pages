@@ -32,6 +32,7 @@ $id = 'fileContent-' . $model->id;
         'id' => $id . '-preview',
         'popoverPosition' => 'top',
         'items' => [$model->getFile()],
+        'edit' => true,
         'options' => ['style' => 'display:block;margin-left:150px']]) ?>
 
     <?= humhub\modules\file\widgets\UploadProgress::widget(['id' => $id . '-progress', 'options' => ['style' => 'display:block;margin-left:150px;width:500px']]) ?>

@@ -7,6 +7,7 @@ Changelog
 - Fix #291: Fix broken URL in email footer
 - Fix #293: Initialize module content class
 - Enh #301: Tests for `next` version
+- Enh #318: Allow deleting of uploaded file from template element
 
 1.9.3 (June 13, 2023)
 ---------------------

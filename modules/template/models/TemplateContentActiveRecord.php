@@ -320,4 +320,9 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
         return isset($options[$key]) ? strval($options[$key]) : $default;
     }
 
+    public function isEmpty(): bool
+    {
+        return false;
+    }
+
 }

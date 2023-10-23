@@ -120,4 +120,9 @@ use humhub\modules\file\models\File;
         return PagePermission::canEdit();
     }
 
-}
+    public function isEmpty(): bool
+    {
+        return !$this->hasFile();
+    }
+
+ }

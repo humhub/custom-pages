@@ -2,6 +2,7 @@ humhub.module('custom_pages.template', function (module, require, $) {
     var object = require('util').object;
     var string = require('util').string;
     var Preview = require('file').Preview;
+    var client = require('client');
     
     var ImagePreview = function(node, options) {
         Preview.call(this, node, options);
@@ -29,7 +30,7 @@ humhub.module('custom_pages.template', function (module, require, $) {
     };
     
     ImagePreview.template = {
-        file_image: '<li data-preview-guid="{guid}"><img src="{thumbnailUrl}" class="preview" /></li>'
+        file_image: '<li class="file-preview-item" data-preview-guid="{guid}"><img src="{thumbnailUrl}" class="preview" /></li>'
     };
     
     ImagePreview.prototype.getTemplate = function (file) {
@@ -83,9 +84,32 @@ humhub.module('custom_pages.template', function (module, require, $) {
         $(document).off('.custom_pages');
     };
 
+    const deleteElementContent = function (evt) {
+        const btn = evt.$trigger;
+        const data = {
+            contentModel: btn.data('owner-content'),
+            contentId: btn.data('owner-content-id'),
+        }
+
+        client.post(evt, {data}).then(function (response) {
+            if (response.success) {
+                const preview = $('#' + btn.data('preview-id'));
+                if (preview.length) {
+                    preview.fadeOut(400, function () {
+                        $(this).find('.file-preview-item').remove();
+                    });
+                }
+                btn.remove();
+            }
+        }).catch(function (e) {
+            module.log.error(e, true);
+        });
+    }
+
     module.export({
-        init: init,
-        unload: unload,
-        ImagePreview: ImagePreview
+        init,
+        unload,
+        ImagePreview,
+        deleteElementContent
     });
 });

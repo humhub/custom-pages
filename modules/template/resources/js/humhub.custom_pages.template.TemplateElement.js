@@ -310,8 +310,8 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
 
     TemplateElement.template = {
         menu: '<div class="editMenu {cssClass}" style="display:none;"></div>',
-        editButton: '<a data-action-click="editAction" data-action-url="{url}" data-action-target="#{target}" class="template-menu-button btn btn-primary {btnSizeClass} tt" href="#"><i class="fa fa-pencil"></i></a>',
-        deleteButton: '<a data-action-click="deleteAction" data-action-url="{url}" data-action-target="#{target}" data-action-confirm="{confirmBody}" data-action-confirm-header="{confirmHeader}" data-action-confirm-text="{confirmText}" class="template-menu-button btn btn-danger {btnSizeClass} tt" href="#"><i class="fa fa-times"></i></a>'
+        editButton: '<a data-action-click="editAction" data-action-url="{url}" data-action-target="#{target}" class="template-menu-button btn btn-icon-only btn-primary {btnSizeClass} tt" href="#"><i class="fa fa-pencil"></i></a>',
+        deleteButton: '<a data-action-click="deleteAction" data-action-url="{url}" data-action-target="#{target}" data-action-confirm="{confirmBody}" data-action-confirm-header="{confirmHeader}" data-action-confirm-text="{confirmText}" class="template-menu-button btn btn-icon-only btn-danger {btnSizeClass} tt" href="#"><i class="fa fa-times"></i></a>'
     };
 
     module.export = TemplateElement;

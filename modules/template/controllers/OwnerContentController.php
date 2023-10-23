@@ -2,6 +2,8 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
+use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use Yii;
 use humhub\modules\custom_pages\modules\template\widgets\EditElementModal;
 use humhub\modules\custom_pages\modules\template\models\OwnerContentVariable;
@@ -11,6 +13,8 @@ use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElementsForm;
 use humhub\modules\custom_pages\modules\template\widgets\EditMultipleElementsModal;
 use yii\base\Response;
+use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * This controller is used to manage OwnerContent instances for TemplateContentOwner.
@@ -52,7 +56,7 @@ class OwnerContentController extends \humhub\components\Controller
      * Edits the content of a specific OwnerContent for the given TemplateContentOwner.
      * 
      * @return Response
-     * @throws \yii\web\HttpException
+     * @throws HttpException
      */
     public function actionEdit($ownerModel, $ownerId, $name)
     {
@@ -85,33 +89,24 @@ class OwnerContentController extends \humhub\components\Controller
      * Used to delete owner content models.
      *
      * @return Response
-     * @throws \yii\web\HttpException
+     * @throws HttpException
      */
     public function actionDelete()
     {
+        $this->forcePostRequest();
+
         $ownerModel = Yii::$app->request->post('ownerModel');
         $ownerId = Yii::$app->request->post('ownerId');
         $name = Yii::$app->request->post('name');
 
         if (!$ownerModel || !$ownerId || !$name) {
-            throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.controllers_TemplateController', 'Invalid request data!'));
+            throw new HttpException(400, Yii::t('CustomPagesModule.controllers_TemplateController', 'Invalid request data!'));
         }
-
-        $this->forcePostRequest();
 
         $form = new EditOwnerContentForm();
         $form->setElementData($ownerModel, $ownerId, $name);
 
-        // Do not allow the deletion of default content this is only allowed in admin controller.
-        if ($form->ownerContent->isDefault()) {
-            throw new \yii\web\HttpException(403, Yii::t('CustomPagesModule.controllers_TemplateController', 'You are not allowed to delete default content!'));
-        } else if ($form->ownerContent->isEmpty()) {
-            throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.controllers_TemplateController', 'Empty content elements cannot be delted!'));
-        }
-
-        TemplateCache::flushByOwnerContent($form->ownerContent);
-
-        $form->ownerContent->delete();
+        $this->deleteOwnerContent($form->ownerContent);
 
         // Set our original owner for this element block
         $variable = new OwnerContentVariable(['ownerContent' => $form->element->getDefaultContent(true), 'options' => [
@@ -120,6 +115,48 @@ class OwnerContentController extends \humhub\components\Controller
         ]]);
 
         return $this->getJsonEditElementResult(true, $variable->render(true));
+    }
+
+    /**
+     * Used to delete owner content models by Content.
+     *
+     * @return Response
+     * @throws HttpException
+     */
+    public function actionDeleteByContent()
+    {
+        $this->forcePostRequest();
+
+        $contentModel = Yii::$app->request->post('contentModel');
+        $contentId = Yii::$app->request->post('contentId');
+
+        if (!$contentModel || !$contentId) {
+            throw new HttpException(400, Yii::t('CustomPagesModule.controllers_TemplateController', 'Invalid request data!'));
+        }
+
+        $ownerContent = OwnerContent::findByContent($contentModel, $contentId);
+
+        $this->deleteOwnerContent($ownerContent);
+
+        return $this->asJson(['success' => true]);
+    }
+
+    private function deleteOwnerContent($ownerContent)
+    {
+        if (!$ownerContent instanceof OwnerContent) {
+            throw new NotFoundHttpException();
+        }
+        // Do not allow the deletion of default content this is only allowed in admin controller.
+        if ($ownerContent->isDefault()) {
+            throw new HttpException(403, Yii::t('CustomPagesModule.controllers_TemplateController', 'You are not allowed to delete default content!'));
+        }
+        if ($ownerContent->isEmpty()) {
+            throw new HttpException(400, Yii::t('CustomPagesModule.controllers_TemplateController', 'Empty content elements cannot be deleted!'));
+        }
+
+        TemplateCache::flushByOwnerContent($ownerContent);
+
+        return $ownerContent->delete();
     }
 
     /**

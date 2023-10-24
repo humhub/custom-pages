@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.9.4 (Unreleased)
----------------------
+1.9.4 (October 24, 2023)
+------------------------
 - Enh #287: Add Support `Custom Pages Without adding to navigation` for Space
 - Fix #291: Fix broken URL in email footer
 - Fix #293: Initialize module content class

@@ -29,7 +29,7 @@ use yii\helpers\Url;
     </td>
 
     <td>
-        <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/edit-element', 'id' => $model->id]); ?>" class="btn btn-primary btn-xs tt" href="#">
+        <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/edit-element', 'id' => $model->id]); ?>" class="btn btn-primary btn-icon-only btn-xs tt" href="#">
             <i class="fa fa-pencil"></i>
         </a> 
         <a data-action-click="deleteElementSubmit" 
@@ -37,7 +37,7 @@ use yii\helpers\Url;
            data-action-confirm="<?= Yii::t('CustomPagesModule.modules_template_widgets_views_confirmDeletionModal', 'Do you really want to delete this element? <br />The deletion will affect all pages using this template.') ?>" 
            data-action-confirm-header="<?= Yii::t('CustomPagesModule.modules_template_controller_OwnerContentController', '<strong>Confirm</strong> element deletion') ?>"
            data-action-confirm-text="<?= Yii::t('CustomPagesModule.base', 'Delete') ?>"
-           class="btn btn-danger btn-xs tt" href="#">
+           class="btn btn-danger btn-icon-only btn-xs tt" href="#">
             <i class="fa fa-times"></i>
         </a>
     </td>

@@ -1,12 +1,15 @@
 <?php
-/* @var $model humhub\modules\custom_pages\modules\template\models\template\ImageContent */
-/* @var $form \humhub\modules\ui\form\widgets\ActiveForm */
-
-use yii\helpers\Url;
-use yii\helpers\Html;
+use humhub\modules\custom_pages\modules\template\models\ImageContent;
 use humhub\modules\custom_pages\modules\template\widgets\CollapsableFormGroup;
+use humhub\modules\custom_pages\modules\template\widgets\DeleteContentButton;
+use humhub\modules\file\widgets\FilePreview;
+use humhub\modules\file\widgets\UploadButton;
+use humhub\modules\file\widgets\UploadProgress;
+use humhub\modules\ui\form\widgets\ActiveForm;
 
-$uploadUrl = Url::to(['/file/file/upload']);
+/* @var $model ImageContent */
+/* @var $form ActiveForm */
+/* @var $isAdminEdit bool */
 
 $disableDefinition = !$isAdminEdit && $model->definition->is_default;
 
@@ -18,23 +21,24 @@ $id = 'imageContent-' . $model->id;
 <div id="<?= $id ?>">
     <div class="row">
         <div class="col-md-4 uploadContainer">
-            <?=
-            \humhub\modules\file\widgets\UploadButton::widget([
+            <?= UploadButton::widget([
                 'cssButtonClass' => 'btn-primary',
                 'model' => $model,
                 'single' => true,
+                'label' => true,
                 'attribute' => 'file_guid',
                 'dropZone' => '#' . $id,
                 'tooltip' => Yii::t('CustomPagesModule.base', 'Upload image'),
                 'preview' => '#' . $id . '-preview',
                 'progress' => '#' . $id . '-progress'
-            ])?>
-
-            <br />
-            <br />
+            ]) ?>
+            <?= DeleteContentButton::widget([
+                'model' => $model,
+                'previewId' => $id . '-preview'
+            ]) ?>
         </div>
-        <?= humhub\modules\file\widgets\UploadProgress::widget(['id' => $id . '-progress', 'options' => ['style' => 'width:500px']]) ?>
-        <?= humhub\modules\file\widgets\FilePreview::widget([
+        <?= UploadProgress::widget(['id' => $id . '-progress', 'options' => ['style' => 'width:500px']]) ?>
+        <?= FilePreview::widget([
             'id' => $id . '-preview',
             'items' => [$model->getFile()],
             'jsWidget' => 'custom_pages.template.ImagePreview',

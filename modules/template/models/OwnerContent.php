@@ -191,7 +191,8 @@ class OwnerContent extends ActiveRecord
 
     public function isEmpty()
     {
-        return $this->getInstance() == null;
+        $instance = $this->getInstance();
+        return $instance === null || $instance->isEmpty();
     }
 
     public function isDefault()

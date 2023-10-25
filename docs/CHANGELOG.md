@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.9.5 (Unreleased)
+------------------------
+- Enh #303: Fix visibility of the method `Controller::getAccessRules()`
+
 1.9.4 (October 24, 2023)
 ------------------------
 - Enh #287: Add Support `Custom Pages Without adding to navigation` for Space

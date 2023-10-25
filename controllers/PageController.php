@@ -55,7 +55,7 @@ class PageController extends AbstractCustomContainerController
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         if ($this->getContainerFromRequest() instanceof Space) {
             return [

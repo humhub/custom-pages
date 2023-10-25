@@ -27,7 +27,7 @@ class ViewController extends AbstractCustomContainerController
     /**
      * @inhritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['strict']

@@ -8,8 +8,10 @@ namespace humhub\modules\custom_pages\lib\templates\twig;
  */
 
 
-use \humhub\modules\custom_pages\lib\templates\TemplateEngine;
+use humhub\libs\Html;
+use humhub\modules\custom_pages\lib\templates\TemplateEngine;
 use Twig\Environment;
+use Twig\TwigFunction;
 
 /**
  * The TwigEngine is the default template eninge of this module and is used to
@@ -20,9 +22,9 @@ use Twig\Environment;
 class TwigEngine implements TemplateEngine
 {
     /**
-     * @inerhitdoc
+     * @inheritdoc
      * 
-     * @param type $template template name
+     * @param string $template template name
      * @param array $content array input [elementName => content]
      * @return string
      */
@@ -30,7 +32,12 @@ class TwigEngine implements TemplateEngine
     {
         $loader = new DatabaseTwigLoader();
         $twig = new Environment($loader, ['autoescape' => false, 'debug' => true]);
-        return $twig->render($template ,$content);
+
+        $twig->addFunction(new TwigFunction('nonce', function () {
+            return Html::nonce();
+        }));
+
+        return $twig->render($template, $content);
     }
 
 }

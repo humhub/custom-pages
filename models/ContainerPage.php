@@ -66,6 +66,7 @@ class ContainerPage extends Page implements Searchable
         return [
             'title' => $this->title,
             'content' => $this->page_content,
+            'abstract' => $this->abstract
         ];
     }
 

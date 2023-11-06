@@ -1,14 +1,17 @@
 <?php
-return array (
-  'Content' => 'Зміст',
-  'ID' => 'ID',
-  'Icon' => '',
-  'Invalid template selection!' => '',
-  'Invalid view file selection!' => '',
-  'Sort Order' => 'Сортувати за номером',
-  'Style Class' => '',
-  'Target Url' => '',
-  'Template Layout' => '',
-  'Title' => 'Заголовок',
-  'Type' => 'Тип',
-);
+
+return [
+    'Content' => 'Зміст',
+    'ID' => 'ID',
+    'Sort Order' => 'Сортувати за номером',
+    'Title' => 'Заголовок',
+    'Type' => 'Тип',
+    'Additional IFrame Attributes' => '',
+    'Icon' => '',
+    'Invalid template selection!' => '',
+    'Invalid view file selection!' => '',
+    'Page Content' => '',
+    'Style Class' => '',
+    'Target Url' => '',
+    'Template Layout' => '',
+];

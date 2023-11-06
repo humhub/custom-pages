@@ -1,14 +1,17 @@
 <?php
-return array (
-  'Content' => 'Sadržaj',
-  'ID' => 'ID',
-  'Icon' => '',
-  'Invalid template selection!' => '',
-  'Invalid view file selection!' => '',
-  'Sort Order' => 'Redoslijed',
-  'Style Class' => '',
-  'Target Url' => '',
-  'Template Layout' => '',
-  'Title' => 'Naziv',
-  'Type' => 'Vrsta',
-);
+
+return [
+    'Content' => 'Sadržaj',
+    'ID' => 'ID',
+    'Sort Order' => 'Redoslijed',
+    'Title' => 'Naziv',
+    'Type' => 'Vrsta',
+    'Additional IFrame Attributes' => '',
+    'Icon' => '',
+    'Invalid template selection!' => '',
+    'Invalid view file selection!' => '',
+    'Page Content' => '',
+    'Style Class' => '',
+    'Target Url' => '',
+    'Template Layout' => '',
+];

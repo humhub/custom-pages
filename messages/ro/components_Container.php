@@ -1,14 +1,17 @@
 <?php
-return array (
-  'Content' => 'Conținut',
-  'ID' => 'ID',
-  'Icon' => '',
-  'Invalid template selection!' => '',
-  'Invalid view file selection!' => '',
-  'Sort Order' => '',
-  'Style Class' => '',
-  'Target Url' => '',
-  'Template Layout' => '',
-  'Title' => 'Titlul',
-  'Type' => 'Tip',
-);
+
+return [
+    'Content' => 'Conținut',
+    'ID' => 'ID',
+    'Title' => 'Titlul',
+    'Type' => 'Tip',
+    'Additional IFrame Attributes' => '',
+    'Icon' => '',
+    'Invalid template selection!' => '',
+    'Invalid view file selection!' => '',
+    'Page Content' => '',
+    'Sort Order' => '',
+    'Style Class' => '',
+    'Target Url' => '',
+    'Template Layout' => '',
+];

@@ -8,5 +8,6 @@ return [
     'Open in new window' => '',
     'Page' => '',
     'Url shortcut' => '',
+    'Visibility' => '',
     'page' => '',
 ];

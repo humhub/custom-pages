@@ -8,5 +8,6 @@ return [
     'Page' => '',
     'Url shortcut' => '',
     'View' => '',
+    'Visibility' => '',
     'page' => '',
 ];

@@ -9,4 +9,5 @@ return [
     'page' => 'side',
     'Abstract' => '',
     'Page' => '',
+    'Visibility' => '',
 ];

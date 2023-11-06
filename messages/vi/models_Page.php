@@ -9,4 +9,5 @@ return [
     'page' => 'trang',
     'Abstract' => '',
     'Page' => '',
+    'Visibility' => '',
 ];

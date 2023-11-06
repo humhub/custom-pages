@@ -9,4 +9,5 @@ return [
     'page' => 'ገፅ',
     'Abstract' => '',
     'Page' => '',
+    'Visibility' => '',
 ];

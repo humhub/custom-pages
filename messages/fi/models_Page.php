@@ -9,4 +9,5 @@ return [
     'Abstract' => '',
     'Page' => '',
     'Url shortcut' => '',
+    'Visibility' => '',
 ];

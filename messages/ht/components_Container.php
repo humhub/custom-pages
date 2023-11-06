@@ -1,14 +1,17 @@
 <?php
-return array (
-  'Content' => 'Kontni',
-  'ID' => '',
-  'Icon' => '',
-  'Invalid template selection!' => '',
-  'Invalid view file selection!' => '',
-  'Sort Order' => '',
-  'Style Class' => '',
-  'Target Url' => '',
-  'Template Layout' => '',
-  'Title' => 'Tit',
-  'Type' => '',
-);
+
+return [
+    'Content' => 'Kontni',
+    'Title' => 'Tit',
+    'Additional IFrame Attributes' => '',
+    'ID' => '',
+    'Icon' => '',
+    'Invalid template selection!' => '',
+    'Invalid view file selection!' => '',
+    'Page Content' => '',
+    'Sort Order' => '',
+    'Style Class' => '',
+    'Target Url' => '',
+    'Template Layout' => '',
+    'Type' => '',
+];

@@ -1,14 +1,17 @@
 <?php
-return array (
-  'Content' => 'Sisältö',
-  'ID' => 'ID',
-  'Icon' => 'Iconi',
-  'Invalid template selection!' => '',
-  'Invalid view file selection!' => '',
-  'Sort Order' => 'Lajittelujärjestys',
-  'Style Class' => 'Tyyli luokka',
-  'Target Url' => '',
-  'Template Layout' => '',
-  'Title' => 'Otsikko',
-  'Type' => 'Tyyppi',
-);
+
+return [
+    'Content' => 'Sisältö',
+    'ID' => 'ID',
+    'Icon' => 'Iconi',
+    'Sort Order' => 'Lajittelujärjestys',
+    'Style Class' => 'Tyyli luokka',
+    'Title' => 'Otsikko',
+    'Type' => 'Tyyppi',
+    'Additional IFrame Attributes' => '',
+    'Invalid template selection!' => '',
+    'Invalid view file selection!' => '',
+    'Page Content' => '',
+    'Target Url' => '',
+    'Template Layout' => '',
+];

@@ -10,4 +10,6 @@ return [
                         If no abstract is given or the page is only visible for admins, no stream entry will be created.' => 'O resumo será usado como conteúdo de entrada de fluxo para promover a página real. Se nenhum resumo for fornecido ou a página estiver visível apenas para administradores, nenhuma entrada de fluxo será criada.',
     'e.g. http://www.example.de' => 'e.g. http://www.example.de',
     '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!' => '',
+    'You need to be a system administrator to edit this URL' => '',
+    'e.g. allowfullscreen allow="camera; microphone"' => '',
 ];

@@ -1,14 +1,17 @@
 <?php
-return array (
-  'Content' => 'Tarkib',
-  'ID' => '',
-  'Icon' => '',
-  'Invalid template selection!' => '',
-  'Invalid view file selection!' => '',
-  'Sort Order' => '',
-  'Style Class' => '',
-  'Target Url' => '',
-  'Template Layout' => '',
-  'Title' => 'Sarlavha',
-  'Type' => '',
-);
+
+return [
+    'Content' => 'Tarkib',
+    'Title' => 'Sarlavha',
+    'Additional IFrame Attributes' => '',
+    'ID' => '',
+    'Icon' => '',
+    'Invalid template selection!' => '',
+    'Invalid view file selection!' => '',
+    'Page Content' => '',
+    'Sort Order' => '',
+    'Style Class' => '',
+    'Target Url' => '',
+    'Template Layout' => '',
+    'Type' => '',
+];

@@ -2,12 +2,13 @@
 
 namespace humhub\modules\custom_pages\models;
 
-use humhub\modules\space\models\Space;
-use Yii;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
-use humhub\modules\search\interfaces\Searchable;
+use humhub\modules\custom_pages\modules\template\components\TemplateRenderer;
 use humhub\modules\custom_pages\modules\template\models\Template;
+use humhub\modules\search\interfaces\Searchable;
+use humhub\modules\space\models\Space;
+use Yii;
 
 /**
  * This is the model class for table "custom_pages_container_page".
@@ -63,11 +64,17 @@ class ContainerPage extends Page implements Searchable
      */
     public function getSearchAttributes()
     {
-        return [
+        $attrs = [
             'title' => $this->title,
             'content' => $this->page_content,
             'abstract' => $this->abstract
         ];
+
+        if ($this->type === TemplateType::ID) {
+            $attrs['template'] = trim(strip_tags(TemplateRenderer::render($this)));
+        }
+
+        return $attrs;
     }
 
     /**

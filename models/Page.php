@@ -2,8 +2,8 @@
 
 namespace humhub\modules\custom_pages\models;
 
-use humhub\libs\Html;
 use humhub\modules\content\models\Content;
+use humhub\modules\custom_pages\helpers\Html;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
 use humhub\modules\custom_pages\modules\template\models\Template;
@@ -188,7 +188,7 @@ class Page extends CustomContentContainer
     public function getPageContent()
     {
         if ($this->type == HtmlType::ID) {
-            return preg_replace('/(<script.*?) nonce(="")?(.*?>)/i', '$1 ' . Html::nonce() . '$3', $this->page_content);
+            return Html::applyScriptNonce($this->page_content);
         }
 
         return $this->page_content;

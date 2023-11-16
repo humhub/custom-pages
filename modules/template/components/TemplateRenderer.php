@@ -1,9 +1,8 @@
 <?php
 
-
 namespace humhub\modules\custom_pages\modules\template\components;
 
-
+use humhub\modules\custom_pages\helpers\Html;
 use yii\web\HttpException;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 
@@ -23,8 +22,6 @@ class TemplateRenderer
             throw new HttpException(404, 'Template instance not found!');
         }
 
-        $html = '';
-
         if(!$editMode && TemplateCache::exists($templateInstance)) {
             $html = TemplateCache::get($templateInstance);
         } else {
@@ -33,7 +30,8 @@ class TemplateRenderer
                 TemplateCache::set($templateInstance, $html);
             }
         }
-        return $html;
+
+        return Html::applyScriptNonce($html);
     }
 
 }

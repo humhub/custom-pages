@@ -1,17 +1,14 @@
 <?php
-
-namespace humhub\modules\custom_pages\lib\templates\twig;
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
+namespace humhub\modules\custom_pages\lib\templates\twig;
 
-use humhub\libs\Html;
 use humhub\modules\custom_pages\lib\templates\TemplateEngine;
 use Twig\Environment;
-use Twig\TwigFunction;
 
 /**
  * The TwigEngine is the default template eninge of this module and is used to
@@ -32,10 +29,6 @@ class TwigEngine implements TemplateEngine
     {
         $loader = new DatabaseTwigLoader();
         $twig = new Environment($loader, ['autoescape' => false, 'debug' => true]);
-
-        $twig->addFunction(new TwigFunction('nonce', function () {
-            return Html::nonce();
-        }));
 
         return $twig->render($template, $content);
     }

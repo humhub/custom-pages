@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.9.5 (Unreleased)
-------------------------
+1.9.5 (November 16, 2023)
+-------------------------
 - Enh #303: Fix visibility of the method `Controller::getAccessRules()`
 - Enh #305: Add nonce attribute to all JavaScript tags in templates and HTML pages automatically
 

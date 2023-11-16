@@ -2,18 +2,19 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
-use Yii;
-use yii\helpers\Html;
-use yii\web\HttpException;
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\HtmlType;
 use humhub\modules\custom_pages\models\IframeType;
 use humhub\modules\custom_pages\models\LinkType;
 use humhub\modules\custom_pages\models\MarkdownType;
+use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\models\PhpType;
 use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\custom_pages\modules\template\components\TemplateRenderer;
+use Yii;
+use yii\helpers\Html;
+use yii\web\HttpException;
 
 
 /**
@@ -101,11 +102,16 @@ class ViewController extends AbstractCustomContainerController
         }
     }
 
+    /**
+     * @param Page $page
+     * @return string
+     * @throws HttpException
+     */
     public function renderGlobalView($page)
     {
         switch ($page->type) {
             case HtmlType::ID:
-                return $this->render('@custom_pages/views/global/html', ['page' => $page, 'html' => $page->page_content, 'title' => $page->title]);
+                return $this->render('@custom_pages/views/global/html', ['page' => $page, 'html' => $page->getPageContent(), 'title' => $page->title]);
             case IframeType::ID:
                 return $this->render('@custom_pages/views/global/iframe', ['page' => $page, 'url' => $page->page_content, 'navigationClass' => $page->getTargetId()]);
             case TemplateType::ID:

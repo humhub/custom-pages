@@ -4,6 +4,7 @@ Changelog
 1.9.5 (Unreleased)
 ------------------------
 - Enh #303: Fix visibility of the method `Controller::getAccessRules()`
+- Enh #305: Add nonce attribute to all JavaScript tags in templates and HTML pages automatically
 
 1.9.4 (October 24, 2023)
 ------------------------

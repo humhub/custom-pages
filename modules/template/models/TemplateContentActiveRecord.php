@@ -2,13 +2,19 @@
 
 namespace humhub\modules\custom_pages\modules\template\models;
 
-use Yii;
 use humhub\components\ActiveRecord;
+use humhub\interfaces\ViewableInterface;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\custom_pages\models\CustomContentContainer;
+use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the base class for all TemplateContent types.
+ *
+ * @property-read OwnerContent $ownerContent
  */
-abstract class TemplateContentActiveRecord extends ActiveRecord
+abstract class TemplateContentActiveRecord extends ActiveRecord implements ViewableInterface
 {
 
     const SCENARIO_CREATE = 'create';
@@ -322,6 +328,45 @@ abstract class TemplateContentActiveRecord extends ActiveRecord
 
     public function isEmpty(): bool
     {
+        return false;
+    }
+
+    public function getOwnerContent(): ActiveQuery
+    {
+        return $this->hasOne(OwnerContent::class, ['content_id' => 'id'])
+            ->andWhere([OwnerContent::tableName() . '.content_type' => get_class($this)]);
+    }
+
+    public function getCustomContentContainer(): ?CustomContentContainer
+    {
+        $ownerContent = $this->ownerContent;
+        if (!$ownerContent instanceof OwnerContent) {
+            return null;
+        }
+
+        $ownerModel = $ownerContent->getOwner();
+        if (!$ownerModel instanceof TemplateInstance) {
+            return null;
+        }
+
+        return $ownerModel->getObject();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function canView($user = null): bool
+    {
+        $customContentContainer = $this->getCustomContentContainer();
+
+        if ($customContentContainer instanceof ContentActiveRecord) {
+            return $customContentContainer->content->canView($user);
+        }
+
+        if ($customContentContainer instanceof ViewableInterface) {
+            return $customContentContainer->canView($user);
+        }
+
         return false;
     }
 

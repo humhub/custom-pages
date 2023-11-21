@@ -3,9 +3,9 @@
     "name": "Custom Pages",
     "description": "Create custom pages and widgets and share them with your users. Take advantage of a wide range of editing options, including HTML and Markdown.",
     "keywords": ["pages", "custom", "iframe", "markdown", "link", "navigation", "spaces"],
-    "version": "1.9.5",
+    "version": "1.10.0",
     "homepage": "https://github.com/humhub/custom-pages",
     "humhub": {
-        "minVersion": "1.14"
+        "minVersion": "1.16"
     }
 }

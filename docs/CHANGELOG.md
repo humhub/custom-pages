@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.0 (Unreleased)
+-------------------------
+- Enh #308: Deny access for files from template of hidden content
+
 1.9.5 (November 16, 2023)
 -------------------------
 - Enh #303: Fix visibility of the method `Controller::getAccessRules()`

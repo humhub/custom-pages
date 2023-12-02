@@ -2,16 +2,16 @@
 
 namespace humhub\modules\custom_pages;
 
-use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\ContainerSnippet;
-use humhub\modules\custom_pages\widgets\SnippetWidget;
+use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
 use humhub\modules\custom_pages\permissions\ManagePages;
+use humhub\modules\custom_pages\widgets\SnippetWidget;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\PeopleHeadingButtons;
 use Throwable;
@@ -146,14 +146,43 @@ class Events
                     continue;
                 }
 
+                $isCurrentTargetUrl = false;
+                if ($page->type === LinkType::ID && $page->page_content) {
+                    $targetUrl = strpos($page->page_content, 'http') === 0 ?
+                        $page->page_content :
+                        'https://domain.tld/' . trim($page->page_content, '/');
+                    $targetUrlPath = parse_url($targetUrl, PHP_URL_PATH) ?: '';
+                    $targetUrlQuery = parse_url($targetUrl, PHP_URL_QUERY) ?: '';
+                    $container = ContentContainerHelper::getCurrent();
+                    $currentContainerPath = $container ?
+                        rtrim(ContentContainerHelper::getCurrent()->getUrl(), '/') :
+                        null;
+                    if (
+                        $targetUrlPath
+                        && (
+                            $currentContainerPath === $targetUrlPath
+                            || Url::current() === $targetUrlPath . '?' . $targetUrlQuery
+                        )
+                    ) {
+                        $isCurrentTargetUrl = true;
+                    }
+                }
+
                 $event->sender->addItem([
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
                     'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
                     'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
-                    'isActive' => (Yii::$app->controller->module
-                        && Yii::$app->controller->module->id === 'custom_pages'
-                        && Yii::$app->controller->id === 'view' && !Yii::$app->controller->contentContainer && Yii::$app->request->get('id') == $page->id),
+                    'isActive' => (
+                        (
+                            Yii::$app->controller->module
+                            && Yii::$app->controller->module->id === 'custom_pages'
+                            && Yii::$app->controller->id === 'view'
+                            && !Yii::$app->controller->contentContainer
+                            && Yii::$app->request->get('id') == $page->id
+                        )
+                        || $isCurrentTargetUrl
+                    ),
                     'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
                 ]);
             }

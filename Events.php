@@ -4,9 +4,11 @@ namespace humhub\modules\custom_pages;
 
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\widgets\AdminMenu;
+use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\ContainerSnippet;
+use humhub\modules\custom_pages\models\LinkType;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;

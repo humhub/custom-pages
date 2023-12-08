@@ -184,7 +184,7 @@ class Events
             $targetUrlQuery = parse_url($targetUrl, PHP_URL_QUERY) ?: '';
             $container = ContentContainerHelper::getCurrent();
             $currentContainerPath = $container ?
-                rtrim(ContentContainerHelper::getCurrent()->getUrl(), '/') :
+                rtrim($container->getUrl(), '/') :
                 null;
             if (
                 $targetUrlPath

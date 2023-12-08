@@ -190,7 +190,7 @@ class Events
                 $targetUrlPath
                 && (
                     $currentContainerPath === $targetUrlPath
-                    || Url::current() === $targetUrlPath . ($targetUrlQuery ? '?' . $targetUrlQuery : '')
+                    || Url::to() === $targetUrlPath . ($targetUrlQuery ? '?' . $targetUrlQuery : '')
                 )
             ) {
                 return true;

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Unreleased
+-------------------------
+- Fix #312: Highlight the top menu entry if the current URL matches the Target Url of a "Link" custom page
+
 1.9.5 (November 16, 2023)
 -------------------------
 - Enh #303: Fix visibility of the method `Controller::getAccessRules()`
@@ -32,7 +36,7 @@ Changelog
 -----------------------
 - Fix #261: Add list buttons in toolbar of RichText TinyMCE editor
 - Fix #263: Conflicts if a page in a content container has the same ID as a global page
-- Fix #270: Don't wrap page type 
+- Fix #270: Don't wrap page type
 - Fix #271: Fix compatible `AssetVariable::offsetGet()` between different PHP versions
 
 1.8.9 (February 6, 2023)
@@ -88,7 +92,7 @@ Changelog
 
 1.7.0 (July 7. 2022)
 --------------------
-- Fix #223: Deleting attached files from template pages was broken 
+- Fix #223: Deleting attached files from template pages was broken
 - Enh #218: Allow custom pages in "People" page as buttons
 
 1.6.4 (June 30, 2022)
@@ -106,10 +110,9 @@ Changelog
 1.6.1 (June 23, 2022)
 ---------------------
 - Fix #211: Fix duplicated template HTML source field
-- Enh #210: Added TinyMCE Editor for HTML Pages 
+- Enh #210: Added TinyMCE Editor for HTML Pages
 - Enh #210: Switched from CKEditor to TinyMCE
 - Enh #210: Also HTML Snippets
-
 
 1.5.0 (April 14, 2022)
 ----------------------
@@ -121,11 +124,9 @@ Changelog
 - Enh #196: Footer menu pages
 - Fix #191: For iframe pages in a container, better iframe height adjustment
 
-
 1.4.3 (June 18, 2021)
 ---------------------
 - Fix #187: Fix lost visibility options for snippets
-
 
 1.4.2 (June 11, 2021)
 ---------------------
@@ -135,12 +136,10 @@ Changelog
 - Fix #177: Remove extraneous ?>
 - Fix #185: Fix markdown page width on mobile/small screens
 
-
 1.3.1 (February 23, 2021)
 -------------------------
 - Fix: Stream Channel was set for AdminOnly pages
 - Enh: Add info regarding "Admin Only" pages without Stream support
-
 
 1.3.0 (February 22, 2021)
 -------------------------
@@ -149,27 +148,23 @@ Changelog
 - Chng: Updated ckeditor to 4.16.0
 - Fix #168: Add edit button to markdown pages
 
-
 1.2.1 (February 05, 2021)
 -------------------------
 - Fix #166 Only system admin can access custom pages space settings
-
 
 1.2.0 (December 12, 2020)
 -------------------------
 - Enh #57: New group permission "Can manage custom pages"
 - Fix #57: Deny public/guest access to custom page with type "User Account Menu (Settings)"
 
-
 1.1.1 (November 12, 2020)
 -------------------------
 - Fix #151: Avoid error on creating of custom php page with not existing directory from old settings
 
-
 1.1.0 (November 3, 2020)
 ------------------------
 The default folders for PHP custom pages were changed.
-New defaults: php-pages/container_pages/, php-pages/container_snippets/, php-pages/global_pages/, php-pages/global_snippets/ 
+New defaults: php-pages/container_pages/, php-pages/container_snippets/, php-pages/global_pages/, php-pages/global_snippets/
 
 - Fix #121: Link color in markdown pages have same color as text
 - Fix #143: (Global) PHP pages were lost on module updates
@@ -177,12 +172,10 @@ New defaults: php-pages/container_pages/, php-pages/container_snippets/, php-pag
 - Chg: 1.7 wall stream entry migration
 - Fix: Word break and image overflow issue on template page
 
-
 1.0.10 (September 19, 2020)
 --------------------
 - Fix #142: Codemirror editor does not initialize correctly when accessing by pjax
 - Fix Delete by target error https://github.com/humhub-contrib/blog/issues/3
-
 
 1.0.9 (July 21, 2020)
 --------------------
@@ -200,13 +193,11 @@ New defaults: php-pages/container_pages/, php-pages/container_snippets/, php-pag
 - Fix: Removed redundant twig class loading
 - Fix: Custom Page visibility selection to "Public" broken
 
-
 1.0.7 (April 06, 2020)
 --------------------
 - Chg: Added 1.5 defer compatibility
 - Fix: Fixed "unreachable code after return statement" in humhub.custom_pages.template.TemplateElement.js
 - Enh: Improved event handler exception handling
-
 
 1.0.6 (February 19, 2020)
 ---------------------
@@ -228,7 +219,7 @@ New defaults: php-pages/container_pages/, php-pages/container_snippets/, php-pag
 - Fix: Use of wrong content visibility in page migration
 - Fix: Guest access for public global pages
 
-1.0.2 
+1.0.2
 ---------------------
 - Enh: Update Ckeditor to v4.13.0
 
@@ -253,7 +244,6 @@ New defaults: php-pages/container_pages/, php-pages/container_snippets/, php-pag
 0.8.14  (April 5, 2019)
 ---------------------
 - Fix: Missed confirm box on page deletion
-
 
 0.8.13  (February 25, 2019)
 ---------------------
@@ -316,7 +306,7 @@ New defaults: php-pages/container_pages/, php-pages/container_snippets/, php-pag
 0.7.9:
 - Enh: Allow target _blank links in richtext
 
-0.7.8: 
+0.7.8:
 - Enh: Added directory menu pages
 
 0.7.7:
@@ -335,8 +325,8 @@ New defaults: php-pages/container_pages/, php-pages/container_snippets/, php-pag
 - Fix: icon 'none' in snippet icon selector.
 - Fix: Don't show container page in stream.
 
-0.7.4: 
-- Fix: select2  template selection shrink if rendered in hidden panel
+0.7.4:
+- Fix: select2 template selection shrink if rendered in hidden panel
 - Fix: Cancel button color
 - Fix: Fixed account setting template page container issue
 - Enh: #56 Use of select2 dropdown as icon chooser

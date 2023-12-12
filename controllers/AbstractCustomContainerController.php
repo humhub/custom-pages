@@ -10,6 +10,7 @@ namespace humhub\modules\custom_pages\controllers;
 use humhub\components\access\StrictAccess;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\custom_pages\helpers\Html;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\ContainerSnippet;
 use humhub\modules\custom_pages\models\CustomContentContainer;
@@ -116,8 +117,6 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
         $canEdit = PagePermission::canEdit();
         $editMode = ($editMode || Yii::$app->request->get('editMode')) && $canEdit;
 
-        $html = '';
-
         if(!$canEdit && TemplateCache::exists($templateInstance)) {
             $html = TemplateCache::get($templateInstance);
         } else {
@@ -126,7 +125,8 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
                 TemplateCache::set($templateInstance, $html);
             }
         }
-        return $html;
+
+        return Html::applyScriptNonce($html);
     }
 
     /**

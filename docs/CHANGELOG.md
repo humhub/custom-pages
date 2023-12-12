@@ -1,7 +1,7 @@
 Changelog
 =========
 
-Unreleased
+1.9.6 (December 12, 2023)
 -------------------------
 - Fix #312: Highlight the top menu entry if the current URL matches the Target Url of a "Link" custom page
 - Enh #314: Add nonce attribute to all JavaScript tags in snippet templates and HTML snippets automatically

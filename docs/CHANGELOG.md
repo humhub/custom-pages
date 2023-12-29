@@ -1,5 +1,8 @@
 Changelog
 =========
+TBA
+---
+- Fix: Highlight admin menu entry when "Template" page is active
 
 1.9.6 (December 12, 2023)
 -------------------------

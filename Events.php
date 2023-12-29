@@ -64,8 +64,9 @@ class Events
                 'group' => 'manage',
                 'icon' => '<i class="fa fa-file-text-o"></i>',
                 'isActive' => (Yii::$app->controller->module
-                    && Yii::$app->controller->module->id === 'custom_pages'
-                    && (Yii::$app->controller->id === 'page' || Yii::$app->controller->id === 'config')),
+                    && (Yii::$app->controller->module->id === 'custom_pages'
+                        && (Yii::$app->controller->id === 'page' || Yii::$app->controller->id === 'config'))
+                    ||  Yii::$app->controller->module->id == 'template'),
                 'sortOrder' => 300,
                 'isVisible' => true,
             ]);

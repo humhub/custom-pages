@@ -1,8 +1,10 @@
 Changelog
 =========
-TBA
----
+
+1.10.0 (January 6, 2024)
+------------------------
 - Fix: Highlight admin menu entry when "Template" page is active
+- Enh: Added Twig Sandbox Extension and restricted Twig templating features by default 
 
 1.9.6 (December 12, 2023)
 -------------------------

@@ -25,11 +25,13 @@ Most content types provide the following setting which may vary between differen
 
 ## Templates
 
-The custom pages module provides a simple template mechanism based on [twig](https://twig.symfony.com/).
+The custom pages module provides a simple template mechanism based on [Twig](https://twig.symfony.com/).
 Templates can be maintained under `Administration -> Templates`.
 
-> Note: In order to use template based pages or snippets on space level, you'll have to allow the layout for spaces within the general settings
+> Note: In order to use template based pages or snippets on Space level, you'll have to allow the layout for spaces within the general settings
 of the template.
+
+> Note: As of module version 1.10.0, the Twig Sandbox Extension is activated by default and restricts some Twig features. This behavior can be switched off or changed via the configuration. See: https://github.com/humhub/custom-pages/blob/master/Module.php#L24-L43
 
 ### Layouts
 

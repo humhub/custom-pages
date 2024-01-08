@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.1 (January 8, 2024)
+------------------------
+- Enh: Added "random" to Twig SandboxPolicy
+
 1.10.0 (January 6, 2024)
 ------------------------
 - Fix: Highlight admin menu entry when "Template" page is active

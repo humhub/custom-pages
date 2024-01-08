@@ -34,7 +34,7 @@ class Module extends ContentContainerModule
     public $enableTwiqSandboxExtensionConfig = [
         'allowedTags' => ['autoescape', 'apply', 'block', 'if', 'with', 'for', 'set'],
         'allowedFilters' => ['capitalize', 'date', 'first', 'upper', 'escape', 'nl2br', 'url_encode', 'round'],
-        'allowedFunctions' => ['range', 'max', 'min'],
+        'allowedFunctions' => ['range', 'max', 'min', 'random'],
         'allowedMethods' => [
             'humhub\modules\custom_pages\modules\template\models\OwnerContentVariable' => '__toString',
         ],

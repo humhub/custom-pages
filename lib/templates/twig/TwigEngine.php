@@ -54,6 +54,7 @@ class TwigEngine implements TemplateEngine
         $policy->setAllowedTags($module->enableTwiqSandboxExtensionConfig['allowedTags']);
         $policy->setAllowedMethods($module->enableTwiqSandboxExtensionConfig['allowedMethods']);
         $policy->setAllowedFilters($module->enableTwiqSandboxExtensionConfig['allowedFilters']);
+        $policy->setAllowedFunctions($module->enableTwiqSandboxExtensionConfig['allowedFunctions']);
         $policy->setAllowedProperties($module->enableTwiqSandboxExtensionConfig['allowedProperties']);
 
         return $policy;

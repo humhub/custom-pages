@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.2 (January 8, 2024)
+------------------------
+- Fix: Twig SandboxPolicy Function Whitelist broken
+
 1.10.1 (January 8, 2024)
 ------------------------
 - Enh: Added "random" to Twig SandboxPolicy

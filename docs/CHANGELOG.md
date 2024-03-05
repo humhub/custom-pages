@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.3 (Unreleased)
+------------------------
+- Fix #321: Fix indexing of template content for search
+
 1.10.2 (January 8, 2024)
 ------------------------
 - Fix: Twig SandboxPolicy Function Whitelist broken

@@ -61,17 +61,6 @@ class ContainerPage extends Page implements Searchable
     /**
      * @inheritdoc
      */
-    public function getSearchAttributes()
-    {
-        return [
-            'title' => $this->title,
-            'content' => $this->page_content,
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getContentTypes()
     {
         return [

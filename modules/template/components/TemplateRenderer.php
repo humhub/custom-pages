@@ -11,10 +11,11 @@ class TemplateRenderer
     /**
      * @param $page
      * @param bool $editMode
+     * @param bool $applyScriptNonce
      * @return string
      * @throws HttpException
      */
-    public static function render($page, $editMode = false)
+    public static function render($page, $editMode = false, bool $applyScriptNonce = true)
     {
         $templateInstance = TemplateInstance::findOne(['object_model' => get_class($page) ,'object_id' => $page->id]);
 
@@ -31,7 +32,7 @@ class TemplateRenderer
             }
         }
 
-        return Html::applyScriptNonce($html);
+        return $applyScriptNonce ? Html::applyScriptNonce($html) : $html;
     }
 
 }

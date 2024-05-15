@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.10.3 (Unreleased)
-------------------------
+1.10.3 (May 15, 2024)
+---------------------
 - Fix #321: Fix indexing of template content for search
 - Fix #326: Fix for search indexing
 

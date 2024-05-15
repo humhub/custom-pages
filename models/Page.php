@@ -176,7 +176,7 @@ class Page extends CustomContentContainer
             'title' => $this->title,
             'content' => preg_replace('/[\r\n\s]+/', ' ', strip_tags($this->type === TemplateType::ID
                 ? TemplateRenderer::render($this, false, false)
-                : $this->page_content)),
+                : $this->abstract . "\r\n" . $this->page_content)),
         ];
     }
 

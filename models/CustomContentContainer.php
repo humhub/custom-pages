@@ -47,11 +47,6 @@ abstract class CustomContentContainer extends ContentActiveRecord
     /**
      * @inheritdoc
      */
-    public $streamChannel = null;
-
-    /**
-     * @inheritdoc
-     */
     public $silentContentCreation = true;
 
     /**
@@ -494,11 +489,8 @@ abstract class CustomContentContainer extends ContentActiveRecord
                 break;
         }
 
-        if ($this->checkAbstract() && !$this->admin_only) {
-            $this->streamChannel = 'default';
-        } else {
-            $this->streamChannel = null;
-        }
+        // Keep page hidden on stream when "Abstract" field is not filled, or it is visible only for admin
+        $this->content->hidden = $this->admin_only || !$this->checkAbstract();
 
         return parent::beforeSave($insert);
     }

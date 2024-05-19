@@ -49,18 +49,21 @@ abstract class CustomContentContainer extends ContentActiveRecord
      * @inheritdoc
      */
     public $silentContentCreation = true;
-    /**
-     * @var integer special field for template based pages specifying the layout template id
-     */
-    public $templateId;
-    /**
-     * @var bool field only used in edit form
-     */
-    public $visibility;
+
     /**
      * @var Target cached target
      */
     private $_target;
+
+    /**
+     * @var integer special field for template based pages specifying the layout template id
+     */
+    public $templateId;
+
+    /**
+     * @var bool field only used in edit form
+     */
+    public $visibility;
 
     public function afterFind()
     {
@@ -94,6 +97,12 @@ abstract class CustomContentContainer extends ContentActiveRecord
     public abstract function getAllowedTemplateSelection();
 
     /**
+     * Returns the page container class label.
+     * @return string
+     */
+    public abstract function getLabel();
+
+    /**
      * Returns the view file path for PHP based content.
      * @return string
      */
@@ -103,6 +112,11 @@ abstract class CustomContentContainer extends ContentActiveRecord
      * @return string
      */
     public abstract function getEditUrl();
+
+    /**
+     * @return string
+     */
+    public abstract function getPageType();
 
     /**
      * @return array
@@ -142,11 +156,6 @@ abstract class CustomContentContainer extends ContentActiveRecord
         return false;
     }
 
-    public function getTargetId()
-    {
-        return $this->target;
-    }
-
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -168,22 +177,6 @@ abstract class CustomContentContainer extends ContentActiveRecord
             'visibility' => Yii::t('CustomPagesModule.models_Page', 'Visibility')
         ];
     }
-
-    /**
-     * Returns all allowed content types for a page container class.
-     *
-     * @return ContentType
-     */
-    public function getContentType()
-    {
-        return ContentType::getById($this->type);
-    }
-
-    /**
-     * Returns the page container class label.
-     * @return string
-     */
-    public abstract function getLabel();
 
     /**
      * Returns the default validation rules of a container, this may be overwritten or extended by subclasses.
@@ -210,82 +203,33 @@ abstract class CustomContentContainer extends ContentActiveRecord
         return array_merge($result, $this->getRulesByContentType());
     }
 
-    private function getRulesByTarget()
+    public function validateTarget()
     {
-        $result = [];
         $target = $this->getTargetModel();
-
         if (!$target) {
-            return $result;
+            $this->addError('target', 'Target not available for this page container.');
         }
-
-        if ($target->isAllowedField('admin_only')) {
-            $result[] = [['admin_only'], 'integer'];
-        }
-
-        if ($target->isAllowedField('sort_order')) {
-            $result[] = [['sort_order'], 'integer'];
-        }
-
-        if ($target->isAllowedField('icon')) {
-            $result[] = [['icon'], 'string', 'max' => 100];
-        }
-
-        if ($target->isAllowedField('cssClass') && !LinkType::isType($this->getContentType())) {
-            $result[] = [['cssClass'], 'string', 'max' => 255];
-        }
-
-        return $result;
     }
 
-    /**
-     * @return Target
-     */
-    public function getTargetModel()
-    {
-        if (!$this->_target) {
-            $this->_target = (new CustomPagesService())->getTargetById($this->getTargetId(), $this->getPageType(), $this->content->container);
-        }
-
-        return $this->_target;
-    }
-
-    /**
-     * @return string
-     */
-    public abstract function getPageType();
-
-    /**
-     * @param $field string
-     * @return bool
-     */
-    public function isAllowedField($field)
+    public function validateContentType()
     {
         $target = $this->getTargetModel();
+        if ($target && !$target->isAllowedContentType($this->type)) {
+            $this->addError('target', 'The selected content type is not allowed for this target.');
+        }
+    }
 
-        if (!$target->isAllowedField($field)) {
-            return false;
+    /**
+     * @inheritdoc
+     */
+    public function getContentName()
+    {
+        $target = $this->getTargetModel();
+        if ($target && $target->contentName) {
+            return $target->contentName;
         }
 
-        $rules = $this->rules();
-
-        foreach ($rules as $rule) {
-            if (!is_array($rule) || !isset($rule[0])) {
-                continue;
-            }
-
-            $firstItem = $rule[0];
-
-            if (is_string($firstItem) && $firstItem === $field) {
-                return true;
-            }
-
-            if (is_array($firstItem) && isset($firstItem[0]) && $firstItem[0] === $field) {
-                return true;
-            }
-        }
-
-        return false;
+        return PageType::getContentName($this->getPageType());
     }
 
     private function getRulesByContentType()
@@ -317,33 +261,32 @@ abstract class CustomContentContainer extends ContentActiveRecord
         return $result;
     }
 
-    public function validateTarget()
+    private function getRulesByTarget()
     {
+        $result = [];
         $target = $this->getTargetModel();
+
         if (!$target) {
-            $this->addError('target', 'Target not available for this page container.');
-        }
-    }
-
-    public function validateContentType()
-    {
-        $target = $this->getTargetModel();
-        if ($target && !$target->isAllowedContentType($this->type)) {
-            $this->addError('target', 'The selected content type is not allowed for this target.');
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getContentName()
-    {
-        $target = $this->getTargetModel();
-        if ($target && $target->contentName) {
-            return $target->contentName;
+            return $result;
         }
 
-        return PageType::getContentName($this->getPageType());
+        if ($target->isAllowedField('admin_only')) {
+            $result[] = [['admin_only'], 'integer'];
+        }
+
+        if ($target->isAllowedField('sort_order')) {
+            $result[] = [['sort_order'], 'integer'];
+        }
+
+        if ($target->isAllowedField('icon')) {
+            $result[] = [['icon'], 'string', 'max' => 100];
+        }
+
+        if ($target->isAllowedField('cssClass') && !LinkType::isType($this->getContentType())) {
+            $result[] = [['cssClass'], 'string', 'max' => 255];
+        }
+
+        return $result;
     }
 
     public function canEdit($type = null): bool
@@ -404,6 +347,45 @@ abstract class CustomContentContainer extends ContentActiveRecord
         return false;
     }
 
+
+    /**
+     * @param $field string
+     * @return bool
+     */
+    public function isAllowedField($field)
+    {
+        $target = $this->getTargetModel();
+
+        if (!$target->isAllowedField($field)) {
+            return false;
+        }
+
+        $rules = $this->rules();
+
+        foreach ($rules as $rule) {
+            if (!is_array($rule) || !isset($rule[0])) {
+                continue;
+            }
+
+            $firstItem = $rule[0];
+
+            if (is_string($firstItem) && $firstItem === $field) {
+                return true;
+            }
+
+            if (is_array($firstItem) && isset($firstItem[0]) && $firstItem[0] === $field) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function setTemplateId($value)
+    {
+        return $this->templateId = $value;
+    }
+
     public function getTemplateId()
     {
         if (!$this->templateId) {
@@ -415,11 +397,6 @@ abstract class CustomContentContainer extends ContentActiveRecord
         return $this->templateId;
     }
 
-    public function setTemplateId($value)
-    {
-        return $this->templateId = $value;
-    }
-
     /**
      * Returns the view url of this page.
      */
@@ -428,9 +405,37 @@ abstract class CustomContentContainer extends ContentActiveRecord
         return $this->getTargetModel()->getContentUrl($this);
     }
 
+    /**
+     * Returns all allowed content types for a page container class.
+     *
+     * @return ContentType
+     */
+    public function getContentType()
+    {
+        return ContentType::getById($this->type);
+    }
+
+
+    /**
+     * @return Target
+     */
+    public function getTargetModel()
+    {
+        if (!$this->_target) {
+            $this->_target = (new CustomPagesService())->getTargetById($this->getTargetId(), $this->getPageType(), $this->content->container);
+        }
+
+        return $this->_target;
+    }
+
     public function render()
     {
         return $this->getContentType()->render($this);
+    }
+
+    public function getTargetId()
+    {
+        return $this->target;
     }
 
     public function hasTarget($targetId)

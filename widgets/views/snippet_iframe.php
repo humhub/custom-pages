@@ -22,20 +22,16 @@ SnippetContent::widget([
 ?>
 
 <style>
-    #
-    <?= $iframeId ?>
-    {
-        border: none
-    ;
-        background: url('<?= Yii::$app->moduleManager->getModule('custom_pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat
-    ;
+    #<?= $iframeId ?> {
+        border: none;
+        background: url('<?= Yii::$app->moduleManager->getModule('custom_pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
     }
 </style>
 
 <?= Html::beginTag('script') ?>
-var $frame = $('#<?= $iframeId ?>');
-$frame.on('load', function () {
-var height = $(this.contentWindow.document.body).outerHeight() + 20;
-$(this).height(height);
-})
+    var $frame = $('#<?= $iframeId ?>');
+    $frame.on('load', function () {
+        var height = $(this.contentWindow.document.body).outerHeight() + 20;
+        $(this).height(height);
+    })
 <?= Html::endTag('script') ?>

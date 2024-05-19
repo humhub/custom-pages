@@ -3,7 +3,7 @@ Changelog
 
 Unreleased
 ---------------------
-- Fix: Missing Iframe attributes in snippet
+- Fix #328: Missing Iframe attributes in snippet
 
 1.10.3 (May 15, 2024)
 ---------------------

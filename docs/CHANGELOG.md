@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Unreleased
+---------------------
+- Fix #328: Missing Iframe attributes in snippet
+
 1.10.3 (May 15, 2024)
 ---------------------
 - Fix #321: Fix indexing of template content for search
@@ -17,7 +21,7 @@ Changelog
 1.10.0 (January 6, 2024)
 ------------------------
 - Fix: Highlight admin menu entry when "Template" page is active
-- Enh: Added Twig Sandbox Extension and restricted Twig templating features by default 
+- Enh: Added Twig Sandbox Extension and restricted Twig templating features by default
 
 1.9.6 (December 12, 2023)
 -------------------------

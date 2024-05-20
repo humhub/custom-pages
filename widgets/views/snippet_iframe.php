@@ -1,5 +1,7 @@
 <?php
-use humhub\libs\Html;use humhub\modules\custom_pages\widgets\SnippetContent;
+
+use humhub\libs\Html;
+use humhub\modules\custom_pages\widgets\SnippetContent;
 
 /* @var $model \humhub\modules\custom_pages\models\CustomContentContainer */
 /* @var $canEdit bool */
@@ -7,14 +9,14 @@ use humhub\libs\Html;use humhub\modules\custom_pages\widgets\SnippetContent;
 $iframeId = 'iframesnippet-' . $model->id;
 
 $navigation = (!$canEdit) ? [] : [
-    '<a href="'.$model->getEditUrl().'"><i class="fa fa-pencil"></i>' . Yii::t('CustomPagesModule.base', 'Edit') . '</a>'
+    '<a href="' . $model->getEditUrl() . '"><i class="fa fa-pencil"></i>' . Yii::t('CustomPagesModule.base', 'Edit') . '</a>'
 ];
 ?>
 
 <?=
 SnippetContent::widget([
     'model' => $model,
-    'content' => '<iframe id="' . $iframeId . '" style="border:0px;width:100%;" src="' . \yii\helpers\Html::encode($model->getPageContent()) . '"></iframe>',
+    'content' => '<iframe id="' . $iframeId . '" style="border:0px;width:100%;" src="' . \yii\helpers\Html::encode($model->getPageContent()) . '"' . ($model->iframe_attrs ? ' ' . $model->iframe_attrs : '') . '></iframe>',
     'navigation' => $navigation
 ]);
 ?>

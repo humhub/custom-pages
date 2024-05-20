@@ -28,6 +28,7 @@ use Yii;
  * @property string $title
  * @property string $icon
  * @property string $page_content
+ * @property string $iframe_attrs
  * @property integer $sort_order
  * @property integer $admin_only
  * @property integer $in_new_window

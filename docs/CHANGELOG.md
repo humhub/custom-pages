@@ -1,7 +1,11 @@
 Changelog
 =========
 
-Unreleased
+1.11.0 (Unreleased)
+---------------------
+- Fix #329: Update module resources path
+
+1.10.4 (Unreleased)
 ---------------------
 - Fix #328: Missing Iframe attributes in snippet
 

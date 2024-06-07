@@ -4,6 +4,7 @@ Changelog
 Unreleased
 ---------------------
 - Fix #328: Missing Iframe attributes in snippet
+- Fix #332: Clean up iframe attributes
 
 1.10.3 (May 15, 2024)
 ---------------------

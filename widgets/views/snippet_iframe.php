@@ -16,7 +16,7 @@ $navigation = (!$canEdit) ? [] : [
 <?=
 SnippetContent::widget([
     'model' => $model,
-    'content' => '<iframe id="' . $iframeId . '" style="border:0px;width:100%;" src="' . \yii\helpers\Html::encode($model->getPageContent()) . '"' . ($model->iframe_attrs ? ' ' . $model->iframe_attrs : '') . '></iframe>',
+    'content' => '<iframe id="' . $iframeId . '" style="border:0px;width:100%;" src="' . \yii\helpers\Html::encode($model->getPageContent()) . '" ' . $model->getIframeAttrs() . '></iframe>',
     'navigation' => $navigation
 ]);
 ?>

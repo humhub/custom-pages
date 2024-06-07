@@ -539,4 +539,13 @@ abstract class CustomContentContainer extends ContentActiveRecord
     public function fixVisibility()
     {
     }
+
+    public function getIframeAttrs(): string
+    {
+        if (empty($this->iframe_attrs)) {
+            return '';
+        }
+
+        return preg_replace('/(^|\s)srcdoc\s*=\s*("|\').+?\2/i', '', $this->iframe_attrs);
+    }
 }

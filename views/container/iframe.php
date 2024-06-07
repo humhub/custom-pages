@@ -1,11 +1,15 @@
 <?php
 
 use humhub\libs\Html;
+use humhub\modules\custom_pages\models\CustomContentContainer;
+
+/* @var CustomContentContainer $page */
+/* @var string $url */
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 ?>
 
-<iframe class="<?= Html::encode($cssClass) ?>" id="iframepage" <?= $page->iframe_attrs ?? '' ?>
+<iframe class="<?= Html::encode($cssClass) ?>" id="iframepage" <?= $page->getIframeAttrs() ?>
         style="width:100%; height: 100%; min-height: 400px;"
         src="<?= Html::encode($url); ?>"></iframe>
 

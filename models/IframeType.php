@@ -8,29 +8,26 @@
 
 namespace humhub\modules\custom_pages\models;
 
-
 use Yii;
 use yii\widgets\ActiveForm;
 
 class IframeType extends ContentType
 {
-
-    const ID = 3;
+    public const ID = 3;
 
     protected $hasContent = false;
 
-
-    function getId()
+    public function getId()
     {
         return static::ID;
     }
 
-    function getLabel()
+    public function getLabel()
     {
         return Yii::t('CustomPagesModule.base', 'Iframe');
     }
 
-    function getDescription()
+    public function getDescription()
     {
         return Yii::t('CustomPagesModule.base', 'Will embed the the result of a given url as an iframe element.');
     }
@@ -47,16 +44,17 @@ class IframeType extends ContentType
 
     public function renderFormField(ActiveForm $form, CustomContentContainer $page)
     {
-        $targetUrlField = $form->field($page, $page->getPageContentProperty())->label($page->getAttributeLabel('targetUrl'));
-        if ($page->iframe_attrs && !Yii::$app->user->isAdmin()) {
-            $formField = $targetUrlField->textInput(['class' => 'form-control', 'disabled' => 'disabled'])->hint(Yii::t('CustomPagesModule.views_common_edit', 'You need to be a system administrator to edit this URL'));
-        } else {
-            $formField = $targetUrlField->textInput(['class' => 'form-control'])->hint(Yii::t('CustomPagesModule.views_common_edit', 'e.g. http://www.example.de'));
-        }
+        $targetUrlField = $form->field($page, $page->getPageContentProperty())
+            ->label($page->getAttributeLabel('targetUrl'));
 
         if (Yii::$app->user->isAdmin()) {
-            $formField .=
-                $form->field($page, 'iframe_attrs')->textInput(['class' => 'form-control'])->hint(Yii::t('CustomPagesModule.views_common_edit', 'e.g. allowfullscreen allow="camera; microphone"'));
+            $formField = $targetUrlField
+                ->hint(Yii::t('CustomPagesModule.views_common_edit', 'e.g. http://www.example.de'));
+            $formField .= $form->field($page, 'iframe_attrs')
+                ->hint(Yii::t('CustomPagesModule.views_common_edit', 'e.g. allowfullscreen allow="camera; microphone"'));
+        } else {
+            $formField = $targetUrlField->textInput(['disabled' => 'disabled'])
+                ->hint(Yii::t('CustomPagesModule.views_common_edit', 'You need to be a system administrator to edit this URL'));
         }
 
         return $formField;

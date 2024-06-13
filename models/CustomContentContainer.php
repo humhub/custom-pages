@@ -23,15 +23,15 @@ use Yii;
  * Note: Subclasses may container global types not bound to any ContentContainerActiveRecord
  *
  * The followings are the available columns in table 'custom_pages_page':
- * @property integer $id
- * @property integer $type
+ * @property int $id
+ * @property int $type
  * @property string $title
  * @property string $icon
  * @property string $page_content
  * @property string $iframe_attrs
- * @property integer $sort_order
- * @property integer $admin_only
- * @property integer $in_new_window
+ * @property int $sort_order
+ * @property int $admin_only
+ * @property int $in_new_window
  * @property string $target
  * @property string $cssClass
  * @property string $url
@@ -41,9 +41,9 @@ abstract class CustomContentContainer extends ContentActiveRecord
     use PhpPageContainer;
     use TemplatePageContainer;
 
-    const VISIBILITY_ADMIN_ONLY = 3;
-    const VISIBILITY_PRIVATE = 0;
-    const VISIBILITY_PUBLIC = 1;
+    public const VISIBILITY_ADMIN_ONLY = 3;
+    public const VISIBILITY_PRIVATE = 0;
+    public const VISIBILITY_PUBLIC = 1;
 
     /**
      * @inheritdoc
@@ -56,7 +56,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
     private $_target;
 
     /**
-     * @var integer special field for template based pages specifying the layout template id
+     * @var int special field for template based pages specifying the layout template id
      */
     public $templateId;
 
@@ -71,7 +71,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
 
         if ($this->admin_only) {
             $this->visibility = static::VISIBILITY_ADMIN_ONLY;
-        } else if ($this->content->isPublic()) {
+        } elseif ($this->content->isPublic()) {
             $this->visibility = static::VISIBILITY_PUBLIC;
         } else {
             $this->visibility = static::VISIBILITY_PRIVATE;
@@ -81,7 +81,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
     /**
      * Returns the database content field. Note this does not render the any content.
      */
-    public abstract function getPageContent();
+    abstract public function getPageContent();
 
     /**
      * Returns the database content field. Note this does not render the any content.
@@ -94,29 +94,29 @@ abstract class CustomContentContainer extends ContentActiveRecord
     /**
      * Returns all allowed templates for a page container class.
      */
-    public abstract function getAllowedTemplateSelection();
+    abstract public function getAllowedTemplateSelection();
 
     /**
      * Returns the page container class label.
      * @return string
      */
-    public abstract function getLabel();
+    abstract public function getLabel();
 
     /**
      * Returns the view file path for PHP based content.
      * @return string
      */
-    public abstract function getPhpViewPath();
+    abstract public function getPhpViewPath();
 
     /**
      * @return string
      */
-    public abstract function getEditUrl();
+    abstract public function getEditUrl();
 
     /**
      * @return string
      */
-    public abstract function getPageType();
+    abstract public function getPageType();
 
     /**
      * @return array
@@ -124,7 +124,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
     public function getVisibilitySelection()
     {
         $result = [
-            static::VISIBILITY_ADMIN_ONLY => Yii::t('CustomPagesModule.visibility', 'Admin only')
+            static::VISIBILITY_ADMIN_ONLY => Yii::t('CustomPagesModule.visibility', 'Admin only'),
         ];
 
         if ($this->isGuestAccessEnabled()) {
@@ -142,7 +142,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
     /**
      * Helper function can be replaced with AuthHelper::isGuestAccessEnabled() after min-version 1.4
      *
-     * @return boolean
+     * @return bool
      */
     protected function isGuestAccessEnabled()
     {
@@ -174,7 +174,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
             'targetUrl' => Yii::t('CustomPagesModule.components_Container', 'Target Url'),
             'templateId' => Yii::t('CustomPagesModule.components_Container', 'Template Layout'),
             'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins'),
-            'visibility' => Yii::t('CustomPagesModule.models_Page', 'Visibility')
+            'visibility' => Yii::t('CustomPagesModule.models_Page', 'Visibility'),
         ];
     }
 
@@ -241,7 +241,11 @@ abstract class CustomContentContainer extends ContentActiveRecord
             return $result;
         }
 
-        if (PhpType::isType($type) || LinkType::isType($type) || HtmlType::isType($type) || MarkdownType::isType($type) || IframeType::isType($type)) {
+        if (PhpType::isType($type) ||
+            LinkType::isType($type) ||
+            HtmlType::isType($type) ||
+            MarkdownType::isType($type) ||
+            (IframeType::isType($type) && Yii::$app->user->isAdmin())) {
             $result[] = ['page_content', 'required'];
         }
 

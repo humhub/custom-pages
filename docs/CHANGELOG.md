@@ -1,9 +1,10 @@
 Changelog
 =========
 
-Unreleased
+1.10.4 (Unreleased)
 ---------------------
 - Fix #328: Missing Iframe attributes in snippet
+- Fix #333: Fix saving of iframe URL by space admin
 
 1.10.3 (May 15, 2024)
 ---------------------

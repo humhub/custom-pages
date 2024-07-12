@@ -229,7 +229,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
             return $target->contentName;
         }
 
-        return PageType::getContentName($this->getPageType());
+        return PageType::getContentName($this->getPageType(), $this->content ? $this->content->getContainer() : null);
     }
 
     private function getRulesByContentType()

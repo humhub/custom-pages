@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.5 (Unreleased)
+----------------------
+- Enh #337: Renaming page and snippet to global and space types
+
 1.10.4 (June 19, 2024)
 ----------------------
 - Fix #328: Missing Iframe attributes in snippet

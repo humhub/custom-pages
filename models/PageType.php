@@ -1,33 +1,26 @@
 <?php
 
-
 namespace humhub\modules\custom_pages\models;
 
-
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use Yii;
 
 abstract class PageType
 {
-    const Page = 'page';
-    const Snippet = 'snippet';
+    public const Page = 'page';
+    public const Snippet = 'snippet';
 
-    public static function getLabel($type)
+    public static function getContentName($type, ?ContentContainerActiveRecord $container = null)
     {
         switch ($type) {
             case static::Page:
-                return Yii::t('CustomPagesModule.models_Page', 'page');
+                return $container === null
+                    ? Yii::t('CustomPagesModule.models_Page', 'Global Page')
+                    : Yii::t('CustomPagesModule.models_Page', 'Space Page');
             case static::Snippet:
-                return Yii::t('CustomPagesModule.models_ContainerSnippet', 'snippet');
-        }
-    }
-
-    public static function getContentName($type)
-    {
-        switch ($type) {
-            case static::Page:
-                return Yii::t('CustomPagesModule.models_Page', 'Page');
-            case static::Snippet:
-                return Yii::t('CustomPagesModule.models_ContainerSnippet', 'Snippet');
+                return $container === null
+                    ? Yii::t('CustomPagesModule.models_ContainerSnippet', 'Global Widget')
+                    : Yii::t('CustomPagesModule.models_ContainerSnippet', 'Space Widget');
         }
     }
 }

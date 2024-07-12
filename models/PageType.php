@@ -3,6 +3,7 @@
 namespace humhub\modules\custom_pages\models;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\space\models\Space;
 use Yii;
 
 abstract class PageType
@@ -10,17 +11,17 @@ abstract class PageType
     public const Page = 'page';
     public const Snippet = 'snippet';
 
-    public static function getContentName($type, ?ContentContainerActiveRecord $container = null)
+    public static function getContentName($type, ?string $containerClass = null)
     {
         switch ($type) {
             case static::Page:
-                return $container === null
-                    ? Yii::t('CustomPagesModule.models_Page', 'Global Page')
-                    : Yii::t('CustomPagesModule.models_Page', 'Space Page');
+                return $containerClass === Space::class
+                    ? Yii::t('CustomPagesModule.base', 'Space Page')
+                    : Yii::t('CustomPagesModule.base', 'Global Page');
             case static::Snippet:
-                return $container === null
-                    ? Yii::t('CustomPagesModule.models_ContainerSnippet', 'Global Widget')
-                    : Yii::t('CustomPagesModule.models_ContainerSnippet', 'Space Widget');
+                return $containerClass === Space::class
+                    ? Yii::t('CustomPagesModule.base', 'Space Widget')
+                    : Yii::t('CustomPagesModule.base', 'Global Widget');
         }
     }
 }

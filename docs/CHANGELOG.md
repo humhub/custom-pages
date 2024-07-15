@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.10.5 (Unreleased)
+1.10.5 (July 15, 2024)
 ----------------------
 - Enh #336: Renaming page and snippet to global and space types
 - Fix #337: Ignore cache on content search index building

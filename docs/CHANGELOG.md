@@ -4,6 +4,7 @@ Changelog
 1.10.5 (Unreleased)
 ----------------------
 - Enh #336: Renaming page and snippet to global and space types
+- Fix #337: Ignore cache on content search index building
 
 1.10.4 (June 19, 2024)
 ----------------------

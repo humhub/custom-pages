@@ -84,6 +84,8 @@ return [
     'Without adding to navigation (Direct link)' => 'Senza aggiungere al menu (collegamento diretto)',
     'Cannot delete!' => '',
     'Deleted.' => '',
+    'Global Page' => '',
+    'Global Widget' => '',
     'Here you can review where the template is used in.' => '',
     'Insert' => '',
     'Page' => '',
@@ -92,6 +94,8 @@ return [
     'Reset the content to default value' => '',
     'Snippet' => '',
     'Space' => '',
+    'Space Page' => '',
+    'Space Widget' => '',
     'Usage' => '',
     'Wrap this HTML page with white panel' => '',
 ];

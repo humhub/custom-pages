@@ -7,7 +7,6 @@ return [
     'View' => 'Näkymä',
     'page' => 'sivu',
     'Abstract' => '',
-    'Page' => '',
     'Url shortcut' => '',
     'Visibility' => '',
 ];

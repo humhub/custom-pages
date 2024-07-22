@@ -8,6 +8,5 @@ return [
     'View' => 'Xem',
     'page' => 'trang',
     'Abstract' => '',
-    'Page' => '',
     'Visibility' => '',
 ];

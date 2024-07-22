@@ -1,6 +1,5 @@
 <?php
 
 return [
-    'Snippet' => '',
     'snippet' => '',
 ];

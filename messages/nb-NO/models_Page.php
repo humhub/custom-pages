@@ -8,6 +8,5 @@ return [
     'View' => 'Visning',
     'page' => 'side',
     'Abstract' => '',
-    'Page' => '',
     'Visibility' => '',
 ];

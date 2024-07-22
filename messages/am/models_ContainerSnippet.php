@@ -2,5 +2,4 @@
 
 return [
     'snippet' => 'ቁንፅልመረጃ',
-    'Snippet' => '',
 ];

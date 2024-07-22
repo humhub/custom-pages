@@ -8,6 +8,5 @@ return [
     'View' => 'ተመልከት',
     'page' => 'ገፅ',
     'Abstract' => '',
-    'Page' => '',
     'Visibility' => '',
 ];

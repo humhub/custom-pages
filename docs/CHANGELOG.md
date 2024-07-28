@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Unreleased
+----------------------
+- Fix: Add autofocus on item or element edit (for HumHub 1.17 - see https://github.com/humhub/humhub/issues/7136)
+
 1.10.5 (July 15, 2024)
 ----------------------
 - Enh #336: Renaming page and snippet to global and space types
@@ -192,8 +196,7 @@ Changelog
 
 1.1.0 (November 3, 2020)
 ------------------------
-The default folders for PHP custom pages were changed.
-New defaults: php-pages/container_pages/, php-pages/container_snippets/, php-pages/global_pages/, php-pages/global_snippets/
+The default folders for PHP custom pages were changed. New defaults: php-pages/container_pages/, php-pages/container_snippets/, php-pages/global_pages/, php-pages/global_snippets/
 
 - Fix #121: Link color in markdown pages have same color as text
 - Fix #143: (Global) PHP pages were lost on module updates

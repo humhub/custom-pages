@@ -21,7 +21,7 @@ use yii\helpers\Html;
             </div>
 
             <?php if($model->element->isNewRecord) : ?>
-                <?= $form->field($model->element, 'name')->textInput(); ?>
+                <?= $form->field($model->element, 'name')->textInput(['autofocus' => '']); ?>
             <?php else: ?>
                 <div style="display:none">
                     <?= $form->field($model->element, 'name')->hiddenInput()->label(false); ?>

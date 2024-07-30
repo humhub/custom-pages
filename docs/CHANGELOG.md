@@ -1,7 +1,7 @@
 Changelog
 =========
 
-Unreleased
+1.10.6 (Unreleased)
 ----------------------
 - Fix: Add autofocus on item or element edit (for HumHub 1.17 - see https://github.com/humhub/humhub/issues/7136)
 

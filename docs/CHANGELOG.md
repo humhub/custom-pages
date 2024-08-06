@@ -4,6 +4,7 @@ Changelog
 1.10.6 (Unreleased)
 ----------------------
 - Fix: Add autofocus on item or element edit (for HumHub 1.17 - see https://github.com/humhub/humhub/issues/7136)
+- Fix #339: Fix stream channel for search indexing
 
 1.10.5 (July 15, 2024)
 ----------------------

@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
+use humhub\modules\custom_pages\assets\HighlightAsset;
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\HtmlType;
 use humhub\modules\custom_pages\models\IframeType;
@@ -16,7 +17,6 @@ use Yii;
 use yii\helpers\Html;
 use yii\web\HttpException;
 
-
 /**
  * Controller for viewing Pages.
  *
@@ -24,14 +24,13 @@ use yii\web\HttpException;
  */
 class ViewController extends AbstractCustomContainerController
 {
-
     /**
      * @inhritdoc
      */
     protected function getAccessRules()
     {
         return [
-            ['strict']
+            ['strict'],
         ];
     }
 
@@ -58,15 +57,13 @@ class ViewController extends AbstractCustomContainerController
             ? $page->getTargetModel()->getSubLayout()
             : $this->subLayout;
 
-        $this->view->pageTitle = Html::encode($page->title);
+        $this->view->setPageTitle(Html::encode($page->title));
 
-        if(!$page->getTargetModel()->isAllowedContentType($page->type)) {
+        if (!$page->getTargetModel()->isAllowedContentType($page->type)) {
             throw new HttpException(404);
         }
 
         return $this->renderView($page);
-
-
     }
 
     /**
@@ -76,13 +73,14 @@ class ViewController extends AbstractCustomContainerController
      */
     public function renderView($page)
     {
-        if($this->contentContainer) {
+        HighlightAsset::register($this->view);
+
+        if ($this->contentContainer) {
             return $this->renderContainerView($page);
         }
 
         return $this->renderGlobalView($page);
     }
-
 
     public function renderContainerView($page)
     {
@@ -123,7 +121,7 @@ class ViewController extends AbstractCustomContainerController
                     'page' => $page,
                     'md' => $page->page_content,
                     'navigationClass' => $page->getTargetId(),
-                    'title' => $page->title
+                    'title' => $page->title,
                 ]);
             case PhpType::ID:
                 return $this->render('@custom_pages/views/global/php', ['page' => $page]);
@@ -153,7 +151,7 @@ class ViewController extends AbstractCustomContainerController
             'page' => $page,
             'editMode' => $editMode,
             'canEdit' => $canEdit,
-            'html' => $html
+            'html' => $html,
         ]);
     }
 

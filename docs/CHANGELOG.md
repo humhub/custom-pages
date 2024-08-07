@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.11.0 (Unreleased)
+-----------------------
+- Enh #341: Highlight searching keywords on view custom page
+
 1.10.6 (August 6, 2024)
 -----------------------
 - Fix: Add autofocus on item or element edit (for HumHub 1.17 - see https://github.com/humhub/humhub/issues/7136)

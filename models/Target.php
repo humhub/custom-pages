@@ -1,12 +1,11 @@
 <?php
 
-
 namespace humhub\modules\custom_pages\models;
-
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\Module;
+use Yii;
 use yii\base\Model;
 
 /**
@@ -78,9 +77,16 @@ class Target extends Model
      */
     public function getContentUrl(CustomContentContainer $content)
     {
+        $params = ['id' => $content->id];
+
+        $searchKeyword = Yii::$app->request->get('keyword');
+        if ($searchKeyword !== null) {
+            $params['highlight'] = $searchKeyword;
+        }
+
         return $content->content->container
-            ? $content->content->container->createUrl($this->accessRoute, ['id' => $content->id])
-            : Url::toRoute([$this->accessRoute, 'id' => $content->id]);
+            ? $content->content->container->createUrl($this->accessRoute, $params)
+            : Url::toRoute(array_merge([$this->accessRoute], $params));
     }
 
     /**
@@ -89,7 +95,7 @@ class Target extends Model
     public function rules()
     {
         return [
-            [['id', 'name'], 'required']
+            [['id', 'name'], 'required'],
         ];
     }
 

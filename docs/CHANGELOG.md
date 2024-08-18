@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.7 (Unreleased)
+-----------------------
+Enh #342: JS Dependency Updates
+
 1.10.6 (August 6, 2024)
 -----------------------
 - Fix: Add autofocus on item or element edit (for HumHub 1.17 - see https://github.com/humhub/humhub/issues/7136)

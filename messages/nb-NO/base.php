@@ -70,7 +70,7 @@ return [
     'Type' => 'Type',
     'Upload image' => 'Last opp bilde',
     'User Account Menu (Settings)' => 'Brukerkonto meny (Innstillinger)',
-    'Will embed the the result of a given url as an iframe element.' => 'Vil embedde (innbake) resultatet av en gitt url som et iframe element.',
+    'Will embed the result of a given url as an iframe element.' => 'Vil embedde (innbake) resultatet av en gitt url som et iframe element.',
     'Will redirect requests to a given (relative or absolute) url.' => 'Videresender bruker til en gitt (relativ eller absolutt) url.',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'Med PHP baserte sider kan du lage dine egne sider. Sjekk ut konfigurasjon under modulen for mer informasjon.',
     'Without adding to navigation (Direct link)' => 'Uten å legge til navigering (direkte link)',

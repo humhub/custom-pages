@@ -78,7 +78,7 @@ return [
     'Type' => 'Típus',
     'Upload image' => 'Kép feltöltése',
     'User Account Menu (Settings)' => 'Felhasználói menü (Beállítások)',
-    'Will embed the the result of a given url as an iframe element.' => 'Beágyazza egy adott url eredményét iframe elemként.',
+    'Will embed the result of a given url as an iframe element.' => 'Beágyazza egy adott url eredményét iframe elemként.',
     'Will redirect requests to a given (relative or absolute) url.' => 'Átirányítja a kéréseket egy adott (relatív vagy abszolút) URL-re.',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'A PHP-alapú oldalakkal egyedi oldalakat hozhatsz létre a fájlrendszereden belüli nézetfájlok segítségével. További információkért tekintsd meg a modul konfigurációját.',
     'Without adding to navigation (Direct link)' => 'A navigációhoz való hozzáadás nélkül (közvetlen link)',

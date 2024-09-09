@@ -29,7 +29,7 @@ class IframeType extends ContentType
 
     public function getDescription()
     {
-        return Yii::t('CustomPagesModule.base', 'Will embed the the result of a given url as an iframe element.');
+        return Yii::t('CustomPagesModule.base', 'Will embed the result of a given url as an iframe element.');
     }
 
     public function render(CustomContentContainer $content, $options = [])

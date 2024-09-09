@@ -73,7 +73,7 @@ return [
     'Type' => 'Vrsta',
     'Upload image' => 'Dodaj sliku',
     'User Account Menu (Settings)' => 'Izbornik korisničkog računa (Postavke)',
-    'Will embed the the result of a given url as an iframe element.' => 'Hoće li ugrađivati rezultat određenog URL-a kao element iframe-a.',
+    'Will embed the result of a given url as an iframe element.' => 'Hoće li ugrađivati rezultat određenog URL-a kao element iframe-a.',
     'Will redirect requests to a given (relative or absolute) url.' => 'Hoće li preusmjeriti zahtjeve na zadani (relativni ili apsolutni) url.',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'Sa stranicama temeljenim na PHP-u možete stvoriti prilagođene stranice pomoću pregleda datoteka u vašem datotečnom sustavu. Molimo provjerite konfiguraciju modula za više informacija.',
     'Without adding to navigation (Direct link)' => 'Bez dodavanja u navigaciju (izravna veza)',

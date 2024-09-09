@@ -69,7 +69,7 @@ return [
     'Type' => 'Tyyppi',
     'Upload image' => 'Lataa kuva',
     'User Account Menu (Settings)' => 'Käyttäjätilien valikko (Asetukset)',
-    'Will embed the the result of a given url as an iframe element.' => 'Asettaa tietyn URL-osoitteen tulos iframe-elementtinä.',
+    'Will embed the result of a given url as an iframe element.' => 'Asettaa tietyn URL-osoitteen tulos iframe-elementtinä.',
     'Will redirect requests to a given (relative or absolute) url.' => 'Ohjaa pyyntöjä uudelleen annettuun (suhteellinen tai absoluuttinen) URL-osoitteeseen.',
     'Without adding to navigation (Direct link)' => 'Ilman lisäämistä mihinkään (Suora Linkki)',
     'Allows the user to manage custom pages.' => '',

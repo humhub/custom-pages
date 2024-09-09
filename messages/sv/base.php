@@ -78,7 +78,7 @@ return [
     'Type' => 'Typ',
     'Upload image' => 'Ladda upp bild',
     'User Account Menu (Settings)' => 'Användares kontomeny (inställningar)',
-    'Will embed the the result of a given url as an iframe element.' => 'Kommer bädda in resultatet från en given url som ett iframe-element.',
+    'Will embed the result of a given url as an iframe element.' => 'Kommer bädda in resultatet från en given url som ett iframe-element.',
     'Will redirect requests to a given (relative or absolute) url.' => 'Kommer omdirigera förfrågningar till en given (relativ eller absolut) url.',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'Med PHP-baserade sidor kan du skapa anpassade sidor via vyfiler i ditt filsystem. Gå till modulkonfigurationen för mer information.',
     'Without adding to navigation (Direct link)' => 'Utan att lägga till i navigeringen (direktlänk)',

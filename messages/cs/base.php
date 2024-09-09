@@ -94,7 +94,7 @@ return [
     'This action requires an templateId or template instance!' => '',
     'This container does not allow any further items!' => '',
     'Usage' => '',
-    'Will embed the the result of a given url as an iframe element.' => '',
+    'Will embed the result of a given url as an iframe element.' => '',
     'Will redirect requests to a given (relative or absolute) url.' => '',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => '',
     'Wrap this HTML page with white panel' => '',

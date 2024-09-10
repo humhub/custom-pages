@@ -93,7 +93,7 @@ return [
     'This container does not allow any further items!' => '',
     'Upload image' => '',
     'Usage' => '',
-    'Will embed the the result of a given url as an iframe element.' => '',
+    'Will embed the result of a given url as an iframe element.' => '',
     'Will redirect requests to a given (relative or absolute) url.' => '',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => '',
     'Without adding to navigation (Direct link)' => '',

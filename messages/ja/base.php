@@ -92,7 +92,7 @@ return array (
   'Upload image' => 'アップロードイメージ',
   'Usage' => '使用法',
   'User Account Menu (Settings)' => 'ユーザー アカウント メニュー (設定)',
-  'Will embed the the result of a given url as an iframe element.' => '指定された URL の結果を iframe 要素として埋め込みます。',
+  'Will embed the result of a given url as an iframe element.' => '指定された URL の結果を iframe 要素として埋め込みます。',
   'Will redirect requests to a given (relative or absolute) url.' => '要求を指定された (相対または絶対) URL にリダイレクトします。',
   'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'PHPベースのページでは、ファイル システム内のビューファイルを使用してカスタム ページを作成できます。 詳細についてはモジュール構成を確認してください。',
   'Without adding to navigation (Direct link)' => '(直接リンク) ナビゲーションに追加しません。',

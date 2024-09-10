@@ -77,7 +77,7 @@ return [
     'Type' => 'พิมพ์',
     'Upload image' => 'อัพโหลดภาพ',
     'User Account Menu (Settings)' => 'เมนูบัญชีผู้ใช้ (การตั้งค่า)',
-    'Will embed the the result of a given url as an iframe element.' => 'จะฝังผลลัพธ์ของ url ที่กำหนดเป็นองค์ประกอบ iframe',
+    'Will embed the result of a given url as an iframe element.' => 'จะฝังผลลัพธ์ของ url ที่กำหนดเป็นองค์ประกอบ iframe',
     'Will redirect requests to a given (relative or absolute) url.' => 'จะเปลี่ยนเส้นทางคำขอไปยัง URL ที่กำหนด (สัมพัทธ์หรือแบบสัมบูรณ์)',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'ด้วยเพจที่ใช้ PHP คุณสามารถสร้างเพจที่กำหนดเองได้ด้วยการดูไฟล์ในระบบไฟล์ของคุณ โปรดตรวจสอบการกำหนดค่าโมดูลสำหรับข้อมูลเพิ่มเติม',
     'Without adding to navigation (Direct link)' => 'โดยไม่ต้องเพิ่มการนำทาง (ลิงก์โดยตรง)',

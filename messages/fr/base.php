@@ -78,7 +78,7 @@ return [
     'Type' => 'Type',
     'Upload image' => 'Transférer une image',
     'User Account Menu (Settings)' => 'Menu du compte utilisateur (paramètres)',
-    'Will embed the the result of a given url as an iframe element.' => 'Va encapsuler le résultat d\'une url donnée dans un élément iframe.',
+    'Will embed the result of a given url as an iframe element.' => 'Va encapsuler le résultat d\'une url donnée dans un élément iframe.',
     'Will redirect requests to a given (relative or absolute) url.' => 'Va rediriger la demande vers une url donnée (relative ou absolue).',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'Avec des pages en PHP vous pouvez créer des pages personnalisées au moyen de fichiers "view" dans votre système de fichiers. Merci de vérifier la configuration du module pour plus d\'information.',
     'Without adding to navigation (Direct link)' => 'Sans l\'ajouter au menu de navigation (lien direct)',

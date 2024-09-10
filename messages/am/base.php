@@ -69,7 +69,7 @@ return [
     'Type' => 'አይነት',
     'Upload image' => 'ምስል አክል',
     'User Account Menu (Settings)' => 'የተጠቃሚ አካውንት ማውጫ (ማስተካከያ)',
-    'Will embed the the result of a given url as an iframe element.' => 'የቀረበው url እንደiframe አካል ሆኖ የሚቀናጅ ይሆናል።',
+    'Will embed the result of a given url as an iframe element.' => 'የቀረበው url እንደiframe አካል ሆኖ የሚቀናጅ ይሆናል።',
     'Will redirect requests to a given (relative or absolute) url.' => 'የቀረቡት ጥያቆዎች ወደ(አማራጭ ወይም ትክክለኛ) url የሚዛወሩ ይሆናል።',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'መሰረታቸውን PHP ባደረጉ ገፃች በፋይል መሰደሪያዎ ላይ ፋይሉን በመመልከት ብጁ ገፃችን መፍጠር ይችላሉ። ለተጨማሪ መረጃ እባክዎን የሞዱሌ ማዋቀሪያውን ይመልከቱ።',
     'Without adding to navigation (Direct link)' => 'ወደማውጫ ቁልፉ ሳያስገቡ (ቀጥተኛ ማስፈንጠሪያ)',

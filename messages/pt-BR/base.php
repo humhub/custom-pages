@@ -75,7 +75,7 @@ return [
     'Type' => 'Tipo',
     'Upload image' => 'Upload de imagem',
     'User Account Menu (Settings)' => 'Menu de Conta do Usuário (Configurações)',
-    'Will embed the the result of a given url as an iframe element.' => 'Incorporará o resultado de um determinado URL como um elemento iframe.',
+    'Will embed the result of a given url as an iframe element.' => 'Incorporará o resultado de um determinado URL como um elemento iframe.',
     'Will redirect requests to a given (relative or absolute) url.' => 'Redirecionará solicitações para um determinado URL (relativo ou absoluto).',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'Com páginas baseadas em PHP, você pode criar páginas personalizadas por meio de arquivos de visualização em seu sistema de arquivos. Por favor, verifique a configuração do módulo para mais informações.',
     'Without adding to navigation (Direct link)' => 'Sem adicionar à navegação (Link direto)',

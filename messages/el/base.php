@@ -69,7 +69,7 @@ return [
     'Type' => 'Τύπος',
     'Upload image' => 'Μεταφόρτωση εικόνας',
     'User Account Menu (Settings)' => 'Μενού λογαριασμού χρήστη (Ρυθμίσεις)',
-    'Will embed the the result of a given url as an iframe element.' => 'Θα ενσωματώσει το αποτέλεσμα μιας δοσμένη url ως στοιχείο iframe.',
+    'Will embed the result of a given url as an iframe element.' => 'Θα ενσωματώσει το αποτέλεσμα μιας δοσμένη url ως στοιχείο iframe.',
     'Will redirect requests to a given (relative or absolute) url.' => 'Θα ανακατευθύνει τα αιτήματα σε μια δοσμένη (σχετική ή απόλυτη) διεύθυνση URL.',
     'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.' => 'Με τις σελίδες που βασίζονται σε PHP μπορείτε να δημιουργήσετε προσαρμοσμένες σελίδες μέσω αρχείων προβολής στο σύστημα αρχείων σας. Παρακαλώ ελέγξτε τις ρυθμίσεις της μονάδας για περισσότερες πληροφορίες.',
     'Without adding to navigation (Direct link)' => 'Χωρίς προσθήκη στην πλοήγηση (Άμεσος σύνδεσμος)',

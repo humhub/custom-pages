@@ -95,7 +95,7 @@ return [
     'This container does not allow any further items!' => '',
     'Upload image' => '',
     'Usage' => '',
-    'Will embed the the result of a given url as an iframe element.' => '',
+    'Will embed the result of a given url as an iframe element.' => '',
     'Will redirect requests to a given (relative or absolute) url.' => '',
     'Wrap this HTML page with white panel' => '',
 ];

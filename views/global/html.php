@@ -9,7 +9,7 @@ use yii\helpers\Html;
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 ?>
 
-<?= CustomPageInlineStyle::widget(['theme' => $this->theme]); ?>
+<?= CustomPageInlineStyle::widget() ?>
 
 <div class="container <?= Html::encode($cssClass) ?>">
     <div class="row">

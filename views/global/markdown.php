@@ -11,7 +11,7 @@ use humhub\modules\custom_pages\widgets\CustomPageInlineStyle;
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 ?>
 
-<?= CustomPageInlineStyle::widget(['theme' => $this->theme]); ?>
+<?= CustomPageInlineStyle::widget() ?>
 
 <?php if ($page->hasTarget(Page::NAV_CLASS_ACCOUNTNAV)): ?>
     <div class="panel panel-default <?= Html::encode($cssClass) ?>">

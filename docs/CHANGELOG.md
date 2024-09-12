@@ -3,7 +3,8 @@ Changelog
 
 1.10.7 (Unreleased)
 -----------------------
-Enh #342: JS Dependency Updates
+- Enh #342: JS Dependency Updates
+- Enh #344: Replace theme variables with CSS variables
 
 1.10.6 (August 6, 2024)
 -----------------------

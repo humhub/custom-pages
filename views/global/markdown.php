@@ -1,18 +1,24 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
 use humhub\libs\Html;
 use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\custom_pages\assets\InlineStyleAssets;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\modules\template\widgets\PageConfigurationButton;
-use humhub\modules\custom_pages\widgets\CustomPageInlineStyle;
+use humhub\modules\ui\view\components\View;
 
+/* @var $this View */
 /* @var $page Page */
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
+
+InlineStyleAssets::register($this);
 ?>
-
-<?= CustomPageInlineStyle::widget() ?>
-
 <?php if ($page->hasTarget(Page::NAV_CLASS_ACCOUNTNAV)): ?>
     <div class="panel panel-default <?= Html::encode($cssClass) ?>">
         <div class="panel-body">

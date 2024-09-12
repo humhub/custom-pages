@@ -1,16 +1,23 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
-use humhub\modules\custom_pages\widgets\CustomPageInlineStyle;
+use humhub\modules\custom_pages\assets\InlineStyleAssets;
+use humhub\modules\custom_pages\models\Page;
+use humhub\modules\ui\view\components\View;
 use yii\helpers\Html;
 
-/** @var $page \humhub\modules\custom_pages\models\Page */
-/** @var $html string */
+/* @var $this View */
+/* @var $page Page */
+/* @var $html string */
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
+
+InlineStyleAssets::register($this);
 ?>
-
-<?= CustomPageInlineStyle::widget() ?>
-
 <div class="container <?= Html::encode($cssClass) ?>">
     <div class="row">
         <div class="col-md-12">

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
 namespace humhub\modules\custom_pages\assets;
 
@@ -29,13 +34,10 @@ class Assets extends AssetBundle
             'custom-pages.css',
             'loader.gif',
             'module_image.png',
-        ]
+        ],
     ];
 
     public $css = [
-        'custom-pages.css'
+        'css/custom-pages.css',
     ];
-
-    public $js = [];
-
 }

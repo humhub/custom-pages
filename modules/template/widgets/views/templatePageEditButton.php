@@ -38,8 +38,8 @@ use humhub\modules\content\helpers\ContentContainerHelper;
     </div>
 
 <?php else: ?>
-    <a id="editPageButton" class="btn btn-primary btn-xs" data-ui-loader style="color:#000;" href="<?= Url::to(['view', 'id' => $pageId, 'editMode' => true, 'sguid' => $sguid]); ?>">
-        <i class="fa fa-pencil"></i>    
+    <a id="editPageButton" class="btn btn-primary btn-xs" data-ui-loader style="color:var(--text-color-highlight)" href="<?= Url::to(['view', 'id' => $pageId, 'editMode' => true, 'sguid' => $sguid]); ?>">
+        <i class="fa fa-pencil"></i>
         <?= Yii::t('CustomPagesModule.modules_template_widgets_views_templatePageEditButton', 'Edit Page') ?>
     </a>
 <?php endif; ?>

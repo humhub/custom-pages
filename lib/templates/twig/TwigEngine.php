@@ -44,7 +44,7 @@ class TwigEngine implements TemplateEngine
     private function getSecurityPolicy(): ?SecurityPolicy
     {
         /** @var Module $module */
-        $module = Yii::$app->getModule('custom_pages');
+        $module = Yii::$app->getModule('custom-pages');
 
         if (!$module->enableTwiqSandboxExtension) {
             return null;

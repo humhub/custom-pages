@@ -30,8 +30,8 @@ class SnippetController extends PageController
         }
 
         $view = $this->contentContainer
-            ? '@custom_pages/views/container/edit_snippet'
-            : '@custom_pages/views/global/edit_snippet';
+            ? '@custom-pages/views/container/edit_snippet'
+            : '@custom-pages/views/global/edit_snippet';
         
         return $this->render($view, [
             'snippet' => $snippet,

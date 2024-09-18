@@ -20,7 +20,7 @@ class Assets extends AssetBundle
      */
     public $defer = true;
 
-    public $sourcePath = '@custom_pages/resources';
+    public $sourcePath = '@custom-pages/resources';
 
     public $publishOptions = [
         'forceCopy' => false,

@@ -34,7 +34,7 @@ class ContainerPageMenu extends BaseMenu
         
         $this->addItem([
             'label' => Yii::t('CustomPagesModule.base', 'Pages'),
-            'url' => $space->createUrl('/custom_pages/page/list'),
+            'url' => $space->createUrl('/custom-pages/page/list'),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->id === 'page'),
         ]);  
@@ -42,7 +42,7 @@ class ContainerPageMenu extends BaseMenu
         
         $this->addItem([
             'label' => Yii::t('CustomPagesModule.base', 'Snippets'),
-            'url' => $space->createUrl('/custom_pages/snippet/list'),
+            'url' => $space->createUrl('/custom-pages/snippet/list'),
             'sortOrder' => 200,
             'isActive' => (Yii::$app->controller->id === 'snippet'),
         ]);  

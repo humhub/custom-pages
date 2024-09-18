@@ -14,7 +14,7 @@ class TemplateInstanceFixture extends ActiveFixture
 {
 
     public $modelClass = 'humhub\modules\custom_pages\modules\template\models\TemplateInstance';
-    public $dataFile = '@custom_pages/tests/codeception/fixtures/data/templateInstance.php';
+    public $dataFile = '@custom-pages/tests/codeception/fixtures/data/templateInstance.php';
     public $depends = ['tests\codeception\fixtures\modules\custom_pages\template\TemplateFixture'];
 
     public function beforeLoad()

@@ -1,5 +1,5 @@
 {
-    "name": "humhub/custom_pages",
+    "name": "humhub/custom-pages",
     "description": "Custom Pages",
     "type": "library",
     "require": {

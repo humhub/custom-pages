@@ -5,6 +5,7 @@ Changelog
 -----------------------
 - Enh #342: JS Dependency Updates
 - Enh #344: Replace theme variables with CSS variables
+- Fix #345: Fix module ID
 
 1.10.6 (August 6, 2024)
 -----------------------

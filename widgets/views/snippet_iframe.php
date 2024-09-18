@@ -24,7 +24,7 @@ SnippetContent::widget([
 <style>
     #<?= $iframeId ?> {
         border: none;
-        background: url('<?= Yii::$app->moduleManager->getModule('custom_pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
+        background: url('<?= Yii::$app->moduleManager->getModule('custom-pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
     }
 </style>
 

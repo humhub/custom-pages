@@ -14,7 +14,7 @@ use humhub\widgets\FooterMenu;
 use humhub\widgets\TopMenu;
 
 return [
-    'id' => 'custom_pages',
+    'id' => 'custom-pages',
     'class' => 'humhub\modules\custom_pages\Module',
     'modules' => [
         'template' => [

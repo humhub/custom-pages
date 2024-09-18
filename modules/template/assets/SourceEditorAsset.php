@@ -7,7 +7,7 @@ use yii\web\AssetBundle;
 
 class SourceEditorAsset extends AssetBundle
 {
-    public $sourcePath = '@custom_pages/modules/template/resources';
+    public $sourcePath = '@custom-pages/modules/template/resources';
 
     public $jsOptions = ['position' => \yii\web\View::POS_END];
     

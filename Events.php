@@ -43,16 +43,16 @@ class Events
      */
     public static function registerAutoloader()
     {
-        Yii::setAlias('@vendor/tinymce/tinymce', '@custom_pages/vendor/tinymce/tinymce');
-        Yii::setAlias('@vendor/2amigos/yii2-tinymce-widget/src/assets', '@custom_pages/vendor/2amigos/yii2-tinymce-widget/src/assets');
+        Yii::setAlias('@vendor/tinymce/tinymce', '@custom-pages/vendor/tinymce/tinymce');
+        Yii::setAlias('@vendor/2amigos/yii2-tinymce-widget/src/assets', '@custom-pages/vendor/2amigos/yii2-tinymce-widget/src/assets');
 
-        require Yii::getAlias('@custom_pages/vendor/autoload.php');
+        require Yii::getAlias('@custom-pages/vendor/autoload.php');
     }
 
     public static function onAdminMenuInit($event)
     {
         try {
-            Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
+            Yii::$app->moduleManager->getModule('custom-pages')->checkOldGlobalContent();
 
             if (!Yii::$app->user->can([ManageModules::class, ManagePages::class])) {
                 return;
@@ -64,7 +64,7 @@ class Events
                 'group' => 'manage',
                 'icon' => '<i class="fa fa-file-text-o"></i>',
                 'isActive' => (Yii::$app->controller->module
-                    && (Yii::$app->controller->module->id === 'custom_pages'
+                    && (Yii::$app->controller->module->id === 'custom-pages'
                         && (Yii::$app->controller->id === 'page' || Yii::$app->controller->id === 'config'))
                     ||  Yii::$app->controller->module->id == 'template'),
                 'sortOrder' => 300,
@@ -78,11 +78,11 @@ class Events
     public static function onSpaceMenuInit($event)
     {
         try {
-            Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
+            Yii::$app->moduleManager->getModule('custom-pages')->checkOldGlobalContent();
 
             /* @var $space \humhub\modules\space\models\Space */
             $space = $event->sender->space;
-            if ($space->moduleManager->isEnabled('custom_pages')) {
+            if ($space->moduleManager->isEnabled('custom-pages')) {
                 /* @var Page[] $pages */
                 $pages = ContainerPage::find()
                     ->contentContainer($space)
@@ -104,7 +104,7 @@ class Events
                         'url' => $page->getUrl(),
                         'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
                         'isActive' => (Yii::$app->controller->module
-                            && Yii::$app->controller->module->id === 'custom_pages'
+                            && Yii::$app->controller->module->id === 'custom-pages'
                             && Yii::$app->controller->id === 'view'
                             && Yii::$app->controller->action->id === 'index' && Yii::$app->request->get('id') == $page->id),
                         'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
@@ -119,18 +119,18 @@ class Events
     public static function onSpaceAdminMenuInit($event)
     {
         try {
-            Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
+            Yii::$app->moduleManager->getModule('custom-pages')->checkOldGlobalContent();
 
             /* @var $space \humhub\modules\space\models\Space */
             $space = $event->sender->space;
-            if ($space->moduleManager->isEnabled('custom_pages') && $space->isAdmin() && $space->isMember()) {
+            if ($space->moduleManager->isEnabled('custom-pages') && $space->isAdmin() && $space->isMember()) {
                 $event->sender->addItem([
                     'label' => Yii::t('CustomPagesModule.base', 'Custom Pages'),
                     'group' => 'admin',
                     'url' => Url::toPageOverview($space),
                     'icon' => '<i class="fa fa-file-text-o"></i>',
                     'isActive' => (Yii::$app->controller->module
-                        && Yii::$app->controller->module->id === 'custom_pages'
+                        && Yii::$app->controller->module->id === 'custom-pages'
                         && Yii::$app->controller->id === 'container'
                         && Yii::$app->controller->action->id !== 'view'),
                 ]);
@@ -146,7 +146,7 @@ class Events
         $menu = $event->sender;
 
         try {
-            Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
+            Yii::$app->moduleManager->getModule('custom-pages')->checkOldGlobalContent();
 
             foreach (self::findPagesByTarget(Page::NAV_CLASS_TOPNAV) as $page) {
                 if (!$page->canView()) {
@@ -156,12 +156,12 @@ class Events
                 $menu->addEntry(new MenuLink([
                     'id' => 'custom-page-' . $page->id,
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
-                    'url' => ['/custom_pages/view', 'id' => $page->id],
+                    'url' => ['/custom-pages/view', 'id' => $page->id],
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
                     'icon' => $page->icon,
                     'isActive' => (
                         (
-                            MenuLink::isActiveState('custom_pages', 'view')
+                            MenuLink::isActiveState('custom-pages', 'view')
                             && !Yii::$app->controller->contentContainer
                             && (int)Yii::$app->request->get('id') === $page->id
                         )
@@ -203,7 +203,7 @@ class Events
     public static function onAccountMenuInit($event)
     {
         try {
-            Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
+            Yii::$app->moduleManager->getModule('custom-pages')->checkOldGlobalContent();
 
             foreach (self::findPagesByTarget(Page::NAV_CLASS_ACCOUNTNAV) as $page) {
                 if (!$page->canView()) {
@@ -212,11 +212,11 @@ class Events
 
                 $event->sender->addItem([
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
-                    'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
+                    'url' => Url::to(['/custom-pages/view', 'id' => $page->id]),
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
                     'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
                     'isActive' => (Yii::$app->controller->module
-                        && Yii::$app->controller->module->id === 'custom_pages'
+                        && Yii::$app->controller->module->id === 'custom-pages'
                         && Yii::$app->controller->id === 'view' && Yii::$app->request->get('id') == $page->id),
                     'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
                 ]);
@@ -239,7 +239,7 @@ class Events
     public static function onDashboardSidebarInit($event)
     {
         try {
-            Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
+            Yii::$app->moduleManager->getModule('custom-pages')->checkOldGlobalContent();
 
             /* @var Snippet[] $snippets */
             $snippets = Snippet::find()->where(['target' => Snippet::SIDEBAR_DASHBOARD])->readable()->all();
@@ -258,11 +258,11 @@ class Events
     public static function onSpaceSidebarInit($event)
     {
         try {
-            Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
+            Yii::$app->moduleManager->getModule('custom-pages')->checkOldGlobalContent();
 
             $space = $event->sender->space;
             $canEdit = PagePermission::canEdit();
-            if ($space->moduleManager->isEnabled('custom_pages')) {
+            if ($space->moduleManager->isEnabled('custom-pages')) {
                 /* @var Snippet[] $snippets */
                 $snippets = ContainerSnippet::find()->contentContainer($space)->readable()->all();
                 foreach ($snippets as $snippet) {
@@ -288,7 +288,7 @@ class Events
 
                 $event->sender->addItem([
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
-                    'url' => Url::to(['/custom_pages/view', 'id' => $page->id], true),
+                    'url' => Url::to(['/custom-pages/view', 'id' => $page->id], true),
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
                     'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
                 ]);
@@ -310,7 +310,7 @@ class Events
 
                 $peopleHeadingButtons->addEntry(new MenuLink([
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
-                    'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
+                    'url' => Url::to(['/custom-pages/view', 'id' => $page->id]),
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
                     'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
                     'icon' => $page->icon,

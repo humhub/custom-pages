@@ -6,7 +6,7 @@ use yii\web\AssetBundle;
 
 class SwitchAssetBundle extends AssetBundle
 {
-    public $sourcePath = '@custom_pages/modules/template/resources/js/switch';
+    public $sourcePath = '@custom-pages/modules/template/resources/js/switch';
 
     public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
 

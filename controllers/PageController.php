@@ -104,7 +104,7 @@ class PageController extends AbstractCustomContainerController
      */
     public function actionOverview()
     {
-        return $this->render('@custom_pages/views/common/list', [
+        return $this->render('@custom-pages/views/common/list', [
             'targets' => $this->customPagesService->getTargets($this->getPageType(), $this->contentContainer),
             'pageType' => $this->getPageType(),
             'subNav' => $this->getSubNav()
@@ -144,7 +144,7 @@ class PageController extends AbstractCustomContainerController
             return $this->redirect(Url::toCreatePage($targetId, $this->getPageType(), $type, $this->contentContainer));
         }
 
-        return $this->render('@custom_pages/views/common/add', [
+        return $this->render('@custom-pages/views/common/add', [
             'model' => $model,
             'target' => $target,
             'pageType' => $this->getPageType(),
@@ -196,7 +196,7 @@ class PageController extends AbstractCustomContainerController
         // if its visibility is not allowed for its page type:
         $page->fixVisibility();
 
-        return $this->render('@custom_pages/views/common/edit', [
+        return $this->render('@custom-pages/views/common/edit', [
             'page' => $page,
             'pageType' => $this->getPageType(),
             'subNav' => $this->getSubNav()

@@ -32,7 +32,7 @@ class DeleteContentButton extends Widget
     public function run()
     {
         return $this->render('deleteContentButton', [
-            'url' => Url::to(['/custom_pages/template/owner-content/delete-by-content']),
+            'url' => Url::to(['/custom-pages/template/owner-content/delete-by-content']),
             'options' => $this->getOptions()
         ]);
     }

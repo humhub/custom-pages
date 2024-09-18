@@ -53,7 +53,7 @@ class Target extends Model
     /**
      * @var string used to create the access url
      */
-    public $accessRoute = '/custom_pages/view';
+    public $accessRoute = '/custom-pages/view';
 
     /**
      * @var string defines a sublayout used when rendering an entry

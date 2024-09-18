@@ -31,7 +31,7 @@ class AssetVariablePhp74 implements \ArrayAccess
     private function getModule()
     {
         if($this->module == null) {
-            $this->module = Yii::$app->getModule('custom_pages');
+            $this->module = Yii::$app->getModule('custom-pages');
         }
         return $this->module;
     }

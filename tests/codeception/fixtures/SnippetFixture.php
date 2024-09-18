@@ -14,5 +14,5 @@ use yii\test\ActiveFixture;
 class SnippetFixture extends ActiveFixture
 {
     public $modelClass = 'humhub\modules\custom_pages\models\Snippet';
-    public $dataFile = '@custom_pages/tests/codeception/fixtures/data/snippet.php';
+    public $dataFile = '@custom-pages/tests/codeception/fixtures/data/snippet.php';
 }

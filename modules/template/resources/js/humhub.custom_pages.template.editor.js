@@ -1,4 +1,4 @@
-humhub.module('custom_pages.template.editor', function (module, require, $) {
+humhub.module('custom-pages.template.editor', function (module, require, $) {
     var Widget = require('ui.widget').Widget;
     var object = require('util').object;
     var client = require('client');
@@ -30,13 +30,13 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             evt.stopPropagation();
         });
 
-        this.$.on('custom_pages.afterActivateContainer', function (event, item) {
+        this.$.on('custom-pages.afterActivateContainer', function (event, item) {
             that.activeItem = item;
             that.setActivateElement(item.$);
             that.clearExcept(item);
         });
 
-        this.$.on('custom_pages.afterDeactivateContainer', function (event, item) {
+        this.$.on('custom-pages.afterDeactivateContainer', function (event, item) {
             that.activeItem = undefined;
             if (item.getParent()) {
                 that.setActivateElement(item.getParent().$);
@@ -44,7 +44,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
         });
 
         // Set the currentElement when menu buttons are used.
-        $(document).off('click.custom_pages').on('click.custom_pages', '.template-menu-button', function () {
+        $(document).off('click.custom-pages').on('click.custom-pages', '.template-menu-button', function () {
             var $this = $(this);
             if ($this.data('action-target')) {
                 that.currentElement = Widget.instance($this.data('action-target'));
@@ -172,7 +172,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             return false;
         }
 
-        var hasRootOwner = element.owner === "humhub\\modules\\custom_pages\\modules\\template\\models\\TemplateInstance";
+        var hasRootOwner = element.owner === "humhub\\modules\\custom-pages\\modules\\template\\models\\TemplateInstance";
         var isActiveCotnainerItemContent = this.activeItem && this.activeItem.isParentOf(element);
         var isEmptyContainer = element.$.is('.emptyContainerBlock');
 
@@ -234,7 +234,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
 
     var _initEvents = function () {
         // Tab logic in edit item modal
-        $(document).on('keyup.custom_pages', '.template-edit-multiple-tab', function (e) {
+        $(document).on('keyup.custom-pages', '.template-edit-multiple-tab', function (e) {
             switch (e.which) {
                 case 13:
                     e.preventDefault();
@@ -255,7 +255,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
                     }
                     break;
             }
-        }).on('click.custom_pages', '.template-edit-multiple-tab', function () {
+        }).on('click.custom-pages', '.template-edit-multiple-tab', function () {
             $(this).next('.panel-body').slideToggle('fast');
             var $switchIcon = $(this).find('.switchIcon');
             if ($switchIcon.hasClass('fa-caret-down')) {
@@ -270,7 +270,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
 
     var unload = function () {
         $('.editMenu, .elementMenu').remove();
-        $(document).off('.custom_pages');
+        $(document).off('.custom-pages');
     };
 
     module.export({

@@ -15,5 +15,5 @@ use yii\test\ActiveFixture;
 class ContainerContentTemplateFixture extends ActiveFixture
 {
     public $modelClass = ContainerContentTemplate::class;
-    public $dataFile = '@custom_pages/tests/codeception/fixtures/data/containerContentTemplate.php';
+    public $dataFile = '@custom-pages/tests/codeception/fixtures/data/containerContentTemplate.php';
 }

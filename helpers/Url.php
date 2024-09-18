@@ -12,25 +12,25 @@ use yii\helpers\Url as BaseUrl;
 class Url extends BaseUrl
 {
 
-    const ROUTE_CONFIG = '/custom_pages/config';
-    const ROUTE_EDIT_PAGE = '/custom_pages/page/edit';
+    const ROUTE_CONFIG = '/custom-pages/config';
+    const ROUTE_EDIT_PAGE = '/custom-pages/page/edit';
 
-    const ROUTE_PAGE_DELETE = '/custom_pages/page/delete';
-    const ROUTE_SNIPPET_DELETE = '/custom_pages/snippet/delete';
+    const ROUTE_PAGE_DELETE = '/custom-pages/page/delete';
+    const ROUTE_SNIPPET_DELETE = '/custom-pages/snippet/delete';
 
-    const ROUTE_EDIT_SNIPPET = '/custom_pages/snippet/edit';
-    const ROUTE_PAGE_OVERVIEW = '/custom_pages/page';
+    const ROUTE_EDIT_SNIPPET = '/custom-pages/snippet/edit';
+    const ROUTE_PAGE_OVERVIEW = '/custom-pages/page';
 
-    const ROUTE_PAGE_ADD = '/custom_pages/page/add';
-    const ROUTE_SNIPPET_ADD = '/custom_pages/snippet/add';
+    const ROUTE_PAGE_ADD = '/custom-pages/page/add';
+    const ROUTE_SNIPPET_ADD = '/custom-pages/snippet/add';
 
-    const ROUTE_SNIPPET_OVERVIEW = '/custom_pages/snippet';
+    const ROUTE_SNIPPET_OVERVIEW = '/custom-pages/snippet';
 
-    const ROUTE_TEMPLATE_LAYOUT_ADMIN = '/custom_pages/template/layout-admin';
+    const ROUTE_TEMPLATE_LAYOUT_ADMIN = '/custom-pages/template/layout-admin';
 
-    const ROUTE_PAGE_INLINE_EDIT = '/custom_pages/view';
+    const ROUTE_PAGE_INLINE_EDIT = '/custom-pages/view';
 
-    const ROUTE_SNIPPET_INLINE_EDIT = '/custom_pages/snippet/edit-snippet';
+    const ROUTE_SNIPPET_INLINE_EDIT = '/custom-pages/snippet/edit-snippet';
 
     public static function toInlineEdit(CustomContentContainer $content, ContentContainerActiveRecord $container = null)
     {

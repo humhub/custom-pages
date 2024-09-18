@@ -23,7 +23,7 @@ class PageUrlRule extends Component implements UrlRuleInterface
     /**
      * @var string default route to page home
      */
-    public $defaultRoutes = ['custom_pages/view', 'custom_pages/view/view'];
+    public $defaultRoutes = ['custom-pages/view', 'custom-pages/view/view'];
 
     /**
      * @var array map with space guid/url pairs

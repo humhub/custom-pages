@@ -14,6 +14,6 @@ class ContentFixture extends ActiveFixture
 {
 
     public $modelClass = Content::class;
-    public $dataFile = '@custom_pages/tests/codeception/fixtures/data/content.php';
+    public $dataFile = '@custom-pages/tests/codeception/fixtures/data/content.php';
 
 }

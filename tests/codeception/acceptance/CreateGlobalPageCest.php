@@ -11,7 +11,7 @@ class CreateGlobalPageCest
         $I->amAdmin();
         $I->wantToTest('the creation of a markdown page on Top Navigation');
         $I->amGoingTo('add a new page');
-        $I->amOnRoute(['/custom_pages/page']);
+        $I->amOnRoute(['/custom-pages/page']);
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('Top Navigation');
@@ -46,7 +46,7 @@ class CreateGlobalPageCest
         $I->amAdmin();
         $I->wantToTest('the creation of a link page on User Account Menu (Settings)');
         $I->amGoingTo('add a new page');
-        $I->amOnRoute(['/custom_pages/page']);
+        $I->amOnRoute(['/custom-pages/page']);
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('User Account Menu');
@@ -83,7 +83,7 @@ class CreateGlobalPageCest
         $I->amAdmin();
         $I->wantToTest('the creation of a markdown page on People Heading Buttons');
         $I->amGoingTo('add a new page');
-        $I->amOnRoute(['/custom_pages/page']);
+        $I->amOnRoute(['/custom-pages/page']);
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('People Buttons');

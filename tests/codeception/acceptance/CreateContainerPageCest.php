@@ -10,11 +10,11 @@ class CreateContainerPageCest
     public function testCreateMarkdownPageOnTopMenu(AcceptanceTester $I)
     {
         $I->amUser1();
-        $I->enableModule(2, 'custom_pages');
+        $I->enableModule(2, 'custom-pages');
 
         $I->wantToTest('the creation of a markdown page');
         $I->amGoingTo('add a new page');
-        $I->amOnSpace2('/custom_pages/page');
+        $I->amOnSpace2('/custom-pages/page');
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('Space Navigation');

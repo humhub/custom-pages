@@ -119,13 +119,13 @@ class TemplatePage extends \humhub\widgets\JsWidget
     {
         if ($this->canEdit && $this->editMode) {
             return [
-                'element-edit-url' => $this->createUrl('/custom_pages/template/owner-content/edit'),
-                'element-delete-url' => $this->createUrl('/custom_pages/template/owner-content/delete'),
-                'create-container-url' => $this->createUrl('/custom_pages/template/container-content/create-container'),
-                'item-delete-url' => $this->createUrl('/custom_pages/template/container-content/delete-item'),
-                'item-edit-url' => $this->createUrl('/custom_pages/template/container-content/edit-item'),
-                'item-add-url' => $this->createUrl('/custom_pages/template/container-content/add-item'),
-                'item-move-url' => $this->createUrl('/custom_pages/template/container-content/move-item'),
+                'element-edit-url' => $this->createUrl('/custom-pages/template/owner-content/edit'),
+                'element-delete-url' => $this->createUrl('/custom-pages/template/owner-content/delete'),
+                'create-container-url' => $this->createUrl('/custom-pages/template/container-content/create-container'),
+                'item-delete-url' => $this->createUrl('/custom-pages/template/container-content/delete-item'),
+                'item-edit-url' => $this->createUrl('/custom-pages/template/container-content/edit-item'),
+                'item-add-url' => $this->createUrl('/custom-pages/template/container-content/add-item'),
+                'item-move-url' => $this->createUrl('/custom-pages/template/container-content/move-item'),
             ];
         }
         return [];

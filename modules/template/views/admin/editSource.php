@@ -62,7 +62,7 @@ $this->registerJsConfig('custom_pages.template.source', [
         <div class="clearfix">
             <?= Html::submitButton(Yii::t('CustomPagesModule.base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
             <div class="dropdown pull-right">
-                <button data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/edit-multiple', 'id' => $model->id]) ?>" class="btn btn-primary">
+                <button data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom-pages/template/admin/edit-multiple', 'id' => $model->id]) ?>" class="btn btn-primary">
                     <i aria-hidden="true" class="fa fa-pencil"></i>
                     <?= Yii::t('CustomPagesModule.modules_template_views_admin_editSource', 'Edit All'); ?>
                 </button>
@@ -74,7 +74,7 @@ $this->registerJsConfig('custom_pages.template.source', [
                 <ul class="dropdown-menu" id="addElementSelect">
                     <?php foreach ($contentTypes as $label => $type) : ?>
                         <li>
-                            <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/add-element', 'templateId' => $model->id, 'type' => $type]) ?>" href="#">
+                            <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom-pages/template/admin/add-element', 'templateId' => $model->id, 'type' => $type]) ?>" href="#">
                                 <?= $label ?>
                             </a>
                         </li>

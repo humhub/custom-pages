@@ -14,7 +14,7 @@ class InlineStyleAssets extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@custom_pages/resources';
+    public $sourcePath = '@custom-pages/resources';
 
     /**
      * @inheritdoc

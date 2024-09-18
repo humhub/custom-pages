@@ -9,5 +9,5 @@ jobs:
   tests:
     uses: humhub/actions/.github/workflows/module-tests-develop.yml@main
     with:
-      module-id: custom_pages
+      module-id: custom-pages
       install-composer: true

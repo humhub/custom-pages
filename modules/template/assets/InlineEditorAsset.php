@@ -6,7 +6,7 @@ use yii\web\AssetBundle;
 
 class InlineEditorAsset extends AssetBundle
 {
-    public $sourcePath = '@custom_pages/modules/template/resources';
+    public $sourcePath = '@custom-pages/modules/template/resources';
 
     public $publishOptions = [
         'forceCopy' => false

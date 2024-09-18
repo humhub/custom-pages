@@ -1,5 +1,5 @@
-humhub.module('custom_pages.template.TemplateElement', function (module, require, $) {
-    var customPage = require('custom_pages.template.editor');
+humhub.module('custom-pages.template.TemplateElement', function (module, require, $) {
+    var customPage = require('custom-pages.template.editor');
     var Widget = require('ui.widget').Widget;
     var object = require('util').object;
     var string = require('util').string;

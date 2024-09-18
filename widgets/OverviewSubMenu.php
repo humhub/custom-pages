@@ -36,7 +36,7 @@ class OverviewSubMenu extends BaseMenu
             'label' => Yii::t('CustomPagesModule.base', 'Pages'),
             'url' => Url::toPageOverview($this->container),
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages'
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom-pages'
                 && Yii::$app->controller->id == 'page')
         ]);
 
@@ -44,7 +44,7 @@ class OverviewSubMenu extends BaseMenu
             'label' => Yii::t('CustomPagesModule.base', 'Snippets'),
             'url' => Url::toSnippetOverview($this->container),
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages'
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom-pages'
                 && Yii::$app->controller->id == 'snippet')
         ]);
     }

@@ -12,7 +12,7 @@ class CreateGlobalSnippetCest
         $I->amAdmin();
         $I->wantToTest('the creation of a markdown page on Dashboard');
         $I->amGoingTo('add a new page');
-        $I->amOnRoute(['/custom_pages/snippet']);
+        $I->amOnRoute(['/custom-pages/snippet']);
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('Dashboard', '.target-page-list');

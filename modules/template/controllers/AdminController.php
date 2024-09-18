@@ -64,7 +64,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $searchModel = new TemplateSearch(['type' => $this->type]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('@custom_pages/modules/template/views/admin/index', [
+        return $this->render('@custom-pages/modules/template/views/admin/index', [
             'helpText' => $this->indexHelp,
             'type' => $this->type,
             'dataProvider' => $dataProvider,
@@ -94,7 +94,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             return $this->redirect(['edit-source', 'id' => $model->id]);
         }
 
-        return $this->render('@custom_pages/modules/template/views/admin/edit', ['model' => $model]);
+        return $this->render('@custom-pages/modules/template/views/admin/edit', ['model' => $model]);
     }
 
     /**
@@ -120,7 +120,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             return $this->redirect(['edit-source', 'id' => $model->id]);
         }
 
-        return $this->render('@custom_pages/modules/template/views/admin/editSource', [
+        return $this->render('@custom-pages/modules/template/views/admin/editSource', [
             'model' => $model,
             'contentTypes' => $this->getContentTypes()
         ]);
@@ -144,7 +144,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             ]
         ]);
 
-        return $this->render('@custom_pages/modules/template/views/admin/editUsage', [
+        return $this->render('@custom-pages/modules/template/views/admin/editUsage', [
             'model' => $model,
             'dataProvider' => $dataProvider
         ]);
@@ -262,12 +262,12 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $editView = ($editView != null) ? $editView : false;
 
         if ($reload != null) {
-            return $this->renderPartial('@custom_pages/modules/template/views/admin/preview', [
+            return $this->renderPartial('@custom-pages/modules/template/views/admin/preview', [
                 'template' => $template,
                 'editView' => $editView
             ]);
         } else {
-            return $this->render('@custom_pages/modules/template/views/admin/preview', [
+            return $this->render('@custom-pages/modules/template/views/admin/preview', [
                 'template' => $template,
                 'editView' => $editView
             ]);
@@ -366,7 +366,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
      */
     public function actionInfo()
     {
-        return $this->renderPartial('@custom_pages/modules/template/views/admin/info');
+        return $this->renderPartial('@custom-pages/modules/template/views/admin/info');
     }
 
 }

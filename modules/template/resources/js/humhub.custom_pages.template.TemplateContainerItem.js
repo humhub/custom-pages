@@ -1,9 +1,9 @@
-humhub.module('custom_pages.template.TemplateContainerItem', function (module, require, $) {
-    var customPage = require('custom_pages.template.editor');
+humhub.module('custom-pages.template.TemplateContainerItem', function (module, require, $) {
+    var customPage = require('custom-pages.template.editor');
     var client = require('client');
     var object = require('util').object;
     var string = require('util').string;
-    var TemplateElement = require('custom_pages.template.TemplateElement');
+    var TemplateElement = require('custom-pages.template.TemplateElement');
 
     /**
      * TemplateContainerItem
@@ -161,7 +161,7 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
 
         this.data('isActiveItem', true);
         this.data('active', true);
-        this.$root.trigger('custom_pages.afterActivateContainer', [this]);
+        this.$root.trigger('custom-pages.afterActivateContainer', [this]);
     };
 
     TemplateContainerItem.prototype.stopInlineEdit = function () {
@@ -172,7 +172,7 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
         if ($overlay.length) {
             $overlay.fadeOut('fast', function () {
                 $overlay.remove();
-                that.$root.trigger('custom_pages.afterDeactivateContainer', [that]);
+                that.$root.trigger('custom-pages.afterDeactivateContainer', [that]);
             });
         }
         this.$.css('background-color', '');

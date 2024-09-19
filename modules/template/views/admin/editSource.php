@@ -9,13 +9,13 @@ SourceEditorAsset::register($this);
 
 /* @var $model humhub\modules\custom_pages\modules\template\models\Template */
 
-$this->registerJsConfig('custom_pages.template.source', [
+$this->registerJsConfig('custom-pages.template.source', [
     'text' => [
         'warning.beforeunload' => Yii::t('CustomPagesModule.modules_template_views_admin_editSource', "You haven't saved your last changes yet. Do you want to leave without saving?")
     ]
 ]);
 ?>
-<div id="templatePageRoot" class="panel panel-default" data-ui-widget="custom_pages.template.source.TemplateSourceEditor" data-ui-init="1">
+<div id="templatePageRoot" class="panel panel-default" data-ui-widget="custom-pages.template.source.TemplateSourceEditor" data-ui-init="1">
     <div class="panel-heading"><?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
 
     <?= \humhub\modules\custom_pages\widgets\AdminMenu::widget([]); ?>

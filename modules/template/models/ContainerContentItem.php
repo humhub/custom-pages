@@ -85,7 +85,7 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
     public function wrap($content, $inline)
     {
         return \humhub\widgets\JsWidget::widget([
-            'jsWidget' => 'custom_pages.template.TemplateContainerItem',
+            'jsWidget' => 'custom-pages.template.TemplateContainerItem',
             'content' => $content,
             'options' => [
                 'class' => ($inline) ? 'inline' : '',

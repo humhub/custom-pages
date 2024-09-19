@@ -21,7 +21,7 @@ class TemplatePage extends \humhub\widgets\JsWidget
     /**
      * @inheritdoc
      */
-    public $jsWidget = 'custom_pages.template.editor.TemplateInlineEditor';
+    public $jsWidget = 'custom-pages.template.editor.TemplateInlineEditor';
 
     /**
      * @inheritdoc
@@ -74,7 +74,7 @@ class TemplatePage extends \humhub\widgets\JsWidget
         if ($this->canEdit && $this->editMode) {
             \humhub\modules\custom_pages\modules\template\assets\InlineEditorAsset::register($this->getView());
 
-            $this->getView()->registerJsConfig('custom_pages.template.editor', [
+            $this->getView()->registerJsConfig('custom-pages.template.editor', [
                 'text' => [
                     'toggleOnText' => Yii::t('CustomPagesModule.base', 'On'),
                     'toggleOffText' => Yii::t('CustomPagesModule.base', 'Off'),

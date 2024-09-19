@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.10.7 (Unreleased)
------------------------
+1.10.7 (September 19, 2024)
+----------------------------
 - Enh #342: JS Dependency Updates
 - Enh #344: Replace theme variables with CSS variables
 - Fix #346: Disable automatic iframe attribute "sandbox" on TinyMCE editor

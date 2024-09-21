@@ -1,7 +1,6 @@
 <?php
-
-return [
-    'Create new {type}' => '',
-    'Edit template \'{templateName}\'' => '',
-    'Save' => '',
-];
+return array (
+  'Create new {type}' => 'Izradi novi {type}',
+  'Edit template \'{templateName}\'' => 'Uredi templejt \'{templateName}\'',
+  'Save' => 'Sačuvaj',
+);

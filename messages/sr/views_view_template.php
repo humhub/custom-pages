@@ -1,9 +1,8 @@
 <?php
-
-return [
-    'Edit Template' => '',
-    'Edit elements' => '',
-    'Edit template' => '',
-    'Page configuration' => '',
-    'Turn edit off' => '',
-];
+return array (
+  'Edit Template' => 'Uredi templejt',
+  'Edit elements' => 'Uredi elemente',
+  'Edit template' => 'Uredi templejt',
+  'Page configuration' => 'Konfiguracija stranice',
+  'Turn edit off' => 'Isključite uređivanje',
+);

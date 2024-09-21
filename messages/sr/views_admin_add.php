@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Add new {pageType}' => '',
-    'Create new template' => '',
-    'Edit template' => '',
-    'Settings' => '',
-];
+return array (
+  'Add new {pageType}' => 'Dodaj novu/i {pageType}',
+  'Create new template' => 'Izradite novi templejt',
+  'Edit template' => 'Uredi templejt',
+  'Settings' => 'Postavke',
+);

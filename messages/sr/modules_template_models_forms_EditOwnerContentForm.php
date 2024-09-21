@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'Use default content' => '',
-];
+return array (
+  'Use default content' => 'Koristite podrazumevani sadržaj',
+);

@@ -1,6 +1,5 @@
 <?php
-
-return [
-    '<strong>Add</strong> {templateName} item' => '',
-    '<strong>Edit</strong> item' => '',
-];
+return array (
+  '<strong>Add</strong> {templateName} item' => '<strong>Dodaj</strong> {templateName} stavku',
+  '<strong>Edit</strong> item' => '<strong>Uredi</strong> stavku',
+);

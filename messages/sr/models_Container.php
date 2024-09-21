@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'Empty <br />Container' => '',
-];
+return array (
+  'Empty <br />Container' => 'Prazan<br> kontejner',
+);

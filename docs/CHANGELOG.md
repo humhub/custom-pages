@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.8 (Unreleased)
+----------------------------
+- Fix #347: Fix errors after save a new page
+
 1.10.7 (September 19, 2024)
 ----------------------------
 - Enh #342: JS Dependency Updates

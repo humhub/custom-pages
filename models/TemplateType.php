@@ -44,7 +44,11 @@ class TemplateType extends ContentType
      */
     public function afterSave($page, $insert, $changedAttributes)
     {
-        if($insert) {
+        if (!parent::afterSave($page, $insert, $changedAttributes)) {
+            return false;
+        }
+
+        if ($insert) {
             $templateInstance = new TemplateInstance([
                 'object_model' => get_class($page),
                 'object_id' => $page->id,

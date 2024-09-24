@@ -41,9 +41,9 @@ class ContainerContentDefinition extends ContentDefinition
 
     public function afterSave($insert, $changedAttributes)
     {
-        $this->saveAllowedTemplateSelection();
-
         parent::afterSave($insert, $changedAttributes);
+
+        $this->saveAllowedTemplateSelection();
     }
 
     public function saveAllowedTemplateSelection()

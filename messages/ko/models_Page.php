@@ -1,13 +1,11 @@
 <?php
-
-return [
-    'Abstract' => '',
-    'Navigation' => '',
-    'Only visible for admins' => '',
-    'Open in new window' => '',
-    'Page' => '',
-    'Url shortcut' => '',
-    'View' => '',
-    'Visibility' => '',
-    'page' => '',
-];
+return array (
+  'Abstract' => '',
+  'Navigation' => '',
+  'Only visible for admins' => '',
+  'Open in new window' => '',
+  'Url shortcut' => '',
+  'View' => '',
+  'Visibility' => '공개여부',
+  'page' => '',
+);

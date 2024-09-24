@@ -1,6 +1,5 @@
 <?php
-
-return [
-    'Display Empty Content' => '',
-    'Update' => '',
-];
+return array (
+  'Display Empty Content' => '',
+  'Update' => 'Eguneratu',
+);

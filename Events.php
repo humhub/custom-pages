@@ -2,18 +2,21 @@
 
 namespace humhub\modules\custom_pages;
 
-use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\admin\widgets\AdminMenu;
+use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\ContainerSnippet;
-use humhub\modules\custom_pages\widgets\SnippetWidget;
+use humhub\modules\custom_pages\models\LinkType;
+use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
 use humhub\modules\custom_pages\permissions\ManagePages;
+use humhub\modules\custom_pages\widgets\SnippetWidget;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\PeopleHeadingButtons;
+use humhub\widgets\TopMenu;
 use Throwable;
 use Yii;
 use yii\helpers\Html;
@@ -61,8 +64,9 @@ class Events
                 'group' => 'manage',
                 'icon' => '<i class="fa fa-file-text-o"></i>',
                 'isActive' => (Yii::$app->controller->module
-                    && Yii::$app->controller->module->id === 'custom_pages'
-                    && (Yii::$app->controller->id === 'page' || Yii::$app->controller->id === 'config')),
+                    && (Yii::$app->controller->module->id === 'custom_pages'
+                        && (Yii::$app->controller->id === 'page' || Yii::$app->controller->id === 'config'))
+                    ||  Yii::$app->controller->module->id == 'template'),
                 'sortOrder' => 300,
                 'isVisible' => true,
             ]);
@@ -138,6 +142,9 @@ class Events
 
     public static function onTopMenuInit($event)
     {
+        /** @var TopMenu $menu */
+        $menu = $event->sender;
+
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
@@ -146,20 +153,51 @@ class Events
                     continue;
                 }
 
-                $event->sender->addItem([
+                $menu->addEntry(new MenuLink([
+                    'id' => 'custom-page-' . $page->id,
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
-                    'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
+                    'url' => ['/custom_pages/view', 'id' => $page->id],
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
-                    'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
-                    'isActive' => (Yii::$app->controller->module
-                        && Yii::$app->controller->module->id === 'custom_pages'
-                        && Yii::$app->controller->id === 'view' && !Yii::$app->controller->contentContainer && Yii::$app->request->get('id') == $page->id),
-                    'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
-                ]);
+                    'icon' => $page->icon,
+                    'isActive' => (
+                        (
+                            MenuLink::isActiveState('custom_pages', 'view')
+                            && !Yii::$app->controller->contentContainer
+                            && (int)Yii::$app->request->get('id') === $page->id
+                        )
+                        || static::isCurrentTargetUrl($page)
+                    ),
+                    'sortOrder' => $page->sort_order ?: 1000,
+                ]));
             }
         } catch (Throwable $e) {
             Yii::error($e);
         }
+    }
+
+    private static function isCurrentTargetUrl(Page $page): bool
+    {
+        if ($page->type === LinkType::ID && $page->page_content) {
+            $targetUrl = strpos($page->page_content, 'http') === 0 ?
+                $page->page_content :
+                'https://domain.tld/' . trim($page->page_content, '/');
+            $targetUrlPath = parse_url($targetUrl, PHP_URL_PATH) ?: '';
+            $targetUrlQuery = parse_url($targetUrl, PHP_URL_QUERY) ?: '';
+            $container = ContentContainerHelper::getCurrent();
+            $currentContainerPath = $container ?
+                rtrim($container->getUrl(), '/') :
+                null;
+            if (
+                $targetUrlPath
+                && (
+                    $currentContainerPath === $targetUrlPath
+                    || Url::to() === $targetUrlPath . ($targetUrlQuery ? '?' . $targetUrlQuery : '')
+                )
+            ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static function onAccountMenuInit($event)

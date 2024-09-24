@@ -47,6 +47,7 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
             'toolbar' => 'undo redo | wrapper blocks | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist' . $humhubTriggerToolbar . ' | removeformat | code',
             'content_style' => '.img-responsive {display:block;max-width:100%;height:auto}',
             'valid_elements' => '*[*]',
+            'sandbox_iframes' => false,
             'relative_urls' => false,
             'remove_script_host' => true,
             'external_plugins' => $external_plugins,

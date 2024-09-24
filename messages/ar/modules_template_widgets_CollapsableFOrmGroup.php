@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Show less' => '',
+  'Show less' => 'عرض أقل',
   'Show more' => 'مشاهدة المزيد',
 );

@@ -1,5 +1,5 @@
 <?php
-return array (
-  'Snippet' => 'Laatikko',
-  'snippet' => '',
-);
+
+return [
+    'snippet' => '',
+];

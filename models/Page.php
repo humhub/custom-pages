@@ -6,6 +6,7 @@ use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\helpers\Html;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
+use humhub\modules\custom_pages\modules\template\components\TemplateRenderer;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\widgets\WallEntry;
 use Yii;
@@ -81,7 +82,7 @@ class Page extends CustomContentContainer
     }
 
     /**
-     * @inhritdoc
+     * @inheritdoc
      */
     public function rules()
     {
@@ -164,6 +165,19 @@ class Page extends CustomContentContainer
         }
 
         return $targets;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSearchAttributes()
+    {
+        return [
+            'title' => $this->title,
+            'content' => preg_replace('/[\r\n\s]+/', ' ', strip_tags($this->type === TemplateType::ID
+                ? TemplateRenderer::render($this, false, false, true)
+                : $this->abstract . "\r\n" . $this->page_content)),
+        ];
     }
 
     /**

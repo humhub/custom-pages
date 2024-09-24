@@ -1,13 +1,11 @@
 <?php
-
-return [
-    'Navigation' => 'Navegació',
-    'Abstract' => '',
-    'Only visible for admins' => '',
-    'Open in new window' => '',
-    'Page' => '',
-    'Url shortcut' => '',
-    'View' => '',
-    'Visibility' => '',
-    'page' => '',
-];
+return array (
+  'Abstract' => '',
+  'Navigation' => 'Navegació',
+  'Only visible for admins' => '',
+  'Open in new window' => '',
+  'Url shortcut' => '',
+  'View' => '',
+  'Visibility' => 'Visibilitat',
+  'page' => '',
+);

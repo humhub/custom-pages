@@ -1,6 +1,6 @@
 <?php
 return array (
   'Content' => 'Obsah',
-  'Sidebar' => '',
+  'Sidebar' => 'Bočný panel',
   'snippet' => '',
 );

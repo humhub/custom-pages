@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'Empty Image' => '',
-];
+return array (
+  'Empty Image' => 'Prazna slika',
+);

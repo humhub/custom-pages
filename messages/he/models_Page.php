@@ -5,7 +5,6 @@ return [
     'Abstract' => '',
     'Navigation' => '',
     'Only visible for admins' => '',
-    'Page' => '',
     'Url shortcut' => '',
     'View' => '',
     'Visibility' => '',

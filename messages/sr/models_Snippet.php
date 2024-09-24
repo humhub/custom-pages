@@ -1,7 +1,6 @@
 <?php
-
-return [
-    'Content' => '',
-    'Sidebar' => '',
-    'snippet' => '',
-];
+return array (
+  'Content' => 'Sadržaj',
+  'Sidebar' => 'Bočna traka',
+  'snippet' => 'isečak',
+);

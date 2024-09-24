@@ -20,14 +20,35 @@ class Module extends ContentContainerModule
 
     public $resourcesPath = 'resources';
 
+
+    /**
+     * @see https://twig.symfony.com/doc/3.x/api.html#sandbox-extension
+     * @var bool
+     */
+    public $enableTwiqSandboxExtension = true;
+
+    /**
+     * @see https://twig.symfony.com/doc/3.x/api.html#sandbox-extension
+     * @var array
+     */
+    public $enableTwiqSandboxExtensionConfig = [
+        'allowedTags' => ['autoescape', 'apply', 'block', 'if', 'with', 'for', 'set'],
+        'allowedFilters' => ['capitalize', 'date', 'first', 'upper', 'escape', 'nl2br', 'url_encode', 'round'],
+        'allowedFunctions' => ['range', 'max', 'min', 'random'],
+        'allowedMethods' => [
+            'humhub\modules\custom_pages\modules\template\models\OwnerContentVariable' => '__toString',
+        ],
+        'allowedProperties' => ['sidebar_container', 'content', 'sidebar_container'],
+    ];
+
     public function checkOldGlobalContent()
     {
 
-        if(!Yii::$app->user->isAdmin()) {
+        if (!Yii::$app->user->isAdmin()) {
             return;
         }
 
-        if(!$this->settings->get(static::SETTING_MIGRATION_KEY, 0)) {
+        if (!$this->settings->get(static::SETTING_MIGRATION_KEY, 0)) {
             foreach (Page::find()->all() as $page) {
                 $page->content->visibility = $page->admin_only ? Content::VISIBILITY_PRIVATE : Content::VISIBILITY_PUBLIC;
                 $page->content->save();

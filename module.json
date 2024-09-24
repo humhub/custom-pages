@@ -6,6 +6,6 @@
     "version": "1.10.8",
     "homepage": "https://github.com/humhub/custom-pages",
     "humhub": {
-        "minVersion": "1.14"
+        "minVersion": "1.16"
     }
 }

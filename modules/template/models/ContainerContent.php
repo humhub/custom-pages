@@ -13,7 +13,6 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
  */
 class ContainerContent extends TemplateContentActiveRecord
 {
-
     public static $label = 'Container';
 
     /**
@@ -47,6 +46,8 @@ class ContainerContent extends TemplateContentActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
+        parent::afterSave($insert, $changedAttributes);
+
         if (!empty($this->allowedTemplateSelection)) {
             ContainerContentTemplate::deleteAll(['container_content_id' => $this->id]);
             foreach ($this->allowedTemplateSelection as $allowedTemplateId) {
@@ -56,8 +57,6 @@ class ContainerContent extends TemplateContentActiveRecord
                 $allowedTemplate->save();
             }
         }
-
-        parent::afterSave($insert, $changedAttributes);
     }
 
     public function beforeDelete()
@@ -112,8 +111,8 @@ class ContainerContent extends TemplateContentActiveRecord
         $options['jsWidget'] = 'custom-pages.template.TemplateContainer';
         return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_Container', 'Empty <br />Container'), $options, [
             'class' => 'emptyContainerBlock',
-            'data-template-multiple' => $this->definition->allow_multiple
-         ]);
+            'data-template-multiple' => $this->definition->allow_multiple,
+        ]);
     }
 
     public function addContainerItem($templateId, $index = null)
@@ -150,7 +149,7 @@ class ContainerContent extends TemplateContentActiveRecord
             ContainerContentItem::decrementBetween($this->id, $oldIndex, $item->sort_order);
 
             $item->save();
-        } else if ($step < 0 && $item->sort_order != 0) {
+        } elseif ($step < 0 && $item->sort_order != 0) {
             $oldIndex = $item->sort_order;
             $newIndex = $oldIndex + $step;
             $item->sort_order = ($newIndex > 0) ? $newIndex : 0;
@@ -205,9 +204,9 @@ class ContainerContent extends TemplateContentActiveRecord
     public function renderForm($form)
     {
         return TemplateContentFormFields::widget([
-                    'type' => 'container',
-                    'form' => $form,
-                    'model' => $this
+            'type' => 'container',
+            'form' => $form,
+            'model' => $this,
         ]);
     }
 

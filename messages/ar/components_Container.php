@@ -1,17 +1,16 @@
 <?php
-
-return [
-    'Content' => 'المحتوى',
-    'ID' => '@ID@',
-    'Title' => 'العنوان',
-    'Type' => 'نوع',
-    'Additional IFrame Attributes' => '',
-    'Icon' => '',
-    'Invalid template selection!' => '',
-    'Invalid view file selection!' => '',
-    'Page Content' => '',
-    'Sort Order' => '',
-    'Style Class' => '',
-    'Target Url' => '',
-    'Template Layout' => '',
-];
+return array (
+  'Additional IFrame Attributes' => '',
+  'Content' => 'المحتوى',
+  'ID' => '@ID@',
+  'Icon' => '',
+  'Invalid template selection!' => '',
+  'Invalid view file selection!' => '',
+  'Page Content' => '',
+  'Sort Order' => 'طريقة الفرز',
+  'Style Class' => '',
+  'Target Url' => '',
+  'Template Layout' => '',
+  'Title' => 'العنوان',
+  'Type' => 'نوع',
+);

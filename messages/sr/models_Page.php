@@ -1,12 +1,11 @@
 <?php
-
-return [
-    'Abstract' => '',
-    'Navigation' => '',
-    'Only visible for admins' => '',
-    'Open in new window' => '',
-    'Url shortcut' => '',
-    'View' => '',
-    'Visibility' => '',
-    'page' => '',
-];
+return array (
+  'Abstract' => 'Sažetak',
+  'Navigation' => 'Navigacija',
+  'Only visible for admins' => 'Vidljivo samo za administratore',
+  'Open in new window' => 'Otvori u novom prozoru',
+  'Url shortcut' => 'Prečica za URL',
+  'View' => 'Vidi',
+  'Visibility' => 'Vidljivost',
+  'page' => 'stranica',
+);

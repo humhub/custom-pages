@@ -519,6 +519,8 @@ abstract class CustomContentContainer extends ContentActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
+        parent::afterSave($insert, $changedAttributes);
+
         if (!$this->getContentType()->afterSave($this, $insert, $changedAttributes)) {
             throw new LogicException('Could not save content type' . $this->getContentType()->getLabel());
         }
@@ -526,8 +528,6 @@ abstract class CustomContentContainer extends ContentActiveRecord
         if ($this->checkAbstract()) {
             RichText::postProcess($this->abstract, $this);
         }
-
-        parent::afterSave($insert, $changedAttributes);
     }
 
     /**

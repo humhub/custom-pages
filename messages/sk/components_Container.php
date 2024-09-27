@@ -1,17 +1,16 @@
 <?php
-
-return [
-    'Content' => 'Obsah',
-    'Title' => '제목',
-    'Additional IFrame Attributes' => '',
-    'ID' => '',
-    'Icon' => '',
-    'Invalid template selection!' => '',
-    'Invalid view file selection!' => '',
-    'Page Content' => '',
-    'Sort Order' => '',
-    'Style Class' => '',
-    'Target Url' => '',
-    'Template Layout' => '',
-    'Type' => '',
-];
+return array (
+  'Additional IFrame Attributes' => '',
+  'Content' => 'Obsah',
+  'ID' => 'ID',
+  'Icon' => '',
+  'Invalid template selection!' => '',
+  'Invalid view file selection!' => '',
+  'Page Content' => '',
+  'Sort Order' => 'Poradie zoradenia',
+  'Style Class' => '',
+  'Target Url' => '',
+  'Template Layout' => '',
+  'Title' => '제목',
+  'Type' => 'Typ',
+);

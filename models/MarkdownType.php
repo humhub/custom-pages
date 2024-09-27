@@ -34,6 +34,10 @@ class MarkdownType extends ContentType
      */
     public function afterSave($page, $insert, $changedAttributes)
     {
+        if (!parent::afterSave($page, $insert, $changedAttributes)) {
+            return false;
+        }
+
         RichText::postProcess($page->page_content, $page);
         return true;
     }

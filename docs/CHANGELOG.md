@@ -5,6 +5,11 @@ Changelog
 ----------------------------
 - Fix #345: Fix module ID
 
+1.10.8 (September 24, 2024)
+---------------------------
+- Fix #347: Fix errors after save a new page
+- Enh #308: Deny access for files from template of hidden content
+
 1.10.7 (September 19, 2024)
 ----------------------------
 - Enh #342: JS Dependency Updates

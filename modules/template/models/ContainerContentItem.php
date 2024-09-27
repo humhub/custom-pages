@@ -85,13 +85,13 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
     public function wrap($content, $inline)
     {
         return \humhub\widgets\JsWidget::widget([
-            'jsWidget' => 'custom_pages.template.TemplateContainerItem',
+            'jsWidget' => 'custom-pages.template.TemplateContainerItem',
             'content' => $content,
             'options' => [
                 'class' => ($inline) ? 'inline' : '',
                 'data-allow-inline-activation' => $this->template->allow_inline_activation,
                 'data-template-item' => $this->id,
-                'data-template-edit-url' => Url::to(['/custom_pages/template/container-admin/edit-source', 'id' => $this->template_id]),
+                'data-template-edit-url' => Url::to(['/custom-pages/template/container-admin/edit-source', 'id' => $this->template_id]),
                 'data-template-item-title' => $this->title,
                 'data-template-owner' => ContainerContent::class,
                 'data-template-owner-id' => $this->container_content_id

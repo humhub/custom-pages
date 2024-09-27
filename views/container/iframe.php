@@ -13,7 +13,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
     #iframepage {
         border: none;
         margin-top: 0;
-        background: url('<?= Yii::$app->moduleManager->getModule('custom_pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
+        background: url('<?= Yii::$app->moduleManager->getModule('custom-pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
     }
 </style>
 

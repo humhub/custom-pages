@@ -41,7 +41,7 @@ $id = 'imageContent-' . $model->id;
         <?= FilePreview::widget([
             'id' => $id . '-preview',
             'items' => [$model->getFile()],
-            'jsWidget' => 'custom_pages.template.ImagePreview',
+            'jsWidget' => 'custom-pages.template.ImagePreview',
             'options' => ['class' => 'col-md-8 previewContainer']]) ?>
 
     </div>

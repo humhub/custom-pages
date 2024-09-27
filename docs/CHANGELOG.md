@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.11.0 (Unreleased)
+----------------------------
+- Fix #345: Fix module ID
+
 1.10.8 (September 24, 2024)
 ---------------------------
 - Fix #347: Fix errors after save a new page

@@ -19,13 +19,13 @@ use humhub\modules\content\helpers\ContentContainerHelper;
             </li>
             <?php if(humhub\modules\custom_pages\modules\template\models\PagePermission::canTemplate()): ?>
                 <li>
-                    <a target="_blank"  href="<?= Url::to(['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid]) ?>">
+                    <a target="_blank"  href="<?= Url::to(['/custom-pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid]) ?>">
                         <?= Yii::t('CustomPagesModule.views_view_template', 'Edit template') ?>
                     </a>
                 </li>
             <?php endif; ?>
             <li>
-                <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/owner-content/edit-multiple', 'id' => $templateInstance->id, 'sguid' => $sguid]) ?>" id="editAllElements" href="#">
+                <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom-pages/template/owner-content/edit-multiple', 'id' => $templateInstance->id, 'sguid' => $sguid]) ?>" id="editAllElements" href="#">
                     <?= Yii::t('CustomPagesModule.views_view_template', 'Edit elements') ?>
                 </a>
             </li>

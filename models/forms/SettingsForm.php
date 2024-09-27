@@ -54,7 +54,7 @@ class SettingsForm extends Model
      */
     public function init()
     {
-        $this->settings = Yii::$app->getModule('custom_pages')->settings;
+        $this->settings = Yii::$app->getModule('custom-pages')->settings;
         $this->phpPagesActive = intval($this->settings->get('phpPagesActive', 0));
         $this->phpGlobalPagePath = $this->settings->get('phpGlobalPagePath', static::DEFAULT_VIEW_PATH_PAGES);
         $this->phpGlobalSnippetPath = $this->settings->get('phpGlobalSnippetPath', static::DEFAULT_VIEW_PATH_SNIPPETS);

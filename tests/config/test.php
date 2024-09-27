@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'modules' => ['custom_pages'],
+    'modules' => ['custom-pages'],
     'fixtures' => [
         'default',
         'template' => 'tests\codeception\fixtures\modules\custom_pages\template\TemplateFixture',
@@ -18,6 +18,3 @@ return [
         'containerSnippet' => 'tests\codeception\fixtures\modules\custom_pages\template\ContainerSnippetFixture',
     ]
 ];
-
-
-

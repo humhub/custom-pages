@@ -15,23 +15,23 @@ class CreatePhpSnippetCest
     public function testCreateMarkdownPageOnTopMenu(AcceptanceTester $I)
     {
         $I->amAdmin();
-        $I->amOnRoute(['/custom_pages/config']);
+        $I->amOnRoute(['/custom-pages/config']);
 
         $I->click('[for="phpPagesActive"]');
 
         $I->wait(1);
 
-        $I->fillField('SettingsForm[phpGlobalPagePath]', '@custom_pages/tests/codeception/_data/views/global_pages');
-        $I->fillField('SettingsForm[phpGlobalSnippetPath]', '@custom_pages/tests/codeception/_data/views/global_snippets');
-        $I->fillField('SettingsForm[phpContainerSnippetPath]', '@custom_pages/tests/codeception/_data/views/container_snippets');
-        $I->fillField('SettingsForm[phpContainerPagePath]', '@custom_pages/tests/codeception/_data/views/container_pages');
+        $I->fillField('SettingsForm[phpGlobalPagePath]', '@custom-pages/tests/codeception/_data/views/global_pages');
+        $I->fillField('SettingsForm[phpGlobalSnippetPath]', '@custom-pages/tests/codeception/_data/views/global_snippets');
+        $I->fillField('SettingsForm[phpContainerSnippetPath]', '@custom-pages/tests/codeception/_data/views/container_snippets');
+        $I->fillField('SettingsForm[phpContainerPagePath]', '@custom-pages/tests/codeception/_data/views/container_pages');
         $I->click('Save');
 
         $I->seeSuccess('Saved');
 
         $I->wantToTest('the creation of a php based snippet');
         $I->amGoingTo('add a new snippet');
-        $I->amOnRoute(['/custom_pages/snippet']);
+        $I->amOnRoute(['/custom-pages/snippet']);
         $I->expectTo('see the add new page site');
         $I->see('Overview');
 

@@ -42,7 +42,7 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
 
     public function init()
     {
-        Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
+        Yii::$app->moduleManager->getModule('custom-pages')->checkOldGlobalContent();
         parent::init();
     }
 

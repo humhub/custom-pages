@@ -99,7 +99,7 @@ class ContainerContent extends TemplateContentActiveRecord
         }
 
         if ($this->isEditMode($options)) {
-            $options['jsWidget'] = 'custom_pages.template.TemplateContainer';
+            $options['jsWidget'] = 'custom-pages.template.TemplateContainer';
             return $this->wrap('div', $result, $options, ['data-template-multiple' => $this->definition->allow_multiple]);
         } else {
             return $result;
@@ -108,7 +108,7 @@ class ContainerContent extends TemplateContentActiveRecord
 
     public function renderEmpty($options = [])
     {
-        $options['jsWidget'] = 'custom_pages.template.TemplateContainer';
+        $options['jsWidget'] = 'custom-pages.template.TemplateContainer';
         return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_Container', 'Empty <br />Container'), $options, [
             'class' => 'emptyContainerBlock',
             'data-template-multiple' => $this->definition->allow_multiple,

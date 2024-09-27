@@ -13,7 +13,7 @@ class TemplateEditorElement extends \humhub\widgets\JsWidget
     /**
      * @inheritdoc
      */
-    public $jsWidget = 'custom_pages.template.TemplateElement';
+    public $jsWidget = 'custom-pages.template.TemplateElement';
 
     /**
      * @var string additional style class of editor root

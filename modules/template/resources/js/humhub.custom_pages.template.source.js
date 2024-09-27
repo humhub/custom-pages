@@ -1,4 +1,4 @@
-humhub.module('custom_pages.template.source', function (module, require, $) {
+humhub.module('custom-pages.template.source', function (module, require, $) {
     var client = require('client');
     var modal = require('ui.modal');
     var Widget = require('ui.widget').Widget;
@@ -41,7 +41,7 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
         });
 
         // Note some browser do not support custom messages for this event.
-        $(window).on('beforeunload.custom_pages', function () {
+        $(window).on('beforeunload.custom-pages', function () {
             if (that.$sourceInput.data('changed')) {
                 return module.text('warning.beforeunload');
             }
@@ -227,8 +227,8 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
     };
 
     var unload = function () {
-        $(document).off('.custom_pages');
-        $(window).off('.custom_pages');
+        $(document).off('.custom-pages');
+        $(window).off('.custom-pages');
         $(document).on('pjax:beforeSend');
     };
 

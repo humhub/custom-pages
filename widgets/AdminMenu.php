@@ -31,7 +31,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
                 'label' => Yii::t('CustomPagesModule.base', 'Overview'),
                 'url' => Url::toPageOverview(),
                 'sortOrder' => 100,
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages'
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom-pages'
                         && Yii::$app->controller->id == 'page')
             ]);
         }
@@ -48,7 +48,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
                 'label' => Yii::t('CustomPagesModule.base', 'Settings'),
                 'url' => Url::toModuleConfig(),
                 'sortOrder' => 400,
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages'
+                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom-pages'
                         && Yii::$app->controller->id == 'config'),
             ]);
         }

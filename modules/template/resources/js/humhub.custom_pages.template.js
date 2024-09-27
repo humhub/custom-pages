@@ -1,4 +1,4 @@
-humhub.module('custom_pages.template', function (module, require, $) {
+humhub.module('custom-pages.template', function (module, require, $) {
     var object = require('util').object;
     var string = require('util').string;
     var Preview = require('file').Preview;
@@ -46,7 +46,7 @@ humhub.module('custom_pages.template', function (module, require, $) {
 
     var _initEvents = function () {
         // Tab logic in edit item modal
-        $(document).on('keyup.custom_pages', '.template-edit-multiple-tab', function (e) {
+        $(document).on('keyup.custom-pages', '.template-edit-multiple-tab', function (e) {
             switch (e.which) {
                 case 13:
                     e.preventDefault();
@@ -67,7 +67,7 @@ humhub.module('custom_pages.template', function (module, require, $) {
                     }
                     break;
             }
-        }).on('click.custom_pages', '.template-edit-multiple-tab', function () {
+        }).on('click.custom-pages', '.template-edit-multiple-tab', function () {
             $(this).next('.panel-body').slideToggle('fast');
             var $switchIcon = $(this).find('.switchIcon');
             if ($switchIcon.hasClass('fa-caret-down')) {
@@ -81,7 +81,7 @@ humhub.module('custom_pages.template', function (module, require, $) {
     };
 
     var unload = function () {
-        $(document).off('.custom_pages');
+        $(document).off('.custom-pages');
     };
 
     const deleteElementContent = function (evt) {

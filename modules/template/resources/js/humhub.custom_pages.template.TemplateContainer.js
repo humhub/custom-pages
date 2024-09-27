@@ -1,8 +1,8 @@
-humhub.module('custom_pages.template.TemplateContainer', function (module, require, $) {
+humhub.module('custom-pages.template.TemplateContainer', function (module, require, $) {
     var string = require('util').string;
     var object = require('util').object;
     var modal = require('ui.modal');
-    var TemplateElement = require('custom_pages.template.TemplateElement');
+    var TemplateElement = require('custom-pages.template.TemplateElement');
 
     /**
      * TemplateContainer

@@ -10,7 +10,7 @@ $margin = $navigationClass == Page::NAV_CLASS_TOPNAV ? -15 : 0;
 <style>
     #iframepage {
         border: none;
-    <?= $margin ? 'margin-top:'.$margin.'px;' : ''?> background: url('<?= Yii::$app->moduleManager->getModule('custom_pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
+    <?= $margin ? 'margin-top:'.$margin.'px;' : ''?> background: url('<?= Yii::$app->moduleManager->getModule('custom-pages')->getPublishedUrl('/loader.gif'); ?>') center center no-repeat;
     }
 </style>
 

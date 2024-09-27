@@ -30,7 +30,7 @@ class ManagePages extends BaseAdminPermission
     /**
      * @inheritdoc
      */
-    protected $moduleId = 'custom_pages';
+    protected $moduleId = 'custom-pages';
 
     /**
      * @inheritdoc

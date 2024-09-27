@@ -6,7 +6,7 @@ $class = ($template->isLayout()) ? 'prview-layout' : 'priview-container';
 
 ?>
 
-<div id="templatePageRoot" data-ui-widget="custom_pages.template.source.TemplateSourcePreview" class="container">
+<div id="templatePageRoot" data-ui-widget="custom-pages.template.source.TemplateSourcePreview" class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="clearfix">
@@ -30,5 +30,3 @@ $class = ($template->isLayout()) ? 'prview-layout' : 'priview-container';
         </div>
     </div>
 </div>
-
-

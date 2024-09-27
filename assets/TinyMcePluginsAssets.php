@@ -14,5 +14,5 @@ class TinyMcePluginsAssets extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@custom_pages/resources/tinymce/plugins';
+    public $sourcePath = '@custom-pages/resources/tinymce/plugins';
 }

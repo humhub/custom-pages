@@ -14,6 +14,6 @@ class ContainerContentItemFixture extends ActiveFixture
 {
 
     public $modelClass = 'humhub\modules\custom_pages\modules\template\models\ContainerContentItem';
-    public $dataFile = '@custom_pages/tests/codeception/fixtures/data/containerContentItem.php';
+    public $dataFile = '@custom-pages/tests/codeception/fixtures/data/containerContentItem.php';
 
 }

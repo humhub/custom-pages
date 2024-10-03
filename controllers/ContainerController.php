@@ -14,7 +14,6 @@ use humhub\modules\custom_pages\models\ContainerPage;
  */
 class ContainerController extends ContentContainerController
 {
-
     /**
      * Is used to view/render a ContainerPage of a certain page content type.
      *
@@ -27,7 +26,7 @@ class ContainerController extends ContentContainerController
     public function actionView($id)
     {
         $page = ContainerPage::find()->contentContainer($this->contentContainer)->where(['custom_pages_container_page.id' => $id])->one();
-        if(!$page) {
+        if (!$page) {
             throw new HttpException(404);
         }
         return $this->redirect($page->getUrl());

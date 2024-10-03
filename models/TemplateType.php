@@ -8,7 +8,6 @@
 
 namespace humhub\modules\custom_pages\models;
 
-
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
@@ -18,22 +17,21 @@ use yii\base\InvalidArgumentException;
 
 class TemplateType extends ContentType
 {
+    public const ID = 5;
 
-    const ID = 5;
-
-    function getId()
+    public function getId()
     {
         return static::ID;
     }
 
-    function getLabel()
+    public function getLabel()
     {
         return Yii::t('CustomPagesModule.base', 'Template');
     }
 
-    function getDescription()
+    public function getDescription()
     {
-       return Yii::t('CustomPagesModule.base', 'Templates allow you to define combinable page fragments with inline edit functionality.');
+        return Yii::t('CustomPagesModule.base', 'Templates allow you to define combinable page fragments with inline edit functionality.');
     }
 
     /**
@@ -52,7 +50,7 @@ class TemplateType extends ContentType
             $templateInstance = new TemplateInstance([
                 'object_model' => get_class($page),
                 'object_id' => $page->id,
-                'template_id' => $page->templateId
+                'template_id' => $page->templateId,
             ]);
             return $templateInstance->save();
         }
@@ -75,24 +73,24 @@ class TemplateType extends ContentType
     {
         $templateInstance = TemplateInstance::findOne(['object_model' => get_class($content) ,'object_id' => $content->id]);
 
-        if(!$templateInstance) {
+        if (!$templateInstance) {
             throw new InvalidArgumentException('Template instance not found!');
         }
 
         $canEdit = PagePermission::canEdit();
         $editMode = isset($options['editMode'])
-            ?  $options['editMode']
+            ? $options['editMode']
             : (bool) Yii::$app->request->get('editMode');
 
         $editMode = $editMode && $canEdit;
 
         $html = '';
 
-        if(!$canEdit && TemplateCache::exists($templateInstance)) {
+        if (!$canEdit && TemplateCache::exists($templateInstance)) {
             $html = TemplateCache::get($templateInstance);
         } else {
             $html = $templateInstance->render($editMode);
-            if(!$canEdit) {
+            if (!$canEdit) {
                 TemplateCache::set($templateInstance, $html);
             }
         }

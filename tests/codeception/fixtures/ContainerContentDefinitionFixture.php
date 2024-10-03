@@ -12,7 +12,6 @@ use yii\test\ActiveFixture;
 
 class ContainerContentDefinitionFixture extends ActiveFixture
 {
-
     public $modelClass = 'humhub\modules\custom_pages\modules\template\models\ContainerContentDefinition';
     public $dataFile = '@custom_pages/tests/codeception/fixtures/data/containerContentDefinition.php';
 

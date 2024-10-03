@@ -17,27 +17,27 @@ use Yii;
  */
 class TemplateElementForm extends \yii\base\Model
 {
-    const SCENARIO_CREATE = 'create';
-    const SCENARIO_EDIT = 'edit';
-    const SCENARIO_EDIT_ADMIN = 'edit-admin';
-    
+    public const SCENARIO_CREATE = 'create';
+    public const SCENARIO_EDIT = 'edit';
+    public const SCENARIO_EDIT_ADMIN = 'edit-admin';
+
     /**
      * The TemplateElement instance.
-     * 
-     * @var \humhub\modules\custom_pages\modules\template\models\TemplateElement 
+     *
+     * @var \humhub\modules\custom_pages\modules\template\models\TemplateElement
      */
     public $element;
 
     /**
      * Default content instance.
-     * 
-     * @var \humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord 
+     *
+     * @var \humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord
      */
     public $content;
-    
+
     /**
      * OwnerContent use_default flag
-     * @var boolean 
+     * @var bool
      */
     public $use_default;
 
@@ -50,10 +50,10 @@ class TemplateElementForm extends \yii\base\Model
     public function rules()
     {
         return [
-            ['use_default', 'safe']
+            ['use_default', 'safe'],
         ];
     }
-    
+
     public function scenarios()
     {
         return [
@@ -62,18 +62,18 @@ class TemplateElementForm extends \yii\base\Model
             self::SCENARIO_EDIT => ['use_default'],
         ];
     }
-    
+
     public function setScenario($value)
     {
         parent::setScenario($value);
-        if($this->element != null) {
+        if ($this->element != null) {
             $this->element->scenario = $value;
         }
-        if($this->content != null) {
+        if ($this->content != null) {
             $this->content->scenario = $value;
         }
     }
-    
+
     public function load($data, $formName = null)
     {
         parent::load($data);
@@ -89,7 +89,7 @@ class TemplateElementForm extends \yii\base\Model
         return $result || $elementLoaded;
     }
 
-    public function validate($attributeNames = NULL, $clearErrors = true)
+    public function validate($attributeNames = null, $clearErrors = true)
     {
         return parent::validate() && $this->element->validate();
     }

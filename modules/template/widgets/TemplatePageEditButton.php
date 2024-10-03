@@ -20,19 +20,18 @@ use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
  */
 class TemplatePageEditButton extends \humhub\components\Widget
 {
-
     /**
      * @var \humhub\modules\custom_pages\models\CustomContentContainer page instance
      */
     public $page;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $canEdit;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $editMode;
 
@@ -52,11 +51,11 @@ class TemplatePageEditButton extends \humhub\components\Widget
         $templateInstance = TemplateInstance::findOne(['object_model' => $ownerModel, 'object_id' => $this->page->id]);
 
         return $this->render('templatePageEditButton', [
-                    'canEdit' => $this->canEdit,
-                    'sguid' => $sguid,
-                    'editMode' => $this->editMode,
-                    'pageId' => $this->page->id,
-                    'templateInstance' => $templateInstance
+            'canEdit' => $this->canEdit,
+            'sguid' => $sguid,
+            'editMode' => $this->editMode,
+            'pageId' => $this->page->id,
+            'templateInstance' => $templateInstance,
         ]);
     }
 }

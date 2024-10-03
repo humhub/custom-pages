@@ -20,7 +20,7 @@
 return [
     ['id' => 1, 'content' => '<p>Default</p>'],
     ['id' => 2, 'content' => '<p>ContainerText</p>'],
-    
+
     ['id' => 3, 'content' => '<p>ContainerText</p>'],
     ['id' => 4, 'content' => '<p>ContainerText</p>'],
     ['id' => 5, 'content' => '<p>ContainerText</p>'],

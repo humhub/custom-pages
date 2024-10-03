@@ -1,7 +1,6 @@
 <?php
 
 use humhub\components\Migration;
-
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\FileDownloadContent;
 use humhub\modules\custom_pages\modules\template\models\ContainerContent;
@@ -25,17 +24,17 @@ class m170413_085114_download_link_template extends Migration
 
         $this->insertSilent('custom_pages_template_container_content', ['definition_id' => $contentDefinitionId]);
         $this->insertSilent('custom_pages_template_owner_content', [
-                'element_name' => 'download_list',
-                'owner_model' => Template::class,
-                'owner_id' => $downloadListTemplateId,
-                'content_type' => ContainerContent::class,
-                'content_id' => $this->db->getLastInsertID()
-            ]);
+            'element_name' => 'download_list',
+            'owner_model' => Template::class,
+            'owner_id' => $downloadListTemplateId,
+            'content_type' => ContainerContent::class,
+            'content_id' => $this->db->getLastInsertID(),
+        ]);
 
         // Create allowed templates setting for download_list definition
         $this->insertSilent('custom_pages_template_container_content_template', [
             'definition_id' => $contentDefinitionId,
-            'template_id' => $downloadItemTemplateId
+            'template_id' => $downloadItemTemplateId,
         ]);
     }
 
@@ -107,7 +106,7 @@ EOT;
             'template_id' => $tmplid,
             'name' => $name,
             'title' => $title,
-            'content_type' => $contentType
+            'content_type' => $contentType,
         ]);
     }
 }

@@ -19,5 +19,5 @@
  */
 return [
     ['id' => 1, 'type' => '5', 'title' => 'test', 'target' => 'TopMenuWidget'],
-    ['id' => 2, 'type' => '5', 'title' => 'test2', 'target' => 'TopMenuWidget']
+    ['id' => 2, 'type' => '5', 'title' => 'test2', 'target' => 'TopMenuWidget'],
 ];

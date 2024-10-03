@@ -18,11 +18,11 @@ return [
     'class' => 'humhub\modules\custom_pages\Module',
     'modules' => [
         'template' => [
-            'class' => 'humhub\modules\custom_pages\modules\template\Module'
+            'class' => 'humhub\modules\custom_pages\modules\template\Module',
         ],
     ],
     'urlManagerRules' => [
-        ['class' => 'humhub\modules\custom_pages\components\PageUrlRule']
+        ['class' => 'humhub\modules\custom_pages\components\PageUrlRule'],
     ],
     'namespace' => 'humhub\modules\custom_pages',
     'events' => [

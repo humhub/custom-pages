@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\custom_pages\interfaces;
-
 
 use Yii;
 use humhub\modules\custom_pages\models\Target;
@@ -26,11 +24,12 @@ class CustomPagesTargetEvent extends CustomPagesEvent
     /**
      * @param $target Target|array
      */
-    public function addTarget($target) {
+    public function addTarget($target)
+    {
         $target = $target instanceof  Target ? $target : new Target($target);
         $target->container = $this->container;
 
-        if(!$target->validate()) {
+        if (!$target->validate()) {
             Yii::warning('Invalid Custom Pages Navigation given in CustomPagesNavigationEvent::addTarget().');
             return;
         }
@@ -38,7 +37,8 @@ class CustomPagesTargetEvent extends CustomPagesEvent
         $this->result[$target->id] = $target;
     }
 
-    public function addTargets($targets) {
+    public function addTargets($targets)
+    {
         foreach ($targets as $target) {
             $this->addTarget($target);
         }

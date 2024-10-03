@@ -16,8 +16,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
  */
 class ContainerPage extends Page implements Searchable
 {
-
-    const NAV_CLASS_SPACE_NAV = 'SpaceMenu';
+    public const NAV_CLASS_SPACE_NAV = 'SpaceMenu';
 
     /**
      * Returns a navigation selection for all navigations this page can be added.
@@ -47,7 +46,7 @@ class ContainerPage extends Page implements Searchable
         $result = $this->defaultAttributeLabels();
         $result['in_new_window'] = Yii::t('CustomPagesModule.models_ContainerPage', 'Open in new window');
 
-        if(PhpType::isType($this->getContentType())) {
+        if (PhpType::isType($this->getContentType())) {
             $contentLabel = Yii::t('CustomPagesModule.models_Page', 'View');
         } else {
             $contentLabel = Yii::t('CustomPagesModule.components_Container', 'Content');
@@ -68,7 +67,7 @@ class ContainerPage extends Page implements Searchable
             LinkType::ID,
             IframeType::ID,
             TemplateType::ID,
-            PhpType::ID
+            PhpType::ID,
         ];
     }
 
@@ -108,7 +107,7 @@ class ContainerPage extends Page implements Searchable
         ];
 
         $container = $this->content->container;
-        if($container->visibility != Space::VISIBILITY_NONE) {
+        if ($container->visibility != Space::VISIBILITY_NONE) {
             $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'Public');
         }
 

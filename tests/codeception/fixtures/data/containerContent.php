@@ -19,5 +19,5 @@
  */
 return [
     ['id' => 1, 'definition_id' => 1],
-    ['id' => 2, 'definition_id' => 2]
+    ['id' => 2, 'definition_id' => 2],
 ];

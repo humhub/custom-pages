@@ -19,7 +19,7 @@
  */
 return [
     ['id' => 1, 'template_id' => 3, 'container_content_id' => 1, 'sort_order' => 0, 'title' => 'test1'],
-    
+
     ['id' => 2, 'template_id' => 4, 'container_content_id' => 2, 'sort_order' => 0, 'title' => 'test2'],
     ['id' => 3, 'template_id' => 4, 'container_content_id' => 2, 'sort_order' => 1, 'title' => 'test3'],
     ['id' => 4, 'template_id' => 4, 'container_content_id' => 2, 'sort_order' => 2, 'title' => 'test4'],

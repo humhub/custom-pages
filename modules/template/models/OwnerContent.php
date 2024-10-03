@@ -27,8 +27,8 @@ class OwnerContent extends ActiveRecord
                 'class' => \humhub\components\behaviors\PolymorphicRelation::class,
                 'mustBeInstanceOf' => [TemplateContentActiveRecord::class],
                 'classAttribute' => 'content_type',
-                'pkAttribute' => 'content_id'
-            ]
+                'pkAttribute' => 'content_id',
+            ],
         ];
     }
 
@@ -118,7 +118,7 @@ class OwnerContent extends ActiveRecord
      */
     public function getOwner()
     {
-        if($this->ownerInstance == null) {
+        if ($this->ownerInstance == null) {
             $this->ownerInstance = self::getOwnerModel($this->owner_model, $this->owner_id);
         }
 
@@ -127,7 +127,7 @@ class OwnerContent extends ActiveRecord
 
     public static function getOwnerModel($model, $id)
     {
-        return call_user_func($model."::findOne", ['id' => $id]);
+        return call_user_func($model . "::findOne", ['id' => $id]);
     }
 
     /**
@@ -166,20 +166,20 @@ class OwnerContent extends ActiveRecord
      * If $contentOnly is set to false the content is rendered with it's container.
      * The container's attributes can be set by means of the $options array.
      *
-     * @param boolean $contentOnly
+     * @param bool $contentOnly
      * @param array $optoins
      * @return string
      */
     public function render($options = [])
     {
-        if($this->use_default) {
+        if ($this->use_default) {
             return ($this->isDefault())
                     ? $this->renderEmpty($options)
                     : $this->defaultContent->render($options);
         }
 
         $instance = $this->getInstance();
-        if($instance != null) {
+        if ($instance != null) {
             return $instance->render($options);
         }
     }
@@ -245,7 +245,7 @@ class OwnerContent extends ActiveRecord
         }
     }
 
-     public static function findByContent($contentType, $contentId = null)
+    public static function findByContent($contentType, $contentId = null)
     {
         if ($contentType instanceof \yii\db\ActiveRecord) {
             $contentId = $contentType->getPrimaryKey();

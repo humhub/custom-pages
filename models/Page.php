@@ -18,15 +18,15 @@ use Yii;
  * user account setting navigation.
  *
  * The followings are the available columns in table 'custom_pages_page':
- * @property integer $id
- * @property integer $type
+ * @property int $id
+ * @property int $type
  * @property string $title
  * @property string $icon
  * @property string $page_content
  * @property string $iframe_attrs
- * @property integer $sort_order
- * @property integer $admin_only
- * @property integer $in_new_window
+ * @property int $sort_order
+ * @property int $admin_only
+ * @property int $in_new_window
  * @property string $target
  * @property string $cssClass
  * @property string $url
@@ -40,11 +40,11 @@ class Page extends CustomContentContainer
      */
     public $wallEntryClass = WallEntry::class;
 
-    const NAV_CLASS_TOPNAV = 'TopMenuWidget';
-    const NAV_CLASS_ACCOUNTNAV = 'AccountMenuWidget';
-    const NAV_CLASS_EMPTY = 'WithOutMenu';
-    const NAV_CLASS_FOOTER = 'FooterMenuWidget';
-    const NAV_CLASS_PEOPLE = 'PeopleButtonsWidget';
+    public const NAV_CLASS_TOPNAV = 'TopMenuWidget';
+    public const NAV_CLASS_ACCOUNTNAV = 'AccountMenuWidget';
+    public const NAV_CLASS_EMPTY = 'WithOutMenu';
+    public const NAV_CLASS_FOOTER = 'FooterMenuWidget';
+    public const NAV_CLASS_PEOPLE = 'PeopleButtonsWidget';
 
     /**
      * @inheritdoc
@@ -182,7 +182,7 @@ class Page extends CustomContentContainer
 
     /**
      * Returns an array of all allowed conten types for this container type.
-     * @return integer[]
+     * @return int[]
      */
     public function getContentTypes()
     {
@@ -192,7 +192,7 @@ class Page extends CustomContentContainer
             MarkdownType::ID,
             IframeType::ID,
             TemplateType::ID,
-            PhpType::ID
+            PhpType::ID,
         ];
     }
 

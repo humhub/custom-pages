@@ -16,7 +16,6 @@ namespace humhub\modules\custom_pages\modules\template;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */

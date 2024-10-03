@@ -17,7 +17,6 @@ use yii\base\Event;
 
 class InterfaceCest
 {
-
     /**
      * @param FunctionalTester $I
      */
@@ -25,11 +24,11 @@ class InterfaceCest
     {
         $I->wantTo('make sure users without create permission can\'t create pages');
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function($event) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function ($event) {
 
-           /* @var $event CustomPagesTargetEvent */
+            /* @var $event CustomPagesTargetEvent */
 
-            if(!$event->container && $event->type === PageType::Page) {
+            if (!$event->container && $event->type === PageType::Page) {
                 $event->addTarget(new Target([
                     'id' => 'test',
                     'name' => 'Test Target',

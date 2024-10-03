@@ -20,7 +20,6 @@ use Yii;
  */
 class AdminMenu extends \humhub\widgets\BaseMenu
 {
-
     public $template = "@humhub/widgets/views/tabMenu";
     public $type = "adminCustomPagesSubNavigation";
 
@@ -32,7 +31,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
                 'url' => Url::toPageOverview(),
                 'sortOrder' => 100,
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages'
-                        && Yii::$app->controller->id == 'page')
+                        && Yii::$app->controller->id == 'page'),
             ]);
         }
 
@@ -52,7 +51,7 @@ class AdminMenu extends \humhub\widgets\BaseMenu
                         && Yii::$app->controller->id == 'config'),
             ]);
         }
-        
+
         parent::init();
     }
 

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\custom_pages\components;
-
 
 use humhub\modules\custom_pages\models\TemplateType;
 use Yii;

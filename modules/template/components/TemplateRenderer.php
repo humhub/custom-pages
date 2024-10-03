@@ -28,7 +28,7 @@ class TemplateRenderer
             $html = TemplateCache::get($templateInstance);
         } else {
             $html = $templateInstance->render($editMode);
-            if(!$editMode) {
+            if (!$editMode) {
                 TemplateCache::set($templateInstance, $html);
             }
         }

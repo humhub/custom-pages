@@ -16,10 +16,9 @@ use yii\db\ActiveQuery;
  */
 abstract class TemplateContentActiveRecord extends ActiveRecord implements ViewableInterface
 {
-
-    const SCENARIO_CREATE = 'create';
-    const SCENARIO_EDIT = 'edit';
-    const SCENARIO_EDIT_ADMIN = 'edit-admin';
+    public const SCENARIO_CREATE = 'create';
+    public const SCENARIO_EDIT = 'edit';
+    public const SCENARIO_EDIT_ADMIN = 'edit-admin';
 
     /**
      * @var string the formname of this model used for loading form data.
@@ -83,7 +82,7 @@ abstract class TemplateContentActiveRecord extends ActiveRecord implements Viewa
     abstract public function renderForm($form);
 
     /**
-     * @return boolean determines if the content instance has currently an attribute set.
+     * @return bool determines if the content instance has currently an attribute set.
      */
     public function hasValues()
     {
@@ -195,7 +194,7 @@ abstract class TemplateContentActiveRecord extends ActiveRecord implements Viewa
     }
 
     /**
-     * @return boolean determines if this content instance has an definition instance relation.
+     * @return bool determines if this content instance has an definition instance relation.
      */
     public function hasDefinition()
     {
@@ -203,7 +202,7 @@ abstract class TemplateContentActiveRecord extends ActiveRecord implements Viewa
     }
 
     /**
-     * @return boolean determines if this content type has an definition type.
+     * @return bool determines if this content type has an definition type.
      */
     public function isDefinitionContent()
     {
@@ -219,7 +218,7 @@ abstract class TemplateContentActiveRecord extends ActiveRecord implements Viewa
         if ($this->isDefinitionContent() && $definition->validate() && $definition->hasValues()) {
             $definition->save(false);
             $this->definition_id = $definition->getPrimaryKey();
-        } else if ($this->isDefinitionContent() && !$definition->isNewRecord && !$definition->hasValues() && $this->scenario === self::SCENARIO_EDIT_ADMIN) {
+        } elseif ($this->isDefinitionContent() && !$definition->isNewRecord && !$definition->hasValues() && $this->scenario === self::SCENARIO_EDIT_ADMIN) {
             // If we reset the default definition to an empty state we remove the definition settings, which will allow the content to define own definitions
             self::updateAll(['definition_id' => null], ['definition_id' => $definition->id]);
             $definition->delete();
@@ -235,7 +234,7 @@ abstract class TemplateContentActiveRecord extends ActiveRecord implements Viewa
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        if(!$this->filesSaved) {
+        if (!$this->filesSaved) {
             $this->filesSaved = true;
             $this->saveFiles();
         }
@@ -284,7 +283,7 @@ abstract class TemplateContentActiveRecord extends ActiveRecord implements Viewa
             'templateContent' => $this,
             'content' => $content,
             'renderOptions' => $options,
-            'renderAttributes' => $attributes
+            'renderAttributes' => $attributes,
         ]);
     }
 

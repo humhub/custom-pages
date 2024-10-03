@@ -28,7 +28,7 @@ class EditElementModal extends \humhub\components\Widget
             'title' => $this->title,
             'contentOnly' => $this->contentOnly,
             'resetUrl' => $this->resetUrl,
-            'isAdminEdit' => $this->isAdminEdit
+            'isAdminEdit' => $this->isAdminEdit,
         ]);
     }
 

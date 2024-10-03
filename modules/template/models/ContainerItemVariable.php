@@ -7,10 +7,10 @@ use yii\base\Model;
 class ContainerItemVariable extends Model
 {
     /**
-     * @var ContainerContentItem 
+     * @var ContainerContentItem
      */
     public $item;
-    
+
     public function getTitle()
     {
         return $this->item->title;

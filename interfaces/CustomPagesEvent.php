@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\modules\custom_pages\interfaces;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;

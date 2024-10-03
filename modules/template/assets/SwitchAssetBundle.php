@@ -11,14 +11,14 @@ class SwitchAssetBundle extends AssetBundle
     public $jsOptions = ['position' => \yii\web\View::POS_BEGIN];
 
     public $css = [
-        'css/bootstrap3/bootstrap-switch.min.css'
+        'css/bootstrap3/bootstrap-switch.min.css',
     ];
-    
+
     public $js = [
-        'js/bootstrap-switch.min.js'
+        'js/bootstrap-switch.min.js',
     ];
-    
+
     public $depends = [
-        'humhub\assets\AppAsset'
+        'humhub\assets\AppAsset',
     ];
 }

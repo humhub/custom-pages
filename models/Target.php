@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\custom_pages\models;
-
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\helpers\Url;
@@ -89,7 +87,7 @@ class Target extends Model
     public function rules()
     {
         return [
-            [['id', 'name'], 'required']
+            [['id', 'name'], 'required'],
         ];
     }
 
@@ -123,11 +121,11 @@ class Target extends Model
      */
     public function isAllowedField($field)
     {
-        if(!isset($this->fieldSettings[$field])) {
+        if (!isset($this->fieldSettings[$field])) {
             return true;
         }
 
-        if($this->fieldSettings[$field] === false) {
+        if ($this->fieldSettings[$field] === false) {
             return false;
         }
 

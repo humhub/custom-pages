@@ -5,17 +5,16 @@ use yii\db\Migration;
 
 class m150916_131805_container extends Migration
 {
-
     public function up()
     {
-        $this->createTable('custom_pages_container_page', array(
+        $this->createTable('custom_pages_container_page', [
             'id' => 'pk',
             'title' => 'varchar(255) NOT NULL',
             'icon' => 'varchar(100)',
             'page_content' => 'TEXT',
             'type' => 'smallint(6) NOT NULL',
             'sort_order' => 'int(11)',
-                ), '');
+        ], '');
     }
 
     public function down()

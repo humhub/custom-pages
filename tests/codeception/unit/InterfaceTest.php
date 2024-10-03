@@ -1,4 +1,5 @@
 <?php
+
 namespace tests\codeception\unit\modules\custom_page;
 
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
@@ -26,9 +27,9 @@ class InterfaceTest extends HumHubDbTestCase
 
         $this->service = new CustomPagesService();
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function($event) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function ($event) {
             /* @var $event CustomPagesTargetEvent */
-            if($event->container && $event->type === PageType::Page) {
+            if ($event->container && $event->type === PageType::Page) {
                 $event->addTarget(new Target([
                     'id' => 'container',
                     'name' => 'Test Container Target',
@@ -36,9 +37,9 @@ class InterfaceTest extends HumHubDbTestCase
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function($event) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function ($event) {
             /* @var $event CustomPagesTargetEvent */
-            if($event->container && $event->type === PageType::Snippet) {
+            if ($event->container && $event->type === PageType::Snippet) {
                 $event->addTarget(new Target([
                     'id' => 'containerSnippet',
                     'name' => 'Test Container Target',
@@ -46,9 +47,9 @@ class InterfaceTest extends HumHubDbTestCase
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function($event) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function ($event) {
             /* @var $event CustomPagesTargetEvent */
-            if(!$event->container && $event->type === PageType::Snippet) {
+            if (!$event->container && $event->type === PageType::Snippet) {
                 $event->addTarget(new Target([
                     'id' => 'snippet',
                     'name' => 'Test Container Target',
@@ -56,20 +57,20 @@ class InterfaceTest extends HumHubDbTestCase
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function($event) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function ($event) {
             /* @var $event CustomPagesTargetEvent */
-            if(!$event->container && $event->type === PageType::Page) {
+            if (!$event->container && $event->type === PageType::Page) {
                 $event->addTarget(new Target([
                     'id' => 'global',
                     'name' => 'Test Target',
-                    'contentTypes' => [MarkdownType::ID, HtmlType::ID]
+                    'contentTypes' => [MarkdownType::ID, HtmlType::ID],
                 ]));
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function($event) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function ($event) {
             /* @var $event CustomPagesTargetEvent */
-            if(!$event->container && $event->type === PageType::Page) {
+            if (!$event->container && $event->type === PageType::Page) {
                 $event->addTarget(new Target([
                     'id' => 'global2',
                     'name' => 'Test2 Target',
@@ -77,8 +78,8 @@ class InterfaceTest extends HumHubDbTestCase
                         'icon' => false,
                         'admin_only' => false,
                         'sort_order' => false,
-                        'cssClass' => false
-                    ]
+                        'cssClass' => false,
+                    ],
                 ]));
             }
         });
@@ -92,7 +93,7 @@ class InterfaceTest extends HumHubDbTestCase
             'title' => 'Test Title',
             'type' => MarkdownType::ID,
             'page_content' => 'Test',
-            'target' => 'global2'
+            'target' => 'global2',
         ]);
 
 
@@ -101,8 +102,8 @@ class InterfaceTest extends HumHubDbTestCase
                 'icon' => 'fa-pencil',
                 'visibility' => Page::VISIBILITY_PUBLIC,
                 'sort_order' => 300,
-                'cssClass' => 'testCss'
-            ]
+                'cssClass' => 'testCss',
+            ],
         ]);
 
         $this->assertTrue($p1->save());
@@ -123,7 +124,7 @@ class InterfaceTest extends HumHubDbTestCase
             'title' => 'Test Title',
             'type' => MarkdownType::ID,
             'page_content' => 'Test',
-            'target' => 'global'
+            'target' => 'global',
         ]);
 
 
@@ -132,8 +133,8 @@ class InterfaceTest extends HumHubDbTestCase
                 'icon' => 'fa-pencil',
                 'visibility' => Page::VISIBILITY_ADMIN_ONLY,
                 'sort_order' => 300,
-                'cssClass' => 'testCss'
-            ]
+                'cssClass' => 'testCss',
+            ],
         ]);
 
         $this->assertTrue($p1->save());
@@ -149,7 +150,7 @@ class InterfaceTest extends HumHubDbTestCase
     public function testTargetAssignment()
     {
         $p1 = new Page([
-            'target' => 'global'
+            'target' => 'global',
         ]);
 
         $this->assertNotNull($p1->getTargetModel());
@@ -164,7 +165,7 @@ class InterfaceTest extends HumHubDbTestCase
             'title' => 'Test Title',
             'type' => MarkdownType::ID,
             'target' => 'global',
-            'icon' => 'fa-pencil'
+            'icon' => 'fa-pencil',
         ]);
 
         $this->assertFalse($p1->save());
@@ -183,7 +184,7 @@ class InterfaceTest extends HumHubDbTestCase
             'type' => MarkdownType::ID,
             'page_content' => 'Test',
             'target' => 'global',
-            'icon' => 'fa-pencil'
+            'icon' => 'fa-pencil',
         ]);
 
         $this->assertFalse($p1->save());
@@ -202,7 +203,7 @@ class InterfaceTest extends HumHubDbTestCase
             'type' => TemplateType::ID,
             'page_content' => 'Test',
             'target' => 'global',
-            'icon' => 'fa-pencil'
+            'icon' => 'fa-pencil',
         ]);
 
         $this->assertFalse($p1->save());
@@ -244,7 +245,7 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $targets = $this->service->getTargets(PageType::Page);
 
-        $targetIds = array_map(function($target) {
+        $targetIds = array_map(function ($target) {
             return $target['id'];
         }, $targets);
 
@@ -258,7 +259,7 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $targets = $this->service->getTargets(PageType::Page, Space::findOne(['id' => 1]));
 
-        $targetIds = array_map(function($target) {
+        $targetIds = array_map(function ($target) {
             return $target['id'];
         }, $targets);
 

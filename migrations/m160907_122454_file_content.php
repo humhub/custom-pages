@@ -2,7 +2,6 @@
 
 use yii\db\Migration;
 
-
 class m160907_122454_file_content extends Migration
 {
     public function up()
@@ -15,8 +14,8 @@ class m160907_122454_file_content extends Migration
             'file_guid' => 'varchar(45) NOT NULL',
         ], '');
     }
-    
-    
+
+
 
     public function down()
     {

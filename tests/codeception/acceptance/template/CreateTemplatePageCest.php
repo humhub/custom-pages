@@ -1,11 +1,11 @@
 <?php
+
 namespace custom_pages\acceptance\template;
 
 use custom_pages\AcceptanceTester;
 
 class CreateTemplatePageCest
 {
-    
     public function testCreateTemplate(AcceptanceTester $I)
     {
         $I->amAdmin();
@@ -14,7 +14,7 @@ class CreateTemplatePageCest
         $I->amOnRoute(['/custom_pages/template/layout-admin']);
         $I->expectTo('see the overview site');
         $I->see('Overview');
-        
+
         $I->click('Create new layout'); // Add Markdown button
 
         $I->waitForElementVisible('#template-name');
@@ -23,10 +23,10 @@ class CreateTemplatePageCest
         $I->fillField('Template[description]', 'Test Content');
         $I->jsClick('#template-allow_for_spaces');
         $I->click('Save');
-        
+
         $I->expectTo('see the edit source view');
         $I->waitForElementVisible('.CodeMirror');
-        
+
         $I->amGoingTo('add a text element');
         $this->clickAddElement($I, 'Text');
         $I->expectTo('see the add text element view');
@@ -36,14 +36,14 @@ class CreateTemplatePageCest
         $I->waitForElementNotVisible('#globalModal');
         $I->expectTo('see the new element added to the source');
         $I->seeInField('#template-form-source', '{{ text }}');
-        
+
         $I->amGoingTo('add a richtext element');
         $this->clickAddElement($I, 'Richtext');
         $I->fillField('TemplateElement[name]', 'richtext');
         $I->jsFillField('RichtextContent[content]', '<p>Richtext Test</p>');
         $I->click('.btn-primary', '#globalModal');
         $I->waitForElementNotVisible('#globalModal');
-        
+
         $I->amGoingTo('add a image element');
         $this->clickAddElement($I, 'Image');
         $I->fillField('TemplateElement[name]', 'tmplimage');
@@ -59,11 +59,11 @@ class CreateTemplatePageCest
         $I->fillField('ImageContent[alt]', 'This is my test alt text');
         $I->click('Save', '#globalModal');
         $I->waitForElementNotVisible('#globalModal');
-        
+
         $I->amGoingTo('add a file element');
         $this->clickAddElement($I, 'File');
         $I->fillField('TemplateElement[name]', 'file');
-        
+
         //Workaround
         $I->jsShow('.uploadElementImage', 'type');
 
@@ -82,8 +82,9 @@ class CreateTemplatePageCest
         $I->see('#tmplimage');
         $I->see('#file');
     }
-    
-    private function clickAddElement(AcceptanceTester $I, $type) {
+
+    private function clickAddElement(AcceptanceTester $I, $type)
+    {
         $I->click('Add Element');
         $I->wait(1);
         $I->click($type);

@@ -13,20 +13,19 @@ use Yii;
  * ContainerSnippets are snippets which can be added to a space sidebar.
  *
  * The followings are the available columns in table 'custom_pages_container_page':
- * @property integer $id
- * @property integer $type
+ * @property int $id
+ * @property int $type
  * @property string $title
  * @property string $icon
  * @property string $page_content
  * @property string $iframe_attrs
- * @property integer $sort_order
- * @property integer $admin_only
+ * @property int $sort_order
+ * @property int $admin_only
  * @property string $cssClass
  */
 class ContainerSnippet extends Snippet
 {
-
-    const SIDEEBAR_STREAM = 'SpaceStreamSidebar';
+    public const SIDEEBAR_STREAM = 'SpaceStreamSidebar';
 
     /**
      * @return string the associated database table name
@@ -39,7 +38,7 @@ class ContainerSnippet extends Snippet
     public static function getDefaultTargets()
     {
         return [
-            ['id' => self::SIDEEBAR_STREAM, 'name' => Yii::t('CustomPagesModule.base', 'Stream'), 'accessRoute' => '/space/space/home']
+            ['id' => self::SIDEEBAR_STREAM, 'name' => Yii::t('CustomPagesModule.base', 'Stream'), 'accessRoute' => '/space/space/home'],
         ];
     }
 

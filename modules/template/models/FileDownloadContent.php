@@ -19,7 +19,7 @@ use humhub\modules\file\libs\FileHelper;
 class FileDownloadContent extends TemplateContentActiveRecord
 {
     public static $label = 'File Download';
-    
+
     public $file;
 
     /**
@@ -29,21 +29,21 @@ class FileDownloadContent extends TemplateContentActiveRecord
     {
         return 'custom_pages_template_file_download_content';
     }
-    
+
     /**
      * @inheritdoc
      */
     public function init()
     {
-        if($this->showFileinfo === null) {
+        if ($this->showFileinfo === null) {
             $this->showFileinfo = 1;
         }
 
-        if($this->showIcon === null) {
+        if ($this->showIcon === null) {
             $this->showIcon = 1;
         }
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -55,7 +55,7 @@ class FileDownloadContent extends TemplateContentActiveRecord
         $result[] = [['showFileinfo', 'showIcon'], 'integer'];
         return $result;
     }
-       
+
     /**
      * @inheritdoc
      */
@@ -67,7 +67,7 @@ class FileDownloadContent extends TemplateContentActiveRecord
         array_push($scenarios[self::SCENARIO_EDIT], 'file_guid', 'title', 'style', 'cssClass', 'showFileinfo', 'showIcon');
         return $scenarios;
     }
-    
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -79,53 +79,54 @@ class FileDownloadContent extends TemplateContentActiveRecord
             'style' => Yii::t('CustomPagesModule.base', 'Style'),
             'cssClass' => Yii::t('CustomPagesModule.base', 'Css Class'),
             'showFileinfo' => Yii::t('CustomPagesModule.base', 'Show additional file information (size)'),
-            'showIcon' => Yii::t('CustomPagesModule.base', 'Add a file icon before the title')
+            'showIcon' => Yii::t('CustomPagesModule.base', 'Add a file icon before the title'),
         ];
     }
-    
+
     public function saveFiles()
     {
         $files = File::findByRecord($this);
 
-        foreach($files as $file) {
-            if($file->guid !== $this->file_guid) {
+        foreach ($files as $file) {
+            if ($file->guid !== $this->file_guid) {
                 $file->delete();
             }
         }
-        
+
         $this->fileManager->attach($this->file_guid);
     }
-    
+
     public function getLabel()
     {
         return static::$label;
     }
-    
+
     public function getFile()
     {
         return File::findOne(['guid' => $this->file_guid]);
     }
-    
+
     public function hasFile()
     {
         return $this->file_guid != null && $this->getFile() != null;
     }
-    
+
     public function getUrl()
     {
         $file = $this->getFile();
         return ($file != null) ? $file->getUrl() : null;
     }
-    
+
     public function getDownloadUrl()
     {
         $file = $this->getFile();
-        if($file) {
+        if ($file) {
             return Url::to(['/file/file/download', 'guid' => $file->guid]);
         }
     }
-    
-    public function copy() {
+
+    public function copy()
+    {
         $clone = $this->createCopy();
         $clone->file_guid = $this->file_guid;
         $clone->title = $this->title;
@@ -137,31 +138,31 @@ class FileDownloadContent extends TemplateContentActiveRecord
     }
 
     public function render($options = [])
-    {   
-        if($this->hasFile()) {
+    {
+        if ($this->hasFile()) {
             $file =  $this->getFile();
             $options['htmlOptions'] = [
                 'href' => $this->getDownloadUrl(),
                 'style' => Html::encode($this->style),
                 'class' => Html::encode($this->cssClass),
                 'target' => '_blank',
-                'data-pjax-prevent' => '1'
+                'data-pjax-prevent' => '1',
             ];
-            
+
             $content = ($this->title) ? $this->title : $file->file_name;
             $content = Html::encode($content);
-            
+
             $fileInfo = FileHelper::getFileInfos($file);
-            
-            if($this->showIcon) {
-                $options['htmlOptions']['class'] .= ' mime '.$fileInfo['mimeIcon'];
+
+            if ($this->showIcon) {
+                $options['htmlOptions']['class'] .= ' mime ' . $fileInfo['mimeIcon'];
             }
-            
-            if($this->showFileinfo) {
-                $content .= Html::tag('small', ' - '.$fileInfo['size_format'], ['class' => 'file-fileInfo']);
+
+            if ($this->showFileinfo) {
+                $content .= Html::tag('small', ' - ' . $fileInfo['size_format'], ['class' => 'file-fileInfo']);
             }
-            
-            if($this->isEditMode($options)) {
+
+            if ($this->isEditMode($options)) {
                 return $this->wrap('a', $content, $options);
             } else {
                 return Html::tag('a', $content, $options['htmlOptions']);
@@ -169,7 +170,7 @@ class FileDownloadContent extends TemplateContentActiveRecord
         }
         return '';
     }
-    
+
     public function renderEmpty($options = [])
     {
         return '';
@@ -180,7 +181,7 @@ class FileDownloadContent extends TemplateContentActiveRecord
         return TemplateContentFormFields::widget([
             'type' => 'fileDownload',
             'form' => $form,
-            'model' => $this
+            'model' => $this,
         ]);
     }
 

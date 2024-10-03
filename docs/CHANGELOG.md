@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.9 (Unreleased)
+---------------------------
+- Enh #: Use PHP CS Fixer
+
 1.10.8 (September 24, 2024)
 ---------------------------
 - Fix #347: Fix errors after save a new page

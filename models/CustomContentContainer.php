@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\models;
 
+use humhub\interfaces\ViewableInterface;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -36,7 +37,7 @@ use Yii;
  * @property string $cssClass
  * @property string $url
  */
-abstract class CustomContentContainer extends ContentActiveRecord
+abstract class CustomContentContainer extends ContentActiveRecord implements ViewableInterface
 {
     use PhpPageContainer;
     use TemplatePageContainer;
@@ -313,7 +314,10 @@ abstract class CustomContentContainer extends ContentActiveRecord
         return true;
     }
 
-    public function canView()
+    /**
+     * @inheritdoc
+     */
+    public function canView($user = null): bool
     {
         if ($this->admin_only && !static::canSeeAdminOnlyContent($this->content->container)) {
             return false;
@@ -329,7 +333,7 @@ abstract class CustomContentContainer extends ContentActiveRecord
             return true;
         }
 
-        return $this->content->canView();
+        return $this->content->canView($user);
     }
 
     public static function canSeeAdminOnlyContent(ContentContainerActiveRecord $container = null)

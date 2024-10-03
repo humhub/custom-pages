@@ -10,6 +10,9 @@ use yii\helpers\Url;
  * @var $template_id int
  * @var $container_content_id int
  * @var $title string
+ *
+ * @property-read ContainerContent $container
+ * @property-read Template $template
  */
 class ContainerContentItem extends \humhub\components\ActiveRecord implements TemplateContentOwner
 {
@@ -106,5 +109,21 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
     public static function findByTemplateId($templateId)
     {
         return self::find()->where(['template_id' => $templateId]);
+    }
+
+    public function getTemplateInstance(): ?TemplateInstance
+    {
+        $container = $this->container;
+        if ($container instanceof ContainerContent) {
+            $ownerContent = $container->ownerContent;
+            if ($ownerContent instanceof OwnerContent) {
+                $owner = $ownerContent->getOwner();
+                if ($owner instanceof TemplateInstance) {
+                    return $owner;
+                }
+            }
+        }
+
+        return null;
     }
 }

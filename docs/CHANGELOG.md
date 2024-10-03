@@ -3,6 +3,7 @@ Changelog
 
 1.10.9 (Unreleased)
 ---------------------------
+- Fix #349: Fix visibility of attached images to template page
 - Enh #351: Use PHP CS Fixer
 
 1.10.8 (September 24, 2024)

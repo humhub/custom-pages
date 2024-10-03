@@ -345,11 +345,16 @@ abstract class TemplateContentActiveRecord extends ActiveRecord implements Viewa
         }
 
         $ownerModel = $ownerContent->getOwner();
-        if (!$ownerModel instanceof TemplateInstance) {
-            return null;
+
+        if ($ownerModel instanceof ContainerContentItem) {
+            $ownerModel = $ownerModel->getTemplateInstance();
         }
 
-        return $ownerModel->getObject();
+        if ($ownerModel instanceof TemplateInstance) {
+            return $ownerModel->getObject();
+        }
+
+        return null;
     }
 
     /**
@@ -359,12 +364,12 @@ abstract class TemplateContentActiveRecord extends ActiveRecord implements Viewa
     {
         $customContentContainer = $this->getCustomContentContainer();
 
-        if ($customContentContainer instanceof ContentActiveRecord) {
-            return $customContentContainer->content->canView($user);
-        }
-
         if ($customContentContainer instanceof ViewableInterface) {
             return $customContentContainer->canView($user);
+        }
+
+        if ($customContentContainer instanceof ContentActiveRecord) {
+            return $customContentContainer->content->canView($user);
         }
 
         return false;

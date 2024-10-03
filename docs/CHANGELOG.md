@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.9 (Unreleased)
+---------------------------
+- Fix #349: Fix visibility of attached images to template page
+
 1.10.8 (September 24, 2024)
 ---------------------------
 - Fix #347: Fix errors after save a new page

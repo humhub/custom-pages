@@ -12,5 +12,4 @@ use Codeception\Module;
  */
 class CustomPagesHelper extends Module
 {
-
 }

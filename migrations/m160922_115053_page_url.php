@@ -6,7 +6,7 @@ class m160922_115053_page_url extends Migration
 {
     public function up()
     {
-        $this->addColumn('custom_pages_page','url', $this->string(45));
+        $this->addColumn('custom_pages_page', 'url', $this->string(45));
         #$this->addColumn('custom_pages_container_page','url', $this->string(45));
     }
 

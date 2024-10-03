@@ -12,7 +12,6 @@ use humhub\modules\custom_pages\models\Page;
 
 class TemplateInstanceTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     public $owner1;
@@ -31,7 +30,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
             'scenario' => 'edit',
             'name' => 'containerTestTmpl',
             'description' => 'My Test Template',
-            'type' => Template::TYPE_LAYOUT
+            'type' => Template::TYPE_LAYOUT,
         ]);
 
         $owner->save();
@@ -47,7 +46,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $owner2 = new TemplateInstance([
             'object_model' => Page::class,
             'object_id' => $page->id,
-            'template_id' => $owner->id
+            'template_id' => $owner->id,
         ]);
 
         $owner2->save();
@@ -130,7 +129,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
             'scenario' => 'edit',
             'name' => 'containerTestTmpl',
             'description' => 'My Test Template',
-            'type' => Template::TYPE_LAYOUT
+            'type' => Template::TYPE_LAYOUT,
         ]);
 
         $owner->save();
@@ -146,7 +145,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $owner2 = new TemplateInstance([
             'object_model' => Page::class,
             'object_id' => $page->id,
-            'template_id' => $owner->id
+            'template_id' => $owner->id,
         ]);
 
         $owner2->save();

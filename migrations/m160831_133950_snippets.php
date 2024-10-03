@@ -4,7 +4,6 @@ use yii\db\Migration;
 
 class m160831_133950_snippets extends Migration
 {
-
     public function up()
     {
         $this->createTable('custom_pages_snippet', [
@@ -15,7 +14,7 @@ class m160831_133950_snippets extends Migration
             'type' => 'smallint(6) NOT NULL',
             'sort_order' => 'int(11)',
             'sidebar' => 'varchar(255) NOT NULL',
-                ], '');
+        ], '');
 
         $this->createTable('custom_pages_container_snippet', [
             'id' => 'pk',
@@ -24,7 +23,7 @@ class m160831_133950_snippets extends Migration
             'page_content' => 'TEXT',
             'type' => 'smallint(6) NOT NULL',
             'sort_order' => 'int(11)',
-                ], '');
+        ], '');
     }
 
     public function down()

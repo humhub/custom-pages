@@ -13,13 +13,12 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
  */
 class TextContent extends TemplateContentActiveRecord
 {
-
     public static $label = 'Text';
 
     public function init()
     {
         parent::init();
-        if($this->isNewRecord) {
+        if ($this->isNewRecord) {
             $this->inline_text = 1;
         }
     }
@@ -112,7 +111,7 @@ class TextContent extends TemplateContentActiveRecord
      */
     public function renderEmpty($options = [])
     {
-        if($this->inline_text) {
+        if ($this->inline_text) {
             $options['class'] = 'emptyBlock text';
             return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_RichtextContent', 'Empty Text'), $options);
         }
@@ -126,9 +125,9 @@ class TextContent extends TemplateContentActiveRecord
     public function renderForm($form)
     {
         return TemplateContentFormFields::widget([
-                    'type' => 'text',
-                    'form' => $form,
-                    'model' => $this
+            'type' => 'text',
+            'form' => $form,
+            'model' => $this,
         ]);
     }
 

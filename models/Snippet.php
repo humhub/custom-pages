@@ -14,20 +14,19 @@ use Yii;
  * Snippets are custom sidebar panels which can be added to the dashboard sidebar.
  *
  * The followings are the available columns in table 'custom_pages_container_page':
- * @property integer $id
- * @property integer $type
+ * @property int $id
+ * @property int $type
  * @property string $title
  * @property string $icon
  * @property string $page_content
  * @property string $iframe_attrs
- * @property integer $sort_order
- * @property integer $admin_only
+ * @property int $sort_order
+ * @property int $admin_only
  * @property string $cssClass
  */
 class Snippet extends CustomContentContainer
 {
-
-    const SIDEBAR_DASHBOARD = 'Dasboard';
+    public const SIDEBAR_DASHBOARD = 'Dasboard';
 
     /**
      * @return string the associated database table name

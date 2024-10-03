@@ -1,11 +1,11 @@
 <?php
+
 namespace custom_pages\acceptance;
 
 use custom_pages\AcceptanceTester;
 
 class CreateGlobalPageCest
 {
-    
     public function testCreateMarkdownPageOnTopMenu(AcceptanceTester $I)
     {
         $I->amAdmin();
@@ -28,7 +28,7 @@ class CreateGlobalPageCest
         $I->fillField('#page-page_content .humhub-ui-richtext', 'Test Content');
         $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->fillField('Page[sort_order]', '400');
-        $I->selectOption('Page[icon]',  ['value' => 'fa-adn']);
+        $I->selectOption('Page[icon]', ['value' => 'fa-adn']);
 
         $I->click('Save');
         $I->waitForElementVisible('#topbar-second .fa-adn');
@@ -40,7 +40,7 @@ class CreateGlobalPageCest
         $I->waitForText('Test Content');
         $I->see('Test title');
     }
-    
+
     public function testCreateLinkPageOnAccountMenu(AcceptanceTester $I)
     {
         $I->amAdmin();
@@ -100,7 +100,7 @@ class CreateGlobalPageCest
         $I->fillField('#page-page_content .humhub-ui-richtext', 'Custom people page content');
         $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->fillField('Page[sort_order]', '200');
-        $I->selectOption('Page[icon]',  ['value' => 'fa-anchor']);
+        $I->selectOption('Page[icon]', ['value' => 'fa-anchor']);
 
         $I->click('Save');
         $I->waitForText('People Buttons');

@@ -11,7 +11,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
  *
  * @property string $content
  */
- class HumHubRichtextContent extends TemplateContentActiveRecord
+class HumHubRichtextContent extends TemplateContentActiveRecord
 {
     public static $label = 'HumHub Richtext';
 
@@ -55,23 +55,24 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
         return self::$label;
     }
 
-    public function copy() {
+    public function copy()
+    {
         return new HumHubRichtextContent(['content' => $this->content]);
     }
 
     public function render($options = [])
     {
-        if($this->isEditMode($options)) {
+        if ($this->isEditMode($options)) {
             return $this->wrap('div', Richtext::output($this->content), $options);
         }
 
         return Richtext::output($this->content);
     }
 
-     public function saveFiles()
-     {
-         Richtext::postProcess($this->content, $this);
-     }
+    public function saveFiles()
+    {
+        Richtext::postProcess($this->content, $this);
+    }
 
     public function renderEmpty($options = [])
     {
@@ -83,7 +84,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
         return TemplateContentFormFields::widget([
             'type' => 'humhub_richtext',
             'form' => $form,
-            'model' => $this
+            'model' => $this,
         ]);
     }
 

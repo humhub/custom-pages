@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\custom_pages\widgets;
-
 
 use humhub\components\Widget;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
@@ -42,8 +40,8 @@ class TargetPageList extends Widget
         $dataProvider = new ActiveDataProvider([
             'query' => $this->customPagesService->findContentByTarget($this->target->id, $this->pageType, $this->target->container),
             'pagination' => [
-                'pageSize' => 5
-            ]
+                'pageSize' => 5,
+            ],
         ]);
 
         return $this->render('targetPageList', ['target' => $this->target, 'dataProvider' => $dataProvider, 'pageType' => $this->pageType]);

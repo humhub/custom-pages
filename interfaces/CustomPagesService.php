@@ -21,8 +21,7 @@ use yii\base\InvalidArgumentException;
  */
 class CustomPagesService extends Component
 {
-
-    const EVENT_FETCH_TARGETS = 'fetchTargets';
+    public const EVENT_FETCH_TARGETS = 'fetchTargets';
 
     private static $pageTargetCache = [];
     private static $snippetTargetCache = [];
@@ -57,12 +56,12 @@ class CustomPagesService extends Component
             case PageType::Page:
                 if (!$event->container) {
                     $event->addTargets(Page::getDefaultTargets());
-                } else if($event->container instanceof Space) {
+                } elseif ($event->container instanceof Space) {
                     $event->addTargets(ContainerPage::getDefaultTargets());
                 }
                 break;
             case PageType::Snippet:
-                if(!$event->container) {
+                if (!$event->container) {
                     $event->addTargets(Snippet::getDefaultTargets());
                 } else {
                     $event->addTargets(ContainerSnippet::getDefaultTargets());
@@ -145,7 +144,7 @@ class CustomPagesService extends Component
         $contentClass = $this->getContentClass($type, $container);
 
         /* @var $query ActiveQueryContent */
-        $query = call_user_func($contentClass.'::find');
+        $query = call_user_func($contentClass . '::find');
 
         $query->where(['target' => $targetId]);
 
@@ -159,7 +158,7 @@ class CustomPagesService extends Component
             $query->andWhere($query->stateFilterCondition);
         }
 
-        if(!CustomContentContainer::canSeeAdminOnlyContent($container)) {
+        if (!CustomContentContainer::canSeeAdminOnlyContent($container)) {
             $query->andWhere(['admin_only' => 0]);
         }
 
@@ -173,10 +172,10 @@ class CustomPagesService extends Component
      */
     private function getContentClass($type, ContentContainerActiveRecord $container = null)
     {
-        if(PageType::Page === $type) {
-            return ($container) ?  ContainerPage::class : Page::class;
-        } else if(PageType::Snippet === $type) {
-           return ($container) ?  ContainerSnippet::class : Snippet::class;
+        if (PageType::Page === $type) {
+            return ($container) ? ContainerPage::class : Page::class;
+        } elseif (PageType::Snippet === $type) {
+            return ($container) ? ContainerSnippet::class : Snippet::class;
         } else {
             throw new InvalidArgumentException('Invalid page type selection in findContentByTarget()');
         }
@@ -195,8 +194,8 @@ class CustomPagesService extends Component
     public function getSingleContent($id, $targetId, $type, ContentContainerActiveRecord $container = null)
     {
         $contentClass = $this->getContentClass($type, $container);
-        $tableName = call_user_func($contentClass.'::tableName');
-        return $this->findContentByTarget($targetId, $type, $container)->where([$tableName.'.id' => $id])->one();
+        $tableName = call_user_func($contentClass . '::tableName');
+        return $this->findContentByTarget($targetId, $type, $container)->where([$tableName . '.id' => $id])->one();
     }
 
 }

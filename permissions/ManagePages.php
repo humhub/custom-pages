@@ -16,7 +16,6 @@ use humhub\modules\admin\components\BaseAdminPermission;
  */
 class ManagePages extends BaseAdminPermission
 {
-
     /**
      * @inheritdoc
      */

@@ -23,15 +23,15 @@ class TemplateContentFormFields extends \humhub\components\Widget
 
     public function run()
     {
-        if($this->view == null) {
-            $this->view = $this->type.'ContentFormFields';
+        if ($this->view == null) {
+            $this->view = $this->type . 'ContentFormFields';
         }
-        
+
         return $this->render($this->view, [
             'form' => $this->form,
             'model' => $this->model,
             'fileList' => $this->fileList,
-            'isAdminEdit' =>  $this->model->scenario === 'edit-admin' || $this->model->scenario === 'create'
+            'isAdminEdit' =>  $this->model->scenario === 'edit-admin' || $this->model->scenario === 'create',
         ]);
     }
 

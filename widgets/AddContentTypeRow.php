@@ -18,7 +18,6 @@ use humhub\modules\custom_pages\models\Target;
  */
 class AddContentTypeRow extends \yii\base\Widget
 {
-
     /**
      * @var ContentType
      */
@@ -34,17 +33,17 @@ class AddContentTypeRow extends \yii\base\Widget
      * @var string
      */
     public $pageType;
-    
+
     public $hide = false;
-    
+
     public function run()
     {
-        if(!$this->hide) {
+        if (!$this->hide) {
             return $this->render('addContentTypeRow', [
                 'target' => $this->target,
                 'pageType' => $this->pageType,
                 'contentType' => $this->contentType,
-                'disabled' => $this->disabled
+                'disabled' => $this->disabled,
             ]);
         }
     }

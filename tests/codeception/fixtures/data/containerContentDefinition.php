@@ -19,5 +19,5 @@
  */
 return [
     ['id' => 1, 'allow_multiple' => 0, 'is_default' => 1, 'is_inline' => 0],
-    ['id' => 2, 'allow_multiple' => 1, 'is_default' => 1, 'is_inline' => 1]
+    ['id' => 2, 'allow_multiple' => 1, 'is_default' => 1, 'is_inline' => 1],
 ];

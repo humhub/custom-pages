@@ -16,7 +16,6 @@ use Yii;
 use yii\helpers\Html;
 use yii\web\HttpException;
 
-
 /**
  * Controller for viewing Pages.
  *
@@ -24,14 +23,13 @@ use yii\web\HttpException;
  */
 class ViewController extends AbstractCustomContainerController
 {
-
     /**
      * @inhritdoc
      */
     protected function getAccessRules()
     {
         return [
-            ['strict']
+            ['strict'],
         ];
     }
 
@@ -60,7 +58,7 @@ class ViewController extends AbstractCustomContainerController
 
         $this->view->pageTitle = Html::encode($page->title);
 
-        if(!$page->getTargetModel()->isAllowedContentType($page->type)) {
+        if (!$page->getTargetModel()->isAllowedContentType($page->type)) {
             throw new HttpException(404);
         }
 
@@ -76,7 +74,7 @@ class ViewController extends AbstractCustomContainerController
      */
     public function renderView($page)
     {
-        if($this->contentContainer) {
+        if ($this->contentContainer) {
             return $this->renderContainerView($page);
         }
 
@@ -123,7 +121,7 @@ class ViewController extends AbstractCustomContainerController
                     'page' => $page,
                     'md' => $page->page_content,
                     'navigationClass' => $page->getTargetId(),
-                    'title' => $page->title
+                    'title' => $page->title,
                 ]);
             case PhpType::ID:
                 return $this->render('@custom_pages/views/global/php', ['page' => $page]);
@@ -143,7 +141,7 @@ class ViewController extends AbstractCustomContainerController
         $editMode = Yii::$app->request->get('editMode');
         $canEdit = $page->content->canEdit();
 
-        if($editMode && !$canEdit) {
+        if ($editMode && !$canEdit) {
             throw new HttpException(403);
         }
 
@@ -153,7 +151,7 @@ class ViewController extends AbstractCustomContainerController
             'page' => $page,
             'editMode' => $editMode,
             'canEdit' => $canEdit,
-            'html' => $html
+            'html' => $html,
         ]);
     }
 

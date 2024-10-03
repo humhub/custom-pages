@@ -22,7 +22,7 @@ class EditMultipleElementsModal extends \humhub\components\Widget
     {
         return $this->render('editMultipleElements', [
             'model' => $this->model,
-            'title' => $this->title
+            'title' => $this->title,
         ]);
     }
 

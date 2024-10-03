@@ -10,8 +10,7 @@ namespace humhub\modules\custom_pages\modules\template\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use \humhub\modules\custom_pages\modules\template\models\Template;
-
+use humhub\modules\custom_pages\modules\template\models\Template;
 
 /**
  * Description of UserSearch
@@ -20,7 +19,6 @@ use \humhub\modules\custom_pages\modules\template\models\Template;
  */
 class TemplateSearch extends Template
 {
-    
     public function rules()
     {
         return [
@@ -48,11 +46,11 @@ class TemplateSearch extends Template
     public function search($params)
     {
         $query = Template::find();
-        
-        if($this->type != null) {
+
+        if ($this->type != null) {
             $query->where(['type' => $this->type]);
         }
-        
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => ['pageSize' => 50],
@@ -64,7 +62,7 @@ class TemplateSearch extends Template
                 'name',
                 'allow_for_space',
                 'is_root',
-            ]
+            ],
         ]);
 
         $this->load($params);

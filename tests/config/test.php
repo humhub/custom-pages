@@ -16,8 +16,5 @@ return [
         'page' => 'tests\codeception\fixtures\modules\custom_pages\template\PageFixture',
         'snippet' => 'tests\codeception\fixtures\modules\custom_pages\template\SnippetFixture',
         'containerSnippet' => 'tests\codeception\fixtures\modules\custom_pages\template\ContainerSnippetFixture',
-    ]
+    ],
 ];
-
-
-

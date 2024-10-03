@@ -15,9 +15,8 @@ use humhub\components\Widget;
  */
 class PageIconSelect extends Widget
 {
-
     public $page;
-    
+
     public function run()
     {
         return $this->render('pageIconSelect', [

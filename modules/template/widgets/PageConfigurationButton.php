@@ -19,7 +19,7 @@ use humhub\modules\custom_pages\modules\template\models\PagePermission;
 class PageConfigurationButton extends \humhub\components\Widget
 {
     /**
-     * @var integer
+     * @var int
      */
     public $pageId;
 

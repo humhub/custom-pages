@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\modules\custom_pages\models;
 
 use Yii;
@@ -9,10 +8,9 @@ use yii\widgets\ActiveForm;
 
 abstract class ContentType extends Model
 {
-
     protected $hasContent = true;
 
-    abstract function getId();
+    abstract public function getId();
 
     public static function getById($type)
     {
@@ -34,24 +32,26 @@ abstract class ContentType extends Model
         }
     }
 
-    public abstract function getLabel();
+    abstract public function getLabel();
 
-    public abstract function getViewName();
+    abstract public function getViewName();
 
-    public abstract function render(CustomContentContainer $content, $options = []);
+    abstract public function render(CustomContentContainer $content, $options = []);
 
-    public abstract function getDescription();
+    abstract public function getDescription();
 
-    public abstract function renderFormField(ActiveForm $form, CustomContentContainer $page);
+    abstract public function renderFormField(ActiveForm $form, CustomContentContainer $page);
 
-    public function getContentLabel() {
+    public function getContentLabel()
+    {
         return Yii::t('CustomPagesModule.components_Container', 'Content');
     }
 
     /**
      * @return bool
      */
-    public function hasContent() {
+    public function hasContent()
+    {
         return $this->hasContent;
     }
 
@@ -66,11 +66,14 @@ abstract class ContentType extends Model
      * @param array $changedAttributes
      * @return bool
      */
-    public function afterSave($page, $insert, $changedAttributes) {
+    public function afterSave($page, $insert, $changedAttributes)
+    {
         return true;
     }
 
-    public function afterDelete($page) {}
+    public function afterDelete($page)
+    {
+    }
 
     /**
      * @param $id int|ContentType
@@ -78,7 +81,7 @@ abstract class ContentType extends Model
      */
     public static function isType($id)
     {
-        if($id instanceof self) {
+        if ($id instanceof self) {
             $id = $id->getId();
         }
 
@@ -88,7 +91,7 @@ abstract class ContentType extends Model
     /**
      * @return ContentType[]
      */
-    public final static function getContentTypes()
+    final public static function getContentTypes()
     {
         return [
             MarkdownType::instance(),
@@ -96,7 +99,7 @@ abstract class ContentType extends Model
             IframeType::instance(),
             TemplateType::instance(),
             HtmlType::instance(),
-            PhpType::instance()
+            PhpType::instance(),
         ];
     }
 }

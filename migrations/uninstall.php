@@ -4,7 +4,6 @@ use yii\db\Migration;
 
 class uninstall extends Migration
 {
-
     public function up()
     {
         $this->dropTable('custom_pages_template_container_content_item');
@@ -25,10 +24,10 @@ class uninstall extends Migration
 
         $this->dropTable('custom_pages_page');
         $this->dropTable('custom_pages_container_page');
-        
+
         $this->dropTable('custom_pages_container_snippet');
         $this->dropTable('custom_pages_snippet');
-        
+
     }
 
     public function down()

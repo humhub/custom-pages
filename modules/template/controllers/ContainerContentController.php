@@ -20,7 +20,6 @@ use humhub\modules\custom_pages\modules\template\components\TemplateCache;
  */
 class ContainerContentController extends \humhub\components\Controller
 {
-
     /**
      * @inerhitdoc
      */
@@ -38,8 +37,8 @@ class ContainerContentController extends \humhub\components\Controller
      * and an owner definition ($ownerModel, $ownerId), which defines the actual owner of the element.
      *
      * @param string $ownerModel
-     * @param integer $ownerId
-     * @param integer $ownerContentId
+     * @param int $ownerId
+     * @param int $ownerContentId
      * @return array
      * @throws \yii\base\InvalidRouteException
      */
@@ -75,7 +74,7 @@ class ContainerContentController extends \humhub\components\Controller
      *
      * Note: The given ownerContent has to be the actual OwnerContent and not a default OwnerContent.
      *
-     * @param integer $ownerContentId id of actual ownerContent
+     * @param int $ownerContentId id of actual ownerContent
      * @param OwnerContent $ownerContent actual (non default) ownerContent instance
      * @return mixed|\yii\web\Response
      * @throws \yii\web\HttpException
@@ -92,25 +91,25 @@ class ContainerContentController extends \humhub\components\Controller
         // If the ContentContainerDefinition only allows one specific template, we skip the template selection.
         if ($ownerContent->instance->isSingleAllowedTemplate()) {
             return $this->runAction('edit-add-item', [
-                        'templateId' => $ownerContent->instance->allowedTemplates[0]->id,
-                        'ownerContent' => $ownerContent,
-                        'cguid' => $cguid
+                'templateId' => $ownerContent->instance->allowedTemplates[0]->id,
+                'ownerContent' => $ownerContent,
+                'cguid' => $cguid,
             ]);
         }
 
         return $this->asJson([
-                    'output' => $this->renderAjax('addItemChooseTemplateModal', [
-                        'allowedTemplateSelection' => $this->getAllowedTemplateSelection($ownerContent->instance),
-                        'action' => Url::to(['edit-add-item', 'ownerContentId' => $ownerContentId, 'cguid' => $cguid])
-                    ])
+            'output' => $this->renderAjax('addItemChooseTemplateModal', [
+                'allowedTemplateSelection' => $this->getAllowedTemplateSelection($ownerContent->instance),
+                'action' => Url::to(['edit-add-item', 'ownerContentId' => $ownerContentId, 'cguid' => $cguid]),
+            ]),
         ]);
     }
 
     /**
      * Creates a selection array in form of 'template.id' => 'template.name' for all allowed Templates of the
      * given ContainerContent instance.
-     * 
-     * @param \humhub\modules\custom_pages\modules\template\models\ContainerContent $containerContent 
+     *
+     * @param \humhub\modules\custom_pages\modules\template\models\ContainerContent $containerContent
      * @return array
      */
     protected function getAllowedTemplateSelection($containerContent)
@@ -133,9 +132,9 @@ class ContainerContentController extends \humhub\components\Controller
      * - Template - provided as post/get templateId or as $itemTemplate instance.
      *
      *
-     * @param integer $ownerContentId id of the actual OwnerContent instance.
+     * @param int $ownerContentId id of the actual OwnerContent instance.
      * @param type $ownerContent instance of the actual OwnerContent.
-     * @param integer $templateId item template id.
+     * @param int $templateId item template id.
      * @param type $itemTemplate Template instance of the itemt template.
      * @return \yii\web\Response
      * @throws \yii\web\HttpException
@@ -172,18 +171,18 @@ class ContainerContentController extends \humhub\components\Controller
             TemplateCache::flushByOwnerContent($ownerContent);
             $variable = new OwnerContentVariable(['ownerContent' => $ownerContent]);
             return $this->asJson([
-                        'success' => true,
-                        'id' => $ownerContent->id,
-                        'output' => $variable->render(true)
+                'success' => true,
+                'id' => $ownerContent->id,
+                'output' => $variable->render(true),
             ]);
         }
 
         return $this->asJson([
-                    'output' => $this->renderAjaxPartial(EditContainerItemModal::widget([
-                        'model' => $form,
-                        'title' => Yii::t('CustomPagesModule.controllers_AdminController', '<strong>Add</strong> {templateName} item', ['templateName' => $form->template->name]),
-                        'action' => Url::to(['edit-add-item', 'ownerContentId' => $ownerContent->id, 'templateId' => $itemTemplate->id, 'cguid' => $cguid])
-                    ]))
+            'output' => $this->renderAjaxPartial(EditContainerItemModal::widget([
+                'model' => $form,
+                'title' => Yii::t('CustomPagesModule.controllers_AdminController', '<strong>Add</strong> {templateName} item', ['templateName' => $form->template->name]),
+                'action' => Url::to(['edit-add-item', 'ownerContentId' => $ownerContent->id, 'templateId' => $itemTemplate->id, 'cguid' => $cguid]),
+            ])),
         ]);
     }
 
@@ -203,16 +202,16 @@ class ContainerContentController extends \humhub\components\Controller
             TemplateCache::flushByOwnerContent($ownerContent);
 
             return $this->asJson([
-                        'success' => true,
-                        'output' => $form->owner->render(true, $form->owner->container->definition->is_inline)
+                'success' => true,
+                'output' => $form->owner->render(true, $form->owner->container->definition->is_inline),
             ]);
         }
 
         return $this->asJson([
             'output' => $this->renderAjaxPartial(EditContainerItemModal::widget([
                 'model' => $form,
-                'title' => Yii::t('CustomPagesModule.controllers_AdminController', '<strong>Edit</strong> item')
-            ]))
+                'title' => Yii::t('CustomPagesModule.controllers_AdminController', '<strong>Edit</strong> item'),
+            ])),
         ]);
     }
 
@@ -233,7 +232,7 @@ class ContainerContentController extends \humhub\components\Controller
 
         return $this->asJson([
             'success' => true,
-            'output' => $variable->render(true)
+            'output' => $variable->render(true),
         ]);
     }
 
@@ -257,7 +256,7 @@ class ContainerContentController extends \humhub\components\Controller
         $variable = new OwnerContentVariable(['ownerContent' => $ownerContent]);
         return [
             'success' => true,
-            'output' => $variable->render(true)
+            'output' => $variable->render(true),
         ];
     }
 

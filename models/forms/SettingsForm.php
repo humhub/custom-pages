@@ -8,19 +8,18 @@
 
 namespace humhub\modules\custom_pages\models\forms;
 
-
 use Yii;
 use yii\base\Model;
 
 class SettingsForm extends Model
 {
-    const DEFAULT_VIEW_PATH_PAGES = '@webroot/php-pages/global_pages/';
-    const DEFAULT_VIEW_PATH_SNIPPETS = '@webroot/php-pages/global_snippets/';
-    const DEFAULT_VIEW_PATH_CONTAINER_PAGES = '@webroot/php-pages/container_pages/';
-    const DEFAULT_VIEW_PATH_CONTAINER_SNIPPETS = '@webroot/php-pages/container_snippets/';
+    public const DEFAULT_VIEW_PATH_PAGES = '@webroot/php-pages/global_pages/';
+    public const DEFAULT_VIEW_PATH_SNIPPETS = '@webroot/php-pages/global_snippets/';
+    public const DEFAULT_VIEW_PATH_CONTAINER_PAGES = '@webroot/php-pages/container_pages/';
+    public const DEFAULT_VIEW_PATH_CONTAINER_SNIPPETS = '@webroot/php-pages/container_snippets/';
 
     /**
-     * @var integer
+     * @var int
      */
     public $phpPagesActive;
 
@@ -75,7 +74,7 @@ class SettingsForm extends Model
 
     public function validateViewPath($attribute, $params)
     {
-        if(!is_dir(Yii::getAlias($this->$attribute)) && $this->phpPagesActive) {
+        if (!is_dir(Yii::getAlias($this->$attribute)) && $this->phpPagesActive) {
             $this->addError($attribute, Yii::t('CustomPagesModule.models_SettignsForm', 'The given view file path does not exist.'));
         }
     }
@@ -86,11 +85,11 @@ class SettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'phpPagesActive' => Yii::t('CustomPagesModule.models_SettignsForm','Activate PHP based Pages and Snippets'),
-            'phpGlobalPagePath' => Yii::t('CustomPagesModule.models_SettignsForm','PHP view path for global custom pages'),
-            'phpGlobalSnippetPath' => Yii::t('CustomPagesModule.models_SettignsForm','PHP view path for global custom snippets'),
-            'phpContainerPagePath' => Yii::t('CustomPagesModule.models_SettignsForm','PHP view path for custom space pages'),
-            'phpContainerSnippetPath' => Yii::t('CustomPagesModule.models_SettignsForm','PHP view path for custom space snippets'),
+            'phpPagesActive' => Yii::t('CustomPagesModule.models_SettignsForm', 'Activate PHP based Pages and Snippets'),
+            'phpGlobalPagePath' => Yii::t('CustomPagesModule.models_SettignsForm', 'PHP view path for global custom pages'),
+            'phpGlobalSnippetPath' => Yii::t('CustomPagesModule.models_SettignsForm', 'PHP view path for global custom snippets'),
+            'phpContainerPagePath' => Yii::t('CustomPagesModule.models_SettignsForm', 'PHP view path for custom space pages'),
+            'phpContainerSnippetPath' => Yii::t('CustomPagesModule.models_SettignsForm', 'PHP view path for custom space snippets'),
         ];
     }
 
@@ -100,7 +99,7 @@ class SettingsForm extends Model
     public function attributeHints()
     {
         return [
-            'phpPagesActive' => Yii::t('CustomPagesModule.models_SettignsForm','If disabled, existing php pages will still be online, but can\'t be created.'),
+            'phpPagesActive' => Yii::t('CustomPagesModule.models_SettignsForm', 'If disabled, existing php pages will still be online, but can\'t be created.'),
         ];
     }
 
@@ -109,34 +108,34 @@ class SettingsForm extends Model
      */
     public function save()
     {
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             return false;
         }
 
         $this->settings->set('phpPagesActive', $this->phpPagesActive);
 
-        if(empty($this->phpGlobalPagePath)) {
+        if (empty($this->phpGlobalPagePath)) {
             $this->settings->delete('phpGlobalPagePath');
             $this->phpGlobalPagePath = static::DEFAULT_VIEW_PATH_PAGES;
         } else {
             $this->settings->set('phpGlobalPagePath', $this->phpGlobalPagePath);
         }
 
-        if(empty($this->phpGlobalSnippetPath)) {
+        if (empty($this->phpGlobalSnippetPath)) {
             $this->settings->delete('phpGlobalSnippetPath');
             $this->phpGlobalSnippetPath = static::DEFAULT_VIEW_PATH_SNIPPETS;
         } else {
             $this->settings->set('phpGlobalSnippetPath', $this->phpGlobalSnippetPath);
         }
 
-        if(empty($this->phpContainerPagePath)) {
+        if (empty($this->phpContainerPagePath)) {
             $this->settings->delete('phpContainerPagePath');
             $this->phpContainerPagePath = static::DEFAULT_VIEW_PATH_SNIPPETS;
         } else {
             $this->settings->set('phpContainerPagePath', $this->phpContainerPagePath);
         }
 
-        if(empty($this->phpContainerSnippetPath)) {
+        if (empty($this->phpContainerSnippetPath)) {
             $this->settings->delete('phpContainerSnippetPath');
             $this->phpContainerSnippetPath = static::DEFAULT_VIEW_PATH_CONTAINER_SNIPPETS;
         } else {

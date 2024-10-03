@@ -11,13 +11,11 @@ namespace humhub\modules\custom_pages\widgets;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\helpers\Url;
-use \humhub\widgets\BaseMenu;
+use humhub\widgets\BaseMenu;
 use Yii;
-
 
 class OverviewSubMenu extends BaseMenu
 {
-
     /**
      * @inheritdoc
      */
@@ -37,7 +35,7 @@ class OverviewSubMenu extends BaseMenu
             'url' => Url::toPageOverview($this->container),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages'
-                && Yii::$app->controller->id == 'page')
+                && Yii::$app->controller->id == 'page'),
         ]);
 
         $this->addItem([
@@ -45,7 +43,7 @@ class OverviewSubMenu extends BaseMenu
             'url' => Url::toSnippetOverview($this->container),
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages'
-                && Yii::$app->controller->id == 'snippet')
+                && Yii::$app->controller->id == 'snippet'),
         ]);
     }
 

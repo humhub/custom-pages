@@ -19,7 +19,6 @@ use humhub\modules\custom_pages\models\Page;
  */
 class PageUrlRule extends Component implements UrlRuleInterface
 {
-
     /**
      * @var string default route to page home
      */

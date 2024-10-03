@@ -16,7 +16,6 @@ use yii\helpers\Url;
  */
 class TemplateAdminMenu extends \humhub\widgets\BaseMenu
 {
-
     /**
      * @inheritdoc
      */
@@ -33,22 +32,22 @@ class TemplateAdminMenu extends \humhub\widgets\BaseMenu
             'sortOrder' => 100,
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template' && Yii::$app->controller->id == 'layout-admin'),
         ]);
-        
+
         $this->addItem([
             'label' => Yii::t('CustomPagesModule.base', 'Snipped-Layouts'),
             'url' => Url::to(['/custom_pages/template/snipped-layout-admin']),
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template' && Yii::$app->controller->id == 'snipped-layout-admin' ),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template' && Yii::$app->controller->id == 'snipped-layout-admin'),
         ]);
-        
+
         $this->addItem([
             'label' => Yii::t('CustomPagesModule.base', 'Containers'),
             'url' => Url::to(['/custom_pages/template/container-admin']),
             'sortOrder' => 300,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template' && Yii::$app->controller->id == 'container-admin' ),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template' && Yii::$app->controller->id == 'container-admin'),
         ]);
-        
-        
+
+
         parent::init();
     }
 

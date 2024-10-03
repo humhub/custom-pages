@@ -12,7 +12,6 @@ use humhub\modules\custom_pages\models\Page;
  */
 class TemplatePage extends \humhub\widgets\JsWidget
 {
-    
     /**
      * @inheritdoc
      */
@@ -29,12 +28,12 @@ class TemplatePage extends \humhub\widgets\JsWidget
     public $init = true;
 
     /**
-     * @var boolean defines if this page can be edited by the current user
+     * @var bool defines if this page can be edited by the current user
      */
     public $canEdit;
 
     /**
-     * @var boolean defines the editmode is active
+     * @var bool defines the editmode is active
      */
     public $editMode;
 
@@ -44,7 +43,7 @@ class TemplatePage extends \humhub\widgets\JsWidget
     public $page;
 
     /**
-     * @var \humhub\modules\content\components\ContentContainerActiveRecord 
+     * @var \humhub\modules\content\components\ContentContainerActiveRecord
      */
     public $contentContainer;
 
@@ -70,7 +69,7 @@ class TemplatePage extends \humhub\widgets\JsWidget
     public function run()
     {
         \humhub\modules\custom_pages\modules\template\assets\TemplatePageStyleAsset::register($this->getView());
-        
+
         if ($this->canEdit && $this->editMode) {
             \humhub\modules\custom_pages\modules\template\assets\InlineEditorAsset::register($this->getView());
 
@@ -86,7 +85,7 @@ class TemplatePage extends \humhub\widgets\JsWidget
                     'confirmDeleteElementBody' => Yii::t('CustomPagesModule.modules_template_widgets_views_confirmDeletionModal', 'Do you really want to delete this content?'),
                     'confirmDeleteItemHeader' => Yii::t('CustomPagesModule.modules_template_controller_OwnerContentController', '<strong>Confirm</strong> container item deletion'),
                     'confirmDeleteItemBody' => Yii::t('CustomPagesModule.modules_template_widgets_views_confirmDeletionModal', 'Are you sure you want to delete this container item?'),
-                ]
+                ],
             ]);
         }
 
@@ -99,16 +98,16 @@ class TemplatePage extends \humhub\widgets\JsWidget
     public function getAttributes()
     {
         //TODO: fullscreen flag
-        if($this->page instanceof Page && !$this->contentContainer && $this->page->getTargetId() !== Page::NAV_CLASS_ACCOUNTNAV) {
+        if ($this->page instanceof Page && !$this->contentContainer && $this->page->getTargetId() !== Page::NAV_CLASS_ACCOUNTNAV) {
             $cssClass = 'container ';
         } else {
             $cssClass = '';
         }
 
-        
+
         $cssClass .= ($this->page->hasAttribute('cssClass') && !empty($this->page->cssClass)) ? $this->page->cssClass : 'custom-pages-page';
         return [
-            'class' => $cssClass
+            'class' => $cssClass,
         ];
     }
 

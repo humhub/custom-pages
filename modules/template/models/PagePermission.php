@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -21,12 +21,12 @@ class PagePermission
 {
     public static function canEdit()
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return false;
         }
 
         $container = ContentContainerHelper::getCurrent();
-        if($container instanceof Space) {
+        if ($container instanceof Space) {
             return $container->isAdmin();
         }
 
@@ -37,6 +37,5 @@ class PagePermission
     {
         return !Yii::$app->user->isGuest && Yii::$app->user->isAdmin();
     }
-    
-}
 
+}

@@ -14,7 +14,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
 class RichtextContent extends TemplateContentActiveRecord
 {
     public static $label = 'Richtext';
-     
+
     /**
      * @return string the associated database table name
      */
@@ -22,15 +22,15 @@ class RichtextContent extends TemplateContentActiveRecord
     {
         return 'custom_pages_template_richtext_content';
     }
-    
+
     public function rules()
     {
         $result = parent::rules();
         $result[] = ['content', 'safe'];
         return $result;
     }
-    
-        
+
+
     public function scenarios()
     {
         $scenarios = parent::scenarios();
@@ -39,7 +39,7 @@ class RichtextContent extends TemplateContentActiveRecord
         $scenarios[self::SCENARIO_EDIT][] = 'content';
         return $scenarios;
     }
-    
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -49,27 +49,28 @@ class RichtextContent extends TemplateContentActiveRecord
             'content' => 'Content',
         ];
     }
-    
+
     public function getLabel()
     {
         return self::$label;
     }
-    
-    public function copy() {
+
+    public function copy()
+    {
         $clone = new RichtextContent();
         $clone->content = $this->content;
         return $clone;
     }
 
     public function render($options = [])
-    {   
-        if($this->isEditMode($options)) {
+    {
+        if ($this->isEditMode($options)) {
             return $this->wrap('div', $this->purify($this->content), $options);
-        } 
-        
+        }
+
         return $this->purify($this->content);
     }
-    
+
     public function renderEmpty($options = [])
     {
         return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_RichtextContent', 'Empty Richtext'), $options);
@@ -80,7 +81,7 @@ class RichtextContent extends TemplateContentActiveRecord
         return TemplateContentFormFields::widget([
             'type' => 'richtext',
             'form' => $form,
-            'model' => $this
+            'model' => $this,
         ]);
     }
 

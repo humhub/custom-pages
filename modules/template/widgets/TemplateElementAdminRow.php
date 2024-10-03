@@ -21,30 +21,30 @@ class TemplateElementAdminRow extends \humhub\components\Widget
      * @var \humhub\modules\custom_pages\modules\template\models\TemplateElement
      */
     public $model;
-    
+
     /**
      * @var \humhub\modules\custom_pages\modules\template\models\forms\TemplateElementForm
      */
     public $form;
-    
+
     /**
-     * @var boolean determines if the output should contain a saved user feedback 
+     * @var bool determines if the output should contain a saved user feedback
      */
     public $saved;
 
     public function run()
     {
-        if($this->form != null) {
+        if ($this->form != null) {
             $this->model = $this->form->element;
         }
-        
-        if($this->saved) {
+
+        if ($this->saved) {
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('CustomPagesModule.base', 'Saved'));
         }
-        
+
         return $this->render('templateElementAdminRow', [
             'model' => $this->model,
-            'saved' => $this->saved
+            'saved' => $this->saved,
         ]);
     }
 

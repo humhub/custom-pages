@@ -19,7 +19,6 @@ use yii\db\ActiveQuery;
  */
 class TemplateInstance extends ActiveRecord implements TemplateContentOwner
 {
-
     /**
      * @inheritdoc
      */
@@ -28,8 +27,8 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
         return [
             [
                 'class' => \humhub\components\behaviors\PolymorphicRelation::class,
-                'mustBeInstanceOf' => [ActiveRecord::class]
-            ]
+                'mustBeInstanceOf' => [ActiveRecord::class],
+            ],
         ];
     }
 
@@ -57,7 +56,7 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
      */
     public function afterDelete()
     {
-        forEach (OwnerContent::findByOwner($this)->all() as $content) {
+        foreach (OwnerContent::findByOwner($this)->all() as $content) {
             $content->delete();
         }
     }
@@ -65,7 +64,7 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
     /**
      * Returns the default element of the element identified by $elementName of the given TemplateInstance identified by $id.
      *
-     * @param \humhub\modules\custom_pages\modules\template\models\TemplateInstance|integer $id
+     * @param \humhub\modules\custom_pages\modules\template\models\TemplateInstance|int $id
      * @param string $elementName
      * @return type
      */
@@ -80,9 +79,11 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
         $query = self::find()->where(['template_id' => $templateId]);
 
         if ($contentState !== null) {
-            $query->leftJoin(Content::tableName(),
+            $query->leftJoin(
+                Content::tableName(),
                 Content::tableName() . '.object_model = ' . self::tableName() . '.object_model AND ' .
-                Content::tableName() . '.object_id = ' . self::tableName() . '.object_id')
+                Content::tableName() . '.object_id = ' . self::tableName() . '.object_id',
+            )
                 ->andWhere([Content::tableName() . '.state' => $contentState]);
         }
 

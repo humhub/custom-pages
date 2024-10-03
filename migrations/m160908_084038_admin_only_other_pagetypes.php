@@ -4,7 +4,6 @@ use yii\db\Migration;
 
 class m160908_084038_admin_only_other_pagetypes extends Migration
 {
-
     public function up()
     {
         $this->addColumn('custom_pages_snippet', 'admin_only', 'boolean DEFAULT 0');

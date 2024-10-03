@@ -28,7 +28,6 @@ use yii\helpers\Html;
  */
 class Events
 {
-
     public static function onBeforeRequest()
     {
         try {
@@ -99,7 +98,7 @@ class Events
                         'group' => 'modules',
                         'htmlOptions' => [
                             'target' => ($page->in_new_window) ? '_blank' : '',
-                            'data-pjax-prevent' => 1
+                            'data-pjax-prevent' => 1,
                         ],
                         'url' => $page->getUrl(),
                         'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',

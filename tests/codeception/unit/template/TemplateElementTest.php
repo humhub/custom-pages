@@ -12,7 +12,6 @@ use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 
 class TemplateElementTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     public $template;

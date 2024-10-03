@@ -11,7 +11,6 @@ use yii\db\ActiveRecord;
  */
 abstract class ContentDefinition extends ActiveRecord
 {
-
     private $formName;
 
     public function setFormName($formName)

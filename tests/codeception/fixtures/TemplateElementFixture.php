@@ -12,7 +12,6 @@ use yii\test\ActiveFixture;
 
 class TemplateElementFixture extends ActiveFixture
 {
-
     public $modelClass = 'humhub\modules\custom_pages\modules\template\models\TemplateElement';
     public $dataFile = '@custom_pages/tests/codeception/fixtures/data/templateElement.php';
     public $depends = ['tests\codeception\fixtures\modules\custom_pages\template\TemplateFixture'];

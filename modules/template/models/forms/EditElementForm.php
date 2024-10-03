@@ -17,23 +17,23 @@ use humhub\modules\custom_pages\modules\template\models\TemplateElement;
  * @author buddha
  */
 class EditElementForm extends TemplateElementForm
-{   
+{
     public $defaultOwnerContent;
-    
-    
+
+
     /**
      * @inheritdoc
      */
     public function attributeLabels()
     {
         return [
-            'use_default' => Yii::t('CustomPagesModule.modules_template_models_forms_EditElementForm', 'Use empty content')
+            'use_default' => Yii::t('CustomPagesModule.modules_template_models_forms_EditElementForm', 'Use empty content'),
         ];
     }
-    
+
     /**
      * Initializes the form data.
-     * 
+     *
      * @param type $templateId
      * @param type $type
      */
@@ -43,22 +43,22 @@ class EditElementForm extends TemplateElementForm
         $this->defaultOwnerContent = $this->element->getDefaultContent(true);
         $this->use_default = $this->defaultOwnerContent->use_default;
         $this->content = $this->defaultOwnerContent->getInstance(true);
-    }    
-    
+    }
+
     public function save()
     {
-        if($this->validate()) {
+        if ($this->validate()) {
             $this->element->save();
-            
+
             // Try saving the default content if
-            if($this->content->save()) {
+            if ($this->content->save()) {
                 $this->defaultOwnerContent->setContent($this->content);
                 $this->defaultOwnerContent->use_default = $this->use_default;
                 $this->defaultOwnerContent->save();
             }
             return true;
-        } 
-        
+        }
+
         return false;
     }
 }

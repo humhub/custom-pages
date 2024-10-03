@@ -15,7 +15,6 @@ namespace humhub\modules\custom_pages\modules\template\models\forms;
  */
 class AddItemEditForm extends EditItemForm
 {
-
     public $ownerContent;
 
     public function setItemTemplate($itemTemplate)
@@ -24,12 +23,12 @@ class AddItemEditForm extends EditItemForm
         $this->owner = $this->ownerContent->instance->createEmptyItem($this->template->id);
         $this->prepareContentInstances();
     }
-    
+
     public function save()
     {
         $this->owner->title = $this->title;
         $this->owner->save();
         return parent::save(false);
     }
-   
+
 }

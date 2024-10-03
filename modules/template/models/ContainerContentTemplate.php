@@ -7,8 +7,8 @@ namespace humhub\modules\custom_pages\modules\template\models;
  *
  * The followings are the available columns in table 'custom_pages_page':
  */
- class ContainerContentTemplate extends \humhub\components\ActiveRecord
-{    
+class ContainerContentTemplate extends \humhub\components\ActiveRecord
+{
     /**
      * @return string the associated database table name
      */
@@ -16,20 +16,20 @@ namespace humhub\modules\custom_pages\modules\template\models;
     {
         return 'custom_pages_template_container_content_template';
     }
-    
+
     public function rules()
     {
         return [
             [['template_id', 'definition_id'], 'required'],
-            [['template_id', 'definition_id'], 'integer']
+            [['template_id', 'definition_id'], 'integer'],
         ];
     }
-    
+
     public function getTemplate()
     {
         return $this->hasOne(Template::class, ['id' => 'template_id']);
     }
-    
+
     public function getContent()
     {
         return $this->hasOne(ContainerContent::class, ['id' => 'definition_id']);

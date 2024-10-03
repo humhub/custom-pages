@@ -8,30 +8,29 @@
 
 namespace humhub\modules\custom_pages\models;
 
-
 use yii\widgets\ActiveForm;
 use Yii;
 
 class PhpType extends ContentType
 {
+    public const ID = 6;
 
-    const ID = 6;
-
-    function getId()
+    public function getId()
     {
         return static::ID;
     }
 
-    function getLabel()
+    public function getLabel()
     {
         return Yii::t('CustomPagesModule.base', 'PHP');
     }
 
-    public function getContentLabel() {
+    public function getContentLabel()
+    {
         return Yii::t('CustomPagesModule.form_labels', 'View');
     }
 
-    function getDescription()
+    public function getDescription()
     {
         return Yii::t('CustomPagesModule.base', 'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.');
     }

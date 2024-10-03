@@ -40,7 +40,6 @@ use yii\data\ActiveDataProvider;
  */
 class AdminController extends \humhub\modules\admin\components\Controller
 {
-
     /**
      * Defines the template type this controller should manage.
      *
@@ -68,7 +67,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             'helpText' => $this->indexHelp,
             'type' => $this->type,
             'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel
+            'searchModel' => $searchModel,
         ]);
     }
 
@@ -122,7 +121,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         return $this->render('@custom_pages/modules/template/views/admin/editSource', [
             'model' => $model,
-            'contentTypes' => $this->getContentTypes()
+            'contentTypes' => $this->getContentTypes(),
         ]);
     }
 
@@ -140,13 +139,13 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $dataProvider = new ActiveDataProvider([
             'query' => $model->getLinkedRecordsQuery(),
             'pagination' => [
-                'pageSize' => 10
-            ]
+                'pageSize' => 10,
+            ],
         ]);
 
         return $this->render('@custom_pages/modules/template/views/admin/editUsage', [
             'model' => $model,
-            'dataProvider' => $dataProvider
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -188,7 +187,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $result = $this->renderAjaxPartial(EditElementModal::widget([
             'model' => $form,
             'isAdminEdit' => true,
-            'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Add</strong> new {type} element', ['type' => $form->getLabel()])
+            'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Add</strong> new {type} element', ['type' => $form->getLabel()]),
         ]));
 
         return $this->getJsonEditElementResult(false, $result, $form);
@@ -217,7 +216,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             'model' => $form,
             'isAdminEdit' => true,
             'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> element {name}', ['name' => $form->element->name]),
-            'resetUrl' => \yii\helpers\Url::to(['reset-element', 'id' => $id])
+            'resetUrl' => \yii\helpers\Url::to(['reset-element', 'id' => $id]),
         ]));
 
         return $this->getJsonEditElementResult(false, $result, $form);
@@ -242,7 +241,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         return $this->asJson([
             'success' => true,
             'id' => $id,
-            'output' => $this->renderAjaxPartial(TemplateElementAdminRow::widget(['model' => $element, 'saved' => true]))
+            'output' => $this->renderAjaxPartial(TemplateElementAdminRow::widget(['model' => $element, 'saved' => true])),
         ]);
     }
 
@@ -264,12 +263,12 @@ class AdminController extends \humhub\modules\admin\components\Controller
         if ($reload != null) {
             return $this->renderPartial('@custom_pages/modules/template/views/admin/preview', [
                 'template' => $template,
-                'editView' => $editView
+                'editView' => $editView,
             ]);
         } else {
             return $this->render('@custom_pages/modules/template/views/admin/preview', [
                 'template' => $template,
-                'editView' => $editView
+                'editView' => $editView,
             ]);
         }
     }
@@ -277,7 +276,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
     /**
      * Creates a json result array used by multiple actions.
      *
-     * @param boolean $success defines if the process was successfull e.g. saving an element
+     * @param bool $success defines if the process was successfull e.g. saving an element
      * @param mixed $content content result
      * @param mixed $form Form model
      * @return Response
@@ -288,7 +287,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             'success' => $success,
             'output' => $content,
             'name' => $form->element->name,
-            'id' => $form->element->id
+            'id' => $form->element->id,
         ]);
     }
 
@@ -328,7 +327,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         $this->asJson([
             'success' => true,
-            'id' => $id
+            'id' => $id,
         ]);
     }
 
@@ -347,7 +346,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             TemplateCache::flushByTemplateId($id);
             return $this->asJson([
                 'success' => true,
-                'output' => $this->renderAjaxPartial(TemplateContentTable::widget(['template' => $form->template, 'saved' => true]))
+                'output' => $this->renderAjaxPartial(TemplateContentTable::widget(['template' => $form->template, 'saved' => true])),
             ]);
         }
 
@@ -355,8 +354,8 @@ class AdminController extends \humhub\modules\admin\components\Controller
             'success' => false,
             'output' => $this->renderAjaxPartial(EditMultipleElementsModal::widget([
                 'model' => $form,
-                'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> {templateName}', ['templateName' => $form->template->name])
-            ]))
+                'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> {templateName}', ['templateName' => $form->template->name]),
+            ])),
         ]);
     }
 

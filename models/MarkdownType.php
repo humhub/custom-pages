@@ -8,7 +8,6 @@
 
 namespace humhub\modules\custom_pages\models;
 
-
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use yii\widgets\ActiveForm;
@@ -17,9 +16,9 @@ use humhub\modules\file\models\File;
 
 class MarkdownType extends ContentType
 {
-    const ID = 4;
+    public const ID = 4;
 
-    function getId()
+    public function getId()
     {
         return static::ID;
     }
@@ -42,12 +41,12 @@ class MarkdownType extends ContentType
         return true;
     }
 
-    function getLabel()
+    public function getLabel()
     {
         return Yii::t('CustomPagesModule.base', 'MarkDown');
     }
 
-    function getDescription()
+    public function getDescription()
     {
         return Yii::t('CustomPagesModule.base', 'Allows you to add content in MarkDown syntax.');
     }
@@ -64,6 +63,6 @@ class MarkdownType extends ContentType
 
     public function renderFormField(ActiveForm $form, CustomContentContainer $page)
     {
-       return  $form->field($page, $page->getPageContentProperty())->widget(RichTextField::class, [ 'pluginOptions' => ['maxHeight' => '500px']]);
+        return  $form->field($page, $page->getPageContentProperty())->widget(RichTextField::class, [ 'pluginOptions' => ['maxHeight' => '500px']]);
     }
 }

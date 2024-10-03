@@ -15,7 +15,7 @@ class m190213_135906_text_edit_mode extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('custom_pages_template_text_content', 'inline_text',  Schema::TYPE_BOOLEAN. ' DEFAULT 1');
+        $this->addColumn('custom_pages_template_text_content', 'inline_text', Schema::TYPE_BOOLEAN . ' DEFAULT 1');
     }
 
     /**

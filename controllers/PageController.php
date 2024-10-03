@@ -64,7 +64,7 @@ class PageController extends AbstractCustomContainerController
         }
 
         return [
-            ['permissions' => [ManageModules::class, ManagePages::class]]
+            ['permissions' => [ManageModules::class, ManagePages::class]],
         ];
     }
 
@@ -107,7 +107,7 @@ class PageController extends AbstractCustomContainerController
         return $this->render('@custom_pages/views/common/list', [
             'targets' => $this->customPagesService->getTargets($this->getPageType(), $this->contentContainer),
             'pageType' => $this->getPageType(),
-            'subNav' => $this->getSubNav()
+            'subNav' => $this->getSubNav(),
         ]);
     }
 
@@ -126,7 +126,7 @@ class PageController extends AbstractCustomContainerController
      *
      * @see getPageClassName() which returns the actual page type.
      * @param string $targetId
-     * @param integer $type
+     * @param int $type
      * @return string view
      * @throws \Exception
      */
@@ -148,7 +148,7 @@ class PageController extends AbstractCustomContainerController
             'model' => $model,
             'target' => $target,
             'pageType' => $this->getPageType(),
-            'subNav' => $this->getSubNav()
+            'subNav' => $this->getSubNav(),
         ]);
     }
 
@@ -158,8 +158,8 @@ class PageController extends AbstractCustomContainerController
      *
      * @see getPageClassName() which returns the actual page type.
      * @param null $targetId
-     * @param integer $type content type
-     * @param integer $id
+     * @param int $type content type
+     * @param int $id
      * @return string
      * @throws HttpException
      * @throws \yii\base\Exception
@@ -169,7 +169,7 @@ class PageController extends AbstractCustomContainerController
     public function actionEdit($targetId = null, $type = null, $id = null)
     {
         /* @var CustomContentContainer $page*/
-       $page = $this->findByid($id);
+        $page = $this->findByid($id);
 
         if (!$page && !$targetId) {
             throw new HttpException(400, 'Invalid request data!');
@@ -186,7 +186,7 @@ class PageController extends AbstractCustomContainerController
 
         $isNew = $page->isNewRecord;
 
-        if($this->savePage($page)) {
+        if ($this->savePage($page)) {
             return (TemplateType::isType($type) && $isNew)
                 ? $this->redirect(Url::toInlineEdit($page, $this->contentContainer))
                 : $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));
@@ -199,7 +199,7 @@ class PageController extends AbstractCustomContainerController
         return $this->render('@custom_pages/views/common/edit', [
             'page' => $page,
             'pageType' => $this->getPageType(),
-            'subNav' => $this->getSubNav()
+            'subNav' => $this->getSubNav(),
         ]);
     }
 
@@ -211,7 +211,7 @@ class PageController extends AbstractCustomContainerController
      */
     protected function savePage($page)
     {
-        if(!$page->load(Yii::$app->request->post())) {
+        if (!$page->load(Yii::$app->request->post())) {
             return false;
         }
         $transaction = Page::getDb()->beginTransaction();
@@ -219,10 +219,10 @@ class PageController extends AbstractCustomContainerController
         try {
             $saved = $page->save();
             $transaction->commit();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $transaction->rollBack();
             throw $e;
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             $transaction->rollBack();
             throw $e;
         }
@@ -239,9 +239,9 @@ class PageController extends AbstractCustomContainerController
     {
         $pageClass = $this->getPageClassName();
         $page = new $pageClass(['type' => $type, 'target' => $targetId]);
-        if($this->contentContainer) {
+        if ($this->contentContainer) {
             $page->content->setContainer($this->contentContainer);
-            if(!$this->contentContainer) {
+            if (!$this->contentContainer) {
                 $page->content->visibility = Content::VISIBILITY_PUBLIC;
             }
         }
@@ -251,7 +251,7 @@ class PageController extends AbstractCustomContainerController
     /**
      * Deletes the page with a given $id.
      *
-     * @param integer $id page id
+     * @param int $id page id
      * @param bool $irrevocably
      * @return string
      * @throws HttpException

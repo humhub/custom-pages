@@ -22,7 +22,7 @@ class TemplateContentTable extends \humhub\components\Widget
     {
         return $this->render('templateElementAdminTable', [
             'template' => $this->template,
-            'saved' => $this->saved
+            'saved' => $this->saved,
         ]);
     }
 

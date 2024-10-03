@@ -5,7 +5,7 @@ namespace humhub\modules\custom_pages\modules\template\models;
 use Yii;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 
- class ImageContent extends FileContent
+class ImageContent extends FileContent
 {
     public static $label = 'Image';
 
@@ -27,7 +27,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
         $result = [];
         // We preven the content instance from beeing saved if there is no definition setting, to get sure we have an empty content in this case
         // TODO: perhaps overwrite the validate method and call parent validate only if no definition is set
-        if($this->definition == null || !$this->definition->hasValues()) {
+        if ($this->definition == null || !$this->definition->hasValues()) {
             $result[] = [['file_guid'], 'required'];
         }
         $result[] = [['alt', 'file_guid'], 'safe'];
@@ -50,11 +50,12 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
     {
         return  [
             'file_guid' =>  Yii::t('CustomPagesModule.base', 'File'),
-            'alt' =>  Yii::t('CustomPagesModule.base', 'Alternate text')
+            'alt' =>  Yii::t('CustomPagesModule.base', 'Alternate text'),
         ];
     }
 
-    public function copy() {
+    public function copy()
+    {
         $clone = parent::copy();
         $clone->alt = $this->alt;
         return $clone;
@@ -62,20 +63,20 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
 
     public function render($options = [])
     {
-        if($this->hasFile() != null) {
+        if ($this->hasFile() != null) {
             $options['htmlOptions'] = [
                 'src' => $this->getFile()->getUrl(),
-                'alt' => $this->purify($this->alt)
+                'alt' => $this->purify($this->alt),
             ];
 
-            if($this->hasDefinition()) {
+            if ($this->hasDefinition()) {
                 $options['htmlOptions']['height'] = $this->purify($this->definition->height);
                 $options['htmlOptions']['width'] = $this->purify($this->definition->width);
                 $options['htmlOptions']['style'] = $this->purify($this->definition->style);
             }
 
-            return $this->wrap('img','', $options);
-        } else if(isset($options['editMode']) && $options['editMode']) {
+            return $this->wrap('img', '', $options);
+        } elseif (isset($options['editMode']) && $options['editMode']) {
             $options['empty'] = true;
             return $this->renderEmpty($options);
         }
@@ -93,7 +94,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
         return TemplateContentFormFields::widget([
             'type' => 'image',
             'form' => $form,
-            'model' => $this
+            'model' => $this,
         ]);
     }
 

@@ -20,7 +20,6 @@ use yii\base\Widget;
  */
 class SnippetWidget extends Widget
 {
-
     /**
      * @var CustomContentContainer
      */
@@ -31,10 +30,10 @@ class SnippetWidget extends Widget
     public function run()
     {
         $contentContainer = property_exists(Yii::$app->controller, 'contentContainer') ? Yii::$app->controller->contentContainer : null;
-        return $this->render('snippet_'.$this->model->getContentType()->getViewName(), [
+        return $this->render('snippet_' . $this->model->getContentType()->getViewName(), [
             'model' => $this->model,
             'contentContainer' => $contentContainer,
-            'canEdit' => $this->canEdit
+            'canEdit' => $this->canEdit,
         ]);
     }
 

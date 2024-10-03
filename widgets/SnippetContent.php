@@ -17,15 +17,14 @@ use Yii;
  */
 class SnippetContent extends \yii\base\Widget
 {
-
     public $model;
     public $content;
     public $navigation = [];
-    
+
     public function run()
     {
         return $this->render('snippet', [
-            'model' => $this->model, 
+            'model' => $this->model,
             'content' => $this->content,
             'navigation' => $this->navigation]);
     }

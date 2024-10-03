@@ -17,7 +17,6 @@ use humhub\modules\custom_pages\modules\template\models\Template;
  */
 class EditMultipleElementsForm extends \yii\base\Model
 {
-
     public $isNewRecord = false;
     public $editDefault = true;
     public $owner;
@@ -34,13 +33,13 @@ class EditMultipleElementsForm extends \yii\base\Model
     // Todo: is the templateId even needed since the woner should have contain a templateid ...
     public function setOwner($ownerModel, $ownerId, $templateId = null)
     {
-        if(!is_string($ownerModel)) {
+        if (!is_string($ownerModel)) {
             $templateId = $ownerId;
             $this->owner = $ownerModel;
         } else {
-            $this->owner = call_user_func($ownerModel."::findOne", ['id' => $ownerId]);
+            $this->owner = call_user_func($ownerModel . "::findOne", ['id' => $ownerId]);
         }
-        
+
         $this->setTemplate($templateId);
     }
 
@@ -56,14 +55,14 @@ class EditMultipleElementsForm extends \yii\base\Model
 
         foreach ($ownerContentArr as $ownerContent) {
             $contentItem = new ContentFormItem([
-                'ownerContent' => $ownerContent, 
+                'ownerContent' => $ownerContent,
                 'element' => $this->getElement($ownerContent->element_name),
                 'editDefault' => $this->editDefault,
                 'scenario' => $this->scenario]);
             $this->contentMap[$contentItem->key] = $contentItem;
         }
     }
-    
+
     public function getElement($name)
     {
         foreach ($this->template->elements as $element) {
@@ -73,7 +72,7 @@ class EditMultipleElementsForm extends \yii\base\Model
         }
     }
 
-    public function load($data, $formName = NULL)
+    public function load($data, $formName = null)
     {
         // This prevents items without elements from beeing rejected
         if (parent::load($data) && empty($this->contentMap)) {
@@ -118,7 +117,7 @@ class EditMultipleElementsForm extends \yii\base\Model
         if (!$this->validate()) {
             return false;
         }
-        
+
         $transaction = Template::getDb()->beginTransaction();
 
         try {
@@ -127,7 +126,7 @@ class EditMultipleElementsForm extends \yii\base\Model
                 $contentItem->save($this->owner);
             }
             $transaction->commit();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $transaction->rollBack();
             throw $e;
         }

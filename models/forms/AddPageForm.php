@@ -39,16 +39,16 @@ class AddPageForm extends Model
 
     /**
      * Defines the page content type to be created (Markdown,Template,...)
-     * @var integer
+     * @var int
      */
     public $type;
-    
+
     /**
      * Defines the page type to be created (Page,Snippet,ContainerPage,...).
      * @var string
      */
     public $class;
-    
+
     /**
      * Singleton page instance used for retrieving some page data as the page label.
      * @var mixed
@@ -73,7 +73,7 @@ class AddPageForm extends Model
      */
     public function validateType($attribute, $params)
     {
-        if(!$this->isAllowedType($this->type)) {
+        if (!$this->isAllowedType($this->type)) {
             $this->addError('type', Yii::t('CustomPagesModule.base', 'Invalid type selection'));
         }
     }
@@ -92,19 +92,19 @@ class AddPageForm extends Model
     /**
      * Tests if the given type is allowed for the given page class.
      *
-     * @param integer|ContentType $type
-     * @return boolean
+     * @param int|ContentType $type
+     * @return bool
      * @throws \yii\base\InvalidConfigException
      */
     public function isAllowedType($type)
     {
-        if($type instanceof ContentType) {
+        if ($type instanceof ContentType) {
             $type = $type->getId();
         }
 
-        if(PhpType::isType($type)) {
+        if (PhpType::isType($type)) {
             $settings = new SettingsForm();
-            if(!$settings->phpPagesActive) {
+            if (!$settings->phpPagesActive) {
                 return false;
             }
         }
@@ -123,7 +123,7 @@ class AddPageForm extends Model
      */
     public function isDisabledType($type)
     {
-        if($type instanceof ContentType) {
+        if ($type instanceof ContentType) {
             $type = $type->getId();
         }
 
@@ -140,7 +140,7 @@ class AddPageForm extends Model
     /**
      * Checks if there are allowed templates available for the given page class.
      *
-     * @return boolean
+     * @return bool
      * @throws \yii\base\InvalidConfigException
      */
     public function showTemplateType()
@@ -156,7 +156,7 @@ class AddPageForm extends Model
      */
     public function getPageInstance()
     {
-        if($this->_instance == null) {
+        if ($this->_instance == null) {
             $params = [];
             if ($this->target->container instanceof ContentContainerActiveRecord) {
                 $params[] = $this->target->container;

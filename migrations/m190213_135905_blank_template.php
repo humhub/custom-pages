@@ -33,7 +33,7 @@ class m190213_135905_blank_template extends Migration
             'owner_model' => Template::class,
             'owner_id' => $tempalteId,
             'content_type' => ContainerContent::class,
-            'content_id' => $this->db->getLastInsertID()
+            'content_id' => $this->db->getLastInsertID(),
         ]);
     }
 
@@ -52,7 +52,7 @@ class m190213_135905_blank_template extends Migration
         $this->insertSilent('custom_pages_template_element', [
             'template_id' => $tmplid,
             'name' => $name,
-            'content_type' => $contentType
+            'content_type' => $contentType,
         ]);
     }
 

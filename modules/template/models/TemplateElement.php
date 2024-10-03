@@ -18,10 +18,9 @@ use yii\db\ActiveRecord;
  */
 class TemplateElement extends ActiveRecord
 {
-
-    const SCENARIO_CREATE = 'create';
-    const SCENARIO_EDIT = 'edit';
-    const SCENARIO_EDIT_ADMIN = 'edit-admin';
+    public const SCENARIO_CREATE = 'create';
+    public const SCENARIO_EDIT = 'edit';
+    public const SCENARIO_EDIT_ADMIN = 'edit-admin';
 
     /**
      * @return string the associated database table name
@@ -41,7 +40,7 @@ class TemplateElement extends ActiveRecord
             [['name', 'title', 'content_type'], 'string', 'length' => [2, 100]],
             ['name', 'match', 'pattern' => '/^[a-zA-Z][a-zA-Z0-9_]+$/', 'message' => Yii::t('CustomPagesModule.models_TemplateElement', 'The element name must contain at least two characters without spaces or special signs except \'_\'')],
             ['name', 'uniqueTemplateElementName', 'on' => ['create']],
-            [['template_id'], 'integer']
+            [['template_id'], 'integer'],
         ];
     }
 
@@ -61,7 +60,7 @@ class TemplateElement extends ActiveRecord
     {
         return [
             'name' => Yii::t('CustomPagesModule.models_TemplateElement', 'Placeholder name'),
-            'title' => Yii::t('CustomPagesModule.models_TemplateElement', 'Label')
+            'title' => Yii::t('CustomPagesModule.models_TemplateElement', 'Label'),
         ];
     }
 
@@ -107,7 +106,7 @@ class TemplateElement extends ActiveRecord
     {
         $content->save();
 
-        if($owner instanceof Template) {
+        if ($owner instanceof Template) {
             return $this->saveAsDefaultContent($content);
         }
 
@@ -129,7 +128,7 @@ class TemplateElement extends ActiveRecord
      * Note that the current default content of this placeholder will be delted.
      *
      * @param TemplateContentActiveRecord $content
-     * @return boolean
+     * @return bool
      */
     public function saveAsDefaultContent(TemplateContentActiveRecord $content)
     {
@@ -157,13 +156,13 @@ class TemplateElement extends ActiveRecord
      * If no default content was found and $createDummy is set to true, this
      * function will return an empty dummy OwnerContent instance.
      *
-     * @param boolean $createDummy
+     * @param bool $createDummy
      * @return OwnerContent
      */
     public function getDefaultContent($createDummy = false)
     {
         $content = OwnerContent::findByOwner(Template::class, $this->template_id, $this->name)->one();
-        if($content == null && $createDummy) {
+        if ($content == null && $createDummy) {
             $content = new OwnerContent();
             $content->setOwner(Template::class, $this->template_id);
             $content->element_name = $this->name;
@@ -201,7 +200,7 @@ class TemplateElement extends ActiveRecord
         OwnerContent::deleteByOwner(Template::class, $this->template_id, $this->name);
         $templateOwners = TemplateInstance::findByTemplateId($this->template_id)->all();
 
-        foreach($templateOwners as $owner) {
+        foreach ($templateOwners as $owner) {
             OwnerContent::deleteByOwner($owner, $this->name);
         }
 

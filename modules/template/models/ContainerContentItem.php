@@ -13,7 +13,6 @@ use yii\helpers\Url;
  */
 class ContainerContentItem extends \humhub\components\ActiveRecord implements TemplateContentOwner
 {
-
     /**
      * @return string the associated database table name
      */
@@ -30,7 +29,7 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
         return [
             [['template_id', 'container_content_id'], 'required'],
             [['template_id', 'container_content_id', 'sort_order'], 'integer'],
-            ['title', 'safe']
+            ['title', 'safe'],
         ];
     }
 
@@ -94,8 +93,8 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
                 'data-template-edit-url' => Url::to(['/custom_pages/template/container-admin/edit-source', 'id' => $this->template_id]),
                 'data-template-item-title' => $this->title,
                 'data-template-owner' => ContainerContent::class,
-                'data-template-owner-id' => $this->container_content_id
-            ]
+                'data-template-owner-id' => $this->container_content_id,
+            ],
         ]);
     }
 

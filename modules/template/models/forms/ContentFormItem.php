@@ -15,7 +15,6 @@ namespace humhub\modules\custom_pages\modules\template\models\forms;
  */
 class ContentFormItem extends \yii\base\Model
 {
-
     public $ownerContent;
     public $editDefault = true;
     public $content;
@@ -37,12 +36,12 @@ class ContentFormItem extends \yii\base\Model
         $this->content->scenario = $this->scenario;
     }
 
-    public function load($data, $formName = NULL)
+    public function load($data, $formName = null)
     {
         if (!isset($data['Content']) || !isset($data['Content'][$this->key])) {
             return false;
         }
-        
+
         $values = $data['Content'][$this->key];
         $this->content->load(['content' => $values], 'content');
         $this->isLoaded = !$this->isEmptySubmit($values);
@@ -74,13 +73,13 @@ class ContentFormItem extends \yii\base\Model
             $this->content = $this->content->copy();
             $this->content->fileList = $fileList;
         }
-        
+
         if ($this->content->isNewRecord) {
             $this->element->saveInstance($owner, $this->content);
         } else {
             $this->content->save(false);
         }
-        
+
         return true;
     }
 

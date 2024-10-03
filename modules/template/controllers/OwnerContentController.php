@@ -23,7 +23,6 @@ use yii\web\NotFoundHttpException;
  */
 class OwnerContentController extends \humhub\components\Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -36,25 +35,25 @@ class OwnerContentController extends \humhub\components\Controller
 
     /**
      * Owner Model Class of the TemplateContentOwner.
-     * @var string 
+     * @var string
      */
     public $ownerModel;
 
     /**
      * Owner Model Id of the TemplateContentOwner.
-     * @var integer 
+     * @var int
      */
     public $ownerId;
 
     /**
      * The placeholder name of the TemplateElement.
-     * @var string 
+     * @var string
      */
     public $elementName;
 
     /**
      * Edits the content of a specific OwnerContent for the given TemplateContentOwner.
-     * 
+     *
      * @return Response
      * @throws HttpException
      */
@@ -72,16 +71,16 @@ class OwnerContentController extends \humhub\components\Controller
             } else {
                 return $this->getJsonEditElementResult(false, $this->renderAjaxPartial(EditElementModal::widget([
                     'model' => $form,
-                    'title' => Yii::t('CustomPagesModule.controllers_TemplateController', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()])
+                    'title' => Yii::t('CustomPagesModule.controllers_TemplateController', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()]),
                 ])));
             }
         }
 
         return $this->asJson([
             'output' => $this->renderAjaxPartial(EditElementModal::widget([
-                    'model' => $form,
-                    'title' => Yii::t('CustomPagesModule.controllers_TemplateController', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()])
-            ]))
+                'model' => $form,
+                'title' => Yii::t('CustomPagesModule.controllers_TemplateController', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()]),
+            ])),
         ]);
     }
 
@@ -110,8 +109,8 @@ class OwnerContentController extends \humhub\components\Controller
 
         // Set our original owner for this element block
         $variable = new OwnerContentVariable(['ownerContent' => $form->element->getDefaultContent(true), 'options' => [
-                'owner_model' => $ownerModel,
-                'owner_id' => $ownerId
+            'owner_model' => $ownerModel,
+            'owner_id' => $ownerId,
         ]]);
 
         return $this->getJsonEditElementResult(true, $variable->render(true));
@@ -161,7 +160,7 @@ class OwnerContentController extends \humhub\components\Controller
 
     /**
      * Action for editing all owner content models for a given template instance in one view.
-     * 
+     *
      * @param int $id
      * @return Response
      */
@@ -181,15 +180,15 @@ class OwnerContentController extends \humhub\components\Controller
         return $this->asJson([
             'output' => $this->renderAjaxPartial(EditMultipleElementsModal::widget([
                 'model' => $form,
-                'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> elements of {templateName}', ['templateName' => $form->template->name])
-            ]))
+                'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> elements of {templateName}', ['templateName' => $form->template->name]),
+            ])),
         ]);
     }
 
     /**
      * Creates a json result array used by multiple actions.
-     * 
-     * @param boolean $success defines if the process was successfull e.g. saving an element
+     *
+     * @param bool $success defines if the process was successfull e.g. saving an element
      * @param mixed $content content result
      * @param mixed $form Form model
      * @return Response

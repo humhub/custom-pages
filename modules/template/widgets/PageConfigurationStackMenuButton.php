@@ -15,10 +15,9 @@ namespace humhub\modules\custom_pages\modules\template\widgets;
  */
 class PageConfigurationStackMenuButton extends \humhub\components\Widget
 {
-
     public function run()
     {
-        
+
         return $this->render('pageConfigurationStackMenuButton');
     }
 

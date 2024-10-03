@@ -11,7 +11,6 @@ use Yii;
  */
 class ImageContentDefinition extends ContentDefinition
 {
-
     /**
      * @return string the associated database table name
      */
@@ -24,7 +23,7 @@ class ImageContentDefinition extends ContentDefinition
     {
         return [
             [['style'], 'string'],
-            [['height', 'width'], 'integer']
+            [['height', 'width'], 'integer'],
         ];
     }
 

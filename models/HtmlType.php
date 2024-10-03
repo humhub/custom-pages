@@ -17,20 +17,19 @@ use yii\widgets\ActiveForm;
 
 class HtmlType extends ContentType
 {
+    public const ID = 2;
 
-    const ID = 2;
-
-    function getId()
+    public function getId()
     {
         return static::ID;
     }
 
-    function getLabel()
+    public function getLabel()
     {
         return Yii::t('CustomPagesModule.base', 'Html');
     }
 
-    function getDescription()
+    public function getDescription()
     {
         return Yii::t('CustomPagesModule.base', 'Adds plain HTML content to your site.');
     }
@@ -54,9 +53,9 @@ class HtmlType extends ContentType
                     'icon' => 'upload',
                     'text' => Yii::t('CustomPagesModule.models_HtmlType', 'Attach Files'),
                     'selector' => '#custom-page-html-file-upload',
-                    'event' => 'click'
-                ]
-            ]
+                    'event' => 'click',
+                ],
+            ],
         ]);
 
         $field .= '<div class="form-group">'
@@ -74,7 +73,7 @@ class HtmlType extends ContentType
                 'id' => 'custom-page-html-upload-preview',
                 'options' => ['style' => 'margin-top:10px'],
                 'model' => $page,
-                'edit' => true
+                'edit' => true,
             ])
             . UploadProgress::widget(['id' => 'custom-page-html-upload-progress'])
         . '</div>';

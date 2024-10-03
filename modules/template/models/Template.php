@@ -40,11 +40,10 @@ use yii\helpers\ArrayHelper;
  */
 class Template extends ActiveRecord implements TemplateContentOwner
 {
-
-    const TYPE_LAYOUT = 'layout';
-    const TYPE_SNIPPED_LAYOUT = 'snipped-layout';
-    const TYPE_NAVIGATION = 'navigation';
-    const TYPE_CONTAINER = 'container';
+    public const TYPE_LAYOUT = 'layout';
+    public const TYPE_SNIPPED_LAYOUT = 'snipped-layout';
+    public const TYPE_NAVIGATION = 'navigation';
+    public const TYPE_CONTAINER = 'container';
 
     /**
      * @var TemplateElement[] all template elements used for the rendering process.
@@ -115,9 +114,10 @@ class Template extends ActiveRecord implements TemplateContentOwner
      * @param type $attribute
      * @param type $model
      */
-    public function validType($attribute, $model) {
+    public function validType($attribute, $model)
+    {
         $validTypes = [self::TYPE_CONTAINER, self::TYPE_LAYOUT, self::TYPE_NAVIGATION];
-        if(!in_array($this->type, $validTypes)) {
+        if (!in_array($this->type, $validTypes)) {
             $this->addError($attribute, 'Invalid template type!');
         }
     }
@@ -171,7 +171,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
 
     /**
      * Checks if this template is a root layout template.
-     * @return boolean
+     * @return bool
      */
     public function isLayout()
     {
@@ -203,9 +203,11 @@ class Template extends ActiveRecord implements TemplateContentOwner
      */
     public function getContents(): ActiveQuery
     {
-        return Content::find()->leftJoin(TemplateInstance::tableName(),
-                Content::tableName() . '.object_model = ' . TemplateInstance::tableName() . '.object_model AND ' .
-                Content::tableName() . '.object_id = ' . TemplateInstance::tableName() . '.object_id')
+        return Content::find()->leftJoin(
+            TemplateInstance::tableName(),
+            Content::tableName() . '.object_model = ' . TemplateInstance::tableName() . '.object_model AND ' .
+                Content::tableName() . '.object_id = ' . TemplateInstance::tableName() . '.object_id',
+        )
             ->where([TemplateInstance::tableName() . '.template_id' => $this->id]);
     }
 
@@ -223,7 +225,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
     {
         $contentElements = $this->getContentElements($owner);
 
-        if($owner == null) {
+        if ($owner == null) {
             $owner = $this;
         }
 
@@ -234,7 +236,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
                 'element_title' => $this->getElementTitle($contentElement->element_name),
                 'owner_model' => get_class($owner),
                 'owner_id' => $owner->id,
-                'item' => $containerItem
+                'item' => $containerItem,
             ];
 
             $content[$contentElement->element_name] = new OwnerContentVariable(['ownerContent' => $contentElement, 'options' => $options]);
@@ -242,7 +244,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
 
         $content['assets'] = PHP_VERSION_ID >= 80000 ? new AssetVariable() : new AssetVariablePhp74();
 
-        if($containerItem) {
+        if ($containerItem) {
             //$content['item'] = new ContainerItemVariable(['item' => $containerItem]);
         }
 
@@ -275,7 +277,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
             $result = OwnerContent::findByOwner($owner)->all();
         }
 
-        $ownerElementNames = array_map(function($contentInstance) {
+        $ownerElementNames = array_map(function ($contentInstance) {
             return $contentInstance->element_name;
         }, $result);
 
@@ -290,12 +292,12 @@ class Template extends ActiveRecord implements TemplateContentOwner
 
     private function getElementTitle($element_name)
     {
-        if(!$this->_elements) {
+        if (!$this->_elements) {
             $this->_elements = $this->getElements()->all();
         }
 
         foreach ($this->_elements as $element) {
-            if($element->name === $element_name) {
+            if ($element->name === $element_name) {
                 return $element->getTitle();
             }
         }

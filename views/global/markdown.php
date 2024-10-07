@@ -24,7 +24,7 @@ InlineStyleAssets::register($this);
         <div class="panel-body">
             <?= PageConfigurationButton::widget() ?>
             <div class="markdown-render">
-                <?= RichText::output($md) ?>
+                <?= RichText::output($md, ['fadeIn' => true]) ?>
             </div>
         </div>
     </div>
@@ -36,7 +36,7 @@ InlineStyleAssets::register($this);
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="markdown-render">
-                            <?= RichText::output($md) ?>
+                            <?= RichText::output($md, ['fadeIn' => true]) ?>
                         </div>
                     </div>
                 </div>

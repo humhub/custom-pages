@@ -9,7 +9,7 @@ use humhub\widgets\Button;
 <div class="media">
     <div class="media-body">
         <div data-ui-show-more>
-            <?= RichText::output($page->abstract)?>
+            <?= RichText::output($page->abstract, ['fadeIn' => true])?>
         </div>
 
         <?= Button::primary(Yii::t('CustomPagesModule.widgets_views_wallentry', 'Open page...'))->link($page->getUrl())->sm() ?>

@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.10.10 (Unreleased)
-------------------------
+1.10.10 (October 12, 2024)
+--------------------------
 - Enh #352: Deferred showing content until Markdown is rendered properly
 
 1.10.9 (October 3, 2024)

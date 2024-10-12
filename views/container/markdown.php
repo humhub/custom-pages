@@ -24,7 +24,7 @@ InlineStyleAssets::register($this);
 <div class="panel panel-default <?= Html::encode($cssClass) ?>">
     <div class="panel-body">
         <div class="markdown-render">
-            <?= RichText::output($md) ?>
+            <?= RichText::output($md, ['fadeIn' => true]) ?>
         </div>
     </div>
 </div>

@@ -12,10 +12,10 @@ $class = ($template->isLayout()) ? 'prview-layout' : 'priview-container';
             <div class="clearfix">
                 <button data-action-click="update" 
                         data-action-url="<?= \yii\helpers\Url::to(['preview', 'id' => $template->id]) ?>" style="margin-left:5px;" class="btn btn-primary btn-md pull-right" role="button" data-ui-loader>
-                    <?= Yii::t('CustomPagesModule.modules_template_views_admin_preview', 'Update'); ?>
+                    <?= Yii::t('CustomPagesModule.template', 'Update'); ?>
                 </button>  
                 <button data-action-click="switchMode" class="btn btn-success btn-md pull-right">
-                    <?= Yii::t('CustomPagesModule.modules_template_views_admin_preview', 'Display Empty Content'); ?>
+                    <?= Yii::t('CustomPagesModule.template', 'Display Empty Content'); ?>
                 </button>
             </div>
             <br />

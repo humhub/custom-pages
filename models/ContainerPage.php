@@ -44,16 +44,16 @@ class ContainerPage extends Page implements Searchable
     public function attributeLabels()
     {
         $result = $this->defaultAttributeLabels();
-        $result['in_new_window'] = Yii::t('CustomPagesModule.models_ContainerPage', 'Open in new window');
+        $result['in_new_window'] = Yii::t('CustomPagesModule.model', 'Open in new window');
 
         if (PhpType::isType($this->getContentType())) {
-            $contentLabel = Yii::t('CustomPagesModule.models_Page', 'View');
+            $contentLabel = Yii::t('CustomPagesModule.model', 'View');
         } else {
-            $contentLabel = Yii::t('CustomPagesModule.components_Container', 'Content');
+            $contentLabel = Yii::t('CustomPagesModule.base', 'Content');
         }
 
         $result['page_content'] = $contentLabel;
-        $result['admin_only'] = Yii::t('CustomPagesModule.models_ContainerPage', 'Only visible for space admins');
+        $result['admin_only'] = Yii::t('CustomPagesModule.model', 'Only visible for space admins');
         return $result;
     }
 
@@ -102,13 +102,13 @@ class ContainerPage extends Page implements Searchable
     public function getVisibilitySelection()
     {
         $result = [
-            static::VISIBILITY_ADMIN_ONLY => Yii::t('CustomPagesModule.visibility', 'Admin only'),
-            static::VISIBILITY_PRIVATE => Yii::t('CustomPagesModule.visibility', 'Space Members only'),
+            static::VISIBILITY_ADMIN_ONLY => Yii::t('CustomPagesModule.base', 'Admin only'),
+            static::VISIBILITY_PRIVATE => Yii::t('CustomPagesModule.base', 'Space Members only'),
         ];
 
         $container = $this->content->container;
         if ($container->visibility != Space::VISIBILITY_NONE) {
-            $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'Public');
+            $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.base', 'Public');
         }
 
         return $result;

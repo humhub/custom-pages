@@ -74,10 +74,10 @@ class Page extends CustomContentContainer
     public function attributeLabels()
     {
         $result = $this->defaultAttributeLabels();
-        $result['in_new_window'] = Yii::t('CustomPagesModule.models_Page', 'Open in new window');
-        $result['abstract'] = Yii::t('CustomPagesModule.models_Page', 'Abstract');
-        $result['target'] = Yii::t('CustomPagesModule.models_Page', 'Navigation');
-        $result['url'] = Yii::t('CustomPagesModule.models_Page', 'Url shortcut');
+        $result['in_new_window'] = Yii::t('CustomPagesModule.model', 'Open in new window');
+        $result['abstract'] = Yii::t('CustomPagesModule.model', 'Abstract');
+        $result['target'] = Yii::t('CustomPagesModule.model', 'Navigation');
+        $result['url'] = Yii::t('CustomPagesModule.model', 'Url shortcut');
         return $result;
     }
 
@@ -144,7 +144,7 @@ class Page extends CustomContentContainer
      */
     public function getLabel()
     {
-        return Yii::t('CustomPagesModule.models_Page', 'page');
+        return Yii::t('CustomPagesModule.model', 'page');
     }
 
     /**

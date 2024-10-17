@@ -49,12 +49,12 @@ class IframeType extends ContentType
 
         if (Yii::$app->user->isAdmin()) {
             $formField = $targetUrlField
-                ->hint(Yii::t('CustomPagesModule.views_common_edit', 'e.g. http://www.example.de'));
+                ->hint(Yii::t('CustomPagesModule.view', 'e.g. http://www.example.de'));
             $formField .= $form->field($page, 'iframe_attrs')
-                ->hint(Yii::t('CustomPagesModule.views_common_edit', 'e.g. allowfullscreen allow="camera; microphone"'));
+                ->hint(Yii::t('CustomPagesModule.view', 'e.g. allowfullscreen allow="camera; microphone"'));
         } else {
             $formField = $targetUrlField->textInput(['disabled' => 'disabled'])
-                ->hint(Yii::t('CustomPagesModule.views_common_edit', 'You need to be a system administrator to edit this URL'));
+                ->hint(Yii::t('CustomPagesModule.view', 'You need to be a system administrator to edit this URL'));
         }
 
         return $formField;

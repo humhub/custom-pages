@@ -22,7 +22,7 @@ class ContainerAdminController extends AdminController
      */
     public function init()
     {
-        $this->indexHelp = Yii::t('CustomPagesModule.modules_template_controller_ContainerAdminController', 'Here you can manage your template container elements.');
+        $this->indexHelp = Yii::t('CustomPagesModule.template', 'Here you can manage your template container elements.');
         parent::init();
     }
 

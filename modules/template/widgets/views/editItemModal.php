@@ -31,17 +31,17 @@ use yii\widgets\ActiveForm;
                         </small>
                         <?php if ($contentItem->content->isNewRecord): ?>
                             <small class="pull-right" style="margin-right: 2px">
-                                <span class="label label-warning"><?= Yii::t('CustomPagesModule.widgets_views_editMultipleElements', 'Empty') ?></span>
+                                <span class="label label-warning"><?= Yii::t('CustomPagesModule.view', 'Empty') ?></span>
                             </small>
                         <?php endif; ?>
                         <?php if ($isContainer && $contentItem->content->definition->allow_multiple): ?>
                             <small class="pull-right" style="margin-right: 2px">
-                                <span class="label label-success"><?= Yii::t('CustomPagesModule.widgets_views_editMultipleElements', 'Multiple') ?></span>
+                                <span class="label label-success"><?= Yii::t('CustomPagesModule.view', 'Multiple') ?></span>
                             </small>
                         <?php endif; ?>
                         <?php if ($isContainer && $contentItem->content->definition->is_inline): ?>
                             <small class="pull-right" style="margin-right: 2px">
-                                <span class="label label-success"><?= Yii::t('CustomPagesModule.widgets_views_editMultipleElements', 'Inline') ?></span>
+                                <span class="label label-success"><?= Yii::t('CustomPagesModule.view', 'Inline') ?></span>
                             </small>
                         <?php endif; ?>
                     </div>
@@ -56,7 +56,7 @@ use yii\widgets\ActiveForm;
 
             <?php if (empty($model->contentMap)) : ?>
                 <div class="text-center">
-                    <?= Yii::t('CustomPagesModule.widgets_views_editMultipleElements', 'This template does not contain any elements yet.') ?>
+                    <?= Yii::t('CustomPagesModule.view', 'This template does not contain any elements yet.') ?>
                 </div>
             <?php endif; ?>
 

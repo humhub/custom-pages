@@ -28,10 +28,10 @@ class TemplateAccessFilter extends ActionFilter
             $space = \humhub\modules\space\models\Space::findOne(['guid' => $sguid]);
 
             if (!$space->isAdmin()) {
-                throw new \yii\web\HttpException(403, Yii::t('CustomPagesModule.controllers_TemplateController', 'Access denied!'));
+                throw new \yii\web\HttpException(403, Yii::t('CustomPagesModule.base', 'Access denied!'));
             }
         } elseif (Yii::$app->user->isGuest || !Yii::$app->user->getIdentity()->isSystemAdmin()) {
-            throw new \yii\web\HttpException(403, Yii::t('CustomPagesModule.controllers_TemplateController', 'Access denied!'));
+            throw new \yii\web\HttpException(403, Yii::t('CustomPagesModule.base', 'Access denied!'));
         }
 
         return parent::beforeAction($action);

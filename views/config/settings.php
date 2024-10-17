@@ -22,7 +22,7 @@ use humhub\libs\Html;
 
     <div class="panel-body">
         <div class="clearfix">
-            <h4><?= Yii::t('CustomPagesModule.views_admin_add', 'Settings') ?></h4>
+            <h4><?= Yii::t('CustomPagesModule.view', 'Settings') ?></h4>
             <div class="help-block">
                 <?= Yii::t('CustomPagesModule.base', 'On this page you can configure general settings of your custom pages.') ?>
             </div>

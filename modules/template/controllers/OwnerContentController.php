@@ -71,7 +71,7 @@ class OwnerContentController extends \humhub\components\Controller
             } else {
                 return $this->getJsonEditElementResult(false, $this->renderAjaxPartial(EditElementModal::widget([
                     'model' => $form,
-                    'title' => Yii::t('CustomPagesModule.controllers_TemplateController', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()]),
+                    'title' => Yii::t('CustomPagesModule.base', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()]),
                 ])));
             }
         }
@@ -79,7 +79,7 @@ class OwnerContentController extends \humhub\components\Controller
         return $this->asJson([
             'output' => $this->renderAjaxPartial(EditElementModal::widget([
                 'model' => $form,
-                'title' => Yii::t('CustomPagesModule.controllers_TemplateController', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()]),
+                'title' => Yii::t('CustomPagesModule.base', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()]),
             ])),
         ]);
     }
@@ -99,7 +99,7 @@ class OwnerContentController extends \humhub\components\Controller
         $name = Yii::$app->request->post('name');
 
         if (!$ownerModel || !$ownerId || !$name) {
-            throw new HttpException(400, Yii::t('CustomPagesModule.controllers_TemplateController', 'Invalid request data!'));
+            throw new HttpException(400, Yii::t('CustomPagesModule.base', 'Invalid request data!'));
         }
 
         $form = new EditOwnerContentForm();
@@ -130,7 +130,7 @@ class OwnerContentController extends \humhub\components\Controller
         $contentId = Yii::$app->request->post('contentId');
 
         if (!$contentModel || !$contentId) {
-            throw new HttpException(400, Yii::t('CustomPagesModule.controllers_TemplateController', 'Invalid request data!'));
+            throw new HttpException(400, Yii::t('CustomPagesModule.base', 'Invalid request data!'));
         }
 
         $ownerContent = OwnerContent::findByContent($contentModel, $contentId);
@@ -147,10 +147,10 @@ class OwnerContentController extends \humhub\components\Controller
         }
         // Do not allow the deletion of default content this is only allowed in admin controller.
         if ($ownerContent->isDefault()) {
-            throw new HttpException(403, Yii::t('CustomPagesModule.controllers_TemplateController', 'You are not allowed to delete default content!'));
+            throw new HttpException(403, Yii::t('CustomPagesModule.base', 'You are not allowed to delete default content!'));
         }
         if ($ownerContent->isEmpty()) {
-            throw new HttpException(400, Yii::t('CustomPagesModule.controllers_TemplateController', 'Empty content elements cannot be deleted!'));
+            throw new HttpException(400, Yii::t('CustomPagesModule.base', 'Empty content elements cannot be deleted!'));
         }
 
         TemplateCache::flushByOwnerContent($ownerContent);
@@ -180,7 +180,7 @@ class OwnerContentController extends \humhub\components\Controller
         return $this->asJson([
             'output' => $this->renderAjaxPartial(EditMultipleElementsModal::widget([
                 'model' => $form,
-                'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> elements of {templateName}', ['templateName' => $form->template->name]),
+                'title' => Yii::t('CustomPagesModule.template', '<strong>Edit</strong> elements of {templateName}', ['templateName' => $form->template->name]),
             ])),
         ]);
     }

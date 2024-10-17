@@ -36,10 +36,10 @@ $contentType = $page->getContentType();
     <div class="panel-body">
         <?= Button::back(Url::toChooseContentType($target, $pageType), Yii::t('CustomPagesModule.base', 'Back'))->sm(); ?>
 
-        <h4><?= Yii::t('CustomPagesModule.views_common_edit', 'Configuration'); ?></h4>
+        <h4><?= Yii::t('CustomPagesModule.view', 'Configuration'); ?></h4>
 
         <div class="help-block">
-            <?= Yii::t('CustomPagesModule.views_common_edit', 'Here you can configure the general settings of your {pageLabel}.', ['pageLabel' => $page->getLabel()]) ?>
+            <?= Yii::t('CustomPagesModule.view', 'Here you can configure the general settings of your {pageLabel}.', ['pageLabel' => $page->getLabel()]) ?>
         </div>
 
         <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
@@ -65,7 +65,7 @@ $contentType = $page->getContentType();
         <?php if ($page instanceof Page && $page->hasAttribute('url') && $page->isAllowedField('url')) : ?>
             <?= $form->field($page, 'url') ?>
             <div class="help-block">
-                <?= Yii::t('CustomPagesModule.views_common_edit', 'By setting an url shortcut value, you can create a better readable url for your page. If <b>URL Rewriting</b> is enabled on your site, the value \'mypage\' will result in an url \'www.example.de/p/mypage\'.') ?>
+                <?= Yii::t('CustomPagesModule.view', 'By setting an url shortcut value, you can create a better readable url for your page. If <b>URL Rewriting</b> is enabled on your site, the value \'mypage\' will result in an url \'www.example.de/p/mypage\'.') ?>
             </div>
         <?php endif; ?>
 
@@ -91,14 +91,14 @@ $contentType = $page->getContentType();
 
         <div class="alert alert-info infoAdminOnly"
              <?php if ($page->visibility != Page::VISIBILITY_ADMIN_ONLY): ?>style="display:none"<?php endif; ?>>
-            <?= Yii::t('CustomPagesModule.views_common_edit', '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!'); ?>
+            <?= Yii::t('CustomPagesModule.view', '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!'); ?>
         </div>
 
         <?php if ($page->isAllowedField('abstract') && (($page instanceof ContainerPage) || version_compare(Yii::$app->version, '1.3.11', '>='))) : ?>
             <?= $form->beginCollapsibleFields(Yii::t('CustomPagesModule.base', 'Stream options')); ?>
             <?= $form->field($page, 'abstract')->widget(RichTextField::class); ?>
             <div class="help-block">
-                <?= Yii::t('CustomPagesModule.views_common_edit',
+                <?= Yii::t('CustomPagesModule.view',
                     'The abstract will be used as stream entry content to promote the actual page. 
                         If no abstract is given or the page is only visible for admins, no stream entry will be created.') ?>
             </div>
@@ -110,11 +110,11 @@ $contentType = $page->getContentType();
         <?= Button::save()->submit() ?>
 
         <?php if (!$page->isNewRecord) : ?>
-            <?= Link::danger(Yii::t('CustomPagesModule.views_common_edit', 'Delete'))->post(Url::toDeletePage($page, $target->container))->pjax(false)->confirm() ?>
+            <?= Link::danger(Yii::t('CustomPagesModule.view', 'Delete'))->post(Url::toDeletePage($page, $target->container))->pjax(false)->confirm() ?>
         <?php endif; ?>
 
         <?php if (TemplateType::isType($contentType) && !$page->isNewRecord): ?>
-            <?= Button::success(Yii::t('CustomPagesModule.views_common_edit', 'Inline Editor'))->link(Url::toInlineEdit($page, $target->container))->right()->icon('fa-pencil') ?>
+            <?= Button::success(Yii::t('CustomPagesModule.view', 'Inline Editor'))->link(Url::toInlineEdit($page, $target->container))->right()->icon('fa-pencil') ?>
         <?php endif; ?>
 
         <script <?= Html::nonce(); ?>>

@@ -12,6 +12,6 @@ use humhub\widgets\Button;
             <?= RichText::output($page->abstract, ['fadeIn' => true])?>
         </div>
 
-        <?= Button::primary(Yii::t('CustomPagesModule.widgets_views_wallentry', 'Open page...'))->link($page->getUrl())->sm() ?>
+        <?= Button::primary(Yii::t('CustomPagesModule.view', 'Open page...'))->link($page->getUrl())->sm() ?>
     </div>
 </div>

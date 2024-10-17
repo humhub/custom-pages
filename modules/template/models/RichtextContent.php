@@ -73,7 +73,7 @@ class RichtextContent extends TemplateContentActiveRecord
 
     public function renderEmpty($options = [])
     {
-        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_RichtextContent', 'Empty Richtext'), $options);
+        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty Richtext'), $options);
     }
 
     public function renderForm($form)

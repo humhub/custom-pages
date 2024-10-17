@@ -109,7 +109,7 @@ class ContainerContent extends TemplateContentActiveRecord
     public function renderEmpty($options = [])
     {
         $options['jsWidget'] = 'custom_pages.template.TemplateContainer';
-        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_Container', 'Empty <br />Container'), $options, [
+        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty <br />Container'), $options, [
             'class' => 'emptyContainerBlock',
             'data-template-multiple' => $this->definition->allow_multiple,
         ]);

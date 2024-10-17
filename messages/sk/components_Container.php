@@ -11,6 +11,6 @@ return array (
   'Style Class' => '',
   'Target Url' => '',
   'Template Layout' => '',
-  'Title' => '제목',
+  'Title' => 'Názov',
   'Type' => 'Typ',
 );

@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Admin only' => '',
-  'All Members' => '',
-  'Members & Guests' => '',
-  'Members only' => '',
+  'Admin only' => 'Iba Admin',
+  'All Members' => 'Všetci Členovia',
+  'Members & Guests' => 'Členovia a Hostia',
+  'Members only' => 'Iba Členovia',
   'Public' => 'Verejné',
-  'Space Members only' => '',
+  'Space Members only' => 'Iba Členovia Priestoru',
 );

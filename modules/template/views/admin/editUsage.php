@@ -28,7 +28,7 @@ $columnLabel = $model->type === Template::TYPE_CONTAINER ? Yii::t('CustomPagesMo
 
     <div class="panel-body">
         <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), ['class' => 'btn btn-default pull-right', 'data-ui-loader' => '']); ?>
-        <h4><?= Yii::t('CustomPagesModule.modules_template_views_admin_editSource', 'Edit template \'{templateName}\'', ['templateName' => Html::encode($model->name)]); ?></h4>
+        <h4><?= Yii::t('CustomPagesModule.template', 'Edit template \'{templateName}\'', ['templateName' => Html::encode($model->name)]); ?></h4>
         <div class="help-block">
             <?= Yii::t('CustomPagesModule.base', 'Here you can review where the template is used in.') ?>
         </div>

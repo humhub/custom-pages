@@ -76,7 +76,7 @@ class HumHubRichtextContent extends TemplateContentActiveRecord
 
     public function renderEmpty($options = [])
     {
-        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_RichtextContent', 'Empty HumHub Richtext'), $options);
+        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty HumHub Richtext'), $options);
     }
 
     public function renderForm($form)

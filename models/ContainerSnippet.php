@@ -47,7 +47,7 @@ class ContainerSnippet extends Snippet
      */
     public function getLabel()
     {
-        return Yii::t('CustomPagesModule.models_ContainerSnippet', 'snippet');
+        return Yii::t('CustomPagesModule.model', 'snippet');
     }
 
     /**
@@ -73,13 +73,13 @@ class ContainerSnippet extends Snippet
     public function getVisibilitySelection()
     {
         $result = [
-            static::VISIBILITY_ADMIN_ONLY => Yii::t('CustomPagesModule.visibility', 'Admin only'),
-            static::VISIBILITY_PRIVATE => Yii::t('CustomPagesModule.visibility', 'Space Members only'),
+            static::VISIBILITY_ADMIN_ONLY => Yii::t('CustomPagesModule.base', 'Admin only'),
+            static::VISIBILITY_PRIVATE => Yii::t('CustomPagesModule.base', 'Space Members only'),
         ];
 
         $container = $this->content->container;
         if ($container->visibility != Space::VISIBILITY_NONE) {
-            $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'Public');
+            $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.base', 'Public');
         }
 
         return $result;

@@ -31,7 +31,7 @@ trait PhpPageContainer
             }
 
             if (!$this->validatePhpViewFile()) {
-                $this->addError($this->getPageContentProperty(), Yii::t('CustomPagesModule.components_Container', 'Invalid view file selection!'));
+                $this->addError($this->getPageContentProperty(), Yii::t('CustomPagesModule.base', 'Invalid view file selection!'));
             }
         }
     }

@@ -125,16 +125,16 @@ abstract class CustomContentContainer extends ContentActiveRecord implements Vie
     public function getVisibilitySelection()
     {
         $result = [
-            static::VISIBILITY_ADMIN_ONLY => Yii::t('CustomPagesModule.visibility', 'Admin only'),
+            static::VISIBILITY_ADMIN_ONLY => Yii::t('CustomPagesModule.base', 'Admin only'),
         ];
 
         if ($this->isGuestAccessEnabled()) {
-            $result[static::VISIBILITY_PRIVATE] = Yii::t('CustomPagesModule.visibility', 'Members only');
+            $result[static::VISIBILITY_PRIVATE] = Yii::t('CustomPagesModule.base', 'Members only');
             if ($this->getTargetId() != Page::NAV_CLASS_ACCOUNTNAV) {
-                $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'Members & Guests');
+                $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.base', 'Members & Guests');
             }
         } else {
-            $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.visibility', 'All Members');
+            $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.base', 'All Members');
         }
 
         return $result;
@@ -163,19 +163,19 @@ abstract class CustomContentContainer extends ContentActiveRecord implements Vie
     public function defaultAttributeLabels()
     {
         return [
-            'id' => Yii::t('CustomPagesModule.components_Container', 'ID'),
-            'type' => Yii::t('CustomPagesModule.components_Container', 'Type'),
-            'title' => Yii::t('CustomPagesModule.components_Container', 'Title'),
-            'page_content' => Yii::t('CustomPagesModule.components_Container', 'Page Content'),
-            'icon' => Yii::t('CustomPagesModule.components_Container', 'Icon'),
-            'cssClass' => Yii::t('CustomPagesModule.components_Container', 'Style Class'),
+            'id' => Yii::t('CustomPagesModule.base', 'ID'),
+            'type' => Yii::t('CustomPagesModule.base', 'Type'),
+            'title' => Yii::t('CustomPagesModule.base', 'Title'),
+            'page_content' => Yii::t('CustomPagesModule.base', 'Page Content'),
+            'icon' => Yii::t('CustomPagesModule.base', 'Icon'),
+            'cssClass' => Yii::t('CustomPagesModule.base', 'Style Class'),
             'content' => $this->getContentType() ? $this->getContentType()->getLabel() : null,
-            'iframe_attrs' => Yii::t('CustomPagesModule.components_Container', 'Additional IFrame Attributes'),
-            'sort_order' => Yii::t('CustomPagesModule.components_Container', 'Sort Order'),
-            'targetUrl' => Yii::t('CustomPagesModule.components_Container', 'Target Url'),
-            'templateId' => Yii::t('CustomPagesModule.components_Container', 'Template Layout'),
-            'admin_only' => Yii::t('CustomPagesModule.models_Page', 'Only visible for admins'),
-            'visibility' => Yii::t('CustomPagesModule.models_Page', 'Visibility'),
+            'iframe_attrs' => Yii::t('CustomPagesModule.base', 'Additional IFrame Attributes'),
+            'sort_order' => Yii::t('CustomPagesModule.base', 'Sort Order'),
+            'targetUrl' => Yii::t('CustomPagesModule.base', 'Target Url'),
+            'templateId' => Yii::t('CustomPagesModule.base', 'Template Layout'),
+            'admin_only' => Yii::t('CustomPagesModule.model', 'Only visible for admins'),
+            'visibility' => Yii::t('CustomPagesModule.model', 'Visibility'),
         ];
     }
 

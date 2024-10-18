@@ -180,7 +180,7 @@ class ContainerContentController extends \humhub\components\Controller
         return $this->asJson([
             'output' => $this->renderAjaxPartial(EditContainerItemModal::widget([
                 'model' => $form,
-                'title' => Yii::t('CustomPagesModule.controllers_AdminController', '<strong>Add</strong> {templateName} item', ['templateName' => $form->template->name]),
+                'title' => Yii::t('CustomPagesModule.base', '<strong>Add</strong> {templateName} item', ['templateName' => $form->template->name]),
                 'action' => Url::to(['edit-add-item', 'ownerContentId' => $ownerContent->id, 'templateId' => $itemTemplate->id, 'cguid' => $cguid]),
             ])),
         ]);
@@ -210,7 +210,7 @@ class ContainerContentController extends \humhub\components\Controller
         return $this->asJson([
             'output' => $this->renderAjaxPartial(EditContainerItemModal::widget([
                 'model' => $form,
-                'title' => Yii::t('CustomPagesModule.controllers_AdminController', '<strong>Edit</strong> item'),
+                'title' => Yii::t('CustomPagesModule.base', '<strong>Edit</strong> item'),
             ])),
         ]);
     }
@@ -246,7 +246,7 @@ class ContainerContentController extends \humhub\components\Controller
         $ownerContent = OwnerContent::findOne(['id' => $ownerContentId]);
 
         if ($ownerContent == null) {
-            throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.controllers_TemplateController', 'Invalid request data!'));
+            throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.base', 'Invalid request data!'));
         }
 
         $ownerContent->instance->moveItem($itemId, $step);

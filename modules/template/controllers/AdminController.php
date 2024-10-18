@@ -107,7 +107,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $model = Template::findOne(['id' => Yii::$app->request->get('id')]);
 
         if ($model == null) {
-            throw new \yii\web\HttpException(404, Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'Template not found!'));
+            throw new \yii\web\HttpException(404, Yii::t('CustomPagesModule.template', 'Template not found!'));
         }
 
         $model->scenario = 'source';
@@ -133,7 +133,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $model = Template::findOne(['id' => Yii::$app->request->get('id')]);
 
         if ($model == null) {
-            throw new \yii\web\HttpException(404, Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'Template not found!'));
+            throw new \yii\web\HttpException(404, Yii::t('CustomPagesModule.template', 'Template not found!'));
         }
 
         $dataProvider = new ActiveDataProvider([
@@ -187,7 +187,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $result = $this->renderAjaxPartial(EditElementModal::widget([
             'model' => $form,
             'isAdminEdit' => true,
-            'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Add</strong> new {type} element', ['type' => $form->getLabel()]),
+            'title' => Yii::t('CustomPagesModule.template', '<strong>Add</strong> new {type} element', ['type' => $form->getLabel()]),
         ]));
 
         return $this->getJsonEditElementResult(false, $result, $form);
@@ -215,7 +215,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $result = $this->renderAjaxPartial(EditElementModal::widget([
             'model' => $form,
             'isAdminEdit' => true,
-            'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> element {name}', ['name' => $form->element->name]),
+            'title' => Yii::t('CustomPagesModule.template', '<strong>Edit</strong> element {name}', ['name' => $form->element->name]),
             'resetUrl' => \yii\helpers\Url::to(['reset-element', 'id' => $id]),
         ]));
 
@@ -304,7 +304,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             if ($template->delete()) {
                 $this->view->success(Yii::t('CustomPagesModule.base', 'Deleted.'));
             } else {
-                $this->view->error(Yii::t('CustomPagesModule.modules_template_controllers_AdminController', 'The template could not be deleted, please get sure that this template is not in use.'));
+                $this->view->error(Yii::t('CustomPagesModule.template', 'The template could not be deleted, please get sure that this template is not in use.'));
             }
         }
 
@@ -354,7 +354,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             'success' => false,
             'output' => $this->renderAjaxPartial(EditMultipleElementsModal::widget([
                 'model' => $form,
-                'title' => Yii::t('CustomPagesModule.modules_template_controllers_AdminController', '<strong>Edit</strong> {templateName}', ['templateName' => $form->template->name]),
+                'title' => Yii::t('CustomPagesModule.template', '<strong>Edit</strong> {templateName}', ['templateName' => $form->template->name]),
             ])),
         ]);
     }

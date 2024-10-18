@@ -16,7 +16,7 @@ trait TemplatePageContainer
     public function validateTemplateType($attribute, $params)
     {
         if (TemplateType::isType($this->type) && $this->isNewRecord && !$this->templateId) {
-            $this->addError('templateId', Yii::t('CustomPagesModule.components_Container', 'Invalid template selection!'));
+            $this->addError('templateId', Yii::t('CustomPagesModule.base', 'Invalid template selection!'));
         }
     }
 }

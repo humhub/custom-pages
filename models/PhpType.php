@@ -27,7 +27,7 @@ class PhpType extends ContentType
 
     public function getContentLabel()
     {
-        return Yii::t('CustomPagesModule.form_labels', 'View');
+        return Yii::t('CustomPagesModule.base', 'View');
     }
 
     public function getDescription()

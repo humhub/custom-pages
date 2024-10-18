@@ -86,7 +86,7 @@ class ImageContent extends FileContent
 
     public function renderEmpty($options = [])
     {
-        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_ImageContent', 'Empty Image'), $options);
+        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty Image'), $options);
     }
 
     public function renderForm($form)

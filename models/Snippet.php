@@ -52,8 +52,8 @@ class Snippet extends CustomContentContainer
     public function attributeLabels()
     {
         $result = $this->defaultAttributeLabels();
-        $result['page_content'] = Yii::t('CustomPagesModule.models_Snippet', 'Content');
-        $result['target'] = Yii::t('CustomPagesModule.models_Snippet', 'Sidebar');
+        $result['page_content'] = Yii::t('CustomPagesModule.model', 'Content');
+        $result['target'] = Yii::t('CustomPagesModule.model', 'Sidebar');
         return $result;
     }
 
@@ -87,7 +87,7 @@ class Snippet extends CustomContentContainer
      */
     public function getLabel()
     {
-        return Yii::t('CustomPagesModule.models_Snippet', 'snippet');
+        return Yii::t('CustomPagesModule.model', 'snippet');
     }
 
     /**

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.11 (Unreleased)
+--------------------------
+- Enh #353: Reduce translation message categories
+
 1.10.10 (October 12, 2024)
 --------------------------
 - Enh #352: Deferred showing content until Markdown is rendered properly

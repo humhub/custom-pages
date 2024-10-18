@@ -51,7 +51,7 @@ class HtmlType extends ContentType
             'clientOptions' => [
                 'humhubTrigger' => [
                     'icon' => 'upload',
-                    'text' => Yii::t('CustomPagesModule.models_HtmlType', 'Attach Files'),
+                    'text' => Yii::t('CustomPagesModule.model', 'Attach Files'),
                     'selector' => '#custom-page-html-file-upload',
                     'event' => 'click',
                 ],
@@ -61,7 +61,7 @@ class HtmlType extends ContentType
         $field .= '<div class="form-group">'
             . UploadButton::widget([
                 'id' => 'custom-page-html-file-upload',
-                'label' => Yii::t('CustomPagesModule.models_HtmlType', 'Attach Files'),
+                'label' => Yii::t('CustomPagesModule.model', 'Attach Files'),
                 'tooltip' => false,
                 'hideInStream' => true,
                 'progress' => '#custom-page-html-upload-progress',

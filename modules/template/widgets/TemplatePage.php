@@ -77,14 +77,14 @@ class TemplatePage extends \humhub\widgets\JsWidget
                 'text' => [
                     'toggleOnText' => Yii::t('CustomPagesModule.base', 'On'),
                     'toggleOffText' => Yii::t('CustomPagesModule.base', 'Off'),
-                    'editTemplateText' => Yii::t('CustomPagesModule.views_view_template', 'Edit Template'),
+                    'editTemplateText' => Yii::t('CustomPagesModule.view', 'Edit Template'),
                     'confirmDeleteButton' => Yii::t('CustomPagesModule.base', 'Delete'),
-                    'confirmDeleteContentHeader' => Yii::t('CustomPagesModule.modules_template_controller_OwnerContentController', '<strong>Confirm</strong> content deletion'),
-                    'confirmDeleteContentBody' => Yii::t('CustomPagesModule.modules_template_widgets_views_confirmDeletionModal', 'Do you really want to delete this content?'),
-                    'confirmDeleteElementHeader' => Yii::t('CustomPagesModule.modules_template_controller_OwnerContentController', '<strong>Confirm</strong> element deletion'),
-                    'confirmDeleteElementBody' => Yii::t('CustomPagesModule.modules_template_widgets_views_confirmDeletionModal', 'Do you really want to delete this content?'),
-                    'confirmDeleteItemHeader' => Yii::t('CustomPagesModule.modules_template_controller_OwnerContentController', '<strong>Confirm</strong> container item deletion'),
-                    'confirmDeleteItemBody' => Yii::t('CustomPagesModule.modules_template_widgets_views_confirmDeletionModal', 'Are you sure you want to delete this container item?'),
+                    'confirmDeleteContentHeader' => Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> content deletion'),
+                    'confirmDeleteContentBody' => Yii::t('CustomPagesModule.template', 'Do you really want to delete this content?'),
+                    'confirmDeleteElementHeader' => Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> element deletion'),
+                    'confirmDeleteElementBody' => Yii::t('CustomPagesModule.template', 'Do you really want to delete this content?'),
+                    'confirmDeleteItemHeader' => Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> container item deletion'),
+                    'confirmDeleteItemBody' => Yii::t('CustomPagesModule.template', 'Are you sure you want to delete this container item?'),
                 ],
             ]);
         }

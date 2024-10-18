@@ -75,7 +75,7 @@ class SettingsForm extends Model
     public function validateViewPath($attribute, $params)
     {
         if (!is_dir(Yii::getAlias($this->$attribute)) && $this->phpPagesActive) {
-            $this->addError($attribute, Yii::t('CustomPagesModule.models_SettignsForm', 'The given view file path does not exist.'));
+            $this->addError($attribute, Yii::t('CustomPagesModule.model', 'The given view file path does not exist.'));
         }
     }
 
@@ -85,11 +85,11 @@ class SettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'phpPagesActive' => Yii::t('CustomPagesModule.models_SettignsForm', 'Activate PHP based Pages and Snippets'),
-            'phpGlobalPagePath' => Yii::t('CustomPagesModule.models_SettignsForm', 'PHP view path for global custom pages'),
-            'phpGlobalSnippetPath' => Yii::t('CustomPagesModule.models_SettignsForm', 'PHP view path for global custom snippets'),
-            'phpContainerPagePath' => Yii::t('CustomPagesModule.models_SettignsForm', 'PHP view path for custom space pages'),
-            'phpContainerSnippetPath' => Yii::t('CustomPagesModule.models_SettignsForm', 'PHP view path for custom space snippets'),
+            'phpPagesActive' => Yii::t('CustomPagesModule.model', 'Activate PHP based Pages and Snippets'),
+            'phpGlobalPagePath' => Yii::t('CustomPagesModule.model', 'PHP view path for global custom pages'),
+            'phpGlobalSnippetPath' => Yii::t('CustomPagesModule.model', 'PHP view path for global custom snippets'),
+            'phpContainerPagePath' => Yii::t('CustomPagesModule.model', 'PHP view path for custom space pages'),
+            'phpContainerSnippetPath' => Yii::t('CustomPagesModule.model', 'PHP view path for custom space snippets'),
         ];
     }
 
@@ -99,7 +99,7 @@ class SettingsForm extends Model
     public function attributeHints()
     {
         return [
-            'phpPagesActive' => Yii::t('CustomPagesModule.models_SettignsForm', 'If disabled, existing php pages will still be online, but can\'t be created.'),
+            'phpPagesActive' => Yii::t('CustomPagesModule.model', 'If disabled, existing php pages will still be online, but can\'t be created.'),
         ];
     }
 

@@ -11,12 +11,12 @@ use yii\widgets\ActiveForm;
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">
-                   <?= Yii::t('CustomPagesModule.modules_template_views_admin_info', '<strong>Template</strong> Infos'); ?>
+                   <?= Yii::t('CustomPagesModule.template', '<strong>Template</strong> Infos'); ?>
                 </h4>
             </div>
             <div class="modal-body media-body">  
                 <div class="info-content">
-                    <?= Yii::t('CustomPagesModule.modules_template_views_admin_info', ''
+                    <?= Yii::t('CustomPagesModule.template', ''
                             . 'This template systems uses {twigLink} as template engine.<br /><br /> '
                             . 'You can add elements as Richtexts or Images into your template by using the \'Add Element\' dropdown menu.<br />'
                             . 'After adding an element, the elements placeholder is automatically inserted to your template.<br />'
@@ -30,7 +30,7 @@ use yii\widgets\ActiveForm;
                         'contentDefaultVar' => '{{ content.default }}'
                         ]); ?>
                     <br /><br />
-                    <?= Yii::t('CustomPagesModule.modules_template_views_admin_info', 'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>', ['twig_tmpl_url' => 'http://twig.sensiolabs.org/doc/templates.html']); ?>
+                    <?= Yii::t('CustomPagesModule.template', 'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>', ['twig_tmpl_url' => 'http://twig.sensiolabs.org/doc/templates.html']); ?>
                 </div>
             </div>
             <div class="modal-footer">

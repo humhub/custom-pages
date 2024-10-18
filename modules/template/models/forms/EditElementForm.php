@@ -27,7 +27,7 @@ class EditElementForm extends TemplateElementForm
     public function attributeLabels()
     {
         return [
-            'use_default' => Yii::t('CustomPagesModule.modules_template_models_forms_EditElementForm', 'Use empty content'),
+            'use_default' => Yii::t('CustomPagesModule.template', 'Use empty content'),
         ];
     }
 

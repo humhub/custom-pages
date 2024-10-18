@@ -20,7 +20,7 @@ $id = $model->id ?? str_replace(['[', ']'], '', $model->formName());
     'clientOptions' => [
         'humhubTrigger' => [
             'icon' => 'upload',
-            'text' => Yii::t('CustomPagesModule.models_HtmlType', 'Attach Files'),
+            'text' => Yii::t('CustomPagesModule.model', 'Attach Files'),
             'selector' => '#richtext-template-file-uploader-' . $id,
             'event' => 'click'
         ]
@@ -28,7 +28,7 @@ $id = $model->id ?? str_replace(['[', ']'], '', $model->formName());
 
 <?= '<div class="form-group">' . UploadButton::widget([
         'id' => 'richtext-template-file-uploader-' . $id,
-        'label' => Yii::t('CustomPagesModule.models_HtmlType', 'Attach Files'),
+        'label' => Yii::t('CustomPagesModule.model', 'Attach Files'),
         'tooltip' => false,
         'progress' => '#richtext-template-file-uploader-progress-' . $id,
         'preview' => '#richtext-template-file-uploader-preview-' . $id,

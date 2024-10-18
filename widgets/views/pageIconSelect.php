@@ -592,7 +592,7 @@ $faIcons = [
 ];
 
 if ($page instanceof Snippet || $page instanceof ContainerSnippet) {
-    $faIcons = array_merge([Yii::t('CustomPagesModule.widgets_views_pageIconSelect', 'none') => 'none'], $faIcons);
+    $faIcons = array_merge([Yii::t('CustomPagesModule.view', 'none') => 'none'], $faIcons);
 }
 ?>
 

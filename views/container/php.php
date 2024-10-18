@@ -24,7 +24,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
             <?php try { ?>
                 <?= $this->renderFile($page->getPhpViewFilePath(), ['contentContainer' => $contentContainer]) ?>
             <?php } catch (ViewNotFoundException $vnfe) { ?>
-                <?= Yii::t('CustomPagesModule.view_php', 'View not found') ?>
+                <?= Yii::t('CustomPagesModule.view', 'View not found') ?>
             <?php } ?>
         </div>
     </div>

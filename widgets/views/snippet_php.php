@@ -15,7 +15,7 @@ use yii\base\ViewNotFoundException;
 try {
     $content = $this->renderFile($model->getPhpViewFilePath(), ['contentContainer' => $contentContainer]);
 } catch (ViewNotFoundException $vnfe) {
-    $content = Yii::t('CustomPagesModule.view_php', 'View not found');
+    $content = Yii::t('CustomPagesModule.view', 'View not found');
 }
 
 $navigation = (!$canEdit) ? [] : [

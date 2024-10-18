@@ -29,7 +29,7 @@ class LinkType extends ContentType
 
     public function getContentLabel()
     {
-        return Yii::t('CustomPagesModule.form_labels', 'Url');
+        return Yii::t('CustomPagesModule.base', 'Url');
     }
 
     public function getDescription()
@@ -50,6 +50,6 @@ class LinkType extends ContentType
     public function renderFormField(ActiveForm $form, CustomContentContainer $page)
     {
         return $form->field($page, $page->getPageContentProperty())->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('targetUrl'))
-            . '<div class="help-block">' . Yii::t('CustomPagesModule.views_common_edit', 'e.g. http://www.example.de') . '</div>';
+            . '<div class="help-block">' . Yii::t('CustomPagesModule.view', 'e.g. http://www.example.de') . '</div>';
     }
 }

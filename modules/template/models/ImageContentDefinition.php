@@ -30,9 +30,9 @@ class ImageContentDefinition extends ContentDefinition
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
-            'style' => Yii::t('CustomPagesModule.modules_template_models_ImageContentDefinition', 'Style'),
-            'height' => Yii::t('CustomPagesModule.modules_template_models_ImageContentDefinition', 'Height'),
-            'width' => Yii::t('CustomPagesModule.modules_template_models_ImageContentDefinition', 'Width'),
+            'style' => Yii::t('CustomPagesModule.template', 'Style'),
+            'height' => Yii::t('CustomPagesModule.template', 'Height'),
+            'width' => Yii::t('CustomPagesModule.template', 'Width'),
         ]);
     }
 }

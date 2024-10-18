@@ -11,7 +11,7 @@ SourceEditorAsset::register($this);
 
 $this->registerJsConfig('custom_pages.template.source', [
     'text' => [
-        'warning.beforeunload' => Yii::t('CustomPagesModule.modules_template_views_admin_editSource', "You haven't saved your last changes yet. Do you want to leave without saving?")
+        'warning.beforeunload' => Yii::t('CustomPagesModule.template', "You haven't saved your last changes yet. Do you want to leave without saving?")
     ]
 ]);
 ?>
@@ -22,10 +22,10 @@ $this->registerJsConfig('custom_pages.template.source', [
 
     <div class="panel-body">
         <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), ['class' => 'btn btn-default pull-right', 'data-ui-loader' => '']); ?>
-        <h4><?= Yii::t('CustomPagesModule.modules_template_views_admin_editSource', 'Edit template \'{templateName}\'', ['templateName' => Html::encode($model->name)]); ?></h4>
+        <h4><?= Yii::t('CustomPagesModule.template', 'Edit template \'{templateName}\'', ['templateName' => Html::encode($model->name)]); ?></h4>
         <div class="help-block">
             <?=
-            Yii::t('CustomPagesModule.modules_template_views_admin_editSource', 'Here you can edit the source of your template by defining the template layout and adding content elements. '
+            Yii::t('CustomPagesModule.template', 'Here you can edit the source of your template by defining the template layout and adding content elements. '
                     . 'Each element can be assigned with a default content and additional definitions.');
             ?>
         </div>
@@ -64,11 +64,11 @@ $this->registerJsConfig('custom_pages.template.source', [
             <div class="dropdown pull-right">
                 <button data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/edit-multiple', 'id' => $model->id]) ?>" class="btn btn-primary">
                     <i aria-hidden="true" class="fa fa-pencil"></i>
-                    <?= Yii::t('CustomPagesModule.modules_template_views_admin_editSource', 'Edit All'); ?>
+                    <?= Yii::t('CustomPagesModule.template', 'Edit All'); ?>
                 </button>
                 <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">
                     <i aria-hidden="true" class="fa fa-plus"></i>
-                    <?= Yii::t('CustomPagesModule.modules_template_views_admin_editSource', 'Add Element'); ?>
+                    <?= Yii::t('CustomPagesModule.template', 'Add Element'); ?>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" id="addElementSelect">

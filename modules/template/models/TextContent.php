@@ -113,7 +113,7 @@ class TextContent extends TemplateContentActiveRecord
     {
         if ($this->inline_text) {
             $options['class'] = 'emptyBlock text';
-            return $this->renderEmptyDiv(Yii::t('CustomPagesModule.models_RichtextContent', 'Empty Text'), $options);
+            return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty Text'), $options);
         }
 
         return '';

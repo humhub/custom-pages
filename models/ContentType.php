@@ -44,7 +44,7 @@ abstract class ContentType extends Model
 
     public function getContentLabel()
     {
-        return Yii::t('CustomPagesModule.components_Container', 'Content');
+        return Yii::t('CustomPagesModule.base', 'Content');
     }
 
     /**

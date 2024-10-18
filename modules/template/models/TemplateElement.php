@@ -38,7 +38,7 @@ class TemplateElement extends ActiveRecord
         return [
             [['name', 'content_type', 'template_id'], 'required'],
             [['name', 'title', 'content_type'], 'string', 'length' => [2, 100]],
-            ['name', 'match', 'pattern' => '/^[a-zA-Z][a-zA-Z0-9_]+$/', 'message' => Yii::t('CustomPagesModule.models_TemplateElement', 'The element name must contain at least two characters without spaces or special signs except \'_\'')],
+            ['name', 'match', 'pattern' => '/^[a-zA-Z][a-zA-Z0-9_]+$/', 'message' => Yii::t('CustomPagesModule.model', 'The element name must contain at least two characters without spaces or special signs except \'_\'')],
             ['name', 'uniqueTemplateElementName', 'on' => ['create']],
             [['template_id'], 'integer'],
         ];
@@ -59,8 +59,8 @@ class TemplateElement extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'name' => Yii::t('CustomPagesModule.models_TemplateElement', 'Placeholder name'),
-            'title' => Yii::t('CustomPagesModule.models_TemplateElement', 'Label'),
+            'name' => Yii::t('CustomPagesModule.model', 'Placeholder name'),
+            'title' => Yii::t('CustomPagesModule.model', 'Label'),
         ];
     }
 
@@ -80,7 +80,7 @@ class TemplateElement extends ActiveRecord
     {
         $templateElementCount = self::find()->where(['template_id' => $this->template_id, 'name' => $this->name])->count();
         if ($templateElementCount > 0) {
-            $this->addError($attribute, Yii::t('CustomPagesModule.models_TemplateElement', 'The given element name is already in use for this template.'));
+            $this->addError($attribute, Yii::t('CustomPagesModule.model', 'The given element name is already in use for this template.'));
         }
     }
 

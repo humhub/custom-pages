@@ -121,13 +121,7 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
      */
     public function render($options = [])
     {
-        try {
-            return Html::encode($this->getRssData()->channel->title ?: $this->url);
-        } catch (\Exception $e) {
-            Yii::error('Cannot load RSS feed "' . $this->url . '". Error: ' . $e->getMessage(), 'custom-pages');
-        }
-
-        return '';
+        return Html::encode($this->getRssData()->channel->title ?: $this->url);
     }
 
     /**
@@ -164,9 +158,18 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
             return '';
         }
 
-        return Yii::$app->cache->getOrSet(sha1(static::class . $this->url), function () {
+        try {
+            if ($this->cache_time > 0) {
+                return Yii::$app->cache->getOrSet(sha1(static::class . $this->url), function () {
+                    return file_get_contents($this->url);
+                }, $this->cache_time);
+            }
+
             return file_get_contents($this->url);
-        });
+        } catch (\Exception $e) {
+            Yii::error('Cannot load RSS feed "' . $this->url . '". Error: ' . $e->getMessage(), 'custom-pages');
+            return '';
+        }
     }
 
     /**

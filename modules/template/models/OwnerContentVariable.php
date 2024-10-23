@@ -81,5 +81,14 @@ class OwnerContentVariable extends Model
         return $this->render();
     }
 
+    public function items(): iterable
+    {
+        try {
+            yield from $this->ownerContent->getItems();
+        } catch (\Exception $e) {
+            yield from [];
+        }
+    }
+
 
 }

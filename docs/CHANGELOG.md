@@ -4,6 +4,7 @@ Changelog
 1.10.11 (Unreleased)
 --------------------------
 - Enh #353: Reduce translation message categories
+- Enh #354: Template - Add RSS Element Type
 
 1.10.10 (October 12, 2024)
 --------------------------

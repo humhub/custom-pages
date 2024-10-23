@@ -12,3 +12,5 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 /* @var ActiveForm $form */
 ?>
 <?= $form->field($model, 'url')->textInput(['maxlength' => 1000]) ?>
+<?= $form->field($model, 'cache_time') ?>
+<?= $form->field($model, 'limit') ?>

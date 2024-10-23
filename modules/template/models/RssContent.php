@@ -11,17 +11,36 @@ use humhub\libs\Html;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use SimpleXMLElement;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class RssContent
  *
  * @property string $url
+ * @property int $cache_time
+ * @property int $limit
  */
 class RssContent extends TemplateContentActiveRecord implements TemplateContentIterable
 {
     public static $label = 'RSS';
 
     private SimpleXMLElement|null|false $rssData = null;
+
+    /**
+     * @inheridoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        if ($this->cache_time === null) {
+            $this->cache_time = 3600;
+        }
+
+        if ($this->limit === null) {
+            $this->limit = 10;
+        }
+    }
 
     /**
      * @inheritdoc
@@ -36,10 +55,12 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
      */
     public function rules()
     {
-        $result = parent::rules();
-        $result[] = ['url', 'string', 'length' => [1, 1000]];
-        $result[] = ['url', 'url'];
-        return $result;
+        return array_merge(parent::rules(), [
+            [['url'], 'string', 'length' => [1, 1000]],
+            [['url'], 'url'],
+            [['cache_time'], 'integer', 'min' => 0],
+            [['limit'], 'integer', 'min' => 0],
+        ]);
     }
 
     /**
@@ -47,11 +68,11 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
      */
     public function scenarios()
     {
-        $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_CREATE][] = 'url';
-        $scenarios[self::SCENARIO_EDIT_ADMIN][] = 'url';
-        $scenarios[self::SCENARIO_EDIT][] = 'url';
-        return $scenarios;
+        return ArrayHelper::merge(parent::scenarios(), [
+            self::SCENARIO_CREATE => $attributes = ['url', 'cache_time', 'limit'],
+            self::SCENARIO_EDIT_ADMIN => $attributes,
+            self::SCENARIO_EDIT => $attributes,
+        ]);
     }
 
     /**
@@ -61,6 +82,19 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
     {
         return [
             'url' => Yii::t('CustomPagesModule.template', 'RSS feed URL'),
+            'cache_time' => Yii::t('CustomPagesModule.template', 'Expire Time (in seconds)'),
+            'limit' => Yii::t('CustomPagesModule.template', 'Limit items'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'cache_time' => Yii::t('CustomPagesModule.template', 'Leave blank to don\'t cache.'),
+            'limit' => Yii::t('CustomPagesModule.template', 'Leave blank to don\'t limit.'),
         ];
     }
 
@@ -88,7 +122,7 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
     public function render($options = [])
     {
         try {
-            return Html::encode(file_get_contents($this->url));
+            return Html::encode($this->getRssData()->channel->title ?: $this->url);
         } catch (\Exception $e) {
             Yii::error('Cannot load RSS feed "' . $this->url . '". Error: ' . $e->getMessage(), 'custom-pages');
         }
@@ -124,6 +158,17 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
         ]);
     }
 
+    private function getRssFileContent(): string
+    {
+        if ($this->isEmpty()) {
+            return '';
+        }
+
+        return Yii::$app->cache->getOrSet(sha1(static::class . $this->url), function () {
+            return file_get_contents($this->url);
+        });
+    }
+
     /**
      * @return SimpleXMLElement|null|false
      */
@@ -131,8 +176,7 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
     {
         if ($this->rssData === null && !$this->isEmpty()) {
             try {
-                // TODO: Cache it?
-                $this->rssData = simplexml_load_file($this->url);
+                $this->rssData = simplexml_load_string($this->getRssFileContent());
             } catch (\Exception $e) {
                 $this->rssData = false;
             }
@@ -148,8 +192,13 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
     {
         $items = [];
         if ($this->getRssData()->channel->item instanceof SimpleXMLElement) {
+            $i = 0;
             foreach ($this->getRssData()->channel->item as $item) {
-                $items[] = (array)$item;
+                $items[] = (array) $item;
+                $i++;
+                if ($this->limit > 0 && $i >= $this->limit) {
+                    break;
+                }
             }
         }
 

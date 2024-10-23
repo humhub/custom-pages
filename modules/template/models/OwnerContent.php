@@ -255,5 +255,14 @@ class OwnerContent extends ActiveRecord
         return self::findOne(['content_type' => $contentType, 'content_id' => $contentId]);
     }
 
-
+    /**
+     * Get items if the template element is iterable
+     *
+     * @return iterable
+     */
+    public function getItems(): iterable
+    {
+        $instance = $this->getInstance();
+        yield from $instance instanceof TemplateContentIterable ? $instance->getItems() : [];
+    }
 }

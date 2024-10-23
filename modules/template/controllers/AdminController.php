@@ -14,6 +14,7 @@ use humhub\modules\custom_pages\modules\template\models\FileDownloadContent;
 use humhub\modules\custom_pages\modules\template\models\HumHubRichtextContent;
 use humhub\modules\custom_pages\modules\template\models\ImageContent;
 use humhub\modules\custom_pages\modules\template\models\RichtextContent;
+use humhub\modules\custom_pages\modules\template\models\RssContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
 use humhub\modules\custom_pages\modules\template\models\TextContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
@@ -56,7 +57,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
     /**
      * Returns a searchable gridview with all avialable templates of the given type.
      *
-     * @return type
+     * @return string
      */
     public function actionIndex()
     {
@@ -99,7 +100,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
     /**
      * Used to edit the source of a template.
      *
-     * @return type
+     * @return string
      * @throws \yii\web\HttpException
      */
     public function actionEditSource()
@@ -151,7 +152,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
     /**
      * Returns a selection of all available template content types.
-     * @return type
+     * @return array
      */
     private function getContentTypes()
     {
@@ -163,6 +164,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             FileContent::$label => FileContent::class,
             FileDownloadContent::$label => FileDownloadContent::class,
             ContainerContent::$label => ContainerContent::class,
+            RssContent::$label => RssContent::class,
         ];
     }
 

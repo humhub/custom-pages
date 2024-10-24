@@ -90,7 +90,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
         return [
             [['name', 'type'], 'required', 'on' => ['edit']],
             ['description', 'safe'],
-            [['allow_for_spaces', 'isLyout', 'allow_inline_activation'], 'integer'],
+            [['allow_for_spaces', 'allow_inline_activation'], 'integer'],
             [['name'], 'unique'],
             [['name', 'type'], 'string', 'max' => 100],
             [['type'], 'validType'],

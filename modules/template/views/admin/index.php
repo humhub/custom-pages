@@ -32,12 +32,12 @@ use yii\helpers\Url;
             ->right()
             ->sm() ?>
 
-        <?php /*Button::info(Yii::t('CustomPagesModule.base', 'Import {type}', ['type' => $type]))
-            ->link(['import'])
+        <?= Button::info(Yii::t('CustomPagesModule.base', 'Import {type}', ['type' => $type]))
+            ->action('ui.modal.load', ['import-source', 'type' => $type])
             ->icon('download')
             ->right()
             ->style('margin-right:5px')
-            ->sm()*/ ?>
+            ->sm() ?>
 
         <?= GridView::widget([
             'dataProvider' => $dataProvider,

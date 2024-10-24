@@ -11,10 +11,10 @@ use yii\db\ActiveRecord;
  * TemplateElements represent the placeholders of a template.
  * A TemplateElement consists of an name which is unique within the template and content type definition.
  *
- * @var $name string
- * @var $content_type string
- * @var $template_id int
- * @var $title string
+ * @property $name string
+ * @property $content_type string
+ * @property $template_id int
+ * @property $title string
  */
 class TemplateElement extends ActiveRecord
 {

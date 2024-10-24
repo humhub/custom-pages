@@ -12,6 +12,13 @@ use Yii;
  *
  * An OwnerContent instance is used to assign a content to a template placeholder.
  * The owner of the content can either be a Template (default content) or an TemplateContentOwner (e.g. TemplateInstance, ContainerContentItem).
+ *
+ * @property string $element_name
+ * @property string $owner_model
+ * @property int $owner_id
+ * @property string $content_type
+ * @property string $content_id
+ * @property bool $use_default
  */
 class OwnerContent extends ActiveRecord
 {

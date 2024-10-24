@@ -11,6 +11,7 @@ namespace humhub\modules\custom_pages\modules\template\controllers;
 use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use humhub\modules\custom_pages\modules\template\models\FileContent;
 use humhub\modules\custom_pages\modules\template\models\FileDownloadContent;
+use humhub\modules\custom_pages\modules\template\models\forms\ImportForm;
 use humhub\modules\custom_pages\modules\template\models\HumHubRichtextContent;
 use humhub\modules\custom_pages\modules\template\models\ImageContent;
 use humhub\modules\custom_pages\modules\template\models\RichtextContent;
@@ -386,6 +387,28 @@ class AdminController extends \humhub\modules\admin\components\Controller
         }
 
         return ExportService::instance($model)->export()->send();
+    }
+
+    /**
+     * Used to import the source of a template.
+     *
+     * @return string
+     */
+    public function actionImportSource(string $type)
+    {
+        $form = new ImportForm(['type' => $type]);
+
+        if ($form->load(Yii::$app->request->post())) {
+            if ($form->import()) {
+                $this->view->success(Yii::t('CustomPagesModule.template', 'Imported.'));
+                return $this->redirect(['edit-source', 'id' => $form->getService()->template->id]);
+            } else {
+                $this->view->error(implode(' ', $form->getErrorSummary(true)));
+                return $this->redirect(['/custom_pages/template/' . $type . '-admin']);
+            }
+        }
+
+        return $this->renderAjax('@custom_pages/modules/template/views/admin/importSource', ['model' => $form]);
     }
 
 }

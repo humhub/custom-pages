@@ -12,6 +12,7 @@ use yii\db\ActiveQuery;
 /**
  * This is the base class for all TemplateContent types.
  *
+ * @property int $id
  * @property-read OwnerContent $ownerContent
  */
 abstract class TemplateContentActiveRecord extends ActiveRecord implements ViewableInterface

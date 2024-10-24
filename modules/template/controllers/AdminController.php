@@ -21,6 +21,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
+use humhub\modules\custom_pages\modules\template\services\ExportService;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateElementAdminRow;
 use humhub\modules\custom_pages\modules\template\widgets\EditElementModal;
 use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElementsForm;
@@ -30,6 +31,7 @@ use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use Yii;
 use yii\base\Response;
 use yii\data\ActiveDataProvider;
+use yii\web\NotFoundHttpException;
 
 /**
  * Admin controller for managing templates.
@@ -368,6 +370,22 @@ class AdminController extends \humhub\modules\admin\components\Controller
     public function actionInfo()
     {
         return $this->renderPartial('@custom_pages/modules/template/views/admin/info');
+    }
+
+    /**
+     * Used to export the source of a template.
+     *
+     * @return Response
+     */
+    public function actionExportSource()
+    {
+        $model = Template::findOne(['id' => Yii::$app->request->get('id')]);
+
+        if ($model === null) {
+            throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template not found!'));
+        }
+
+        return ExportService::instance($model)->export()->send();
     }
 
 }

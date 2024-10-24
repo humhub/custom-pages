@@ -26,8 +26,18 @@ use yii\helpers\Url;
     <?= TemplateAdminMenu::widget(); ?>
 
     <div class="panel-body">
-        <?= Button::success(Yii::t('CustomPagesModule.base', 'Create new {type}', ['type' => $type]))->icon('fa-plus')->right()->link(['edit'])->sm()?>
+        <?= Button::success(Yii::t('CustomPagesModule.base', 'Create new {type}', ['type' => $type]))
+            ->link(['edit'])
+            ->icon('plus')
+            ->right()
+            ->sm() ?>
 
+        <?php /*Button::info(Yii::t('CustomPagesModule.base', 'Import {type}', ['type' => $type]))
+            ->link(['import'])
+            ->icon('download')
+            ->right()
+            ->style('margin-right:5px')
+            ->sm()*/ ?>
 
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
@@ -43,23 +53,32 @@ use yii\helpers\Url;
                 ],
                 'name',
                 [
-                    'header' => Yii::t('AdminModule.views_user_index', 'Actions'),
+                    'header' => Yii::t('CustomPagesModule.template', 'Actions'),
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['style' => 'width:80px; min-width:80px;'],
+                    'template' => '{export} {update} {delete}',
                     'buttons' => [
-                        'view' => function ($url, $model) {
-                            return null;
+                        'export' => function ($url, $model) {
+                            return Button::defaultType()->icon('upload')
+                                ->link(Url::toRoute(['export-source', 'id' => $model->id]))
+                                ->tooltip(Yii::t('CustomPagesModule.template', 'Export {type}', ['type' => $model->type]))
+                                ->loader(false)
+                                ->xs();
                         },
                         'update' => function ($url, $model) {
-                            return Button::primary()->icon('fa-pencil')->link(Url::toRoute(['edit-source', 'id' => $model->id]))->xs();
+                            return Button::primary()->icon('fa-pencil')
+                                ->link(Url::toRoute(['edit-source', 'id' => $model->id]))
+                                ->xs();
                         },
                         'delete' => function ($url, $model) {
-                            return Button::danger()->icon('fa-times')->link(Url::toRoute(['delete-template', 'id' => $model->id]))->xs()->confirm();
-                        }
+                            return Button::danger()->icon('fa-times')
+                                ->link(Url::toRoute(['delete-template', 'id' => $model->id]))
+                                ->xs()
+                                ->confirm();
+                        },
                     ],
                 ],
             ],
-        ]);
-        ?>
+        ]) ?>
     </div>
 </div>

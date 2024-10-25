@@ -6,6 +6,8 @@ use humhub\components\ActiveRecord;
 use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\custom_pages\models\CustomContentContainer;
+use humhub\modules\custom_pages\permissions\ManagePages;
+use humhub\modules\user\components\PermissionManager;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -336,14 +338,15 @@ abstract class TemplateContentActiveRecord extends ActiveRecord implements Viewa
             ->andWhere([OwnerContent::tableName() . '.content_type' => get_class($this)]);
     }
 
-    public function getCustomContentContainer(): ?CustomContentContainer
+    public function getOwner(): ?TemplateContentOwner
     {
         $ownerContent = $this->ownerContent;
-        if (!$ownerContent instanceof OwnerContent) {
-            return null;
-        }
+        return $ownerContent instanceof OwnerContent ? $ownerContent->getOwner() : null;
+    }
 
-        $ownerModel = $ownerContent->getOwner();
+    public function getCustomContentContainer(): ?CustomContentContainer
+    {
+        $ownerModel = $this->getOwner();
 
         if ($ownerModel instanceof ContainerContentItem) {
             $ownerModel = $ownerModel->getTemplateInstance();
@@ -369,6 +372,12 @@ abstract class TemplateContentActiveRecord extends ActiveRecord implements Viewa
 
         if ($customContentContainer instanceof ContentActiveRecord) {
             return $customContentContainer->content->canView($user);
+        }
+
+        if ($customContentContainer === null && $this->getOwner() instanceof Template) {
+            // If this template content record is not linked to any container(Page, Snippet),
+            // then it is from Template Layout, try to check if the user can manage Template Layouts
+            return (new PermissionManager(['subject' => $user]))->can(ManagePages::class);
         }
 
         return false;

@@ -7,12 +7,16 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
+use humhub\components\ActiveRecord;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord;
+use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
-use yii\db\ActiveRecord;
+use humhub\modules\file\models\FileContent;
+use yii\base\InvalidConfigException;
 use Yii;
+use yii\db\ActiveRecord as BaseActiveRecord;
 
 class ImportService
 {
@@ -74,7 +78,7 @@ class ImportService
         return !$this->hasErrors();
     }
 
-    private function saveRecord(ActiveRecord $record): ?ActiveRecord
+    private function saveRecord(BaseActiveRecord $record): ?BaseActiveRecord
     {
         if ($record->validate() && $record->save()) {
             return $record;
@@ -109,7 +113,7 @@ class ImportService
         return $this->template instanceof Template;
     }
 
-    public function importElement(array $data): ?TemplateElement
+    private function importElement(array $data): ?TemplateElement
     {
         $element = new TemplateElement();
         $element->setScenario(TemplateElement::SCENARIO_CREATE);
@@ -122,44 +126,134 @@ class ImportService
             return null;
         }
 
-        if (isset($data['templateContent'])) {
-            if ($templateContent = $this->importTemplateContent($element, $data['templateContent'])) {
-                $this->importOwnerContent($element, $templateContent, $data['ownerContent']);
-            }
+        if (!isset($data['ownerContent'])) {
+            $this->addError('Missed Owner Content for element with name "' . $data['name'] . '"!');
+            return null;
         }
+
+        $this->importOwnerContent($data['ownerContent']);
 
         return $element;
     }
 
-    public function importTemplateContent(TemplateElement $element, array $data): ?TemplateContentActiveRecord
-    {
-        if (!class_exists($element->content_type)) {
-            $this->addError('Wrong template element content type "' . $element->content_type . '"!');
-            return null;
-        }
-
-        /* @var TemplateContentActiveRecord $templateContent */
-        $templateContent = Yii::createObject($element->content_type);
-        foreach ($data as $key => $value) {
-            if ($key === 'id') {
-                continue;
-            }
-            $templateContent->$key = $value;
-        }
-
-        return $this->saveRecord($templateContent);
-    }
-
-    public function importOwnerContent(TemplateElement $element, TemplateContentActiveRecord $templateContent, array $data): ?OwnerContent
+    private function importOwnerContent(array $data): ?OwnerContent
     {
         $ownerContent = new OwnerContent();
         $ownerContent->element_name = $data['element_name'];
-        $ownerContent->owner_model = $data['owner_model']; // TODO: Create new object instead of getting from the data
-        $ownerContent->owner_id = $element->template_id;
-        $ownerContent->content_type = $templateContent::class;
-        $ownerContent->content_id = $templateContent->id;
         $ownerContent->use_default = $data['use_default'];
 
+        if (!isset($data['ownerObject'])) {
+            $this->addError('Missed Owner Object for Owner Content with element name "' . $data['element_name'] . '"!');
+            return null;
+        }
+
+        if (!isset($data['contentObject'])) {
+            $this->addError('Missed Content Object for Owner Content with element name "' . $data['element_name'] . '"!');
+            return null;
+        }
+
+        $ownerObject = $this->importOwnerObject($data['owner_model'], $data['ownerObject']);
+        if ($ownerObject instanceof TemplateContentOwner) {
+            $ownerContent->owner_model = $data['owner_model'];
+            $ownerContent->owner_id = $ownerObject->id;
+        }
+
+        $contentObject = $this->createObjectByData($data['content_type'], $data['contentObject']);
+        if ($contentObject instanceof TemplateContentActiveRecord) {
+            $ownerContent->content_type = $data['content_type'];
+            $ownerContent->content_id = $contentObject->id;
+        }
+
         return $this->saveRecord($ownerContent);
+    }
+
+    private function importOwnerObject(string $ownerClass, $data): ?TemplateContentOwner
+    {
+        if ($data === '#parentTemplate') {
+            return $this->template;
+        }
+
+        if (!is_array($data)) {
+            $this->addError('Wrong object data for creating Owner Object "' . $ownerClass . '"!');
+            return null;
+        }
+
+        return $this->createObjectByData($ownerClass, $data);
+    }
+
+    private function createObjectByData(string $class, array $data): ?ActiveRecord
+    {
+        if (!class_exists($class)) {
+            $this->addError('Wrong object class "' . $class . '"!');
+            return null;
+        }
+
+        try {
+            /* @var ActiveRecord $object */
+            $object = Yii::createObject($class);
+        } catch (InvalidConfigException $e) {
+            $this->addError('Cannot init object class "' . $class . '"!');
+            return null;
+        }
+
+        foreach ($data as $name => $value) {
+            if ($name === 'id' || is_array($value)) {
+                continue;
+            }
+            $object->$name = $value;
+        }
+
+        $object = $this->saveRecord($object);
+        if (!$object) {
+            return null;
+        }
+
+        if (isset($data['attachedFiles']) && is_array($data['attachedFiles'])) {
+            $this->attachFiles($object, $data['attachedFiles']);
+        }
+
+        return $object;
+    }
+
+    private function attachFiles(ActiveRecord $record, array $files)
+    {
+        $recordAttributes = $record->attributes;
+        $updateRecord = false;
+
+        $newFiles = [];
+        foreach ($files as $fileData) {
+            $file = new FileContent();
+            foreach ($fileData as $attribute => $value) {
+                if (in_array($attribute, ['guid', 'object_model', 'object_id'])) {
+                    continue;
+                }
+                if ($attribute === 'base64Content') {
+                    $file->newFileContent = base64_decode($value);
+                } else {
+                    $file->$attribute = $value;
+                }
+            }
+            if ($file->save()) {
+                $newGuid = $file->guid;
+                $newFiles[] = $file;
+            } else {
+                $newGuid = '';
+            }
+
+            foreach ($recordAttributes as $attribute => $value) {
+                if ($value === $fileData['guid']) {
+                    $record->$attribute = $newGuid;
+                    $updateRecord = true;
+                }
+            }
+        }
+
+        if ($newFiles !== []) {
+            $record->fileManager->attach($newFiles);
+        }
+
+        if ($updateRecord) {
+            $record->save();
+        }
     }
 }

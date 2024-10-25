@@ -10,6 +10,8 @@ namespace humhub\modules\custom_pages\modules\template\services;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord;
+use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
+use humhub\modules\file\models\File;
 use Yii;
 use yii\web\Response;
 
@@ -40,9 +42,33 @@ class ExportService
             if ($defaultContent instanceof OwnerContent) {
                 $this->data['elements'][$e]['ownerContent'] = $defaultContent->attributes;
 
-                $templateContent = $defaultContent->getInstance();
-                if ($templateContent instanceof TemplateContentActiveRecord) {
-                    $this->data['elements'][$e]['templateContent'] = $templateContent->attributes;
+                $ownerObject = $defaultContent->getOwner();
+                if ($ownerObject instanceof TemplateContentOwner) {
+                    $this->data['elements'][$e]['ownerContent']['ownerObject'] = $this->template->equals($ownerObject)
+                        ? '#parentTemplate'
+                        : $ownerObject->attributes;
+                }
+
+                $contentObject = $defaultContent->getInstance();
+                if ($contentObject instanceof TemplateContentActiveRecord) {
+                    $this->data['elements'][$e]['ownerContent']['contentObject'] = $contentObject->attributes;
+
+                    // Attach files
+                    $files = [];
+                    foreach ($contentObject->fileManager->find()->each() as $f => $file) {
+                        /* @var File $file */
+                        if ($file->store->has()) {
+                            foreach ($file->attributes() as $attribute) {
+                                if ($attribute !== 'id' && $attribute !== 'metadata') {
+                                    $files[$f][$attribute] = $file->$attribute;
+                                }
+                            }
+                            $files[$f]['base64Content'] = base64_encode(file_get_contents($file->store->get()));
+                        }
+                    }
+                    if ($files !== []) {
+                        $this->data['elements'][$e]['ownerContent']['contentObject']['attachedFiles'] = $files;
+                    }
                 }
             }
         }

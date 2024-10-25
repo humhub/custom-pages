@@ -179,7 +179,7 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
     {
         if ($this->rssData === null && !$this->isEmpty()) {
             try {
-                $this->rssData = simplexml_load_string($this->getRssFileContent());
+                $this->rssData = simplexml_load_string($this->getRssFileContent(), SimpleXMLElement::class, LIBXML_NOCDATA);
             } catch (\Exception $e) {
                 $this->rssData = false;
             }

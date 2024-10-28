@@ -22,6 +22,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
+use humhub\modules\custom_pages\modules\template\models\UserContent;
 use humhub\modules\custom_pages\modules\template\services\ExportService;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateElementAdminRow;
 use humhub\modules\custom_pages\modules\template\widgets\EditElementModal;
@@ -168,6 +169,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             FileDownloadContent::$label => FileDownloadContent::class,
             ContainerContent::$label => ContainerContent::class,
             RssContent::$label => RssContent::class,
+            UserContent::$label => UserContent::class,
         ];
     }
 

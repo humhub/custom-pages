@@ -113,6 +113,8 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
     {
         $clone = new RssContent();
         $clone->url = $this->url;
+        $clone->cache_time = $this->cache_time;
+        $clone->limit = $this->limit;
         return $clone;
     }
 

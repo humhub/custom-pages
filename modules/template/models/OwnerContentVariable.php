@@ -90,5 +90,14 @@ class OwnerContentVariable extends Model
         }
     }
 
-
+    /**
+     * Get a profile field
+     *
+     * @param string|null $field Field name or NULL to get default field
+     * @return string
+     */
+    public function profile(string $field = null): string
+    {
+        return $this->ownerContent->getProfileField($field);
+    }
 }

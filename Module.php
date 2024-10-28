@@ -36,7 +36,11 @@ class Module extends ContentContainerModule
         'allowedFilters' => ['capitalize', 'date', 'first', 'upper', 'escape', 'nl2br', 'url_encode', 'round'],
         'allowedFunctions' => ['range', 'max', 'min', 'random'],
         'allowedMethods' => [
-            'humhub\modules\custom_pages\modules\template\models\OwnerContentVariable' => ['__toString', 'items'],
+            'humhub\modules\custom_pages\modules\template\models\OwnerContentVariable' => [
+                '__toString',
+                'items',
+                'profile',
+            ],
         ],
         'allowedProperties' => ['sidebar_container', 'content', 'sidebar_container'],
     ];

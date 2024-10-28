@@ -272,4 +272,16 @@ class OwnerContent extends ActiveRecord
         $instance = $this->getInstance();
         yield from $instance instanceof TemplateContentIterable ? $instance->getItems() : [];
     }
+
+    /**
+     * Get a profile field
+     *
+     * @param string|null $field Field name or NULL to get default field
+     * @return string
+     */
+    public function getProfileField(string $field = null): string
+    {
+        $instance = $this->getInstance();
+        return $instance instanceof UserContent ? $instance->getProfileField($field) : '';
+    }
 }

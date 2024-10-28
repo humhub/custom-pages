@@ -181,7 +181,11 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
     {
         if ($this->rssData === null && !$this->isEmpty()) {
             try {
-                $this->rssData = simplexml_load_string($this->getRssFileContent(), SimpleXMLElement::class, LIBXML_NOCDATA);
+                $this->rssData = simplexml_load_string($this->getRssFileContent(), SimpleXMLElement::class, LIBXML_NOCDATA, '');
+                // Register all found namespaces in the RSS feed
+                foreach ($this->rssData->getNamespaces(true) as $prefix => $namespace) {
+                    $this->rssData->registerXPathNamespace($prefix, $namespace);
+                }
             } catch (\Exception $e) {
                 $this->rssData = false;
             }
@@ -198,8 +202,18 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
         $items = [];
         if ($this->getRssData()->channel->item instanceof SimpleXMLElement) {
             $i = 0;
+            $namespaces = $this->getRssData()->getNamespaces(true);
             foreach ($this->getRssData()->channel->item as $item) {
-                $items[] = (array) $item;
+                $items[$i] = (array) $item;
+
+                // Append fields from all found namespaces
+                foreach ($namespaces as $prefix => $namespace) {
+                    $namespacedElements = $item->xpath($prefix . ':*');
+                    foreach ($namespacedElements as $element) {
+                        $items[$i][$prefix . '_' . $element->getName()] = (string) $element;
+                    }
+                }
+
                 $i++;
                 if ($this->limit > 0 && $i >= $this->limit) {
                     break;

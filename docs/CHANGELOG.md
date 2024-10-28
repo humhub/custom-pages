@@ -1,10 +1,14 @@
 Changelog
 =========
 
+1.11 (DEVELOP)
+---------------
+- Enh #354: Template - Add RSS Element Type
+
 1.10.11 (Unreleased)
 --------------------------
 - Enh #353: Reduce translation message categories
-- Enh #354: Template - Add RSS Element Type
+- Fix #355: Fix visibility of attached images to Template Layout
 
 1.10.10 (October 12, 2024)
 --------------------------

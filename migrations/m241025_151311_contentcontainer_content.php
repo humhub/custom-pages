@@ -2,7 +2,6 @@
 
 use humhub\components\Migration;
 
-
 /**
  * Class m241025_151311_contentcontainer_content
  */

@@ -202,19 +202,14 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
         $items = [];
         if ($this->getRssData()->channel->item instanceof SimpleXMLElement) {
             $i = 0;
-            $namespaces = $this->getRssData()->getNamespaces(true);
             foreach ($this->getRssData()->channel->item as $item) {
-                $items[$i] = (array) $item;
+                $fields = (array) $item;
+                $fields = $this->parseItemNamespacedFields($item, $fields);
+                $fields = $this->parseItemImage($fields);
 
-                // Append fields from all found namespaces
-                foreach ($namespaces as $prefix => $namespace) {
-                    $namespacedElements = $item->xpath($prefix . ':*');
-                    foreach ($namespacedElements as $element) {
-                        $items[$i][$prefix . '_' . $element->getName()] = (string) $element;
-                    }
-                }
-
+                $items[] = $fields;
                 $i++;
+
                 if ($this->limit > 0 && $i >= $this->limit) {
                     break;
                 }
@@ -222,6 +217,42 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
         }
 
         yield from $items;
+    }
+
+    protected function parseItemNamespacedFields($item, array $fields = []): array
+    {
+        $namespaces = $this->getRssData()->getNamespaces(true);
+
+        foreach ($namespaces as $prefix => $namespace) {
+            $namespacedElements = $item->xpath($prefix . ':*');
+            foreach ($namespacedElements as $element) {
+                if (!isset($fields[$prefix])) {
+                    $fields[$prefix] = (string) $element;
+                }
+                $fields[$prefix . '_' . $element->getName()] = (string) $element;
+            }
+        }
+
+        return $fields;
+    }
+
+    protected function parseItemImage(array $fields = []): array
+    {
+        if (isset($fields['image'])) {
+            return $fields;
+        }
+
+        $imageFields = ['content', 'description'];
+
+        foreach ($imageFields as $imageField) {
+            if (isset($fields[$imageField]) &&
+                preg_match('/<img.+?src="(.+?)".+?>/i', $fields[$imageField], $image)) {
+                $fields['image'] = $image[1];
+                break;
+            }
+        }
+
+        return $fields;
     }
 
 }

@@ -77,7 +77,7 @@ class TemplateCache
      */
     public static function getKey(TemplateInstance $owner)
     {
-        return get_class($owner) . $owner->getPrimaryKey();
+        return $owner->getCacheKey();
     }
 
     /**

@@ -5,6 +5,7 @@ namespace humhub\modules\custom_pages\modules\template\models;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\models\CustomContentContainer;
+use Yii;
 use yii\db\ActiveQuery;
 
 /**
@@ -16,6 +17,7 @@ use yii\db\ActiveQuery;
  * @property int object_id
  * @property int template_id
  *
+ * @property-read Template $template
  */
 class TemplateInstance extends ActiveRecord implements TemplateContentOwner
 {
@@ -128,4 +130,18 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
         return false;
     }
 
+    public function getCacheKey(): string
+    {
+        $key = get_class($this) . $this->getPrimaryKey();
+
+        $template = $this->template;
+        if ($template instanceof Template &&
+            $template->getElements()->andWhere(['content_type' => UserContent::class])->exists()) {
+            // If this template contains at least one element with user data,
+            // then cache it per current user in order to display user elements correctly
+            $key .= '-' . Yii::$app->user->id;
+        }
+
+        return $key;
+    }
 }

@@ -11,6 +11,7 @@ use humhub\modules\custom_pages\lib\templates\TemplateEngine;
 use humhub\modules\custom_pages\Module;
 use Twig\Environment;
 use Twig\Extension\SandboxExtension;
+use Twig\Extra\String\StringExtension;
 use Twig\Sandbox\SecurityPolicy;
 use Yii;
 
@@ -37,6 +38,7 @@ class TwigEngine implements TemplateEngine
         $securityPolicy = $this->getSecurityPolicy();
         if ($securityPolicy !== null) {
             $twig->addExtension(new SandboxExtension($securityPolicy, true));
+            $twig->addExtension(new StringExtension());
         }
         return $twig->render($template, $content);
     }

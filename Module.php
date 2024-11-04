@@ -33,13 +33,17 @@ class Module extends ContentContainerModule
      */
     public $enableTwiqSandboxExtensionConfig = [
         'allowedTags' => ['autoescape', 'apply', 'block', 'if', 'with', 'for', 'set'],
-        'allowedFilters' => ['capitalize', 'date', 'first', 'upper', 'escape', 'nl2br', 'url_encode', 'round'],
+        'allowedFilters' => ['capitalize', 'date', 'first', 'upper', 'escape', 'nl2br', 'url_encode', 'round', 'u'],
         'allowedFunctions' => ['range', 'max', 'min', 'random'],
         'allowedMethods' => [
             'humhub\modules\custom_pages\modules\template\models\OwnerContentVariable' => [
                 '__toString',
                 'items',
                 'profile',
+            ],
+            'Symfony\Component\String\UnicodeString' => [
+                '__toString',
+                'truncate',
             ],
         ],
         'allowedProperties' => ['sidebar_container', 'content', 'sidebar_container'],

@@ -35,7 +35,7 @@ class ContainerSnippet extends Snippet
         return 'custom_pages_container_snippet';
     }
 
-    public static function getDefaultTargets()
+    public static function getDefaultTargets(string $type = 'page')
     {
         return [
             ['id' => self::SIDEEBAR_STREAM, 'name' => Yii::t('CustomPagesModule.base', 'Stream'), 'accessRoute' => '/space/space/home'],

@@ -26,7 +26,7 @@ use Yii;
  */
 class Snippet extends CustomContentContainer
 {
-    public const SIDEBAR_DASHBOARD = 'Dasboard';
+    public const SIDEBAR_DASHBOARD = 'Dashboard';
 
     /**
      * @return string the associated database table name
@@ -61,7 +61,7 @@ class Snippet extends CustomContentContainer
      * Returns a sidebar selection for all sidebars this page can be added.
      * @return array
      */
-    public static function getDefaultTargets()
+    public static function getDefaultTargets(string $type = 'page')
     {
         return [
             ['id' => static::SIDEBAR_DASHBOARD, 'name' => Yii::t('CustomPagesModule.base', 'Dashboard'), 'accessRoute' => '/dashboard'],

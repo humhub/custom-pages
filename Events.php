@@ -240,8 +240,12 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            /* @var Snippet[] $snippets */
-            $snippets = Snippet::find()->where(['target' => Snippet::SIDEBAR_DASHBOARD])->readable()->all();
+            /* @var Page[] $snippets */
+            $snippets = Page::find()
+                ->where(['is_snippet' => 1])
+                ->andWhere(['target' => Page::TARGET_DASHBOARD])
+                ->readable()
+                ->all();
             $canEdit = PagePermission::canEdit();
             foreach ($snippets as $snippet) {
                 if (!$snippet->canView()) {

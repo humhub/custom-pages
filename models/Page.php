@@ -19,6 +19,7 @@ use Yii;
  *
  * The followings are the available columns in table 'custom_pages_page':
  * @property int $id
+ * @property boolean $is_snippet
  * @property int $type
  * @property string $title
  * @property string $icon
@@ -45,6 +46,7 @@ class Page extends CustomContentContainer
     public const NAV_CLASS_EMPTY = 'WithOutMenu';
     public const NAV_CLASS_FOOTER = 'FooterMenuWidget';
     public const NAV_CLASS_PEOPLE = 'PeopleButtonsWidget';
+    public const TARGET_DASHBOARD = 'Dashboard';
 
     /**
      * @inheritdoc
@@ -151,8 +153,14 @@ class Page extends CustomContentContainer
      * Returns a navigation selection for all navigations this page can be added.
      * @return array
      */
-    public static function getDefaultTargets()
+    public static function getDefaultTargets(string $type = 'page')
     {
+        if ($type === 'snippet') {
+            return [
+                ['id' => self::TARGET_DASHBOARD, 'name' => Yii::t('CustomPagesModule.base', 'Dashboard'), 'accessRoute' => '/dashboard'],
+            ];
+        }
+
         $targets = [
             ['id' => self::NAV_CLASS_TOPNAV, 'name' => Yii::t('CustomPagesModule.base', 'Top Navigation')],
             ['id' => self::NAV_CLASS_ACCOUNTNAV, 'name' => Yii::t('CustomPagesModule.base', 'User Account Menu (Settings)'), 'subLayout' => '@humhub/modules/user/views/account/_layout'],
@@ -238,6 +246,6 @@ class Page extends CustomContentContainer
      */
     public function getPageType()
     {
-        return PageType::Page;
+        return empty($this->is_snippet) ? PageType::Page : PageType::Snippet;
     }
 }

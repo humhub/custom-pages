@@ -35,8 +35,8 @@ class CreatePhpSnippetCest
         $I->expectTo('see the add new page site');
         $I->see('Overview');
 
-        $I->seeElement('.target-page-list.Dasboard');
-        $I->click('.btn-success', '.target-page-list.Dasboard');
+        $I->seeElement('.target-page-list.Dashboard');
+        $I->click('.btn-success', '.target-page-list.Dashboard');
 
         $I->waitForText('Add new snippet');
 

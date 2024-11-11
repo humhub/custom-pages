@@ -55,14 +55,14 @@ class CustomPagesService extends Component
         switch ($event->type) {
             case PageType::Page:
                 if (!$event->container) {
-                    $event->addTargets(Page::getDefaultTargets());
+                    $event->addTargets(Page::getDefaultTargets($event->type));
                 } elseif ($event->container instanceof Space) {
                     $event->addTargets(ContainerPage::getDefaultTargets());
                 }
                 break;
             case PageType::Snippet:
                 if (!$event->container) {
-                    $event->addTargets(Snippet::getDefaultTargets());
+                    $event->addTargets(Page::getDefaultTargets($event->type));
                 } else {
                     $event->addTargets(ContainerSnippet::getDefaultTargets());
                 }
@@ -116,10 +116,6 @@ class CustomPagesService extends Component
             $content->delete();
         }
 
-        foreach (Snippet::find()->where(['target' => $targetId])->all() as $content) {
-            $content->delete();
-        }
-
         foreach (ContainerSnippet::find()->where(['target' => $targetId])->all() as $content) {
             $content->delete();
         }
@@ -144,9 +140,10 @@ class CustomPagesService extends Component
         $contentClass = $this->getContentClass($type, $container);
 
         /* @var $query ActiveQueryContent */
-        $query = call_user_func($contentClass . '::find');
-
-        $query->where(['target' => $targetId]);
+//        $query = call_user_func($contentClass . '::find');
+        $query = Page::find()
+            ->andWhere(['is_snippet' => $type === 'snippet' ? 1 : 0])
+            ->andWhere(['target' => $targetId]);
 
         if ($container) {
             $query->contentContainer($container);
@@ -175,7 +172,7 @@ class CustomPagesService extends Component
         if (PageType::Page === $type) {
             return ($container) ? ContainerPage::class : Page::class;
         } elseif (PageType::Snippet === $type) {
-            return ($container) ? ContainerSnippet::class : Snippet::class;
+            return ($container) ? ContainerSnippet::class : Page::class;
         } else {
             throw new InvalidArgumentException('Invalid page type selection in findContentByTarget()');
         }

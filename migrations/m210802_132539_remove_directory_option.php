@@ -20,7 +20,7 @@ class m210802_132539_remove_directory_option extends Migration
         ]);
 
         $this->execute('UPDATE custom_pages_snippet SET target = :newTarget WHERE target = :oldTarget', [
-            ':newTarget' => Snippet::SIDEBAR_DASHBOARD,
+            ':newTarget' => Page::TARGET_DASHBOARD,
             ':oldTarget' => 'Directory',
         ]);
     }

@@ -51,7 +51,6 @@ class Module extends ContentContainerModule
 
     public function checkOldGlobalContent()
     {
-
         if (!Yii::$app->user->isAdmin()) {
             return;
         }
@@ -60,11 +59,6 @@ class Module extends ContentContainerModule
             foreach (Page::find()->all() as $page) {
                 $page->content->visibility = $page->admin_only ? Content::VISIBILITY_PRIVATE : Content::VISIBILITY_PUBLIC;
                 $page->content->save();
-            }
-
-            foreach (Snippet::find()->all() as $snippet) {
-                $snippet->content->visibility = $snippet->admin_only ? Content::VISIBILITY_PRIVATE : Content::VISIBILITY_PUBLIC;
-                $snippet->content->save();
             }
 
             $this->settings->set(static::SETTING_MIGRATION_KEY, 1);
@@ -89,10 +83,6 @@ class Module extends ContentContainerModule
         }
 
         foreach (ContainerPage::find()->all() as $page) {
-            $page->hardDelete();
-        }
-
-        foreach (models\Snippet::find()->all() as $page) {
             $page->hardDelete();
         }
 

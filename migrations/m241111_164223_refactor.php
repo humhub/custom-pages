@@ -34,7 +34,7 @@ class m241111_164223_refactor extends Migration
                 'object_id' => $this->db->lastInsertID,
             ]);
         }
-//        $this->safeDropTable('custom_pages_snippet');
+        //        $this->safeDropTable('custom_pages_snippet');
     }
 
     /**
@@ -42,9 +42,9 @@ class m241111_164223_refactor extends Migration
      */
     public function safeDown()
     {
-//        echo "m241111_164223_refactor cannot be reverted.\n";
-//
-//        return false;
+        //        echo "m241111_164223_refactor cannot be reverted.\n";
+        //
+        //        return false;
     }
 
     private function updateRelatedObjectRecords(array $oldObjectData, array $newObjectData): void

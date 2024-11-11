@@ -19,7 +19,7 @@ use Yii;
  *
  * The followings are the available columns in table 'custom_pages_page':
  * @property int $id
- * @property boolean $is_snippet
+ * @property bool $is_snippet
  * @property int $type
  * @property string $title
  * @property string $icon

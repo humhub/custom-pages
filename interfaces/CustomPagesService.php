@@ -140,7 +140,7 @@ class CustomPagesService extends Component
         $contentClass = $this->getContentClass($type, $container);
 
         /* @var $query ActiveQueryContent */
-//        $query = call_user_func($contentClass . '::find');
+        //        $query = call_user_func($contentClass . '::find');
         $query = Page::find()
             ->andWhere(['is_snippet' => $type === 'snippet' ? 1 : 0])
             ->andWhere(['target' => $targetId]);

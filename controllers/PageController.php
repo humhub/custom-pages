@@ -26,11 +26,6 @@ use yii\web\NotFoundHttpException;
  *
  * This Controller is designed to be overwritten by other controller for supporting other page types.
  *
- * The following functions have to be redeclared in order to support another page type:
- *
- *  - getPageClassName()
- *  - findById()
- *
  * @author luke, buddha
  */
 class PageController extends AbstractCustomContainerController
@@ -98,7 +93,6 @@ class PageController extends AbstractCustomContainerController
     /**
      * Returns a view which lists all available pages of a given type.
      *
-     * @see getPageClassName() which returns the actual page type.
      * @return string view
      * @throws \Exception
      */
@@ -124,7 +118,6 @@ class PageController extends AbstractCustomContainerController
      * This action is used to add a new page of a given type.
      * After selecting a page content type the user is redirected to an edit page view.
      *
-     * @see getPageClassName() which returns the actual page type.
      * @param string $targetId
      * @param int $type
      * @return string view
@@ -138,7 +131,7 @@ class PageController extends AbstractCustomContainerController
             throw new HttpException(404, 'Invalid target setting!');
         }
 
-        $model = new AddPageForm(['class' => $this->getPageClassName(), 'target' => $target, 'type' => $type]);
+        $model = new AddPageForm(['target' => $target, 'type' => $type]);
 
         if ($model->validate()) {
             return $this->redirect(Url::toCreatePage($targetId, $this->getPageType(), $type, $this->contentContainer));
@@ -153,10 +146,9 @@ class PageController extends AbstractCustomContainerController
     }
 
     /**
-     * Action for editing pages. This action expects either an page id or a content type for
+     * Action for editing pages. This action expects either a page id or a content type for
      * creating new pages of a given content type.
      *
-     * @see getPageClassName() which returns the actual page type.
      * @param null $targetId
      * @param int $type content type
      * @param int $id
@@ -237,8 +229,7 @@ class PageController extends AbstractCustomContainerController
      */
     private function createNewPage($type, $targetId)
     {
-        $pageClass = $this->getPageClassName();
-        $page = new $pageClass(['type' => $type, 'target' => $targetId]);
+        $page = new Page(['type' => $type, 'target' => $targetId]);
         if ($this->contentContainer) {
             $page->content->setContainer($this->contentContainer);
             if (!$this->contentContainer) {
@@ -284,7 +275,7 @@ class PageController extends AbstractCustomContainerController
     /**
      * @inheritdoc
      */
-    protected function getPageType()
+    protected function getPageType(): string
     {
         return PageType::Page;
     }

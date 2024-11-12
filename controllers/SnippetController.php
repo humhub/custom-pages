@@ -2,10 +2,7 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
-use Yii;
-use humhub\modules\custom_pages\models\ContainerSnippet;
 use humhub\modules\custom_pages\models\PageType;
-use humhub\modules\custom_pages\models\Snippet;
 use yii\web\HttpException;
 
 /**
@@ -40,12 +37,7 @@ class SnippetController extends PageController
         ]);
     }
 
-    protected function getPageClassName()
-    {
-        return $this->contentContainer ? ContainerSnippet::class : Snippet::class;
-    }
-
-    protected function getPageType()
+    protected function getPageType(): string
     {
         return PageType::Snippet;
     }

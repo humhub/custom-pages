@@ -4,16 +4,11 @@ namespace humhub\modules\custom_pages\interfaces;
 
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\custom_pages\models\ContainerPage;
-use humhub\modules\custom_pages\models\ContainerSnippet;
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\PageType;
-use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\models\Target;
-use humhub\modules\space\models\Space;
 use yii\base\Component;
-use yii\base\InvalidArgumentException;
 
 /**
  * Class CustomPagesService
@@ -23,50 +18,29 @@ class CustomPagesService extends Component
 {
     public const EVENT_FETCH_TARGETS = 'fetchTargets';
 
-    private static $pageTargetCache = [];
-    private static $snippetTargetCache = [];
-
     /**
      * Fetches all available navigations for a given container.
      *
      * @param string $type
-     * @param ContentContainerActiveRecord $container
+     * @param ?ContentContainerActiveRecord $container
      * @return array
      */
-    public function getTargets($type, ContentContainerActiveRecord $container = null)
+    public function getTargets(string $type, ?ContentContainerActiveRecord $container = null): array
     {
+        static $cache;
+
         $containerKey = $container ? $container->contentcontainer_id : 'global';
-        $cache = ($type === PageType::Page) ? static::$pageTargetCache : static::$snippetTargetCache;
 
-        if (isset($cache[$containerKey])) {
-            return $cache[$containerKey];
+        if (!isset($cache[$type][$containerKey])) {
+            $event = new CustomPagesTargetEvent(['type' => $type, 'container' => $container]);
+            $event->addDefaultTargets();
+
+            $this->trigger(self::EVENT_FETCH_TARGETS, $event);
+
+            $cache[$type][$containerKey] = $event->getTargets();
         }
 
-        $event = new CustomPagesTargetEvent(['type' => $type, 'container' => $container]);
-        $this->addDefaultTargets($event);
-
-        $this->trigger(self::EVENT_FETCH_TARGETS, $event);
-
-        return $cache[$containerKey] = $event->getTargets();
-    }
-
-    public function addDefaultTargets(CustomPagesTargetEvent $event)
-    {
-        switch ($event->type) {
-            case PageType::Page:
-                if (!$event->container) {
-                    $event->addTargets(Page::getDefaultTargets($event->type));
-                } elseif ($event->container instanceof Space) {
-                    $event->addTargets(ContainerPage::getDefaultTargets());
-                }
-                break;
-            case PageType::Snippet:
-                if (!$event->container) {
-                    $event->addTargets(Page::getDefaultTargets($event->type));
-                } else {
-                    $event->addTargets(ContainerSnippet::getDefaultTargets());
-                }
-        }
+        return $cache[$type][$containerKey];
     }
 
     /**
@@ -79,6 +53,19 @@ class CustomPagesService extends Component
     {
         $availableTargets = $this->getTargets($type, $container);
         return array_key_exists($targetId, $availableTargets) ? $availableTargets[$targetId] : null;
+    }
+
+    public function getTargetByPage(CustomContentContainer $page): ?Target
+    {
+        $types = [PageType::Page, PageType::Snippet];
+
+        foreach ($types as $type) {
+            if ($target = $this->getTargetById($page->target, $type, $page->content->container)) {
+                return $target;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -108,16 +95,9 @@ class CustomPagesService extends Component
      */
     public function deleteAllByTarget($targetId)
     {
-        foreach (Page::find()->where(['target' => $targetId])->all() as $content) {
-            $content->delete();
-        }
-
-        foreach (ContainerPage::find()->where(['target' => $targetId])->all() as $content) {
-            $content->delete();
-        }
-
-        foreach (ContainerSnippet::find()->where(['target' => $targetId])->all() as $content) {
-            $content->delete();
+        foreach (Page::find()->where(['target' => $targetId])->all() as $page) {
+            /* @var Page $page */
+            $page->delete();
         }
     }
 
@@ -137,21 +117,14 @@ class CustomPagesService extends Component
             $targetId = $targetId->id;
         }
 
-        $contentClass = $this->getContentClass($type, $container);
-
-        /* @var $query ActiveQueryContent */
-//        $query = call_user_func($contentClass . '::find');
         $query = Page::find()
-            ->andWhere(['is_snippet' => $type === 'snippet' ? 1 : 0])
-            ->andWhere(['target' => $targetId]);
+            ->where(['target' => $targetId])
+            ->contentContainer($container);
 
         if ($container) {
-            $query->contentContainer($container);
-
             // See https://github.com/humhub/humhub/issues/3784 this does not work for global content
             $query->readable();
         } else {
-            $query->joinWith('content');
             $query->andWhere($query->stateFilterCondition);
         }
 
@@ -159,23 +132,10 @@ class CustomPagesService extends Component
             $query->andWhere(['admin_only' => 0]);
         }
 
-        return $query->orderBy('sort_order, id DESC');
-    }
-
-    /**
-     * @param $type
-     * @param ContentContainerActiveRecord|null $container
-     * @return string
-     */
-    private function getContentClass($type, ContentContainerActiveRecord $container = null)
-    {
-        if (PageType::Page === $type) {
-            return ($container) ? ContainerPage::class : Page::class;
-        } elseif (PageType::Snippet === $type) {
-            return ($container) ? ContainerSnippet::class : Page::class;
-        } else {
-            throw new InvalidArgumentException('Invalid page type selection in findContentByTarget()');
-        }
+        return $query->orderBy([
+            Page::tableName() . '.sort_order' => SORT_ASC,
+            Page::tableName() . '.id' => SORT_DESC,
+        ]);
     }
 
     /**
@@ -185,14 +145,14 @@ class CustomPagesService extends Component
      * @param $targetId
      * @param $type
      * @param ContentContainerActiveRecord|null $container
-     * @return CustomContentContainer
+     * @return Page|null
      * @throws \yii\base\Exception
      */
-    public function getSingleContent($id, $targetId, $type, ContentContainerActiveRecord $container = null)
+    public function getSingleContent($id, $targetId, $type, ContentContainerActiveRecord $container = null): ?Page
     {
-        $contentClass = $this->getContentClass($type, $container);
-        $tableName = call_user_func($contentClass . '::tableName');
-        return $this->findContentByTarget($targetId, $type, $container)->where([$tableName . '.id' => $id])->one();
+        return $this->findContentByTarget($targetId, $type, $container)
+            ->andWhere([Page::tableName() . '.id' => $id])
+            ->one();
     }
 
 }

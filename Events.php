@@ -7,10 +7,9 @@ use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\ContainerPage;
-use humhub\modules\custom_pages\models\ContainerSnippet;
 use humhub\modules\custom_pages\models\LinkType;
 use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\models\Snippet;
+use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\custom_pages\widgets\SnippetWidget;
@@ -83,10 +82,10 @@ class Events
             $space = $event->sender->space;
             if ($space->moduleManager->isEnabled('custom_pages')) {
                 /* @var Page[] $pages */
-                $pages = ContainerPage::find()
+                $pages = Page::find()
                     ->contentContainer($space)
                     ->readable()
-                    ->andWhere(['target' => ContainerPage::NAV_CLASS_SPACE_NAV])
+                    ->andWhere(['target' => PageType::TARGET_SPACE_MENU])
                     ->all();
                 foreach ($pages as $page) {
                     if (!$page->canView()) {
@@ -147,7 +146,7 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            foreach (self::findPagesByTarget(Page::NAV_CLASS_TOPNAV) as $page) {
+            foreach (self::findPagesByTarget(PageType::TARGET_TOP_MENU) as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -204,7 +203,7 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            foreach (self::findPagesByTarget(Page::NAV_CLASS_ACCOUNTNAV) as $page) {
+            foreach (self::findPagesByTarget(PageType::TARGET_ACCOUNT_MENU) as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -240,18 +239,16 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            /* @var Page[] $snippets */
-            $snippets = Page::find()
-                ->where(['is_snippet' => 1])
-                ->andWhere(['target' => Page::TARGET_DASHBOARD])
+            /* @var Page[] $pages */
+            $pages = Page::find()
+                ->andWhere(['target' => PageType::TARGET_DASHBOARD_SIDEBAR])
                 ->readable()
                 ->all();
             $canEdit = PagePermission::canEdit();
-            foreach ($snippets as $snippet) {
-                if (!$snippet->canView()) {
-                    continue;
+            foreach ($pages as $page) {
+                if ($page->canView()) {
+                    $event->sender->addWidget(SnippetWidget::class, ['model' => $page, 'canEdit' => $canEdit], ['sortOrder' => $page->sort_order]);
                 }
-                $event->sender->addWidget(SnippetWidget::class, ['model' => $snippet, 'canEdit' => $canEdit], ['sortOrder' => $snippet->sort_order]);
             }
         } catch (Throwable $e) {
             Yii::error($e);
@@ -266,14 +263,17 @@ class Events
             $space = $event->sender->space;
             $canEdit = PagePermission::canEdit();
             if ($space->moduleManager->isEnabled('custom_pages')) {
-                /* @var Snippet[] $snippets */
-                $snippets = ContainerSnippet::find()->contentContainer($space)->readable()->all();
-                foreach ($snippets as $snippet) {
-                    if (!$snippet->canView()) {
-                        continue;
+                /* @var Page[] $pages */
+                $pages = Page::find()
+                    ->contentContainer($space)
+                    ->readable()
+                    //->filterByTargetType() TODO: Filter only by Snippet Targets
+                    ->andWhere(['target' => PageType::TARGET_SPACE_SIDEBAR])
+                    ->all();
+                foreach ($pages as $page) {
+                    if ($page->canView() && $page->isSnippet()) {
+                        $event->sender->addWidget(SnippetWidget::class, ['model' => $page, 'canEdit' => $canEdit], ['sortOrder' => $page->sort_order]);
                     }
-
-                    $event->sender->addWidget(SnippetWidget::class, ['model' => $snippet, 'canEdit' => $canEdit], ['sortOrder' => $snippet->sort_order]);
                 }
             }
         } catch (Throwable $e) {
@@ -284,7 +284,7 @@ class Events
     public static function onFooterMenuInit($event)
     {
         try {
-            foreach (self::findPagesByTarget(Page::NAV_CLASS_FOOTER) as $page) {
+            foreach (self::findPagesByTarget(PageType::TARGET_FOOTER) as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -306,7 +306,7 @@ class Events
         try {
             /* @var PeopleHeadingButtons $peopleHeadingButtons */
             $peopleHeadingButtons = $event->sender;
-            foreach (self::findPagesByTarget(Page::NAV_CLASS_PEOPLE) as $page) {
+            foreach (self::findPagesByTarget(PageType::TARGET_PEOPLE) as $page) {
                 if (!$page->canView()) {
                     continue;
                 }

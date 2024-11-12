@@ -2,8 +2,7 @@
 
 use humhub\libs\Html;
 use humhub\modules\custom_pages\assets\Assets;
-use humhub\modules\custom_pages\models\ContainerSnippet;
-use \humhub\modules\custom_pages\models\Snippet;
+use humhub\modules\custom_pages\models\Page;
 
 Assets::register($this);
 
@@ -591,7 +590,7 @@ $faIcons = [
     'fa-youtube-square' => '&#xf166'
 ];
 
-if ($page instanceof Snippet || $page instanceof ContainerSnippet) {
+if ($page instanceof Page && $page->isSnippet()) {
     $faIcons = array_merge([Yii::t('CustomPagesModule.view', 'none') => 'none'], $faIcons);
 }
 ?>

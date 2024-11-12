@@ -56,7 +56,7 @@ class ViewController extends AbstractCustomContainerController
             ? $page->getTargetModel()->getSubLayout()
             : $this->subLayout;
 
-        $this->view->pageTitle = Html::encode($page->title);
+        $this->view->setPageTitle(Html::encode($page->title));
 
         if (!$page->getTargetModel()->isAllowedContentType($page->type)) {
             throw new HttpException(404);
@@ -170,7 +170,7 @@ class ViewController extends AbstractCustomContainerController
     /**
      * @inheritdoc
      */
-    protected function getPageType()
+    protected function getPageType(): string
     {
         return PageType::Page;
     }

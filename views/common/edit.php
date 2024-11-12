@@ -47,18 +47,7 @@ $contentType = $page->getContentType();
             <?= $form->field($page, 'title') ?>
         <?php endif; ?>
 
-        <!--
-        <div class="form-group">
-            <?= Html::textInput('type', $contentType->getLabel(), ['class' => 'form-control', 'disabled' => '1']); ?>
-        </div>
-
-        <div class="form-group">
-            <?= Html::textInput('target', $target->name, ['class' => 'form-control', 'disabled' => '1']); ?>
-        </div>
-        -->
-
         <?= $page->getContentType()->renderFormField($form, $page); ?>
-
 
         <?= $form->beginCollapsibleFields(Yii::t('CustomPagesModule.base', 'Menu settings')); ?>
 

@@ -11,12 +11,9 @@ use humhub\components\access\StrictAccess;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\custom_pages\helpers\Html;
-use humhub\modules\custom_pages\models\ContainerPage;
-use humhub\modules\custom_pages\models\ContainerSnippet;
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\PageType;
-use humhub\modules\custom_pages\models\Snippet;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
@@ -50,21 +47,7 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
      * @return string
      * @see PageType
      */
-    abstract protected function getPageType();
-
-    /**
-     * Returns the actual class for this type of page.
-     *
-     * @return string
-     */
-    protected function getPageClassName()
-    {
-        if ($this->getPageType() === PageType::Snippet) {
-            return $this->contentContainer ? ContainerSnippet::class : Snippet::class;
-        }
-
-        return $this->contentContainer ? ContainerPage::class : Page::class;
-    }
+    abstract protected function getPageType(): string;
 
     /**
      * Returns a page by a given $id.
@@ -74,7 +57,7 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
      */
     protected function findById($id)
     {
-        return call_user_func($this->getPageClassName() . '::findOne', ['id' => $id]);
+        return Page::findOne(['id' => $id]);
     }
 
     /**

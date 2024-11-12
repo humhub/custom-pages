@@ -21,9 +21,9 @@ use Yii;
 /**
  * This abstract class is used by all custom content container types as pages and snippets.
  *
- * Note: Subclasses may container global types not bound to any ContentContainerActiveRecord
+ * Note: Subclasses may contain global types not bound to any ContentContainerActiveRecord
  *
- * The followings are the available columns in table 'custom_pages_page':
+ * The following columns are in table 'custom_pages_page':
  * @property int $id
  * @property int $type
  * @property string $title
@@ -31,11 +31,12 @@ use Yii;
  * @property string $page_content
  * @property string $iframe_attrs
  * @property int $sort_order
- * @property int $admin_only
- * @property int $in_new_window
  * @property string $target
+ * @property bool $admin_only
+ * @property bool $in_new_window
  * @property string $cssClass
  * @property string $url
+ * @property string $abstract
  */
 abstract class CustomContentContainer extends ContentActiveRecord implements ViewableInterface
 {
@@ -66,6 +67,17 @@ abstract class CustomContentContainer extends ContentActiveRecord implements Vie
      */
     public $visibility;
 
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'custom_pages_page';
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function afterFind()
     {
         parent::afterFind();
@@ -101,7 +113,7 @@ abstract class CustomContentContainer extends ContentActiveRecord implements Vie
      * Returns the page container class label.
      * @return string
      */
-    abstract public function getLabel();
+    abstract public function getLabel(): string;
 
     /**
      * Returns the view file path for PHP based content.
@@ -115,9 +127,11 @@ abstract class CustomContentContainer extends ContentActiveRecord implements Vie
     abstract public function getEditUrl();
 
     /**
+     * Get type of the Custom Page: Page or Snippet
+     *
      * @return string
      */
-    abstract public function getPageType();
+    abstract public function getPageType(): string;
 
     /**
      * @return array
@@ -130,7 +144,7 @@ abstract class CustomContentContainer extends ContentActiveRecord implements Vie
 
         if ($this->isGuestAccessEnabled()) {
             $result[static::VISIBILITY_PRIVATE] = Yii::t('CustomPagesModule.base', 'Members only');
-            if ($this->getTargetId() != Page::NAV_CLASS_ACCOUNTNAV) {
+            if ($this->getTargetId() != PageType::TARGET_ACCOUNT_MENU) {
                 $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.base', 'Members & Guests');
             }
         } else {
@@ -432,7 +446,7 @@ abstract class CustomContentContainer extends ContentActiveRecord implements Vie
     public function getTargetModel()
     {
         if (!$this->_target) {
-            $this->_target = (new CustomPagesService())->getTargetById($this->getTargetId(), $this->getPageType(), $this->content->container);
+            $this->_target = (new CustomPagesService())->getTargetByPage($this);
         }
 
         return $this->_target;

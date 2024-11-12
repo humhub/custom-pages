@@ -16,19 +16,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
  */
 class ContainerPage extends Page implements Searchable
 {
-    public const NAV_CLASS_SPACE_NAV = 'SpaceMenu';
-
-    /**
-     * Returns a navigation selection for all navigations this page can be added.
-     * @return array
-     */
-    public static function getDefaultTargets(string $type = 'page')
-    {
-        return [
-            ['id' => self::NAV_CLASS_SPACE_NAV , 'name' => Yii::t('CustomPagesModule.base', 'Space Navigation')],
-            ['id' => self::NAV_CLASS_EMPTY, 'name' => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)')],
-        ];
-    }
+    public const TARGET_SPACE_MENU = 'SpaceMenu';
 
     /**
      * @return string the associated database table name
@@ -69,31 +57,6 @@ class ContainerPage extends Page implements Searchable
             TemplateType::ID,
             PhpType::ID,
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAllowedTemplateSelection()
-    {
-        return Template::getSelection(['type' => Template::TYPE_LAYOUT, 'allow_for_spaces' => 1]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getPhpViewPath()
-    {
-        $settings = new SettingsForm();
-        return $settings->phpContainerPagePath;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEditUrl()
-    {
-        return Url::toEditPage($this->id, $this->content->container);
     }
 
     /**

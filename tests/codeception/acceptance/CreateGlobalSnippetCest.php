@@ -3,8 +3,7 @@
 namespace custom_pages\acceptance;
 
 use custom_pages\AcceptanceTester;
-use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\models\Snippet;
+use humhub\modules\custom_pages\models\PageType;
 
 class CreateGlobalSnippetCest
 {
@@ -17,9 +16,9 @@ class CreateGlobalSnippetCest
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('Dashboard', '.target-page-list');
-        $I->seeElement('.target-page-list.' . Page::TARGET_DASHBOARD);
+        $I->seeElement('.target-page-list.' . PageType::TARGET_DASHBOARD_SIDEBAR);
 
-        $I->click('.btn-success', '.target-page-list.' . Page::TARGET_DASHBOARD);
+        $I->click('.btn-success', '.target-page-list.' . PageType::TARGET_DASHBOARD_SIDEBAR);
 
         $I->waitForText('Add new snippet');
         $I->click('#add-content-type-4');

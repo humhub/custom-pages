@@ -2,8 +2,9 @@
 
 namespace humhub\modules\custom_pages\interfaces;
 
-use Yii;
+use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\models\Target;
+use Yii;
 
 /**
  * Class CustomPagesNavigationEvent
@@ -50,6 +51,11 @@ class CustomPagesTargetEvent extends CustomPagesEvent
     public function getTargets()
     {
         return $this->result;
+    }
+
+    public function addDefaultTargets(): void
+    {
+        $this->addTargets(PageType::getDefaultTargets($this->type, $this->container));
     }
 
 }

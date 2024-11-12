@@ -98,7 +98,7 @@ class TemplatePage extends \humhub\widgets\JsWidget
     public function getAttributes()
     {
         //TODO: fullscreen flag
-        if ($this->page instanceof Page && !$this->contentContainer && $this->page->getTargetId() !== Page::NAV_CLASS_ACCOUNTNAV) {
+        if ($this->page instanceof Page && !$this->contentContainer && $this->page->getTargetId() !== Page::TARGET_ACCOUNT_MENU) {
             $cssClass = 'container ';
         } else {
             $cssClass = '';

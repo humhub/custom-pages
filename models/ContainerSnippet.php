@@ -23,50 +23,8 @@ use Yii;
  * @property int $admin_only
  * @property string $cssClass
  */
-class ContainerSnippet extends Snippet
+class ContainerSnippet extends Page
 {
-    public const SIDEEBAR_STREAM = 'SpaceStreamSidebar';
-
-    /**
-     * @return string the associated database table name
-     */
-    public static function tableName()
-    {
-        return 'custom_pages_container_snippet';
-    }
-
-    public static function getDefaultTargets(string $type = 'page')
-    {
-        return [
-            ['id' => self::SIDEEBAR_STREAM, 'name' => Yii::t('CustomPagesModule.base', 'Stream'), 'accessRoute' => '/space/space/home'],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getLabel()
-    {
-        return Yii::t('CustomPagesModule.model', 'snippet');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAllowedTemplateSelection()
-    {
-        return Template::getSelection(['type' => Template::TYPE_SNIPPED_LAYOUT, 'allow_for_spaces' => 1]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getPhpViewPath()
-    {
-        return (new SettingsForm())->phpContainerSnippetPath;
-    }
-
-
     /**
      * @inheritdoc
      */

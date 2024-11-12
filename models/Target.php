@@ -59,6 +59,11 @@ class Target extends Model
     public $subLayout;
 
     /**
+     * @var bool Flag to mark the Target is used as snippet/widget
+     */
+    public bool $isSnippet = false;
+
+    /**
      * [
      * 'sortOrder' => ['value' => 0, 'hidden' => true],
      * 'icon' => ['value' => 'adjust', 'readonly' => true],

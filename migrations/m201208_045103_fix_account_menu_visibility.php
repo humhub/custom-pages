@@ -2,6 +2,7 @@
 
 use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\PageType;
 use yii\db\Migration;
 
 /**
@@ -26,7 +27,7 @@ class m201208_045103_fix_account_menu_visibility extends Migration
                 ':visibility_private' => CustomContentContainer::VISIBILITY_PRIVATE,
                 ':visibility_public' => CustomContentContainer::VISIBILITY_PUBLIC,
                 ':object_model' => Page::class,
-                ':target' => Page::NAV_CLASS_ACCOUNTNAV,
+                ':target' => PageType::TARGET_ACCOUNT_MENU,
             ])
             ->execute();
     }

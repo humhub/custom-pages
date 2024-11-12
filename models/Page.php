@@ -13,26 +13,6 @@ use Yii;
 
 /**
  * This is the model class for table "custom_pages_page".
- *
- * Pages are global custom page container which can be added to the main navigation or
- * user account setting navigation.
- *
- * The followings are the available columns in table 'custom_pages_page':
- * @property int $id
- * @property boolean $is_snippet
- * @property int $type
- * @property string $title
- * @property string $icon
- * @property string $page_content
- * @property string $iframe_attrs
- * @property int $sort_order
- * @property int $admin_only
- * @property int $in_new_window
- * @property string $target
- * @property string $cssClass
- * @property string $url
- * @property string $abstract
- * @method string viewTemplatePage(CustomContentContainer $page)
  */
 class Page extends CustomContentContainer
 {
@@ -40,13 +20,6 @@ class Page extends CustomContentContainer
      * @inheritdoc
      */
     public $wallEntryClass = WallEntry::class;
-
-    public const NAV_CLASS_TOPNAV = 'TopMenuWidget';
-    public const NAV_CLASS_ACCOUNTNAV = 'AccountMenuWidget';
-    public const NAV_CLASS_EMPTY = 'WithOutMenu';
-    public const NAV_CLASS_FOOTER = 'FooterMenuWidget';
-    public const NAV_CLASS_PEOPLE = 'PeopleButtonsWidget';
-    public const TARGET_DASHBOARD = 'Dashboard';
 
     /**
      * @inheritdoc
@@ -62,14 +35,6 @@ class Page extends CustomContentContainer
     }
 
     /**
-     * @return string the associated database table name
-     */
-    public static function tableName()
-    {
-        return 'custom_pages_page';
-    }
-
-    /**
      * @inerhitdoc
      * @return array
      */
@@ -80,6 +45,12 @@ class Page extends CustomContentContainer
         $result['abstract'] = Yii::t('CustomPagesModule.model', 'Abstract');
         $result['target'] = Yii::t('CustomPagesModule.model', 'Navigation');
         $result['url'] = Yii::t('CustomPagesModule.model', 'Url shortcut');
+
+        if ($this->isSnippet()) {
+            $result['page_content'] = Yii::t('CustomPagesModule.model', 'Content');
+            $result['target'] = Yii::t('CustomPagesModule.model', 'Sidebar');
+        }
+
         return $result;
     }
 
@@ -89,6 +60,10 @@ class Page extends CustomContentContainer
     public function rules()
     {
         $rules = $this->defaultRules();
+
+        if ($this->isSnippet()) {
+            return $rules;
+        }
 
         $target = $this->getTargetModel();
         if ($target && $target->isAllowedField('in_new_window')) {
@@ -122,7 +97,7 @@ class Page extends CustomContentContainer
     {
         // Force visibility access "Members & Guests" to "Members only" for
         // page type "User Account Menu (Settings)"
-        if ($this->getTargetId() == Page::NAV_CLASS_ACCOUNTNAV) {
+        if ($this->getTargetId() == PageType::TARGET_ACCOUNT_MENU) {
             if ($this->visibility == CustomContentContainer::VISIBILITY_PUBLIC) {
                 $this->visibility = CustomContentContainer::VISIBILITY_PRIVATE;
             }
@@ -144,35 +119,11 @@ class Page extends CustomContentContainer
      * Returns a container specific title mainly used in views.
      * @return string
      */
-    public function getLabel()
+    public function getLabel(): string
     {
-        return Yii::t('CustomPagesModule.model', 'page');
-    }
-
-    /**
-     * Returns a navigation selection for all navigations this page can be added.
-     * @return array
-     */
-    public static function getDefaultTargets(string $type = 'page')
-    {
-        if ($type === 'snippet') {
-            return [
-                ['id' => self::TARGET_DASHBOARD, 'name' => Yii::t('CustomPagesModule.base', 'Dashboard'), 'accessRoute' => '/dashboard'],
-            ];
-        }
-
-        $targets = [
-            ['id' => self::NAV_CLASS_TOPNAV, 'name' => Yii::t('CustomPagesModule.base', 'Top Navigation')],
-            ['id' => self::NAV_CLASS_ACCOUNTNAV, 'name' => Yii::t('CustomPagesModule.base', 'User Account Menu (Settings)'), 'subLayout' => '@humhub/modules/user/views/account/_layout'],
-            ['id' => self::NAV_CLASS_EMPTY, 'name' => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)')],
-            ['id' => self::NAV_CLASS_FOOTER, 'name' => Yii::t('CustomPagesModule.base', 'Footer menu')],
-        ];
-
-        if (class_exists('humhub\modules\user\widgets\PeopleHeadingButtons')) {
-            $targets[] = ['id' => self::NAV_CLASS_PEOPLE, 'name' => Yii::t('CustomPagesModule.base', 'People Buttons')];
-        }
-
-        return $targets;
+        return $this->isSnippet()
+            ? Yii::t('CustomPagesModule.model', 'snippet')
+            : Yii::t('CustomPagesModule.model', 'page');
     }
 
     /**
@@ -194,6 +145,16 @@ class Page extends CustomContentContainer
      */
     public function getContentTypes()
     {
+        if ($this->isSnippet()) {
+            return [
+                MarkdownType::ID,
+                IframeType::ID,
+                TemplateType::ID,
+                PhpType::ID,
+                HtmlType::ID,
+            ];
+        }
+
         return [
             LinkType::ID,
             HtmlType::ID,
@@ -221,7 +182,10 @@ class Page extends CustomContentContainer
      */
     public function getAllowedTemplateSelection()
     {
-        return Template::getSelection(['type' => Template::TYPE_LAYOUT]);
+        return Template::getSelection([
+            'type' => $this->isSnippet() ? Template::TYPE_SNIPPED_LAYOUT : Template::TYPE_LAYOUT,
+            'allow_for_spaces' => $this->isGlobal() ? 0 : 1,
+        ]);
     }
 
     /**
@@ -229,23 +193,41 @@ class Page extends CustomContentContainer
      */
     public function getPhpViewPath()
     {
-        return (new SettingsForm())->phpGlobalPagePath;
+        $settings = new SettingsForm();
+
+        if ($this->isSnippet()) {
+            return $this->isGlobal()
+                ? $settings->phpGlobalSnippetPath
+                : $settings->phpContainerSnippetPath;
+        }
+
+        return $this->isGlobal()
+            ? $settings->phpGlobalPagePath
+            : $settings->phpContainerPagePath;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getEditUrl()
+    public function getEditUrl(): string
     {
-        return Url::toEditPage($this->id, $this->content->container);
+        return $this->isSnippet()
+            ? Url::toEditSnippet($this->id, $this->content->container)
+            : Url::toEditPage($this->id, $this->content->container);
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
-    public function getPageType()
+    public function getPageType(): string
     {
-        return empty($this->is_snippet) ? PageType::Page : PageType::Snippet;
+        return $this->isSnippet() ? PageType::Snippet : PageType::Page;
+    }
+
+    public function isSnippet(): bool
+    {
+        return $this->getTargetModel() && $this->getTargetModel()->isSnippet;
+    }
+
+    public function isGlobal(): bool
+    {
+        return !isset($this->content->container);
     }
 }

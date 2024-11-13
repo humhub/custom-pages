@@ -43,6 +43,7 @@ class InterfaceTest extends HumHubDbTestCase
                 $event->addTarget(new Target([
                     'id' => 'containerSnippet',
                     'name' => 'Test Container Target',
+                    'type' => PageType::Snippet,
                 ]));
             }
         });
@@ -53,6 +54,7 @@ class InterfaceTest extends HumHubDbTestCase
                 $event->addTarget(new Target([
                     'id' => 'snippet',
                     'name' => 'Test Container Target',
+                    'type' => PageType::Snippet,
                 ]));
             }
         });

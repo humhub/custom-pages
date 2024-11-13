@@ -345,7 +345,7 @@ abstract class TemplateContentActiveRecord extends ActiveRecord implements Viewa
         return $ownerContent instanceof OwnerContent ? $ownerContent->getOwner() : null;
     }
 
-    public function getPage(): ?Page
+    public function getPage(): ?CustomPage
     {
         $ownerModel = $this->getOwner();
 

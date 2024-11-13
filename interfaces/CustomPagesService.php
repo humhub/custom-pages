@@ -147,7 +147,7 @@ class CustomPagesService extends Component
      * @return CustomPage|null
      * @throws \yii\base\Exception
      */
-    public function getSingleContent($id, $targetId, $type, ContentContainerActiveRecord $container = null): ?Page
+    public function getSingleContent($id, $targetId, $type, ContentContainerActiveRecord $container = null): ?CustomPage
     {
         return $this->findContentByTarget($targetId, $type, $container)
             ->andWhere([CustomPage::tableName() . '.id' => $id])

@@ -44,8 +44,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $page->save(false);
 
         $owner2 = new TemplateInstance([
-            'object_model' => CustomPage::class,
-            'object_id' => $page->id,
+            'page_id' => $page->id,
             'template_id' => $owner->id,
         ]);
 
@@ -83,7 +82,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
 
         $page->save(false);
 
-        $owner = TemplateInstance::findOne(['object_model' => CustomPage::class, 'object_id' => $page->id]);
+        $owner = TemplateInstance::findOne(['page_id' => $page->id]);
 
         $richtext = new RichtextContent(['content' => 'testContent']);
         $ownerContent = $element->saveInstance($owner, $richtext);
@@ -108,7 +107,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
 
         $page->save(false);
 
-        $owner = TemplateInstance::findOne(['object_model' => CustomPage::class, 'object_id' => $page->id]);
+        $owner = TemplateInstance::findOne(['page_id' => $page->id]);
 
         $richtext = new RichtextContent(['content' => 'testContent']);
         $ownerContent = $element->saveInstance($owner, $richtext);
@@ -143,8 +142,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $page->save(false);
 
         $owner2 = new TemplateInstance([
-            'object_model' => CustomPage::class,
-            'object_id' => $page->id,
+            'page_id' => $page->id,
             'template_id' => $owner->id,
         ]);
 

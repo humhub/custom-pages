@@ -48,8 +48,7 @@ class TemplateType extends ContentType
 
         if ($insert) {
             $templateInstance = new TemplateInstance([
-                'object_model' => get_class($page),
-                'object_id' => $page->id,
+                'page_id' => $page->id,
                 'template_id' => $page->templateId,
             ]);
             return $templateInstance->save();
@@ -71,20 +70,16 @@ class TemplateType extends ContentType
      */
     public function render(CustomPage $content, $options = [])
     {
-        $templateInstance = TemplateInstance::findOne(['object_model' => get_class($content) ,'object_id' => $content->id]);
+        $templateInstance = TemplateInstance::findOne(['page_id' => $content->id]);
 
         if (!$templateInstance) {
             throw new InvalidArgumentException('Template instance not found!');
         }
 
         $canEdit = PagePermission::canEdit();
-        $editMode = isset($options['editMode'])
-            ? $options['editMode']
-            : (bool) Yii::$app->request->get('editMode');
+        $editMode = $options['editMode'] ?? (bool) Yii::$app->request->get('editMode');
 
         $editMode = $editMode && $canEdit;
-
-        $html = '';
 
         if (!$canEdit && TemplateCache::exists($templateInstance)) {
             $html = TemplateCache::get($templateInstance);

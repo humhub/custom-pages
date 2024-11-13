@@ -5,6 +5,7 @@ namespace humhub\modules\custom_pages\modules\template\models;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\lib\templates\TemplateEngineFactory;
+use humhub\modules\custom_pages\models\CustomPage;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
@@ -205,8 +206,9 @@ class Template extends ActiveRecord implements TemplateContentOwner
     {
         return Content::find()->leftJoin(
             TemplateInstance::tableName(),
-            Content::tableName() . '.object_model = ' . TemplateInstance::tableName() . '.object_model AND ' .
-                Content::tableName() . '.object_id = ' . TemplateInstance::tableName() . '.object_id',
+            Content::tableName() . '.object_model = :object_model AND ' .
+                Content::tableName() . '.object_id = ' . TemplateInstance::tableName() . '.page_id',
+            ['object_model' => CustomPage::class],
         )
             ->where([TemplateInstance::tableName() . '.template_id' => $this->id]);
     }

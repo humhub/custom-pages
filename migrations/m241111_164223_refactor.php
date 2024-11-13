@@ -23,6 +23,11 @@ class m241111_164223_refactor extends Migration
         $this->moveOldRecords('custom_pages_container_page', 'ContainerPage');
 
         $this->safeCreateIndex('idx_target', 'custom_pages_page', 'target');
+
+        // Modify the columns 'object_model' and 'object_id' to 'page_id',
+        // because only the object CustomPage is used there.
+        $this->safeDropColumn('custom_pages_template_container', 'object_model');
+        $this->renameColumn('custom_pages_template_container', 'object_id', 'page_id');
     }
 
     /**

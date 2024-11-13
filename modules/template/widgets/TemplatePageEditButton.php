@@ -46,7 +46,7 @@ class TemplatePageEditButton extends Widget
 
         $space = Yii::$app->controller->contentContainer ?? null;
 
-        $templateInstance = TemplateInstance::findOne(['object_model' => CustomPage::class, 'object_id' => $this->page->id]);
+        $templateInstance = TemplateInstance::findOne(['page_id' => $this->page->id]);
 
         return $this->render('templatePageEditButton', [
             'canEdit' => $this->canEdit,

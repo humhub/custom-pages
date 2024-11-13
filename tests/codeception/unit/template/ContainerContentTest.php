@@ -89,11 +89,11 @@ class ContainerContentTest extends HumHubDbTestCase
     public function testDeletePage()
     {
         $this->becomeUser('Admin');
-        $page = CustomPage::find()->where(['custom_pages_page.id' => 2])->readable()->one();
+        $page = CustomPage::find()->where([CustomPage::tableName() . '.id' => 2])->readable()->one();
 
         // Check after soft deletion the Page is not visible even for admin
         $this->assertNotFalse($page->delete());// Soft deletion
-        $page = CustomPage::find()->where(['custom_pages_page.id' => 2])->readable()->one();
+        $page = CustomPage::find()->where([CustomPage::tableName() . '.id' => 2])->readable()->one();
         $this->assertNull($page);
 
         $page = CustomPage::findOne(['id' => 2]);

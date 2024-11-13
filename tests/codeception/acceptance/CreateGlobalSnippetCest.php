@@ -26,7 +26,7 @@ class CreateGlobalSnippetCest
         $I->waitForText('Configuration');
 
         $I->fillField('CustomPage[title]', 'Test title');
-        $I->fillField('#snippet-page_content .humhub-ui-richtext', 'Test Snippet Content');
+        $I->fillField('#custompage-page_content .humhub-ui-richtext', 'Test Snippet Content');
         $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->fillField('CustomPage[sort_order]', '400');
         $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);

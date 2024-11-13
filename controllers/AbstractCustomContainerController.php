@@ -84,14 +84,14 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
     }
 
     /**
-     * @param $page
-     * @param null $editMode
+     * @param CustomPage $page
+     * @param bool $editMode
      * @return string
      * @throws HttpException
      */
-    public function renderTemplate($page, $editMode = null)
+    public function renderTemplate(CustomPage $page, $editMode = false)
     {
-        $templateInstance = TemplateInstance::findOne(['object_model' => get_class($page) ,'object_id' => $page->id]);
+        $templateInstance = TemplateInstance::findOne(['page_id' => $page->id]);
 
         if (!$templateInstance) {
             throw new HttpException(404);

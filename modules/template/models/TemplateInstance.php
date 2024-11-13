@@ -9,13 +9,12 @@ use Yii;
 use yii\db\ActiveQuery;
 
 /**
- * A TemplateInstance represents an acutal instantiation of an Template model.
+ * A TemplateInstance represents an actual instantiation of a Template model.
  * The TemplateInstance can be for example a Page or Snippet related by the PolymorphicRelation behaviour.
  *
  * @property int $id
- * @property string object_model
- * @property int object_id
- * @property int template_id
+ * @property int $page_id
+ * @property int $template_id
  *
  * @property-read Template $template
  */
@@ -48,8 +47,8 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
     public function rules()
     {
         return [
-            [['template_id', 'object_model', 'object_id'], 'required'],
-            [['template_id'], 'integer'],
+            [['template_id', 'page_id'], 'required'],
+            [['template_id', 'page_id'], 'integer'],
         ];
     }
 
@@ -83,8 +82,9 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
         if ($contentState !== null) {
             $query->leftJoin(
                 Content::tableName(),
-                Content::tableName() . '.object_model = ' . self::tableName() . '.object_model AND ' .
-                Content::tableName() . '.object_id = ' . self::tableName() . '.object_id',
+                Content::tableName() . '.object_model = :object_model AND ' .
+                Content::tableName() . '.object_id = ' . self::tableName() . '.page_id',
+                ['object_model' => CustomPage::class],
             )
                 ->andWhere([Content::tableName() . '.state' => $contentState]);
         }
@@ -102,13 +102,13 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
         return $this->hasOne(Template::class, ['id' => 'template_id']);
     }
 
-    public function getObject(): ?Page
+    public function getObject(): ?CustomPage
     {
-        if (empty($this->object_model) || empty($this->object_id)) {
+        if (empty($this->page_id)) {
             return null;
         }
 
-        return call_user_func($this->object_model . '::findOne', ['id' => $this->object_id]);
+        return CustomPage::findOne(['id' => $this->page_id]);
     }
 
     public function getTemplateId()
@@ -118,12 +118,12 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
 
     public static function findByOwner(ActiveRecord $owner)
     {
-        return self::findOne(['object_model' => get_class($owner), 'object_id' => $owner->getPrimaryKey()]);
+        return self::findOne(['page_id' => $owner->getPrimaryKey()]);
     }
 
     public static function deleteByOwner(ActiveRecord $owner)
     {
-        $container = self::findOne(['object_model' => get_class($owner), 'object_id' => $owner->getPrimaryKey()]);
+        $container = self::findOne(['page_id' => $owner->getPrimaryKey()]);
         if ($container) {
             return $container->delete();
         }

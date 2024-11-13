@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\helpers\PageType;
 use yii\db\Migration;
 
 /**

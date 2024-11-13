@@ -9,7 +9,7 @@
 namespace custom_pages\acceptance;
 
 use custom_pages\AcceptanceTester;
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\helpers\PageType;
 
 class CreatePhpSnippetCest
 {
@@ -45,10 +45,10 @@ class CreatePhpSnippetCest
 
         $I->waitForText('Configuration');
 
-        $I->fillField('Snippet[title]', 'PHP snippet');
-        $I->selectOption('Snippet[page_content]', ['value' => 'test_snippet']);
+        $I->fillField('CustomPage[title]', 'PHP snippet');
+        $I->selectOption('CustomPage[page_content]', ['value' => 'test_snippet']);
         $I->jsShow('.form-collapsible-fields.closed fieldset');
-        $I->selectOption('Snippet[icon]', ['value' => 'fa-adn']);
+        $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
         $I->click('Save');
         $I->wait(1);
 

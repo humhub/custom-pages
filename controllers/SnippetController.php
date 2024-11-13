@@ -2,7 +2,7 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\helpers\PageType;
 use yii\web\HttpException;
 
 /**

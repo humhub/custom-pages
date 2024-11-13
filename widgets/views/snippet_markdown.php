@@ -1,10 +1,10 @@
 <?php
 
 use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\widgets\SnippetContent;
 
-/* @var $model Page */
+/* @var $model CustomPage */
 /* @var $canEdit bool */
 
 $navigation = (!$canEdit) ? [] : [

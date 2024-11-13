@@ -2,16 +2,17 @@
 
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\helpers\PageType;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\widgets\JsWidget;
 use Yii;
-use humhub\modules\custom_pages\models\Page;
 
 /**
  * Description of TemplatePage
  *
  * @author buddha
  */
-class TemplatePage extends \humhub\widgets\JsWidget
+class TemplatePage extends JsWidget
 {
     /**
      * @inheritdoc
@@ -39,7 +40,7 @@ class TemplatePage extends \humhub\widgets\JsWidget
     public $editMode;
 
     /**
-     * @var Page page instance
+     * @var CustomPage page instance
      */
     public $page;
 
@@ -99,7 +100,7 @@ class TemplatePage extends \humhub\widgets\JsWidget
     public function getAttributes()
     {
         //TODO: fullscreen flag
-        if ($this->page instanceof Page && !$this->contentContainer && $this->page->getTargetId() !== PageType::TARGET_ACCOUNT_MENU) {
+        if ($this->page instanceof CustomPage && !$this->contentContainer && $this->page->getTargetId() !== PageType::TARGET_ACCOUNT_MENU) {
             $cssClass = 'container ';
         } else {
             $cssClass = '';

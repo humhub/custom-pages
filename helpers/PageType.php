@@ -1,12 +1,17 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
-namespace humhub\modules\custom_pages\models;
+namespace humhub\modules\custom_pages\helpers;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use Yii;
 
-abstract class PageType
+class PageType
 {
     public const Page = 'page';
     public const Snippet = 'snippet';
@@ -18,7 +23,7 @@ abstract class PageType
     public const TARGET_PEOPLE = 'PeopleButtonsWidget';
     public const TARGET_SPACE_MENU = 'SpaceMenu';
     public const TARGET_DASHBOARD_SIDEBAR = 'Dashboard';
-    public const TARGET_SPACE_SIDEBAR = 'SpaceStreamSidebar';
+    public const TARGET_SPACE_STREAM_SIDEBAR = 'SpaceStreamSidebar';
 
     public static function getContentName(string $type, ?string $containerClass = null): ?string
     {
@@ -40,6 +45,7 @@ abstract class PageType
      * Returns targets where a Custom Page can be located.
      *
      * @param string $type
+     * @param ContentContainerActiveRecord|null $container
      * @return array
      */
     public static function getDefaultTargets(string $type, ?ContentContainerActiveRecord $container): array
@@ -48,21 +54,25 @@ abstract class PageType
             // Space Page
             if ($container instanceof ContentContainerActiveRecord) {
                 return [
-                    ['id' => self::TARGET_SPACE_MENU , 'name' => Yii::t('CustomPagesModule.base', 'Space Navigation')],
-                    ['id' => self::TARGET_DIRECT_LINK, 'name' => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)')],
+                    self::TARGET_SPACE_MENU => Yii::t('CustomPagesModule.base', 'Space Navigation'),
+                    self::TARGET_DIRECT_LINK => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)'),
                 ];
             }
 
             // Global Page
             $targets = [
-                ['id' => self::TARGET_TOP_MENU, 'name' => Yii::t('CustomPagesModule.base', 'Top Navigation')],
-                ['id' => self::TARGET_ACCOUNT_MENU, 'name' => Yii::t('CustomPagesModule.base', 'User Account Menu (Settings)'), 'subLayout' => '@humhub/modules/user/views/account/_layout'],
-                ['id' => self::TARGET_DIRECT_LINK, 'name' => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)')],
-                ['id' => self::TARGET_FOOTER, 'name' => Yii::t('CustomPagesModule.base', 'Footer menu')],
+                self::TARGET_TOP_MENU => Yii::t('CustomPagesModule.base', 'Top Navigation'),
+                self::TARGET_ACCOUNT_MENU => [
+                    'name' => Yii::t('CustomPagesModule.base', 'User Account Menu (Settings)'),
+                    'subLayout' => '@humhub/modules/user/views/account/_layout',
+                ],
+                self::TARGET_DIRECT_LINK => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)'),
+                self::TARGET_FOOTER => Yii::t('CustomPagesModule.base', 'Footer menu'),
             ];
             if (class_exists('humhub\modules\user\widgets\PeopleHeadingButtons')) {
-                $targets[] = ['id' => self::TARGET_PEOPLE, 'name' => Yii::t('CustomPagesModule.base', 'People Buttons')];
+                $targets[self::TARGET_PEOPLE] = Yii::t('CustomPagesModule.base', 'People Buttons');
             }
+
             return $targets;
         }
 
@@ -70,22 +80,20 @@ abstract class PageType
             // Space Snippet
             if ($container instanceof ContentContainerActiveRecord) {
                 return [
-                    [
-                        'id' => self::TARGET_SPACE_SIDEBAR,
+                    self::TARGET_SPACE_STREAM_SIDEBAR => [
                         'name' => Yii::t('CustomPagesModule.base', 'Stream'),
                         'accessRoute' => '/space/space/home',
-                        'isSnippet' => true,
+                        'type' => self::Snippet,
                     ],
                 ];
             }
 
             // Global Snippet
             return [
-                [
-                    'id' => self::TARGET_DASHBOARD_SIDEBAR,
+                self::TARGET_DASHBOARD_SIDEBAR => [
                     'name' => Yii::t('CustomPagesModule.base', 'Dashboard'),
                     'accessRoute' => '/dashboard',
-                    'isSnippet' => true,
+                    'type' => self::Snippet,
                 ],
             ];
         }

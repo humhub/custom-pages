@@ -13,6 +13,11 @@ class m241111_164223_refactor extends Migration
      */
     public function safeUp()
     {
+        $this->updateRelatedObjectRecords(
+            ['object_model' => 'humhub\\modules\\custom_pages\\models\\Page'],
+            ['object_model' => 'humhub\\modules\\custom_pages\\models\\CustomPage'],
+        );
+
         $this->moveOldRecords('custom_pages_snippet', 'Snippet');
         $this->moveOldRecords('custom_pages_container_snippet', 'ContainerSnippet');
         $this->moveOldRecords('custom_pages_container_page', 'ContainerPage');
@@ -61,7 +66,7 @@ class m241111_164223_refactor extends Migration
                 'object_model' => 'humhub\\modules\\custom_pages\\models\\' . $oldClassName,
                 'object_id' => $oldId,
             ], [
-                'object_model' => 'humhub\\modules\\custom_pages\\models\\Page',
+                'object_model' => 'humhub\\modules\\custom_pages\\models\\CustomPage',
                 'object_id' => $this->db->lastInsertID,
             ]);
         }

@@ -35,7 +35,7 @@ class TemplateType extends ContentType
     }
 
     /**
-     * @param Page $page
+     * @param CustomPage $page
      * @param bool $insert
      * @param array $changedAttributes
      * @return bool
@@ -65,11 +65,11 @@ class TemplateType extends ContentType
     }
 
     /**
-     * @param Page $content
+     * @param CustomPage $content
      * @param array $options
      * @return string
      */
-    public function render(Page $content, $options = [])
+    public function render(CustomPage $content, $options = [])
     {
         $templateInstance = TemplateInstance::findOne(['object_model' => get_class($content) ,'object_id' => $content->id]);
 
@@ -102,7 +102,7 @@ class TemplateType extends ContentType
         return 'template';
     }
 
-    public function renderFormField(ActiveForm $form, Page $page)
+    public function renderFormField(ActiveForm $form, CustomPage $page)
     {
         return $form->field($page, 'templateId')->dropDownList($page->getAllowedTemplateSelection(), ['value' => $page->getTemplateId(), 'disabled' => !$page->isNewRecord]);
     }

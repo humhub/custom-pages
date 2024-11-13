@@ -24,11 +24,11 @@ class CreateGlobalPageCest
 
         $I->waitForText('Configuration');
 
-        $I->fillField('Page[title]', 'Test title');
+        $I->fillField('CustomPage[title]', 'Test title');
         $I->fillField('#page-page_content .humhub-ui-richtext', 'Test Content');
         $I->jsShow('.form-collapsible-fields.closed fieldset');
-        $I->fillField('Page[sort_order]', '400');
-        $I->selectOption('Page[icon]', ['value' => 'fa-adn']);
+        $I->fillField('CustomPage[sort_order]', '400');
+        $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
 
         $I->click('Save');
         $I->waitForElementVisible('#topbar-second .fa-adn');
@@ -59,11 +59,11 @@ class CreateGlobalPageCest
 
         $I->waitForText('Configuration');
 
-        $I->fillField('Page[title]', 'Test link');
-        $I->fillField('Page[page_content]', '/dashboard/dashboard');
+        $I->fillField('CustomPage[title]', 'Test link');
+        $I->fillField('CustomPage[page_content]', '/dashboard/dashboard');
         $I->jsShow('.form-collapsible-fields.closed fieldset');
-        $I->fillField('Page[sort_order]', '400');
-        $I->selectOption('Page[icon]', ['value' => 'fa-adn']);
+        $I->fillField('CustomPage[sort_order]', '400');
+        $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
         $I->click('Save');
         $I->wait(1);
         $I->amOnRoute(['/user/account/edit']);
@@ -96,11 +96,11 @@ class CreateGlobalPageCest
 
         $I->waitForText('Configuration');
 
-        $I->fillField('Page[title]', 'Custom people page');
+        $I->fillField('CustomPage[title]', 'Custom people page');
         $I->fillField('#page-page_content .humhub-ui-richtext', 'Custom people page content');
         $I->jsShow('.form-collapsible-fields.closed fieldset');
-        $I->fillField('Page[sort_order]', '200');
-        $I->selectOption('Page[icon]', ['value' => 'fa-anchor']);
+        $I->fillField('CustomPage[sort_order]', '200');
+        $I->selectOption('CustomPage[icon]', ['value' => 'fa-anchor']);
 
         $I->click('Save');
         $I->waitForText('People Buttons');

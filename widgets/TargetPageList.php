@@ -4,7 +4,7 @@ namespace humhub\modules\custom_pages\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\Target;
 use yii\data\ActiveDataProvider;
 

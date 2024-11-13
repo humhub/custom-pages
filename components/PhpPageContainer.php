@@ -4,14 +4,14 @@ namespace humhub\modules\custom_pages\components;
 
 use HttpException;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\models\PhpType;
 use humhub\modules\file\libs\FileHelper;
 use Yii;
 use yii\helpers\Html;
 
 /**
- * @used-by Page
+ * @used-by CustomPage
  */
 trait PhpPageContainer
 {

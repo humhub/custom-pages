@@ -1,7 +1,7 @@
 <?php
 
 use humhub\libs\Html;
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\helpers\PageType;
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 $margin = $navigationClass == PageType::TARGET_TOP_MENU ? -15 : 0;

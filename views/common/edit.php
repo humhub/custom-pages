@@ -4,7 +4,7 @@ use humhub\libs\Html;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\custom_pages\widgets\PageIconSelect;
 use humhub\modules\ui\form\widgets\ActiveForm;
@@ -13,7 +13,7 @@ use humhub\widgets\Link;
 
 Assets::register($this);
 
-/* @var $page Page */
+/* @var $page CustomPage */
 /* @var $subNav string */
 /* @var $pageType string */
 
@@ -48,7 +48,7 @@ $contentType = $page->getContentType();
 
         <?= $form->beginCollapsibleFields(Yii::t('CustomPagesModule.base', 'Menu settings')); ?>
 
-        <?php if ($page instanceof Page && $page->hasAttribute('url') && $page->isAllowedField('url')) : ?>
+        <?php if ($page->isAllowedField('url')) : ?>
             <?= $form->field($page, 'url') ?>
             <div class="help-block">
                 <?= Yii::t('CustomPagesModule.view', 'By setting an url shortcut value, you can create a better readable url for your page. If <b>URL Rewriting</b> is enabled on your site, the value \'mypage\' will result in an url \'www.example.de/p/mypage\'.') ?>
@@ -77,7 +77,7 @@ $contentType = $page->getContentType();
 
         <?php if (!$page->isSnippet()) : ?>
             <div class="alert alert-info infoAdminOnly"
-                 <?php if ($page->visibility != Page::VISIBILITY_ADMIN_ONLY): ?>style="display:none"<?php endif; ?>>
+                 <?php if ($page->visibility != CustomPage::VISIBILITY_ADMIN_ONLY): ?>style="display:none"<?php endif; ?>>
                 <?= Yii::t('CustomPagesModule.view', '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!'); ?>
             </div>
         <?php endif; ?>
@@ -107,8 +107,8 @@ $contentType = $page->getContentType();
 
         <script <?= Html::nonce() ?>>
             $(document).one('humhub:ready', function () {
-                    $('input[type="radio"][name="Page[visibility]"]').click(function () {
-                        $('.infoAdminOnly').toggle($(this).val() == <?= Page::VISIBILITY_ADMIN_ONLY ?>);
+                    $('input[type="radio"][name="CustomPage[visibility]"]').click(function () {
+                        $('.infoAdminOnly').toggle($(this).val() == <?= CustomPage::VISIBILITY_ADMIN_ONLY ?>);
                     });
                 }
             );

@@ -16,6 +16,7 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\custom_pages\components\PhpPageContainer;
 use humhub\modules\custom_pages\components\TemplatePageContainer;
 use humhub\modules\custom_pages\helpers\Html;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
@@ -48,7 +49,7 @@ use Yii;
  * @property string $url
  * @property string $abstract
  */
-class Page extends ContentActiveRecord implements ViewableInterface
+class CustomPage extends ContentActiveRecord implements ViewableInterface
 {
     use PhpPageContainer;
     use TemplatePageContainer;
@@ -548,7 +549,7 @@ class Page extends ContentActiveRecord implements ViewableInterface
 
     public function isSnippet(): bool
     {
-        return $this->getTargetModel() && $this->getTargetModel()->isSnippet;
+        return $this->getTargetModel() && $this->getTargetModel()->type === PageType::Snippet;
     }
 
     public function isGlobal(): bool

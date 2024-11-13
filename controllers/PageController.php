@@ -5,15 +5,15 @@ namespace humhub\modules\custom_pages\controllers;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\custom_pages\permissions\ManagePages;
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\content\components\ContentContainerControllerAccess;
 use humhub\modules\space\models\Space;
 use humhub\modules\custom_pages\widgets\AdminMenu;
-use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\forms\AddPageForm;
 use Yii;
 use yii\web\ForbiddenHttpException;
@@ -21,7 +21,7 @@ use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
 /**
- * PageController used to manage global (non container) pages of type humhub\modules\custom_pages\models\Page.
+ * PageController used to manage global (non container) pages.
  *
  * This Controller is designed to be overwritten by other controller for supporting other page types.
  *
@@ -159,7 +159,7 @@ class PageController extends AbstractCustomContainerController
      */
     public function actionEdit($targetId = null, $type = null, $id = null)
     {
-        /* @var Page $page*/
+        /* @var CustomPage $page*/
         $page = $this->findByid($id);
 
         if (!$page && !$targetId) {
@@ -195,7 +195,7 @@ class PageController extends AbstractCustomContainerController
     }
 
     /**
-     * @param $page Page
+     * @param $page CustomPage
      * @return bool
      * @throws \Throwable
      * @throws \yii\db\Exception
@@ -205,7 +205,7 @@ class PageController extends AbstractCustomContainerController
         if (!$page->load(Yii::$app->request->post())) {
             return false;
         }
-        $transaction = Page::getDb()->beginTransaction();
+        $transaction = CustomPage::getDb()->beginTransaction();
 
         try {
             $saved = $page->save();
@@ -224,11 +224,11 @@ class PageController extends AbstractCustomContainerController
     /**
      * @param $type
      * @param $targetId
-     * @return Page
+     * @return CustomPage
      */
-    private function createNewPage($type, $targetId): Page
+    private function createNewPage($type, $targetId): CustomPage
     {
-        $page = new Page(['type' => $type, 'target' => $targetId]);
+        $page = new CustomPage(['type' => $type, 'target' => $targetId]);
         if ($this->contentContainer) {
             $page->content->setContainer($this->contentContainer);
             if (!$this->contentContainer) {

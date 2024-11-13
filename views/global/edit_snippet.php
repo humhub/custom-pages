@@ -1,11 +1,11 @@
 <?php
 
 use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\CustomPage;
 use yii\helpers\Html;
 use humhub\modules\custom_pages\modules\template\widgets\TemplatePage;
 
-/* @var $snippet Page */
+/* @var $snippet CustomPage */
 /* @var $html string */
 
 $backUrl = Url::to(['/dashboard/dashboard']);

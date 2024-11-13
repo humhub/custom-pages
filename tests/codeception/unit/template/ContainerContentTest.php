@@ -9,7 +9,7 @@ use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\RichtextContent;
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use humhub\modules\custom_pages\modules\template\models\ContainerContentItem;
 use humhub\modules\custom_pages\modules\template\models\ContainerContentDefinition;
@@ -89,14 +89,14 @@ class ContainerContentTest extends HumHubDbTestCase
     public function testDeletePage()
     {
         $this->becomeUser('Admin');
-        $page = Page::find()->where(['custom_pages_page.id' => 2])->readable()->one();
+        $page = CustomPage::find()->where(['custom_pages_page.id' => 2])->readable()->one();
 
         // Check after soft deletion the Page is not visible even for admin
         $this->assertNotFalse($page->delete());// Soft deletion
-        $page = Page::find()->where(['custom_pages_page.id' => 2])->readable()->one();
+        $page = CustomPage::find()->where(['custom_pages_page.id' => 2])->readable()->one();
         $this->assertNull($page);
 
-        $page = Page::findOne(['id' => 2]);
+        $page = CustomPage::findOne(['id' => 2]);
         $this->assertNotFalse($page->hardDelete());
 
         $this->assertNull(ContainerContentItem::findOne(['id' => 2]));
@@ -114,8 +114,8 @@ class ContainerContentTest extends HumHubDbTestCase
 
     public function testDeleteAll()
     {
-        Page::findOne(['id' => 2])->hardDelete();
-        Page::findOne(['id' => 1])->hardDelete();
+        CustomPage::findOne(['id' => 2])->hardDelete();
+        CustomPage::findOne(['id' => 1])->hardDelete();
 
         $this->assertEquals(0, OwnerContent::find()->where(['not', ['owner_model' => Template::class]])->count());
         $this->assertEquals(0, TemplateInstance::find()->count());

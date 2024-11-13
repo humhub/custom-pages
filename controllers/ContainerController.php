@@ -2,7 +2,7 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\CustomPage;
 use yii\web\HttpException;
 use humhub\modules\content\components\ContentContainerController;
 use yii\web\NotFoundHttpException;
@@ -26,11 +26,11 @@ class ContainerController extends ContentContainerController
      */
     public function actionView($id)
     {
-        /* @var Page $page */
-        $page = Page::find()
+        /* @var CustomPage $page */
+        $page = CustomPage::find()
             ->contentContainer($this->contentContainer)
             // TODO: Filter only with Space targets
-            ->andWhere([Page::tableName() . '.id' => $id])
+            ->andWhere([CustomPage::tableName() . '.id' => $id])
             ->one();
 
         if (!$page) {

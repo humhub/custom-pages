@@ -2,7 +2,7 @@
 
 namespace humhub\modules\custom_pages\interfaces;
 
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\Target;
 use Yii;
 
@@ -17,15 +17,12 @@ class CustomPagesTargetEvent extends CustomPagesEvent
      */
     public $type;
 
-    /**
-     * @var array
-     */
-    private $result = [];
+    private array $result = [];
 
     /**
-     * @param $target Target|array
+     * @param Target|array $target
      */
-    public function addTarget($target)
+    public function addTarget($target): void
     {
         $target = $target instanceof  Target ? $target : new Target($target);
         $target->container = $this->container;
@@ -38,9 +35,15 @@ class CustomPagesTargetEvent extends CustomPagesEvent
         $this->result[$target->id] = $target;
     }
 
-    public function addTargets($targets)
+    public function addTargets($targets): void
     {
-        foreach ($targets as $target) {
+        foreach ($targets as $id => $target) {
+            if (is_string($target)) {
+                $target = ['name' => $target];
+            }
+            if (!isset($target['id'])) {
+                $target['id'] = $id;
+            }
             $this->addTarget($target);
         }
     }
@@ -48,7 +51,7 @@ class CustomPagesTargetEvent extends CustomPagesEvent
     /**
      * @return array
      */
-    public function getTargets()
+    public function getTargets(): array
     {
         return $this->result;
     }

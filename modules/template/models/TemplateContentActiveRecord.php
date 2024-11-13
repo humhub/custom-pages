@@ -5,7 +5,7 @@ namespace humhub\modules\custom_pages\modules\template\models;
 use humhub\components\ActiveRecord;
 use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\user\components\PermissionManager;
 use Yii;

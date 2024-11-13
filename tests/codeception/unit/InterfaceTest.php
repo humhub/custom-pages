@@ -6,8 +6,8 @@ use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\custom_pages\interfaces\CustomPagesTargetEvent;
 use humhub\modules\custom_pages\models\HtmlType;
 use humhub\modules\custom_pages\models\MarkdownType;
-use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\Target;
 use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\space\models\Space;
@@ -89,7 +89,7 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $this->becomeUser('User1');
 
-        $p1 = new Page([
+        $p1 = new CustomPage([
             'title' => 'Test Title',
             'type' => MarkdownType::ID,
             'page_content' => 'Test',
@@ -98,9 +98,9 @@ class InterfaceTest extends HumHubDbTestCase
 
 
         $p1->load([
-            'Page' => [
+            'CustomPage' => [
                 'icon' => 'fa-pencil',
-                'visibility' => Page::VISIBILITY_PUBLIC,
+                'visibility' => CustomPage::VISIBILITY_PUBLIC,
                 'sort_order' => 300,
                 'cssClass' => 'testCss',
             ],
@@ -108,7 +108,7 @@ class InterfaceTest extends HumHubDbTestCase
 
         $this->assertTrue($p1->save());
 
-        $page = Page::findOne(['id' => $p1->id]);
+        $page = CustomPage::findOne(['id' => $p1->id]);
 
         $this->assertNull($page->icon);
         $this->assertNull($page->cssClass);
@@ -120,7 +120,7 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $this->becomeUser('User1');
 
-        $p1 = new Page([
+        $p1 = new CustomPage([
             'title' => 'Test Title',
             'type' => MarkdownType::ID,
             'page_content' => 'Test',
@@ -129,9 +129,9 @@ class InterfaceTest extends HumHubDbTestCase
 
 
         $p1->load([
-            'Page' => [
+            'CustomPage' => [
                 'icon' => 'fa-pencil',
-                'visibility' => Page::VISIBILITY_ADMIN_ONLY,
+                'visibility' => CustomPage::VISIBILITY_ADMIN_ONLY,
                 'sort_order' => 300,
                 'cssClass' => 'testCss',
             ],
@@ -139,7 +139,7 @@ class InterfaceTest extends HumHubDbTestCase
 
         $this->assertTrue($p1->save());
 
-        $page = Page::findOne(['id' => $p1->id]);
+        $page = CustomPage::findOne(['id' => $p1->id]);
 
         $this->assertEquals('fa-pencil', $page->icon);
         $this->assertEquals('testCss', $page->cssClass);
@@ -149,7 +149,7 @@ class InterfaceTest extends HumHubDbTestCase
 
     public function testTargetAssignment()
     {
-        $p1 = new Page([
+        $p1 = new CustomPage([
             'target' => 'global',
         ]);
 
@@ -161,7 +161,7 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $this->becomeUser('User1');
 
-        $p1 = new Page([
+        $p1 = new CustomPage([
             'title' => 'Test Title',
             'type' => MarkdownType::ID,
             'target' => 'global',
@@ -179,7 +179,7 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $this->becomeUser('User1');
 
-        $p1 = new Page(Space::findOne(['id' => 1]), [
+        $p1 = new CustomPage(Space::findOne(['id' => 1]), [
             'title' => 'Test Title',
             'type' => MarkdownType::ID,
             'page_content' => 'Test',
@@ -198,7 +198,7 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $this->becomeUser('User1');
 
-        $p1 = new Page([
+        $p1 = new CustomPage([
             'title' => 'Test Title',
             'type' => TemplateType::ID,
             'page_content' => 'Test',

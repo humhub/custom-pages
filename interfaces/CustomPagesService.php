@@ -4,8 +4,8 @@ namespace humhub\modules\custom_pages\interfaces;
 
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\Target;
 use yii\base\Component;
 
@@ -54,7 +54,7 @@ class CustomPagesService extends Component
         return array_key_exists($targetId, $availableTargets) ? $availableTargets[$targetId] : null;
     }
 
-    public function getTargetByPage(Page $page): ?Target
+    public function getTargetByPage(CustomPage $page): ?Target
     {
         $types = [PageType::Page, PageType::Snippet];
 
@@ -94,8 +94,8 @@ class CustomPagesService extends Component
      */
     public function deleteAllByTarget($targetId)
     {
-        foreach (Page::find()->where(['target' => $targetId])->all() as $page) {
-            /* @var Page $page */
+        foreach (CustomPage::find()->where(['target' => $targetId])->all() as $page) {
+            /* @var CustomPage $page */
             $page->delete();
         }
     }
@@ -116,7 +116,7 @@ class CustomPagesService extends Component
             $targetId = $targetId->id;
         }
 
-        $query = Page::find()
+        $query = CustomPage::find()
             ->where(['target' => $targetId])
             ->contentContainer($container);
 
@@ -127,13 +127,13 @@ class CustomPagesService extends Component
             $query->andWhere($query->stateFilterCondition);
         }
 
-        if (!Page::canSeeAdminOnlyContent($container)) {
+        if (!CustomPage::canSeeAdminOnlyContent($container)) {
             $query->andWhere(['admin_only' => 0]);
         }
 
         return $query->orderBy([
-            Page::tableName() . '.sort_order' => SORT_ASC,
-            Page::tableName() . '.id' => SORT_DESC,
+            CustomPage::tableName() . '.sort_order' => SORT_ASC,
+            CustomPage::tableName() . '.id' => SORT_DESC,
         ]);
     }
 
@@ -144,13 +144,13 @@ class CustomPagesService extends Component
      * @param string $targetId
      * @param string $type
      * @param ContentContainerActiveRecord|null $container
-     * @return Page|null
+     * @return CustomPage|null
      * @throws \yii\base\Exception
      */
     public function getSingleContent($id, $targetId, $type, ContentContainerActiveRecord $container = null): ?Page
     {
         return $this->findContentByTarget($targetId, $type, $container)
-            ->andWhere([Page::tableName() . '.id' => $id])
+            ->andWhere([CustomPage::tableName() . '.id' => $id])
             ->one();
     }
 

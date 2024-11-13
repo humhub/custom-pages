@@ -10,7 +10,7 @@ namespace humhub\modules\custom_pages\modules\template\widgets;
 
 use humhub\components\Widget;
 use Yii;
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 
 /**
@@ -21,7 +21,7 @@ use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 class TemplatePageEditButton extends Widget
 {
     /**
-     * @var Page page instance
+     * @var CustomPage page instance
      */
     public $page;
 
@@ -46,7 +46,7 @@ class TemplatePageEditButton extends Widget
 
         $space = Yii::$app->controller->contentContainer ?? null;
 
-        $templateInstance = TemplateInstance::findOne(['object_model' => Page::class, 'object_id' => $this->page->id]);
+        $templateInstance = TemplateInstance::findOne(['object_model' => CustomPage::class, 'object_id' => $this->page->id]);
 
         return $this->render('templatePageEditButton', [
             'canEdit' => $this->canEdit,

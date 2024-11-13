@@ -10,7 +10,7 @@ namespace custom_pages\functional;
 
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\custom_pages\interfaces\CustomPagesTargetEvent;
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\Target;
 use custom_pages\FunctionalTester;
 use yii\base\Event;

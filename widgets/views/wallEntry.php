@@ -1,10 +1,10 @@
 <?php
 
 use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\widgets\Button;
 
-/* @var $page \humhub\modules\custom_pages\models\Page */
-
+/* @var $page CustomPage */
 ?>
 <div class="media">
     <div class="media-body">

@@ -8,7 +8,7 @@ use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\RichtextContent;
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\CustomPage;
 
 class TemplateInstanceTest extends HumHubDbTestCase
 {
@@ -35,7 +35,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
 
         $owner->save();
 
-        $page = new Page([
+        $page = new CustomPage([
             'type' => '5',
             'title' => 'test2',
             'target' => 'TopMenuWidget',
@@ -44,7 +44,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $page->save(false);
 
         $owner2 = new TemplateInstance([
-            'object_model' => Page::class,
+            'object_model' => CustomPage::class,
             'object_id' => $page->id,
             'template_id' => $owner->id,
         ]);
@@ -75,7 +75,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $template = Template::findOne(['id' => 1]);
         $element = $template->getElement('test_content');
 
-        $page = new Page([
+        $page = new CustomPage([
             'type' => '5',
             'title' => 'test2',
             'target' => 'TopMenuWidget',
@@ -83,7 +83,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
 
         $page->save(false);
 
-        $owner = TemplateInstance::findOne(['object_model' => Page::class, 'object_id' => $page->id]);
+        $owner = TemplateInstance::findOne(['object_model' => CustomPage::class, 'object_id' => $page->id]);
 
         $richtext = new RichtextContent(['content' => 'testContent']);
         $ownerContent = $element->saveInstance($owner, $richtext);
@@ -100,7 +100,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $template = Template::findOne(['id' => 1]);
         $element = $template->getElement('test_content');
 
-        $page = new Page([
+        $page = new CustomPage([
             'type' => '5',
             'title' => 'test2',
             'target' => 'TopMenuWidget',
@@ -108,7 +108,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
 
         $page->save(false);
 
-        $owner = TemplateInstance::findOne(['object_model' => Page::class, 'object_id' => $page->id]);
+        $owner = TemplateInstance::findOne(['object_model' => CustomPage::class, 'object_id' => $page->id]);
 
         $richtext = new RichtextContent(['content' => 'testContent']);
         $ownerContent = $element->saveInstance($owner, $richtext);
@@ -134,7 +134,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
 
         $owner->save();
 
-        $page = new Page([
+        $page = new CustomPage([
             'type' => '5',
             'title' => 'test2',
             'target' => 'TopMenuWidget',
@@ -143,7 +143,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $page->save(false);
 
         $owner2 = new TemplateInstance([
-            'object_model' => Page::class,
+            'object_model' => CustomPage::class,
             'object_id' => $page->id,
             'template_id' => $owner->id,
         ]);

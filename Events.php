@@ -7,8 +7,8 @@ use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\LinkType;
-use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\custom_pages\widgets\SnippetWidget;
@@ -80,8 +80,8 @@ class Events
             /* @var $space \humhub\modules\space\models\Space */
             $space = $event->sender->space;
             if ($space->moduleManager->isEnabled('custom_pages')) {
-                /* @var Page[] $pages */
-                $pages = Page::find()
+                /* @var CustomPage[] $pages */
+                $pages = CustomPage::find()
                     ->contentContainer($space)
                     ->readable()
                     ->andWhere(['target' => PageType::TARGET_SPACE_MENU])
@@ -172,7 +172,7 @@ class Events
         }
     }
 
-    private static function isCurrentTargetUrl(Page $page): bool
+    private static function isCurrentTargetUrl(CustomPage $page): bool
     {
         if ($page->type === LinkType::ID && $page->page_content) {
             $targetUrl = strpos($page->page_content, 'http') === 0 ?
@@ -238,8 +238,8 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            /* @var Page[] $pages */
-            $pages = Page::find()
+            /* @var CustomPage[] $pages */
+            $pages = CustomPage::find()
                 ->andWhere(['target' => PageType::TARGET_DASHBOARD_SIDEBAR])
                 ->readable()
                 ->all();
@@ -262,12 +262,12 @@ class Events
             $space = $event->sender->space;
             $canEdit = PagePermission::canEdit();
             if ($space->moduleManager->isEnabled('custom_pages')) {
-                /* @var Page[] $pages */
-                $pages = Page::find()
+                /* @var CustomPage[] $pages */
+                $pages = CustomPage::find()
                     ->contentContainer($space)
                     ->readable()
                     //->filterByTargetType() TODO: Filter only by Snippet Targets
-                    ->andWhere(['target' => PageType::TARGET_SPACE_SIDEBAR])
+                    ->andWhere(['target' => PageType::TARGET_SPACE_STREAM_SIDEBAR])
                     ->all();
                 foreach ($pages as $page) {
                     if ($page->canView() && $page->isSnippet()) {
@@ -325,11 +325,11 @@ class Events
 
     /**
      * @param string $target
-     * @return Page[]
+     * @return CustomPage[]
      */
     private static function findPagesByTarget(string $target): array
     {
-        return Page::find()
+        return CustomPage::find()
             ->where(['target' => $target])
             ->readable()
             ->all();

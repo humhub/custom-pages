@@ -4,7 +4,7 @@ namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\CustomPage;
 use Yii;
 use yii\db\ActiveQuery;
 

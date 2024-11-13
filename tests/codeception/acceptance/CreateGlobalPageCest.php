@@ -25,7 +25,7 @@ class CreateGlobalPageCest
         $I->waitForText('Configuration');
 
         $I->fillField('CustomPage[title]', 'Test title');
-        $I->fillField('#page-page_content .humhub-ui-richtext', 'Test Content');
+        $I->fillField('#custompage-page_content .humhub-ui-richtext', 'Test Content');
         $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->fillField('CustomPage[sort_order]', '400');
         $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
@@ -97,7 +97,7 @@ class CreateGlobalPageCest
         $I->waitForText('Configuration');
 
         $I->fillField('CustomPage[title]', 'Custom people page');
-        $I->fillField('#page-page_content .humhub-ui-richtext', 'Custom people page content');
+        $I->fillField('#custompage-page_content .humhub-ui-richtext', 'Custom people page content');
         $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->fillField('CustomPage[sort_order]', '200');
         $I->selectOption('CustomPage[icon]', ['value' => 'fa-anchor']);

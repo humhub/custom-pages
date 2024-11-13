@@ -36,6 +36,14 @@ class CustomPagesService extends Component
 
             $this->trigger(self::EVENT_FETCH_TARGETS, $event);
 
+            if (!is_array($cache)) {
+                $cache = [];
+            }
+
+            if (!isset($cache[$type])) {
+                $cache[$type] = [];
+            }
+
             $cache[$type][$containerKey] = $event->getTargets();
         }
 

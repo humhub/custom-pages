@@ -610,7 +610,7 @@ class PageIconSelect extends Widget
             'fa-yelp' => '&#xf1e9',
             'fa-youtube' => '&#xf167',
             'fa-youtube-play' => '&#xf16a',
-            'fa-youtube-square' => '&#xf166'
+            'fa-youtube-square' => '&#xf166',
         ];
 
         if ($this->page->isSnippet()) {

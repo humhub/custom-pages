@@ -2,12 +2,13 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
+use humhub\modules\custom_pages\models\Page;
 use yii\web\HttpException;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\custom_pages\models\ContainerPage;
+use yii\web\NotFoundHttpException;
 
 /**
- * Controller for managing ContainerPage instances.
+ * Controller for managing Container/Space Page instances.
  *
  * @author luke, buddha
  * @deprecated
@@ -15,9 +16,9 @@ use humhub\modules\custom_pages\models\ContainerPage;
 class ContainerController extends ContentContainerController
 {
     /**
-     * Is used to view/render a ContainerPage of a certain page content type.
+     * Is used to view/render a Container/Space Page of a certain page content type.
      *
-     * This action expects an page id as request parameter.
+     * This action expects a page id as request parameter.
      *
      * @return string
      * @throws HttpException if the page was not found
@@ -25,10 +26,17 @@ class ContainerController extends ContentContainerController
      */
     public function actionView($id)
     {
-        $page = ContainerPage::find()->contentContainer($this->contentContainer)->where(['custom_pages_container_page.id' => $id])->one();
+        /* @var Page $page */
+        $page = Page::find()
+            ->contentContainer($this->contentContainer)
+            // TODO: Filter only with Space targets
+            ->andWhere([Page::tableName() . '.id' => $id])
+            ->one();
+
         if (!$page) {
-            throw new HttpException(404);
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
         return $this->redirect($page->getUrl());
     }
 }

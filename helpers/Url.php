@@ -4,7 +4,7 @@ namespace humhub\modules\custom_pages\helpers;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\custom_pages\models\CustomContentContainer;
+use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\models\Target;
 use yii\helpers\Url as BaseUrl;
@@ -31,7 +31,7 @@ class Url extends BaseUrl
 
     public const ROUTE_SNIPPET_INLINE_EDIT = '/custom_pages/snippet/edit-snippet';
 
-    public static function toInlineEdit(CustomContentContainer $content, ContentContainerActiveRecord $container = null)
+    public static function toInlineEdit(Page $content, ContentContainerActiveRecord $container = null)
     {
         if ($content->getPageType() === PageType::Snippet) {
             return static::create(static::ROUTE_SNIPPET_INLINE_EDIT, ['id' => $content->id], $container);
@@ -138,7 +138,7 @@ class Url extends BaseUrl
         return static::create(static::ROUTE_SNIPPET_OVERVIEW, [], $container);
     }
 
-    public static function toDeletePage(CustomContentContainer $page, ContentContainerActiveRecord $container = null)
+    public static function toDeletePage(Page $page, ContentContainerActiveRecord $container = null)
     {
         $route = ($page->getPageType() === PageType::Page) ? static::ROUTE_PAGE_DELETE : static::ROUTE_SNIPPET_DELETE;
         return static::create($route, ['id' => $page->id], $container);

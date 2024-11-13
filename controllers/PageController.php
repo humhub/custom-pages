@@ -7,7 +7,6 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\custom_pages\permissions\ManagePages;
-use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
@@ -160,7 +159,7 @@ class PageController extends AbstractCustomContainerController
      */
     public function actionEdit($targetId = null, $type = null, $id = null)
     {
-        /* @var CustomContentContainer $page*/
+        /* @var Page $page*/
         $page = $this->findByid($id);
 
         if (!$page && !$targetId) {
@@ -196,7 +195,7 @@ class PageController extends AbstractCustomContainerController
     }
 
     /**
-     * @param $page CustomContentContainer
+     * @param $page Page
      * @return bool
      * @throws \Throwable
      * @throws \yii\db\Exception
@@ -225,9 +224,9 @@ class PageController extends AbstractCustomContainerController
     /**
      * @param $type
      * @param $targetId
-     * @return CustomContentContainer
+     * @return Page
      */
-    private function createNewPage($type, $targetId)
+    private function createNewPage($type, $targetId): Page
     {
         $page = new Page(['type' => $type, 'target' => $targetId]);
         if ($this->contentContainer) {

@@ -1,9 +1,10 @@
 <?php
 
 use humhub\libs\Html;
+use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\widgets\SnippetContent;
 
-/* @var $model \humhub\modules\custom_pages\models\CustomContentContainer */
+/* @var $model Page */
 /* @var $canEdit bool */
 
 $iframeId = 'iframesnippet-' . $model->id;

@@ -76,10 +76,10 @@ class Target extends Model
     /**
      * Returns the url for accessing this content. Targets can change the access url by overwriting the default
      * [[accessRoute]].
-     * @param CustomContentContainer $content
+     * @param Page $content
      * @return string
      */
-    public function getContentUrl(CustomContentContainer $content)
+    public function getContentUrl(Page $content)
     {
         return $content->content->container
             ? $content->content->container->createUrl($this->accessRoute, ['id' => $content->id])

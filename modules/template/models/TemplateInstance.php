@@ -4,7 +4,7 @@ namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
-use humhub\modules\custom_pages\models\CustomContentContainer;
+use humhub\modules\custom_pages\models\Page;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -102,7 +102,7 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
         return $this->hasOne(Template::class, ['id' => 'template_id']);
     }
 
-    public function getObject(): ?CustomContentContainer
+    public function getObject(): ?Page
     {
         if (empty($this->object_model) || empty($this->object_id)) {
             return null;

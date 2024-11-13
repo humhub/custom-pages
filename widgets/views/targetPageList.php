@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\custom_pages\models\CustomContentContainer;
+use humhub\modules\custom_pages\models\Page;
 use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use humhub\widgets\Link;
@@ -31,7 +31,7 @@ use yii\helpers\Html;
                     'label' => Yii::t('CustomPagesModule.base', 'Title'),
                     'format' => 'raw',
                     'value' => function ($data) {
-                        /*  @var $data CustomContentContainer */
+                        /*  @var $data Page */
                         return Link::to(Html::encode($data->getTitle()), $data->getUrl())->icon(Html::encode($data->icon));
                     }
                 ],
@@ -40,7 +40,7 @@ use yii\helpers\Html;
                     'label' => Yii::t('CustomPagesModule.base', 'Type'),
                     'headerOptions' => ['style' => 'width:10%'],
                     'value' => function ($data) {
-                        /*  @var $data CustomContentContainer */
+                        /*  @var $data Page */
                         return $data->getContentType()->getLabel();
                     }
                 ],
@@ -49,7 +49,7 @@ use yii\helpers\Html;
                     'options' => ['width' => '80px'],
                     'buttons' => [
                         'update' => function ($url, $model) {
-                            /*  @var $model CustomContentContainer */
+                            /*  @var $model Page */
                             return $model->canEdit()
                                 ? Link::primary()->icon('fa-pencil')->link($model->getEditUrl())->xs()->right()
                                 : '';

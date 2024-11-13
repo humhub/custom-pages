@@ -1,9 +1,10 @@
 <?php
 
+use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\widgets\SnippetContent;
 use humhub\modules\custom_pages\controllers\ViewController;
 
-/* @var $model \humhub\modules\custom_pages\models\CustomContentContainer */
+/* @var $model Page */
 /* @var $canEdit bool */
 
 $controller = new ViewController(null, null);

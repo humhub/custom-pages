@@ -10,7 +10,6 @@
 namespace humhub\modules\custom_pages\models\forms;
 
 use humhub\modules\custom_pages\models\ContentType;
-use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\PhpType;
 use humhub\modules\custom_pages\models\Target;
@@ -21,7 +20,7 @@ use yii\base\Model;
 /**
  * AddPageForm selects a page type
  *
- * @property-read CustomContentContainer $pageInstance
+ * @property-read Page $pageInstance
  * @author luke
  */
 class AddPageForm extends Model
@@ -140,15 +139,16 @@ class AddPageForm extends Model
     /**
      * Returns the singleton page instance.
      *
-     * @return CustomContentContainer
+     * @return Page
      * @throws \yii\base\InvalidConfigException
      */
-    public function getPageInstance()
+    public function getPageInstance(): Page
     {
         if ($this->_instance == null) {
             $this->_instance = new Page($this->target->container);
             $this->_instance->target = $this->target->id;
         }
+
         return $this->_instance;
     }
 

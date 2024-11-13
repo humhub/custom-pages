@@ -6,10 +6,11 @@
  *
  */
 
+use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\widgets\SnippetContent;
 use yii\base\ViewNotFoundException;
 
-/* @var $model \humhub\modules\custom_pages\models\CustomContentContainer */
+/* @var $model Page */
 /* @var $canEdit bool */
 
 try {
@@ -31,6 +32,3 @@ SnippetContent::widget([
     'navigation' => $navigation
 ]);
 ?>
-
-
-

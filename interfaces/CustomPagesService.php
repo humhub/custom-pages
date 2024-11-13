@@ -4,7 +4,6 @@ namespace humhub\modules\custom_pages\interfaces;
 
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\models\Target;
@@ -55,7 +54,7 @@ class CustomPagesService extends Component
         return array_key_exists($targetId, $availableTargets) ? $availableTargets[$targetId] : null;
     }
 
-    public function getTargetByPage(CustomContentContainer $page): ?Target
+    public function getTargetByPage(Page $page): ?Target
     {
         $types = [PageType::Page, PageType::Snippet];
 
@@ -128,7 +127,7 @@ class CustomPagesService extends Component
             $query->andWhere($query->stateFilterCondition);
         }
 
-        if (!CustomContentContainer::canSeeAdminOnlyContent($container)) {
+        if (!Page::canSeeAdminOnlyContent($container)) {
             $query->andWhere(['admin_only' => 0]);
         }
 
@@ -141,9 +140,9 @@ class CustomPagesService extends Component
     /**
      * Should be called to search for a single custom content with a given id.
      *
-     * @param $id
-     * @param $targetId
-     * @param $type
+     * @param int $id
+     * @param string $targetId
+     * @param string $type
      * @param ContentContainerActiveRecord|null $container
      * @return Page|null
      * @throws \yii\base\Exception

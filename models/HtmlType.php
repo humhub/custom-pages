@@ -34,7 +34,7 @@ class HtmlType extends ContentType
         return Yii::t('CustomPagesModule.base', 'Adds plain HTML content to your site.');
     }
 
-    public function render(CustomContentContainer $content, $options = [])
+    public function render(Page $content, $options = [])
     {
         // TODO: Implement getRender() method.
     }
@@ -44,9 +44,9 @@ class HtmlType extends ContentType
         return 'html';
     }
 
-    public function renderFormField(ActiveForm $form, CustomContentContainer $page)
+    public function renderFormField(ActiveForm $form, Page $page)
     {
-        $field = $form->field($page, $page->getPageContentProperty())->widget(TinyMce::class, [
+        $field = $form->field($page, 'page_content')->widget(TinyMce::class, [
             'options' => ['id' => 'html_content'],
             'clientOptions' => [
                 'humhubTrigger' => [

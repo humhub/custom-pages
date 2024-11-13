@@ -2,12 +2,11 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
-use humhub\modules\custom_pages\models\CustomContentContainer;
+use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\HtmlType;
 use humhub\modules\custom_pages\models\IframeType;
 use humhub\modules\custom_pages\models\LinkType;
 use humhub\modules\custom_pages\models\MarkdownType;
-use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\models\PhpType;
 use humhub\modules\custom_pages\models\TemplateType;
@@ -131,12 +130,12 @@ class ViewController extends AbstractCustomContainerController
     }
 
     /**
-     * @param CustomContentContainer $page
+     * @param Page $page
      * @param $view
      * @return string rendered template page
      * @throws HttpException in case the page is protected from non admin access
      */
-    public function viewTemplatePage(CustomContentContainer $page, $view)
+    public function viewTemplatePage(Page $page, $view): string
     {
         $editMode = Yii::$app->request->get('editMode');
         $canEdit = $page->content->canEdit();

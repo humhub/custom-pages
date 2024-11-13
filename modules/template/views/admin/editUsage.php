@@ -4,7 +4,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\StateBadge;
 use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\custom_pages\models\CustomContentContainer;
+use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\widgets\AdminMenu;
 use humhub\widgets\GridView;
@@ -55,7 +55,7 @@ $columnLabel = $model->type === Template::TYPE_CONTAINER ? Yii::t('CustomPagesMo
                 'format' => 'raw',
                 'value' => function ($model) {
                     if ($model instanceof Content) {
-                        /* @var $record CustomContentContainer */
+                        /* @var $record Page */
                         $record = $model->getPolymorphicRelation();
                         return Link::to(Html::encode($record->getTitle()), $record->getUrl())->icon(Html::encode($record->icon)) . ' ' .
                             StateBadge::widget(['model' => $record]);
@@ -83,7 +83,7 @@ $columnLabel = $model->type === Template::TYPE_CONTAINER ? Yii::t('CustomPagesMo
             'buttons' => [
                 'update' => function ($url, $model) {
                     if ($model instanceof Content) {
-                        /* @var $record CustomContentContainer */
+                        /* @var $record Page */
                         $record = $model->getPolymorphicRelation();
                         return $record->canEdit()
                             ? Link::primary()->icon('fa-pencil')->link($record->getEditUrl())->xs()->right()

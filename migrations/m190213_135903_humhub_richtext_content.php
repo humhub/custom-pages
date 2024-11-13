@@ -1,6 +1,5 @@
 <?php
 
-use humhub\modules\custom_pages\models\ContainerPage;
 use yii\db\Migration;
 
 /**

@@ -11,7 +11,6 @@ use humhub\components\access\StrictAccess;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\custom_pages\helpers\Html;
-use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\PageType;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
@@ -53,7 +52,7 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
      * Returns a page by a given $id.
      *
      * @param int $id page id.
-     * @return CustomContentContainer
+     * @return Page
      */
     protected function findById($id)
     {
@@ -61,12 +60,13 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
     }
 
     /**
+     * Render the given template page
      *
-     * @param \humhub\modules\custom_pages\models\CustomContentContainer $page
+     * @param Page $page
      * @return string rendered template page
      * @throws \yii\web\HttpException in case the page is protected from non admin access
      */
-    public function viewTemplatePage(CustomContentContainer $page, $view)
+    public function viewTemplatePage(Page $page, $view): string
     {
         $html = $this->renderTemplate($page);
         $canEdit = $this->isCanEdit();

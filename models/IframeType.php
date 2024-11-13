@@ -32,7 +32,7 @@ class IframeType extends ContentType
         return Yii::t('CustomPagesModule.base', 'Will embed the result of a given url as an iframe element.');
     }
 
-    public function render(CustomContentContainer $content, $options = [])
+    public function render(Page $content, $options = [])
     {
         // TODO: Implement render() method.
     }
@@ -42,9 +42,9 @@ class IframeType extends ContentType
         return 'iframe';
     }
 
-    public function renderFormField(ActiveForm $form, CustomContentContainer $page)
+    public function renderFormField(ActiveForm $form, Page $page)
     {
-        $targetUrlField = $form->field($page, $page->getPageContentProperty())
+        $targetUrlField = $form->field($page, 'page_content')
             ->label($page->getAttributeLabel('targetUrl'));
 
         if (Yii::$app->user->isAdmin()) {

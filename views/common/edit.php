@@ -1,30 +1,27 @@
 <?php
 
-use humhub\modules\content\models\Content;
-use humhub\modules\custom_pages\models\ContainerPage;
-use humhub\modules\custom_pages\widgets\PageIconSelect;
-use humhub\widgets\Link;
 use humhub\libs\Html;
-use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\custom_pages\models\Page;
-use humhub\widgets\Button;
-use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\content\widgets\richtext\RichTextField;
+use humhub\modules\custom_pages\assets\Assets;
+use humhub\modules\custom_pages\helpers\Url;
+use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\TemplateType;
+use humhub\modules\custom_pages\widgets\PageIconSelect;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\Button;
+use humhub\widgets\Link;
 
-\humhub\modules\custom_pages\assets\Assets::register($this);
+Assets::register($this);
 
-/** @var  $page \humhub\modules\custom_pages\models\CustomContentContainer */
-/** @var  $subNav string */
-/** @var  $pageType string */
+/* @var $page Page */
+/* @var $subNav string */
+/* @var $pageType string */
 
 $indexUrl = Url::to(['index', 'sguid' => null]);
 $deleteUrl = Url::to(['delete', 'id' => $page->id, 'sguid' => null]);
 
 $target = $page->getTargetModel();
-
 $contentType = $page->getContentType();
-
 ?>
 <div class="panel panel-default content-edit">
     <div class="panel-heading">
@@ -78,12 +75,14 @@ $contentType = $page->getContentType();
 
         <?= $form->endCollapsibleFields(); ?>
 
-        <div class="alert alert-info infoAdminOnly"
-             <?php if ($page->visibility != Page::VISIBILITY_ADMIN_ONLY): ?>style="display:none"<?php endif; ?>>
-            <?= Yii::t('CustomPagesModule.view', '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!'); ?>
-        </div>
+        <?php if (!$page->isSnippet()) : ?>
+            <div class="alert alert-info infoAdminOnly"
+                 <?php if ($page->visibility != Page::VISIBILITY_ADMIN_ONLY): ?>style="display:none"<?php endif; ?>>
+                <?= Yii::t('CustomPagesModule.view', '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!'); ?>
+            </div>
+        <?php endif; ?>
 
-        <?php if ($page->isAllowedField('abstract') && (($page instanceof ContainerPage) || version_compare(Yii::$app->version, '1.3.11', '>='))) : ?>
+        <?php if ($page->isAllowedField('abstract')) : ?>
             <?= $form->beginCollapsibleFields(Yii::t('CustomPagesModule.base', 'Stream options')); ?>
             <?= $form->field($page, 'abstract')->widget(RichTextField::class); ?>
             <div class="help-block">
@@ -106,14 +105,10 @@ $contentType = $page->getContentType();
             <?= Button::success(Yii::t('CustomPagesModule.view', 'Inline Editor'))->link(Url::toInlineEdit($page, $target->container))->right()->icon('fa-pencil') ?>
         <?php endif; ?>
 
-        <script <?= Html::nonce(); ?>>
-            $(document).one("humhub:ready", function () {
-                    $('input[type="radio"][name="ContainerPage[visibility]"]').click(function () {
-                        if ($(this).attr("value") == <?= Page::VISIBILITY_ADMIN_ONLY ?>) {
-                            $(".infoAdminOnly").show();
-                        } else {
-                            $(".infoAdminOnly").hide();
-                        }
+        <script <?= Html::nonce() ?>>
+            $(document).one('humhub:ready', function () {
+                    $('input[type="radio"][name="Page[visibility]"]').click(function () {
+                        $('.infoAdminOnly').toggle($(this).val() == <?= Page::VISIBILITY_ADMIN_ONLY ?>);
                     });
                 }
             );

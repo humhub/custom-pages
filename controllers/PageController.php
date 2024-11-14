@@ -30,17 +30,12 @@ use yii\web\NotFoundHttpException;
 class PageController extends AbstractCustomContainerController
 {
     /**
-     * @var CustomPagesService
-     */
-    public $customPagesService;
-
-    /**
      * @inheritdoc
      */
     public function init()
     {
         parent::init();
-        $this->customPagesService = new CustomPagesService();
+
         if (!$this->contentContainer) {
             $this->subLayout = "@humhub/modules/admin/views/layouts/main";
         }
@@ -98,7 +93,7 @@ class PageController extends AbstractCustomContainerController
     public function actionOverview()
     {
         return $this->render('@custom_pages/views/common/list', [
-            'targets' => $this->customPagesService->getTargets($this->getPageType(), $this->contentContainer),
+            'targets' => CustomPagesService::instance()->getTargets($this->getPageType(), $this->contentContainer),
             'pageType' => $this->getPageType(),
             'subNav' => $this->getSubNav(),
         ]);
@@ -124,7 +119,7 @@ class PageController extends AbstractCustomContainerController
      */
     public function actionAdd($targetId, $type = null)
     {
-        $target = $this->customPagesService->getTargetById($targetId, $this->getPageType(), $this->contentContainer);
+        $target = CustomPagesService::instance()->getTargetById($targetId, $this->getPageType(), $this->contentContainer);
 
         if (!$target) {
             throw new HttpException(404, 'Invalid target setting!');

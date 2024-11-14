@@ -6,12 +6,14 @@ use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\helpers\Url;
+use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\custom_pages\models\LinkType;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\custom_pages\widgets\SnippetWidget;
+use humhub\modules\space\models\Space;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\PeopleHeadingButtons;
 use humhub\widgets\TopMenu;
@@ -77,16 +79,11 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            /* @var $space \humhub\modules\space\models\Space */
+            /* @var $space Space */
             $space = $event->sender->space;
             if ($space->moduleManager->isEnabled('custom_pages')) {
-                /* @var CustomPage[] $pages */
-                $pages = CustomPage::find()
-                    ->contentContainer($space)
-                    ->readable()
-                    ->andWhere(['target' => PageType::TARGET_SPACE_MENU])
-                    ->all();
-                foreach ($pages as $page) {
+                foreach (CustomPagesService::instance()->find(PageType::TARGET_SPACE_MENU, $space)->all() as $page) {
+                    /* @var CustomPage $page */
                     if (!$page->canView()) {
                         continue;
                     }
@@ -118,7 +115,7 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            /* @var $space \humhub\modules\space\models\Space */
+            /* @var $space Space */
             $space = $event->sender->space;
             if ($space->moduleManager->isEnabled('custom_pages') && $space->isAdmin() && $space->isMember()) {
                 $event->sender->addItem([
@@ -145,7 +142,7 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            foreach (self::findPagesByTarget(PageType::TARGET_TOP_MENU) as $page) {
+            foreach (CustomPagesService::instance()->find(PageType::TARGET_TOP_MENU)->all() as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -202,7 +199,7 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            foreach (self::findPagesByTarget(PageType::TARGET_ACCOUNT_MENU) as $page) {
+            foreach (CustomPagesService::instance()->find(PageType::TARGET_ACCOUNT_MENU)->all() as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -237,14 +234,9 @@ class Events
     {
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
-
-            /* @var CustomPage[] $pages */
-            $pages = CustomPage::find()
-                ->andWhere(['target' => PageType::TARGET_DASHBOARD_SIDEBAR])
-                ->readable()
-                ->all();
             $canEdit = PagePermission::canEdit();
-            foreach ($pages as $page) {
+            foreach (CustomPagesService::instance()->find(PageType::TARGET_DASHBOARD_SIDEBAR)->all() as $page) {
+                /* @var CustomPage $page */
                 if ($page->canView()) {
                     $event->sender->addWidget(SnippetWidget::class, ['model' => $page, 'canEdit' => $canEdit], ['sortOrder' => $page->sort_order]);
                 }
@@ -262,15 +254,9 @@ class Events
             $space = $event->sender->space;
             $canEdit = PagePermission::canEdit();
             if ($space->moduleManager->isEnabled('custom_pages')) {
-                /* @var CustomPage[] $pages */
-                $pages = CustomPage::find()
-                    ->contentContainer($space)
-                    ->readable()
-                    //->filterByTargetType() TODO: Filter only by Snippet Targets
-                    ->andWhere(['target' => PageType::TARGET_SPACE_STREAM_SIDEBAR])
-                    ->all();
-                foreach ($pages as $page) {
-                    if ($page->canView() && $page->isSnippet()) {
+                foreach (CustomPagesService::instance()->find(PageType::TARGET_SPACE_STREAM_SIDEBAR, $space)->all() as $page) {
+                    /* @var CustomPage $page */
+                    if ($page->canView()) {
                         $event->sender->addWidget(SnippetWidget::class, ['model' => $page, 'canEdit' => $canEdit], ['sortOrder' => $page->sort_order]);
                     }
                 }
@@ -283,7 +269,7 @@ class Events
     public static function onFooterMenuInit($event)
     {
         try {
-            foreach (self::findPagesByTarget(PageType::TARGET_FOOTER) as $page) {
+            foreach (CustomPagesService::instance()->find(PageType::TARGET_FOOTER)->all() as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -305,7 +291,7 @@ class Events
         try {
             /* @var PeopleHeadingButtons $peopleHeadingButtons */
             $peopleHeadingButtons = $event->sender;
-            foreach (self::findPagesByTarget(PageType::TARGET_PEOPLE) as $page) {
+            foreach (CustomPagesService::instance()->find(PageType::TARGET_PEOPLE)->all() as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -322,17 +308,4 @@ class Events
             Yii::error($e);
         }
     }
-
-    /**
-     * @param string $target
-     * @return CustomPage[]
-     */
-    private static function findPagesByTarget(string $target): array
-    {
-        return CustomPage::find()
-            ->where(['target' => $target])
-            ->readable()
-            ->all();
-    }
-
 }

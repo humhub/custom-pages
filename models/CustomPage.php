@@ -520,7 +520,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     public function getTargetModel(): ?Target
     {
         if (!$this->_target) {
-            $this->_target = (new CustomPagesService())->getTargetByPage($this);
+            $this->_target = CustomPagesService::instance()->getTargetByPage($this);
         }
 
         return $this->_target;

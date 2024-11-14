@@ -8,6 +8,7 @@ use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\Target;
 use yii\base\Component;
+use yii\base\StaticInstanceTrait;
 
 /**
  * Class CustomPagesService
@@ -15,14 +16,16 @@ use yii\base\Component;
  */
 class CustomPagesService extends Component
 {
+    use StaticInstanceTrait;
+
     public const EVENT_FETCH_TARGETS = 'fetchTargets';
 
     /**
      * Fetches all available navigations for a given container.
      *
      * @param string $type
-     * @param ?ContentContainerActiveRecord $container
-     * @return array
+     * @param ContentContainerActiveRecord|null $container
+     * @return Target[]
      */
     public function getTargets(string $type, ?ContentContainerActiveRecord $container = null): array
     {
@@ -56,7 +59,7 @@ class CustomPagesService extends Component
      * @param ContentContainerActiveRecord|null $container
      * @return Target
      */
-    public function getTargetById($targetId, $type, ContentContainerActiveRecord $container = null)
+    public function getTargetById($targetId, $type, ContentContainerActiveRecord $container = null): ?Target
     {
         $availableTargets = $this->getTargets($type, $container);
         return array_key_exists($targetId, $availableTargets) ? $availableTargets[$targetId] : null;
@@ -82,15 +85,14 @@ class CustomPagesService extends Component
      * to remove all pages and snippets of a given target.
      *
      * @param $targetId
-     * @param $type
      * @param ContentContainerActiveRecord|null $container
      * @throws \Throwable
      * @throws \yii\base\Exception
      * @throws \yii\db\StaleObjectException
      */
-    public function deleteByTarget($targetId, $type, ContentContainerActiveRecord $container = null)
+    public function deleteByTarget($targetId, ContentContainerActiveRecord $container = null): void
     {
-        foreach ($this->findContentByTarget($targetId, $type, $container)->all() as $content) {
+        foreach ($this->find($targetId, $container)->each() as $content) {
             $content->delete();
         }
     }
@@ -100,16 +102,16 @@ class CustomPagesService extends Component
      *
      * @param $targetId
      */
-    public function deleteAllByTarget($targetId)
+    public function deleteAllByTarget($targetId): void
     {
-        foreach (CustomPage::find()->where(['target' => $targetId])->all() as $page) {
+        foreach (CustomPage::find()->where(['target' => $targetId])->each() as $page) {
             /* @var CustomPage $page */
             $page->delete();
         }
     }
 
     /**
-     * Returns all pages related to a given target.
+     * Returns a query to find all pages related to a given target and container/space.
      *
      * @param string|Target $targetId
      * @param ContentContainerActiveRecord|null $container
@@ -117,7 +119,7 @@ class CustomPagesService extends Component
      * @throws \yii\base\Exception
      * @throws \Throwable
      */
-    public function findContentByTarget($targetId, $type, ContentContainerActiveRecord $container = null)
+    public function find($targetId, ?ContentContainerActiveRecord $container = null): ActiveQueryContent
     {
         if ($targetId instanceof Target) {
             $container = $targetId->container;
@@ -125,7 +127,7 @@ class CustomPagesService extends Component
         }
 
         $query = CustomPage::find()
-            ->where(['target' => $targetId])
+            ->where([CustomPage::tableName() . '.target' => $targetId])
             ->contentContainer($container);
 
         if ($container) {
@@ -136,7 +138,7 @@ class CustomPagesService extends Component
         }
 
         if (!CustomPage::canSeeAdminOnlyContent($container)) {
-            $query->andWhere(['admin_only' => 0]);
+            $query->andWhere([CustomPage::tableName() . '.admin_only' => 0]);
         }
 
         return $query->orderBy([
@@ -144,22 +146,4 @@ class CustomPagesService extends Component
             CustomPage::tableName() . '.id' => SORT_DESC,
         ]);
     }
-
-    /**
-     * Should be called to search for a single custom content with a given id.
-     *
-     * @param int $id
-     * @param string $targetId
-     * @param string $type
-     * @param ContentContainerActiveRecord|null $container
-     * @return CustomPage|null
-     * @throws \yii\base\Exception
-     */
-    public function getSingleContent($id, $targetId, $type, ContentContainerActiveRecord $container = null): ?CustomPage
-    {
-        return $this->findContentByTarget($targetId, $type, $container)
-            ->andWhere([CustomPage::tableName() . '.id' => $id])
-            ->one();
-    }
-
 }

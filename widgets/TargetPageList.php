@@ -4,7 +4,6 @@ namespace humhub\modules\custom_pages\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
-use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\Target;
 use yii\data\ActiveDataProvider;
 
@@ -21,30 +20,23 @@ class TargetPageList extends Widget
     public $pageType;
 
     /**
-     * @var CustomPagesService
-     */
-    private $customPagesService;
-
-    public function init()
-    {
-        $this->customPagesService = new CustomPagesService();
-        parent::init();
-    }
-
-    /**
      * @inheritdoc
      * @throws \yii\base\Exception
      */
     public function run()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => $this->customPagesService->findContentByTarget($this->target->id, $this->pageType, $this->target->container),
+            'query' => CustomPagesService::instance()->find($this->target->id, $this->target->container),
             'pagination' => [
                 'pageSize' => 5,
             ],
         ]);
 
-        return $this->render('targetPageList', ['target' => $this->target, 'dataProvider' => $dataProvider, 'pageType' => $this->pageType]);
+        return $this->render('targetPageList', [
+            'target' => $this->target,
+            'dataProvider' => $dataProvider,
+            'pageType' => $this->pageType,
+        ]);
     }
 
 }

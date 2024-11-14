@@ -11,6 +11,7 @@ use humhub\components\access\StrictAccess;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\custom_pages\helpers\Html;
+use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
@@ -52,11 +53,17 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
      * Returns a page by a given $id.
      *
      * @param int $id page id.
-     * @return CustomPage
+     * @return CustomPage|null
      */
-    protected function findById($id)
+    protected function findById($id): ?CustomPage
     {
-        return CustomPage::findOne(['id' => $id]);
+        $targets = CustomPagesService::instance()->getTargets($this->getPageType(), $this->contentContainer);
+
+        return CustomPage::find()
+            ->contentContainer($this->contentContainer)
+            ->andWhere([CustomPage::tableName() . '.target' => array_column($targets, 'id')])
+            ->andWhere([CustomPage::tableName() . '.id' => $id])
+            ->one();
     }
 
     /**

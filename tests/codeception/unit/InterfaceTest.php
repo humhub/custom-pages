@@ -21,14 +21,16 @@ class InterfaceTest extends HumHubDbTestCase
      */
     public $service;
 
+    /**
+     * @inheritdoc
+     */
     public function _before()
     {
         parent::_before();
 
-        $this->service = new CustomPagesService();
+        $this->service = CustomPagesService::instance(true);
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function ($event) {
-            /* @var $event CustomPagesTargetEvent */
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
             if ($event->container && $event->type === PageType::Page) {
                 $event->addTarget(new Target([
                     'id' => 'container',
@@ -37,30 +39,27 @@ class InterfaceTest extends HumHubDbTestCase
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function ($event) {
-            /* @var $event CustomPagesTargetEvent */
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
             if ($event->container && $event->type === PageType::Snippet) {
                 $event->addTarget(new Target([
                     'id' => 'containerSnippet',
                     'name' => 'Test Container Target',
-                    'type' => PageType::Snippet,
+                    'type' => $event->type,
                 ]));
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function ($event) {
-            /* @var $event CustomPagesTargetEvent */
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
             if (!$event->container && $event->type === PageType::Snippet) {
                 $event->addTarget(new Target([
                     'id' => 'snippet',
                     'name' => 'Test Container Target',
-                    'type' => PageType::Snippet,
+                    'type' => $event->type,
                 ]));
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function ($event) {
-            /* @var $event CustomPagesTargetEvent */
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
             if (!$event->container && $event->type === PageType::Page) {
                 $event->addTarget(new Target([
                     'id' => 'global',
@@ -70,8 +69,7 @@ class InterfaceTest extends HumHubDbTestCase
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function ($event) {
-            /* @var $event CustomPagesTargetEvent */
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
             if (!$event->container && $event->type === PageType::Page) {
                 $event->addTarget(new Target([
                     'id' => 'global2',
@@ -218,9 +216,6 @@ class InterfaceTest extends HumHubDbTestCase
     public function testAllowedContentType()
     {
         $target = $this->service->getTargetById('global', PageType::Page);
-
-        $this->assertEquals(['debug'], $this->service->getTargets(PageType::Page));
-
         $this->assertFalse($target->isAllowedContentType(TemplateType::ID));
         $this->assertTrue($target->isAllowedContentType(MarkdownType::ID));
     }

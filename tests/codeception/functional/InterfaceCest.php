@@ -24,10 +24,7 @@ class InterfaceCest
     {
         $I->wantTo('make sure users without create permission can\'t create pages');
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function ($event) {
-
-            /* @var $event CustomPagesTargetEvent */
-
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
             if (!$event->container && $event->type === PageType::Page) {
                 $event->addTarget(new Target([
                     'id' => 'test',
@@ -35,14 +32,12 @@ class InterfaceCest
                     'icon' => 'fa-bath',
                 ]));
             }
-
         });
 
         $I->amAdmin();
 
         $I->amOnRoute('/custom_pages/page');
         $I->see('Test Target', '.target-page-list');
-
 
         $I->enableModule(1, 'custom_pages');
         $I->amOnSpace1('/custom_pages/page');

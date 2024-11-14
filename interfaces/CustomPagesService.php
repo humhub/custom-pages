@@ -20,6 +20,8 @@ class CustomPagesService extends Component
 
     public const EVENT_FETCH_TARGETS = 'fetchTargets';
 
+    private array $cache = [];
+
     /**
      * Fetches all available navigations for a given container.
      *
@@ -29,28 +31,18 @@ class CustomPagesService extends Component
      */
     public function getTargets(string $type, ?ContentContainerActiveRecord $container = null): array
     {
-        static $cache;
-
         $containerKey = $container ? $container->contentcontainer_id : 'global';
 
-        if (!isset($cache[$type][$containerKey])) {
+        if (!isset($this->cache[$type][$containerKey])) {
             $event = new CustomPagesTargetEvent(['type' => $type, 'container' => $container]);
             $event->addDefaultTargets();
 
             $this->trigger(self::EVENT_FETCH_TARGETS, $event);
 
-            if (!is_array($cache)) {
-                $cache = [];
-            }
-
-            if (!isset($cache[$type])) {
-                $cache[$type] = [];
-            }
-
-            $cache[$type][$containerKey] = $event->getTargets();
+            $this->cache[$type][$containerKey] = $event->getTargets();
         }
 
-        return $cache[$type][$containerKey];
+        return $this->cache[$type][$containerKey];
     }
 
     /**

@@ -218,6 +218,9 @@ class InterfaceTest extends HumHubDbTestCase
     public function testAllowedContentType()
     {
         $target = $this->service->getTargetById('global', PageType::Page);
+
+        $this->assertEquals(['debug'], $this->service->getTargets(PageType::Page));
+
         $this->assertFalse($target->isAllowedContentType(TemplateType::ID));
         $this->assertTrue($target->isAllowedContentType(MarkdownType::ID));
     }

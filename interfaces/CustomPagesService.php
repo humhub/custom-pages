@@ -84,7 +84,7 @@ class CustomPagesService extends Component
      */
     public function deleteByTarget($targetId, ContentContainerActiveRecord $container = null): void
     {
-        foreach ($this->find($targetId, $container)->each() as $content) {
+        foreach ($this->findByTarget($targetId, $container)->each() as $content) {
             $content->delete();
         }
     }
@@ -103,23 +103,15 @@ class CustomPagesService extends Component
     }
 
     /**
-     * Returns a query to find all pages related to a given target and container/space.
+     * Returns a query to find all pages from the given container/space or global pages.
      *
-     * @param string|Target $targetId
      * @param ContentContainerActiveRecord|null $container
      * @return ActiveQueryContent
-     * @throws \yii\base\Exception
      * @throws \Throwable
      */
-    public function find($targetId, ?ContentContainerActiveRecord $container = null): ActiveQueryContent
+    public function find(?ContentContainerActiveRecord $container = null): ActiveQueryContent
     {
-        if ($targetId instanceof Target) {
-            $container = $targetId->container;
-            $targetId = $targetId->id;
-        }
-
         $query = CustomPage::find()
-            ->where([CustomPage::tableName() . '.target' => $targetId])
             ->contentContainer($container);
 
         if ($container) {
@@ -137,5 +129,40 @@ class CustomPagesService extends Component
             CustomPage::tableName() . '.sort_order' => SORT_ASC,
             CustomPage::tableName() . '.id' => SORT_DESC,
         ]);
+    }
+
+    /**
+     * Returns a query to find all pages related to a given target.
+     *
+     * @param string|Target $targetId
+     * @param ContentContainerActiveRecord|null $container
+     * @return ActiveQueryContent
+     * @throws \Throwable
+     */
+    public function findByTarget($targetId, ?ContentContainerActiveRecord $container = null): ActiveQueryContent
+    {
+        if ($targetId instanceof Target) {
+            $container = $targetId->container;
+            $targetId = $targetId->id;
+        }
+
+        return $this->find($container)
+            ->andWhere([CustomPage::tableName() . '.target' => $targetId]);
+    }
+
+    /**
+     * Returns a query to find all pages by page type(page or snippet).
+     *
+     * @param string $pageType
+     * @param ContentContainerActiveRecord|null $container
+     * @return ActiveQueryContent
+     * @throws \Throwable
+     */
+    public function findByPageType(string $pageType, ?ContentContainerActiveRecord $container = null): ActiveQueryContent
+    {
+        $targets = $this->getTargets($pageType, $container);
+
+        return $this->find($container)
+            ->andWhere([CustomPage::tableName() . '.target' => array_column($targets, 'id')]);
     }
 }

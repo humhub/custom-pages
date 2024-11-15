@@ -4,6 +4,7 @@ Changelog
 1.11 (DEVELOP)
 ---------------
 - Enh #354: Template - Add RSS Element Type
+- Enh #357: Refactor all snippets and container pages to single page class
 
 1.10.11 (Unreleased)
 --------------------------

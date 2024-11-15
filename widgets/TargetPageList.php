@@ -26,7 +26,7 @@ class TargetPageList extends Widget
     public function run()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => CustomPagesService::instance()->find($this->target->id, $this->target->container),
+            'query' => CustomPagesService::instance()->findByTarget($this->target),
             'pagination' => [
                 'pageSize' => 5,
             ],

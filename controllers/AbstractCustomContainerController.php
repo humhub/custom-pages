@@ -57,11 +57,8 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
      */
     protected function findById($id): ?CustomPage
     {
-        $targets = CustomPagesService::instance()->getTargets($this->getPageType(), $this->contentContainer);
-
-        return CustomPage::find()
-            ->contentContainer($this->contentContainer)
-            ->andWhere([CustomPage::tableName() . '.target' => array_column($targets, 'id')])
+        return CustomPagesService::instance()
+            ->findByPageType($this->getPageType(), $this->contentContainer)
             ->andWhere([CustomPage::tableName() . '.id' => $id])
             ->one();
     }

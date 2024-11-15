@@ -82,7 +82,7 @@ class Events
             /* @var $space Space */
             $space = $event->sender->space;
             if ($space->moduleManager->isEnabled('custom_pages')) {
-                foreach (CustomPagesService::instance()->find(PageType::TARGET_SPACE_MENU, $space)->all() as $page) {
+                foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_SPACE_MENU, $space)->all() as $page) {
                     /* @var CustomPage $page */
                     if (!$page->canView()) {
                         continue;
@@ -142,7 +142,7 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            foreach (CustomPagesService::instance()->find(PageType::TARGET_TOP_MENU)->all() as $page) {
+            foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_TOP_MENU)->all() as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -199,7 +199,7 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            foreach (CustomPagesService::instance()->find(PageType::TARGET_ACCOUNT_MENU)->all() as $page) {
+            foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_ACCOUNT_MENU)->all() as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -235,7 +235,7 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
             $canEdit = PagePermission::canEdit();
-            foreach (CustomPagesService::instance()->find(PageType::TARGET_DASHBOARD_SIDEBAR)->all() as $page) {
+            foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_DASHBOARD_SIDEBAR)->all() as $page) {
                 /* @var CustomPage $page */
                 if ($page->canView()) {
                     $event->sender->addWidget(SnippetWidget::class, ['model' => $page, 'canEdit' => $canEdit], ['sortOrder' => $page->sort_order]);
@@ -254,7 +254,7 @@ class Events
             $space = $event->sender->space;
             $canEdit = PagePermission::canEdit();
             if ($space->moduleManager->isEnabled('custom_pages')) {
-                foreach (CustomPagesService::instance()->find(PageType::TARGET_SPACE_STREAM_SIDEBAR, $space)->all() as $page) {
+                foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_SPACE_STREAM_SIDEBAR, $space)->all() as $page) {
                     /* @var CustomPage $page */
                     if ($page->canView()) {
                         $event->sender->addWidget(SnippetWidget::class, ['model' => $page, 'canEdit' => $canEdit], ['sortOrder' => $page->sort_order]);
@@ -269,7 +269,7 @@ class Events
     public static function onFooterMenuInit($event)
     {
         try {
-            foreach (CustomPagesService::instance()->find(PageType::TARGET_FOOTER)->all() as $page) {
+            foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_FOOTER)->all() as $page) {
                 if (!$page->canView()) {
                     continue;
                 }
@@ -291,7 +291,7 @@ class Events
         try {
             /* @var PeopleHeadingButtons $peopleHeadingButtons */
             $peopleHeadingButtons = $event->sender;
-            foreach (CustomPagesService::instance()->find(PageType::TARGET_PEOPLE)->all() as $page) {
+            foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_PEOPLE)->all() as $page) {
                 if (!$page->canView()) {
                     continue;
                 }

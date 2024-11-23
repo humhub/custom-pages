@@ -6,12 +6,12 @@
  */
 
 use humhub\modules\custom_pages\assets\InlineStyleAssets;
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\ui\view\components\View;
 use yii\helpers\Html;
 
 /* @var $this View */
-/* @var $page Page */
+/* @var $page CustomPage */
 /* @var $html string */
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';

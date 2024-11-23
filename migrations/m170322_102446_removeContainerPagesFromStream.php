@@ -6,8 +6,8 @@ class m170322_102446_removeContainerPagesFromStream extends Migration
 {
     public function up()
     {
-        $this->update('content', ['stream_channel' => new yii\db\Expression('NULL')], ['object_model' => 'humhub\modules\custom_pages\models\ContainerPage']);
-        $this->update('content', ['stream_channel' => new yii\db\Expression('NULL')], ['object_model' => 'humhub\modules\custom_pages\models\ContainerSnippet']);
+        $this->update('content', ['stream_channel' => new yii\db\Expression('NULL')], ['object_model' => 'humhub\\modules\\custom_pages\\models\\ContainerPage']);
+        $this->update('content', ['stream_channel' => new yii\db\Expression('NULL')], ['object_model' => 'humhub\\modules\\custom_pages\\models\\ContainerSnippet']);
     }
 
     public function down()

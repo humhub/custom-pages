@@ -12,11 +12,9 @@ abstract class ContentType extends Model
 
     abstract public function getId();
 
-    public static function getById($type)
+    public static function getById($type): ?ContentType
     {
-        $type = (int) $type;
-
-        switch ($type) {
+        switch ((int) $type) {
             case MarkdownType::ID:
                 return MarkdownType::instance();
             case LinkType::ID:
@@ -29,6 +27,8 @@ abstract class ContentType extends Model
                 return HtmlType::instance();
             case PhpType::ID:
                 return PhpType::instance();
+            default:
+                return null;
         }
     }
 
@@ -36,11 +36,11 @@ abstract class ContentType extends Model
 
     abstract public function getViewName();
 
-    abstract public function render(CustomContentContainer $content, $options = []);
+    abstract public function render(CustomPage $content, $options = []);
 
     abstract public function getDescription();
 
-    abstract public function renderFormField(ActiveForm $form, CustomContentContainer $page);
+    abstract public function renderFormField(ActiveForm $form, CustomPage $page);
 
     public function getContentLabel()
     {
@@ -61,7 +61,7 @@ abstract class ContentType extends Model
     }
 
     /**
-     * @param CustomContentContainer $page
+     * @param CustomPage $page
      * @param bool $insert
      * @param array $changedAttributes
      * @return bool

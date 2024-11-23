@@ -18,7 +18,7 @@ class TemplateRenderer
      */
     public static function render($page, $editMode = false, bool $applyScriptNonce = true, bool $ignoreCache = false)
     {
-        $templateInstance = TemplateInstance::findOne(['object_model' => get_class($page) ,'object_id' => $page->id]);
+        $templateInstance = TemplateInstance::findOne(['page_id' => $page->id]);
 
         if (!$templateInstance) {
             throw new HttpException(404, 'Template instance not found!');

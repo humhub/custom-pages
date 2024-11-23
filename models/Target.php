@@ -3,6 +3,7 @@
 namespace humhub\modules\custom_pages\models;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\Module;
 use yii\base\Model;
@@ -59,6 +60,11 @@ class Target extends Model
     public $subLayout;
 
     /**
+     * @var string Type where the Target is used: Page or Snippet
+     */
+    public string $type = PageType::Page;
+
+    /**
      * [
      * 'sortOrder' => ['value' => 0, 'hidden' => true],
      * 'icon' => ['value' => 'adjust', 'readonly' => true],
@@ -71,10 +77,10 @@ class Target extends Model
     /**
      * Returns the url for accessing this content. Targets can change the access url by overwriting the default
      * [[accessRoute]].
-     * @param CustomContentContainer $content
+     * @param CustomPage $content
      * @return string
      */
-    public function getContentUrl(CustomContentContainer $content)
+    public function getContentUrl(CustomPage $content)
     {
         return $content->content->container
             ? $content->content->container->createUrl($this->accessRoute, ['id' => $content->id])

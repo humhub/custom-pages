@@ -8,9 +8,9 @@
 
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
+use humhub\components\Widget;
 use Yii;
-use humhub\modules\custom_pages\models\ContainerPage;
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 
 /**
@@ -18,10 +18,10 @@ use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
  *
  * @author Basti
  */
-class TemplatePageEditButton extends \humhub\components\Widget
+class TemplatePageEditButton extends Widget
 {
     /**
-     * @var \humhub\modules\custom_pages\models\CustomContentContainer page instance
+     * @var CustomPage page instance
      */
     public $page;
 
@@ -41,18 +41,16 @@ class TemplatePageEditButton extends \humhub\components\Widget
     public function run()
     {
         if (!$this->canEdit) {
-            return;
+            return '';
         }
 
-        $space = (isset(Yii::$app->controller->contentContainer)) ? Yii::$app->controller->contentContainer : null;
-        $sguid = ($space) ? $space->guid : null;
-        $ownerModel = ($space) ? ContainerPage::class : Page::class;
+        $space = Yii::$app->controller->contentContainer ?? null;
 
-        $templateInstance = TemplateInstance::findOne(['object_model' => $ownerModel, 'object_id' => $this->page->id]);
+        $templateInstance = TemplateInstance::findOne(['page_id' => $this->page->id]);
 
         return $this->render('templatePageEditButton', [
             'canEdit' => $this->canEdit,
-            'sguid' => $sguid,
+            'sguid' => $space ? $space->guid : null,
             'editMode' => $this->editMode,
             'pageId' => $this->page->id,
             'templateInstance' => $templateInstance,

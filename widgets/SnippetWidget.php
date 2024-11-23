@@ -9,8 +9,7 @@
 namespace humhub\modules\custom_pages\widgets;
 
 use Yii;
-use humhub\modules\custom_pages\models\CustomContentContainer;
-use humhub\modules\custom_pages\Module;
+use humhub\modules\custom_pages\models\CustomPage;
 use yii\base\Widget;
 
 /**
@@ -21,7 +20,7 @@ use yii\base\Widget;
 class SnippetWidget extends Widget
 {
     /**
-     * @var CustomContentContainer
+     * @var CustomPage
      */
     public $model;
 

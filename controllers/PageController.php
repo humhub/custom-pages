@@ -5,16 +5,15 @@ namespace humhub\modules\custom_pages\controllers;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\custom_pages\permissions\ManagePages;
-use humhub\modules\custom_pages\models\CustomContentContainer;
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\content\components\ContentContainerControllerAccess;
 use humhub\modules\space\models\Space;
 use humhub\modules\custom_pages\widgets\AdminMenu;
-use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\forms\AddPageForm;
 use Yii;
 use yii\web\ForbiddenHttpException;
@@ -22,31 +21,21 @@ use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
 /**
- * PageController used to manage global (non container) pages of type humhub\modules\custom_pages\models\Page.
+ * PageController used to manage global (non container) pages.
  *
  * This Controller is designed to be overwritten by other controller for supporting other page types.
- *
- * The following functions have to be redeclared in order to support another page type:
- *
- *  - getPageClassName()
- *  - findById()
  *
  * @author luke, buddha
  */
 class PageController extends AbstractCustomContainerController
 {
     /**
-     * @var CustomPagesService
-     */
-    public $customPagesService;
-
-    /**
      * @inheritdoc
      */
     public function init()
     {
         parent::init();
-        $this->customPagesService = new CustomPagesService();
+
         if (!$this->contentContainer) {
             $this->subLayout = "@humhub/modules/admin/views/layouts/main";
         }
@@ -98,14 +87,13 @@ class PageController extends AbstractCustomContainerController
     /**
      * Returns a view which lists all available pages of a given type.
      *
-     * @see getPageClassName() which returns the actual page type.
      * @return string view
      * @throws \Exception
      */
     public function actionOverview()
     {
         return $this->render('@custom_pages/views/common/list', [
-            'targets' => $this->customPagesService->getTargets($this->getPageType(), $this->contentContainer),
+            'targets' => CustomPagesService::instance()->getTargets($this->getPageType(), $this->contentContainer),
             'pageType' => $this->getPageType(),
             'subNav' => $this->getSubNav(),
         ]);
@@ -124,7 +112,6 @@ class PageController extends AbstractCustomContainerController
      * This action is used to add a new page of a given type.
      * After selecting a page content type the user is redirected to an edit page view.
      *
-     * @see getPageClassName() which returns the actual page type.
      * @param string $targetId
      * @param int $type
      * @return string view
@@ -132,13 +119,13 @@ class PageController extends AbstractCustomContainerController
      */
     public function actionAdd($targetId, $type = null)
     {
-        $target = $this->customPagesService->getTargetById($targetId, $this->getPageType(), $this->contentContainer);
+        $target = CustomPagesService::instance()->getTargetById($targetId, $this->getPageType(), $this->contentContainer);
 
         if (!$target) {
             throw new HttpException(404, 'Invalid target setting!');
         }
 
-        $model = new AddPageForm(['class' => $this->getPageClassName(), 'target' => $target, 'type' => $type]);
+        $model = new AddPageForm(['target' => $target, 'type' => $type]);
 
         if ($model->validate()) {
             return $this->redirect(Url::toCreatePage($targetId, $this->getPageType(), $type, $this->contentContainer));
@@ -153,10 +140,9 @@ class PageController extends AbstractCustomContainerController
     }
 
     /**
-     * Action for editing pages. This action expects either an page id or a content type for
+     * Action for editing pages. This action expects either a page id or a content type for
      * creating new pages of a given content type.
      *
-     * @see getPageClassName() which returns the actual page type.
      * @param null $targetId
      * @param int $type content type
      * @param int $id
@@ -168,7 +154,7 @@ class PageController extends AbstractCustomContainerController
      */
     public function actionEdit($targetId = null, $type = null, $id = null)
     {
-        /* @var CustomContentContainer $page*/
+        /* @var CustomPage $page*/
         $page = $this->findByid($id);
 
         if (!$page && !$targetId) {
@@ -204,7 +190,7 @@ class PageController extends AbstractCustomContainerController
     }
 
     /**
-     * @param $page CustomContentContainer
+     * @param $page CustomPage
      * @return bool
      * @throws \Throwable
      * @throws \yii\db\Exception
@@ -214,7 +200,7 @@ class PageController extends AbstractCustomContainerController
         if (!$page->load(Yii::$app->request->post())) {
             return false;
         }
-        $transaction = Page::getDb()->beginTransaction();
+        $transaction = CustomPage::getDb()->beginTransaction();
 
         try {
             $saved = $page->save();
@@ -233,12 +219,11 @@ class PageController extends AbstractCustomContainerController
     /**
      * @param $type
      * @param $targetId
-     * @return CustomContentContainer
+     * @return CustomPage
      */
-    private function createNewPage($type, $targetId)
+    private function createNewPage($type, $targetId): CustomPage
     {
-        $pageClass = $this->getPageClassName();
-        $page = new $pageClass(['type' => $type, 'target' => $targetId]);
+        $page = new CustomPage(['type' => $type, 'target' => $targetId]);
         if ($this->contentContainer) {
             $page->content->setContainer($this->contentContainer);
             if (!$this->contentContainer) {
@@ -284,7 +269,7 @@ class PageController extends AbstractCustomContainerController
     /**
      * @inheritdoc
      */
-    protected function getPageType()
+    protected function getPageType(): string
     {
         return PageType::Page;
     }

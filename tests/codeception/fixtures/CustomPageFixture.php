@@ -8,12 +8,13 @@
 
 namespace tests\codeception\fixtures\modules\custom_pages\template;
 
+use humhub\modules\custom_pages\models\CustomPage;
 use yii\test\ActiveFixture;
 
-class PageFixture extends ActiveFixture
+class CustomPageFixture extends ActiveFixture
 {
-    public $modelClass = 'humhub\modules\custom_pages\models\Page';
-    public $dataFile = '@custom_pages/tests/codeception/fixtures/data/page.php';
+    public $modelClass = CustomPage::class;
+    public $dataFile = '@custom_pages/tests/codeception/fixtures/data/customPage.php';
 
     public $depends = [
         ContentFixture::class,

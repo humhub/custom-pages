@@ -26,11 +26,11 @@ class CreateContainerPageCest
 
         $I->waitForText('Configuration');
 
-        $I->fillField('ContainerPage[title]', 'Space Markdown Page');
-        $I->fillField('#containerpage-page_content .humhub-ui-richtext', 'Space Test Content');
+        $I->fillField('CustomPage[title]', 'Space Markdown Page');
+        $I->fillField('#custompage-page_content .humhub-ui-richtext', 'Space Test Content');
         $I->jsShow('.form-collapsible-fields.closed fieldset');
-        $I->fillField('ContainerPage[sort_order]', '400');
-        $I->selectOption('ContainerPage[icon]', ['value' => 'fa-adn']);
+        $I->fillField('CustomPage[sort_order]', '400');
+        $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
 
         $I->click('Save');
         $I->waitForElementVisible('.left-navigation .fa-adn');

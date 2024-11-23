@@ -6,9 +6,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\custom_pages\models\ContainerPage;
-use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\models\Snippet;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\space\models\Space;
 use Yii;
 
@@ -51,20 +49,15 @@ class Module extends ContentContainerModule
 
     public function checkOldGlobalContent()
     {
-
         if (!Yii::$app->user->isAdmin()) {
             return;
         }
 
         if (!$this->settings->get(static::SETTING_MIGRATION_KEY, 0)) {
-            foreach (Page::find()->all() as $page) {
+            foreach (CustomPage::find()->all() as $page) {
+                /* @var CustomPage $page */
                 $page->content->visibility = $page->admin_only ? Content::VISIBILITY_PRIVATE : Content::VISIBILITY_PUBLIC;
                 $page->content->save();
-            }
-
-            foreach (Snippet::find()->all() as $snippet) {
-                $snippet->content->visibility = $snippet->admin_only ? Content::VISIBILITY_PRIVATE : Content::VISIBILITY_PUBLIC;
-                $snippet->content->save();
             }
 
             $this->settings->set(static::SETTING_MIGRATION_KEY, 1);
@@ -84,19 +77,7 @@ class Module extends ContentContainerModule
      */
     public function disable()
     {
-        foreach (Page::find()->all() as $page) {
-            $page->hardDelete();
-        }
-
-        foreach (ContainerPage::find()->all() as $page) {
-            $page->hardDelete();
-        }
-
-        foreach (models\Snippet::find()->all() as $page) {
-            $page->hardDelete();
-        }
-
-        foreach (models\ContainerSnippet::find()->all() as $page) {
+        foreach (CustomPage::find()->all() as $page) {
             $page->hardDelete();
         }
 
@@ -118,7 +99,7 @@ class Module extends ContentContainerModule
      */
     public function getContentClasses(): array
     {
-        return [Page::class, ContainerPage::class];
+        return [CustomPage::class];
     }
 
     /**
@@ -143,11 +124,7 @@ class Module extends ContentContainerModule
     {
         parent::disableContentContainer($container);
 
-        foreach (ContainerPage::find()->contentContainer($container)->all() as $page) {
-            $page->hardDelete();
-        }
-
-        foreach (models\ContainerSnippet::find()->contentContainer($container)->all() as $page) {
+        foreach (CustomPage::find()->contentContainer($container)->all() as $page) {
             $page->hardDelete();
         }
     }

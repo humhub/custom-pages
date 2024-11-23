@@ -35,7 +35,7 @@ class PhpType extends ContentType
         return Yii::t('CustomPagesModule.base', 'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.');
     }
 
-    public function render(CustomContentContainer $content, $options = [])
+    public function render(CustomPage $content, $options = [])
     {
         // TODO: Implement render() method.
     }
@@ -45,8 +45,8 @@ class PhpType extends ContentType
         return 'php';
     }
 
-    public function renderFormField(ActiveForm $form, CustomContentContainer $page)
+    public function renderFormField(ActiveForm $form, CustomPage $page)
     {
-        return  $form->field($page, $page->getPageContentProperty())->dropDownList($page->getAllowedPhpViewFileSelection());
+        return  $form->field($page, 'page_content')->dropDownList($page->getAllowedPhpViewFileSelection());
     }
 }

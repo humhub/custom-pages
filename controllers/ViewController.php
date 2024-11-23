@@ -2,13 +2,12 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
-use humhub\modules\custom_pages\models\CustomContentContainer;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\models\HtmlType;
 use humhub\modules\custom_pages\models\IframeType;
 use humhub\modules\custom_pages\models\LinkType;
 use humhub\modules\custom_pages\models\MarkdownType;
-use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\PhpType;
 use humhub\modules\custom_pages\models\TemplateType;
 use humhub\modules\custom_pages\modules\template\components\TemplateRenderer;
@@ -56,7 +55,7 @@ class ViewController extends AbstractCustomContainerController
             ? $page->getTargetModel()->getSubLayout()
             : $this->subLayout;
 
-        $this->view->pageTitle = Html::encode($page->title);
+        $this->view->setPageTitle(Html::encode($page->title));
 
         if (!$page->getTargetModel()->isAllowedContentType($page->type)) {
             throw new HttpException(404);
@@ -101,7 +100,7 @@ class ViewController extends AbstractCustomContainerController
     }
 
     /**
-     * @param Page $page
+     * @param CustomPage $page
      * @return string
      * @throws HttpException
      */
@@ -131,12 +130,12 @@ class ViewController extends AbstractCustomContainerController
     }
 
     /**
-     * @param CustomContentContainer $page
+     * @param CustomPage $page
      * @param $view
      * @return string rendered template page
      * @throws HttpException in case the page is protected from non admin access
      */
-    public function viewTemplatePage(CustomContentContainer $page, $view)
+    public function viewTemplatePage(CustomPage $page, $view): string
     {
         $editMode = Yii::$app->request->get('editMode');
         $canEdit = $page->content->canEdit();
@@ -170,7 +169,7 @@ class ViewController extends AbstractCustomContainerController
     /**
      * @inheritdoc
      */
-    protected function getPageType()
+    protected function getPageType(): string
     {
         return PageType::Page;
     }

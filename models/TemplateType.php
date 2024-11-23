@@ -35,7 +35,7 @@ class TemplateType extends ContentType
     }
 
     /**
-     * @param CustomContentContainer $page
+     * @param CustomPage $page
      * @param bool $insert
      * @param array $changedAttributes
      * @return bool
@@ -48,8 +48,7 @@ class TemplateType extends ContentType
 
         if ($insert) {
             $templateInstance = new TemplateInstance([
-                'object_model' => get_class($page),
-                'object_id' => $page->id,
+                'page_id' => $page->id,
                 'template_id' => $page->templateId,
             ]);
             return $templateInstance->save();
@@ -65,26 +64,22 @@ class TemplateType extends ContentType
     }
 
     /**
-     * @param CustomContentContainer $content
+     * @param CustomPage $content
      * @param array $options
      * @return string
      */
-    public function render(CustomContentContainer $content, $options = [])
+    public function render(CustomPage $content, $options = [])
     {
-        $templateInstance = TemplateInstance::findOne(['object_model' => get_class($content) ,'object_id' => $content->id]);
+        $templateInstance = TemplateInstance::findOne(['page_id' => $content->id]);
 
         if (!$templateInstance) {
             throw new InvalidArgumentException('Template instance not found!');
         }
 
         $canEdit = PagePermission::canEdit();
-        $editMode = isset($options['editMode'])
-            ? $options['editMode']
-            : (bool) Yii::$app->request->get('editMode');
+        $editMode = $options['editMode'] ?? (bool) Yii::$app->request->get('editMode');
 
         $editMode = $editMode && $canEdit;
-
-        $html = '';
 
         if (!$canEdit && TemplateCache::exists($templateInstance)) {
             $html = TemplateCache::get($templateInstance);
@@ -102,7 +97,7 @@ class TemplateType extends ContentType
         return 'template';
     }
 
-    public function renderFormField(ActiveForm $form, CustomContentContainer $page)
+    public function renderFormField(ActiveForm $form, CustomPage $page)
     {
         return $form->field($page, 'templateId')->dropDownList($page->getAllowedTemplateSelection(), ['value' => $page->getTemplateId(), 'disabled' => !$page->isNewRecord]);
     }

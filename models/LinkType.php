@@ -37,7 +37,7 @@ class LinkType extends ContentType
         return  Yii::t('CustomPagesModule.base', 'Will redirect requests to a given (relative or absolute) url.');
     }
 
-    public function render(CustomContentContainer $content, $options = [])
+    public function render(CustomPage $content, $options = [])
     {
         // TODO: Implement render() method.
     }
@@ -47,9 +47,9 @@ class LinkType extends ContentType
         return null;
     }
 
-    public function renderFormField(ActiveForm $form, CustomContentContainer $page)
+    public function renderFormField(ActiveForm $form, CustomPage $page)
     {
-        return $form->field($page, $page->getPageContentProperty())->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('targetUrl'))
+        return $form->field($page, 'page_content')->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('targetUrl'))
             . '<div class="help-block">' . Yii::t('CustomPagesModule.view', 'e.g. http://www.example.de') . '</div>';
     }
 }

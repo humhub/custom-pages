@@ -25,7 +25,7 @@ class MarkdownType extends ContentType
 
 
     /**
-     * @param CustomContentContainer $page
+     * @param CustomPage $page
      * @param bool $insert
      * @param array $changedAttributes
      * @return bool
@@ -51,7 +51,7 @@ class MarkdownType extends ContentType
         return Yii::t('CustomPagesModule.base', 'Allows you to add content in MarkDown syntax.');
     }
 
-    public function render(CustomContentContainer $content, $options = [])
+    public function render(CustomPage $content, $options = [])
     {
         return RichText::output($content->page_content);
     }
@@ -61,8 +61,8 @@ class MarkdownType extends ContentType
         return 'markdown';
     }
 
-    public function renderFormField(ActiveForm $form, CustomContentContainer $page)
+    public function renderFormField(ActiveForm $form, CustomPage $page)
     {
-        return  $form->field($page, $page->getPageContentProperty())->widget(RichTextField::class, [ 'pluginOptions' => ['maxHeight' => '500px']]);
+        return  $form->field($page, 'page_content')->widget(RichTextField::class, [ 'pluginOptions' => ['maxHeight' => '500px']]);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: kingb
@@ -6,8 +7,9 @@
  * Time: 13:29
  */
 
-namespace humhub\modules\custom_pages\models;
+namespace humhub\modules\custom_pages\types;
 
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\widgets\TinyMce;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
@@ -19,32 +21,28 @@ class HtmlType extends ContentType
 {
     public const ID = 2;
 
-    public function getId()
-    {
-        return static::ID;
-    }
-
-    public function getLabel()
+    public function getLabel(): string
     {
         return Yii::t('CustomPagesModule.base', 'Html');
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return Yii::t('CustomPagesModule.base', 'Adds plain HTML content to your site.');
     }
 
-    public function render(CustomPage $content, $options = [])
+    public function render(CustomPage $content, $options = []): string
     {
         // TODO: Implement getRender() method.
+        return '';
     }
 
-    public function getViewName()
+    public function getViewName(): string
     {
         return 'html';
     }
 
-    public function renderFormField(ActiveForm $form, CustomPage $page)
+    public function renderFormField(ActiveForm $form, CustomPage $page): string
     {
         $field = $form->field($page, 'page_content')->widget(TinyMce::class, [
             'options' => ['id' => 'html_content'],
@@ -84,7 +82,7 @@ class HtmlType extends ContentType
     /**
      * @inheritdoc
      */
-    public function afterSave($page, $insert, $changedAttributes)
+    public function afterSave(CustomPage $page, bool $insert, array $changedAttributes): bool
     {
         if (!parent::afterSave($page, $insert, $changedAttributes)) {
             return false;

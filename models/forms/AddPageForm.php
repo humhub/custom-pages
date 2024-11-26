@@ -9,11 +9,11 @@
 
 namespace humhub\modules\custom_pages\models\forms;
 
-use humhub\modules\custom_pages\models\ContentType;
+use humhub\modules\custom_pages\types\ContentType;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\models\PhpType;
+use humhub\modules\custom_pages\types\PhpType;
 use humhub\modules\custom_pages\models\Target;
-use humhub\modules\custom_pages\models\TemplateType;
+use humhub\modules\custom_pages\types\TemplateType;
 use Yii;
 use yii\base\Model;
 

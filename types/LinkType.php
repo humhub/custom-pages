@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: kingb
@@ -6,48 +7,43 @@
  * Time: 13:29
  */
 
-namespace humhub\modules\custom_pages\models;
+namespace humhub\modules\custom_pages\types;
 
-use yii\widgets\ActiveForm;
+use humhub\modules\custom_pages\models\CustomPage;
 use Yii;
+use yii\widgets\ActiveForm;
 
 class LinkType extends ContentType
 {
     public const ID = 1;
 
-    protected $hasContent = false;
+    /**
+     * @inheritdoc
+     */
+    protected bool $hasContent = false;
 
-    public function getId()
-    {
-        return static::ID;
-    }
-
-    public function getLabel()
+    public function getLabel(): string
     {
         return Yii::t('CustomPagesModule.base', 'Link');
     }
 
-    public function getContentLabel()
-    {
-        return Yii::t('CustomPagesModule.base', 'Url');
-    }
-
-    public function getDescription()
+    public function getDescription(): string
     {
         return  Yii::t('CustomPagesModule.base', 'Will redirect requests to a given (relative or absolute) url.');
     }
 
-    public function render(CustomPage $content, $options = [])
+    public function render(CustomPage $content, $options = []): string
     {
         // TODO: Implement render() method.
+        return '';
     }
 
-    public function getViewName()
+    public function getViewName(): string
     {
-        return null;
+        return '';
     }
 
-    public function renderFormField(ActiveForm $form, CustomPage $page)
+    public function renderFormField(ActiveForm $form, CustomPage $page): string
     {
         return $form->field($page, 'page_content')->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('targetUrl'))
             . '<div class="help-block">' . Yii::t('CustomPagesModule.view', 'e.g. http://www.example.de') . '</div>';

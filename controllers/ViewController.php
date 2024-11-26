@@ -3,13 +3,13 @@
 namespace humhub\modules\custom_pages\controllers;
 
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\models\HtmlType;
-use humhub\modules\custom_pages\models\IframeType;
-use humhub\modules\custom_pages\models\LinkType;
-use humhub\modules\custom_pages\models\MarkdownType;
+use humhub\modules\custom_pages\types\HtmlType;
+use humhub\modules\custom_pages\types\IframeType;
+use humhub\modules\custom_pages\types\LinkType;
+use humhub\modules\custom_pages\types\MarkdownType;
 use humhub\modules\custom_pages\helpers\PageType;
-use humhub\modules\custom_pages\models\PhpType;
-use humhub\modules\custom_pages\models\TemplateType;
+use humhub\modules\custom_pages\types\PhpType;
+use humhub\modules\custom_pages\types\TemplateType;
 use humhub\modules\custom_pages\modules\template\components\TemplateRenderer;
 use Yii;
 use yii\helpers\Html;

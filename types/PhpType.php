@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: kingb
@@ -6,46 +7,38 @@
  * Time: 13:29
  */
 
-namespace humhub\modules\custom_pages\models;
+namespace humhub\modules\custom_pages\types;
 
-use yii\widgets\ActiveForm;
+use humhub\modules\custom_pages\models\CustomPage;
 use Yii;
+use yii\widgets\ActiveForm;
 
 class PhpType extends ContentType
 {
     public const ID = 6;
 
-    public function getId()
-    {
-        return static::ID;
-    }
-
-    public function getLabel()
+    public function getLabel(): string
     {
         return Yii::t('CustomPagesModule.base', 'PHP');
     }
 
-    public function getContentLabel()
-    {
-        return Yii::t('CustomPagesModule.base', 'View');
-    }
-
-    public function getDescription()
+    public function getDescription(): string
     {
         return Yii::t('CustomPagesModule.base', 'With PHP based pages you can create custom pages by means of view files in your file system. Please check the module configuration for more Information.');
     }
 
-    public function render(CustomPage $content, $options = [])
+    public function render(CustomPage $content, $options = []): string
     {
         // TODO: Implement render() method.
+        return '';
     }
 
-    public function getViewName()
+    public function getViewName(): string
     {
         return 'php';
     }
 
-    public function renderFormField(ActiveForm $form, CustomPage $page)
+    public function renderFormField(ActiveForm $form, CustomPage $page): string
     {
         return  $form->field($page, 'page_content')->dropDownList($page->getAllowedPhpViewFileSelection());
     }

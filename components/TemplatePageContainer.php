@@ -2,7 +2,7 @@
 
 namespace humhub\modules\custom_pages\components;
 
-use humhub\modules\custom_pages\models\TemplateType;
+use humhub\modules\custom_pages\types\TemplateType;
 use Yii;
 
 trait TemplatePageContainer

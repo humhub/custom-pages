@@ -6,7 +6,7 @@ use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\models\TemplateType;
+use humhub\modules\custom_pages\types\TemplateType;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\helpers\Url;

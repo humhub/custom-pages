@@ -7,7 +7,7 @@ use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
-use humhub\modules\custom_pages\models\LinkType;
+use humhub\modules\custom_pages\types\LinkType;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;

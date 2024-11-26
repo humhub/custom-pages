@@ -6,8 +6,9 @@
  * Time: 13:29
  */
 
-namespace humhub\modules\custom_pages\models;
+namespace humhub\modules\custom_pages\types;
 
+use humhub\modules\custom_pages\models\CustomPage;
 use Yii;
 use yii\widgets\ActiveForm;
 
@@ -15,34 +16,33 @@ class IframeType extends ContentType
 {
     public const ID = 3;
 
-    protected $hasContent = false;
+    /**
+     * @inheritdoc
+     */
+    protected bool $hasContent = false;
 
-    public function getId()
-    {
-        return static::ID;
-    }
-
-    public function getLabel()
+    public function getLabel(): string
     {
         return Yii::t('CustomPagesModule.base', 'Iframe');
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return Yii::t('CustomPagesModule.base', 'Will embed the result of a given url as an iframe element.');
     }
 
-    public function render(CustomPage $content, $options = [])
+    public function render(CustomPage $content, $options = []): string
     {
         // TODO: Implement render() method.
+        return '';
     }
 
-    public function getViewName()
+    public function getViewName(): string
     {
         return 'iframe';
     }
 
-    public function renderFormField(ActiveForm $form, CustomPage $page)
+    public function renderFormField(ActiveForm $form, CustomPage $page): string
     {
         $targetUrlField = $form->field($page, 'page_content')
             ->label($page->getAttributeLabel('targetUrl'));

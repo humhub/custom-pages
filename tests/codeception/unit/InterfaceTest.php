@@ -4,12 +4,12 @@ namespace tests\codeception\unit\modules\custom_page;
 
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\custom_pages\interfaces\CustomPagesTargetEvent;
-use humhub\modules\custom_pages\models\HtmlType;
-use humhub\modules\custom_pages\models\MarkdownType;
+use humhub\modules\custom_pages\types\HtmlType;
+use humhub\modules\custom_pages\types\MarkdownType;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\Target;
-use humhub\modules\custom_pages\models\TemplateType;
+use humhub\modules\custom_pages\types\TemplateType;
 use humhub\modules\space\models\Space;
 use tests\codeception\_support\HumHubDbTestCase;
 use yii\base\Event;

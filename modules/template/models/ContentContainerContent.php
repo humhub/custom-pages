@@ -12,7 +12,6 @@ use humhub\libs\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
-use humhub\modules\user\models\User;
 use yii\db\IntegrityException;
 use yii\helpers\ArrayHelper;
 

@@ -6,6 +6,7 @@ Changelog
 - Enh #354: Template - Add RSS Element Type
 - Enh #357: Refactor all snippets and container pages to single page class
 - Enh #358: Refactor page content types
+- Enh #359: Template - Add Space Element Type
 
 1.10.11 (Unreleased)
 --------------------------

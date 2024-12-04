@@ -20,7 +20,7 @@ use yii\helpers\ArrayHelper;
  *
  * @property string $type
  * @property string $class
- * @property string $options
+ * @property string|array $options
  */
 abstract class RecordsContent extends TemplateContentActiveRecord
 {
@@ -36,8 +36,6 @@ abstract class RecordsContent extends TemplateContentActiveRecord
      */
     public string $formView = '';
 
-    protected ?array $arrayOptions = null;
-
     /**
      * @inheritdoc
      */
@@ -52,7 +50,8 @@ abstract class RecordsContent extends TemplateContentActiveRecord
     public function rules()
     {
         return [
-            [['type', 'class', 'options'], 'string'],
+            [['type', 'class'], 'string'],
+            [['options'], 'safe'],
             [['class'], 'required'],
             [['type'], 'in', 'range' => array_keys($this->getTypes())],
         ];
@@ -68,20 +67,15 @@ abstract class RecordsContent extends TemplateContentActiveRecord
         ];
     }
 
-    protected function getScenarioAttributes(?string $scenario = null): array
-    {
-        return ['type', 'class', 'options'];
-    }
-
     /**
      * @inheritdoc
      */
     public function scenarios()
     {
         return ArrayHelper::merge(parent::scenarios(), [
-            self::SCENARIO_CREATE => $this->getScenarioAttributes(self::SCENARIO_CREATE),
-            self::SCENARIO_EDIT_ADMIN => $this->getScenarioAttributes(self::SCENARIO_EDIT_ADMIN),
-            self::SCENARIO_EDIT => $this->getScenarioAttributes(self::SCENARIO_EDIT),
+            self::SCENARIO_CREATE => $attributes = ['type', 'options'],
+            self::SCENARIO_EDIT_ADMIN => $attributes,
+            self::SCENARIO_EDIT => $attributes,
         ]);
     }
 
@@ -136,22 +130,16 @@ abstract class RecordsContent extends TemplateContentActiveRecord
     /**
      * @inheritdoc
      */
-    public function setAttributes($values, $safeOnly = true)
+    public function __get($name)
     {
-        if (isset($values['guid'])) {
-            $values['guid'] = is_array($values['guid']) ? array_shift($values['guid']) : null;
+        $value = parent::__get($name);
+
+        if ($name === 'options' && !is_array($value)) {
+            $value = empty($value) ? [] : json_decode($value, true);
+            $this->setAttribute($name, $value);
         }
 
-        parent::setAttributes($values, $safeOnly);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function afterFind()
-    {
-        parent::afterFind();
-        $this->initArrayOptions();
+        return $value;
     }
 
     /**
@@ -168,8 +156,12 @@ abstract class RecordsContent extends TemplateContentActiveRecord
      */
     public function beforeSave($insert)
     {
-        $this->options = json_encode($this->arrayOptions);
-        return parent::beforeSave($insert);
+        if (parent::beforeSave($insert)) {
+            $this->options = is_array($this->options) ? json_encode($this->options) : null;
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -197,22 +189,5 @@ abstract class RecordsContent extends TemplateContentActiveRecord
         return [
             'static' => Yii::t('CustomPagesModule.template', 'Static list'),
         ];
-    }
-
-    protected function initArrayOptions(): void
-    {
-        if ($this->arrayOptions === null) {
-            $this->arrayOptions = empty($this->options) ? [] : json_decode($this->options, true);
-        }
-    }
-
-    public function getArrayOption(string $key, $default = null): mixed
-    {
-        return $this->arrayOptions[$key] ?? $default;
-    }
-
-    public function setArrayOption(string $key, $value): void
-    {
-        $this->arrayOptions[$key] = $value;
     }
 }

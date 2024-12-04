@@ -25,7 +25,7 @@ use humhub\modules\ui\view\components\View;
 $(document).on('change', '.records-content-form-type', function () {
     const type = $(this).val();
     $(this).closest('form').find('.records-content-form-fields').each(function () {
-        $(this).toggle($(this).data('type') === type);
+        $(this).toggle($(this).data('type').match(new RegExp('(^|,)' + type + '(,|$)')) !== null);
     });
 });
 $('.records-content-form-type').trigger('change');

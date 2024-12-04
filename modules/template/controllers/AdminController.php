@@ -16,6 +16,7 @@ use humhub\modules\custom_pages\modules\template\models\HumHubRichtextContent;
 use humhub\modules\custom_pages\modules\template\models\ImageContent;
 use humhub\modules\custom_pages\modules\template\models\RichtextContent;
 use humhub\modules\custom_pages\modules\template\models\RssContent;
+use humhub\modules\custom_pages\modules\template\models\SpacesContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
 use humhub\modules\custom_pages\modules\template\models\TextContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
@@ -172,6 +173,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             RssContent::$label => RssContent::class,
             UserContent::$label => UserContent::class,
             UsersContent::$label => UsersContent::class,
+            SpacesContent::$label => SpacesContent::class,
         ];
     }
 

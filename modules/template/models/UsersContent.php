@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -10,6 +11,7 @@ namespace humhub\modules\custom_pages\modules\template\models;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * Class UsersContent
@@ -43,5 +45,32 @@ class UsersContent extends RecordsContent
         }
 
         return $options;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getQuery(): ActiveQuery
+    {
+        $query = User::find()->visible();
+
+        return match ($this->type) {
+            'group' => $this->filterGroup($query),
+            'friend' => $this->filterFriend($query),
+            default => $this->filterStatic($query),
+        };
+    }
+
+    protected function filterGroup(ActiveQuery $query): ActiveQuery
+    {
+        return $query->leftJoin('group_user', 'group_user.user_id = user.id')
+            ->andWhere(['group_user.group_id' => $this->options['group']]);
+    }
+
+    protected function filterFriend(ActiveQuery $query): ActiveQuery
+    {
+        return $query->leftJoin('user_friendship', 'user_friendship.user_id = user.id')
+            ->leftJoin('user AS friend', 'user_friendship.friend_user_id = friend.id')
+            ->andWhere(['friend.guid' => $this->options['friend']]);
     }
 }

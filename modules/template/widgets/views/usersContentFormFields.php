@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -13,7 +14,7 @@ use humhub\modules\user\widgets\UserPickerField;
 /* @var ActiveForm $form */
 ?>
 <div class="records-content-form-fields" data-type="static">
-    <?= $form->field($model, 'options[users]')->widget(UserPickerField::class, [
+    <?= $form->field($model, 'options[static]')->widget(UserPickerField::class, [
         'minInput' => 2,
     ])->label(Yii::t('CustomPagesModule.template', 'Select users')) ?>
 </div>
@@ -21,7 +22,7 @@ use humhub\modules\user\widgets\UserPickerField;
 <div class="records-content-form-fields" data-type="group">
     <?= $form->field($model, 'options[group]')
         ->dropDownList($model->getGroupOptions())
-        ->label(Yii::t('CustomPagesModule.template', 'Select group'))?>
+        ->label(Yii::t('CustomPagesModule.template', 'Select group')) ?>
 </div>
 
 <div class="records-content-form-fields" data-type="friend">

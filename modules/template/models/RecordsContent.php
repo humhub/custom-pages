@@ -12,7 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\libs\Html;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use Yii;
-use yii\db\IntegrityException;
+use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -22,7 +22,7 @@ use yii\helpers\ArrayHelper;
  * @property string $class
  * @property string|array $options
  */
-abstract class RecordsContent extends TemplateContentActiveRecord
+abstract class RecordsContent extends TemplateContentActiveRecord implements TemplateContentIterable
 {
     public const RECORD_CLASS = null;
 
@@ -35,6 +35,13 @@ abstract class RecordsContent extends TemplateContentActiveRecord
      * @var string Prefix for view file to render a widget with form fields
      */
     public string $formView = '';
+
+    /**
+     * Get query of the records depending on config
+     *
+     * @return ActiveQuery
+     */
+    abstract protected function getQuery(): ActiveQuery;
 
     /**
      * @inheritdoc
@@ -165,21 +172,6 @@ abstract class RecordsContent extends TemplateContentActiveRecord
     }
 
     /**
-     * Get records
-     *
-     * @return ActiveRecord[]
-     * @throws IntegrityException
-     */
-    public function getRecords(): array
-    {
-        if ($this->records === null) {
-            $this->records = Yii::createObject($this->class)->find()->all();
-        }
-
-        return $this->records;
-    }
-
-    /**
      * Get types for the records list
      *
      * @return array
@@ -189,5 +181,35 @@ abstract class RecordsContent extends TemplateContentActiveRecord
         return [
             'static' => Yii::t('CustomPagesModule.template', 'Static list'),
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getItems(): iterable
+    {
+        if ($this->records === null) {
+            if (empty($this->options[$this->type])) {
+                // No need to touch DB because option is not configured for the current type
+                $this->records = [];
+            } else {
+                // Get records from DB
+                $query = $this->getQuery();
+
+                if ($this->type !== 'static' && !empty($this->options['limit'])) {
+                    // Limit only dynamic list
+                    $query->limit($this->options['limit']);
+                }
+
+                $this->records = $query->all();
+            }
+        }
+
+        yield from $this->records;
+    }
+
+    protected function filterStatic(ActiveQuery $query): ActiveQuery
+    {
+        return $query->andWhere(['guid' => $this->options['static']]);
     }
 }

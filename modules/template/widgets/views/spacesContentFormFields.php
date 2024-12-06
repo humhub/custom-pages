@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -16,12 +17,17 @@ use yii\helpers\Url;
 /* @var ActiveForm $form */
 ?>
 <div class="records-content-form-fields" data-type="static">
-    <?= $form->field($model, 'options[spaces]')->widget(SpacePickerField::class, [
+    <?= $form->field($model, 'options[static]')->widget(SpacePickerField::class, [
         'minInput' => 2,
     ])->label(Yii::t('CustomPagesModule.template', 'Select spaces')) ?>
 </div>
 
 <div class="records-content-form-fields" data-type="member">
+    <?= $form->field($model, 'options[member]')->widget(UserPickerField::class, [
+        'minInput' => 2,
+        'maxSelection' => 1,
+    ])->label(Yii::t('CustomPagesModule.template', 'User')) ?>
+
     <?= $form->field($model, 'options[memberType]')
         ->dropDownList($model->getMemberTypes())
         ->label(Yii::t('CustomPagesModule.template', 'Space member type')) ?>

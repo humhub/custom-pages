@@ -9,7 +9,7 @@ use yii\caching\DummyCache;
 
 class TemplateInstanceRendererService
 {
-    const CACHE_PREFIX = 'cp-';
+    public const CACHE_PREFIX = 'cp-';
 
     private $templateInstance;
 

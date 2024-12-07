@@ -9,7 +9,6 @@ use humhub\modules\custom_pages\modules\template\models\TextContent;
 
 class Text extends AbstractElement
 {
-
     public static function getElementTypeTitle(): string
     {
         return "Text element";

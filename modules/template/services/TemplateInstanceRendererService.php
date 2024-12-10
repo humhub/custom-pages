@@ -10,9 +10,11 @@ namespace humhub\modules\custom_pages\modules\template\services;
 
 use humhub\modules\custom_pages\helpers\Html;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
+use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use Yii;
+use yii\caching\DummyCache;
 use yii\web\NotFoundHttpException;
 
 class TemplateInstanceRendererService
@@ -59,19 +61,35 @@ class TemplateInstanceRendererService
     {
         $editMode = $editMode && PagePermission::canEdit();
 
-        if (!$this->ignoreCache && !$editMode && TemplateCache::exists($this->templateInstance)) {
-            $html = TemplateCache::get($this->templateInstance);
-        } else {
-            $html = $this->templateInstance->render($editMode);
-            if (!$editMode) {
-                TemplateCache::set($this->templateInstance, $html);
-            }
-        }
+        $cache = $this->isCacheable($editMode) ? Yii::$app->cache : new DummyCache();
+
+        $html = $cache->getOrSet($this->templateInstance->getCacheKey(), function () use ($editMode) {
+            return $this->templateInstance->render($editMode);
+        });
 
         if ($this->applyScriptNonce) {
             $html = Html::applyScriptNonce($html);
         }
 
         return $html;
+    }
+
+    private function isCacheable($editMode = false): bool
+    {
+        if ($this->ignoreCache || $editMode) {
+            return false;
+        }
+
+        $template = $this->templateInstance->template;
+        if ($template instanceof Template) {
+            foreach ($template->elements as $templateElement) {
+                if (!$templateElement->getTemplateContent()->isCacheable()) {
+                    // Don't cache if at least one Template Element cannot be cached
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

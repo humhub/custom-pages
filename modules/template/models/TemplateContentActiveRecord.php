@@ -384,4 +384,11 @@ abstract class TemplateContentActiveRecord extends ActiveRecord implements Viewa
         return false;
     }
 
+    /**
+     * @return bool False - if the content has a dynamic content, and it must not be cached
+     */
+    public function isCacheable(): bool
+    {
+        return true;
+    }
 }

@@ -62,4 +62,14 @@ class UserContent extends ContentContainerContent
             ? $this->getRecord()->profile->$field ?? $this->getRecord()->displayName
             : '';
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function isCacheable(): bool
+    {
+        // Don't cache data of the current user
+        // Cache only when specific user is selected
+        return !empty($this->guid);
+    }
 }

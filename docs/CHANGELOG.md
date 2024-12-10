@@ -7,6 +7,7 @@ Changelog
 - Enh #357: Refactor all snippets and container pages to single page class
 - Enh #358: Refactor page content types
 - Enh #360: Template - Spaces and Users Element Type
+- Enh #362: Template - Rendering & Caching
 
 1.10.11 (Unreleased)
 --------------------------

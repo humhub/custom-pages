@@ -38,7 +38,7 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
      */
     public static function tableName()
     {
-        return 'custom_pages_template_container';
+        return 'custom_pages_template_instance';
     }
 
     /**

@@ -21,9 +21,9 @@ use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
-use humhub\modules\custom_pages\modules\template\components\TemplateRenderer;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\custom_pages\types\ContentType;
 use humhub\modules\custom_pages\types\HtmlType;
@@ -419,7 +419,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
         return [
             'title' => $this->title,
             'content' => preg_replace('/[\r\n\s]+/', ' ', strip_tags($this->type === TemplateType::ID
-                ? TemplateRenderer::render($this, false, false, true)
+                ? TemplateInstanceRendererService::instance($this)->disableScriptNonce()->ignoreCache()->render()
                 : $this->abstract . "\r\n" . $this->page_content)),
         ];
     }

@@ -38,7 +38,7 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
      */
     public static function tableName()
     {
-        return 'custom_pages_template_container';
+        return 'custom_pages_template_instance';
     }
 
     /**
@@ -132,16 +132,6 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
 
     public function getCacheKey(): string
     {
-        $key = get_class($this) . $this->getPrimaryKey();
-
-        $template = $this->template;
-        if ($template instanceof Template &&
-            $template->getElements()->andWhere(['content_type' => UserContent::class])->exists()) {
-            // If this template contains at least one element with user data,
-            // then cache it per current user in order to display user elements correctly
-            $key .= '-' . Yii::$app->user->id;
-        }
-
-        return $key;
+        return get_class($this) . $this->getPrimaryKey();
     }
 }

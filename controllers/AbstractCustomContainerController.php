@@ -11,17 +11,14 @@ namespace humhub\modules\custom_pages\controllers;
 use humhub\components\access\StrictAccess;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\custom_pages\helpers\Html;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
-use humhub\modules\custom_pages\modules\template\components\TemplateCache;
-use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\space\models\Space;
 use Yii;
-use yii\web\HttpException;
 
 abstract class AbstractCustomContainerController extends ContentContainerController
 {
@@ -73,48 +70,19 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
      */
     public function viewTemplatePage(CustomPage $page, $view): string
     {
-        $html = $this->renderTemplate($page);
-        $canEdit = $this->isCanEdit();
-
+        $canEdit = PagePermission::canEdit();
         if (!$canEdit && $page->admin_only) {
             throw new \yii\web\HttpException(403, 'Access denied!');
         }
 
+        $editMode = Yii::$app->request->get('editMode') && $canEdit;
+
         return $this->owner->render('template', [
             'page' => $page,
-            'editMode' => Yii::$app->request->get('editMode') && $canEdit,
+            'editMode' => $editMode,
             'canEdit' => $canEdit,
-            'html' => $html,
+            'html' => TemplateInstanceRendererService::instance($page)->render($editMode),
         ]);
-    }
-
-    /**
-     * @param CustomPage $page
-     * @param bool $editMode
-     * @return string
-     * @throws HttpException
-     */
-    public function renderTemplate(CustomPage $page, $editMode = false)
-    {
-        $templateInstance = TemplateInstance::findOne(['page_id' => $page->id]);
-
-        if (!$templateInstance) {
-            throw new HttpException(404);
-        }
-
-        $canEdit = PagePermission::canEdit();
-        $editMode = ($editMode || Yii::$app->request->get('editMode')) && $canEdit;
-
-        if (!$canEdit && TemplateCache::exists($templateInstance)) {
-            $html = TemplateCache::get($templateInstance);
-        } else {
-            $html = $templateInstance->render($editMode);
-            if (!$canEdit) {
-                TemplateCache::set($templateInstance, $html);
-            }
-        }
-
-        return Html::applyScriptNonce($html);
     }
 
     /**
@@ -128,13 +96,4 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
 
         return Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageModules::class, ManagePages::class]);
     }
-
-    public function isCanEdit()
-    {
-        if ($this->_canEdit === null) {
-            $this->_canEdit = PagePermission::canEdit();
-        }
-        return $this->_canEdit;
-    }
-
 }

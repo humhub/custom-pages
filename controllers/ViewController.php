@@ -3,6 +3,7 @@
 namespace humhub\modules\custom_pages\controllers;
 
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use humhub\modules\custom_pages\types\HtmlType;
 use humhub\modules\custom_pages\types\IframeType;
 use humhub\modules\custom_pages\types\LinkType;
@@ -10,7 +11,6 @@ use humhub\modules\custom_pages\types\MarkdownType;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\types\PhpType;
 use humhub\modules\custom_pages\types\TemplateType;
-use humhub\modules\custom_pages\modules\template\components\TemplateRenderer;
 use Yii;
 use yii\helpers\Html;
 use yii\web\HttpException;
@@ -144,13 +144,11 @@ class ViewController extends AbstractCustomContainerController
             throw new HttpException(403);
         }
 
-        $html = TemplateRenderer::render($page, $editMode);
-
         return $this->owner->render($view, [
             'page' => $page,
             'editMode' => $editMode,
             'canEdit' => $canEdit,
-            'html' => $html,
+            'html' => TemplateInstanceRendererService::instance($page)->render($editMode),
         ]);
     }
 

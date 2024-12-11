@@ -3,6 +3,7 @@
 namespace humhub\modules\custom_pages\controllers;
 
 use humhub\modules\custom_pages\helpers\PageType;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use yii\web\HttpException;
 
 /**
@@ -33,7 +34,7 @@ class SnippetController extends PageController
         return $this->render($view, [
             'snippet' => $snippet,
             'contentContainer' => $this->contentContainer,
-            'html' => $this->renderTemplate($snippet, true),
+            'html' => TemplateInstanceRendererService::instance($snippet)->render(true),
         ]);
     }
 

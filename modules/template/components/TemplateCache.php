@@ -8,10 +8,10 @@
 
 namespace humhub\modules\custom_pages\modules\template\components;
 
-use Yii;
-use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\ContainerContentItem;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use Yii;
 
 /**
  * Used to manage the template cache of template pages.
@@ -62,54 +62,10 @@ class TemplateCache
     /**
      * Flushes all cache entries related to an template instance.
      *
-     * @param TemplateInstance $owner
+     * @param TemplateInstance $templateInstance
      */
-    public static function flushByTemplateInstance(TemplateInstance $owner)
+    public static function flushByTemplateInstance(TemplateInstance $templateInstance)
     {
-        Yii::$app->cache->delete(self::getKey($owner));
+        Yii::$app->cache->delete($templateInstance->getCacheKey());
     }
-
-    /**
-     * Returns the template key for a given template instance.
-     *
-     * @param TemplateInstance $owner
-     * @return string
-     */
-    public static function getKey(TemplateInstance $owner)
-    {
-        return $owner->getCacheKey();
-    }
-
-    /**
-     * Checks for an existing cache entrie for a given $owner instance exists.
-     * @param TemplateInstance $owner
-     * @return bool
-     */
-    public static function exists($owner)
-    {
-        return Yii::$app->cache->exists(self::getKey($owner));
-    }
-
-    /**
-     * Retrieves the cached content for a given $owner instnance.
-     * @param TemplateInstance $owner
-     * @return string
-     */
-    public static function get($owner)
-    {
-        return Yii::$app->cache->get(self::getKey($owner));
-    }
-
-    /**
-     * Sets the cache entry for a given $owner instance.
-     *
-     * @param TemplateInstance $owner
-     * @param string $content
-     * @return bool
-     */
-    public static function set($owner, $content)
-    {
-        return Yii::$app->cache->set(self::getKey($owner), $content);
-    }
-
 }

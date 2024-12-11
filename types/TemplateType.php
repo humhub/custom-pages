@@ -10,12 +10,10 @@
 namespace humhub\modules\custom_pages\types;
 
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
-use humhub\modules\custom_pages\modules\template\models\PagePermission;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use Yii;
 use yii\widgets\ActiveForm;
-use yii\base\InvalidArgumentException;
 
 class TemplateType extends ContentType
 {
@@ -33,26 +31,8 @@ class TemplateType extends ContentType
 
     public function render(CustomPage $content, $options = []): string
     {
-        $templateInstance = TemplateInstance::findOne(['page_id' => $content->id]);
-
-        if (!$templateInstance) {
-            throw new InvalidArgumentException('Template instance not found!');
-        }
-
-        $canEdit = PagePermission::canEdit();
-        $editMode = $options['editMode'] ?? (bool) Yii::$app->request->get('editMode');
-
-        $editMode = $editMode && $canEdit;
-
-        if (!$canEdit && TemplateCache::exists($templateInstance)) {
-            $html = TemplateCache::get($templateInstance);
-        } else {
-            $html = $templateInstance->render($editMode);
-            if (!$canEdit) {
-                TemplateCache::set($templateInstance, $html);
-            }
-        }
-        return $html;
+        return TemplateInstanceRendererService::instance($content)
+            ->render($options['editMode'] ?? Yii::$app->request->get('editMode'));
     }
 
     public function getViewName(): string

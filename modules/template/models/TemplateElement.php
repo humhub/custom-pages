@@ -207,13 +207,20 @@ class TemplateElement extends ActiveRecord
         parent::afterDelete();
     }
 
+    public function getTemplateContent(): TemplateContentActiveRecord
+    {
+        return Yii::createObject($this->content_type);
+    }
+
     /**
      * Returns the label of the related content type.
      * @return string
      */
     public function getLabel()
     {
-        return Yii::createObject($this->content_type)->getLabel();
+        return $this->getTemplateContent()->getLabel();
     }
+
+
 
 }

@@ -2,9 +2,8 @@
 
 namespace humhub\modules\custom_pages\modules\template\models;
 
-use Yii;
-use humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
+use Yii;
 
 /**
  * This is the model class for table "custom_pages_page".
@@ -210,4 +209,11 @@ class ContainerContent extends TemplateContentActiveRecord
         ]);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function isCacheable(): bool
+    {
+        return false;
+    }
 }

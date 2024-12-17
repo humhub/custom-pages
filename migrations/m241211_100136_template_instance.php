@@ -3,7 +3,7 @@
 use humhub\components\Migration;
 
 /**
- * Class m241203_100135_records_content
+ * Class m241211_100136_template_instance
  */
 class m241211_100136_template_instance extends Migration
 {
@@ -20,6 +20,6 @@ class m241211_100136_template_instance extends Migration
      */
     public function safeDown()
     {
-        $this->safeDropTable('custom_pages_template_records_content');
+        $this->renameTable('custom_pages_template_instance', 'custom_pages_template_container');
     }
 }

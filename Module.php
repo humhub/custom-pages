@@ -44,7 +44,17 @@ class Module extends ContentContainerModule
                 'truncate',
             ],
         ],
-        'allowedProperties' => ['sidebar_container', 'content', 'sidebar_container'],
+        'allowedProperties' => [
+            'humhub\modules\custom_pages\modules\template\models\OwnerContentVariable' => [
+                'content',
+                'emptyContent',
+                'empty',
+            ],
+            'humhub\modules\custom_pages\modules\template\models\AssetVariable' => [
+                'bgImage1.jpg',
+                'bgImage2.jpg',
+            ],
+        ],
     ];
 
     public function checkOldGlobalContent()

@@ -50,10 +50,10 @@ class Module extends ContentContainerModule
                 'emptyContent',
                 'empty',
             ],
-            'humhub\modules\custom_pages\modules\template\models\AssetVariable' => [
-                'bgImage1.jpg',
-                'bgImage2.jpg',
-            ],
+            'humhub\modules\custom_pages\modules\template\models\AssetVariable' => '*',
+            'SimpleXMLElement' => '*',
+            'humhub\modules\user\models\User' => '*',
+            'humhub\modules\space\models\Space' => '*',
         ],
     ];
 

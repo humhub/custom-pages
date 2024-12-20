@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
+use humhub\modules\custom_pages\modules\template\elements\TextElement;
 use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use humhub\modules\custom_pages\modules\template\models\FileContent;
 use humhub\modules\custom_pages\modules\template\models\FileDownloadContent;
@@ -21,7 +22,6 @@ use humhub\modules\custom_pages\modules\template\models\RssContent;
 use humhub\modules\custom_pages\modules\template\models\SpaceContent;
 use humhub\modules\custom_pages\modules\template\models\SpacesContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
-use humhub\modules\custom_pages\modules\template\models\TextContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\UserContent;
@@ -164,7 +164,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
     private function getContentTypes()
     {
         return [
-            TextContent::$label => TextContent::class,
+            TextElement::$label => TextElement::class,
             RichtextContent::$label => RichtextContent::class,
             HumHubRichtextContent::$label => HumHubRichtextContent::class,
             ImageContent::$label => ImageContent::class,

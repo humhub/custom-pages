@@ -8,6 +8,8 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord;
 use Yii;
 
 /**
@@ -31,7 +33,7 @@ class TemplateElementForm extends \yii\base\Model
     /**
      * Default content instance.
      *
-     * @var \humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord
+     * @var TemplateContentActiveRecord|BaseTemplateElementContent
      */
     public $content;
 
@@ -91,7 +93,7 @@ class TemplateElementForm extends \yii\base\Model
 
     public function validate($attributeNames = null, $clearErrors = true)
     {
-        return parent::validate() && $this->element->validate();
+        return parent::validate() && $this->element->validate() && $this->content->validate();
     }
 
     public function getLabel()

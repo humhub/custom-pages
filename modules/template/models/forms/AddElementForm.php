@@ -82,9 +82,7 @@ class AddElementForm extends TemplateElementForm
     public function save()
     {
         if ($this->validate()) {
-            // Try saving the default content if
-            $this->element->saveAsDefaultContent($this->content);
-            return $this->element->save(false);
+            return $this->element->save(false) && $this->element->saveAsDefaultContent($this->content);
         } else {
             return false;
         }

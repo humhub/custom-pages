@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages;
 
+use humhub\libs\ProfileImage;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\models\Content;
@@ -10,7 +11,6 @@ use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\AssetVariable;
 use humhub\modules\custom_pages\modules\template\models\OwnerContentVariable;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
 use SimpleXMLElement;
 use Symfony\Component\String\UnicodeString;
 use Yii;
@@ -48,6 +48,12 @@ class Module extends ContentContainerModule
                 '__toString',
                 'truncate',
             ],
+            ContentContainerActiveRecord::class => [
+                'getUrl',
+            ],
+            ProfileImage::class => [
+                'getUrl',
+            ],
         ],
         'allowedProperties' => [
             OwnerContentVariable::class => [
@@ -60,8 +66,8 @@ class Module extends ContentContainerModule
                 'bgImage2.jpg',
             ],
             SimpleXMLElement::class => '*',
-            User::class => '*',
-            Space::class => '*',
+            ContentContainerActiveRecord::class => '*',
+            ProfileImage::class => '*',
         ],
     ];
 

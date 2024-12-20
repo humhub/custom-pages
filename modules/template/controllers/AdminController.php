@@ -11,17 +11,18 @@ namespace humhub\modules\custom_pages\modules\template\controllers;
 use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use humhub\modules\custom_pages\modules\template\models\FileContent;
 use humhub\modules\custom_pages\modules\template\models\FileDownloadContent;
+use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
+use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\ImportForm;
 use humhub\modules\custom_pages\modules\template\models\HumHubRichtextContent;
 use humhub\modules\custom_pages\modules\template\models\ImageContent;
 use humhub\modules\custom_pages\modules\template\models\RichtextContent;
 use humhub\modules\custom_pages\modules\template\models\RssContent;
+use humhub\modules\custom_pages\modules\template\models\SpaceContent;
 use humhub\modules\custom_pages\modules\template\models\SpacesContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
 use humhub\modules\custom_pages\modules\template\models\TextContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
-use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\UserContent;
 use humhub\modules\custom_pages\modules\template\models\UsersContent;
@@ -172,6 +173,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             ContainerContent::$label => ContainerContent::class,
             RssContent::$label => RssContent::class,
             UserContent::$label => UserContent::class,
+            SpaceContent::$label => SpaceContent::class,
             UsersContent::$label => UsersContent::class,
             SpacesContent::$label => SpacesContent::class,
         ];

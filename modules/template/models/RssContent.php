@@ -208,7 +208,7 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
                 $fields = $this->parseItemNamespacedFields($item, $fields);
                 $fields = $this->parseItemImage($fields);
 
-                $items[] = $fields;
+                $items[] = $this->convertSimpleXMLElementsToArray($fields);
                 $i++;
 
                 if ($this->limit > 0 && $i >= $this->limit) {
@@ -254,6 +254,22 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
         }
 
         return $fields;
+    }
+
+    protected function convertSimpleXMLElementsToArray(array $array): array
+    {
+        foreach ($array as $a => $element) {
+            if ($element instanceof SimpleXMLElement) {
+                $element = (array) $element;
+                if (isset($element['@attributes'])) {
+                    $element = array_merge($element, (array) $element['@attributes']);
+                    unset($element['@attributes']);
+                }
+                $array[$a] = $this->convertSimpleXMLElementsToArray($element);
+            }
+        }
+
+        return $array;
     }
 
 }

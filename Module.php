@@ -7,7 +7,12 @@ use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\models\AssetVariable;
+use humhub\modules\custom_pages\modules\template\models\OwnerContentVariable;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
+use SimpleXMLElement;
+use Symfony\Component\String\UnicodeString;
 use Yii;
 
 class Module extends ContentContainerModule
@@ -34,26 +39,29 @@ class Module extends ContentContainerModule
         'allowedFilters' => ['capitalize', 'date', 'first', 'upper', 'escape', 'nl2br', 'url_encode', 'round', 'u'],
         'allowedFunctions' => ['range', 'max', 'min', 'random'],
         'allowedMethods' => [
-            'humhub\modules\custom_pages\modules\template\models\OwnerContentVariable' => [
+            OwnerContentVariable::class => [
                 '__toString',
                 'items',
                 'profile',
             ],
-            'Symfony\Component\String\UnicodeString' => [
+            UnicodeString::class => [
                 '__toString',
                 'truncate',
             ],
         ],
         'allowedProperties' => [
-            'humhub\modules\custom_pages\modules\template\models\OwnerContentVariable' => [
+            OwnerContentVariable::class => [
                 'content',
                 'emptyContent',
                 'empty',
             ],
-            'humhub\modules\custom_pages\modules\template\models\AssetVariable' => '*',
-            'SimpleXMLElement' => '*',
-            'humhub\modules\user\models\User' => '*',
-            'humhub\modules\space\models\Space' => '*',
+            AssetVariable::class => [
+                'bgImage1.jpg',
+                'bgImage2.jpg',
+            ],
+            SimpleXMLElement::class => '*',
+            User::class => '*',
+            Space::class => '*',
         ],
     ];
 

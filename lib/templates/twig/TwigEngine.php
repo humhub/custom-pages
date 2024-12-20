@@ -13,7 +13,6 @@ use humhub\modules\custom_pages\Module;
 use Twig\Environment;
 use Twig\Extension\SandboxExtension;
 use Twig\Extra\String\StringExtension;
-use Twig\Sandbox\SecurityPolicy;
 use Yii;
 
 /**
@@ -53,14 +52,13 @@ class TwigEngine implements TemplateEngine
             return null;
         }
 
-        $policy = new SecurityPolicy();
-        $policy->setAllowedTags($module->enableTwiqSandboxExtensionConfig['allowedTags']);
-        $policy->setAllowedMethods($module->enableTwiqSandboxExtensionConfig['allowedMethods']);
-        $policy->setAllowedFilters($module->enableTwiqSandboxExtensionConfig['allowedFilters']);
-        $policy->setAllowedFunctions($module->enableTwiqSandboxExtensionConfig['allowedFunctions']);
-        $policy->setAllowedProperties($module->enableTwiqSandboxExtensionConfig['allowedProperties']);
-
-        return $policy;
+        return new SecurityPolicy(
+            $module->enableTwiqSandboxExtensionConfig['allowedTags'],
+            $module->enableTwiqSandboxExtensionConfig['allowedFilters'],
+            $module->enableTwiqSandboxExtensionConfig['allowedMethods'],
+            $module->enableTwiqSandboxExtensionConfig['allowedProperties'],
+            $module->enableTwiqSandboxExtensionConfig['allowedFunctions'],
+        );
     }
 
 }

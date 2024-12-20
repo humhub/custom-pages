@@ -2,12 +2,17 @@
 
 namespace humhub\modules\custom_pages;
 
+use humhub\libs\ProfileImage;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\models\AssetVariable;
+use humhub\modules\custom_pages\modules\template\models\OwnerContentVariable;
 use humhub\modules\space\models\Space;
+use SimpleXMLElement;
+use Symfony\Component\String\UnicodeString;
 use Yii;
 
 class Module extends ContentContainerModule
@@ -34,17 +39,36 @@ class Module extends ContentContainerModule
         'allowedFilters' => ['capitalize', 'date', 'first', 'upper', 'escape', 'nl2br', 'url_encode', 'round', 'u'],
         'allowedFunctions' => ['range', 'max', 'min', 'random'],
         'allowedMethods' => [
-            'humhub\modules\custom_pages\modules\template\models\OwnerContentVariable' => [
+            OwnerContentVariable::class => [
                 '__toString',
                 'items',
                 'profile',
             ],
-            'Symfony\Component\String\UnicodeString' => [
+            UnicodeString::class => [
                 '__toString',
                 'truncate',
             ],
+            ContentContainerActiveRecord::class => [
+                'getUrl',
+            ],
+            ProfileImage::class => [
+                'getUrl',
+            ],
         ],
-        'allowedProperties' => ['sidebar_container', 'content', 'sidebar_container'],
+        'allowedProperties' => [
+            OwnerContentVariable::class => [
+                'content',
+                'emptyContent',
+                'empty',
+            ],
+            AssetVariable::class => [
+                'bgImage1.jpg',
+                'bgImage2.jpg',
+            ],
+            SimpleXMLElement::class => '*',
+            ContentContainerActiveRecord::class => '*',
+            ProfileImage::class => '*',
+        ],
     ];
 
     public function checkOldGlobalContent()

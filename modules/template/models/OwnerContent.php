@@ -5,6 +5,7 @@ namespace humhub\modules\custom_pages\modules\template\models;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use Yii;
 
 /**
@@ -32,7 +33,7 @@ class OwnerContent extends ActiveRecord
         return [
             [
                 'class' => \humhub\components\behaviors\PolymorphicRelation::class,
-                'mustBeInstanceOf' => [TemplateContentActiveRecord::class],
+                'mustBeInstanceOf' => [TemplateContentActiveRecord::class, BaseTemplateElementContent::class],
                 'classAttribute' => 'content_type',
                 'pkAttribute' => 'content_id',
             ],
@@ -140,9 +141,9 @@ class OwnerContent extends ActiveRecord
     /**
      * Sets the object_model and object_id by means of the given $content instance.
      *
-     * @param TemplateContentActiveRecord $content
+     * @param TemplateContentActiveRecord|BaseTemplateElementContent $content
      */
-    public function setContent(TemplateContentActiveRecord $content)
+    public function setContent($content)
     {
         $this->content_type = get_class($content);
         $this->content_id = $content->id;
@@ -246,7 +247,7 @@ class OwnerContent extends ActiveRecord
      */
     public static function deleteByOwner($ownerClass, $ownerId = null, $elementName = null)
     {
-        // We can't use delteAll since it won't trigger the afetDelete
+        // We can't use deleteAll since it won't trigger the afetDelete
         foreach (self::findByOwner($ownerClass, $ownerId, $elementName)->all() as $instance) {
             $instance->delete();
         }

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use Yii;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 
@@ -47,9 +48,10 @@ class EditElementForm extends TemplateElementForm
 
     public function save()
     {
-        if ($this->validate()) {
-            $this->element->save();
-
+        if ($this->validate() && $this->element->save()) {
+            if ($this->content instanceof BaseTemplateElementContent) {
+                $this->content->element_id = $this->element->id;
+            }
             // Try saving the default content if
             if ($this->content->save()) {
                 $this->defaultOwnerContent->setContent($this->content);

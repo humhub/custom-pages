@@ -2,7 +2,6 @@
 
 use humhub\components\Migration;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\TextContent;
 use humhub\modules\custom_pages\modules\template\models\FileContent;
 use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use humhub\modules\custom_pages\modules\template\models\RichtextContent;
@@ -160,7 +159,9 @@ class m160907_175706_default_templates extends Migration
 
     public function insertTextTemplateElement($tmplid, $name, $default = null)
     {
-        $this->insertTemplateElement($tmplid, $name, TextContent::class);
+        $TextContentClass = 'humhub\\modules\\custom_pages\\modules\\template\\models\\TextContent';
+
+        $this->insertTemplateElement($tmplid, $name, $TextContentClass);
 
         if ($default != null) {
             $this->insertSilent('custom_pages_template_text_content', [
@@ -171,7 +172,7 @@ class m160907_175706_default_templates extends Migration
                 'element_name' => $name,
                 'owner_model' => Template::class,
                 'owner_id' => $tmplid,
-                'content_type' => TextContent::class,
+                'content_type' => $TextContentClass,
                 'content_id' => $this->db->getLastInsertID(),
             ]);
         }

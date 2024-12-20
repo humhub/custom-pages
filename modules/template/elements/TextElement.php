@@ -1,34 +1,37 @@
 <?php
 
-namespace humhub\modules\custom_pages\modules\template\models;
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\libs\Html;
-use Yii;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
+use Yii;
 
 /**
- * Class TextContent
- * @property bool $inline_text
- * @property string content
+ * Class to manage content records of the text elements
+ *
+ * Element content fields:
+ * @property-read bool $inline_text
+ * @property-read string $content
  */
-class TextContent extends TemplateContentActiveRecord
+class TextElement extends BaseTemplateElementContent
 {
     public static $label = 'Text';
 
-    public function init()
-    {
-        parent::init();
-        if ($this->isNewRecord) {
-            $this->inline_text = 1;
-        }
-    }
-
     /**
-     * @return string the associated database table name
+     * @inheritdoc
      */
-    public static function tableName()
+    protected function getFields(): array
     {
-        return 'custom_pages_template_text_content';
+        return [
+            'content' => null,
+            'inline_text' => 1,
+        ];
     }
 
     /**
@@ -36,11 +39,11 @@ class TextContent extends TemplateContentActiveRecord
      */
     public function rules()
     {
-        $result = parent::rules();
-        $result[] = ['content', 'trim'];
-        $result[] = ['inline_text', 'boolean'];
-        $result[] = ['content', 'string', 'length' => [1, 255]];
-        return $result;
+        return array_merge(parent::rules(), [
+            ['content', 'trim'],
+            ['inline_text', 'boolean'],
+            ['content', 'string', 'length' => [1, 255]],
+        ]);
     }
 
     /**
@@ -63,33 +66,11 @@ class TextContent extends TemplateContentActiveRecord
     }
 
     /**
-     * @return array customized attribute labels (name=>label)
-     */
-    public function attributeLabels()
-    {
-        return [
-            'content' => 'Content',
-            'inline_text' => 'Is inline text',
-        ];
-    }
-
-    /**
      * @inheritdoc
      */
     public function getLabel()
     {
         return self::$label;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function copy()
-    {
-        $clone = new TextContent();
-        $clone->content = $this->content;
-        $clone->inline_text = $this->inline_text;
-        return $clone;
     }
 
     /**

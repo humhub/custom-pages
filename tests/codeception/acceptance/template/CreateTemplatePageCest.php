@@ -31,7 +31,7 @@ class CreateTemplatePageCest
         $this->clickAddElement($I, 'Text');
         $I->expectTo('see the add text element view');
         $I->fillField('TemplateElement[name]', 'text');
-        $I->fillField('TextContent[content]', 'This is my test text!');
+        $I->fillField('TextElement[content]', 'This is my test text!');
         $I->click('.btn-primary', '#globalModal');
         $I->waitForElementNotVisible('#globalModal');
         $I->expectTo('see the new element added to the source');

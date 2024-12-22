@@ -9,7 +9,6 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\libs\Html;
-use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use Yii;
 
 /**
@@ -26,7 +25,7 @@ class TextElement extends BaseTemplateElementContent
     /**
      * @inheritdoc
      */
-    protected function getFields(): array
+    protected function getDynamicAttributes(): array
     {
         return [
             'content' => null,
@@ -39,11 +38,11 @@ class TextElement extends BaseTemplateElementContent
      */
     public function rules()
     {
-        return array_merge(parent::rules(), [
+        return [
             ['content', 'trim'],
             ['inline_text', 'boolean'],
             ['content', 'string', 'length' => [1, 255]],
-        ]);
+        ];
     }
 
     /**
@@ -105,11 +104,21 @@ class TextElement extends BaseTemplateElementContent
      */
     public function renderForm($form)
     {
-        return TemplateContentFormFields::widget([
-            'type' => 'text',
-            'form' => $form,
-            'model' => $this,
-        ]);
-    }
+        $output = $form->field($this, 'content')->textInput(['maxlength' => 255])->label(false);
 
+        if (in_array($this->scenario, [$this::SCENARIO_EDIT_ADMIN, $this::SCENARIO_CREATE])) {
+            $output .= $form->field($this, 'inline_text')->checkbox()
+                ->label(Yii::t('CustomPagesModule.template', 'Is inline text'));
+
+            $output .= Html::tag(
+                'div',
+                Yii::t(
+                    'CustomPagesModule.base',
+                    'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.'
+                ),
+                ['class' => 'alert alert-info']
+            );
+        }
+        return $output;
+    }
 }

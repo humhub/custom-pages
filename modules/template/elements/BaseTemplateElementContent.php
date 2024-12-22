@@ -8,10 +8,10 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
-use humhub\components\ActiveRecord;
 use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\components\ActiveRecordDynamicAttributes;
 use humhub\modules\custom_pages\modules\template\models\ContainerContentDefinition;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\permissions\ManagePages;
@@ -32,7 +32,7 @@ use yii\db\ActiveQuery;
  *
  * @property-read OwnerContent $ownerContent
  */
-abstract class BaseTemplateElementContent extends ActiveRecord implements ViewableInterface
+abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes implements ViewableInterface
 {
     public const SCENARIO_CREATE = 'create';
     public const SCENARIO_EDIT = 'edit';
@@ -70,13 +70,6 @@ abstract class BaseTemplateElementContent extends ActiveRecord implements Viewab
     public $filesSaved = false;
 
     /**
-     * Get all possible fields for this element content
-     *
-     * @return array Key - element index name, Value - default value
-     */
-    abstract protected function getFields(): array;
-
-    /**
      * @return string rendered content type by means of the given $options.
      */
     abstract public function render($options = []);
@@ -106,70 +99,6 @@ abstract class BaseTemplateElementContent extends ActiveRecord implements Viewab
         return 'custom_pages_template_element_content';
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['fields'], 'safe'],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function __get($name)
-    {
-        if ($this->hasField($name)) {
-            return $this->fields[$name] ?? $this->getFieldDefaultValue($name);
-        }
-
-        $value = parent::__get($name);
-
-        if ($name === 'fields' && !is_array($value)) {
-            $value = empty($value) ? [] : json_decode($value, true);
-            $this->setAttribute($name, $value);
-        }
-
-        return $value;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function __set($name, $value)
-    {
-        if ($this->hasField($name)) {
-            $fields = $this->fields;
-            $fields[$name] = $value;
-            $this->setAttribute('fields', $fields);
-        } else {
-            parent::__set($name, $value);
-        }
-    }
-
-    /**
-     * Check if this Element Content has the requested field
-     *
-     * @param string $name
-     * @return bool
-     */
-    protected function hasField(string $name): bool
-    {
-        return array_key_exists($name, $this->getFields());
-    }
-
-    /**
-     * Get default value of the requested field
-     *
-     * @param string $name
-     * @return mixed
-     */
-    protected function getFieldDefaultValue(string $name): mixed
-    {
-        return $this->getFields()[$name] ?? null;
-    }
 
     /**
      * Copies the values of this content type instance.
@@ -326,11 +255,6 @@ abstract class BaseTemplateElementContent extends ActiveRecord implements Viewab
             self::updateAll(['definition_id' => null], ['definition_id' => $definition->id]);
             $definition->delete();
             return false;
-        }
-
-        if (parent::beforeSave($insert)) {
-            $this->fields = is_array($this->fields) ? json_encode($this->fields) : null;
-            return true;
         }
 
         return false;

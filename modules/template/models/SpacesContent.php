@@ -62,22 +62,24 @@ class SpacesContent extends RecordsContent
 
     protected function filterMember(ActiveQuery $query): ActiveQuery
     {
-        if (!empty($this->options['memberType'])) {
-            return match ($this->options['memberType']) {
-                'member' => $query->leftJoin('space_membership', 'space_membership.space_id = space.id')
-                    ->leftJoin('user', 'user.id = space_membership.user_id')
-                    ->andWhere(['user.guid' => $this->options['member']])
-                    ->andWhere(['space_membership.status' => Membership::STATUS_MEMBER]),
-                'not-member' => $query->andWhere(['NOT IN', 'space.id', Membership::find()
-                    ->select('space_membership.space_id')
-                    ->leftJoin('user', 'space_membership.user_id = user.id')
-                    ->where(['space_membership.status' => Membership::STATUS_MEMBER])
-                    ->andWhere(['user.guid' => $this->options['member']])]),
-            };
+        $userGuid = $this->options['member'] ?: Yii::$app->user->getGuid();
+
+        if (empty($this->options['memberType']) || empty($userGuid)) {
+            return $query->andWhere(false);
         }
 
-        // Invalid member type
-        return $query->andWhere(false);
+        return match ($this->options['memberType']) {
+            'member' => $query->leftJoin('space_membership', 'space_membership.space_id = space.id')
+                ->leftJoin('user', 'user.id = space_membership.user_id')
+                ->andWhere(['user.guid' => $userGuid])
+                ->andWhere(['space_membership.status' => Membership::STATUS_MEMBER]),
+            'not-member' => $query->andWhere(['NOT IN', 'space.id', Membership::find()
+                ->select('space_membership.space_id')
+                ->leftJoin('user', 'space_membership.user_id = user.id')
+                ->where(['space_membership.status' => Membership::STATUS_MEMBER])
+                ->andWhere(['user.guid' => $userGuid])]),
+            default => $query->andWhere(false),
+        };
     }
 
     protected function filterTag(ActiveQuery $query): ActiveQuery
@@ -86,5 +88,21 @@ class SpacesContent extends RecordsContent
             ->leftJoin('contentcontainer_tag', 'contentcontainer_tag.id = contentcontainer_tag_relation.tag_id')
             ->andWhere(['contentcontainer_tag.contentcontainer_class' => Space::class])
             ->andWhere(['contentcontainer_tag.name' => $this->options['tag']]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function isConfigured(): bool
+    {
+        return parent::isConfigured() || $this->type === 'member';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isCacheable(): bool
+    {
+        return false;
     }
 }

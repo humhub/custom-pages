@@ -69,8 +69,30 @@ class UsersContent extends RecordsContent
 
     protected function filterFriend(ActiveQuery $query): ActiveQuery
     {
+        $friendGuid = $this->options['friend'] ?: Yii::$app->user->getGuid();
+
+        if (empty($friendGuid)) {
+            return $query->andWhere(false);
+        }
+
         return $query->leftJoin('user_friendship', 'user_friendship.user_id = user.id')
             ->leftJoin('user AS friend', 'user_friendship.friend_user_id = friend.id')
-            ->andWhere(['friend.guid' => $this->options['friend']]);
+            ->andWhere(['friend.guid' => $friendGuid]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function isConfigured(): bool
+    {
+        return parent::isConfigured() || $this->type === 'friend';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isCacheable(): bool
+    {
+        return false;
     }
 }

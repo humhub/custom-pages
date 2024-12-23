@@ -206,9 +206,10 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
             foreach ($this->getRssData()->channel->item as $item) {
                 $fields = (array) $item;
                 $fields = $this->parseItemNamespacedFields($item, $fields);
+                $fields = $this->convertSimpleXMLElementsToArray($fields);
                 $fields = $this->parseItemImage($fields);
 
-                $items[] = $this->convertSimpleXMLElementsToArray($fields);
+                $items[] = $fields;
                 $i++;
 
                 if ($this->limit > 0 && $i >= $this->limit) {
@@ -239,7 +240,12 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
 
     protected function parseItemImage(array $fields = []): array
     {
-        if (isset($fields['image'])) {
+        if (isset($fields['imageUrl'])) {
+            return $fields;
+        }
+
+        if (!empty($fields['enclosure']['url'])) {
+            $fields['imageUrl'] = $fields['enclosure']['url'];
             return $fields;
         }
 
@@ -248,7 +254,7 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
         foreach ($imageFields as $imageField) {
             if (isset($fields[$imageField]) &&
                 preg_match('/<img.+?src="(.+?)".+?>/i', $fields[$imageField], $image)) {
-                $fields['image'] = $image[1];
+                $fields['imageUrl'] = $image[1];
                 break;
             }
         }

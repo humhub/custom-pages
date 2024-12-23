@@ -8,10 +8,10 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
-use humhub\components\ActiveRecord;
 use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\components\ActiveRecordDynamicAttributes;
 use humhub\modules\custom_pages\modules\template\models\ContainerContentDefinition;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\permissions\ManagePages;
@@ -24,15 +24,10 @@ use yii\db\ActiveQuery;
  *
  * @property int $id
  * @property int $element_id
- * @property string|array $fields
- *
- * Element content fields:
- * (List here all virtual for the Element Content,
- *  they all are stored in the property $fields as json encoded array)
  *
  * @property-read OwnerContent $ownerContent
  */
-abstract class BaseTemplateElementContent extends ActiveRecord implements ViewableInterface
+abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes implements ViewableInterface
 {
     public const SCENARIO_CREATE = 'create';
     public const SCENARIO_EDIT = 'edit';
@@ -70,13 +65,6 @@ abstract class BaseTemplateElementContent extends ActiveRecord implements Viewab
     public $filesSaved = false;
 
     /**
-     * Get all possible fields for this element content
-     *
-     * @return array Key - element index name, Value - default value
-     */
-    abstract protected function getFields(): array;
-
-    /**
      * @return string rendered content type by means of the given $options.
      */
     abstract public function render($options = []);
@@ -107,71 +95,6 @@ abstract class BaseTemplateElementContent extends ActiveRecord implements Viewab
     }
 
     /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['fields'], 'safe'],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function __get($name)
-    {
-        if ($this->hasField($name)) {
-            return $this->fields[$name] ?? $this->getFieldDefaultValue($name);
-        }
-
-        $value = parent::__get($name);
-
-        if ($name === 'fields' && !is_array($value)) {
-            $value = empty($value) ? [] : json_decode($value, true);
-            $this->setAttribute($name, $value);
-        }
-
-        return $value;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function __set($name, $value)
-    {
-        if ($this->hasField($name)) {
-            $fields = $this->fields;
-            $fields[$name] = $value;
-            $this->setAttribute('fields', $fields);
-        } else {
-            parent::__set($name, $value);
-        }
-    }
-
-    /**
-     * Check if this Element Content has the requested field
-     *
-     * @param string $name
-     * @return bool
-     */
-    protected function hasField(string $name): bool
-    {
-        return array_key_exists($name, $this->getFields());
-    }
-
-    /**
-     * Get default value of the requested field
-     *
-     * @param string $name
-     * @return mixed
-     */
-    protected function getFieldDefaultValue(string $name): mixed
-    {
-        return $this->getFields()[$name] ?? null;
-    }
-
-    /**
      * Copies the values of this content type instance.
      * This function can initiate the copy by using `createCopy`.
      *
@@ -182,7 +105,7 @@ abstract class BaseTemplateElementContent extends ActiveRecord implements Viewab
     {
         $clone = new static();
         $clone->element_id = $this->element_id;
-        $clone->fields = $this->fields;
+        $clone->dynAttributes = $this->dynAttributes;
         return $clone;
     }
 
@@ -220,10 +143,10 @@ abstract class BaseTemplateElementContent extends ActiveRecord implements Viewab
     public function scenarios()
     {
         return [
-            self::SCENARIO_DEFAULT => ['fileList', 'definitionPostData', 'fields'],
-            self::SCENARIO_CREATE => ['fileList', 'definitionPostData', 'fields'],
-            self::SCENARIO_EDIT_ADMIN => ['fileList', 'definitionPostData', 'fields'],
-            self::SCENARIO_EDIT => ['fileList', 'definitionPostData', 'fields'],
+            self::SCENARIO_DEFAULT => ['fileList', 'definitionPostData', 'dynAttributes'],
+            self::SCENARIO_CREATE => ['fileList', 'definitionPostData', 'dynAttributes'],
+            self::SCENARIO_EDIT_ADMIN => ['fileList', 'definitionPostData', 'dynAttributes'],
+            self::SCENARIO_EDIT => ['fileList', 'definitionPostData', 'dynAttributes'],
         ];
     }
 
@@ -328,12 +251,7 @@ abstract class BaseTemplateElementContent extends ActiveRecord implements Viewab
             return false;
         }
 
-        if (parent::beforeSave($insert)) {
-            $this->fields = is_array($this->fields) ? json_encode($this->fields) : null;
-            return true;
-        }
-
-        return false;
+        return parent::beforeSave($insert);
     }
 
     /**

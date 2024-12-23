@@ -15,7 +15,7 @@ use Yii;
 /**
  * Class to manage content records of the text elements
  *
- * Element content fields:
+ * Dynamic attributes:
  * @property-read bool $inline_text
  * @property-read string $content
  */
@@ -26,7 +26,7 @@ class TextElement extends BaseTemplateElementContent
     /**
      * @inheritdoc
      */
-    protected function getFields(): array
+    protected function getDynamicAttributes(): array
     {
         return [
             'content' => null,
@@ -39,11 +39,11 @@ class TextElement extends BaseTemplateElementContent
      */
     public function rules()
     {
-        return array_merge(parent::rules(), [
+        return [
             ['content', 'trim'],
             ['inline_text', 'boolean'],
             ['content', 'string', 'length' => [1, 255]],
-        ]);
+        ];
     }
 
     /**

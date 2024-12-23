@@ -13,7 +13,7 @@ class m241220_101915_template_elements extends Migration
         $this->safeCreateTable('custom_pages_template_element_content', [
             'id' => $this->primaryKey(),
             'element_id' => $this->integer()->notNull(),
-            'fields' => $this->text(),
+            'dynAttributes' => $this->text(),
         ]);
         $this->safeAddForeignKey('fk-element_id', 'custom_pages_template_element_content', 'element_id', 'custom_pages_template_element', 'id', 'CASCADE');
 
@@ -44,7 +44,7 @@ class m241220_101915_template_elements extends Migration
         foreach ($textElements->each() as $text) {
             $this->insertSilent('custom_pages_template_element_content', [
                 'element_id' => $text['elementId'],
-                'fields' => json_encode([
+                'dynAttributes' => json_encode([
                     'content' => $text['content'],
                     'inline_text' => $text['inline_text'],
                 ]),

@@ -26,7 +26,8 @@ use yii\helpers\Url;
     <?= $form->field($model, 'options[member]')->widget(UserPickerField::class, [
         'minInput' => 2,
         'maxSelection' => 1,
-    ])->label(Yii::t('CustomPagesModule.template', 'User')) ?>
+    ])->label(Yii::t('CustomPagesModule.template', 'User'))
+    ->hint(Yii::t('CustomPagesModule.template', 'When no user is selected, the current logged in user will be used.')) ?>
 
     <?= $form->field($model, 'options[memberType]')
         ->dropDownList($model->getMemberTypes())

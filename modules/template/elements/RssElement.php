@@ -6,49 +6,39 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\custom_pages\modules\template\models;
+namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\libs\Html;
+use humhub\modules\custom_pages\modules\template\models\TemplateContentIterable;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use SimpleXMLElement;
 use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
- * Class RssContent
+ * Class to manage content records of the RSS elements
  *
+ * Dynamic attributes:
  * @property string $url
  * @property int $cache_time
  * @property int $limit
  */
-class RssContent extends TemplateContentActiveRecord implements TemplateContentIterable
+class RssElement extends BaseTemplateElementContent implements TemplateContentIterable
 {
     public static $label = 'RSS';
 
     private SimpleXMLElement|null|false $rssData = null;
 
     /**
-     * @inheridoc
-     */
-    public function init()
-    {
-        parent::init();
-
-        if ($this->cache_time === null) {
-            $this->cache_time = 3600;
-        }
-
-        if ($this->limit === null) {
-            $this->limit = 10;
-        }
-    }
-
-    /**
      * @inheritdoc
      */
-    public static function tableName()
+    protected function getDynamicAttributes(): array
     {
-        return 'custom_pages_template_rss_content';
+        return [
+            'url' => null,
+            'cache_time' => 3600,
+            'limit' => 10,
+        ];
     }
 
     /**
@@ -56,12 +46,12 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
      */
     public function rules()
     {
-        return array_merge(parent::rules(), [
+        return [
             [['url'], 'string', 'length' => [1, 1000]],
             [['url'], 'url'],
             [['cache_time'], 'integer', 'min' => 0],
             [['limit'], 'integer', 'min' => 0],
-        ]);
+        ];
     }
 
     /**
@@ -105,18 +95,6 @@ class RssContent extends TemplateContentActiveRecord implements TemplateContentI
     public function getLabel()
     {
         return self::$label;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function copy()
-    {
-        $clone = new RssContent();
-        $clone->url = $this->url;
-        $clone->cache_time = $this->cache_time;
-        $clone->limit = $this->limit;
-        return $clone;
     }
 
     /**

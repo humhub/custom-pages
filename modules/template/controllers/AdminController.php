@@ -12,13 +12,13 @@ use humhub\modules\custom_pages\modules\template\elements\FileDownloadElement;
 use humhub\modules\custom_pages\modules\template\elements\FileElement;
 use humhub\modules\custom_pages\modules\template\elements\HumHubRichtextElement;
 use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
+use humhub\modules\custom_pages\modules\template\elements\RssElement;
 use humhub\modules\custom_pages\modules\template\elements\TextElement;
 use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\ImportForm;
 use humhub\modules\custom_pages\modules\template\models\ImageContent;
-use humhub\modules\custom_pages\modules\template\models\RssContent;
 use humhub\modules\custom_pages\modules\template\models\SpaceContent;
 use humhub\modules\custom_pages\modules\template\models\SpacesContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
@@ -171,7 +171,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             FileElement::$label => FileElement::class,
             FileDownloadElement::$label => FileDownloadElement::class,
             ContainerContent::$label => ContainerContent::class,
-            RssContent::$label => RssContent::class,
+            RssElement::$label => RssElement::class,
             UserContent::$label => UserContent::class,
             SpaceContent::$label => SpaceContent::class,
             UsersContent::$label => UsersContent::class,

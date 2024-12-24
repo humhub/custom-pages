@@ -2,7 +2,6 @@
 
 use humhub\components\Migration;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\FileContent;
 use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 
 class m160907_175706_default_templates extends Migration
@@ -71,7 +70,7 @@ class m160907_175706_default_templates extends Migration
         // Insert elements
         $this->insertTextTemplateElement($headlineTmplId, 'heading', 'My Headline');
         $this->insertTextTemplateElement($headlineTmplId, 'subheading', 'My Subheadline');
-        $this->insertTemplateElement($headlineTmplId, 'background', FileContent::class);
+        $this->insertTemplateElement($headlineTmplId, 'background', 'humhub\\modules\\custom_pages\\modules\\template\\models\\FileContent');
 
         /**
          *

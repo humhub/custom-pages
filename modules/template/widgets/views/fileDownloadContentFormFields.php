@@ -1,6 +1,6 @@
 <?php
 use humhub\modules\custom_pages\modules\template\widgets\CollapsableFormGroup;
-/* @var $model humhub\modules\custom_pages\modules\template\models\template\FileContent */
+/* @var $model humhub\modules\custom_pages\modules\template\models\FileDownloadContent */
 /* @var $form \humhub\modules\ui\form\widgets\ActiveForm */
 
 use yii\helpers\Url;
@@ -47,4 +47,3 @@ $id = 'fileContent-' . $model->id;
     <?= $form->field($model, 'cssClass')->textInput(); ?>
     <?= $form->field($model, 'file_guid')->hiddenInput(['class' => 'file-guid'])->label(false); ?>
 <?php CollapsableFormGroup::end() ?>
-

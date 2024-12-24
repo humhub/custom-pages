@@ -20,6 +20,7 @@ class m241220_101915_template_elements extends Migration
         $this->migrateElements('custom_pages_template_text_content', 'Text', ['content', 'inline_text']);
         $this->migrateElements('custom_pages_template_richtext_content', 'Richtext', ['content']);
         $this->migrateElements('custom_pages_template_hh_richtext_content', 'HumHubRichtext', ['content']);
+        $this->migrateElements('custom_pages_template_file_content', 'File', ['file_guid']);
     }
 
     /**

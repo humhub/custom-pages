@@ -8,11 +8,11 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
+use humhub\modules\custom_pages\modules\template\elements\FileElement;
 use humhub\modules\custom_pages\modules\template\elements\HumHubRichtextElement;
 use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
 use humhub\modules\custom_pages\modules\template\elements\TextElement;
 use humhub\modules\custom_pages\modules\template\models\ContainerContent;
-use humhub\modules\custom_pages\modules\template\models\FileContent;
 use humhub\modules\custom_pages\modules\template\models\FileDownloadContent;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
@@ -168,7 +168,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             RichtextElement::$label => RichtextElement::class,
             HumHubRichtextElement::$label => HumHubRichtextElement::class,
             ImageContent::$label => ImageContent::class,
-            FileContent::$label => FileContent::class,
+            FileElement::$label => FileElement::class,
             FileDownloadContent::$label => FileDownloadContent::class,
             ContainerContent::$label => ContainerContent::class,
             RssContent::$label => RssContent::class,

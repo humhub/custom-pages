@@ -22,7 +22,7 @@ class TemplateContentTest extends HumHubDbTestCase
     public function testRenderHtml()
     {
 
-        $content = new \humhub\modules\custom_pages\modules\template\models\RichtextContent();
+        $content = new \humhub\modules\custom_pages\modules\template\elements\RichtextElement();
         $content->content = '<p>Test</p>';
         $content->save();
 

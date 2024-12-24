@@ -40,7 +40,7 @@ class CreateTemplatePageCest
         $I->amGoingTo('add a richtext element');
         $this->clickAddElement($I, 'Richtext');
         $I->fillField('TemplateElement[name]', 'richtext');
-        $I->jsFillField('RichtextContent[content]', '<p>Richtext Test</p>');
+        $I->jsFillField('RichtextElement[content]', '<p>Richtext Test</p>');
         $I->click('.btn-primary', '#globalModal');
         $I->waitForElementNotVisible('#globalModal');
 

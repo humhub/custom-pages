@@ -2,13 +2,12 @@
 
 namespace tests\codeception\unit\modules\custom_page\template;
 
-use humhub\modules\custom_pages\modules\template\models\ContainerContentTemplate;
+use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use tests\codeception\_support\HumHubDbTestCase;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\RichtextContent;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use humhub\modules\custom_pages\modules\template\models\ContainerContentItem;
@@ -32,9 +31,9 @@ class ContainerContentTest extends HumHubDbTestCase
         $this->assertNull(OwnerContent::findOne(['id' => 7]));
 
 
-        $this->assertNull(RichtextContent::findOne(['id' => 3]));
-        $this->assertNull(RichtextContent::findOne(['id' => 4]));
-        $this->assertNull(RichtextContent::findOne(['id' => 5]));
+        $this->assertNull(RichtextElement::findOne(['id' => 3]));
+        $this->assertNull(RichtextElement::findOne(['id' => 4]));
+        $this->assertNull(RichtextElement::findOne(['id' => 5]));
 
     }
 
@@ -58,9 +57,9 @@ class ContainerContentTest extends HumHubDbTestCase
         $this->assertNull(OwnerContent::findOne(['id' => 7]));
 
 
-        $this->assertNull(RichtextContent::findOne(['id' => 3]));
-        $this->assertNull(RichtextContent::findOne(['id' => 4]));
-        $this->assertNull(RichtextContent::findOne(['id' => 5]));
+        $this->assertNull(RichtextElement::findOne(['id' => 3]));
+        $this->assertNull(RichtextElement::findOne(['id' => 4]));
+        $this->assertNull(RichtextElement::findOne(['id' => 5]));
 
     }
 
@@ -80,9 +79,9 @@ class ContainerContentTest extends HumHubDbTestCase
         $this->assertNull(OwnerContent::findOne(['id' => 7]));
 
 
-        $this->assertNull(RichtextContent::findOne(['id' => 3]));
-        $this->assertNull(RichtextContent::findOne(['id' => 4]));
-        $this->assertNull(RichtextContent::findOne(['id' => 5]));
+        $this->assertNull(RichtextElement::findOne(['id' => 3]));
+        $this->assertNull(RichtextElement::findOne(['id' => 4]));
+        $this->assertNull(RichtextElement::findOne(['id' => 5]));
 
     }
 
@@ -107,9 +106,9 @@ class ContainerContentTest extends HumHubDbTestCase
         $this->assertNull(OwnerContent::findOne(['id' => 6]));
         $this->assertNull(OwnerContent::findOne(['id' => 7]));
 
-        $this->assertNull(RichtextContent::findOne(['id' => 3]));
-        $this->assertNull(RichtextContent::findOne(['id' => 4]));
-        $this->assertNull(RichtextContent::findOne(['id' => 5]));
+        $this->assertNull(RichtextElement::findOne(['id' => 3]));
+        $this->assertNull(RichtextElement::findOne(['id' => 4]));
+        $this->assertNull(RichtextElement::findOne(['id' => 5]));
     }
 
     public function testDeleteAll()
@@ -119,7 +118,7 @@ class ContainerContentTest extends HumHubDbTestCase
 
         $this->assertEquals(0, OwnerContent::find()->where(['not', ['owner_model' => Template::class]])->count());
         $this->assertEquals(0, TemplateInstance::find()->count());
-        $this->assertEquals(1, RichtextContent::find()->count());
+        $this->assertEquals(1, RichtextElement::find()->count());
         $this->assertEquals(0, ContainerContentItem::find()->count());
         $this->assertEquals(0, ContainerContent::find()->count());
 
@@ -131,7 +130,7 @@ class ContainerContentTest extends HumHubDbTestCase
         $this->assertEquals(1, Template::findOne(['id' => 3])->delete());
         $this->assertEquals(1, Template::findOne(['id' => 4])->delete());
 
-        $this->assertEquals(0, RichtextContent::find()->count());
+        $this->assertEquals(0, RichtextElement::find()->count());
         $this->assertEquals(0, TemplateElement::find()->count());
     }
 }

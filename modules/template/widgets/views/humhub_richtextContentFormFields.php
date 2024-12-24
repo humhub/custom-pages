@@ -1,5 +1,5 @@
 <?php
-/* @var $model humhub\modules\custom_pages\modules\template\models\RichtextContent */
+/* @var $model humhub\modules\custom_pages\modules\template\models\HumHubRichtextContent */
 /* @var $form \humhub\modules\ui\form\widgets\ActiveForm */
 
 use yii\helpers\Html;

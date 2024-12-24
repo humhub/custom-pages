@@ -17,7 +17,8 @@ class m241220_101915_template_elements extends Migration
         ]);
         $this->safeAddForeignKey('fk-element_id', 'custom_pages_template_element_content', 'element_id', 'custom_pages_template_element', 'id', 'CASCADE');
 
-        $this->migrateTextElements();
+        $this->migrateElements('custom_pages_template_text_content', 'Text', ['content', 'inline_text']);
+        $this->migrateElements('custom_pages_template_richtext_content', 'Richtext', ['content']);
     }
 
     /**
@@ -30,30 +31,34 @@ class m241220_101915_template_elements extends Migration
         return false;
     }
 
-    private function migrateTextElements()
+    private function migrateElements(string $oldTable, string $type, array $dynAttributes)
     {
-        $oldContentType = 'humhub\\modules\\custom_pages\\modules\\template\\models\\TextContent';
-        $newContentType = 'humhub\\modules\\custom_pages\\modules\\template\\elements\\TextElement';
+        $oldContentType = 'humhub\\modules\\custom_pages\\modules\\template\\models\\' . $type . 'Content';
+        $newContentType = 'humhub\\modules\\custom_pages\\modules\\template\\elements\\' . $type . 'Element';
 
-        $textElements = (new Query())
-            ->select('tc.*, e.id AS elementId, oc.id AS ownerContentId')
-            ->from('custom_pages_template_text_content AS tc')
-            ->leftJoin('custom_pages_template_owner_content AS oc', 'tc.id = oc.content_id AND oc.content_type = :contentType', ['contentType' => $oldContentType])
+        $elements = (new Query())
+            ->select('ot.*, e.id AS elementId, oc.id AS ownerContentId')
+            ->from($oldTable . ' AS ot')
+            ->leftJoin('custom_pages_template_owner_content AS oc', 'ot.id = oc.content_id AND oc.content_type = :contentType', ['contentType' => $oldContentType])
             ->leftJoin('custom_pages_template_element AS e', 'e.content_type = oc.content_type AND e.name = oc.element_name');
 
-        foreach ($textElements->each() as $text) {
+        foreach ($elements->each() as $element) {
+            $dynValues = [];
+            foreach ($dynAttributes as $attribute) {
+                if (isset($element[$attribute])) {
+                    $dynValues[$attribute] = $element[$attribute];
+                }
+            }
+
             $this->insertSilent('custom_pages_template_element_content', [
-                'element_id' => $text['elementId'],
-                'dynAttributes' => json_encode([
-                    'content' => $text['content'],
-                    'inline_text' => $text['inline_text'],
-                ]),
+                'element_id' => $element['elementId'],
+                'dynAttributes' => json_encode($dynValues),
             ]);
 
             $this->updateSilent(
                 'custom_pages_template_owner_content',
                 ['content_type' => $newContentType, 'content_id' => $this->db->getLastInsertID()],
-                ['id' => $text['ownerContentId']],
+                ['id' => $element['ownerContentId']],
             );
 
             $this->updateSilent(
@@ -63,6 +68,6 @@ class m241220_101915_template_elements extends Migration
             );
         }
 
-        $this->safeDropTable('custom_pages_template_text_content');
+        $this->safeDropTable($oldTable);
     }
 }

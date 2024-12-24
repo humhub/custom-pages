@@ -13,11 +13,11 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFiel
 use Yii;
 
 /**
- * Class to manage content records of the text elements
+ * Class to manage content records of the Text elements
  *
  * Dynamic attributes:
- * @property-read bool $inline_text
- * @property-read string $content
+ * @property bool $inline_text
+ * @property string $content
  */
 class TextElement extends BaseTemplateElementContent
 {
@@ -43,6 +43,17 @@ class TextElement extends BaseTemplateElementContent
             ['content', 'trim'],
             ['inline_text', 'boolean'],
             ['content', 'string', 'length' => [1, 255]],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'content' => Yii::t('CustomPagesModule.template', 'Content'),
+            'inline_text' => Yii::t('CustomPagesModule.template', 'Is inline text'),
         ];
     }
 

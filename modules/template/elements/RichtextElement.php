@@ -1,28 +1,39 @@
 <?php
 
-namespace humhub\modules\custom_pages\modules\template\models;
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
-use Yii;
+namespace humhub\modules\custom_pages\modules\template\elements;
+
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
+use Yii;
 
 /**
- * Class RichtextContent
- * @package humhub\modules\custom_pages\modules\template\models
+ * Class to manage content records of the RichText elements
  *
+ * Dynamic attributes:
  * @property string $content
  */
-class RichtextContent extends TemplateContentActiveRecord
+class RichtextElement extends BaseTemplateElementContent
 {
     public static $label = 'Richtext';
 
     /**
-     * @return string the associated database table name
+     * @inheritdoc
      */
-    public static function tableName()
+    protected function getDynamicAttributes(): array
     {
-        return 'custom_pages_template_richtext_content';
+        return [
+            'content' => null,
+        ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         $result = parent::rules();
@@ -30,7 +41,9 @@ class RichtextContent extends TemplateContentActiveRecord
         return $result;
     }
 
-
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         $scenarios = parent::scenarios();
@@ -41,27 +54,26 @@ class RichtextContent extends TemplateContentActiveRecord
     }
 
     /**
-     * @return array customized attribute labels (name=>label)
+     * @inheritdoc
      */
     public function attributeLabels()
     {
-        return  [
-            'content' => 'Content',
+        return [
+            'content' => Yii::t('CustomPagesModule.template', 'Content'),
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getLabel()
     {
         return self::$label;
     }
 
-    public function copy()
-    {
-        $clone = new RichtextContent();
-        $clone->content = $this->content;
-        return $clone;
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function render($options = [])
     {
         if ($this->isEditMode($options)) {
@@ -71,11 +83,17 @@ class RichtextContent extends TemplateContentActiveRecord
         return $this->purify($this->content);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function renderEmpty($options = [])
     {
         return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty Richtext'), $options);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function renderForm($form)
     {
         return TemplateContentFormFields::widget([
@@ -84,14 +102,4 @@ class RichtextContent extends TemplateContentActiveRecord
             'model' => $this,
         ]);
     }
-
-    /**
-     * @param null $user
-     * @return bool
-     */
-    public function canEdit($user = null): bool
-    {
-        return PagePermission::canEdit();
-    }
-
 }

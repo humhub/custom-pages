@@ -8,7 +8,7 @@ return [
         'containerContent' => 'tests\codeception\fixtures\modules\custom_pages\template\ContainerContentFixture',
         'templateInstance' => 'tests\codeception\fixtures\modules\custom_pages\template\TemplateInstanceFixture',
         'templateElement' => 'tests\codeception\fixtures\modules\custom_pages\template\TemplateElementFixture',
-        'richtextContent' => 'tests\codeception\fixtures\modules\custom_pages\template\RichtextContentFixture',
+        'richtextElement' => 'tests\codeception\fixtures\modules\custom_pages\template\RichtextElementFixture',
         'ownerContent' => 'tests\codeception\fixtures\modules\custom_pages\template\OwnerContentFixture',
         'containerContentDefinition' => 'tests\codeception\fixtures\modules\custom_pages\template\ContainerContentDefinitionFixture',
         'containerContentTemplate' => \tests\codeception\fixtures\modules\custom_pages\template\ContainerContentTemplateFixture::class,

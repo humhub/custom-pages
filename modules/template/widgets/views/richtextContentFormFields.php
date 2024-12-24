@@ -1,12 +1,13 @@
 <?php
-use humhub\modules\custom_pages\modules\template\models\RichtextContent;
+
+use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
 use humhub\modules\custom_pages\widgets\TinyMce;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\UploadProgress;
 use humhub\modules\ui\form\widgets\ActiveForm;
 
-/* @var $model RichtextContent */
+/* @var $model RichtextElement */
 /* @var $form ActiveForm */
 
 $id = $model->id ?? str_replace(['[', ']'], '', $model->formName());
@@ -15,14 +16,14 @@ $id = $model->id ?? str_replace(['[', ']'], '', $model->formName());
     'options' => [
         'id' => 'richtext_' . $id,
         'class' => 'tinymceInput',
-        'rows' => 6
+        'rows' => 6,
     ],
     'clientOptions' => [
         'humhubTrigger' => [
             'icon' => 'upload',
             'text' => Yii::t('CustomPagesModule.model', 'Attach Files'),
             'selector' => '#richtext-template-file-uploader-' . $id,
-            'event' => 'click'
+            'event' => 'click',
         ]
     ]])->label(false) ?>
 
@@ -34,11 +35,11 @@ $id = $model->id ?? str_replace(['[', ']'], '', $model->formName());
         'preview' => '#richtext-template-file-uploader-preview-' . $id,
         'cssButtonClass' => 'btn-default btn-sm',
         'model' => $model,
-        'submitName' => $model->formName().'[fileList][]'
+        'submitName' => $model->formName().'[fileList][]',
     ]) . FilePreview::widget([
         'id' => 'richtext-template-file-uploader-preview-' . $id,
         'options' => ['style' => 'margin-top:10px'],
         'model' => $model,
-        'edit' => true
+        'edit' => true,
     ]) . UploadProgress::widget(['id' => 'richtext-template-file-uploader-progress-' . $id]) .
 '</div>' ?>

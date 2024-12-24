@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
+use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
 use humhub\modules\custom_pages\modules\template\elements\TextElement;
 use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use humhub\modules\custom_pages\modules\template\models\FileContent;
@@ -17,7 +18,6 @@ use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\ImportForm;
 use humhub\modules\custom_pages\modules\template\models\HumHubRichtextContent;
 use humhub\modules\custom_pages\modules\template\models\ImageContent;
-use humhub\modules\custom_pages\modules\template\models\RichtextContent;
 use humhub\modules\custom_pages\modules\template\models\RssContent;
 use humhub\modules\custom_pages\modules\template\models\SpaceContent;
 use humhub\modules\custom_pages\modules\template\models\SpacesContent;
@@ -165,7 +165,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
     {
         return [
             TextElement::$label => TextElement::class,
-            RichtextContent::$label => RichtextContent::class,
+            RichtextElement::$label => RichtextElement::class,
             HumHubRichtextContent::$label => HumHubRichtextContent::class,
             ImageContent::$label => ImageContent::class,
             FileContent::$label => FileContent::class,

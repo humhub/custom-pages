@@ -14,6 +14,7 @@ use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\components\ActiveRecordDynamicAttributes;
 use humhub\modules\custom_pages\modules\template\models\ContainerContentDefinition;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
+use humhub\modules\custom_pages\modules\template\models\PagePermission;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\user\components\PermissionManager;
 use Yii;
@@ -405,6 +406,15 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
         }
 
         return false;
+    }
+
+    /**
+     * @param null $user
+     * @return bool
+     */
+    public function canEdit($user = null): bool
+    {
+        return PagePermission::canEdit();
     }
 
     /**

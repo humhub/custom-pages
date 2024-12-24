@@ -15,8 +15,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 <?= $form->field($model, 'content')->textInput(['maxlength' => 255])->label(false) ?>
 
 <?php if (in_array($model->scenario, [$model::SCENARIO_EDIT_ADMIN, $model::SCENARIO_CREATE])) : ?>
-    <?= $form->field($model, 'inline_text')->checkbox()
-        ->label(Yii::t('CustomPagesModule.template', 'Is inline text')) ?>
+    <?= $form->field($model, 'inline_text')->checkbox() ?>
     <div class="alert alert-info">
         <?= Yii::t('CustomPagesModule.base', 'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.') ?>
     </div>

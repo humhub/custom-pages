@@ -143,10 +143,10 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     public function scenarios()
     {
         return [
-            self::SCENARIO_DEFAULT => ['fileList', 'definitionPostData', 'dynAttributes'],
-            self::SCENARIO_CREATE => ['fileList', 'definitionPostData', 'dynAttributes'],
-            self::SCENARIO_EDIT_ADMIN => ['fileList', 'definitionPostData', 'dynAttributes'],
-            self::SCENARIO_EDIT => ['fileList', 'definitionPostData', 'dynAttributes'],
+            self::SCENARIO_DEFAULT => ['fileList', 'definitionPostData'],
+            self::SCENARIO_CREATE => ['fileList', 'definitionPostData'],
+            self::SCENARIO_EDIT_ADMIN => ['fileList', 'definitionPostData'],
+            self::SCENARIO_EDIT => ['fileList', 'definitionPostData'],
         ];
     }
 

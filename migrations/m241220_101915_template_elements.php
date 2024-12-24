@@ -21,6 +21,7 @@ class m241220_101915_template_elements extends Migration
         $this->migrateElements('custom_pages_template_richtext_content', 'Richtext', ['content']);
         $this->migrateElements('custom_pages_template_hh_richtext_content', 'HumHubRichtext', ['content']);
         $this->migrateElements('custom_pages_template_file_content', 'File', ['file_guid']);
+        $this->migrateElements('custom_pages_template_file_download_content', 'FileDownload', ['file_guid', 'title', 'style', 'cssClass', 'showFileinfo', 'showIcon']);
     }
 
     /**

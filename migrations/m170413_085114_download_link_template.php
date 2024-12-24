@@ -2,7 +2,6 @@
 
 use humhub\components\Migration;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\FileDownloadContent;
 use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 
 class m170413_085114_download_link_template extends Migration
@@ -11,7 +10,7 @@ class m170413_085114_download_link_template extends Migration
     {
         //Create Download Item
         $downloadItemTemplateId = $this->insertDownloadItemTemplate();
-        $this->insertTemplateElement($downloadItemTemplateId, 'file_download', 'File', FileDownloadContent::class);
+        $this->insertTemplateElement($downloadItemTemplateId, 'file_download', 'File', 'humhub\\modules\\custom_pages\\modules\\template\\models\\FileDownloadContent');
 
         //Create Download List
         $downloadListTemplateId = $this->insertDownloadListTemplate();

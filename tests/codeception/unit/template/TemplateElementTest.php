@@ -46,6 +46,7 @@ class TemplateElementTest extends HumHubDbTestCase
     public function testOverwriteDefaultContent()
     {
         $content = new RichtextElement();
+        $content->element_id = 1;
         $content->content = '<p>Non Default</p>';
 
         $this->element->saveInstance($this->owner, $content);
@@ -64,6 +65,7 @@ class TemplateElementTest extends HumHubDbTestCase
     public function testOverwriteEmptyDefaultContent()
     {
         $content = new RichtextElement();
+        $content->element_id = 1;
         $content->content = '<p>Non Default2</p>';
 
         $this->element2->saveInstance($this->owner, $content);
@@ -78,11 +80,13 @@ class TemplateElementTest extends HumHubDbTestCase
     public function testOverwriteOldContent()
     {
         $content = new RichtextElement();
+        $content->element_id = 1;
         $content->content = '<p>Non Default2</p>';
 
         $this->element2->saveInstance($this->owner, $content);
 
         $content2 = new RichtextElement();
+        $content->element_id = 1;
         $content2->content = '<p>Non Default New</p>';
         $content2->save();
 
@@ -97,6 +101,7 @@ class TemplateElementTest extends HumHubDbTestCase
     public function testSaveAsDefaultContent()
     {
         $content = new RichtextElement();
+        $content->element_id = 1;
         $content->content = '<p>Default2</p>';
         $content->save();
         $this->element->saveAsDefaultContent($content);
@@ -128,10 +133,12 @@ class TemplateElementTest extends HumHubDbTestCase
     public function testDeleteElement()
     {
         $content = new RichtextElement();
+        $content->element_id = 1;
         $content->content = '<p>Non Default</p>';
         $content->save();
 
         $content2 = new RichtextElement();
+        $content->element_id = 1;
         $content2->content = '<p>Non Default2</p>';
         $content2->save();
 
@@ -155,10 +162,12 @@ class TemplateElementTest extends HumHubDbTestCase
     public function testDeleteTemplate()
     {
         $content = new RichtextElement();
+        $content->element_id = 1;
         $content->content = '<p>Non Default</p>';
         $content->save();
 
         $content2 = new RichtextElement();
+        $content->element_id = 1;
         $content2->content = '<p>Non Default2</p>';
         $content2->save();
 

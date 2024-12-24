@@ -179,7 +179,7 @@ class m160907_175706_default_templates extends Migration
 
     public function insertRichTextTemplateElement($tmplid, $name, $default = null)
     {
-        $this->insertTemplateElement($tmplid, $name, 'humhub\\modules\\custom_pages\\modules\\template\\elements\\RichtextElement');
+        $this->insertTemplateElement($tmplid, $name, 'humhub\\modules\\custom_pages\\modules\\template\\models\\RichtextContent');
 
         if ($default != null) {
             $this->insertSilent('custom_pages_template_richtext_content', [
@@ -190,7 +190,7 @@ class m160907_175706_default_templates extends Migration
                 'element_name' => $name,
                 'owner_model' => Template::class,
                 'owner_id' => $tmplid,
-                'content_type' => 'humhub\\modules\\custom_pages\\modules\\template\\elements\\RichtextElement',
+                'content_type' => 'humhub\\modules\\custom_pages\\modules\\template\\models\\RichtextContent',
                 'content_id' => $this->db->getLastInsertID(),
             ]);
         }

@@ -36,9 +36,9 @@ class RichtextElement extends BaseTemplateElementContent
      */
     public function rules()
     {
-        $result = parent::rules();
-        $result[] = ['content', 'safe'];
-        return $result;
+        return [
+            ['content', 'safe'],
+        ];
     }
 
     /**

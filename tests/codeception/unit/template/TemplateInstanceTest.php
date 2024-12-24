@@ -52,7 +52,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
 
         $template = Template::findOne(['id' => 1]);
         $element = $template->getElement('test_content');
-        $richtext = new RichtextElement(['content' => 'testContent']);
+        $richtext = new RichtextElement(['element_id' => 1, 'content' => 'testContent']);
         $ownerContent = $element->saveInstance($owner2, $richtext);
 
         $ownerTestContent = $element->getOwnerContent($owner2);
@@ -84,7 +84,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
 
         $owner = TemplateInstance::findOne(['page_id' => $page->id]);
 
-        $richtext = new RichtextElement(['content' => 'testContent']);
+        $richtext = new RichtextElement(['element_id' => 1, 'content' => 'testContent']);
         $ownerContent = $element->saveInstance($owner, $richtext);
 
         TemplateInstance::deleteByOwner($page);
@@ -109,7 +109,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
 
         $owner = TemplateInstance::findOne(['page_id' => $page->id]);
 
-        $richtext = new RichtextElement(['content' => 'testContent']);
+        $richtext = new RichtextElement(['element_id' => 1, 'content' => 'testContent']);
         $ownerContent = $element->saveInstance($owner, $richtext);
 
         $this->assertFalse($richtext->isNewRecord);
@@ -149,14 +149,17 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $owner2->save();
 
         $content = new RichtextElement();
+        $content->element_id = 1;
         $content->content = '<p>Test</p>';
         $content->save();
 
         $content2 = new RichtextElement();
+        $content2->element_id = 1;
         $content2->content = '<p>Test</p>';
         $content2->save();
 
         $content3 = new RichtextElement();
+        $content3->element_id = 1;
         $content3->content = '<p>Test</p>';
         $content3->save();
 

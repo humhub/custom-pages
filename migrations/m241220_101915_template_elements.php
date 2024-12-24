@@ -19,6 +19,7 @@ class m241220_101915_template_elements extends Migration
 
         $this->migrateElements('custom_pages_template_text_content', 'Text', ['content', 'inline_text']);
         $this->migrateElements('custom_pages_template_richtext_content', 'Richtext', ['content']);
+        $this->migrateElements('custom_pages_template_hh_richtext_content', 'HumHubRichtext', ['content']);
     }
 
     /**
@@ -39,8 +40,8 @@ class m241220_101915_template_elements extends Migration
         $elements = (new Query())
             ->select('ot.*, e.id AS elementId, oc.id AS ownerContentId')
             ->from($oldTable . ' AS ot')
-            ->leftJoin('custom_pages_template_owner_content AS oc', 'ot.id = oc.content_id AND oc.content_type = :contentType', ['contentType' => $oldContentType])
-            ->leftJoin('custom_pages_template_element AS e', 'e.content_type = oc.content_type AND e.name = oc.element_name');
+            ->innerJoin('custom_pages_template_owner_content AS oc', 'ot.id = oc.content_id AND oc.content_type = :contentType', ['contentType' => $oldContentType])
+            ->innerJoin('custom_pages_template_element AS e', 'e.content_type = oc.content_type AND e.name = oc.element_name');
 
         foreach ($elements->each() as $element) {
             $dynValues = [];
@@ -54,10 +55,11 @@ class m241220_101915_template_elements extends Migration
                 'element_id' => $element['elementId'],
                 'dynAttributes' => json_encode($dynValues),
             ]);
+            $newElementId = $this->db->getLastInsertID();
 
             $this->updateSilent(
                 'custom_pages_template_owner_content',
-                ['content_type' => $newContentType, 'content_id' => $this->db->getLastInsertID()],
+                ['content_type' => $newContentType, 'content_id' => $newElementId],
                 ['id' => $element['ownerContentId']],
             );
 
@@ -65,6 +67,12 @@ class m241220_101915_template_elements extends Migration
                 'custom_pages_template_element',
                 ['content_type' => $newContentType],
                 ['content_type' => $oldContentType],
+            );
+
+            $this->updateSilent(
+                'file',
+                ['object_model' => $newContentType, 'object_id' => $newElementId],
+                ['object_model' => $oldContentType, 'object_id' => $element['id']],
             );
         }
 

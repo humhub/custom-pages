@@ -1,36 +1,50 @@
 <?php
 
-namespace humhub\modules\custom_pages\modules\template\models;
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\content\widgets\richtext\RichText;
-use Yii;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
+use Yii;
 
 /**
- * Class HumHubRichtextContent
+ * Class to manage content records of the HumHub RichText elements
  *
+ * Dynamic attributes:
  * @property string $content
  */
-class HumHubRichtextContent extends TemplateContentActiveRecord
+class HumHubRichtextElement extends BaseTemplateElementContent
 {
     public static $label = 'HumHub Richtext';
 
     /**
-     * @return string the associated database table name
+     * @inheritdoc
      */
-    public static function tableName()
+    protected function getDynamicAttributes(): array
     {
-        return 'custom_pages_template_hh_richtext_content';
+        return [
+            'content' => null,
+        ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
-        $result = parent::rules();
-        $result[] = ['content', 'safe'];
-        return $result;
+        return [
+            ['content', 'safe'],
+        ];
     }
 
-
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         $scenarios = parent::scenarios();
@@ -41,25 +55,26 @@ class HumHubRichtextContent extends TemplateContentActiveRecord
     }
 
     /**
-     * @return array customized attribute labels (name=>label)
+     * @inheritdoc
      */
     public function attributeLabels()
     {
         return  [
-            'content' => 'Content',
+            'content' => Yii::t('CustomPagesModule.template', 'Content'),
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getLabel()
     {
         return self::$label;
     }
 
-    public function copy()
-    {
-        return new HumHubRichtextContent(['content' => $this->content]);
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function render($options = [])
     {
         if ($this->isEditMode($options)) {
@@ -69,20 +84,29 @@ class HumHubRichtextContent extends TemplateContentActiveRecord
         return Richtext::output($this->content);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function saveFiles()
     {
         Richtext::postProcess($this->content, $this);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function renderEmpty($options = [])
     {
         return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty HumHub Richtext'), $options);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function renderForm($form)
     {
         return TemplateContentFormFields::widget([
-            'type' => 'humhub_richtext',
+            'type' => 'humhubRichtext',
             'form' => $form,
             'model' => $this,
         ]);

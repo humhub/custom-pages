@@ -6,15 +6,15 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\custom_pages\modules\template\models;
+namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\space\models\Space;
 use Yii;
 
 /**
- * Class SpaceContent
+ * Class to manage content records of the Space elements
  */
-class SpaceContent extends ContentContainerContent
+class SpaceElement extends BaseContentContainerElement
 {
     public const CONTAINER_CLASS = Space::class;
     public static $label = 'Space';

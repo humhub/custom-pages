@@ -5,11 +5,11 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\modules\custom_pages\modules\template\models\SpaceContent;
+use humhub\modules\custom_pages\modules\template\elements\SpaceElement;
 use humhub\modules\space\widgets\SpacePickerField;
 use humhub\modules\ui\form\widgets\ActiveForm;
 
-/* @var SpaceContent $model */
+/* @var SpaceElement $model */
 /* @var ActiveForm $form */
 ?>
 <?= $form->field($model, 'guid')->widget(SpacePickerField::class, [

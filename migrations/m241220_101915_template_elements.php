@@ -23,6 +23,8 @@ class m241220_101915_template_elements extends Migration
         $this->migrateElements('custom_pages_template_file_content', 'File', ['file_guid']);
         $this->migrateElements('custom_pages_template_file_download_content', 'FileDownload', ['file_guid', 'title', 'style', 'cssClass', 'showFileinfo', 'showIcon']);
         $this->migrateElements('custom_pages_template_rss_content', 'Rss', ['url', 'cache_time', 'limit']);
+        $this->migrateElements('custom_pages_template_contentcontainer_content', 'User', ['guid'], false);
+        $this->migrateElements('custom_pages_template_contentcontainer_content', 'Space', ['guid']);
     }
 
     /**
@@ -35,7 +37,7 @@ class m241220_101915_template_elements extends Migration
         return false;
     }
 
-    private function migrateElements(string $oldTable, string $type, array $dynAttributes)
+    private function migrateElements(string $oldTable, string $type, array $dynAttributes, bool $deleteOldTable = true)
     {
         $oldContentType = 'humhub\\modules\\custom_pages\\modules\\template\\models\\' . $type . 'Content';
         $newContentType = 'humhub\\modules\\custom_pages\\modules\\template\\elements\\' . $type . 'Element';
@@ -79,6 +81,8 @@ class m241220_101915_template_elements extends Migration
             );
         }
 
-        $this->safeDropTable($oldTable);
+        if ($deleteOldTable) {
+            $this->safeDropTable($oldTable);
+        }
     }
 }

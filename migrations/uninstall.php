@@ -11,9 +11,6 @@ class uninstall extends Migration
         $this->safeDropTable('custom_pages_template_file_content');
         $this->safeDropTable('custom_pages_template_container_content');
         $this->safeDropTable('custom_pages_template_image_content');
-        $this->safeDropTable('custom_pages_template_hh_richtext_content');
-        $this->safeDropTable('custom_pages_template_richtext_content');
-        $this->safeDropTable('custom_pages_template_file_download_content');
         $this->safeDropTable('custom_pages_template_element');
         $this->safeDropTable('custom_pages_template_owner_content');
         $this->safeDropTable('custom_pages_template_instance');

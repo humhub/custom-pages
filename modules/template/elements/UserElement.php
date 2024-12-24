@@ -6,16 +6,16 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\custom_pages\modules\template\models;
+namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\models\User;
 use Yii;
 
 /**
- * Class UserContent
+ * Class to manage content records of the User elements
  */
-class UserContent extends ContentContainerContent
+class UserElement extends BaseContentContainerElement
 {
     public const CONTAINER_CLASS = User::class;
     public static $label = 'User';

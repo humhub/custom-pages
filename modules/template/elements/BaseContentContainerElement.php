@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\custom_pages\modules\template\models;
+namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -16,12 +16,12 @@ use yii\db\IntegrityException;
 use yii\helpers\ArrayHelper;
 
 /**
- * Class ContentContainerContent
+ * Abstract class to manage content records of the User/Space elements
  *
+ * Dynamic attributes:
  * @property string $guid
- * @property string $class
  */
-abstract class ContentContainerContent extends TemplateContentActiveRecord
+abstract class BaseContentContainerElement extends BaseTemplateElementContent
 {
     public const CONTAINER_CLASS = null;
 
@@ -30,9 +30,11 @@ abstract class ContentContainerContent extends TemplateContentActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    protected function getDynamicAttributes(): array
     {
-        return 'custom_pages_template_contentcontainer_content';
+        return [
+            'guid' => null,
+        ];
     }
 
     /**
@@ -40,10 +42,9 @@ abstract class ContentContainerContent extends TemplateContentActiveRecord
      */
     public function rules()
     {
-        return array_merge(parent::rules(), [
-            [['guid', 'class'], 'string'],
-            [['class'], 'required'],
-        ]);
+        return [
+            [['guid'], 'string'],
+        ];
     }
 
     /**
@@ -52,7 +53,7 @@ abstract class ContentContainerContent extends TemplateContentActiveRecord
     public function scenarios()
     {
         return ArrayHelper::merge(parent::scenarios(), [
-            self::SCENARIO_CREATE => $attributes = ['guid', 'class'],
+            self::SCENARIO_CREATE => $attributes = ['guid'],
             self::SCENARIO_EDIT_ADMIN => $attributes,
             self::SCENARIO_EDIT => $attributes,
         ]);
@@ -64,17 +65,6 @@ abstract class ContentContainerContent extends TemplateContentActiveRecord
     public function getLabel()
     {
         return static::$label;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function copy()
-    {
-        $clone = new static();
-        $clone->guid = $this->guid;
-        $clone->class = $this->class;
-        return $clone;
     }
 
     /**
@@ -122,7 +112,6 @@ abstract class ContentContainerContent extends TemplateContentActiveRecord
      */
     public function beforeValidate()
     {
-        $this->class = static::CONTAINER_CLASS;
         return parent::beforeValidate();
     }
 

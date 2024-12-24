@@ -6,6 +6,7 @@ use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\UserElement;
 use Yii;
 
 /**
@@ -283,6 +284,6 @@ class OwnerContent extends ActiveRecord
     public function getProfileField(string $field = null): string
     {
         $instance = $this->getInstance();
-        return $instance instanceof UserContent ? $instance->getProfileField($field) : '';
+        return $instance instanceof UserElement ? $instance->getProfileField($field) : '';
     }
 }

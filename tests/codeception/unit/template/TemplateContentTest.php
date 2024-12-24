@@ -2,10 +2,11 @@
 
 namespace tests\codeception\unit\modules\custom_page\template;
 
-use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
+use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use tests\codeception\_support\HumHubDbTestCase;
 
 class TemplateContentTest extends HumHubDbTestCase
 {
@@ -21,8 +22,8 @@ class TemplateContentTest extends HumHubDbTestCase
 
     public function testRenderHtml()
     {
-
-        $content = new \humhub\modules\custom_pages\modules\template\elements\RichtextElement();
+        $content = new RichtextElement();
+        $content->element_id = 1;
         $content->content = '<p>Test</p>';
         $content->save();
 

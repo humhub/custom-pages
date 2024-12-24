@@ -86,7 +86,7 @@ class TemplateElementTest extends HumHubDbTestCase
         $this->element2->saveInstance($this->owner, $content);
 
         $content2 = new RichtextElement();
-        $content->element_id = 1;
+        $content2->element_id = 1;
         $content2->content = '<p>Non Default New</p>';
         $content2->save();
 
@@ -133,12 +133,12 @@ class TemplateElementTest extends HumHubDbTestCase
     public function testDeleteElement()
     {
         $content = new RichtextElement();
-        $content->element_id = 1;
+        $content->element_id = 2;
         $content->content = '<p>Non Default</p>';
         $content->save();
 
         $content2 = new RichtextElement();
-        $content->element_id = 1;
+        $content2->element_id = 2;
         $content2->content = '<p>Non Default2</p>';
         $content2->save();
 
@@ -167,7 +167,7 @@ class TemplateElementTest extends HumHubDbTestCase
         $content->save();
 
         $content2 = new RichtextElement();
-        $content->element_id = 1;
+        $content2->element_id = 1;
         $content2->content = '<p>Non Default2</p>';
         $content2->save();
 

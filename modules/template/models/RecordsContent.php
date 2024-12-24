@@ -189,7 +189,7 @@ abstract class RecordsContent extends TemplateContentActiveRecord implements Tem
     public function getItems(): iterable
     {
         if ($this->records === null) {
-            if (empty($this->options[$this->type])) {
+            if (!$this->isConfigured()) {
                 // No need to touch DB because option is not configured for the current type
                 $this->records = [];
             } else {
@@ -211,5 +211,15 @@ abstract class RecordsContent extends TemplateContentActiveRecord implements Tem
     protected function filterStatic(ActiveQuery $query): ActiveQuery
     {
         return $query->andWhere(['guid' => $this->options['static']]);
+    }
+
+    /**
+     * Check if the Element is properly configured
+     *
+     * @return bool
+     */
+    protected function isConfigured(): bool
+    {
+        return !empty($this->options[$this->type]);
     }
 }

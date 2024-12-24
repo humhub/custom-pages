@@ -29,7 +29,8 @@ use humhub\modules\user\widgets\UserPickerField;
     <?= $form->field($model, 'options[friend]')->widget(UserPickerField::class, [
         'minInput' => 2,
         'maxSelection' => 1,
-    ])->label(Yii::t('CustomPagesModule.template', 'User')) ?>
+    ])->label(Yii::t('CustomPagesModule.template', 'User'))
+    ->hint(Yii::t('CustomPagesModule.template', 'When no user is selected, the current logged in user will be used.')) ?>
 </div>
 
 <div class="records-content-form-fields" data-type="group,friend">

@@ -6,23 +6,24 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\custom_pages\modules\template\models;
+namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\components\ActiveRecord;
 use humhub\libs\Html;
+use humhub\modules\custom_pages\modules\template\models\TemplateContentIterable;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
 /**
- * Class RecordsContent
+ * Abstract class to manage content records of the elements with different object list (Spaces, Users)
  *
+ * Dynamic attributes:
  * @property string $type
- * @property string $class
- * @property string|array $options
+ * @property array $static
  */
-abstract class RecordsContent extends TemplateContentActiveRecord implements TemplateContentIterable
+abstract class BaseRecordsElement extends BaseTemplateElementContent implements TemplateContentIterable
 {
     public const RECORD_CLASS = null;
 
@@ -46,21 +47,11 @@ abstract class RecordsContent extends TemplateContentActiveRecord implements Tem
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
-        return 'custom_pages_template_records_content';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
+    protected function getDynamicAttributes(): array
     {
         return [
-            [['type', 'class'], 'string'],
-            [['options'], 'safe'],
-            [['class'], 'required'],
-            [['type'], 'in', 'range' => array_keys($this->getTypes())],
+            'type' => null,
+            'static' => null,
         ];
     }
 
@@ -77,13 +68,12 @@ abstract class RecordsContent extends TemplateContentActiveRecord implements Tem
     /**
      * @inheritdoc
      */
-    public function scenarios()
+    public function rules()
     {
-        return ArrayHelper::merge(parent::scenarios(), [
-            self::SCENARIO_CREATE => $attributes = ['type', 'options'],
-            self::SCENARIO_EDIT_ADMIN => $attributes,
-            self::SCENARIO_EDIT => $attributes,
-        ]);
+        return [
+            [['type'], 'in', 'range' => array_keys($this->getTypes())],
+            [['static'], 'safe'],
+        ];
     }
 
     /**
@@ -97,21 +87,9 @@ abstract class RecordsContent extends TemplateContentActiveRecord implements Tem
     /**
      * @inheritdoc
      */
-    public function copy()
-    {
-        $clone = new static();
-        $clone->type = $this->type;
-        $clone->class = $this->class;
-        $clone->options = $this->options;
-        return $clone;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function render($options = [])
     {
-        return Html::encode($this->class);
+        return Html::encode(static::RECORD_CLASS);
     }
 
     /**
@@ -132,43 +110,6 @@ abstract class RecordsContent extends TemplateContentActiveRecord implements Tem
             'form' => $form,
             'model' => $this,
         ]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function __get($name)
-    {
-        $value = parent::__get($name);
-
-        if ($name === 'options' && !is_array($value)) {
-            $value = empty($value) ? [] : json_decode($value, true);
-            $this->setAttribute($name, $value);
-        }
-
-        return $value;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function beforeValidate()
-    {
-        $this->class = static::RECORD_CLASS;
-        return parent::beforeValidate();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function beforeSave($insert)
-    {
-        if (parent::beforeSave($insert)) {
-            $this->options = is_array($this->options) ? json_encode($this->options) : null;
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -196,9 +137,9 @@ abstract class RecordsContent extends TemplateContentActiveRecord implements Tem
                 // Get records from DB
                 $query = $this->getQuery();
 
-                if ($this->type !== 'static' && !empty($this->options['limit'])) {
+                if ($this->type !== 'static' && !empty($this->limit)) {
                     // Limit only dynamic list
-                    $query->limit($this->options['limit']);
+                    $query->limit($this->limit);
                 }
 
                 $this->records = $query->all();
@@ -210,7 +151,7 @@ abstract class RecordsContent extends TemplateContentActiveRecord implements Tem
 
     protected function filterStatic(ActiveQuery $query): ActiveQuery
     {
-        return $query->andWhere(['guid' => $this->options['static']]);
+        return $query->andWhere(['guid' => $this->static]);
     }
 
     /**
@@ -220,6 +161,6 @@ abstract class RecordsContent extends TemplateContentActiveRecord implements Tem
      */
     protected function isConfigured(): bool
     {
-        return !empty($this->options[$this->type]);
+        return !empty($this->{$this->type});
     }
 }

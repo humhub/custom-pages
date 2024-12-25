@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\custom_pages\modules\template\models;
+namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -14,13 +14,56 @@ use Yii;
 use yii\db\ActiveQuery;
 
 /**
- * Class UsersContent
+ * Class to manage content records of the elements with Spaces list
+ *
+ * Dynamic attributes:
+ * @property array $member
+ * @property string $memberType
+ * @property array $tag
+ * @property int $limit
  */
-class SpacesContent extends RecordsContent
+class SpacesElement extends BaseRecordsElement
 {
     public const RECORD_CLASS = Space::class;
     public static $label = 'Spaces';
     public string $formView = 'spaces';
+
+    /**
+     * @inheritdoc
+     */
+    protected function getDynamicAttributes(): array
+    {
+        return array_merge(parent::getDynamicAttributes(), [
+            'member' => null,
+            'memberType' => null,
+            'tag' => null,
+            'limit' => null,
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return array_merge(parent::attributeLabels(), [
+            'static' => Yii::t('CustomPagesModule.template', 'Select spaces'),
+            'member' => Yii::t('CustomPagesModule.template', 'User'),
+            'memberType' => Yii::t('CustomPagesModule.template', 'Space member type'),
+            'tag' => Yii::t('CustomPagesModule.template', 'Tag'),
+            'limit' => Yii::t('CustomPagesModule.template', 'Limit'),
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return array_merge(parent::attributeHints(), [
+            'member' => Yii::t('CustomPagesModule.template', 'When no user is selected, the current logged in user will be used.'),
+        ]);
+    }
 
     /**
      * @inheritdoc
@@ -62,13 +105,13 @@ class SpacesContent extends RecordsContent
 
     protected function filterMember(ActiveQuery $query): ActiveQuery
     {
-        $userGuid = $this->options['member'] ?: Yii::$app->user->getGuid();
+        $userGuid = $this->member ?: Yii::$app->user->getGuid();
 
-        if (empty($this->options['memberType']) || empty($userGuid)) {
+        if (empty($this->memberType) || empty($userGuid)) {
             return $query->andWhere(false);
         }
 
-        return match ($this->options['memberType']) {
+        return match ($this->memberType) {
             'member' => $query->leftJoin('space_membership', 'space_membership.space_id = space.id')
                 ->leftJoin('user', 'user.id = space_membership.user_id')
                 ->andWhere(['user.guid' => $userGuid])
@@ -87,7 +130,7 @@ class SpacesContent extends RecordsContent
         return $query->leftJoin('contentcontainer_tag_relation', 'contentcontainer_tag_relation.contentcontainer_id = space.contentcontainer_id')
             ->leftJoin('contentcontainer_tag', 'contentcontainer_tag.id = contentcontainer_tag_relation.tag_id')
             ->andWhere(['contentcontainer_tag.contentcontainer_class' => Space::class])
-            ->andWhere(['contentcontainer_tag.name' => $this->options['tag']]);
+            ->andWhere(['contentcontainer_tag.name' => $this->tag]);
     }
 
     /**

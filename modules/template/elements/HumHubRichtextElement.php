@@ -45,18 +45,6 @@ class HumHubRichtextElement extends BaseTemplateElementContent
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
-        $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_CREATE][] = 'content';
-        $scenarios[self::SCENARIO_EDIT_ADMIN][] = 'content';
-        $scenarios[self::SCENARIO_EDIT][] = 'content';
-        return $scenarios;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return  [

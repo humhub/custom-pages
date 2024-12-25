@@ -14,18 +14,18 @@ use humhub\modules\custom_pages\modules\template\elements\HumHubRichtextElement;
 use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
 use humhub\modules\custom_pages\modules\template\elements\RssElement;
 use humhub\modules\custom_pages\modules\template\elements\SpaceElement;
+use humhub\modules\custom_pages\modules\template\elements\SpacesElement;
 use humhub\modules\custom_pages\modules\template\elements\TextElement;
 use humhub\modules\custom_pages\modules\template\elements\UserElement;
+use humhub\modules\custom_pages\modules\template\elements\UsersElement;
 use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\ImportForm;
 use humhub\modules\custom_pages\modules\template\models\ImageContent;
-use humhub\modules\custom_pages\modules\template\models\SpacesContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
-use humhub\modules\custom_pages\modules\template\models\UsersContent;
 use humhub\modules\custom_pages\modules\template\services\ExportService;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateElementAdminRow;
 use humhub\modules\custom_pages\modules\template\widgets\EditElementModal;
@@ -174,8 +174,8 @@ class AdminController extends \humhub\modules\admin\components\Controller
             RssElement::$label => RssElement::class,
             UserElement::$label => UserElement::class,
             SpaceElement::$label => SpaceElement::class,
-            UsersContent::$label => UsersContent::class,
-            SpacesContent::$label => SpacesContent::class,
+            UsersElement::$label => UsersElement::class,
+            SpacesElement::$label => SpacesElement::class,
         ];
     }
 

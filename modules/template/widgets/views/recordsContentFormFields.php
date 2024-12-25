@@ -6,11 +6,11 @@
  */
 
 use humhub\libs\Html;
-use humhub\modules\custom_pages\modules\template\models\RecordsContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseRecordsElement;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\view\components\View;
 
-/* @var RecordsContent $model */
+/* @var BaseRecordsElement $model */
 /* @var ActiveForm $form */
 /* @var View $this */
 ?>

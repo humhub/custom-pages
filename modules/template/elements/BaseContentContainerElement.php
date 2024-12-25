@@ -13,7 +13,6 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use yii\db\IntegrityException;
-use yii\helpers\ArrayHelper;
 
 /**
  * Abstract class to manage content records of the User/Space elements
@@ -45,18 +44,6 @@ abstract class BaseContentContainerElement extends BaseTemplateElementContent
         return [
             [['guid'], 'string'],
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function scenarios()
-    {
-        return ArrayHelper::merge(parent::scenarios(), [
-            self::SCENARIO_CREATE => $attributes = ['guid'],
-            self::SCENARIO_EDIT_ADMIN => $attributes,
-            self::SCENARIO_EDIT => $attributes,
-        ]);
     }
 
     /**

@@ -44,18 +44,6 @@ class FileElement extends BaseTemplateElementContent
     }
 
     /**
-     * @inheritdoc
-     */
-    public function scenarios()
-    {
-        $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_CREATE][] = 'file_guid';
-        $scenarios[self::SCENARIO_EDIT_ADMIN][] = 'file_guid';
-        $scenarios[self::SCENARIO_EDIT][] = 'file_guid';
-        return $scenarios;
-    }
-
-    /**
      * @inerhitdoc
      */
     public function attributeLabels()

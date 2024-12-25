@@ -143,11 +143,16 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
      */
     public function scenarios()
     {
+        $attributes = array_merge(
+            ['fileList', 'definitionPostData'],
+            array_keys($this->getDynamicAttributes()),
+        );
+
         return [
-            self::SCENARIO_DEFAULT => ['fileList', 'definitionPostData'],
-            self::SCENARIO_CREATE => ['fileList', 'definitionPostData'],
-            self::SCENARIO_EDIT_ADMIN => ['fileList', 'definitionPostData'],
-            self::SCENARIO_EDIT => ['fileList', 'definitionPostData'],
+            self::SCENARIO_DEFAULT => $attributes,
+            self::SCENARIO_CREATE => $attributes,
+            self::SCENARIO_EDIT_ADMIN => $attributes,
+            self::SCENARIO_EDIT => $attributes,
         ];
     }
 

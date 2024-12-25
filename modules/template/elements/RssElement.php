@@ -13,7 +13,6 @@ use humhub\modules\custom_pages\modules\template\models\TemplateContentIterable;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use SimpleXMLElement;
 use Yii;
-use yii\helpers\ArrayHelper;
 
 /**
  * Class to manage content records of the RSS elements
@@ -52,18 +51,6 @@ class RssElement extends BaseTemplateElementContent implements TemplateContentIt
             [['cache_time'], 'integer', 'min' => 0],
             [['limit'], 'integer', 'min' => 0],
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function scenarios()
-    {
-        return ArrayHelper::merge(parent::scenarios(), [
-            self::SCENARIO_CREATE => $attributes = ['url', 'cache_time', 'limit'],
-            self::SCENARIO_EDIT_ADMIN => $attributes,
-            self::SCENARIO_EDIT => $attributes,
-        ]);
     }
 
     /**

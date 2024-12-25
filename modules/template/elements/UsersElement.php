@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\custom_pages\modules\template\models;
+namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
@@ -14,13 +14,53 @@ use Yii;
 use yii\db\ActiveQuery;
 
 /**
- * Class UsersContent
+ * Class to manage content records of the elements with Users list
+ *
+ * Dynamic attributes:
+ * @property string $group
+ * @property array $friend
+ * @property int $limit
  */
-class UsersContent extends RecordsContent
+class UsersElement extends BaseRecordsElement
 {
     public const RECORD_CLASS = User::class;
     public static $label = 'Users';
     public string $formView = 'users';
+
+    /**
+     * @inheritdoc
+     */
+    protected function getDynamicAttributes(): array
+    {
+        return array_merge(parent::getDynamicAttributes(), [
+            'group' => null,
+            'friend' => null,
+            'limit' => null,
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return array_merge(parent::attributeLabels(), [
+            'static' => Yii::t('CustomPagesModule.template', 'Select users'),
+            'group' => Yii::t('CustomPagesModule.template', 'Select group'),
+            'friend' => Yii::t('CustomPagesModule.template', 'User'),
+            'limit' => Yii::t('CustomPagesModule.template', 'Limit'),
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return array_merge(parent::attributeHints(), [
+            'friend' => Yii::t('CustomPagesModule.template', 'When no user is selected, the current logged in user will be used.'),
+        ]);
+    }
 
     /**
      * @inheritdoc
@@ -30,6 +70,18 @@ class UsersContent extends RecordsContent
         return array_merge(parent::getTypes(), [
             'group' => Yii::t('CustomPagesModule.template', 'Users from the selected group'),
             'friend' => Yii::t('CustomPagesModule.template', 'Users where the user is friend of'),
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return array_merge(parent::rules(), [
+            [['group'], 'in', 'range' => array_keys($this->getGroupOptions())],
+            [['friend'], 'safe'],
+            [['limit'], 'integer'],
         ]);
     }
 
@@ -64,12 +116,12 @@ class UsersContent extends RecordsContent
     protected function filterGroup(ActiveQuery $query): ActiveQuery
     {
         return $query->leftJoin('group_user', 'group_user.user_id = user.id')
-            ->andWhere(['group_user.group_id' => $this->options['group']]);
+            ->andWhere(['group_user.group_id' => $this->group]);
     }
 
     protected function filterFriend(ActiveQuery $query): ActiveQuery
     {
-        $friendGuid = $this->options['friend'] ?: Yii::$app->user->getGuid();
+        $friendGuid = $this->friend ?: Yii::$app->user->getGuid();
 
         if (empty($friendGuid)) {
             return $query->andWhere(false);

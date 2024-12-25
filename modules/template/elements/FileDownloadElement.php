@@ -60,18 +60,6 @@ class FileDownloadElement extends BaseTemplateElementContent
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
-        $scenarios = parent::scenarios();
-        array_push($scenarios[self::SCENARIO_CREATE], 'file_guid', 'title', 'style', 'cssClass', 'showFileinfo', 'showIcon');
-        array_push($scenarios[self::SCENARIO_EDIT_ADMIN], 'file_guid', 'title', 'style', 'cssClass', 'showFileinfo', 'showIcon');
-        array_push($scenarios[self::SCENARIO_EDIT], 'file_guid', 'title', 'style', 'cssClass', 'showFileinfo', 'showIcon');
-        return $scenarios;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return  [

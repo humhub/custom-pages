@@ -25,6 +25,8 @@ class m241220_101915_template_elements extends Migration
         $this->migrateElements('custom_pages_template_rss_content', 'Rss', ['url', 'cache_time', 'limit']);
         $this->migrateElements('custom_pages_template_contentcontainer_content', 'User', ['guid'], false);
         $this->migrateElements('custom_pages_template_contentcontainer_content', 'Space', ['guid']);
+        $this->migrateElements('custom_pages_template_records_content', 'Users', ['type', 'options' => 'jsonMerge'], false);
+        $this->migrateElements('custom_pages_template_records_content', 'Spaces', ['type', 'options' => 'jsonMerge']);
     }
 
     /**
@@ -50,9 +52,16 @@ class m241220_101915_template_elements extends Migration
 
         foreach ($elements->each() as $element) {
             $dynValues = [];
-            foreach ($dynAttributes as $attribute) {
-                if (isset($element[$attribute])) {
-                    $dynValues[$attribute] = $element[$attribute];
+            foreach ($dynAttributes as $attrKey => $attrName) {
+                if ($attrName === 'jsonMerge') {
+                    if (!empty($element[$attrKey])) {
+                        $jsonValues = @json_decode($element[$attrKey], true);
+                        if (is_array($jsonValues)) {
+                            $dynValues = array_merge($dynValues, $jsonValues);
+                        }
+                    }
+                } elseif (isset($element[$attrName])) {
+                    $dynValues[$attrName] = $element[$attrName];
                 }
             }
 

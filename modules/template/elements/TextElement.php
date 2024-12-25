@@ -63,15 +63,12 @@ class TextElement extends BaseTemplateElementContent
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_CREATE][] = 'content';
-        $scenarios[self::SCENARIO_EDIT_ADMIN][] = 'content';
-        $scenarios[self::SCENARIO_EDIT][] = 'content';
-
-        $scenarios[self::SCENARIO_CREATE][] = 'inline_text';
-        $scenarios[self::SCENARIO_EDIT_ADMIN][] = 'inline_text';
 
         // We disallow editing this field in page editor
-        //$scenarios[self::SCENARIO_EDIT][] = 'inline_text';
+        $index = array_search('inline_text', $scenarios[self::SCENARIO_EDIT]);
+        if ($index !== false) {
+            unset($scenarios[self::SCENARIO_EDIT][$index]);
+        }
 
         return $scenarios;
     }

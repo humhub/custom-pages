@@ -44,17 +44,17 @@ class FileElement extends BaseTemplateElementContent
     }
 
     /**
-     * @inerhitdoc
+     * @inheritdoc
      */
     public function attributeLabels()
     {
-        return  [
+        return [
             'file_guid' => Yii::t('CustomPagesModule.base', 'File'),
         ];
     }
 
     /**
-     * @inerhitdoc
+     * @inheritdoc
      */
     public function saveFiles()
     {
@@ -70,7 +70,7 @@ class FileElement extends BaseTemplateElementContent
     }
 
     /**
-     * @inerhitdoc
+     * @inheritdoc
      */
     public function getLabel()
     {
@@ -78,32 +78,35 @@ class FileElement extends BaseTemplateElementContent
     }
 
     /**
-     * @inerhitdoc
+     * Get File
+     *
+     * @return File|null
      */
-    public function getFile()
+    public function getFile(): ?File
     {
-        return File::findOne(['guid' => $this->file_guid]);
+        return empty($this->file_guid) ? null : File::findOne(['guid' => $this->file_guid]);
     }
 
     /**
-     * @inerhitdoc
+     * Check if a File is found for this Element
+     *
+     * @return bool
      */
-    public function hasFile()
+    public function hasFile(): bool
     {
-        return $this->file_guid != null && $this->getFile() != null;
+        return $this->getFile() !== null;
     }
 
     /**
-     * @inerhitdoc
+     * @return string|null
      */
-    public function getUrl()
+    public function getUrl(): ?string
     {
-        $file = $this->getFile();
-        return ($file != null) ? $file->getUrl() : null;
+        return $this->getFile()?->getUrl();
     }
 
     /**
-     * @inerhitdoc
+     * @inheritdoc
      */
     public function render($options = [])
     {
@@ -114,7 +117,7 @@ class FileElement extends BaseTemplateElementContent
     }
 
     /**
-     * @inerhitdoc
+     * @inheritdoc
      */
     public function renderEmpty($options = [])
     {
@@ -122,7 +125,7 @@ class FileElement extends BaseTemplateElementContent
     }
 
     /**
-     * @inerhitdoc
+     * @inheritdoc
      */
     public function renderForm($form)
     {
@@ -134,11 +137,10 @@ class FileElement extends BaseTemplateElementContent
     }
 
     /**
-     * @inerhitdoc
+     * @inheritdoc
      */
     public function isEmpty(): bool
     {
         return !$this->hasFile();
     }
-
 }

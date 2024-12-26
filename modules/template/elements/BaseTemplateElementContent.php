@@ -12,9 +12,15 @@ use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\components\ActiveRecordDynamicAttributes;
+use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use humhub\modules\custom_pages\modules\template\models\ContainerContentDefinition;
+use humhub\modules\custom_pages\modules\template\models\ContainerContentItem;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
+use humhub\modules\custom_pages\modules\template\models\Template;
+use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\modules\custom_pages\modules\template\widgets\TemplateEditorElement;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\user\components\PermissionManager;
 use Yii;
@@ -25,8 +31,10 @@ use yii\db\ActiveQuery;
  *
  * @property int $id
  * @property int $element_id
+ * @property int $definition_id
  *
  * @property-read OwnerContent $ownerContent
+ * @property-read BaseTemplateElementContentDefinition $definition
  */
 abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes implements ViewableInterface
 {
@@ -40,7 +48,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     private $formName;
 
     /**
-     * @var ContainerContentDefinition instance of this template
+     * @var BaseTemplateElementContentDefinition|null instance of the definition
      */
     private $definitionInstance;
 
@@ -75,7 +83,6 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
      */
     abstract public function renderEmpty($options = []);
 
-
     /**
      * @return string the label of this content type
      */
@@ -107,6 +114,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
         $clone = new static();
         $clone->element_id = $this->element_id;
         $clone->dynAttributes = $this->dynAttributes;
+        $clone->definition_id = $this->definition_id;
         return $clone;
     }
 
@@ -192,14 +200,14 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     /**
      * Returns the ContainerContentDefinition instance of this instance. +
      * This function will create an empty definition instance if this content type has an definitionModel and
-     * does not have an related definition_id.
+     * does not have a related definition_id.
      *
-     * @return ContainerContentDefinition the definition instance.
+     * @return BaseTemplateElementContentDefinition|null the definition instance.
      */
-    public function getDefinition()
+    public function getDefinition(): ?BaseTemplateElementContentDefinition
     {
         if (!$this->isDefinitionContent()) {
-            return;
+            return null;
         }
 
         if ($this->definitionInstance) {
@@ -310,7 +318,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
             $options['template-content-id'] = $this->getPrimaryKey();
         }
 
-        return \humhub\modules\custom_pages\modules\template\widgets\TemplateEditorElement::widget([
+        return TemplateEditorElement::widget([
             'container' => $type,
             'templateContent' => $this,
             'content' => $content,
@@ -357,6 +365,11 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
         return isset($options[$key]) ? strval($options[$key]) : $default;
     }
 
+    /**
+     * Check if the Element is empty
+     *
+     * @return bool
+     */
     public function isEmpty(): bool
     {
         return false;

@@ -1,31 +1,48 @@
 <?php
 
-namespace humhub\modules\custom_pages\modules\template\models;
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
-use Yii;
+namespace humhub\modules\custom_pages\modules\template\elements;
+
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
+use Yii;
 
-class ImageContent extends FileContent
+/**
+ * Class to manage content records of the Image elements
+ *
+ * Dynamic attributes:
+ * @property string $alt
+ */
+class ImageElement extends FileElement
 {
     public static $label = 'Image';
 
-    public function init()
+    /**
+     * @inheritdoc
+     */
+    public $definitionModel = ImageDefinition::class;
+
+    /**
+     * @inheritdoc
+     */
+    protected function getDynamicAttributes(): array
     {
-        $this->definitionModel = ImageContentDefinition::class;
+        return array_merge(parent::getDynamicAttributes(), [
+            'alt' => null,
+        ]);
     }
 
     /**
-     * @return string the associated database table name
+     * @inheritdoc
      */
-    public static function tableName()
-    {
-        return 'custom_pages_template_image_content';
-    }
-
     public function rules()
     {
         $result = [];
-        // We preven the content instance from beeing saved if there is no definition setting, to get sure we have an empty content in this case
+        // We prevent the content instance from being saved if there is no definition setting, to get sure we have an empty content in this case
         // TODO: perhaps overwrite the validate method and call parent validate only if no definition is set
         if ($this->definition == null || !$this->definition->hasValues()) {
             $result[] = [['file_guid'], 'required'];
@@ -34,33 +51,19 @@ class ImageContent extends FileContent
         return $result;
     }
 
-    public function scenarios()
-    {
-        $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_CREATE][] = 'alt';
-        $scenarios[self::SCENARIO_EDIT_ADMIN][] = 'alt';
-        $scenarios[self::SCENARIO_EDIT][] = 'alt';
-        return $scenarios;
-    }
-
     /**
-     * @return array customized attribute labels (name=>label)
+     * @inheritdoc
      */
     public function attributeLabels()
     {
-        return  [
-            'file_guid' =>  Yii::t('CustomPagesModule.base', 'File'),
+        return array_merge(parent::attributeLabels(), [
             'alt' =>  Yii::t('CustomPagesModule.base', 'Alternate text'),
-        ];
+        ]);
     }
 
-    public function copy()
-    {
-        $clone = parent::copy();
-        $clone->alt = $this->alt;
-        return $clone;
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function render($options = [])
     {
         if ($this->hasFile() != null) {
@@ -84,11 +87,17 @@ class ImageContent extends FileContent
         return '';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function renderEmpty($options = [])
     {
         return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty Image'), $options);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function renderForm($form)
     {
         return TemplateContentFormFields::widget([
@@ -97,5 +106,4 @@ class ImageContent extends FileContent
             'model' => $this,
         ]);
     }
-
 }

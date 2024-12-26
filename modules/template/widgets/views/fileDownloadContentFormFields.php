@@ -16,7 +16,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 /* @var $model FileDownloadElement */
 /* @var $form ActiveForm */
 
-$id = 'fileContent-' . $model->id;
+$id = 'fileDownloadElement-' . $model->id;
 ?>
 <?= $form->field($model, 'title') ?>
 <?= $form->field($model, 'showFileinfo')->checkbox() ?>

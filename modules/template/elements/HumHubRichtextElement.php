@@ -47,7 +47,7 @@ class HumHubRichtextElement extends BaseTemplateElementContent
      */
     public function attributeLabels()
     {
-        return  [
+        return [
             'content' => Yii::t('CustomPagesModule.template', 'Content'),
         ];
     }

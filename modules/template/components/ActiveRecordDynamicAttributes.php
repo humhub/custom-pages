@@ -15,6 +15,7 @@ use yii\validators\Validator;
  * Abstract ActiveRecord which allows you to use not only the regular AR attributes but also other dynamic attributes.
  * These are stored in a JSON field.
  *
+ * @property int $id
  * @property string|array $dynAttributes
  *
  * Dynamic attributes:

@@ -53,10 +53,10 @@ class CreateTemplatePageCest
         $I->attachFile('files[]', 'test.jpg');
         $I->click('.collapsableTrigger'); //Show more
         $I->wait(2);
-        $I->fillField('ImageContent[definitionPostData][height]', '100');
-        $I->fillField('ImageContent[definitionPostData][width]', '100');
-        $I->fillField('ImageContent[definitionPostData][style]', 'border:1px solid black');
-        $I->fillField('ImageContent[alt]', 'This is my test alt text');
+        $I->fillField('ImageElement[definitionPostData][height]', '100');
+        $I->fillField('ImageElement[definitionPostData][width]', '100');
+        $I->fillField('ImageElement[definitionPostData][style]', 'border:1px solid black');
+        $I->fillField('ImageElement[alt]', 'This is my test alt text');
         $I->click('Save', '#globalModal');
         $I->waitForElementNotVisible('#globalModal');
 

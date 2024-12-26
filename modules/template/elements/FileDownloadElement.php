@@ -62,7 +62,7 @@ class FileDownloadElement extends BaseTemplateElementContent
      */
     public function attributeLabels()
     {
-        return  [
+        return [
             'file_guid' => Yii::t('CustomPagesModule.base', 'File'),
             'title' => Yii::t('CustomPagesModule.base', 'Title'),
             'style' => Yii::t('CustomPagesModule.base', 'Style'),

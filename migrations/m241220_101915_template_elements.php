@@ -43,7 +43,7 @@ class m241220_101915_template_elements extends Migration
             'custom_pages_template_container_content',
             'Container',
             [],
-            true,
+            false,
             'custom_pages_template_container_content_definition',
             [
                 'allow_multiple',
@@ -64,6 +64,8 @@ class m241220_101915_template_elements extends Migration
         $this->safeDropColumn('custom_pages_template_container_content_item', 'container_content_id');
         $this->safeAddForeignKey('fk-tmpl-container-item-element-content', 'custom_pages_template_container_content_item', 'element_content_id', 'custom_pages_template_element_content', 'id', 'CASCADE');
         $this->safeDropTable('custom_pages_template_container_content_template');
+        $this->safeDropTable('custom_pages_template_container_content_definition');
+        $this->safeDropTable('custom_pages_template_container_content');
         $this->update(
             'custom_pages_template_owner_content',
             ['owner_model' => 'humhub\\modules\\custom_pages\\modules\\template\\elements\\ContainerItem'],

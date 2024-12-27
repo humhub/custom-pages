@@ -8,7 +8,6 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
-use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use humhub\modules\file\models\File;
 use Yii;
 
@@ -20,7 +19,13 @@ use Yii;
  */
 class FileElement extends BaseTemplateElementContent
 {
-    public static $label = 'File';
+    /**
+     * @inheritdoc
+     */
+    public function getLabel(): string
+    {
+        return Yii::t('CustomPagesModule.template', 'File');
+    }
 
     /**
      * @inheritdoc
@@ -70,14 +75,6 @@ class FileElement extends BaseTemplateElementContent
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getLabel()
-    {
-        return static::$label;
-    }
-
-    /**
      * Get File
      *
      * @return File|null
@@ -122,18 +119,6 @@ class FileElement extends BaseTemplateElementContent
     public function renderEmpty($options = [])
     {
         return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderForm($form)
-    {
-        return TemplateContentFormFields::widget([
-            'type' => 'file',
-            'form' => $form,
-            'model' => $this,
-        ]);
     }
 
     /**

@@ -9,7 +9,6 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\libs\Html;
-use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use Yii;
 
 /**
@@ -21,7 +20,13 @@ use Yii;
  */
 class TextElement extends BaseTemplateElementContent
 {
-    public static $label = 'Text';
+    /**
+     * @inheritdoc
+     */
+    public function getLabel(): string
+    {
+        return Yii::t('CustomPagesModule.template', 'Text');
+    }
 
     /**
      * @inheritdoc
@@ -76,14 +81,6 @@ class TextElement extends BaseTemplateElementContent
     /**
      * @inheritdoc
      */
-    public function getLabel()
-    {
-        return self::$label;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function render($options = [])
     {
         $result = $this->inline_text ? $this->purify($this->content) : Html::encode($this->content);
@@ -107,17 +104,4 @@ class TextElement extends BaseTemplateElementContent
 
         return '';
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderForm($form)
-    {
-        return TemplateContentFormFields::widget([
-            'type' => 'text',
-            'form' => $form,
-            'model' => $this,
-        ]);
-    }
-
 }

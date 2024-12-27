@@ -16,7 +16,7 @@ use humhub\modules\ui\view\components\View;
 ?>
 <?= $form->field($model, 'type')->dropDownList($model->getTypes(), ['class' => 'records-content-form-type']) ?>
 
-<?= $this->render($model->formView . 'ContentFormFields', [
+<?= $this->render($model->subFormView, [
     'form' => $form,
     'model' => $model,
 ]) ?>

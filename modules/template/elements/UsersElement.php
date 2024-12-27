@@ -24,8 +24,15 @@ use yii\db\ActiveQuery;
 class UsersElement extends BaseRecordsElement
 {
     public const RECORD_CLASS = User::class;
-    public static $label = 'Users';
-    public string $formView = 'users';
+    public string $subFormView = 'users';
+
+    /**
+     * @inheritdoc
+     */
+    public function getLabel(): string
+    {
+        return Yii::t('CustomPagesModule.template', 'Users');
+    }
 
     /**
      * @inheritdoc

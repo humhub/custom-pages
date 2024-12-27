@@ -9,7 +9,6 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -22,7 +21,13 @@ use yii\db\ActiveQuery;
  */
 class ContainerElement extends BaseTemplateElementContent
 {
-    public static $label = 'Container';
+    /**
+     * @inheritdoc
+     */
+    public function getLabel(): string
+    {
+        return Yii::t('CustomPagesModule.template', 'Container');
+    }
 
     /**
      * @inheritdoc
@@ -50,6 +55,9 @@ class ContainerElement extends BaseTemplateElementContent
         return $this->definition->allowedTemplates;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function beforeDelete()
     {
         if ($this->hasItems()) {
@@ -61,11 +69,9 @@ class ContainerElement extends BaseTemplateElementContent
         return parent::beforeDelete();
     }
 
-    public function getLabel()
-    {
-        return self::$label;
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function render($options = [])
     {
         $items = $this->items;
@@ -90,6 +96,9 @@ class ContainerElement extends BaseTemplateElementContent
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function renderEmpty($options = [])
     {
         $options['jsWidget'] = 'custom_pages.template.TemplateContainer';
@@ -183,18 +192,6 @@ class ContainerElement extends BaseTemplateElementContent
     public function isSingleAllowedTemplate(): bool
     {
         return $this->definition->isSingleAllowedTemplate();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderForm($form)
-    {
-        return TemplateContentFormFields::widget([
-            'type' => 'container',
-            'form' => $form,
-            'model' => $this,
-        ]);
     }
 
     /**

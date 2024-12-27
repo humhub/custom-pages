@@ -8,29 +8,25 @@
 
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
+use humhub\components\Widget;
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use yii\widgets\ActiveForm;
+
 /**
- * User Administration Menu
+ * Widget renders a form with fields of the Template Element Content
  *
  * @author buddh4
  */
-class TemplateContentFormFields extends \humhub\components\Widget
+class TemplateContentFormFields extends Widget
 {
-    public $view;
-    public $type;
-    public $form;
-    public $model;
-    public $fileList;
+    public ?ActiveForm $form = null;
+    public ?BaseTemplateElementContent $model = null;
 
     public function run()
     {
-        if ($this->view == null) {
-            $this->view = $this->type . 'ContentFormFields';
-        }
-
-        return $this->render($this->view, [
+        return $this->render('elements/' . $this->model->getFormView(), [
             'form' => $this->form,
             'model' => $this->model,
-            'fileList' => $this->fileList,
             'isAdminEdit' =>  $this->model->scenario === 'edit-admin' || $this->model->scenario === 'create',
         ]);
     }

@@ -11,10 +11,8 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 use humhub\components\ActiveRecord;
 use humhub\libs\Html;
 use humhub\modules\custom_pages\modules\template\models\TemplateContentIterable;
-use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use Yii;
 use yii\db\ActiveQuery;
-use yii\helpers\ArrayHelper;
 
 /**
  * Abstract class to manage content records of the elements with different object list (Spaces, Users)
@@ -35,7 +33,7 @@ abstract class BaseRecordsElement extends BaseTemplateElementContent implements 
     /**
      * @var string Prefix for view file to render a widget with form fields
      */
-    public string $formView = '';
+    public string $subFormView = '';
 
     /**
      * Get query of the records depending on config
@@ -79,14 +77,6 @@ abstract class BaseRecordsElement extends BaseTemplateElementContent implements 
     /**
      * @inheritdoc
      */
-    public function getLabel()
-    {
-        return static::$label;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function render($options = [])
     {
         return Html::encode(static::RECORD_CLASS);
@@ -103,13 +93,9 @@ abstract class BaseRecordsElement extends BaseTemplateElementContent implements 
     /**
      * @inheritdoc
      */
-    public function renderForm($form)
+    public function getFormView(): string
     {
-        return TemplateContentFormFields::widget([
-            'type' => 'records',
-            'form' => $form,
-            'model' => $this,
-        ]);
+        return 'records';
     }
 
     /**

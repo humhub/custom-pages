@@ -9,7 +9,6 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use Yii;
 
 /**
@@ -20,7 +19,13 @@ use Yii;
  */
 class HumHubRichtextElement extends BaseTemplateElementContent
 {
-    public static $label = 'HumHub Richtext';
+    /**
+     * @inheritdoc
+     */
+    public function getLabel(): string
+    {
+        return Yii::t('CustomPagesModule.template', 'HumHub Richtext');
+    }
 
     /**
      * @inheritdoc
@@ -55,14 +60,6 @@ class HumHubRichtextElement extends BaseTemplateElementContent
     /**
      * @inheritdoc
      */
-    public function getLabel()
-    {
-        return self::$label;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function render($options = [])
     {
         if ($this->isEditMode($options)) {
@@ -87,17 +84,4 @@ class HumHubRichtextElement extends BaseTemplateElementContent
     {
         return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty HumHub Richtext'), $options);
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderForm($form)
-    {
-        return TemplateContentFormFields::widget([
-            'type' => 'humhubRichtext',
-            'form' => $form,
-            'model' => $this,
-        ]);
-    }
-
 }

@@ -17,7 +17,14 @@ use Yii;
 class SpaceElement extends BaseContentContainerElement
 {
     public const CONTAINER_CLASS = Space::class;
-    public static $label = 'Space';
+
+    /**
+     * @inheritdoc
+     */
+    public function getLabel(): string
+    {
+        return Yii::t('CustomPagesModule.template', 'Space');
+    }
 
     /**
      * @inheritdoc

@@ -164,18 +164,18 @@ class AdminController extends \humhub\modules\admin\components\Controller
     private function getContentTypes(): array
     {
         return [
-            TextElement::$label => TextElement::class,
-            RichtextElement::$label => RichtextElement::class,
-            HumHubRichtextElement::$label => HumHubRichtextElement::class,
-            ImageElement::$label => ImageElement::class,
-            FileElement::$label => FileElement::class,
-            FileDownloadElement::$label => FileDownloadElement::class,
-            ContainerElement::$label => ContainerElement::class,
-            RssElement::$label => RssElement::class,
-            UserElement::$label => UserElement::class,
-            SpaceElement::$label => SpaceElement::class,
-            UsersElement::$label => UsersElement::class,
-            SpacesElement::$label => SpacesElement::class,
+            TextElement::class,
+            RichtextElement::class,
+            HumHubRichtextElement::class,
+            ImageElement::class,
+            FileElement::class,
+            FileDownloadElement::class,
+            ContainerElement::class,
+            RssElement::class,
+            UserElement::class,
+            SpaceElement::class,
+            UsersElement::class,
+            SpacesElement::class,
         ];
     }
 

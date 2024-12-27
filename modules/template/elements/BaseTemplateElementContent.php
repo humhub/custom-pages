@@ -84,13 +84,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     /**
      * @return string the label of this content type
      */
-    abstract public function getLabel();
-
-    /**
-     * @param \yii\widgets\ActiveForm $form form instance
-     * @return string edit form of this content type
-     */
-    abstract public function renderForm($form);
+    abstract public function getLabel(): string;
 
     /**
      * @inheritdoc
@@ -453,5 +447,15 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     public function isCacheable(): bool
     {
         return true;
+    }
+
+    /**
+     * Get a view file name to render a form with fields for this Element Content
+     *
+     * @return string
+     */
+    public function getFormView(): string
+    {
+        return lcfirst(substr(strrchr(static::class, '\\'), 1, -7));
     }
 }

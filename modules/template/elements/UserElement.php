@@ -18,7 +18,14 @@ use Yii;
 class UserElement extends BaseContentContainerElement
 {
     public const CONTAINER_CLASS = User::class;
-    public static $label = 'User';
+
+    /**
+     * @inheritdoc
+     */
+    public function getLabel(): string
+    {
+        return Yii::t('CustomPagesModule.template', 'User');
+    }
 
     /**
      * @inheritdoc

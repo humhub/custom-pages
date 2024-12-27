@@ -8,7 +8,6 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
-use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use Yii;
 
 /**
@@ -19,7 +18,13 @@ use Yii;
  */
 class ImageElement extends FileElement
 {
-    public static $label = 'Image';
+    /**
+     * @inheritdoc
+     */
+    public function getLabel(): string
+    {
+        return Yii::t('CustomPagesModule.template', 'Image');
+    }
 
     /**
      * @inheritdoc
@@ -93,17 +98,5 @@ class ImageElement extends FileElement
     public function renderEmpty($options = [])
     {
         return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty Image'), $options);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderForm($form)
-    {
-        return TemplateContentFormFields::widget([
-            'type' => 'image',
-            'form' => $form,
-            'model' => $this,
-        ]);
     }
 }

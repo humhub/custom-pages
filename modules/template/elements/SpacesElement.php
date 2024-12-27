@@ -25,8 +25,15 @@ use yii\db\ActiveQuery;
 class SpacesElement extends BaseRecordsElement
 {
     public const RECORD_CLASS = Space::class;
-    public static $label = 'Spaces';
-    public string $formView = 'spaces';
+    public string $subFormView = 'spaces';
+
+    /**
+     * @inheritdoc
+     */
+    public function getLabel(): string
+    {
+        return Yii::t('CustomPagesModule.template', 'Spaces');
+    }
 
     /**
      * @inheritdoc

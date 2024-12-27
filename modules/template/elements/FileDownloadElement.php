@@ -8,7 +8,6 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
-use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use humhub\modules\file\models\File;
 use humhub\modules\file\libs\FileHelper;
 use Yii;
@@ -28,7 +27,13 @@ use yii\helpers\Html;
  */
 class FileDownloadElement extends BaseTemplateElementContent
 {
-    public static $label = 'File Download';
+    /**
+     * @inheritdoc
+     */
+    public function getLabel(): string
+    {
+        return Yii::t('CustomPagesModule.template', 'File Download');
+    }
 
     /**
      * @inheritdoc
@@ -86,14 +91,6 @@ class FileDownloadElement extends BaseTemplateElementContent
         }
 
         $this->fileManager->attach($this->file_guid);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getLabel()
-    {
-        return static::$label;
     }
 
     public function getFile(): ?File
@@ -160,17 +157,5 @@ class FileDownloadElement extends BaseTemplateElementContent
     public function renderEmpty($options = [])
     {
         return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderForm($form)
-    {
-        return TemplateContentFormFields::widget([
-            'type' => 'fileDownload',
-            'form' => $form,
-            'model' => $this,
-        ]);
     }
 }

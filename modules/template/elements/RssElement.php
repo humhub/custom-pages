@@ -10,7 +10,6 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\libs\Html;
 use humhub\modules\custom_pages\modules\template\models\TemplateContentIterable;
-use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use SimpleXMLElement;
 use Yii;
 
@@ -24,7 +23,13 @@ use Yii;
  */
 class RssElement extends BaseTemplateElementContent implements TemplateContentIterable
 {
-    public static $label = 'RSS';
+    /**
+     * @inheritdoc
+     */
+    public function getLabel(): string
+    {
+        return Yii::t('CustomPagesModule.template', 'Rss');
+    }
 
     private SimpleXMLElement|null|false $rssData = null;
 
@@ -79,14 +84,6 @@ class RssElement extends BaseTemplateElementContent implements TemplateContentIt
     /**
      * @inheritdoc
      */
-    public function getLabel()
-    {
-        return self::$label;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function render($options = [])
     {
         return Html::encode($this->getRssData()->channel->title ?: $this->url);
@@ -106,18 +103,6 @@ class RssElement extends BaseTemplateElementContent implements TemplateContentIt
     public function renderEmpty($options = [])
     {
         return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderForm($form)
-    {
-        return TemplateContentFormFields::widget([
-            'type' => 'rss',
-            'form' => $form,
-            'model' => $this,
-        ]);
     }
 
     private function getRssFileContent(): string

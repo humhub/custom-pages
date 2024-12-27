@@ -1,6 +1,7 @@
 <?php
 
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use humhub\widgets\ModalDialog;
 use yii\widgets\ActiveForm;
 use humhub\libs\Html;
@@ -44,7 +45,7 @@ use humhub\libs\Html;
                     </div>
                     <?php // This was only set for container elements before. ?>
                     <div class="panel-body" data-element-index="<?= $counter ?>" style="<?= ($counter != 0) ? 'display:none' : '' ?>">
-                        <?= $contentItem->content->renderForm($form); ?>
+                        <?= TemplateContentFormFields::widget(['form' => $form, 'model' => $contentItem->content]) ?>
                     </div>
                     <div class="panel-footer">&nbsp;</div>
                 </div>

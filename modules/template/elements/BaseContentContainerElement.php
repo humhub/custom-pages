@@ -11,7 +11,6 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use yii\db\IntegrityException;
 
 /**
@@ -49,14 +48,6 @@ abstract class BaseContentContainerElement extends BaseTemplateElementContent
     /**
      * @inheritdoc
      */
-    public function getLabel()
-    {
-        return static::$label;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function render($options = [])
     {
         return Html::encode($this->getRecord()->getDisplayName());
@@ -73,13 +64,9 @@ abstract class BaseContentContainerElement extends BaseTemplateElementContent
     /**
      * @inheritdoc
      */
-    public function renderForm($form)
+    public function getFormView(): string
     {
-        return TemplateContentFormFields::widget([
-            'type' => strtolower(substr(strrchr(static::CONTAINER_CLASS, '\\'), 1)),
-            'form' => $form,
-            'model' => $this,
-        ]);
+        return strtolower(substr(strrchr(static::CONTAINER_CLASS, '\\'), 1));
     }
 
     /**

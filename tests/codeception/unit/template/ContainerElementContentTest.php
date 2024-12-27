@@ -2,6 +2,9 @@
 
 namespace tests\codeception\unit\modules\custom_page\template;
 
+use humhub\modules\custom_pages\modules\template\elements\ContainerDefinition;
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -9,11 +12,8 @@ use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\modules\template\models\ContainerContent;
-use humhub\modules\custom_pages\modules\template\models\ContainerContentItem;
-use humhub\modules\custom_pages\modules\template\models\ContainerContentDefinition;
 
-class ContainerContentTest extends HumHubDbTestCase
+class ContainerElementContentTest extends HumHubDbTestCase
 {
     public $owner2;
     public $owner1;
@@ -22,9 +22,9 @@ class ContainerContentTest extends HumHubDbTestCase
     public function testDeleteContainerItem()
     {
 
-        ContainerContentItem::findOne(['id' => 2])->delete();
-        ContainerContentItem::findOne(['id' => 3])->delete();
-        ContainerContentItem::findOne(['id' => 4])->delete();
+        ContainerItem::findOne(['id' => 2])->delete();
+        ContainerItem::findOne(['id' => 3])->delete();
+        ContainerItem::findOne(['id' => 4])->delete();
 
         $this->assertNull(OwnerContent::findOne(['id' => 5]));
         $this->assertNull(OwnerContent::findOne(['id' => 6]));
@@ -37,20 +37,20 @@ class ContainerContentTest extends HumHubDbTestCase
 
     }
 
-    public function testDeleteContainerContent()
+    public function testDeleteContainerElementContent()
     {
 
-        $container = ContainerContent::findOne(['id' => 2]);
+        $container = ContainerElement::findOne(['id' => 7]);
 
         $this->assertEquals(3, $container->getItems()->count());
 
         $container->delete();
 
-        $this->assertNull(ContainerContentDefinition::findOne(['id' => 2]));
+        $this->assertNull(ContainerDefinition::findOne(['id' => 2]));
 
-        $this->assertNull(ContainerContentItem::findOne(['id' => 2]));
-        $this->assertNull(ContainerContentItem::findOne(['id' => 3]));
-        $this->assertNull(ContainerContentItem::findOne(['id' => 4]));
+        $this->assertNull(ContainerItem::findOne(['id' => 2]));
+        $this->assertNull(ContainerItem::findOne(['id' => 3]));
+        $this->assertNull(ContainerItem::findOne(['id' => 4]));
 
         $this->assertNull(OwnerContent::findOne(['id' => 5]));
         $this->assertNull(OwnerContent::findOne(['id' => 6]));
@@ -66,13 +66,13 @@ class ContainerContentTest extends HumHubDbTestCase
     public function testDeleteParentContainer()
     {
 
-        $container = ContainerContent::findOne(['id' => 1]);
+        $container = ContainerElement::findOne(['id' => 6]);
 
         $container->delete();
 
-        $this->assertNull(ContainerContentItem::findOne(['id' => 2]));
-        $this->assertNull(ContainerContentItem::findOne(['id' => 3]));
-        $this->assertNull(ContainerContentItem::findOne(['id' => 4]));
+        $this->assertNull(ContainerItem::findOne(['id' => 2]));
+        $this->assertNull(ContainerItem::findOne(['id' => 3]));
+        $this->assertNull(ContainerItem::findOne(['id' => 4]));
 
         $this->assertNull(OwnerContent::findOne(['id' => 5]));
         $this->assertNull(OwnerContent::findOne(['id' => 6]));
@@ -98,9 +98,9 @@ class ContainerContentTest extends HumHubDbTestCase
         $page = CustomPage::findOne(['id' => 2]);
         $this->assertNotFalse($page->hardDelete());
 
-        $this->assertNull(ContainerContentItem::findOne(['id' => 2]));
-        $this->assertNull(ContainerContentItem::findOne(['id' => 3]));
-        $this->assertNull(ContainerContentItem::findOne(['id' => 4]));
+        $this->assertNull(ContainerItem::findOne(['id' => 2]));
+        $this->assertNull(ContainerItem::findOne(['id' => 3]));
+        $this->assertNull(ContainerItem::findOne(['id' => 4]));
 
         $this->assertNull(OwnerContent::findOne(['id' => 5]));
         $this->assertNull(OwnerContent::findOne(['id' => 6]));
@@ -118,11 +118,11 @@ class ContainerContentTest extends HumHubDbTestCase
 
         $this->assertEquals(0, OwnerContent::find()->where(['not', ['owner_model' => Template::class]])->count());
         $this->assertEquals(0, TemplateInstance::find()->count());
-        $this->assertEquals(1, RichtextElement::find()->count());
-        $this->assertEquals(0, ContainerContentItem::find()->count());
-        $this->assertEquals(0, ContainerContent::find()->count());
+        $this->assertEquals(1, RichtextElement::findByType()->count());
+        $this->assertEquals(0, ContainerItem::find()->count());
+        $this->assertEquals(0, ContainerElement::findByType()->count());
 
-        $this->assertEquals(0, ContainerContentDefinition::find()->count());
+        $this->assertEquals(0, ContainerDefinition::find()->count());
 
         $this->assertEquals(1, Template::findOne(['id' => 1])->delete());
         $this->assertEquals(1, Template::findOne(['id' => 2])->delete());
@@ -130,7 +130,7 @@ class ContainerContentTest extends HumHubDbTestCase
         $this->assertEquals(1, Template::findOne(['id' => 3])->delete());
         $this->assertEquals(1, Template::findOne(['id' => 4])->delete());
 
-        $this->assertEquals(0, RichtextElement::find()->count());
+        $this->assertEquals(0, RichtextElement::findByType()->count());
         $this->assertEquals(0, TemplateElement::find()->count());
     }
 }

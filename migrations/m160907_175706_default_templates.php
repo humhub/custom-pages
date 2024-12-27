@@ -2,12 +2,13 @@
 
 use humhub\components\Migration;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 
 class m160907_175706_default_templates extends Migration
 {
     public function up()
     {
+        $containerContentClass = 'humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent';
+
         /**
          *
          * Two column template
@@ -15,8 +16,8 @@ class m160907_175706_default_templates extends Migration
          */
         $twoColumnTemplateId = $this->insertTwoColumnTemplate();
         // Insert elements
-        $this->insertTemplateElement($twoColumnTemplateId, 'content', ContainerContent::class);
-        $this->insertTemplateElement($twoColumnTemplateId, 'sidebar_container', ContainerContent::class);
+        $this->insertTemplateElement($twoColumnTemplateId, 'content', $containerContentClass);
+        $this->insertTemplateElement($twoColumnTemplateId, 'sidebar_container', $containerContentClass);
 
         // Insert default container definition for content container
         $this->insertSilent('custom_pages_template_container_content_definition', ['allow_multiple' => 1, 'is_inline' => 0, 'is_default' => 1]);
@@ -25,7 +26,7 @@ class m160907_175706_default_templates extends Migration
             'element_name' => 'content',
             'owner_model' => Template::class,
             'owner_id' => $twoColumnTemplateId,
-            'content_type' => ContainerContent::class,
+            'content_type' => $containerContentClass,
             'content_id' => $this->db->getLastInsertID(),
         ]);
 
@@ -36,7 +37,7 @@ class m160907_175706_default_templates extends Migration
             'element_name' => 'sidebar_container',
             'owner_model' => Template::class,
             'owner_id' => $twoColumnTemplateId,
-            'content_type' => ContainerContent::class,
+            'content_type' => $containerContentClass,
             'content_id' => $this->db->getLastInsertID(),
         ]);
 
@@ -48,7 +49,7 @@ class m160907_175706_default_templates extends Migration
         $oneColumnTemplateId = $this->insertOneColumnTemplate();
 
         // Insert elements
-        $this->insertTemplateElement($oneColumnTemplateId, 'content', ContainerContent::class);
+        $this->insertTemplateElement($oneColumnTemplateId, 'content', $containerContentClass);
 
         // Insert default content definition
         $this->insertSilent('custom_pages_template_container_content_definition', ['allow_multiple' => 1, 'is_inline' => 0, 'is_default' => 1]);
@@ -57,7 +58,7 @@ class m160907_175706_default_templates extends Migration
             'element_name' => 'content',
             'owner_model' => Template::class,
             'owner_id' => $oneColumnTemplateId,
-            'content_type' => ContainerContent::class,
+            'content_type' => $containerContentClass,
             'content_id' => $this->db->getLastInsertID(),
         ]);
 
@@ -89,7 +90,7 @@ class m160907_175706_default_templates extends Migration
         $snippetLayoutTemplateId = $this->insertSnippetLayoutTemplate();
 
         // Insert elements
-        $this->insertTemplateElement($snippetLayoutTemplateId, 'heading', ContainerContent::class);
+        $this->insertTemplateElement($snippetLayoutTemplateId, 'heading', $containerContentClass);
 
         // Insert default content definition
         $this->insertSilent('custom_pages_template_container_content_definition', ['allow_multiple' => 0, 'is_inline' => 0, 'is_default' => 1]);
@@ -100,7 +101,7 @@ class m160907_175706_default_templates extends Migration
             'element_name' => 'heading',
             'owner_model' => Template::class,
             'owner_id' => $snippetLayoutTemplateId,
-            'content_type' => ContainerContent::class,
+            'content_type' => $containerContentClass,
             'content_id' => $this->db->getLastInsertID(),
         ]);
 

@@ -1,61 +1,53 @@
 <?php
 
-namespace humhub\modules\custom_pages\modules\template\models;
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
+namespace humhub\modules\custom_pages\modules\template\elements;
+
+use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
- * This is the model class for table "custom_pages_page".
+ * Class to manage content records of the Container elements
  *
- * The followings are the available columns in table 'custom_pages_page':
+ * @property-read ContainerItem[] $items
+ * @property-read Template[] $templates
+ * @property-read Template[] $allowedTemplates
  */
-class ContainerContent extends TemplateContentActiveRecord
+class ContainerElement extends BaseTemplateElementContent
 {
     public static $label = 'Container';
 
     /**
      * @inheritdoc
      */
-    public function init()
+    public $definitionModel = ContainerDefinition::class;
+
+    /**
+     * @inheritdoc
+     */
+    protected function getDynamicAttributes(): array
     {
-        $this->definitionModel = ContainerContentDefinition::class;
+        return [];
     }
 
     /**
-     * @return string the associated database table name
+     * @inheritdoc
      */
-    public static function tableName()
-    {
-        return 'custom_pages_template_container_content';
-    }
-
     public function validate($attributeNames = null, $clearErrors = true)
     {
-        return parent::validate() && $this->definition->validate();
+        return parent::validate($attributeNames, $clearErrors) && $this->definition->validate();
     }
 
-    public function getAllowedTemplates()
+    public function getAllowedTemplates(): array
     {
-        if (empty($this->definition->templates)) {
-            return Template::findAllByType(Template::TYPE_CONTAINER);
-        }
-        return $this->definition->templates;
-    }
-
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-
-        if (!empty($this->allowedTemplateSelection)) {
-            ContainerContentTemplate::deleteAll(['container_content_id' => $this->id]);
-            foreach ($this->allowedTemplateSelection as $allowedTemplateId) {
-                $allowedTemplate = new ContainerContentTemplate();
-                $allowedTemplate->template_id = $allowedTemplateId;
-                $allowedTemplate->container_content_id = $this->id;
-                $allowedTemplate->save();
-            }
-        }
+        return $this->definition->allowedTemplates;
     }
 
     public function beforeDelete()
@@ -74,15 +66,8 @@ class ContainerContent extends TemplateContentActiveRecord
         return self::$label;
     }
 
-    public function copy()
-    {
-        // We do not have to set additional attributes here
-        return $this->createCopy();
-    }
-
     public function render($options = [])
     {
-
         $items = $this->items;
 
         $result = '';
@@ -118,11 +103,11 @@ class ContainerContent extends TemplateContentActiveRecord
     {
         $index = ($index == null) ? $this->getNextIndex() : $index;
 
-        ContainerContentItem::incrementIndex($this->id, $index);
+        ContainerItem::incrementIndex($this->id, $index);
 
-        $item = new ContainerContentItem();
+        $item = new ContainerItem();
         $item->template_id = $templateId;
-        $item->container_content_id = $this->id;
+        $item->element_content_id = $this->id;
         $item->sort_order = $index;
         $item->save();
 
@@ -131,9 +116,9 @@ class ContainerContent extends TemplateContentActiveRecord
 
     public function moveItem($itemId, $step)
     {
-        $item = ContainerContentItem::findOne(['id' => $itemId]);
+        $item = ContainerItem::findOne(['id' => $itemId]);
 
-        if ($item == null || $item->container_content_id != $this->id) {
+        if ($item == null || $item->element_content_id != $this->id) {
             return;
         }
 
@@ -145,7 +130,7 @@ class ContainerContent extends TemplateContentActiveRecord
             $newIndex = $oldIndex + $step;
             $item->sort_order = ($newIndex < $nextIndex) ? $newIndex : ($nextIndex - 1);
 
-            ContainerContentItem::decrementBetween($this->id, $oldIndex, $item->sort_order);
+            ContainerItem::decrementBetween($this->id, $oldIndex, $item->sort_order);
 
             $item->save();
         } elseif ($step < 0 && $item->sort_order != 0) {
@@ -153,7 +138,7 @@ class ContainerContent extends TemplateContentActiveRecord
             $newIndex = $oldIndex + $step;
             $item->sort_order = ($newIndex > 0) ? $newIndex : 0;
 
-            ContainerContentItem::incrementBetween($this->id, $item->sort_order, $oldIndex);
+            ContainerItem::incrementBetween($this->id, $item->sort_order, $oldIndex);
 
             $item->save();
         }
@@ -163,9 +148,9 @@ class ContainerContent extends TemplateContentActiveRecord
     {
         $index = ($index == null) ? $this->getNextIndex() : $index;
 
-        $item = new ContainerContentItem();
+        $item = new ContainerItem();
         $item->template_id = $templateId;
-        $item->container_content_id = $this->id;
+        $item->element_content_id = $this->id;
         $item->sort_order = $index;
         return $item;
     }
@@ -175,31 +160,34 @@ class ContainerContent extends TemplateContentActiveRecord
         return $this->getItems()->count();
     }
 
-    public function hasItems()
+    public function hasItems(): bool
     {
         return $this->getItems()->count() > 0;
     }
 
-    public function getItems()
+    public function getItems(): ActiveQuery
     {
-        return $this->hasMany(ContainerContentItem::class, ['container_content_id' => 'id'])->orderBy('sort_order ASC');
+        return $this->hasMany(ContainerItem::class, ['element_content_id' => 'id'])->orderBy('sort_order ASC');
     }
 
-    public function canAddItem()
+    public function canAddItem(): bool
     {
-        return $this->definition == null || $this->definition->allow_multiple || !$this->hasItems();
+        return $this->definition === null || $this->definition->allow_multiple || !$this->hasItems();
     }
 
-    public function getTemplates()
+    public function getTemplates(): array
     {
-        return $this->definition->templates;
+        return $this->definition->allowedTemplates;
     }
 
-    public function isSingleAllowedTemplate()
+    public function isSingleAllowedTemplate(): bool
     {
-        return count($this->templates) === 1;
+        return $this->definition->isSingleAllowedTemplate();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function renderForm($form)
     {
         return TemplateContentFormFields::widget([

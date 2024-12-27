@@ -91,7 +91,7 @@ class TemplateElement extends ActiveRecord
      * This will overwrite the default content of a template placeholder for the given
      * $owner instance.
      *
-     * $content is the actual content instance of type TemplateContentActiveRecord which will
+     * $content is the actual content instance of type BaseTemplateElementContent which will
      * be assigned to this placeholder for the given $owner.
      *
      * If the given $content instance was not persisted yet, it will be saved first.
@@ -101,10 +101,10 @@ class TemplateElement extends ActiveRecord
      * Note that all current OwnerContent entries for this placeholder owned by $owner are delted.
      *
      * @param ActiveRecord $owner the owner
-     * @param TemplateContentActiveRecord $content
+     * @param BaseTemplateElementContent $content
      * @return OwnerContent the new created owner content instance.
      */
-    public function saveInstance(ActiveRecord $owner, TemplateContentActiveRecord|BaseTemplateElementContent $content, $useDefault = false)
+    public function saveInstance(ActiveRecord $owner, BaseTemplateElementContent $content, $useDefault = false)
     {
         $content->save();
 
@@ -129,7 +129,7 @@ class TemplateElement extends ActiveRecord
      *
      * Note that the current default content of this placeholder will be delted.
      *
-     * @param TemplateContentActiveRecord|BaseTemplateElementContent $content
+     * @param BaseTemplateElementContent $content
      * @return bool
      */
     public function saveAsDefaultContent($content)
@@ -213,7 +213,7 @@ class TemplateElement extends ActiveRecord
         parent::afterDelete();
     }
 
-    public function getTemplateContent(): TemplateContentActiveRecord|BaseTemplateElementContent
+    public function getTemplateContent(): BaseTemplateElementContent
     {
         return Yii::createObject($this->content_type);
     }
@@ -226,7 +226,4 @@ class TemplateElement extends ActiveRecord
     {
         return $this->getTemplateContent()->getLabel();
     }
-
-
-
 }

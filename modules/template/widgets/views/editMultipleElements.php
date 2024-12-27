@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\widgets\ModalDialog;
 use yii\widgets\ActiveForm;
 use humhub\libs\Html;
@@ -14,7 +15,7 @@ use humhub\libs\Html;
             <?php $counter = 0 ?>
             <?php foreach ($model->contentMap as $key => $contentItem) : ?>
 
-                <?php $isContainer = $contentItem->content instanceof humhub\modules\custom_pages\modules\template\models\ContainerContent; ?>
+                <?php $isContainer = $contentItem->content instanceof ContainerElement; ?>
 
                 <div class="panel panel-default">
                     <div class="template-edit-multiple-tab panel-heading" tabindex="0">

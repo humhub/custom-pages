@@ -18,6 +18,9 @@
  * GNU Affero General Public License for more details.
  */
 return [
-    ['id' => 1, 'allow_multiple' => 0, 'is_default' => 1, 'is_inline' => 0],
-    ['id' => 2, 'allow_multiple' => 1, 'is_default' => 1, 'is_inline' => 1],
+    ['id' => 1, 'template_id' => 3, 'element_content_id' => 6, 'sort_order' => 0, 'title' => 'test1'],
+
+    ['id' => 2, 'template_id' => 4, 'element_content_id' => 7, 'sort_order' => 0, 'title' => 'test2'],
+    ['id' => 3, 'template_id' => 4, 'element_content_id' => 7, 'sort_order' => 1, 'title' => 'test3'],
+    ['id' => 4, 'template_id' => 4, 'element_content_id' => 7, 'sort_order' => 2, 'title' => 'test4'],
 ];

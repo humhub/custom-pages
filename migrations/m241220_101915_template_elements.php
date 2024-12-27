@@ -35,6 +35,40 @@ class m241220_101915_template_elements extends Migration
         $this->migrateElements('custom_pages_template_records_content', 'Users', ['type', 'options' => 'jsonMerge'], false);
         $this->migrateElements('custom_pages_template_records_content', 'Spaces', ['type', 'options' => 'jsonMerge']);
         $this->migrateElements('custom_pages_template_image_content', 'Image', ['file_guid', 'alt'], true, 'custom_pages_template_image_content_definition', ['height', 'width', 'style']);
+
+        // Migrate Container Elements:
+        $this->safeDropForeignKey('fk-tmpl-container-item-content', 'custom_pages_template_container_content_item');
+        $this->safeAddColumn('custom_pages_template_container_content_item', 'element_content_id', $this->integer()->after('container_content_id'));
+        $this->migrateElements(
+            'custom_pages_template_container_content',
+            'Container',
+            [],
+            true,
+            'custom_pages_template_container_content_definition',
+            [
+                'allow_multiple',
+                'is_inline',
+                'templates' => [
+                    'table' => 'custom_pages_template_container_content_template',
+                    'id' => 'definition_id',
+                    'column' => 'template_id',
+                ],
+            ],
+            [
+                'custom_pages_template_container_content_item' => [
+                    'old' => 'container_content_id',
+                    'new' => 'element_content_id',
+                ],
+            ],
+        );
+        $this->safeDropColumn('custom_pages_template_container_content_item', 'container_content_id');
+        $this->safeAddForeignKey('fk-tmpl-container-item-element-content', 'custom_pages_template_container_content_item', 'element_content_id', 'custom_pages_template_element_content', 'id', 'CASCADE');
+        $this->safeDropTable('custom_pages_template_container_content_template');
+        $this->update(
+            'custom_pages_template_owner_content',
+            ['owner_model' => 'humhub\\modules\\custom_pages\\modules\\template\\elements\\ContainerItem'],
+            ['owner_model' => 'humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContentItem'],
+        );
     }
 
     /**
@@ -47,7 +81,7 @@ class m241220_101915_template_elements extends Migration
         return false;
     }
 
-    private function migrateElements(string $oldTable, string $type, array $dynAttributes, bool $deleteOldTable = true, ?string $oldDefinitionTable = null, ?array $definitionDynAttributes = null)
+    private function migrateElements(string $oldTable, string $type, array $dynAttributes, bool $deleteOldTable = true, ?string $oldDefinitionTable = null, ?array $definitionDynAttributes = null, ?array $updateLinkedElementContentTables = null)
     {
         $oldContentType = 'humhub\\modules\\custom_pages\\modules\\template\\models\\' . $type . 'Content';
         $newContentType = 'humhub\\modules\\custom_pages\\modules\\template\\elements\\' . $type . 'Element';
@@ -86,7 +120,7 @@ class m241220_101915_template_elements extends Migration
 
             $this->insertSilent('custom_pages_template_element_content', [
                 'element_id' => $element['elementId'],
-                'dynAttributes' => json_encode($dynValues),
+                'dynAttributes' => empty($dynValues) ? null : json_encode($dynValues),
                 'definition_id' => $definitionId,
             ]);
             $newElementId = $this->db->getLastInsertID();
@@ -108,6 +142,8 @@ class m241220_101915_template_elements extends Migration
                 ['object_model' => $newContentType, 'object_id' => $newElementId],
                 ['object_model' => $oldContentType, 'object_id' => $element['id']],
             );
+
+            $this->updateLinkedElementContentTables($element['id'], $newElementId, $updateLinkedElementContentTables);
         }
 
         if ($deleteOldTable) {
@@ -135,17 +171,38 @@ class m241220_101915_template_elements extends Migration
         }
 
         $definitionDynValues = [];
-        foreach ($definitionDynAttributes as $attrName) {
-            if (isset($definition[$attrName])) {
+        foreach ($definitionDynAttributes as $attrKey => $attrName) {
+            if (is_array($attrName)) {
+                $definitionDynValues[$attrKey] = (new Query())
+                    ->select($attrName['column'])
+                    ->from($attrName['table'])
+                    ->where([$attrName['id'] => $definition_id])
+                    ->column();
+            } elseif (isset($definition[$attrName])) {
                 $definitionDynValues[$attrName] = $definition[$attrName];
             }
         }
 
         $this->insertSilent('custom_pages_template_element_content_definition', [
-            'dynAttributes' => json_encode($definitionDynValues),
+            'dynAttributes' => empty($definitionDynValues) ? null : json_encode($definitionDynValues),
             'is_default' => $definition['is_default'],
         ]);
 
         return $this->db->getLastInsertID();
+    }
+
+    private function updateLinkedElementContentTables($oldElementContentId, $newElementContentId, ?array $tables = null)
+    {
+        if (!is_array($tables) || empty($oldElementContentId) || empty($newElementContentId)) {
+            return;
+        }
+
+        foreach ($tables as $table => $columns) {
+            $this->updateSilent(
+                $table,
+                [$columns['new'] => $newElementContentId],
+                [$columns['old'] => $oldElementContentId],
+            );
+        }
     }
 }

@@ -1,23 +1,36 @@
 <?php
 
-namespace humhub\modules\custom_pages\modules\template\models;
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
+namespace humhub\modules\custom_pages\modules\template\elements;
+
+use humhub\components\ActiveRecord;
+use humhub\modules\custom_pages\modules\template\models\OwnerContent;
+use humhub\modules\custom_pages\modules\template\models\Template;
+use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use yii\helpers\Url;
 
 /**
  * This is the model class for table "custom_pages_template_container_content_item".
  *
- * @var $template_id int
- * @var $container_content_id int
- * @var $title string
+ * @property int $id
+ * @property int $template_id
+ * @property int $element_content_id
+ * @property int $sort_order
+ * @property string $title
  *
- * @property-read ContainerContent $container
+ * @property-read ContainerElement $container
  * @property-read Template $template
  */
-class ContainerContentItem extends \humhub\components\ActiveRecord implements TemplateContentOwner
+class ContainerItem extends ActiveRecord implements TemplateContentOwner
 {
     /**
-     * @return string the associated database table name
+     * @inheritdoc
      */
     public static function tableName()
     {
@@ -30,8 +43,8 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
     public function rules()
     {
         return [
-            [['template_id', 'container_content_id'], 'required'],
-            [['template_id', 'container_content_id', 'sort_order'], 'integer'],
+            [['template_id', 'element_content_id'], 'required'],
+            [['template_id', 'element_content_id', 'sort_order'], 'integer'],
             ['title', 'safe'],
         ];
     }
@@ -45,24 +58,24 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
         parent::afterDelete();
     }
 
-    public static function incrementIndex($cotnainerId, $index)
+    public static function incrementIndex($containerId, $index)
     {
-        self::updateAllCounters(['sort_order' => 1], ['and', ['>=', 'sort_order', $index], ['container_content_id' => $cotnainerId]]);
+        self::updateAllCounters(['sort_order' => 1], ['and', ['>=', 'sort_order', $index], ['element_content_id' => $containerId]]);
     }
 
-    public static function incrementBetween($cotnainerId, $start, $end)
+    public static function incrementBetween($containerId, $start, $end)
     {
-        self::updateAllCounters(['sort_order' => 1], ['and', ['>=', 'sort_order', $start], ['<=', 'sort_order', $end], ['container_content_id' => $cotnainerId]]);
+        self::updateAllCounters(['sort_order' => 1], ['and', ['>=', 'sort_order', $start], ['<=', 'sort_order', $end], ['element_content_id' => $containerId]]);
     }
 
-    public static function decrementIndex($cotnainerId, $index)
+    public static function decrementIndex($containerId, $index)
     {
-        self::updateAllCounters(['sort_order' => -1], ['and', ['<=', 'sort_order', $index], ['container_content_id' => $cotnainerId]]);
+        self::updateAllCounters(['sort_order' => -1], ['and', ['<=', 'sort_order', $index], ['element_content_id' => $containerId]]);
     }
 
-    public static function decrementBetween($cotnainerId, $start, $end)
+    public static function decrementBetween($containerId, $start, $end)
     {
-        self::updateAllCounters(['sort_order' => -1], ['and', ['>=', 'sort_order', $start], ['<=', 'sort_order', $end], ['container_content_id' => $cotnainerId]]);
+        self::updateAllCounters(['sort_order' => -1], ['and', ['>=', 'sort_order', $start], ['<=', 'sort_order', $end], ['element_content_id' => $containerId]]);
     }
 
     public function getTemplate()
@@ -72,7 +85,7 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
 
     public function getContainer()
     {
-        return $this->hasOne(ContainerContent::class, ['id' => 'container_content_id']);
+        return $this->hasOne(ContainerElement::class, ['id' => 'element_content_id']);
     }
 
     public function render($editMode, $inline = false)
@@ -95,8 +108,8 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
                 'data-template-item' => $this->id,
                 'data-template-edit-url' => Url::to(['/custom_pages/template/container-admin/edit-source', 'id' => $this->template_id]),
                 'data-template-item-title' => $this->title,
-                'data-template-owner' => ContainerContent::class,
-                'data-template-owner-id' => $this->container_content_id,
+                'data-template-owner' => ContainerElement::class,
+                'data-template-owner-id' => $this->element_content_id,
             ],
         ]);
     }
@@ -114,7 +127,7 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
     public function getTemplateInstance(): ?TemplateInstance
     {
         $container = $this->container;
-        if ($container instanceof ContainerContent) {
+        if ($container instanceof ContainerElement) {
             $ownerContent = $container->ownerContent;
             if ($ownerContent instanceof OwnerContent) {
                 $owner = $ownerContent->getOwner();

@@ -9,9 +9,9 @@
 namespace humhub\modules\custom_pages\modules\template\services;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord;
 use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\file\models\FileContent;
@@ -160,7 +160,7 @@ class ImportService
         }
 
         $contentObject = $this->createObjectByData($data['content_type'], $data['contentObject']);
-        if ($contentObject instanceof TemplateContentActiveRecord) {
+        if ($contentObject instanceof BaseTemplateElementContent) {
             $ownerContent->content_type = $data['content_type'];
             $ownerContent->content_id = $contentObject->id;
         }

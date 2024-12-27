@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\FileDownloadElement;
 use humhub\modules\custom_pages\modules\template\elements\FileElement;
 use humhub\modules\custom_pages\modules\template\elements\HumHubRichtextElement;
@@ -19,7 +20,6 @@ use humhub\modules\custom_pages\modules\template\elements\SpacesElement;
 use humhub\modules\custom_pages\modules\template\elements\TextElement;
 use humhub\modules\custom_pages\modules\template\elements\UserElement;
 use humhub\modules\custom_pages\modules\template\elements\UsersElement;
-use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\ImportForm;
@@ -161,7 +161,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
      * Returns a selection of all available template content types.
      * @return array
      */
-    private function getContentTypes()
+    private function getContentTypes(): array
     {
         return [
             TextElement::$label => TextElement::class,
@@ -170,7 +170,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             ImageElement::$label => ImageElement::class,
             FileElement::$label => FileElement::class,
             FileDownloadElement::$label => FileDownloadElement::class,
-            ContainerContent::$label => ContainerContent::class,
+            ContainerElement::$label => ContainerElement::class,
             RssElement::$label => RssElement::class,
             UserElement::$label => UserElement::class,
             SpaceElement::$label => SpaceElement::class,

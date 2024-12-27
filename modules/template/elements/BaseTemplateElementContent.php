@@ -12,13 +12,11 @@ use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\components\ActiveRecordDynamicAttributes;
-use humhub\modules\custom_pages\modules\template\models\ContainerContent;
-use humhub\modules\custom_pages\modules\template\models\ContainerContentDefinition;
-use humhub\modules\custom_pages\modules\template\models\ContainerContentItem;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
+use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateEditorElement;
 use humhub\modules\custom_pages\permissions\ManagePages;
@@ -103,6 +101,21 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     }
 
     /**
+     * Find records related only to the current element type
+     *
+     * @return ActiveQuery
+     */
+    public static function findByType(): ActiveQuery
+    {
+        return parent::find()->innerJoin(
+            TemplateElement::tableName(),
+            self::tableName() . '.element_id = ' . TemplateElement::tableName() . '.id AND ' .
+            TemplateElement::tableName() . '.content_type = :contentType',
+            ['contentType' => static::class],
+        );
+    }
+
+    /**
      * Copies the values of this content type instance.
      * This function can initiate the copy by using `createCopy`.
      *
@@ -121,23 +134,22 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     /**
      * @return bool determines if the content instance has currently an attribute set.
      */
-    public function hasValues()
+    public function hasValues(): bool
     {
-        $result = false;
         foreach ($this->attributes() as $key) {
             if ($this->getAttribute($key) != null && $key != 'id') {
-                $result = true;
-                break;
+                return true;
             }
         }
-        return $result;
+
+        return false;
     }
 
     /**
      * Creates an empty copy of the current content type and adopts the definition_id (if present).
-     * @return self
+     * @return static
      */
-    protected function createCopy()
+    protected function createCopy(): static
     {
         $copy = Yii::createObject(get_class($this));
         if ($this->isDefinitionContent()) {
@@ -198,7 +210,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     }
 
     /**
-     * Returns the ContainerContentDefinition instance of this instance. +
+     * Returns the BaseTemplateElementContentDefinition instance of this instance. +
      * This function will create an empty definition instance if this content type has an definitionModel and
      * does not have a related definition_id.
      *
@@ -297,7 +309,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
      */
     public function afterDelete()
     {
-        if ($this instanceof ContainerContent) {
+        if ($this instanceof ContainerElement) {
             if (self::find()->where(['definition_id' => $this->definition_id])->count() == 0) {
                 $this->definition->delete();
             }
@@ -391,7 +403,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     {
         $ownerModel = $this->getOwner();
 
-        if ($ownerModel instanceof ContainerContentItem) {
+        if ($ownerModel instanceof ContainerItem) {
             $ownerModel = $ownerModel->getTemplateInstance();
         }
 

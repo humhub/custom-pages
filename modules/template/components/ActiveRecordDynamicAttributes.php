@@ -73,7 +73,9 @@ abstract class ActiveRecordDynamicAttributes extends ActiveRecord
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-            $this->dynAttributes = is_array($this->dynAttributes) ? json_encode($this->dynAttributes) : null;
+            $this->dynAttributes = is_array($this->dynAttributes) && ! empty($this->dynAttributes)
+                ? json_encode($this->dynAttributes)
+                : null;
             return true;
         }
 

@@ -20,8 +20,8 @@
 return [
     ['id' => 1, 'name' => 'test_content', 'template_id' => 1, 'content_type' => 'humhub\modules\custom_pages\modules\template\elements\RichtextElement'],
     ['id' => 2, 'name' => 'test_text', 'template_id' => 1, 'content_type' => 'humhub\modules\custom_pages\modules\template\elements\RichtextElement'],
-    ['id' => 3, 'name' => 'container', 'template_id' => 2, 'content_type' => 'humhub\modules\custom_pages\modules\template\models\ContainerContent'],
-    ['id' => 4, 'name' => 'container', 'template_id' => 3, 'content_type' => 'humhub\modules\custom_pages\modules\template\models\ContainerContent'],
+    ['id' => 3, 'name' => 'container', 'template_id' => 2, 'content_type' => 'humhub\modules\custom_pages\modules\template\elements\ContainerElement'],
+    ['id' => 4, 'name' => 'container', 'template_id' => 3, 'content_type' => 'humhub\modules\custom_pages\modules\template\elements\ContainerElement'],
     ['id' => 5, 'name' => 'text', 'template_id' => 3, 'content_type' => 'humhub\modules\custom_pages\modules\template\elements\RichtextElement'],
     ['id' => 6, 'name' => 'text', 'template_id' => 4, 'content_type' => 'humhub\modules\custom_pages\modules\template\elements\RichtextElement'],
 ];

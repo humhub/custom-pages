@@ -13,7 +13,7 @@ use Yii;
  * This is the model class for table "custom_pages_template_content".
  *
  * An OwnerContent instance is used to assign a content to a template placeholder.
- * The owner of the content can either be a Template (default content) or an TemplateContentOwner (e.g. TemplateInstance, ContainerContentItem).
+ * The owner of the content can either be a Template (default content) or an TemplateContentOwner (e.g. TemplateInstance, ContainerItem).
  *
  * @property string $element_name
  * @property string $owner_model
@@ -34,7 +34,7 @@ class OwnerContent extends ActiveRecord
         return [
             [
                 'class' => \humhub\components\behaviors\PolymorphicRelation::class,
-                'mustBeInstanceOf' => [TemplateContentActiveRecord::class, BaseTemplateElementContent::class],
+                'mustBeInstanceOf' => [BaseTemplateElementContent::class],
                 'classAttribute' => 'content_type',
                 'pkAttribute' => 'content_id',
             ],
@@ -77,17 +77,16 @@ class OwnerContent extends ActiveRecord
     }
 
     /**
-     * Returns the underlying TemplateContentActiveRecord instance.
+     * Returns the underlying BaseTemplateElementContent instance.
      *
      * If $createDummy is set to true, this function will return a empty dummy
      * object of this content_type.
      *
-     * @param type $createDummy
-     * @return TemplateContentActiveRecord
+     * @param bool $createDummy
+     * @return BaseTemplateElementContent|null
      */
-    public function getInstance($createDummy = false)
+    public function getInstance(bool $createDummy = false): ?BaseTemplateElementContent
     {
-
         if ($this->getPolymorphicRelation() == null && $createDummy) {
             return Yii::createObject($this->content_type);
         }
@@ -142,9 +141,9 @@ class OwnerContent extends ActiveRecord
     /**
      * Sets the object_model and object_id by means of the given $content instance.
      *
-     * @param TemplateContentActiveRecord|BaseTemplateElementContent $content
+     * @param BaseTemplateElementContent $content
      */
-    public function setContent($content)
+    public function setContent(BaseTemplateElementContent $content)
     {
         $this->content_type = get_class($content);
         $this->content_id = $content->id;
@@ -162,9 +161,9 @@ class OwnerContent extends ActiveRecord
     /**
      * Returns a copy of the related content instance.
      *
-     * @return \humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord
+     * @return BaseTemplateElementContent
      */
-    public function copyContent()
+    public function copyContent(): BaseTemplateElementContent
     {
         return $this->getPolymorphicRelation()->copy();
     }

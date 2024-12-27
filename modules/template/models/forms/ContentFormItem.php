@@ -8,23 +8,29 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\models\OwnerContent;
+use humhub\modules\custom_pages\modules\template\models\TemplateElement;
+use yii\base\Model;
+
 /**
  * Form model used to add new TemplateElement instances to a Template.
  *
  * @author buddha
  */
-class ContentFormItem extends \yii\base\Model
+class ContentFormItem extends Model
 {
-    public $ownerContent;
-    public $editDefault = true;
-    public $content;
-    public $element;
-    public $isLoaded = false;
+    public ?OwnerContent $ownerContent = null;
+    public bool $editDefault = true;
+    public ?BaseTemplateElementContent $content = null;
+    public ?TemplateElement $element = null;
+    public bool $isLoaded = false;
     public $key;
 
     public function init()
     {
         $this->content = $this->ownerContent->getInstance(true);
+        $this->content->element_id = $this->element->id;
 
         if ($this->ownerContent->isNewRecord) {
             $this->key = $this->ownerContent->element_name;

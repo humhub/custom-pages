@@ -9,7 +9,6 @@
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
-use humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord;
 use Yii;
 
 /**
@@ -33,7 +32,7 @@ class TemplateElementForm extends \yii\base\Model
     /**
      * Default content instance.
      *
-     * @var TemplateContentActiveRecord|BaseTemplateElementContent
+     * @var BaseTemplateElementContent
      */
     public $content;
 

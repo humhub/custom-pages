@@ -2,12 +2,13 @@
 
 namespace humhub\modules\custom_pages\modules\template\models;
 
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use yii\base\Model;
 
 class ContainerItemVariable extends Model
 {
     /**
-     * @var ContainerContentItem
+     * @var ContainerItem
      */
     public $item;
 

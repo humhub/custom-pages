@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\models;
 
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -9,12 +10,13 @@ use yii\db\ActiveRecord;
  * This is the model class for table "custom_pages_template".
  *
  * TemplateElements represent the placeholders of a template.
- * A TemplateElement consists of an name which is unique within the template and content type definition.
+ * A TemplateElement consists of a name which is unique within the template and content type definition.
  *
- * @property $name string
- * @property $content_type string
- * @property $template_id int
- * @property $title string
+ * @property int $id
+ * @property int $template_id
+ * @property string $name
+ * @property string $content_type
+ * @property string $title
  */
 class TemplateElement extends ActiveRecord
 {
@@ -89,7 +91,7 @@ class TemplateElement extends ActiveRecord
      * This will overwrite the default content of a template placeholder for the given
      * $owner instance.
      *
-     * $content is the actual content instance of type TemplateContentActiveRecord which will
+     * $content is the actual content instance of type BaseTemplateElementContent which will
      * be assigned to this placeholder for the given $owner.
      *
      * If the given $content instance was not persisted yet, it will be saved first.
@@ -99,10 +101,10 @@ class TemplateElement extends ActiveRecord
      * Note that all current OwnerContent entries for this placeholder owned by $owner are delted.
      *
      * @param ActiveRecord $owner the owner
-     * @param TemplateContentActiveRecord $content
+     * @param BaseTemplateElementContent $content
      * @return OwnerContent the new created owner content instance.
      */
-    public function saveInstance(ActiveRecord $owner, TemplateContentActiveRecord $content, $useDefault = false)
+    public function saveInstance(ActiveRecord $owner, BaseTemplateElementContent $content, $useDefault = false)
     {
         $content->save();
 
@@ -127,10 +129,10 @@ class TemplateElement extends ActiveRecord
      *
      * Note that the current default content of this placeholder will be delted.
      *
-     * @param TemplateContentActiveRecord $content
+     * @param BaseTemplateElementContent $content
      * @return bool
      */
-    public function saveAsDefaultContent(TemplateContentActiveRecord $content)
+    public function saveAsDefaultContent($content)
     {
         if (get_class($content) != $this->content_type) {
             return false;
@@ -138,6 +140,10 @@ class TemplateElement extends ActiveRecord
 
         // Delete all current default content elements.
         OwnerContent::deleteByOwner(Template::class, $this->template_id, $this->name);
+
+        if ($content instanceof BaseTemplateElementContent) {
+            $content->element_id = $this->id;
+        }
 
         if ($content->save()) {
             $contentInstance = new OwnerContent();
@@ -207,7 +213,7 @@ class TemplateElement extends ActiveRecord
         parent::afterDelete();
     }
 
-    public function getTemplateContent(): TemplateContentActiveRecord
+    public function getTemplateContent(): BaseTemplateElementContent
     {
         return Yii::createObject($this->content_type);
     }
@@ -220,7 +226,4 @@ class TemplateElement extends ActiveRecord
     {
         return $this->getTemplateContent()->getLabel();
     }
-
-
-
 }

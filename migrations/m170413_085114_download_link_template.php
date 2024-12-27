@@ -2,20 +2,20 @@
 
 use humhub\components\Migration;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\FileDownloadContent;
-use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 
 class m170413_085114_download_link_template extends Migration
 {
     public function up()
     {
+        $containerContentClass = 'humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent';
+
         //Create Download Item
         $downloadItemTemplateId = $this->insertDownloadItemTemplate();
-        $this->insertTemplateElement($downloadItemTemplateId, 'file_download', 'File', FileDownloadContent::class);
+        $this->insertTemplateElement($downloadItemTemplateId, 'file_download', 'File', 'humhub\\modules\\custom_pages\\modules\\template\\models\\FileDownloadContent');
 
         //Create Download List
         $downloadListTemplateId = $this->insertDownloadListTemplate();
-        $this->insertTemplateElement($downloadListTemplateId, 'download_list', 'File List', ContainerContent::class);
+        $this->insertTemplateElement($downloadListTemplateId, 'download_list', 'File List', $containerContentClass);
 
         //Create container definition for download_list container
         $this->insertSilent('custom_pages_template_container_content_definition', ['allow_multiple' => 1, 'is_inline' => 0, 'is_default' => 1]);
@@ -27,7 +27,7 @@ class m170413_085114_download_link_template extends Migration
             'element_name' => 'download_list',
             'owner_model' => Template::class,
             'owner_id' => $downloadListTemplateId,
-            'content_type' => ContainerContent::class,
+            'content_type' => $containerContentClass,
             'content_id' => $this->db->getLastInsertID(),
         ]);
 

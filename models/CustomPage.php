@@ -313,7 +313,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
         parent::afterSave($insert, $changedAttributes);
 
         if (!$this->getContentType()->afterSave($this, $insert, $changedAttributes)) {
-            throw new LogicException('Could not save content type' . $this->getContentType()->getLabel());
+            throw new LogicException('Could not save content type ' . $this->getContentType()->getLabel());
         }
 
         if ($this->checkAbstract()) {

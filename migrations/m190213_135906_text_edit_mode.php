@@ -1,8 +1,6 @@
 <?php
 
 use humhub\components\Migration;
-use humhub\modules\custom_pages\modules\template\models\ContainerContent;
-use humhub\modules\custom_pages\modules\template\models\Template;
 use yii\db\Schema;
 
 /**

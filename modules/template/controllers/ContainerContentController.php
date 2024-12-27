@@ -2,23 +2,25 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
+use humhub\components\Controller;
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use Yii;
 use yii\helpers\Url;
 use humhub\modules\custom_pages\modules\template\models\forms\AddItemEditForm;
 use humhub\modules\custom_pages\modules\template\widgets\EditContainerItemModal;
 use humhub\modules\custom_pages\modules\template\models\forms\EditItemForm;
-use humhub\modules\custom_pages\modules\template\models\ContainerContentItem;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\OwnerContentVariable;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 
 /**
- * This controller is used to manage ContainerContent and ContainerContentItem instances.
+ * This controller is used to manage ContainerElement and ContainerItem instances.
  *
  * @author buddha
  */
-class ContainerContentController extends \humhub\components\Controller
+class ContainerContentController extends Controller
 {
     /**
      * @inerhitdoc
@@ -31,7 +33,7 @@ class ContainerContentController extends \humhub\components\Controller
     }
 
     /**
-     * This action is used for empty ContainerContent instances, which means there is only a default CotnainerContent for the given owner.
+     * This action is used for empty ContainerElement instances, which means there is only a default ContainerElement for the given owner.
      *
      * This action accepts an $ownerContentId, which is the id of the default OwnerContent instance,
      * and an owner definition ($ownerModel, $ownerId), which defines the actual owner of the element.
@@ -68,7 +70,7 @@ class ContainerContentController extends \humhub\components\Controller
     }
 
     /**
-     * This action is used to add new ContainerContentItems to an element.
+     * This action is used to add new ContainerItems to an element.
      *
      * This action accepts either an $ownerContentId or an $ownerContent instance of type OwnerContent.
      *
@@ -84,14 +86,16 @@ class ContainerContentController extends \humhub\components\Controller
     {
         $ownerContent = (!$ownerContent) ? OwnerContent::findOne(['id' => $ownerContentId]) : $ownerContent;
 
-        if (!$ownerContent->instance->canAddItem()) {
+        /* @var ContainerElement $element */
+        $element = $ownerContent->instance;
+        if (!$element->canAddItem()) {
             throw new \yii\web\HttpException(403, Yii::t('CustomPagesModule.base', 'This container does not allow any further items!'));
         }
 
         // If the ContentContainerDefinition only allows one specific template, we skip the template selection.
-        if ($ownerContent->instance->isSingleAllowedTemplate()) {
+        if ($element->isSingleAllowedTemplate()) {
             return $this->runAction('edit-add-item', [
-                'templateId' => $ownerContent->instance->allowedTemplates[0]->id,
+                'templateId' => $element->allowedTemplates[0]->id,
                 'ownerContent' => $ownerContent,
                 'cguid' => $cguid,
             ]);
@@ -99,7 +103,7 @@ class ContainerContentController extends \humhub\components\Controller
 
         return $this->asJson([
             'output' => $this->renderAjax('addItemChooseTemplateModal', [
-                'allowedTemplateSelection' => $this->getAllowedTemplateSelection($ownerContent->instance),
+                'allowedTemplateSelection' => $this->getAllowedTemplateSelection($element),
                 'action' => Url::to(['edit-add-item', 'ownerContentId' => $ownerContentId, 'cguid' => $cguid]),
             ]),
         ]);
@@ -107,15 +111,15 @@ class ContainerContentController extends \humhub\components\Controller
 
     /**
      * Creates a selection array in form of 'template.id' => 'template.name' for all allowed Templates of the
-     * given ContainerContent instance.
+     * given ContainerElement instance.
      *
-     * @param \humhub\modules\custom_pages\modules\template\models\ContainerContent $containerContent
+     * @param ContainerElement $containerElementContent
      * @return array
      */
-    protected function getAllowedTemplateSelection($containerContent)
+    protected function getAllowedTemplateSelection($containerElementContent)
     {
         $result = [];
-        foreach ($containerContent->definition->allowedTemplates as $allowedTemplate) {
+        foreach ($containerElementContent->definition->allowedTemplates as $allowedTemplate) {
             $result[$allowedTemplate->id] = $allowedTemplate->name;
         }
 
@@ -224,7 +228,7 @@ class ContainerContentController extends \humhub\components\Controller
         $itemId = Yii::$app->request->post('itemId');
         $ownerContentId = Yii::$app->request->post('ownerContentId');
 
-        ContainerContentItem::findOne(['id' => $itemId])->delete();
+        ContainerItem::findOne(['id' => $itemId])->delete();
         $ownerContent = OwnerContent::findOne(['id' => $ownerContentId]);
         $variable = new OwnerContentVariable(['ownerContent' => $ownerContent]);
 

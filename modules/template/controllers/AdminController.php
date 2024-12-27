@@ -8,24 +8,24 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
-use humhub\modules\custom_pages\modules\template\models\ContainerContent;
-use humhub\modules\custom_pages\modules\template\models\FileContent;
-use humhub\modules\custom_pages\modules\template\models\FileDownloadContent;
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\elements\FileDownloadElement;
+use humhub\modules\custom_pages\modules\template\elements\FileElement;
+use humhub\modules\custom_pages\modules\template\elements\HumHubRichtextElement;
+use humhub\modules\custom_pages\modules\template\elements\ImageElement;
+use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
+use humhub\modules\custom_pages\modules\template\elements\RssElement;
+use humhub\modules\custom_pages\modules\template\elements\SpaceElement;
+use humhub\modules\custom_pages\modules\template\elements\SpacesElement;
+use humhub\modules\custom_pages\modules\template\elements\TextElement;
+use humhub\modules\custom_pages\modules\template\elements\UserElement;
+use humhub\modules\custom_pages\modules\template\elements\UsersElement;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\ImportForm;
-use humhub\modules\custom_pages\modules\template\models\HumHubRichtextContent;
-use humhub\modules\custom_pages\modules\template\models\ImageContent;
-use humhub\modules\custom_pages\modules\template\models\RichtextContent;
-use humhub\modules\custom_pages\modules\template\models\RssContent;
-use humhub\modules\custom_pages\modules\template\models\SpaceContent;
-use humhub\modules\custom_pages\modules\template\models\SpacesContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
-use humhub\modules\custom_pages\modules\template\models\TextContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
-use humhub\modules\custom_pages\modules\template\models\UserContent;
-use humhub\modules\custom_pages\modules\template\models\UsersContent;
 use humhub\modules\custom_pages\modules\template\services\ExportService;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateElementAdminRow;
 use humhub\modules\custom_pages\modules\template\widgets\EditElementModal;
@@ -161,21 +161,21 @@ class AdminController extends \humhub\modules\admin\components\Controller
      * Returns a selection of all available template content types.
      * @return array
      */
-    private function getContentTypes()
+    private function getContentTypes(): array
     {
         return [
-            TextContent::$label => TextContent::class,
-            RichtextContent::$label => RichtextContent::class,
-            HumHubRichtextContent::$label => HumHubRichtextContent::class,
-            ImageContent::$label => ImageContent::class,
-            FileContent::$label => FileContent::class,
-            FileDownloadContent::$label => FileDownloadContent::class,
-            ContainerContent::$label => ContainerContent::class,
-            RssContent::$label => RssContent::class,
-            UserContent::$label => UserContent::class,
-            SpaceContent::$label => SpaceContent::class,
-            UsersContent::$label => UsersContent::class,
-            SpacesContent::$label => SpacesContent::class,
+            TextElement::class,
+            RichtextElement::class,
+            HumHubRichtextElement::class,
+            ImageElement::class,
+            FileElement::class,
+            FileDownloadElement::class,
+            ContainerElement::class,
+            RssElement::class,
+            UserElement::class,
+            SpaceElement::class,
+            UsersElement::class,
+            SpacesElement::class,
         ];
     }
 

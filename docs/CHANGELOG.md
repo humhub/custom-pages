@@ -10,6 +10,7 @@ Changelog
 - Enh #360: Template - Spaces and Users Element Type
 - Enh #362: Template - Rendering & Caching
 - Fix #365: Fix allowed properties for Twig v3.14.1+
+- Enh #367: Migrate all element contents to single table
 
 1.10.11 (Unreleased)
 --------------------------

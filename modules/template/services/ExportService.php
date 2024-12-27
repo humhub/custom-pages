@@ -8,9 +8,9 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord;
 use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
 use humhub\modules\file\models\File;
 use Yii;
@@ -51,7 +51,7 @@ class ExportService
                 }
 
                 $contentObject = $defaultContent->getInstance();
-                if ($contentObject instanceof TemplateContentActiveRecord) {
+                if ($contentObject instanceof BaseTemplateElementContent) {
                     $this->data['elements'][$e]['ownerContent']['contentObject'] = $contentObject->attributes;
 
                     // Attach files

@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\models;
 
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use yii\base\Model;
 
 class OwnerContentVariable extends Model
@@ -55,7 +56,7 @@ class OwnerContentVariable extends Model
             ], $this->options);
 
             // We only need the template_id for container content elements
-            if ($this->ownerContent->content_type == ContainerContent::class) {
+            if ($this->ownerContent->content_type == ContainerElement::class) {
                 $options['template_id'] = $this->ownerContent->owner->getTemplateId();
             }
         } else {

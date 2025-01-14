@@ -56,11 +56,25 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
                 'text' => Yii::t('CustomPagesModule.base', 'Panel'),
                 'tooltip' => Yii::t('CustomPagesModule.base', 'Wrap this HTML page with white panel'),
             ],
+            'content_css' => $this->getThemeCssUrl(),
+            'content_style' => 'body { background: #fff; padding: 0 }',
         ], $this->clientOptions);
 
         // Fix issue with disabled inputs when it is loaded on modal window
         // Fix the editor initialization on second time loading by modal window(without browser page refreshing)
         $this->view->registerJs('$(document).on("focusin", "[class^=tox-] input", function(e) {e.stopImmediatePropagation()});
             tinymce.remove("#' . $this->options['id'] . '")');
+    }
+
+    protected function getThemeCssUrl(): string
+    {
+        $filePath = '/css/theme.css';
+
+        if (file_exists(Yii::$app->view->theme->getBasePath() . $filePath)) {
+            $mtime = filemtime(Yii::$app->view->theme->getBasePath() . $filePath);
+            return Yii::$app->view->theme->getBaseUrl() . $filePath . '?v=' . $mtime;
+        }
+
+        return '';
     }
 }

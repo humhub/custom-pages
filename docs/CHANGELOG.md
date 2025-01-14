@@ -5,6 +5,7 @@ Changelog
 --------------------------
 - Enh #353: Reduce translation message categories
 - Fix #355: Fix visibility of attached images to Template Layout
+- Fix #372: Use current theme styles in TinyMce editor
 
 1.10.10 (October 12, 2024)
 --------------------------

@@ -8,7 +8,8 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
-use humhub\components\ActiveRecord;
+use humhub\modules\custom_pages\modules\template\models\ContainerContentDefinition;
+use humhub\modules\custom_pages\modules\template\models\ContainerContentTemplate;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord;
@@ -17,7 +18,7 @@ use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\file\models\FileContent;
 use yii\base\InvalidConfigException;
 use Yii;
-use yii\db\ActiveRecord as BaseActiveRecord;
+use yii\db\ActiveRecord;
 
 class ImportService
 {
@@ -79,7 +80,7 @@ class ImportService
         return !$this->hasErrors();
     }
 
-    private function saveRecord(BaseActiveRecord $record): ?BaseActiveRecord
+    private function saveRecord(ActiveRecord $record): ?ActiveRecord
     {
         if ($record->validate() && $record->save()) {
             return $record;
@@ -198,10 +199,25 @@ class ImportService
         }
 
         foreach ($data as $name => $value) {
-            if ($name === 'id' || is_array($value)) {
+            if ($name === 'id' || $name === 'definitionClass' || is_array($value)) {
                 continue;
             }
             $object->$name = $value;
+        }
+
+        if (isset($data['definition_id'], $data['definitionClass'], $data['definitionObject']) && is_array($data['definitionObject'])) {
+            $definition = $this->createObjectByData($data['definitionClass'], $data['definitionObject']);
+            $object->definition_id = $definition?->id;
+
+            if ($definition instanceof ContainerContentDefinition && !empty($data['definitionTemplates'])) {
+                $definitionTemplates = Template::findAll(['id' => $data['definitionTemplates']]);
+                foreach ($definitionTemplates as $definitionTemplate) {
+                    $allowedTemplate = new ContainerContentTemplate();
+                    $allowedTemplate->template_id = $definitionTemplate->id;
+                    $allowedTemplate->definition_id = $definition->id;
+                    $allowedTemplate->save();
+                }
+            }
         }
 
         $object = $this->saveRecord($object);

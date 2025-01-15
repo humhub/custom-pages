@@ -8,6 +8,8 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
+use humhub\modules\custom_pages\modules\template\models\ContainerContentDefinition;
+use humhub\modules\custom_pages\modules\template\models\ContentDefinition;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord;
@@ -52,7 +54,18 @@ class ExportService
 
                 $contentObject = $defaultContent->getInstance();
                 if ($contentObject instanceof TemplateContentActiveRecord) {
-                    $this->data['elements'][$e]['ownerContent']['contentObject'] = $contentObject->attributes;
+                    $contentData = $contentObject->attributes;
+
+                    if ($contentObject->hasDefinition()) {
+                        $definition = $contentObject->getDefinition();
+                        if ($definition instanceof ContentDefinition) {
+                            $contentData['definitionClass'] = get_class($definition);
+                            $contentData['definitionObject'] = $definition->attributes;
+                            if ($definition instanceof ContainerContentDefinition) {
+                                $contentData['definitionTemplates'] = array_column($definition->getTemplates(), 'id');
+                            }
+                        }
+                    }
 
                     // Attach files
                     $files = [];
@@ -68,8 +81,10 @@ class ExportService
                         }
                     }
                     if ($files !== []) {
-                        $this->data['elements'][$e]['ownerContent']['contentObject']['attachedFiles'] = $files;
+                        $contentData['attachedFiles'] = $files;
                     }
+
+                    $this->data['elements'][$e]['ownerContent']['contentObject'] = $contentData;
                 }
             }
         }

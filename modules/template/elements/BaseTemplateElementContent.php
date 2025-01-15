@@ -120,7 +120,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     {
         $clone = new static();
         $clone->element_id = $this->element_id;
-        $clone->dynAttributes = $this->dynAttributes;
+        $clone->dyn_attributes = $this->dyn_attributes;
         $clone->definition_id = $this->definition_id;
         return $clone;
     }

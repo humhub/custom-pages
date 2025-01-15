@@ -13,12 +13,12 @@ class m241220_101915_template_elements extends Migration
         $this->safeCreateTable('custom_pages_template_element_content', [
             'id' => $this->primaryKey(),
             'element_id' => $this->integer()->notNull(),
-            'dynAttributes' => $this->text(),
+            'dyn_attributes' => $this->text(),
             'definition_id' => $this->integer(),
         ]);
         $this->safeCreateTable('custom_pages_template_element_content_definition', [
             'id' => $this->primaryKey(),
-            'dynAttributes' => $this->text(),
+            'dyn_attributes' => $this->text(),
             'is_default' => $this->boolean()->notNull()->defaultValue(0),
         ]);
         $this->safeAddForeignKey('fk-element_id', 'custom_pages_template_element_content', 'element_id', 'custom_pages_template_element', 'id', 'CASCADE');
@@ -122,7 +122,7 @@ class m241220_101915_template_elements extends Migration
 
             $this->insertSilent('custom_pages_template_element_content', [
                 'element_id' => $element['elementId'],
-                'dynAttributes' => empty($dynValues) ? null : json_encode($dynValues),
+                'dyn_attributes' => empty($dynValues) ? null : json_encode($dynValues),
                 'definition_id' => $definitionId,
             ]);
             $newElementId = $this->db->getLastInsertID();
@@ -186,7 +186,7 @@ class m241220_101915_template_elements extends Migration
         }
 
         $this->insertSilent('custom_pages_template_element_content_definition', [
-            'dynAttributes' => empty($definitionDynValues) ? null : json_encode($definitionDynValues),
+            'dyn_attributes' => empty($definitionDynValues) ? null : json_encode($definitionDynValues),
             'is_default' => $definition['is_default'],
         ]);
 

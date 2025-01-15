@@ -16,13 +16,13 @@ use yii\validators\Validator;
  * These are stored in a JSON field.
  *
  * @property int $id
- * @property string|array $dynAttributes
+ * @property string|array $dyn_attributes
  *
  * Dynamic attributes:
  * (List here all virtual/dynamic for the Record,
- *  they all are stored in the property $dynAttributes as json encoded array)
+ *  they all are stored in the property $dyn_attributes as json encoded array)
  *
- * @todo Avoid mark `dynAttribute` model attribute as Safe attribute
+ * @todo Avoid mark `dyn_attributes` model attribute as Safe attribute
  */
 abstract class ActiveRecordDynamicAttributes extends ActiveRecord
 {
@@ -39,12 +39,12 @@ abstract class ActiveRecordDynamicAttributes extends ActiveRecord
     public function __get($name)
     {
         if ($this->hasDynamicAttribute($name)) {
-            return $this->dynAttributes[$name] ?? $this->getDynamicAttributeDefaultValue($name);
+            return $this->dyn_attributes[$name] ?? $this->getDynamicAttributeDefaultValue($name);
         }
 
         $value = parent::__get($name);
 
-        if ($name === 'dynAttributes' && !is_array($value)) {
+        if ($name === 'dyn_attributes' && !is_array($value)) {
             $value = empty($value) ? [] : json_decode($value, true);
             $this->setAttribute($name, $value);
         }
@@ -58,9 +58,9 @@ abstract class ActiveRecordDynamicAttributes extends ActiveRecord
     public function __set($name, $value)
     {
         if ($this->hasDynamicAttribute($name)) {
-            $attrs = $this->dynAttributes;
+            $attrs = $this->dyn_attributes;
             $attrs[$name] = $value;
-            $this->setAttribute('dynAttributes', $attrs);
+            $this->setAttribute('dyn_attributes', $attrs);
         } else {
             parent::__set($name, $value);
         }
@@ -73,8 +73,8 @@ abstract class ActiveRecordDynamicAttributes extends ActiveRecord
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-            $this->dynAttributes = is_array($this->dynAttributes) && ! empty($this->dynAttributes)
-                ? json_encode($this->dynAttributes)
+            $this->dyn_attributes = is_array($this->dyn_attributes) && ! empty($this->dyn_attributes)
+                ? json_encode($this->dyn_attributes)
                 : null;
             return true;
         }
@@ -88,7 +88,7 @@ abstract class ActiveRecordDynamicAttributes extends ActiveRecord
     public function createValidators()
     {
         $validators = parent::createValidators();
-        $validators->append(Validator::createValidator('safe', $this, 'dynAttributes'));
+        $validators->append(Validator::createValidator('safe', $this, 'dyn_attributes'));
 
         return $validators;
     }

@@ -18,6 +18,6 @@
  * GNU Affero General Public License for more details.
  */
 return [
-    ['id' => 1, 'dynAttributes' => json_encode(['allow_multiple' => 0, 'is_inline' => 0, 'templates' => []]), 'is_default' => 1],
-    ['id' => 2, 'dynAttributes' => json_encode(['allow_multiple' => 1, 'is_inline' => 1, 'templates' => []]), 'is_default' => 1],
+    ['id' => 1, 'dyn_attributes' => json_encode(['allow_multiple' => 0, 'is_inline' => 0, 'templates' => []]), 'is_default' => 1],
+    ['id' => 2, 'dyn_attributes' => json_encode(['allow_multiple' => 1, 'is_inline' => 1, 'templates' => []]), 'is_default' => 1],
 ];

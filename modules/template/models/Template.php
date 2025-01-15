@@ -157,7 +157,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
                 ->leftJoin(ContainerElement::tableName(), TemplateElement::tableName() . '.id = ' . ContainerElement::tableName() . '.element_id')
                 ->leftJoin(ContainerDefinition::tableName(), ContainerElement::tableName() . '.definition_id = ' . ContainerDefinition::tableName() . '.id')
                 ->where([TemplateElement::tableName() . '.content_type' => ContainerElement::class])
-                ->andWhere(['REGEXP', ContainerDefinition::tableName() . '.dynAttributes', '"templates":[^\\]]*' . $this->id . '[,\\]]'])
+                ->andWhere(['REGEXP', ContainerDefinition::tableName() . '.dyn_attributes', '"templates":[^\\]]*' . $this->id . '[,\\]]'])
                 ->exists();
         }
     }
@@ -173,7 +173,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
                 ->leftJoin(ContainerDefinition::tableName(), ContainerDefinition::tableName() . '.id = ' . ContainerElement::tableName() . '.definition_id')
                 ->where([OwnerContent::tableName() . '.owner_model' => Template::class])
                 ->andWhere([OwnerContent::tableName() . '.content_type' => ContainerElement::class])
-                ->andWhere(['REGEXP', ContainerDefinition::tableName() . '.dynAttributes', '"templates":[^\\]]*' . $this->id . '[,\\]]']);
+                ->andWhere(['REGEXP', ContainerDefinition::tableName() . '.dyn_attributes', '"templates":[^\\]]*' . $this->id . '[,\\]]']);
         }
     }
 

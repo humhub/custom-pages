@@ -18,10 +18,10 @@
  * GNU Affero General Public License for more details.
  */
 return [
-    ['id' => 1, 'element_id' => 1, 'dynAttributes' => json_encode(['content' => '<p>Default</p>'])],
-    ['id' => 2, 'element_id' => 5, 'dynAttributes' => json_encode(['content' => '<p>ContainerText</p>'])],
+    ['id' => 1, 'element_id' => 1, 'dyn_attributes' => json_encode(['content' => '<p>Default</p>'])],
+    ['id' => 2, 'element_id' => 5, 'dyn_attributes' => json_encode(['content' => '<p>ContainerText</p>'])],
 
-    ['id' => 3, 'element_id' => 6, 'dynAttributes' => json_encode(['content' => '<p>ContainerText</p>'])],
-    ['id' => 4, 'element_id' => 6, 'dynAttributes' => json_encode(['content' => '<p>ContainerText</p>'])],
-    ['id' => 5, 'element_id' => 6, 'dynAttributes' => json_encode(['content' => '<p>ContainerText</p>'])],
+    ['id' => 3, 'element_id' => 6, 'dyn_attributes' => json_encode(['content' => '<p>ContainerText</p>'])],
+    ['id' => 4, 'element_id' => 6, 'dyn_attributes' => json_encode(['content' => '<p>ContainerText</p>'])],
+    ['id' => 5, 'element_id' => 6, 'dyn_attributes' => json_encode(['content' => '<p>ContainerText</p>'])],
 ];

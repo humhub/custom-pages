@@ -8,11 +8,9 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
-use humhub\modules\custom_pages\modules\template\models\ContainerContentDefinition;
-use humhub\modules\custom_pages\modules\template\models\ContainerContentTemplate;
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord;
 use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\file\models\FileContent;
@@ -161,7 +159,7 @@ class ImportService
         }
 
         $contentObject = $this->createObjectByData($data['content_type'], $data['contentObject']);
-        if ($contentObject instanceof TemplateContentActiveRecord) {
+        if ($contentObject instanceof BaseTemplateElementContent) {
             $ownerContent->content_type = $data['content_type'];
             $ownerContent->content_id = $contentObject->id;
         }
@@ -199,7 +197,7 @@ class ImportService
         }
 
         foreach ($data as $name => $value) {
-            if ($name === 'id' || $name === 'definitionClass' || is_array($value)) {
+            if ($name === 'id' || $name === 'definitionClass' || ($name !== 'dyn_attributes' && is_array($value))) {
                 continue;
             }
             $object->$name = $value;
@@ -208,16 +206,6 @@ class ImportService
         if (isset($data['definition_id'], $data['definitionClass'], $data['definitionObject']) && is_array($data['definitionObject'])) {
             $definition = $this->createObjectByData($data['definitionClass'], $data['definitionObject']);
             $object->definition_id = $definition?->id;
-
-            if ($definition instanceof ContainerContentDefinition && !empty($data['definitionTemplates'])) {
-                $definitionTemplates = Template::findAll(['id' => $data['definitionTemplates']]);
-                foreach ($definitionTemplates as $definitionTemplate) {
-                    $allowedTemplate = new ContainerContentTemplate();
-                    $allowedTemplate->template_id = $definitionTemplate->id;
-                    $allowedTemplate->definition_id = $definition->id;
-                    $allowedTemplate->save();
-                }
-            }
         }
 
         $object = $this->saveRecord($object);

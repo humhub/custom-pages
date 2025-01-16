@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
-use humhub\modules\custom_pages\modules\template\models\ContainerContentItem;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 
 /**
  * Description of UserGroupForm
@@ -36,7 +36,7 @@ class EditItemForm extends EditMultipleElementsForm
 
     public function setItem($itemId)
     {
-        $this->owner = ContainerContentItem::findOne(['id' => $itemId]);
+        $this->owner = ContainerItem::findOne(['id' => $itemId]);
         $this->title = $this->owner->title;
         $this->setTemplate($this->owner->template_id);
     }

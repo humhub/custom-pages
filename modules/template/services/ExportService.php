@@ -8,11 +8,10 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
-use humhub\modules\custom_pages\modules\template\models\ContainerContentDefinition;
-use humhub\modules\custom_pages\modules\template\models\ContentDefinition;
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContentDefinition;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord;
 use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
 use humhub\modules\file\models\File;
 use Yii;
@@ -53,17 +52,14 @@ class ExportService
                 }
 
                 $contentObject = $defaultContent->getInstance();
-                if ($contentObject instanceof TemplateContentActiveRecord) {
+                if ($contentObject instanceof BaseTemplateElementContent) {
                     $contentData = $contentObject->attributes;
 
                     if ($contentObject->hasDefinition()) {
                         $definition = $contentObject->getDefinition();
-                        if ($definition instanceof ContentDefinition) {
+                        if ($definition instanceof BaseTemplateElementContentDefinition) {
                             $contentData['definitionClass'] = get_class($definition);
                             $contentData['definitionObject'] = $definition->attributes;
-                            if ($definition instanceof ContainerContentDefinition) {
-                                $contentData['definitionTemplates'] = array_column($definition->getTemplates(), 'id');
-                            }
                         }
                     }
 

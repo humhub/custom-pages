@@ -1,5 +1,7 @@
 <?php
 
+use humhub\modules\custom_pages\modules\template\widgets\EditContentSeperator;
+use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Html;
 
@@ -34,9 +36,9 @@ use yii\helpers\Html;
                 <?= $form->field($model, 'use_default')->checkbox(['style' => 'margin: 100px']); ?>
             <?php endif; ?>
 
-            <?= \humhub\modules\custom_pages\modules\template\widgets\EditContentSeperator::widget(['isAdminEdit' => $isAdminEdit])?>
+            <?= EditContentSeperator::widget(['isAdminEdit' => $isAdminEdit]) ?>
 
-            <?= $model->content->renderForm($form); ?>
+            <?= TemplateContentFormFields::widget(['form' => $form, 'model' => $model->content]) ?>
 
         </div>
         <div class="modal-footer">

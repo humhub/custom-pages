@@ -6,6 +6,8 @@ use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\lib\templates\TemplateEngineFactory;
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\elements\ContainerDefinition;
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
@@ -151,7 +153,12 @@ class Template extends ActiveRecord implements TemplateContentOwner
         if ($this->isLayout()) {
             return TemplateInstance::findByTemplateId($this->id, Content::STATE_PUBLISHED)->count() > 0;
         } else {
-            return ContainerContentTemplate::find()->where(['template_id' => $this->id])->count() > 0;
+            return TemplateElement::find()
+                ->leftJoin(ContainerElement::tableName(), TemplateElement::tableName() . '.id = ' . ContainerElement::tableName() . '.element_id')
+                ->leftJoin(ContainerDefinition::tableName(), ContainerElement::tableName() . '.definition_id = ' . ContainerDefinition::tableName() . '.id')
+                ->where([TemplateElement::tableName() . '.content_type' => ContainerElement::class])
+                ->andWhere(['REGEXP', ContainerDefinition::tableName() . '.dyn_attributes', '"templates":[^\\]]*' . $this->id . '[,\\]]'])
+                ->exists();
         }
     }
 
@@ -162,11 +169,11 @@ class Template extends ActiveRecord implements TemplateContentOwner
         } else {
             return Template::find()
                 ->leftJoin(OwnerContent::tableName(), Template::tableName() . '.id = ' . OwnerContent::tableName() . '.owner_id')
-                ->leftJoin(ContainerContent::tableName(), ContainerContent::tableName() . '.id = ' . OwnerContent::tableName() . '.content_id')
-                ->leftJoin(ContainerContentTemplate::tableName(), ContainerContentTemplate::tableName() . '.definition_id = ' . ContainerContent::tableName() . '.definition_id')
+                ->leftJoin(ContainerElement::tableName(), ContainerElement::tableName() . '.id = ' . OwnerContent::tableName() . '.content_id')
+                ->leftJoin(ContainerDefinition::tableName(), ContainerDefinition::tableName() . '.id = ' . ContainerElement::tableName() . '.definition_id')
                 ->where([OwnerContent::tableName() . '.owner_model' => Template::class])
-                ->andWhere([OwnerContent::tableName() . '.content_type' => ContainerContent::class])
-                ->andWhere([ContainerContentTemplate::tableName() . '.template_id' => $this->id]);
+                ->andWhere([OwnerContent::tableName() . '.content_type' => ContainerElement::class])
+                ->andWhere(['REGEXP', ContainerDefinition::tableName() . '.dyn_attributes', '"templates":[^\\]]*' . $this->id . '[,\\]]']);
         }
     }
 

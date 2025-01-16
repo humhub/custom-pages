@@ -37,8 +37,9 @@ class m241220_101915_template_elements extends Migration
         $this->migrateElements('custom_pages_template_image_content', 'Image', ['file_guid', 'alt'], true, 'custom_pages_template_image_content_definition', ['height', 'width', 'style']);
 
         // Migrate Container Elements:
-        $this->safeDropForeignKey('fk-tmpl-container-item-content', 'custom_pages_template_container_content_item');
-        $this->safeAddColumn('custom_pages_template_container_content_item', 'element_content_id', $this->integer()->after('container_content_id'));
+        $this->renameTable('custom_pages_template_container_content_item', 'custom_pages_template_element_container_item');
+        $this->safeDropForeignKey('fk-tmpl-container-item-content', 'custom_pages_template_element_container_item');
+        $this->safeAddColumn('custom_pages_template_element_container_item', 'element_content_id', $this->integer()->after('container_content_id'));
         $this->migrateElements(
             'custom_pages_template_container_content',
             'Container',
@@ -55,14 +56,14 @@ class m241220_101915_template_elements extends Migration
                 ],
             ],
             [
-                'custom_pages_template_container_content_item' => [
+                'custom_pages_template_element_container_item' => [
                     'old' => 'container_content_id',
                     'new' => 'element_content_id',
                 ],
             ],
         );
-        $this->safeDropColumn('custom_pages_template_container_content_item', 'container_content_id');
-        $this->safeAddForeignKey('fk-tmpl-container-item-element-content', 'custom_pages_template_container_content_item', 'element_content_id', 'custom_pages_template_element_content', 'id', 'CASCADE');
+        $this->safeDropColumn('custom_pages_template_element_container_item', 'container_content_id');
+        $this->safeAddForeignKey('fk-tmpl-container-item-element-content', 'custom_pages_template_element_container_item', 'element_content_id', 'custom_pages_template_element_content', 'id', 'CASCADE');
         $this->safeDropTable('custom_pages_template_container_content_template');
         $this->safeDropTable('custom_pages_template_container_content');
         $this->safeDropTable('custom_pages_template_container_content_definition');

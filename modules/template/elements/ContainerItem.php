@@ -16,7 +16,7 @@ use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use yii\helpers\Url;
 
 /**
- * This is the model class for table "custom_pages_template_container_content_item".
+ * This is the model class for table "custom_pages_template_element_container_item".
  *
  * @property int $id
  * @property int $template_id
@@ -34,7 +34,7 @@ class ContainerItem extends ActiveRecord implements TemplateContentOwner
      */
     public static function tableName()
     {
-        return 'custom_pages_template_container_content_item';
+        return 'custom_pages_template_element_container_item';
     }
 
     /**

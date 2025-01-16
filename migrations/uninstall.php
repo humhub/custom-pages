@@ -6,7 +6,7 @@ class uninstall extends Migration
 {
     public function up()
     {
-        $this->safeDropTable('custom_pages_template_container_content_item');
+        $this->safeDropTable('custom_pages_template_element_container_item');
         $this->safeDropTable('custom_pages_template_element');
         $this->safeDropTable('custom_pages_template_element_content');
         $this->safeDropTable('custom_pages_template_element_content_definition');

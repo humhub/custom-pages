@@ -8,7 +8,6 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
-use humhub\components\ActiveRecord;
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
@@ -17,7 +16,7 @@ use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\file\models\FileContent;
 use yii\base\InvalidConfigException;
 use Yii;
-use yii\db\ActiveRecord as BaseActiveRecord;
+use yii\db\ActiveRecord;
 
 class ImportService
 {
@@ -79,7 +78,7 @@ class ImportService
         return !$this->hasErrors();
     }
 
-    private function saveRecord(BaseActiveRecord $record): ?BaseActiveRecord
+    private function saveRecord(ActiveRecord $record): ?ActiveRecord
     {
         if ($record->validate() && $record->save()) {
             return $record;
@@ -198,10 +197,15 @@ class ImportService
         }
 
         foreach ($data as $name => $value) {
-            if ($name === 'id' || is_array($value)) {
+            if ($name === 'id' || $name === 'definitionClass' || ($name !== 'dyn_attributes' && is_array($value))) {
                 continue;
             }
             $object->$name = $value;
+        }
+
+        if (isset($data['definition_id'], $data['definitionClass'], $data['definitionObject']) && is_array($data['definitionObject'])) {
+            $definition = $this->createObjectByData($data['definitionClass'], $data['definitionObject']);
+            $object->definition_id = $definition?->id;
         }
 
         $object = $this->saveRecord($object);

@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\services;
 
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContentDefinition;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
@@ -52,7 +53,15 @@ class ExportService
 
                 $contentObject = $defaultContent->getInstance();
                 if ($contentObject instanceof BaseTemplateElementContent) {
-                    $this->data['elements'][$e]['ownerContent']['contentObject'] = $contentObject->attributes;
+                    $contentData = $contentObject->attributes;
+
+                    if ($contentObject->hasDefinition()) {
+                        $definition = $contentObject->getDefinition();
+                        if ($definition instanceof BaseTemplateElementContentDefinition) {
+                            $contentData['definitionClass'] = get_class($definition);
+                            $contentData['definitionObject'] = $definition->attributes;
+                        }
+                    }
 
                     // Attach files
                     $files = [];
@@ -68,8 +77,10 @@ class ExportService
                         }
                     }
                     if ($files !== []) {
-                        $this->data['elements'][$e]['ownerContent']['contentObject']['attachedFiles'] = $files;
+                        $contentData['attachedFiles'] = $files;
                     }
+
+                    $this->data['elements'][$e]['ownerContent']['contentObject'] = $contentData;
                 }
             }
         }

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.10.11 (January 16, 2025)
+1.10.12 (January 16, 2025)
 --------------------------
 - Enh #353: Reduce translation message categories
 - Fix #355: Fix visibility of attached images to Template Layout

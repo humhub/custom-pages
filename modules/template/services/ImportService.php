@@ -131,6 +131,10 @@ class ImportService
             return null;
         }
 
+        if (isset($data['ownerContent']['contentObject']['element_id'])) {
+            $data['ownerContent']['contentObject']['element_id'] = $element->id;
+        }
+
         $this->importOwnerContent($data['ownerContent']);
 
         return $element;

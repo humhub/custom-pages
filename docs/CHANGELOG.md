@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.13 (Unreleased)
+--------------------------
+- Fix #374: Fix allowed properties for Twig v3.14.1+
+
 1.10.12 (January 16, 2025)
 --------------------------
 - Enh #353: Reduce translation message categories

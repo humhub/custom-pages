@@ -9,6 +9,8 @@ use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\ContainerPage;
 use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\Snippet;
+use humhub\modules\custom_pages\modules\template\models\AssetVariable;
+use humhub\modules\custom_pages\modules\template\models\OwnerContentVariable;
 use humhub\modules\space\models\Space;
 use Yii;
 
@@ -38,7 +40,17 @@ class Module extends ContentContainerModule
         'allowedMethods' => [
             'humhub\modules\custom_pages\modules\template\models\OwnerContentVariable' => '__toString',
         ],
-        'allowedProperties' => ['sidebar_container', 'content', 'sidebar_container'],
+        'allowedProperties' => [
+            OwnerContentVariable::class => [
+                'content',
+                'emptyContent',
+                'empty',
+            ],
+            AssetVariable::class => [
+                'bgImage1.jpg',
+                'bgImage2.jpg',
+            ],
+        ],
     ];
 
     public function checkOldGlobalContent()

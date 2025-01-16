@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.10.13 (Unreleased)
+1.10.13 (January 16, 2025)
 --------------------------
 - Fix #374: Fix allowed properties for Twig v3.14.1+
 

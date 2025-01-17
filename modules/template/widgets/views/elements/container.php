@@ -18,7 +18,7 @@ use humhub\modules\ui\form\widgets\MultiSelect;
 $disableDefinition = !$isAdminEdit && !$model->definition->isNewRecord;
 ?>
 <?= $form->field($model->definition, 'templates')->widget(MultiSelect::class, [
-    'items' => Template::getSelection(['type' => Template::TYPE_CONTAINER]),
+    'items' => Template::getSelection(['type' => Template::TYPE_CONTAINER], 'name'),
     'disabled' => $disableDefinition,
 ]) ?>
 

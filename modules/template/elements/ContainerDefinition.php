@@ -81,7 +81,7 @@ class ContainerDefinition extends BaseTemplateElementContentDefinition
         if (empty($this->_templates)) {
             $condition = ['type' => Template::TYPE_CONTAINER];
             if (!empty($this->templates)) {
-                $condition['id'] = $this->templates;
+                $condition['name'] = $this->templates;
             }
             $this->_templates = Template::findAll($condition);
         }

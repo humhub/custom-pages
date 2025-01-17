@@ -128,6 +128,31 @@ class Template extends ActiveRecord implements TemplateContentOwner
     /**
      * @inheritdoc
      */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if (isset($changedAttributes['name'])) {
+            // Update to new template name when it is used as Allowed Template in Container Element
+            $definitions = ContainerDefinition::find()
+                ->where(['LIKE', 'dyn_attributes', '"templates":['])
+                ->andWhere(['LIKE', 'dyn_attributes', '"' . $changedAttributes['name'] . '"']);
+            foreach ($definitions->each() as $definition) {
+                /* @var ContainerDefinition $definition */
+                $oldTemplates = $definition->templates;
+                $oldTemplateIndex = array_search($changedAttributes['name'], $oldTemplates);
+                if ($oldTemplateIndex !== false) {
+                    $oldTemplates[$oldTemplateIndex] = $this->name;
+                    $definition->templates = $oldTemplates;
+                    $definition->save();
+                }
+            }
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function beforeDelete()
     {
         if (!parent::beforeDelete()) {
@@ -339,11 +364,12 @@ class Template extends ActiveRecord implements TemplateContentOwner
      * Prepares a template selection array for the given query condition.
      *
      * @param array $condition query condition
+     * @param string $keyFieldName
      * @return array selection array with template id as keys and template name as values.
      */
-    public static function getSelection($condition = [])
+    public static function getSelection(array $condition = [], string $keyFieldName = 'id')
     {
-        return ArrayHelper::map(self::find()->where($condition)->all(), 'id', 'name');
+        return ArrayHelper::map(self::find()->where($condition)->all(), $keyFieldName, 'name');
     }
 
     public function getTemplateId()

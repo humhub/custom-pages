@@ -90,7 +90,13 @@ class ExportService
 
     private function getFileName(): string
     {
-        return $this->template->name . '_' . date('Y-m-d_H-i') . '.json';
+        $type = match ($this->template->type) {
+            Template::TYPE_CONTAINER => 'Container',
+            Template::TYPE_SNIPPED_LAYOUT => 'Snippet Layout',
+            default => 'Layout',
+        };
+
+        return $type . '_' . $this->template->name . '_' . date('Y-m-d_H-i') . '.json';
     }
 
     public function send(): Response

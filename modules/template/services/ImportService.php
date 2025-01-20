@@ -65,6 +65,17 @@ class ImportService
             return false;
         }
 
+        if (isset($data['type']) && $data['type'] !== $this->type) {
+            $type = match ($data['type']) {
+                Template::TYPE_CONTAINER => Yii::t('CustomPagesModule.base', 'Container'),
+                Template::TYPE_SNIPPED_LAYOUT => Yii::t('CustomPagesModule.base', 'Snipped-Layout'),
+                default => Yii::t('CustomPagesModule.base', 'Layout'),
+            };
+
+            $this->addError(Yii::t('CustomPagesModule.template', 'The template can be imported only as {type}!', ['type' => $type]));
+            return false;
+        }
+
         if (!$this->importTemplate($data)) {
             return false;
         }

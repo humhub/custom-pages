@@ -12,6 +12,7 @@ Changelog
 - Fix #365: Fix allowed properties for Twig v3.14.1+
 - Enh #367: Migrate all element contents to single table
 - Fix #376: Use template name for allowed templates in the container element dynamic attributes
+- Fix #377: Rename "snipped" to "snippet"
 
 1.10.11 (Unreleased)
 --------------------------

@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => 'Välj denna inställning endast för synliga textnoder. Avmarkera inställningen om detta element till exempel används  som ett HTML attributvärde.',
   'Settings' => 'Inställningar',
   'Show additional file information (size)' => 'Visa utökad filinformation (storlek)',
-  'Snipped-Layouts' => 'Snipped-Layouts',
+  'Snippet Layouts' => 'Snippet Layouts',
   'Snippet' => 'Snippet',
   'Snippets' => 'Snippets',
   'Sort Order' => 'Sorteringsordning',

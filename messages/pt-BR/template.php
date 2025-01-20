@@ -24,7 +24,7 @@ return [
   'Edit template \'{templateName}\'' => 'Editar modelo \'{templateName}\'',
   'Height' => 'Altura',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => 'Aqui você pode editar a origem do seu modelo definindo o layout do modelo e adicionando elementos de conteúdo. Cada elemento pode ser atribuído com um conteúdo padrão e definições adicionais.',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Aqui você pode gerenciar seus layouts recortados. Layouts de trechos são modelos, que podem ser incluídos em barras laterais.',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Aqui você pode gerenciar seus layouts recortados. Layouts de trechos são modelos, que podem ser incluídos em barras laterais.',
   'Here you can manage your template container elements.' => 'Aqui você pode gerenciar seus elementos de contêiner de modelo.',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'Aqui você pode gerenciar seus layouts de modelo. Os layouts são a raiz das suas páginas de modelo e não podem ser combinados com outros modelos.',
   'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'Mais informações sobre a sintaxe do galho estão disponíveis <strong> <a href="{twig_tmpl_url}"> aqui </a> </strong>',

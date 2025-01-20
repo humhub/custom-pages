@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => 'Csak a látható szöveges csomópontoknál válassza ezt a beállítást. Törölje a jelet arról az esetről, ha ezt az elemet például HTML attribútum értékként használják.',
   'Settings' => 'Beállítások',
   'Show additional file information (size)' => 'Mutassa a további fájlinformációkat (méret)',
-  'Snipped-Layouts' => 'Snippet-elrendezések',
+  'Snippet Layouts' => 'Snippet-elrendezések',
   'Snippet' => 'Kódrészlet (snippet)',
   'Snippets' => 'Kódrészletek (snippet)',
   'Sort Order' => 'Rendezési sorrend',

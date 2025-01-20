@@ -22,7 +22,7 @@ return [
   'Edit template \'{templateName}\'' => 'Επεξεργασία προτύπου \'{templateName}\'',
   'Height' => 'Ύψος',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => 'Εδώ μπορείτε να επεξεργαστείτε την προέλευση του προτύπου σας καθορίζοντας τη διάταξη του προτύπου και προσθέτοντας στοιχεία περιεχομένου. Κάθε στοιχείο μπορεί να αντιστοιχιστεί με προεπιλεγμένο περιεχόμενο και πρόσθετους ορισμούς.',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Εδώ μπορείτε να διαχειριστείτε τις απεικονιζόμενες διατάξεις σας. Οι διατάξεις διαμόρφωσης αποσπασμάτων είναι πρότυπα, τα οποία μπορούν να συμπεριληφθούν στις πλευρικές γραμμές.',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Εδώ μπορείτε να διαχειριστείτε τις απεικονιζόμενες διατάξεις σας. Οι διατάξεις διαμόρφωσης αποσπασμάτων είναι πρότυπα, τα οποία μπορούν να συμπεριληφθούν στις πλευρικές γραμμές.',
   'Here you can manage your template container elements.' => 'Εδώ μπορείτε να διαχειριστείτε τα στοιχεία του δοχείου προτύπου.',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'Εδώ μπορείτε να διαχειριστείτε τις διατάξεις προτύπων. Οι διατάξεις είναι η ρίζα των σελίδων προτύπων και δεν μπορούν να συνδυαστούν με άλλα πρότυπα.',
   'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'Περισσότερες πληροφορίες σχετικά με την

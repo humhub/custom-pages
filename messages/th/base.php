@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => 'เลือกการตั้งค่านี้สำหรับโหนดข้อความที่มองเห็นเท่านั้น ยกเลิกการเลือกการตั้งค่านี้ในกรณีที่องค์ประกอบนี้ถูกใช้ เช่น เป็นค่าแอตทริบิวต์ HTML',
   'Settings' => 'การตั้งค่า',
   'Show additional file information (size)' => 'แสดงข้อมูลไฟล์เพิ่มเติม (ขนาด)',
-  'Snipped-Layouts' => 'สนิป-เลย์เอาต์',
+  'Snippet Layouts' => 'สนิป-เลย์เอาต์',
   'Snippet' => 'Snippet',
   'Snippets' => 'ตัวอย่าง',
   'Sort Order' => 'เรียงลำดับ',

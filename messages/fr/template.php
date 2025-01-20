@@ -22,7 +22,7 @@ return [
   'Edit template \'{templateName}\'' => 'Modifier le modèle \'{templateName}\'',
   'Height' => 'Hauteur',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => 'Vous pouvez modifier ici le code source de votre modèle en définissant la structure du modèle et en ajoutant des éléments de contenu. Chaque élément peut être associé à un contenu par défaut et à des définitions supplémentaires.',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Vous pouvez gérer ici vos dispositions d\'extraits. Les dispositions d\'extrait sont des modèles, qui peuvent être affichés dans les barres latérales.',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Vous pouvez gérer ici vos dispositions d\'extraits. Les dispositions d\'extrait sont des modèles, qui peuvent être affichés dans les barres latérales.',
   'Here you can manage your template container elements.' => 'Vous pouvez gérer ici vos éléments de conteneur pour vos modèles.',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'Vous pouvez gérer ici les dispositions de votre modèle. Les dispositions sont la base des pages de votre modèle et ne peuvent être combinées avec d\'autres modèles.',
   'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'Plus d\'informations sur la syntaxe twig est disponible <strong><a href="{twig_tmpl_url}">ici</a></strong>.',

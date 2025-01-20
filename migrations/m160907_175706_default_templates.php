@@ -115,7 +115,7 @@ class m160907_175706_default_templates extends Migration
             'engine' => 'twig',
             'description' => 'Simple snippet layout with head container and richtext.',
             'source' => $this->getSnippetLayoutSource(),
-            'type' => Template::TYPE_SNIPPED_LAYOUT,
+            'type' => Template::TYPE_SNIPPET_LAYOUT,
             'created_at' => date('Y-m-d G:i:s')]);
 
         return $this->db->getLastInsertID();

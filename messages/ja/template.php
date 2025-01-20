@@ -22,7 +22,7 @@ return [
   'Edit template \'{templateName}\'' => 'テンプレート \'{templateName}\' を編集',
   'Height' => '高さ',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => 'ここでテンプレート レイアウトを定義し、コンテンツ要素を追加することでテンプレートのソースを編集できます。各要素には、デフォルトのコンテンツと追加の定義を割り当てる事ができます。',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'ここで切り取ったレイアウトを管理できます。スニペット レイアウトはサイドバーに含める事ができるテンプレートです。',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'ここで切り取ったレイアウトを管理できます。スニペット レイアウトはサイドバーに含める事ができるテンプレートです。',
   'Here you can manage your template container elements.' => 'ここでテンプレート コンテナー要素を管理できます。',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'ここでテンプレートのレイアウトを管理できます。レイアウトはテンプレート ページのルートであり、他のテンプレートと組み合わせる事はできません。',
   'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'twig 構文の詳細については、<strong><a href="{twig_tmpl_url}">こちら</a></strong>をご覧ください。',

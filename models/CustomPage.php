@@ -483,7 +483,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     public function getAllowedTemplateSelection(): array
     {
         return Template::getSelection([
-            'type' => $this->isSnippet() ? Template::TYPE_SNIPPED_LAYOUT : Template::TYPE_LAYOUT,
+            'type' => $this->isSnippet() ? Template::TYPE_SNIPPET_LAYOUT : Template::TYPE_LAYOUT,
             'allow_for_spaces' => $this->isGlobal() ? 0 : 1,
         ]);
     }

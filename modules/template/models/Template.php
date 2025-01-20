@@ -8,6 +8,7 @@ use humhub\modules\custom_pages\lib\templates\TemplateEngineFactory;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\elements\ContainerDefinition;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
@@ -44,7 +45,7 @@ use yii\helpers\ArrayHelper;
 class Template extends ActiveRecord implements TemplateContentOwner
 {
     public const TYPE_LAYOUT = 'layout';
-    public const TYPE_SNIPPED_LAYOUT = 'snipped-layout';
+    public const TYPE_SNIPPET_LAYOUT = 'snippet-layout';
     public const TYPE_NAVIGATION = 'navigation';
     public const TYPE_CONTAINER = 'container';
 
@@ -208,7 +209,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
      */
     public function isLayout()
     {
-        return $this->type === self::TYPE_LAYOUT || $this->type === self::TYPE_SNIPPED_LAYOUT;
+        return $this->type === self::TYPE_LAYOUT || $this->type === self::TYPE_SNIPPET_LAYOUT;
     }
 
     /**
@@ -375,6 +376,16 @@ class Template extends ActiveRecord implements TemplateContentOwner
     public function getTemplateId()
     {
         return $this->id;
+    }
+
+    public static function getTypeTitle(string $type): string
+    {
+        return match ($type) {
+            self::TYPE_CONTAINER => Yii::t('CustomPagesModule.base', 'Container'),
+            self::TYPE_SNIPPET_LAYOUT => Yii::t('CustomPagesModule.base', 'Snippet Layout'),
+            self::TYPE_NAVIGATION => Yii::t('CustomPagesModule.base', 'Navigation'),
+            default => Yii::t('CustomPagesModule.base', 'Layout'),
+        };
     }
 
 }

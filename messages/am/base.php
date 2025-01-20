@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => '',
   'Settings' => 'አስተካክል',
   'Show additional file information (size)' => 'ተጨማሪ የፋይል መረጃዎችን አሳይ (መጠን)',
-  'Snipped-Layouts' => 'ቁንፅል-አቀማመጥ',
+  'Snippet Layouts' => 'ቁንፅል-አቀማመጥ',
   'Snippet' => '',
   'Snippets' => 'ቁንፅል መረጃዎች',
   'Sort Order' => 'ቅደም ተከተል ያስይዙ',

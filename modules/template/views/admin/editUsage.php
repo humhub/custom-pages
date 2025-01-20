@@ -18,7 +18,7 @@ use yii\helpers\Html;
 /* @var ActiveDataProvider $dataProvider */
 
 $columnLabel = $model->type === Template::TYPE_CONTAINER ? Yii::t('CustomPagesModule.base', 'Template')
-    : ($model->type === Template::TYPE_SNIPPED_LAYOUT ? Yii::t('CustomPagesModule.base', 'Snippet')
+    : ($model->type === Template::TYPE_SNIPPET_LAYOUT ? Yii::t('CustomPagesModule.base', 'Snippet')
     : Yii::t('CustomPagesModule.base', 'Page'));
 ?>
 <div class="panel panel-default">

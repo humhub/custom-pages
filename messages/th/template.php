@@ -22,7 +22,7 @@ return [
   'Edit template \'{templateName}\'' => 'แก้ไขเทมเพลต \'{templateName}\'',
   'Height' => 'ส่วนสูง',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => 'คุณสามารถแก้ไขที่มาของเทมเพลตได้ที่นี่โดยกำหนดเค้าโครงเทมเพลตและเพิ่มองค์ประกอบเนื้อหา แต่ละองค์ประกอบสามารถกำหนดได้ด้วยเนื้อหาเริ่มต้นและคำจำกัดความเพิ่มเติ',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'คุณสามารถจัดการเลย์เอาต์ที่ตัดทอนได้ที่นี่ เค้าโครงตัวอย่างเป็นเทมเพลต ซึ่งสามารถรวมไว้ในแถบด้านข้างได้',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'คุณสามารถจัดการเลย์เอาต์ที่ตัดทอนได้ที่นี่ เค้าโครงตัวอย่างเป็นเทมเพลต ซึ่งสามารถรวมไว้ในแถบด้านข้างได้',
   'Here you can manage your template container elements.' => 'คุณสามารถจัดการองค์ประกอบคอนเทนเนอร์เทมเพลตได้ที่นี่',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'คุณสามารถจัดการเค้าโครงแม่แบบได้ที่นี่ เลย์เอาต์เป็นรูทของหน้าเทมเพลตของคุณและไม่สามารถรวมกับเทมเพลตอื่นได้',
   'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'ดูข้อมูลเพิ่มเติมเกี่ยวกับไวยากรณ์ของกิ่งได้<strong><a href="{twig_tmpl_url}">ที่นี่</a></strong>',

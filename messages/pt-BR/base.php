@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => 'Selecione esta configuração apenas para nós de texto visíveis. Desmarque esta configuração caso este elemento seja usado, por exemplo, como valor de atributo HTML.',
   'Settings' => 'Configurações',
   'Show additional file information (size)' => 'Mostrar informações adicionais sobre o arquivo (tamanho)',
-  'Snipped-Layouts' => 'Layouts Recortados',
+  'Snippet Layouts' => 'Layouts Recortados',
   'Snippet' => 'Fragmento',
   'Snippets' => 'Trechos',
   'Sort Order' => 'Ordem de classificação',

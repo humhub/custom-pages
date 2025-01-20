@@ -15,7 +15,7 @@ class CreateTemplatePageCest
         $I->expectTo('see the overview site');
         $I->see('Overview');
 
-        $I->click('Create new layout'); // Add Markdown button
+        $I->click('Create new Layout'); // Add Markdown button
 
         $I->waitForElementVisible('#template-name');
 

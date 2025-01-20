@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => 'Seleziona questa impostazione solo per i nodi di testo visibili. Deseleziona questa impostazione nel caso in cui questo elemento venga utilizzato, ad esempio, come valore dell\'attributo HTML.',
   'Settings' => 'Impostazioni',
   'Show additional file information (size)' => 'Mostra informazioni file aggiuntive (dimensioni)',
-  'Snipped-Layouts' => 'Layout snipped',
+  'Snippet Layouts' => 'Layout snippet',
   'Snippet' => 'Snippet',
   'Snippets' => 'Snippet',
   'Sort Order' => 'Ordinamento',

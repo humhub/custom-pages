@@ -6,6 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateAdminMenu;
 use humhub\modules\custom_pages\widgets\AdminMenu;
 use humhub\widgets\Button;
@@ -17,7 +18,7 @@ use yii\helpers\Url;
     <div class="panel-heading"><?php echo Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
     <?= AdminMenu::widget([]); ?>
     <div class="panel-body">
-        <h4><?= Yii::t('CustomPagesModule.base', 'Overview', ['type' => $type]) ?></h4>
+        <h4><?= Yii::t('CustomPagesModule.base', 'Overview') ?></h4>
         <div class="help-block">
             <?= $helpText ?>
         </div>
@@ -26,13 +27,13 @@ use yii\helpers\Url;
     <?= TemplateAdminMenu::widget(); ?>
 
     <div class="panel-body">
-        <?= Button::success(Yii::t('CustomPagesModule.base', 'Create new {type}', ['type' => $type]))
+        <?= Button::success(Yii::t('CustomPagesModule.base', 'Create new {type}', ['type' => Template::getTypeTitle($type)]))
             ->link(['edit'])
             ->icon('plus')
             ->right()
             ->sm() ?>
 
-        <?= Button::info(Yii::t('CustomPagesModule.base', 'Import {type}', ['type' => $type]))
+        <?= Button::info(Yii::t('CustomPagesModule.base', 'Import {type}', ['type' => Template::getTypeTitle($type)]))
             ->action('ui.modal.load', ['import-source', 'type' => $type])
             ->icon('download')
             ->right()

@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => '',
   'Settings' => 'Innstillinger',
   'Show additional file information (size)' => 'Vis tilleggsinformasjon for fil (størrelse)',
-  'Snipped-Layouts' => 'Infobox-layouts (snippet)',
+  'Snippet Layouts' => 'Infobox-layouts (snippet)',
   'Snippet' => 'Snippet',
   'Snippets' => 'Infoboxer (snippet)',
   'Sort Order' => 'Sorteringsrekkefølge',

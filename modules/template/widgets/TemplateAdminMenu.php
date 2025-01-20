@@ -34,10 +34,10 @@ class TemplateAdminMenu extends \humhub\widgets\BaseMenu
         ]);
 
         $this->addItem([
-            'label' => Yii::t('CustomPagesModule.base', 'Snipped-Layouts'),
-            'url' => Url::to(['/custom_pages/template/snipped-layout-admin']),
+            'label' => Yii::t('CustomPagesModule.base', 'Snippet Layouts'),
+            'url' => Url::to(['/custom_pages/template/snippet-layout-admin']),
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template' && Yii::$app->controller->id == 'snipped-layout-admin'),
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template' && Yii::$app->controller->id == 'snippet-layout-admin'),
         ]);
 
         $this->addItem([

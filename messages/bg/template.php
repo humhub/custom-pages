@@ -22,7 +22,7 @@ return [
   'Edit template \'{templateName}\'' => 'Редактиране на шаблон "{templateName}"',
   'Height' => 'Височина',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => 'Тук можете да редактирате източника на вашия шаблон, като дефинирате оформлението на шаблона и добавите елементи на съдържанието. Всеки елемент може да бъде присвоен със съдържание по подразбиране и допълнителни дефиниции.',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Тук можете да управлявате оформления на фрагментите. Оформленията на фрагменти са шаблони, които могат да бъдат включени в страничните ленти.',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Тук можете да управлявате оформления на фрагментите. Оформленията на фрагменти са шаблони, които могат да бъдат включени в страничните ленти.',
   'Here you can manage your template container elements.' => 'Тук можете да управлявате елементите на контейнера на шаблона.',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'Тук можете да управлявате вашите оформления на шаблони. Оформленията са в основата на вашите страници с шаблони и не могат да се комбинират с други шаблони.',
   'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'Повече информация за синтаксиса на twig е налична на URL {twig_tmpl_url}',

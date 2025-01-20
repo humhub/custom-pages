@@ -22,7 +22,7 @@ return [
   'Edit template \'{templateName}\'' => 'Redigera mallen \'{templateName}\'',
   'Height' => 'Höjd',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => 'Här kan du redigera källan till din mall genom att definiera malllayouten och lägga till innehållselement. Varje element kan tilldelas ett standardinnehåll och ytterligare definitioner.',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Här kan du hantera dina Snippets layouter. Snippetlayouter är mallar som kan inkluderas i sidofältet.',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Här kan du hantera dina Snippets layouter. Snippetlayouter är mallar som kan inkluderas i sidofältet.',
   'Here you can manage your template container elements.' => 'Här kan du hantera dina mallbehållares element.',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'Här kan du hantera dina malllayouter. Layouter är roten till dina mallsidor och kan inte kombineras med andra mallar.',
   'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'Mer information om twig syntaxen finns <strong> <a href="{twig_tmpl_url}"> här </a> </strong>',

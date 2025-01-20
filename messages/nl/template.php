@@ -22,7 +22,7 @@ return [
   'Edit template \'{templateName}\'' => 'Sjabloon \'{templateName}\' bewerken',
   'Height' => 'Hoogte',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => 'Hier kunt u de bron van uw sjabloon bewerken door de sjabloonlay-out te definiëren en inhoudselementen toe te voegen. Elk element kan worden toegewezen met een standaard inhoud en aanvullende definities.',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Hier kunt u uw snipper lay-outs beheren. Snipper-lay-outs zijn sjablonen die kunnen worden opgenomen in zijbalken.',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Hier kunt u uw snipper lay-outs beheren. Snipper-lay-outs zijn sjablonen die kunnen worden opgenomen in zijbalken.',
   'Here you can manage your template container elements.' => 'Hier kunt u uw sjablooncontainerelementen beheren.',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'Hier kunt u uw sjabloonlay-outs beheren. Lay-outs vormen het begin van uw sjabloonpagina\'s en kunnen niet worden gecombineerd met andere sjablonen.',
   'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'Meer informatie over de twig-syntaxis is beschikbaar <strong> <a href="{twig_tmpl_url}">hier</a></strong>',

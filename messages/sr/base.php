@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => 'Odaberite ovu postavku samo za vidljive čvorove teksta. Poništite ovu postavku u slučaju da se ovaj element koristi, na primjer, kao vrednost HTML atributa.',
   'Settings' => 'Postavke',
   'Show additional file information (size)' => 'Prikaži dodatne podatke o datoteci (veličina)',
-  'Snipped-Layouts' => 'Snipped-Layouts',
+  'Snippet Layouts' => 'Snippet Layouts',
   'Snippet' => 'Isečak',
   'Snippets' => 'Isječci',
   'Sort Order' => 'Redosled',

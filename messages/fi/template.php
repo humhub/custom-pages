@@ -22,7 +22,7 @@ return [
   'Edit template \'{templateName}\'' => 'Muokkaa mallia \'{templateName}\' ',
   'Height' => 'Korkeus',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => '',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Täällä voit hallita laatikkoja. Laatikot ovat malleja, jotka voidaan sisällyttää sivupalkkeihin.',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Täällä voit hallita laatikkoja. Laatikot ovat malleja, jotka voidaan sisällyttää sivupalkkeihin.',
   'Here you can manage your template container elements.' => '
 Täällä voit hallita mallien elementtejä.',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'Täällä voit hallita mallipohjasi. Mallit ovat mallisivusi juuret, eikä niitä voi yhdistää muiden mallien kanssa.',

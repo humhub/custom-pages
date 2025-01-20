@@ -27,7 +27,7 @@ class ImportForm extends Model
     public function rules()
     {
         return [
-            [['type'], 'in', 'range' => [Template::TYPE_LAYOUT, Template::TYPE_SNIPPED_LAYOUT, Template::TYPE_CONTAINER]],
+            [['type'], 'in', 'range' => [Template::TYPE_LAYOUT, Template::TYPE_SNIPPET_LAYOUT, Template::TYPE_CONTAINER]],
             [['file'], 'file', 'extensions' => 'json', 'checkExtensionByMimeType' => false, 'skipOnEmpty' => false],
         ];
     }

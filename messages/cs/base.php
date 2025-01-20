@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => '',
   'Settings' => 'Nastavení',
   'Show additional file information (size)' => '',
-  'Snipped-Layouts' => '',
+  'Snippet Layouts' => '',
   'Snippet' => 'Úryvek',
   'Snippets' => '',
   'Sort Order' => 'Řazení',

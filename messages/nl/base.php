@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => 'Selecteer deze instelling alleen voor zichtbare tekstknooppunten. Schakel deze instelling uit als dit element bijvoorbeeld wordt gebruikt als HTML-attribuutwaarde.',
   'Settings' => 'Instellingen',
   'Show additional file information (size)' => 'Extra bestandsinformatie weergeven (grootte)',
-  'Snipped-Layouts' => 'Snipper-lay-outs',
+  'Snippet Layouts' => 'Snipper-lay-outs',
   'Snippet' => 'Fragment',
   'Snippets' => 'Snippers',
   'Sort Order' => 'Sorteervolgorde',

@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => 'Escolher esta definição para nodos de texto visíveis. Não selecionar esta definição no caso deste elemento ser usado, por exemplo, como um valor de atributo HTML.',
   'Settings' => 'Definições',
   'Show additional file information (size)' => 'Mostrar informação adicional do ficheiro (tamanho)',
-  'Snipped-Layouts' => '<em>Layouts</em> de Excertos',
+  'Snippet Layouts' => '<em>Layouts</em> de Excertos',
   'Snippet' => 'Excerto',
   'Snippets' => 'Excertos',
   'Sort Order' => 'Ordem',

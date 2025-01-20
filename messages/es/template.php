@@ -22,7 +22,7 @@ return [
   'Edit template \'{templateName}\'' => 'Editar plantilla \'{templateName}\'',
   'Height' => 'Alto',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => 'Aquí puede editar la fuente de su plantilla definiendo el diseño de la plantilla y agregando elementos de contenido. A cada elemento se le puede asignar un contenido predeterminado y definiciones adicionales.',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Aquí puede administrar sus diseños recortados. Los diseños de fragmentos son plantillas que se pueden incluir en las barras laterales.',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Aquí puede administrar sus diseños recortados. Los diseños de fragmentos son plantillas que se pueden incluir en las barras laterales.',
   'Here you can manage your template container elements.' => 'Aquí puede administrar los elementos del contenedor de su plantilla.',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'Aquí puede administrar los diseños de su plantilla. Los diseños son la raíz de las páginas de su plantilla y no se pueden combinar con otras plantillas.',
   'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'Más información sobre la sintaxis twig disponible <strong><a href="{twig_tmpl_url}">en este enlace</a></strong>',

@@ -10,12 +10,12 @@ use humhub\modules\custom_pages\modules\template\models\Template;
  *
  * @author buddha
  */
-class SnippedLayoutAdminController extends AdminController
+class SnippetLayoutAdminController extends AdminController
 {
     /**
      * @inheritdoc
      */
-    public $type = Template::TYPE_SNIPPED_LAYOUT;
+    public $type = Template::TYPE_SNIPPET_LAYOUT;
 
     /**
      * @inheritdoc
@@ -24,7 +24,7 @@ class SnippedLayoutAdminController extends AdminController
     {
         $this->indexHelp = Yii::t(
             'CustomPagesModule.template',
-            'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.',
+            'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.',
         );
         parent::init();
     }

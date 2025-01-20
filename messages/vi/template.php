@@ -22,7 +22,7 @@ return [
   'Edit template \'{templateName}\'' => 'Sửa mẫu \'{templateName}\'',
   'Height' => 'Height',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => 'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.',
   'Here you can manage your template container elements.' => 'Bạn có thể quản lý các thành phần chứa của mẫu của bạn',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'Ở đây bạn có thể quản lý các template layout của bạn. Layouts là gốc của các trang mẫu và không thể được gộp vào các template khác.',
   'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'More infos about the twig syntax is available <strong><a href="%7Btwig_tmpl_url%7D">here</a></strong>',

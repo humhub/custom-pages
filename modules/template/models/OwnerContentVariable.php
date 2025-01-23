@@ -2,12 +2,16 @@
 
 namespace humhub\modules\custom_pages\modules\template\models;
 
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\elements\UserElement;
 use yii\base\Model;
 
 class OwnerContentVariable extends Model
 {
     public $options = [];
+
+    public ?BaseTemplateElementContent $elementContent = null;
 
     /**
      * @var OwnerContent
@@ -16,30 +20,30 @@ class OwnerContentVariable extends Model
 
     public function getLabel()
     {
-        return $this->ownerContent->getLabel();
+        return $this->elementContent->getLabel();
     }
 
-    public function isEditMode()
+    public function isEditMode(): bool
     {
-        return (isset($this->options['editMode'])) ? $this->options['editMode'] : false;
+        return $this->options['editMode'] ?? false;
     }
 
     public function getEmptyContent()
     {
-        return $this->ownerContent->renderEmpty();
+        return $this->elementContent->renderEmpty();
     }
 
     public function getEmpty()
     {
-        return $this->ownerContent->isEmpty();
+        return $this->elementContent->isEmpty();
     }
 
     public function getContent()
     {
-        return $this->ownerContent->instance;
+        return $this->elementContent;
     }
 
-    public function render($editMode = false)
+    public function render(bool $editMode = false): string
     {
         if ($editMode) {
             $this->options['editMode'] = true;
@@ -47,27 +51,25 @@ class OwnerContentVariable extends Model
 
         if (isset($this->options['editMode']) && $this->options['editMode']) {
             $options = array_merge([
-                'empty' => $this->ownerContent->isEmpty(),
-                'owner_content_id' => $this->ownerContent->id,
-                'element_name' => $this->ownerContent->element_name,
-                'owner_model' => $this->ownerContent->owner_model,
-                'owner_id' => $this->ownerContent->owner_id,
-                'default' => $this->ownerContent->isDefault(),
+                'empty' => $this->elementContent->isEmpty(),
+                'element_content_id' => $this->elementContent->id,
+                'element_name' => $this->elementContent->element->name,
+                'default' => $this->elementContent->isDefault(),
             ], $this->options);
 
             // We only need the template_id for container content elements
-            if ($this->ownerContent->content_type == ContainerElement::class) {
-                $options['template_id'] = $this->ownerContent->owner->getTemplateId();
+            if ($this->elementContent instanceof ContainerElement) {
+                $options['template_id'] = $this->elementContent->templateInstance->template_id;
             }
         } else {
             $options = $this->options;
         }
 
         try {
-            if (!$this->ownerContent->isEmpty()) {
-                return $this->ownerContent->render($options);
+            if (!$this->elementContent->isEmpty()) {
+                return $this->elementContent->render($options);
             } elseif ($this->isEditMode()) {
-                return $this->ownerContent->renderEmpty($options);
+                return $this->elementContent->renderEmpty($options);
             }
         } catch (\Exception $e) {
             return strval($e);
@@ -85,7 +87,7 @@ class OwnerContentVariable extends Model
     public function items(): iterable
     {
         try {
-            yield from $this->ownerContent->getItems();
+            yield from $this->elementContent instanceof TemplateContentIterable ? $this->elementContent->getItems() : [];
         } catch (\Exception $e) {
             yield from [];
         }
@@ -99,6 +101,6 @@ class OwnerContentVariable extends Model
      */
     public function profile(string $field = null): string
     {
-        return $this->ownerContent->getProfileField($field);
+        return $this->elementContent instanceof UserElement ? $this->elementContent->getProfileField($field) : '';
     }
 }

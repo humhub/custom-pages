@@ -6,6 +6,7 @@ use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\lib\templates\TemplateEngineFactory;
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerDefinition;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use Yii;
@@ -258,30 +259,21 @@ class Template extends ActiveRecord implements TemplateContentOwner
      */
     public function render(ActiveRecord $owner = null, $editMode = false, $containerItem = null)
     {
-        $contentElements = $this->getContentElements($owner);
-
-        if ($owner == null) {
-            $owner = $this;
-        }
+        $elementContents = $this->getElementContents($owner);
 
         $content = [];
-        foreach ($contentElements as $contentElement) {
-            $options = [
-                'editMode' => $editMode,
-                'element_title' => $this->getElementTitle($contentElement->element_name),
-                'owner_model' => get_class($owner),
-                'owner_id' => $owner->id,
-                'item' => $containerItem,
-            ];
-
-            $content[$contentElement->element_name] = new OwnerContentVariable(['ownerContent' => $contentElement, 'options' => $options]);
+        foreach ($elementContents as $elementContent) {
+            $content[$elementContent->element->name] = new OwnerContentVariable([
+                'elementContent' => $elementContent,
+                'options' => [
+                    'editMode' => $editMode,
+                    'element_title' => $elementContent->element->getTitle(),
+                    'item' => $containerItem,
+                ],
+            ]);
         }
 
         $content['assets'] = PHP_VERSION_ID >= 80000 ? new AssetVariable() : new AssetVariablePhp74();
-
-        if ($containerItem) {
-            //$content['item'] = new ContainerItemVariable(['item' => $containerItem]);
-        }
 
         $engine = TemplateEngineFactory::create($this->engine);
         $result = $engine->render($this->name, $content);
@@ -325,9 +317,43 @@ class Template extends ActiveRecord implements TemplateContentOwner
         return $result;
     }
 
+    /**
+     * @return BaseTemplateElementContent[]
+     */
+    public function getElementContents(TemplateInstance $templateInstance): array
+    {
+        if (!is_array($this->_elements)) {
+            $this->_elements = $this->getElements()->all();
+        }
+
+        $elementContents = [];
+        if ($this->_elements === []) {
+            return $elementContents;
+        }
+
+        if ($templateInstance !== null) {
+            // Non default content defined by owner
+            $elementContents = BaseTemplateElementContent::find()
+                ->where(['template_instance_id' => $templateInstance->id])
+                ->all();
+        }
+
+        $elementNames = array_map(function ($elementContent) {
+            return $elementContent->element->name;
+        }, $elementContents);
+
+        foreach ($this->_elements as $element) {
+            if (!in_array($element->name, $elementNames)) {
+                $elementContents[] = $element->getDefaultContent(true);
+            }
+        }
+
+        return $elementContents;
+    }
+
     private function getElementTitle($element_name)
     {
-        if (!$this->_elements) {
+        if (!is_array($this->_elements)) {
             $this->_elements = $this->getElements()->all();
         }
 

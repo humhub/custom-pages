@@ -237,18 +237,18 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
     /**
      * This action will reset the default content of a given TemplateElement
-     * @param type $id
-     * @return type
+     * @param int $id
+     * @return Response
      */
     public function actionResetElement($id)
     {
         $this->forcePostRequest();
 
         $element = TemplateElement::findOne(['id' => $id]);
-        $ownerContent = $element->getDefaultContent();
+        $elementContent = $element->getDefaultContent();
 
-        if ($ownerContent != null) {
-            $ownerContent->delete();
+        if ($elementContent !== null) {
+            $elementContent->delete();
         }
 
         return $this->asJson([

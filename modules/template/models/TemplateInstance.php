@@ -5,8 +5,9 @@ namespace humhub\modules\custom_pages\modules\template\models;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\models\CustomPage;
-use Yii;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 /**
  * A TemplateInstance represents an actual instantiation of a Template model.
@@ -15,8 +16,10 @@ use yii\db\ActiveQuery;
  * @property int $id
  * @property int $page_id
  * @property int $template_id
+ * @property int|null $container_item_id
  *
  * @property-read Template $template
+ * @property-read CustomPage $page
  */
 class TemplateInstance extends ActiveRecord implements TemplateContentOwner
 {
@@ -49,6 +52,7 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
         return [
             [['template_id', 'page_id'], 'required'],
             [['template_id', 'page_id'], 'integer'],
+            [['container_item_id'], 'safe'],
         ];
     }
 
@@ -102,13 +106,9 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
         return $this->hasOne(Template::class, ['id' => 'template_id']);
     }
 
-    public function getObject(): ?CustomPage
+    public function getPage(): ActiveQuery
     {
-        if (empty($this->page_id)) {
-            return null;
-        }
-
-        return CustomPage::findOne(['id' => $this->page_id]);
+        return $this->hasOne(Template::class, ['id' => 'page_id']);
     }
 
     public function getTemplateId()
@@ -116,18 +116,23 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
         return $this->template_id;
     }
 
-    public static function findByOwner(ActiveRecord $owner)
+    public static function findByOwner(ActiveRecord $owner): ?self
     {
-        return self::findOne(['page_id' => $owner->getPrimaryKey()]);
+        if ($owner instanceof CustomPage) {
+            return self::findOne(['page_id' => $owner->id, ['IS', 'container_item_id', new Expression('NULL')]]);
+        }
+
+        if ($owner instanceof ContainerItem) {
+            return self::findOne(['container_item_id' => $owner->id]);
+        }
+
+        return null;
     }
 
     public static function deleteByOwner(ActiveRecord $owner)
     {
-        $container = self::findOne(['page_id' => $owner->getPrimaryKey()]);
-        if ($container) {
-            return $container->delete();
-        }
-        return false;
+        $templateInstance = self::findByOwner($owner);
+        return $templateInstance ? $templateInstance->delete() : false;
     }
 
     public function getCacheKey(): string

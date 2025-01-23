@@ -82,29 +82,29 @@ class ContainerContentController extends Controller
      * @throws \yii\web\HttpException
      * @throws \yii\base\InvalidRouteException
      */
-    public function actionAddItem($ownerContentId, $ownerContent = null, $cguid = null)
+    public function actionAddItem($elementContentId, $elementContent = null, $cguid = null)
     {
-        $ownerContent = (!$ownerContent) ? OwnerContent::findOne(['id' => $ownerContentId]) : $ownerContent;
+        if ($elementContent === null) {
+            $elementContent = ContainerElement::findOne(['id' => $elementContentId]);
+        }
 
-        /* @var ContainerElement $element */
-        $element = $ownerContent->instance;
-        if (!$element->canAddItem()) {
+        if (!$elementContent || !$elementContent->canAddItem()) {
             throw new \yii\web\HttpException(403, Yii::t('CustomPagesModule.base', 'This container does not allow any further items!'));
         }
 
         // If the ContentContainerDefinition only allows one specific template, we skip the template selection.
-        if ($element->isSingleAllowedTemplate()) {
+        if ($elementContent->isSingleAllowedTemplate()) {
             return $this->runAction('edit-add-item', [
-                'templateId' => $element->allowedTemplates[0]->id,
-                'ownerContent' => $ownerContent,
+                'templateId' => $elementContent->allowedTemplates[0]->id,
+                'elementContent' => $elementContent,
                 'cguid' => $cguid,
             ]);
         }
 
         return $this->asJson([
             'output' => $this->renderAjax('addItemChooseTemplateModal', [
-                'allowedTemplateSelection' => $this->getAllowedTemplateSelection($element),
-                'action' => Url::to(['edit-add-item', 'ownerContentId' => $ownerContentId, 'cguid' => $cguid]),
+                'allowedTemplateSelection' => $this->getAllowedTemplateSelection($elementContent),
+                'action' => Url::to(['edit-add-item', 'elementContentId' => $elementContentId, 'cguid' => $cguid]),
             ]),
         ]);
     }
@@ -143,16 +143,18 @@ class ContainerContentController extends Controller
      * @return \yii\web\Response
      * @throws \yii\web\HttpException
      */
-    public function actionEditAddItem($ownerContentId = null, $ownerContent = null, $templateId = null, $itemTemplate = null, $cguid = null)
+    public function actionEditAddItem($elementContentId = null, $elementContent = null, $templateId = null, $itemTemplate = null, $cguid = null)
     {
         // First do some validation of the given data
-        if ($ownerContentId == null && $ownerContent == null) {
+        if ($elementContentId == null && $elementContent == null) {
             throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.base', 'This action requires an ownerContentId or ownerContent instance!'));
         }
 
-        $ownerContent = ($ownerContent == null) ? OwnerContent::findOne(['id' => $ownerContentId]) : $ownerContent;
+        if ($elementContent === null) {
+            $elementContent = ContainerElement::findOne(['id' => $elementContentId]);
+        }
 
-        if (!$ownerContent->instance->canAddItem()) {
+        if (!$elementContent->canAddItem()) {
             throw new \yii\web\HttpException(403, Yii::t('CustomPagesModule.base', 'This container does not allow any further items!'));
         }
 
@@ -167,16 +169,16 @@ class ContainerContentController extends Controller
         }
 
         // Render form or handle form submission
-        $form = new AddItemEditForm(['ownerContent' => $ownerContent]);
+        $form = new AddItemEditForm(['elementContent' => $elementContent]);
         $form->setItemTemplate($itemTemplate);
         $form->setScenario('edit');
 
         if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
-            TemplateCache::flushByOwnerContent($ownerContent);
-            $variable = new OwnerContentVariable(['ownerContent' => $ownerContent]);
+            // TemplateCache::flushByOwnerContent($ownerContent);
+            $variable = new OwnerContentVariable(['elementContent' => $elementContent]);
             return $this->asJson([
                 'success' => true,
-                'id' => $ownerContent->id,
+                'id' => $elementContent->id,
                 'output' => $variable->render(true),
             ]);
         }
@@ -185,7 +187,7 @@ class ContainerContentController extends Controller
             'output' => $this->renderAjaxPartial(EditContainerItemModal::widget([
                 'model' => $form,
                 'title' => Yii::t('CustomPagesModule.base', '<strong>Add</strong> {templateName} item', ['templateName' => $form->template->name]),
-                'action' => Url::to(['edit-add-item', 'ownerContentId' => $ownerContent->id, 'templateId' => $itemTemplate->id, 'cguid' => $cguid]),
+                'action' => Url::to(['edit-add-item', 'elementContentId' => $elementContent->id, 'templateId' => $itemTemplate->id, 'cguid' => $cguid]),
             ])),
         ]);
     }

@@ -49,7 +49,7 @@ humhub.module('custom_pages.template.TemplateContainer', function (module, requi
             url:  (this.default) ? this.editor.options.createContainerUrl : this.editor.options.itemAddUrl,
             dataType: 'json',
             data: {
-                ownerContentId: this.ownerContentId
+                elementContentId: this.elementContentId,
             }
         };
         

@@ -1,11 +1,12 @@
 <?php
 
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\models\forms\EditItemForm;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use yii\bootstrap\Html;
 use yii\widgets\ActiveForm;
 
-/* @var $model humhub\modules\custom_pages\modules\template\models\forms\TemplateElementForm */
+/* @var $model EditItemForm */
 /* @var $action string */
 /* @var $title string */
 
@@ -25,11 +26,11 @@ use yii\widgets\ActiveForm;
                 <div class="panel panel-default">
                     <div class="template-edit-multiple-tab panel-heading" tabindex="0">
                         <strong>
-                            <?= Html::encode($model->getElement($contentItem->ownerContent->element_name)->getTitle()) ?>&nbsp;
+                            <?= Html::encode($model->getElement($contentItem->elementContent->element->name)->getTitle()) ?>&nbsp;
                             <i class="switchIcon fa fa-caret-down" aria-hidden="true"></i>
                         </strong>
                         <small class="pull-right">
-                            <span class="label label-success"><?= $contentItem->ownerContent->label ?></span>
+                            <span class="label label-success"><?= $contentItem->elementContent->getLabel() ?></span>
                         </small>
                         <?php if ($contentItem->content->isNewRecord): ?>
                             <small class="pull-right" style="margin-right: 2px">

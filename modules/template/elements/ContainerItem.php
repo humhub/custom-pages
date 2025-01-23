@@ -9,26 +9,32 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use yii\db\ActiveQuery;
 use yii\helpers\Url;
 
 /**
  * This is the model class for table "custom_pages_template_element_container_item".
  *
  * @property int $id
- * @property int $template_id
  * @property int $element_content_id
  * @property int $sort_order
  * @property string $title
  *
  * @property-read ContainerElement $container
+ * @property-read TemplateInstance $templateInstance
  * @property-read Template $template
+ * @property-read CustomPage $page
  */
 class ContainerItem extends ActiveRecord implements TemplateContentOwner
 {
+    public ?int $pageId = null;
+    public ?int $templateId = null;
+
     /**
      * @inheritdoc
      */
@@ -43,10 +49,26 @@ class ContainerItem extends ActiveRecord implements TemplateContentOwner
     public function rules()
     {
         return [
-            [['template_id', 'element_content_id'], 'required'],
-            [['template_id', 'element_content_id', 'sort_order'], 'integer'],
+            [['pageId', 'templateId', 'element_content_id'], 'required'],
+            [['pageId', 'templateId', 'element_content_id', 'sort_order'], 'integer'],
             ['title', 'safe'],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            $templateInstance = new TemplateInstance();
+            $templateInstance->page_id = $this->pageId;
+            $templateInstance->template_id = $this->templateId;
+            $templateInstance->container_item_id = $this->id;
+            $templateInstance->save();
+        }
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -78,12 +100,24 @@ class ContainerItem extends ActiveRecord implements TemplateContentOwner
         self::updateAllCounters(['sort_order' => -1], ['and', ['>=', 'sort_order', $start], ['<=', 'sort_order', $end], ['element_content_id' => $containerId]]);
     }
 
-    public function getTemplate()
+    public function getTemplateInstance(): ActiveQuery
     {
-        return $this->hasOne(Template::class, ['id' => 'template_id']);
+        return $this->hasOne(TemplateInstance::class, ['container_item_id' => 'id']);
     }
 
-    public function getContainer()
+    public function getTemplate(): ActiveQuery
+    {
+        return $this->hasOne(Template::class, ['id' => 'template_id'])
+            ->via('templateInstance');
+    }
+
+    public function getPage(): ActiveQuery
+    {
+        return $this->hasOne(CustomPage::class, ['id' => 'page_id'])
+            ->via('templateInstance');
+    }
+
+    public function getContainer(): ActiveQuery
     {
         return $this->hasOne(ContainerElement::class, ['id' => 'element_content_id']);
     }
@@ -91,10 +125,10 @@ class ContainerItem extends ActiveRecord implements TemplateContentOwner
     public function render($editMode, $inline = false)
     {
         if ($editMode) {
-            return $this->wrap($this->template->render($this, $editMode), $inline);
+            return $this->wrap($this->template->render($this->templateInstance, $editMode), $inline);
         }
 
-        return $this->template->render($this, $editMode, $this);
+        return $this->template->render($this->templateInstance, $editMode, $this);
     }
 
     public function wrap($content, $inline)
@@ -106,7 +140,7 @@ class ContainerItem extends ActiveRecord implements TemplateContentOwner
                 'class' => ($inline) ? 'inline' : '',
                 'data-allow-inline-activation' => $this->template->allow_inline_activation,
                 'data-template-item' => $this->id,
-                'data-template-edit-url' => Url::to(['/custom_pages/template/container-admin/edit-source', 'id' => $this->template_id]),
+                'data-template-edit-url' => Url::to(['/custom_pages/template/container-admin/edit-source', 'id' => $this->template->id]),
                 'data-template-item-title' => $this->title,
                 'data-template-owner' => ContainerElement::class,
                 'data-template-owner-id' => $this->element_content_id,
@@ -116,27 +150,16 @@ class ContainerItem extends ActiveRecord implements TemplateContentOwner
 
     public function getTemplateId()
     {
-        return $this->template_id;
+        return $this->template->id;
     }
 
-    public static function findByTemplateId($templateId)
+    public static function findByTemplateId($templateId): ActiveQuery
     {
-        return self::find()->where(['template_id' => $templateId]);
-    }
-
-    public function getTemplateInstance(): ?TemplateInstance
-    {
-        $container = $this->container;
-        if ($container instanceof ContainerElement) {
-            $ownerContent = $container->ownerContent;
-            if ($ownerContent instanceof OwnerContent) {
-                $owner = $ownerContent->getOwner();
-                if ($owner instanceof TemplateInstance) {
-                    return $owner;
-                }
-            }
-        }
-
-        return null;
+        return self::find()->innerJoin(
+            TemplateInstance::tableName(),
+            TemplateInstance::tableName() . '.container_item_id = ' . self::tableName() . '.id AND ' .
+                TemplateInstance::tableName() . '.template_id = :templateId',
+            ['templateId' => $templateId],
+        );
     }
 }

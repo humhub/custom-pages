@@ -5,6 +5,7 @@ namespace humhub\modules\custom_pages\modules\template\models;
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use Yii;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "custom_pages_template".
@@ -163,17 +164,21 @@ class TemplateElement extends ActiveRecord
      * function will return an empty dummy OwnerContent instance.
      *
      * @param bool $createDummy
-     * @return OwnerContent
+     * @return BaseTemplateElementContent|null
      */
-    public function getDefaultContent($createDummy = false)
+    public function getDefaultContent(bool $createDummy = false): ?BaseTemplateElementContent
     {
-        $content = OwnerContent::findByOwner(Template::class, $this->template_id, $this->name)->one();
-        if ($content == null && $createDummy) {
-            $content = new OwnerContent();
-            $content->setOwner(Template::class, $this->template_id);
-            $content->element_name = $this->name;
-            $content->content_type = $this->content_type;
+        /* @var $content BaseTemplateElementContent */
+        $content = BaseTemplateElementContent::find()
+            ->where(['element_id' => $this->id])
+            ->andWhere(['IS', 'template_instance_id', new Expression('NULL')])
+            ->one();
+
+        if ($content === null && $createDummy) {
+            $content = Yii::createObject($this->content_type);
+            $content->element_id = $this->id;
         }
+
         return $content;
     }
 

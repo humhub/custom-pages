@@ -17,6 +17,8 @@ use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
  */
 class EditItemForm extends EditMultipleElementsForm
 {
+    public ?ContainerItem $item = null;
+
     public $title;
     public $editDefault = false;
 
@@ -36,16 +38,17 @@ class EditItemForm extends EditMultipleElementsForm
 
     public function setItem($itemId)
     {
-        $this->owner = ContainerItem::findOne(['id' => $itemId]);
-        $this->title = $this->owner->title;
+        $this->item = ContainerItem::findOne(['id' => $itemId]);
+        $this->title = $this->item->title;
+        $this->owner = $this->item->templateInstance;
         $this->setTemplate($this->owner->template_id);
     }
 
     public function save()
     {
-        if (parent::save(false)) {
-            $this->owner->title = $this->title;
-            $this->owner->save();
+        if (parent::save()) {
+            $this->item->title = $this->title;
+            return $this->item->save();
         }
 
         return true;

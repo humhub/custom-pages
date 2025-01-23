@@ -32,10 +32,6 @@ use yii\helpers\Html;
 
             <?= $form->field($model->element, 'title')->textInput(); ?>
 
-            <?php if(false) : ?>
-                <?= $form->field($model, 'use_default')->checkbox(['style' => 'margin: 100px']); ?>
-            <?php endif; ?>
-
             <?= EditContentSeperator::widget(['isAdminEdit' => $isAdminEdit]) ?>
 
             <?= TemplateContentFormFields::widget(['form' => $form, 'model' => $model->content]) ?>

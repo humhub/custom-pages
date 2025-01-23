@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 
 /**
@@ -20,8 +21,12 @@ class EditMultipleElementsForm extends \yii\base\Model
     public $isNewRecord = false;
     public $editDefault = true;
     public $owner;
-    public $template;
-    public $contentMap = [];
+    public ?Template $template = null;
+
+    /**
+     * @var ContentFormItem[]
+     */
+    public array $contentMap = [];
     public $scenario = 'edit';
 
     public function setOwnerTemplateId($templateId)
@@ -51,12 +56,12 @@ class EditMultipleElementsForm extends \yii\base\Model
 
     public function prepareContentInstances()
     {
-        $ownerContentArr = $this->template->getContentElements($this->owner);
+        $elementContents = $this->template->getElementContents($this->owner);
 
-        foreach ($ownerContentArr as $ownerContent) {
+        foreach ($elementContents as $elementContent) {
             $contentItem = new ContentFormItem([
-                'ownerContent' => $ownerContent,
-                'element' => $this->getElement($ownerContent->element_name),
+                'elementContent' => $elementContent,
+                'element' => $elementContent->element,
                 'editDefault' => $this->editDefault,
                 'scenario' => $this->scenario]);
             $this->contentMap[$contentItem->key] = $contentItem;

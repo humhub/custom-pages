@@ -30,9 +30,12 @@ use yii\db\ActiveQuery;
  * @property int $id
  * @property int $element_id
  * @property int $definition_id
+ * @property int|null $template_instance_id
  *
+ * @property-read TemplateElement $element
  * @property-read OwnerContent $ownerContent
  * @property-read BaseTemplateElementContentDefinition $definition
+ * @property-read TemplateInstance|null $templateInstance
  */
 abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes implements ViewableInterface
 {
@@ -92,6 +95,15 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     public static function tableName()
     {
         return 'custom_pages_template_element_content';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function instantiate($row)
+    {
+        $element = TemplateElement::findOne(['id' => $row['element_id']]);
+        return $element ? Yii::createObject($element['content_type']) : null;
     }
 
     /**
@@ -381,6 +393,16 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
         return false;
     }
 
+    public function getElement(): ActiveQuery
+    {
+        return $this->hasOne(TemplateElement::class, ['id' => 'element_id']);
+    }
+
+    public function getTemplateInstance(): ActiveQuery
+    {
+        return $this->hasOne(TemplateInstance::class, ['id' => 'template_instance_id']);
+    }
+
     public function getOwnerContent(): ActiveQuery
     {
         return $this->hasOne(OwnerContent::class, ['content_id' => 'id'])
@@ -398,11 +420,11 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
         $ownerModel = $this->getOwner();
 
         if ($ownerModel instanceof ContainerItem) {
-            $ownerModel = $ownerModel->getTemplateInstance();
+            return $ownerModel->page;
         }
 
         if ($ownerModel instanceof TemplateInstance) {
-            return $ownerModel->getObject();
+            return $ownerModel->page;
         }
 
         return null;
@@ -457,5 +479,22 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     public function getFormView(): string
     {
         return lcfirst(substr(strrchr(static::class, '\\'), 1, -7));
+    }
+
+    public function isDefault(): bool
+    {
+        return $this->template_instance_id === null;
+    }
+
+    public function getInstance(bool $createDummy = false): ?static
+    {
+        if ($this->isNewRecord && $createDummy) {
+            /* @var static $content */
+            $content = Yii::createObject($this->element->content_type);
+            $content->element_id = $this->element_id;
+            return $content;
+        }
+
+        return $this;
     }
 }

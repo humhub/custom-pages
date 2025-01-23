@@ -38,7 +38,7 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
         this.ownerId = this.options.templateOwnerId;
         this.empty = this.options.templateEmpty;
         this.default = this.options.templateDefault;
-        this.ownerContentId = this.options.templateOwnerContentId;
+        this.elementContentId = this.options.templateElementContentId;
         this.label = this.options.templateLabel;
     };
 

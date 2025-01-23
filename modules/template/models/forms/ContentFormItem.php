@@ -9,7 +9,6 @@
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
-use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use yii\base\Model;
 
@@ -20,7 +19,7 @@ use yii\base\Model;
  */
 class ContentFormItem extends Model
 {
-    public ?OwnerContent $ownerContent = null;
+    public ?BaseTemplateElementContent $elementContent = null;
     public bool $editDefault = true;
     public ?BaseTemplateElementContent $content = null;
     public ?TemplateElement $element = null;
@@ -29,13 +28,13 @@ class ContentFormItem extends Model
 
     public function init()
     {
-        $this->content = $this->ownerContent->getInstance(true);
+        $this->content = $this->elementContent->getInstance(true);
         $this->content->element_id = $this->element->id;
 
-        if ($this->ownerContent->isNewRecord) {
-            $this->key = $this->ownerContent->element_name;
+        if ($this->elementContent->isNewRecord) {
+            $this->key = $this->elementContent->element->name;
         } else {
-            $this->key = $this->ownerContent->id;
+            $this->key = $this->elementContent->id;
         }
 
         $this->content->setFormName('Content[' . $this->key . ']');
@@ -74,7 +73,7 @@ class ContentFormItem extends Model
             return true;
         }
 
-        if ($this->ownerContent->isDefault() && !$this->editDefault) {
+        if ($this->elementContent->isDefault() && !$this->editDefault) {
             $fileList = $this->content->fileList;
             $this->content = $this->content->copy();
             $this->content->fileList = $fileList;

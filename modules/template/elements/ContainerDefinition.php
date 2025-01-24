@@ -91,6 +91,6 @@ class ContainerDefinition extends BaseTemplateElementContentDefinition
 
     public function isSingleAllowedTemplate(): bool
     {
-        return count($this->templates) === 1;
+        return is_array($this->templates) && count($this->templates) === 1;
     }
 }

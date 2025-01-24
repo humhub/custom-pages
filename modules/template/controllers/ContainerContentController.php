@@ -3,8 +3,10 @@
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
 use humhub\components\Controller;
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use Yii;
 use yii\helpers\Url;
 use humhub\modules\custom_pages\modules\template\models\forms\AddItemEditForm;
@@ -38,35 +40,36 @@ class ContainerContentController extends Controller
      * This action accepts an $ownerContentId, which is the id of the default OwnerContent instance,
      * and an owner definition ($ownerModel, $ownerId), which defines the actual owner of the element.
      *
-     * @param string $ownerModel
-     * @param int $ownerId
-     * @param int $ownerContentId
+     * @param int $elementContentId
+     * @param int $templateInstanceId
      * @return array
      * @throws \yii\base\InvalidRouteException
      */
-    public function actionCreateContainer($ownerModel, $ownerId, $ownerContentId, $cguid = null)
+    public function actionCreateContainer($elementContentId, $templateInstanceId, $cguid = null)
     {
-        // Load actual owner and default content
-        $owner = OwnerContent::getOwnerModel($ownerModel, $ownerId);
-        $defaultOwnerContent = OwnerContent::findOne(['id' => $ownerContentId]);
+        // Load actual template instance and default content
+        $templateInstance = TemplateInstance::findOne(['id' => $templateInstanceId]);
+        $defaultElementContent = BaseTemplateElementContent::findOne(['id' => $elementContentId]);
 
-        // Check if owner content already exists
-        $ownerContent = OwnerContent::findOne(['owner_model' => $ownerModel, 'owner_id' => $owner->id, 'element_name' => $defaultOwnerContent->element_name]);
+        // Check if element content already exists
+        $elementContent = BaseTemplateElementContent::findOne([
+            'element_id' => $defaultElementContent->element_id,
+            'template_instance_id' => $templateInstance->id,
+        ]);
 
-        // If there is no container content yet, we create an OwnerContent isntance by copying the default one.
-        if (!$ownerContent) {
+        // If there is no container content yet, we create an ElementContent instance by copying the default one.
+        if (!$elementContent) {
             // Create a copy of the default content
-            $content = $defaultOwnerContent->copyContent();
-            $content->save();
-
-            // Copy default OwnerContent and set owner and new content
-            $ownerContent = $defaultOwnerContent->copy();
-            $ownerContent->setOwner($owner);
-            $ownerContent->setContent($content);
-            $ownerContent->save();
+            $elementContent = $defaultElementContent->copy();
+            $elementContent->template_instance_id = $templateInstance->id;
+            $elementContent->save();
         }
 
-        return $this->runAction('add-item', ['ownerContentId' => $ownerContent->id, 'ownerContent' => $ownerContent, 'cguid' => $cguid]);
+        return $this->runAction('add-item', [
+            'elementContentId' => $elementContent->id,
+            'elementContent' => $elementContent,
+            'cguid' => $cguid,
+        ]);
     }
 
     /**
@@ -76,8 +79,8 @@ class ContainerContentController extends Controller
      *
      * Note: The given ownerContent has to be the actual OwnerContent and not a default OwnerContent.
      *
-     * @param int $ownerContentId id of actual ownerContent
-     * @param OwnerContent $ownerContent actual (non default) ownerContent instance
+     * @param int $elementContentId id of actual ownerContent
+     * @param BaseTemplateElementContent $elementContent actual (non default) ownerContent instance
      * @return mixed|\yii\web\Response
      * @throws \yii\web\HttpException
      * @throws \yii\base\InvalidRouteException
@@ -174,7 +177,7 @@ class ContainerContentController extends Controller
         $form->setScenario('edit');
 
         if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
-            // TemplateCache::flushByOwnerContent($ownerContent);
+            TemplateCache::flushByElementContent($elementContent);
             $variable = new OwnerContentVariable(['elementContent' => $elementContent]);
             return $this->asJson([
                 'success' => true,
@@ -204,12 +207,11 @@ class ContainerContentController extends Controller
         $form->setScenario('edit');
 
         if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
-            $ownerContent = OwnerContent::findByContent($form->owner->container);
-            TemplateCache::flushByOwnerContent($ownerContent);
+            TemplateCache::flushByTemplateInstance($form->item->templateInstance);
 
             return $this->asJson([
                 'success' => true,
-                'output' => $form->owner->render(true, $form->owner->container->definition->is_inline),
+                'output' => $form->item->render(true, $form->item->container->definition->is_inline),
             ]);
         }
 
@@ -228,13 +230,13 @@ class ContainerContentController extends Controller
     {
         $this->forcePostRequest();
         $itemId = Yii::$app->request->post('itemId');
-        $ownerContentId = Yii::$app->request->post('ownerContentId');
+        $elementContentId = Yii::$app->request->post('elementContentId');
 
         ContainerItem::findOne(['id' => $itemId])->delete();
-        $ownerContent = OwnerContent::findOne(['id' => $ownerContentId]);
-        $variable = new OwnerContentVariable(['ownerContent' => $ownerContent]);
+        $elementContent = BaseTemplateElementContent::findOne(['id' => $elementContentId]);
+        $variable = new OwnerContentVariable(['elementContent' => $elementContent]);
 
-        TemplateCache::flushByOwnerContent($ownerContent);
+        TemplateCache::flushByElementContent($elementContent);
 
         return $this->asJson([
             'success' => true,

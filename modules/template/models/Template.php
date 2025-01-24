@@ -319,9 +319,10 @@ class Template extends ActiveRecord implements TemplateContentOwner
     }
 
     /**
+     * @param TemplateInstance|null $templateInstance
      * @return BaseTemplateElementContent[]
      */
-    public function getElementContents(TemplateInstance $templateInstance): array
+    public function getElementContents(?TemplateInstance $templateInstance = null): array
     {
         if (!is_array($this->_elements)) {
             $this->_elements = $this->getElements()->all();

@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use yii\base\Model;
@@ -80,6 +81,8 @@ class ContentFormItem extends Model
             $this->content->fileList = $fileList;
             if ($owner instanceof TemplateInstance) {
                 $this->content->template_instance_id = $owner->id;
+            } elseif ($owner instanceof ContainerItem) {
+                $this->content->template_instance_id = $owner->templateInstance?->id;
             }
         }
 

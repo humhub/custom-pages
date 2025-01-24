@@ -9,7 +9,6 @@ use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use yii\db\ActiveQuery;
-use yii\db\Expression;
 
 /**
  * A TemplateInstance represents an actual instantiation of a Template model.
@@ -114,7 +113,7 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
     public static function findByOwner(ActiveRecord $owner): ?self
     {
         if ($owner instanceof CustomPage) {
-            return self::findOne(['page_id' => $owner->id, ['IS', 'container_item_id', new Expression('NULL')]]);
+            return self::findOne(['page_id' => $owner->id, 'container_item_id' => null]);
         }
 
         if ($owner instanceof ContainerItem) {
@@ -147,7 +146,7 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
             return $this;
         }
 
-        return self::findOne(['page_id' => $this->page_id, ['IS', 'container_item_id', new Expression('NULL')]]);
+        return self::findOne(['page_id' => $this->page_id, 'container_item_id' => null]);
     }
 
     public static function getTypeById($id): string

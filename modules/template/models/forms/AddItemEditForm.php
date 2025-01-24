@@ -27,11 +27,11 @@ class AddItemEditForm extends EditItemForm
         $this->prepareContentInstances();
     }
 
-    public function save()
+    public function save(): bool
     {
         $this->owner->title = $this->title;
         $this->owner->save();
-        return parent::save(false);
+        return parent::save();
     }
 
 }

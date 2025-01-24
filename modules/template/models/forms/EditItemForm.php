@@ -44,14 +44,16 @@ class EditItemForm extends EditMultipleElementsForm
         $this->setTemplate($this->owner->template_id);
     }
 
-    public function save()
+    public function save(): bool
     {
         if (parent::save()) {
-            $this->item->title = $this->title;
-            return $this->item->save();
+            if ($this->item instanceof ContainerItem) {
+                $this->item->title = $this->title;
+                return $this->item->save();
+            }
+            return true;
         }
-
-        return true;
+        return false;
     }
 
 }

@@ -10,6 +10,7 @@ namespace humhub\modules\custom_pages\modules\template\models\forms;
 
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 
 /**
  * Description of UserGroupForm
@@ -56,7 +57,8 @@ class EditMultipleElementsForm extends \yii\base\Model
 
     public function prepareContentInstances()
     {
-        $elementContents = $this->template->getElementContents($this->owner);
+        $templateInstance = $this->owner instanceof TemplateInstance ? $this->owner : null;
+        $elementContents = $this->template->getElementContents($templateInstance);
 
         foreach ($elementContents as $elementContent) {
             $contentItem = new ContentFormItem([
@@ -117,7 +119,7 @@ class EditMultipleElementsForm extends \yii\base\Model
         return $result;
     }
 
-    public function save()
+    public function save(): bool
     {
         if (!$this->validate()) {
             return false;

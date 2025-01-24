@@ -69,7 +69,7 @@ class TemplateCache
     public static function flushByElementContent(BaseTemplateElementContent $elementContent): void
     {
         $templateInstance = $elementContent->templateInstance;
-        $templateInstance && self::flushByTemplateInstance($templateInstance->getRoot());
+        $templateInstance && self::flushByTemplateInstance($templateInstance);
     }
 
     /**
@@ -80,6 +80,6 @@ class TemplateCache
      */
     public static function flushByTemplateInstance(?TemplateInstance $templateInstance): void
     {
-        $templateInstance && Yii::$app->cache->delete($templateInstance->getCacheKey());
+        $templateInstance && Yii::$app->cache->delete($templateInstance->getRoot()->getCacheKey());
     }
 }

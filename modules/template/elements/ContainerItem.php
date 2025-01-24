@@ -58,6 +58,20 @@ class ContainerItem extends ActiveRecord implements TemplateContentOwner
     /**
      * @inheritdoc
      */
+    public function afterFind()
+    {
+        $templateInstance = $this->templateInstance;
+        if ($templateInstance) {
+            $this->pageId = $templateInstance->page_id;
+            $this->templateId = $templateInstance->template_id;
+        }
+
+        parent::afterFind();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
@@ -77,6 +91,7 @@ class ContainerItem extends ActiveRecord implements TemplateContentOwner
     public function afterDelete()
     {
         OwnerContent::deleteByOwner($this);
+        TemplateInstance::findOne(['container_item_id' => $this->id])?->delete();
         parent::afterDelete();
     }
 

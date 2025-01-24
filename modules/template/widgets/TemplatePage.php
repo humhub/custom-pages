@@ -120,8 +120,8 @@ class TemplatePage extends JsWidget
     {
         if ($this->canEdit && $this->editMode) {
             return [
-                'element-edit-url' => $this->createUrl('/custom_pages/template/owner-content/edit'),
-                'element-delete-url' => $this->createUrl('/custom_pages/template/owner-content/delete'),
+                'element-edit-url' => $this->createUrl('/custom_pages/template/element-content/edit'),
+                'element-delete-url' => $this->createUrl('/custom_pages/template/element-content/delete'),
                 'create-container-url' => $this->createUrl('/custom_pages/template/container-content/create-container'),
                 'item-delete-url' => $this->createUrl('/custom_pages/template/container-content/delete-item'),
                 'item-edit-url' => $this->createUrl('/custom_pages/template/container-content/edit-item'),

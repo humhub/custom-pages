@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\components;
 
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
@@ -60,12 +61,25 @@ class TemplateCache
     }
 
     /**
+     * Flushes all cache entries related to a given $ownerContent instance.
+     *
+     * @param BaseTemplateElementContent $elementContent
+     * @return void
+     */
+    public static function flushByElementContent(BaseTemplateElementContent $elementContent): void
+    {
+        $templateInstance = $elementContent->templateInstance;
+        $templateInstance && self::flushByTemplateInstance($templateInstance->getRoot());
+    }
+
+    /**
      * Flushes all cache entries related to an template instance.
      *
-     * @param TemplateInstance $templateInstance
+     * @param TemplateInstance|null $templateInstance
+     * @return void
      */
-    public static function flushByTemplateInstance(TemplateInstance $templateInstance)
+    public static function flushByTemplateInstance(?TemplateInstance $templateInstance): void
     {
-        Yii::$app->cache->delete($templateInstance->getCacheKey());
+        $templateInstance && Yii::$app->cache->delete($templateInstance->getCacheKey());
     }
 }

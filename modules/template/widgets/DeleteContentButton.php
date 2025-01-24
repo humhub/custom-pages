@@ -33,7 +33,7 @@ class DeleteContentButton extends Widget
     public function run()
     {
         return $this->render('deleteContentButton', [
-            'url' => Url::to(['/custom_pages/template/owner-content/delete-by-content']),
+            'url' => Url::to(['/custom_pages/template/element-content/delete-by-content']),
             'options' => $this->getOptions(),
         ]);
     }
@@ -48,9 +48,7 @@ class DeleteContentButton extends Widget
             return false;
         }
 
-        $ownerContent = OwnerContent::findByContent($this->model);
-
-        if (!$ownerContent || $ownerContent->isDefault() || $ownerContent->isEmpty()) {
+        if ($this->model->isDefault() || $this->model->isEmpty()) {
             return false;
         }
 
@@ -61,8 +59,7 @@ class DeleteContentButton extends Widget
     {
         return ['data' => [
             'placement' => 'bottom',
-            'owner-content' => get_class($this->model),
-            'owner-content-id' => $this->model->id,
+            'element-content-id' => $this->model->id,
             'preview-id' => $this->previewId,
         ]];
     }

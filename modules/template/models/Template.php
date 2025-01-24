@@ -257,9 +257,9 @@ class Template extends ActiveRecord implements TemplateContentOwner
      * @param ActiveRecord $owner
      * @return string
      */
-    public function render(ActiveRecord $owner = null, $editMode = false, $containerItem = null)
+    public function render(TemplateInstance $templateInstance = null, $editMode = false, $containerItem = null)
     {
-        $elementContents = $this->getElementContents($owner);
+        $elementContents = $this->getElementContents($templateInstance);
 
         $content = [];
         foreach ($elementContents as $elementContent) {
@@ -268,6 +268,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
                 'options' => [
                     'editMode' => $editMode,
                     'element_title' => $elementContent->element->getTitle(),
+                    'template_instance_id' => $templateInstance->id,
                     'item' => $containerItem,
                 ],
             ]);

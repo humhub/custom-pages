@@ -134,6 +134,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
         $clone->element_id = $this->element_id;
         $clone->dyn_attributes = $this->dyn_attributes;
         $clone->definition_id = $this->definition_id;
+        $clone->template_instance_id = $this->template_instance_id;
         return $clone;
     }
 
@@ -417,17 +418,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
 
     public function getPage(): ?CustomPage
     {
-        $ownerModel = $this->getOwner();
-
-        if ($ownerModel instanceof ContainerItem) {
-            return $ownerModel->page;
-        }
-
-        if ($ownerModel instanceof TemplateInstance) {
-            return $ownerModel->page;
-        }
-
-        return null;
+        return $this->templateInstance?->page;
     }
 
     /**
@@ -445,7 +436,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
             return $page->content->canView($user);
         }
 
-        if ($page === null && $this->getOwner() instanceof Template) {
+        if ($this->template_instance_id === null) {
             // If this template content record is not linked to any container(Page, Snippet),
             // then it is from Template Layout, try to check if the user can manage Template Layouts
             return (new PermissionManager(['subject' => $user]))->can(ManagePages::class);

@@ -3,8 +3,10 @@
 namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\components\ActiveRecord;
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
@@ -20,6 +22,7 @@ use yii\db\Expression;
  *
  * @property-read Template $template
  * @property-read CustomPage $page
+ * @property-read ContainerItem|null $containerItem
  */
 class TemplateInstance extends ActiveRecord implements TemplateContentOwner
 {
@@ -30,14 +33,14 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::class,
+                'class' => PolymorphicRelation::class,
                 'mustBeInstanceOf' => [ActiveRecord::class],
             ],
         ];
     }
 
     /**
-     * @return string the associated database table name
+     * @inheritdoc
      */
     public static function tableName()
     {
@@ -61,22 +64,9 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
      */
     public function afterDelete()
     {
-        foreach (OwnerContent::findByOwner($this)->all() as $content) {
+        foreach (BaseTemplateElementContent::findAll(['template_instance_id' => $this->id]) as $content) {
             $content->delete();
         }
-    }
-
-    /**
-     * Returns the default element of the element identified by $elementName of the given TemplateInstance identified by $id.
-     *
-     * @param \humhub\modules\custom_pages\modules\template\models\TemplateInstance|int $id
-     * @param string $elementName
-     * @return type
-     */
-    public static function getDefaultElement($id, $elementName)
-    {
-        $pageTemplate = ($id instanceof TemplateInstance) ? $id : self::find()->where(['custom_pages_page_template.id' => $id])->joinWith('template')->one();
-        return $pageTemplate->template->getElement($elementName);
     }
 
     public static function findByTemplateId($templateId, ?int $contentState = null): ActiveQuery
@@ -90,7 +80,7 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
                 Content::tableName() . '.object_id = ' . self::tableName() . '.page_id',
                 ['object_model' => CustomPage::class],
             )
-                ->andWhere([Content::tableName() . '.state' => $contentState]);
+            ->andWhere([Content::tableName() . '.state' => $contentState]);
         }
 
         return $query;
@@ -108,7 +98,12 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
 
     public function getPage(): ActiveQuery
     {
-        return $this->hasOne(Template::class, ['id' => 'page_id']);
+        return $this->hasOne(CustomPage::class, ['id' => 'page_id']);
+    }
+
+    public function getContainerItem(): ActiveQuery
+    {
+        return $this->hasOne(ContainerItem::class, ['id' => 'container_item_id']);
     }
 
     public function getTemplateId()
@@ -138,5 +133,30 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
     public function getCacheKey(): string
     {
         return get_class($this) . $this->getPrimaryKey();
+    }
+
+    /**
+     * Get root template instance of the Container Item,
+     * Return this if the instance is already a root of the Custom Page
+     *
+     * @return self|null
+     */
+    public function getRoot(): ?self
+    {
+        if ($this->container_item_id === null) {
+            return $this;
+        }
+
+        return self::findOne(['page_id' => $this->page_id, ['IS', 'container_item_id', new Expression('NULL')]]);
+    }
+
+    public static function getTypeById($id): string
+    {
+        $instance = self::findOne($id);
+        if ($instance === null) {
+            return '';
+        }
+
+        return $instance->container_item_id === null ? 'page' : 'container';
     }
 }

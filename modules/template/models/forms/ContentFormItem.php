@@ -10,6 +10,7 @@ namespace humhub\modules\custom_pages\modules\template\models\forms;
 
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use yii\base\Model;
 
 /**
@@ -77,6 +78,9 @@ class ContentFormItem extends Model
             $fileList = $this->content->fileList;
             $this->content = $this->content->copy();
             $this->content->fileList = $fileList;
+            if ($owner instanceof TemplateInstance) {
+                $this->content->template_instance_id = $owner->id;
+            }
         }
 
         if ($this->content->isNewRecord) {

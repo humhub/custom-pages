@@ -4,6 +4,7 @@ namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use humhub\modules\custom_pages\modules\template\elements\UserElement;
 use yii\base\Model;
 
@@ -53,9 +54,12 @@ class OwnerContentVariable extends Model
             $options = array_merge([
                 'empty' => $this->elementContent->isEmpty(),
                 'element_content_id' => $this->elementContent->id,
+                'template_instance_id' => $this->elementContent->template_instance_id,
                 'element_name' => $this->elementContent->element->name,
                 'default' => $this->elementContent->isDefault(),
             ], $this->options);
+
+            $options['template_instance_type'] = TemplateInstance::getTypeById($options['template_instance_id']);
 
             // We only need the template_id for container content elements
             if ($this->elementContent instanceof ContainerElement) {

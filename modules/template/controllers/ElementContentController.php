@@ -1,27 +1,33 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
-use humhub\modules\content\interfaces\ContentOwner;
-use humhub\modules\custom_pages\modules\template\models\OwnerContent;
-use Yii;
+use humhub\components\Controller;
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\models\forms\EditElementContentForm;
 use humhub\modules\custom_pages\modules\template\widgets\EditElementModal;
 use humhub\modules\custom_pages\modules\template\models\OwnerContentVariable;
-use humhub\modules\custom_pages\modules\template\models\forms\EditOwnerContentForm;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElementsForm;
 use humhub\modules\custom_pages\modules\template\widgets\EditMultipleElementsModal;
+use Yii;
 use yii\base\Response;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
 /**
- * This controller is used to manage OwnerContent instances for TemplateContentOwner.
+ * This controller is used to manage TemplateElementContent instances.
  *
  * @author buddha
  */
-class OwnerContentController extends \humhub\components\Controller
+class ElementContentController extends Controller
 {
     /**
      * @inheritdoc
@@ -34,39 +40,21 @@ class OwnerContentController extends \humhub\components\Controller
     }
 
     /**
-     * Owner Model Class of the TemplateContentOwner.
-     * @var string
-     */
-    public $ownerModel;
-
-    /**
-     * Owner Model Id of the TemplateContentOwner.
-     * @var int
-     */
-    public $ownerId;
-
-    /**
-     * The placeholder name of the TemplateElement.
-     * @var string
-     */
-    public $elementName;
-
-    /**
      * Edits the content of a specific OwnerContent for the given TemplateContentOwner.
      *
      * @return Response
      * @throws HttpException
      */
-    public function actionEdit($ownerModel, $ownerId, $name)
+    public function actionEdit($elementContentId, $templateInstanceId)
     {
-        $form = new EditOwnerContentForm();
-        $form->setElementData($ownerModel, $ownerId, $name);
+        $form = new EditElementContentForm();
+        $form->setElementData($elementContentId, $templateInstanceId);
         $form->setScenario('edit');
 
         if ($form->load(Yii::$app->request->post())) {
             if ($form->save()) {
-                TemplateCache::flushByOwnerContent($form->ownerContent);
-                $wrapper = new OwnerContentVariable(['ownerContent' => $form->ownerContent]);
+                TemplateCache::flushByElementContent($form->content);
+                $wrapper = new OwnerContentVariable(['elementContent' => $form->content]);
                 return $this->getJsonEditElementResult(true, $wrapper->render(true));
             } else {
                 return $this->getJsonEditElementResult(false, $this->renderAjaxPartial(EditElementModal::widget([
@@ -85,7 +73,7 @@ class OwnerContentController extends \humhub\components\Controller
     }
 
     /**
-     * Used to delete owner content models.
+     * Used to delete element content record.
      *
      * @return Response
      * @throws HttpException
@@ -94,30 +82,31 @@ class OwnerContentController extends \humhub\components\Controller
     {
         $this->forcePostRequest();
 
-        $ownerModel = Yii::$app->request->post('ownerModel');
-        $ownerId = Yii::$app->request->post('ownerId');
-        $name = Yii::$app->request->post('name');
+        $elementContentId = Yii::$app->request->post('elementContentId');
+        $templateInstanceId = Yii::$app->request->post('templateInstanceId');
 
-        if (!$ownerModel || !$ownerId || !$name) {
+        if (!$elementContentId || !$templateInstanceId) {
             throw new HttpException(400, Yii::t('CustomPagesModule.base', 'Invalid request data!'));
         }
 
-        $form = new EditOwnerContentForm();
-        $form->setElementData($ownerModel, $ownerId, $name);
+        $form = new EditElementContentForm();
+        $form->setElementData($elementContentId, $templateInstanceId);
 
-        $this->deleteOwnerContent($form->ownerContent);
+        $this->deleteElementContent($form->elementContent);
 
-        // Set our original owner for this element block
-        $variable = new OwnerContentVariable(['ownerContent' => $form->element->getDefaultContent(true), 'options' => [
-            'owner_model' => $ownerModel,
-            'owner_id' => $ownerId,
-        ]]);
+        // Set the default content for this element block
+        $variable = new OwnerContentVariable([
+            'elementContent' => $form->element->getDefaultContent(true),
+            'options' => [
+                'template_instance_id' => $templateInstanceId,
+            ],
+        ]);
 
         return $this->getJsonEditElementResult(true, $variable->render(true));
     }
 
     /**
-     * Used to delete owner content models by Content.
+     * Used to delete element content models by Content.
      *
      * @return Response
      * @throws HttpException
@@ -126,40 +115,39 @@ class OwnerContentController extends \humhub\components\Controller
     {
         $this->forcePostRequest();
 
-        $contentModel = Yii::$app->request->post('contentModel');
-        $contentId = Yii::$app->request->post('contentId');
+        $elementContentId = Yii::$app->request->post('elementContentId');
 
-        if (!$contentModel || !$contentId) {
+        if (!$elementContentId) {
             throw new HttpException(400, Yii::t('CustomPagesModule.base', 'Invalid request data!'));
         }
 
-        $ownerContent = OwnerContent::findByContent($contentModel, $contentId);
+        $elementContent = BaseTemplateElementContent::findOne($elementContentId);
 
-        $this->deleteOwnerContent($ownerContent);
+        $this->deleteElementContent($elementContent);
 
         return $this->asJson(['success' => true]);
     }
 
-    private function deleteOwnerContent($ownerContent)
+    private function deleteElementContent($elementContent)
     {
-        if (!$ownerContent instanceof OwnerContent) {
+        if (!$elementContent instanceof BaseTemplateElementContent) {
             throw new NotFoundHttpException();
         }
         // Do not allow the deletion of default content this is only allowed in admin controller.
-        if ($ownerContent->isDefault()) {
+        if ($elementContent->isDefault()) {
             throw new HttpException(403, Yii::t('CustomPagesModule.base', 'You are not allowed to delete default content!'));
         }
-        if ($ownerContent->isEmpty()) {
+        if ($elementContent->isEmpty()) {
             throw new HttpException(400, Yii::t('CustomPagesModule.base', 'Empty content elements cannot be deleted!'));
         }
 
-        TemplateCache::flushByOwnerContent($ownerContent);
+        TemplateCache::flushByElementContent($elementContent);
 
-        return $ownerContent->delete();
+        return $elementContent->delete();
     }
 
     /**
-     * Action for editing all owner content models for a given template instance in one view.
+     * Action for editing all element content models for a given template instance in one view.
      *
      * @param int $id
      * @return Response
@@ -188,20 +176,16 @@ class OwnerContentController extends \humhub\components\Controller
     /**
      * Creates a json result array used by multiple actions.
      *
-     * @param bool $success defines if the process was successfull e.g. saving an element
+     * @param bool $success defines if the process was successful e.g. saving an element
      * @param mixed $content content result
-     * @param mixed $form Form model
      * @return Response
      */
-    private function getJsonEditElementResult($success, $content)
+    private function getJsonEditElementResult(bool $success, string $content): Response
     {
-        $json = [];
-        $json['success'] = $success;
-        $json['output'] = $content;
-        $json['ownerModel'] = Yii::$app->request->get('ownerModel');
-        $json['ownerId'] = Yii::$app->request->get('ownerId');
-        $json['name'] = Yii::$app->request->get('name');
-        return $this->asJson($json);
+        return $this->asJson([
+            'success' => $success,
+            'output' => $content,
+        ]);
     }
 
 }

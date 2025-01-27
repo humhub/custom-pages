@@ -53,10 +53,7 @@ class TemplateEditorElement extends \humhub\widgets\JsWidget
         return [
             'template-element-title' => $this->_getOption($this->renderOptions, 'element_title'),
             'template-element' => $this->_getOption($this->renderOptions, 'element_name'),
-            'template-owner' => $this->_getOption($this->renderOptions, 'owner_model'),
-            'template-owner-id' => $this->_getOption($this->renderOptions, 'owner_id'),
             'template-id' => $this->_getOption($this->renderOptions, 'template_id'),
-            'template-owner-content-id' => $this->_getOption($this->renderOptions, 'owner_content_id'),
             'template-instance-id' => $this->_getOption($this->renderOptions, 'template_instance_id'),
             'template-instance-type' => $this->_getOption($this->renderOptions, 'template_instance_type'),
             'template-element-content-id' => $this->_getOption($this->renderOptions, 'element_content_id'),

@@ -53,11 +53,6 @@ humhub.module('custom_pages.template.TemplateContainer', function (module, requi
                 elementContentId: this.elementContentId,
             }
         };
-        
-        if (this.default) {
-            options.data.ownerModel = this.owner;
-            options.data.ownerId = this.ownerId;
-        }         
 
         modal.load(evt, options);
     };

@@ -155,8 +155,6 @@ class ContainerItem extends ActiveRecord implements TemplateContentOwner
                 'data-template-item' => $this->id,
                 'data-template-edit-url' => Url::to(['/custom_pages/template/container-admin/edit-source', 'id' => $this->template->id]),
                 'data-template-item-title' => $this->title,
-                'data-template-owner' => ContainerElement::class,
-                'data-template-owner-id' => $this->element_content_id,
             ],
         ]);
     }

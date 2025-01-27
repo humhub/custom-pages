@@ -34,8 +34,6 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
         this.title = this.options.templateElementTitle || this.name;
         this.content = this.options.templateContent;
         this.contentId = this.options.templateContentId;
-        this.owner = this.options.templateOwner;
-        this.ownerId = this.options.templateOwnerId;
         this.empty = this.options.templateEmpty;
         this.default = this.options.templateDefault;
         this.templateInstanceId = this.options.templateInstanceId;

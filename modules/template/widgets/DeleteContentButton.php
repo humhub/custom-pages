@@ -10,7 +10,6 @@ namespace humhub\modules\custom_pages\modules\template\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
-use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
 use yii\helpers\Url;
 

@@ -9,8 +9,6 @@
 namespace humhub\modules\custom_pages\modules\template\components;
 
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
-use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
-use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use Yii;
 
@@ -29,35 +27,6 @@ class TemplateCache
         foreach (TemplateInstance::findByTemplateId($templateId)->all() as $templateInstance) {
             self::flushByTemplateInstance($templateInstance);
         }
-
-        foreach (ContainerItem::findByTemplateId($templateId)->all() as $containerItem) {
-            $ownerContent = OwnerContent::findByContent($containerItem->container);
-            self::flushByOwnerContent($ownerContent);
-        }
-    }
-
-    /**
-     * Flushes all cache entries related to a given $ownerContent instance.
-     *
-     * @param OwnerContent $ownerContent
-     * @return null
-     */
-    public static function flushByOwnerContent(OwnerContent $ownerContent)
-    {
-        $owner = null;
-
-        while (!$owner instanceof TemplateInstance) {
-            $owner = $ownerContent->owner;
-
-            if ($owner instanceof ContainerItem) {
-                $ownerContent = OwnerContent::findByContent($owner->container);
-            } elseif (!$owner instanceof TemplateInstance) {
-                // Just to avoid infinity loops in case of invalid data.
-                return;
-            }
-        }
-
-        self::flushByTemplateInstance($owner);
     }
 
     /**

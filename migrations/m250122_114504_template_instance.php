@@ -61,7 +61,7 @@ class m250122_114504_template_instance extends Migration
         $this->safeDropForeignKey('fk-tmpl-container-item-tmpl', 'custom_pages_template_element_container_item');
         $this->safeDropColumn('custom_pages_template_element_container_item', 'template_id');
 
-        // TODO: Drop custom_pages_template_owner_content
+        $this->safeDropTable('custom_pages_template_owner_content');
     }
 
     /**

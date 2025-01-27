@@ -12,10 +12,7 @@ use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\components\ActiveRecordDynamicAttributes;
-use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
-use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateEditorElement;
@@ -33,7 +30,6 @@ use yii\db\ActiveQuery;
  * @property int|null $template_instance_id
  *
  * @property-read TemplateElement $element
- * @property-read OwnerContent $ownerContent
  * @property-read BaseTemplateElementContentDefinition $definition
  * @property-read TemplateInstance|null $templateInstance
  */
@@ -316,10 +312,8 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
      */
     public function afterDelete()
     {
-        if ($this instanceof ContainerElement) {
-            if (self::find()->where(['definition_id' => $this->definition_id])->count() == 0) {
-                $this->definition->delete();
-            }
+        if ($this->hasDefinition() && !self::find()->where(['definition_id' => $this->definition_id])->exists()) {
+            $this->definition->delete();
         }
 
         $files = $this->fileManager->findAll();
@@ -402,18 +396,6 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     public function getTemplateInstance(): ActiveQuery
     {
         return $this->hasOne(TemplateInstance::class, ['id' => 'template_instance_id']);
-    }
-
-    public function getOwnerContent(): ActiveQuery
-    {
-        return $this->hasOne(OwnerContent::class, ['content_id' => 'id'])
-            ->andWhere([OwnerContent::tableName() . '.content_type' => get_class($this)]);
-    }
-
-    public function getOwner(): ?TemplateContentOwner
-    {
-        $ownerContent = $this->ownerContent;
-        return $ownerContent instanceof OwnerContent ? $ownerContent->getOwner() : null;
     }
 
     public function getPage(): ?CustomPage

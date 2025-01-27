@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\components\ActiveRecord;
@@ -79,11 +85,11 @@ class Template extends ActiveRecord implements TemplateContentOwner
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'source' => 'Source',
-            'allow_for_spaces' => 'Allow this layout in spaces',
-            'allow_inline_activation' => 'Allow inline edit activation in inline editor',
-            'description' => 'Description',
+            'name' => Yii::t('CustomPagesModule.template', 'Name'),
+            'source' => Yii::t('CustomPagesModule.template', 'Source'),
+            'allow_for_spaces' => Yii::t('CustomPagesModule.template', 'Allow this layout in spaces'),
+            'allow_inline_activation' => Yii::t('CustomPagesModule.template', 'Allow inline edit activation in inline editor'),
+            'description' => Yii::t('CustomPagesModule.template', 'Description'),
         ];
     }
 
@@ -195,12 +201,11 @@ class Template extends ActiveRecord implements TemplateContentOwner
             return $this->getContents();
         } else {
             return Template::find()
-                ->leftJoin(OwnerContent::tableName(), Template::tableName() . '.id = ' . OwnerContent::tableName() . '.owner_id')
-                ->leftJoin(ContainerElement::tableName(), ContainerElement::tableName() . '.id = ' . OwnerContent::tableName() . '.content_id')
-                ->leftJoin(ContainerDefinition::tableName(), ContainerDefinition::tableName() . '.id = ' . ContainerElement::tableName() . '.definition_id')
-                ->where([OwnerContent::tableName() . '.owner_model' => Template::class])
-                ->andWhere([OwnerContent::tableName() . '.content_type' => ContainerElement::class])
-                ->andWhere(['REGEXP', ContainerDefinition::tableName() . '.dyn_attributes', '"templates":[^\\]]*' . $this->id . '[,\\]]']);
+                ->innerJoin(TemplateElement::tableName(), Template::tableName() . '.id = ' . TemplateElement::tableName() . '.template_id')
+                ->innerJoin(ContainerElement::tableName(), TemplateElement::tableName() . '.id = ' . ContainerElement::tableName() . '.element_id')
+                ->innerJoin(ContainerDefinition::tableName(), ContainerDefinition::tableName() . '.id = ' . ContainerElement::tableName() . '.definition_id')
+                ->where([TemplateElement::tableName() . '.content_type' => ContainerElement::class])
+                ->andWhere(['REGEXP', ContainerDefinition::tableName() . '.dyn_attributes', '"templates":\\[.*"' . preg_quote($this->name, '/') . '".*\\]']);
         }
     }
 
@@ -263,7 +268,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
 
         $content = [];
         foreach ($elementContents as $elementContent) {
-            $content[$elementContent->element->name] = new OwnerContentVariable([
+            $content[$elementContent->element->name] = new ElementContentVariable([
                 'elementContent' => $elementContent,
                 'options' => [
                     'editMode' => $editMode,
@@ -278,43 +283,6 @@ class Template extends ActiveRecord implements TemplateContentOwner
 
         $engine = TemplateEngineFactory::create($this->engine);
         $result = $engine->render($this->name, $content);
-        return $result;
-    }
-
-    /**
-     * Merges the default OwnerContent instances with the OwnerContent instances of the given $owner.
-     * If there is no default OwnerContent and no OwnerContent for the given $owner this function will create an
-     * empty dummy content for the given placeholder.
-     *
-     * If no $owner is given, this function will just return default OwnerContent of this template and empty OwnerContent instances.
-     *
-     * @param ActiveRecord $owner the template owner
-     * @return array
-     */
-    public function getContentElements(ActiveRecord $owner = null)
-    {
-        $result = [];
-        $this->_elements = $this->getElements()->all();
-
-        if (count($this->_elements) == 0) {
-            return $result;
-        }
-
-        if ($owner != null) {
-            // Non default content defined by owner
-            $result = OwnerContent::findByOwner($owner)->all();
-        }
-
-        $ownerElementNames = array_map(function ($contentInstance) {
-            return $contentInstance->element_name;
-        }, $result);
-
-        foreach ($this->_elements as $element) {
-            if (!in_array($element->name, $ownerElementNames)) {
-                $result[] = $element->getDefaultContent(true);
-            }
-        }
-
         return $result;
     }
 

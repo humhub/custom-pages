@@ -1,23 +1,23 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
-use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use humhub\modules\custom_pages\modules\template\elements\UserElement;
 use yii\base\Model;
 
-class OwnerContentVariable extends Model
+class ElementContentVariable extends Model
 {
     public $options = [];
 
     public ?BaseTemplateElementContent $elementContent = null;
-
-    /**
-     * @var OwnerContent
-     */
-    public $ownerContent;
 
     public function getLabel()
     {

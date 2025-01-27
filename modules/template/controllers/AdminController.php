@@ -115,7 +115,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $model = Template::findOne(['id' => Yii::$app->request->get('id')]);
 
         if ($model == null) {
-            throw new \yii\web\HttpException(404, Yii::t('CustomPagesModule.template', 'Template not found!'));
+            throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template not found!'));
         }
 
         $model->scenario = 'source';
@@ -141,7 +141,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $model = Template::findOne(['id' => Yii::$app->request->get('id')]);
 
         if ($model == null) {
-            throw new \yii\web\HttpException(404, Yii::t('CustomPagesModule.template', 'Template not found!'));
+            throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template not found!'));
         }
 
         $dataProvider = new ActiveDataProvider([
@@ -261,10 +261,10 @@ class AdminController extends \humhub\modules\admin\components\Controller
     /**
      * This action will render a preview of a given template.
      *
-     * @param type $id
-     * @param type $editView
-     * @param type $reload
-     * @return type
+     * @param int $id
+     * @param bool|null $editView
+     * @param bool|null $reload
+     * @return string
      */
     public function actionPreview($id, $editView = null, $reload = null)
     {

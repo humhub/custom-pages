@@ -12,14 +12,15 @@ use humhub\components\Controller;
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementContentForm;
 use humhub\modules\custom_pages\modules\template\widgets\EditElementModal;
-use humhub\modules\custom_pages\modules\template\models\OwnerContentVariable;
+use humhub\modules\custom_pages\modules\template\models\ElementContentVariable;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElementsForm;
 use humhub\modules\custom_pages\modules\template\widgets\EditMultipleElementsModal;
 use Yii;
 use yii\base\Response;
-use yii\web\HttpException;
+use yii\web\BadRequestHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -40,10 +41,9 @@ class ElementContentController extends Controller
     }
 
     /**
-     * Edits the content of a specific OwnerContent for the given TemplateContentOwner.
+     * Edits the content of a specific Element Content for the given TemplateContentOwner.
      *
      * @return Response
-     * @throws HttpException
      */
     public function actionEdit($elementContentId, $templateInstanceId)
     {
@@ -54,7 +54,7 @@ class ElementContentController extends Controller
         if ($form->load(Yii::$app->request->post())) {
             if ($form->save()) {
                 TemplateCache::flushByElementContent($form->content);
-                $wrapper = new OwnerContentVariable(['elementContent' => $form->content]);
+                $wrapper = new ElementContentVariable(['elementContent' => $form->content]);
                 return $this->getJsonEditElementResult(true, $wrapper->render(true));
             } else {
                 return $this->getJsonEditElementResult(false, $this->renderAjaxPartial(EditElementModal::widget([
@@ -76,7 +76,7 @@ class ElementContentController extends Controller
      * Used to delete element content record.
      *
      * @return Response
-     * @throws HttpException
+     * @throws BadRequestHttpException
      */
     public function actionDelete()
     {
@@ -86,7 +86,7 @@ class ElementContentController extends Controller
         $templateInstanceId = Yii::$app->request->post('templateInstanceId');
 
         if (!$elementContentId || !$templateInstanceId) {
-            throw new HttpException(400, Yii::t('CustomPagesModule.base', 'Invalid request data!'));
+            throw new BadRequestHttpException('Invalid request data!');
         }
 
         $form = new EditElementContentForm();
@@ -95,7 +95,7 @@ class ElementContentController extends Controller
         $this->deleteElementContent($form->elementContent);
 
         // Set the default content for this element block
-        $variable = new OwnerContentVariable([
+        $variable = new ElementContentVariable([
             'elementContent' => $form->element->getDefaultContent(true),
             'options' => [
                 'template_instance_id' => $templateInstanceId,
@@ -109,7 +109,7 @@ class ElementContentController extends Controller
      * Used to delete element content models by Content.
      *
      * @return Response
-     * @throws HttpException
+     * @throws BadRequestHttpException
      */
     public function actionDeleteByContent()
     {
@@ -118,7 +118,7 @@ class ElementContentController extends Controller
         $elementContentId = Yii::$app->request->post('elementContentId');
 
         if (!$elementContentId) {
-            throw new HttpException(400, Yii::t('CustomPagesModule.base', 'Invalid request data!'));
+            throw new BadRequestHttpException('Invalid request data!');
         }
 
         $elementContent = BaseTemplateElementContent::findOne($elementContentId);
@@ -135,10 +135,10 @@ class ElementContentController extends Controller
         }
         // Do not allow the deletion of default content this is only allowed in admin controller.
         if ($elementContent->isDefault()) {
-            throw new HttpException(403, Yii::t('CustomPagesModule.base', 'You are not allowed to delete default content!'));
+            throw new ForbiddenHttpException(Yii::t('CustomPagesModule.base', 'You are not allowed to delete default content!'));
         }
         if ($elementContent->isEmpty()) {
-            throw new HttpException(400, Yii::t('CustomPagesModule.base', 'Empty content elements cannot be deleted!'));
+            throw new BadRequestHttpException(Yii::t('CustomPagesModule.base', 'Empty content elements cannot be deleted!'));
         }
 
         TemplateCache::flushByElementContent($elementContent);

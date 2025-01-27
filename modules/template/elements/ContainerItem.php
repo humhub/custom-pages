@@ -10,7 +10,6 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
@@ -90,7 +89,6 @@ class ContainerItem extends ActiveRecord implements TemplateContentOwner
      */
     public function afterDelete()
     {
-        OwnerContent::deleteByOwner($this);
         TemplateInstance::findOne(['container_item_id' => $this->id])?->delete();
         parent::afterDelete();
     }
@@ -166,15 +164,5 @@ class ContainerItem extends ActiveRecord implements TemplateContentOwner
     public function getTemplateId()
     {
         return $this->template->id;
-    }
-
-    public static function findByTemplateId($templateId): ActiveQuery
-    {
-        return self::find()->innerJoin(
-            TemplateInstance::tableName(),
-            TemplateInstance::tableName() . '.container_item_id = ' . self::tableName() . '.id AND ' .
-                TemplateInstance::tableName() . '.template_id = :templateId',
-            ['templateId' => $templateId],
-        );
     }
 }

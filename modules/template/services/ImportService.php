@@ -8,10 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
-use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\file\models\FileContent;
 use yii\base\InvalidConfigException;
@@ -133,63 +130,16 @@ class ImportService
             return null;
         }
 
-        if (!isset($data['ownerContent'])) {
-            $this->addError('Missed Owner Content for element with name "' . $data['name'] . '"!');
+        if (!isset($data['elementContent'])) {
+            $this->addError('Missed content for element with name "' . $data['name'] . '"!');
             return null;
         }
 
-        if (isset($data['ownerContent']['contentObject']['element_id'])) {
-            $data['ownerContent']['contentObject']['element_id'] = $element->id;
-        }
+        $data['elementContent']['element_id'] = $element->id;
 
-        $this->importOwnerContent($data['ownerContent']);
+        $this->createObjectByData($element->content_type, $data['elementContent']);
 
         return $element;
-    }
-
-    private function importOwnerContent(array $data): ?OwnerContent
-    {
-        $ownerContent = new OwnerContent();
-        $ownerContent->element_name = $data['element_name'];
-        $ownerContent->use_default = $data['use_default'];
-
-        if (!isset($data['ownerObject'])) {
-            $this->addError('Missed Owner Object for Owner Content with element name "' . $data['element_name'] . '"!');
-            return null;
-        }
-
-        if (!isset($data['contentObject'])) {
-            $this->addError('Missed Content Object for Owner Content with element name "' . $data['element_name'] . '"!');
-            return null;
-        }
-
-        $ownerObject = $this->importOwnerObject($data['owner_model'], $data['ownerObject']);
-        if ($ownerObject instanceof TemplateContentOwner) {
-            $ownerContent->owner_model = $data['owner_model'];
-            $ownerContent->owner_id = $ownerObject->id;
-        }
-
-        $contentObject = $this->createObjectByData($data['content_type'], $data['contentObject']);
-        if ($contentObject instanceof BaseTemplateElementContent) {
-            $ownerContent->content_type = $data['content_type'];
-            $ownerContent->content_id = $contentObject->id;
-        }
-
-        return $this->saveRecord($ownerContent);
-    }
-
-    private function importOwnerObject(string $ownerClass, $data): ?TemplateContentOwner
-    {
-        if ($data === '#parentTemplate') {
-            return $this->template;
-        }
-
-        if (!is_array($data)) {
-            $this->addError('Wrong object data for creating Owner Object "' . $ownerClass . '"!');
-            return null;
-        }
-
-        return $this->createObjectByData($ownerClass, $data);
     }
 
     private function createObjectByData(string $class, array $data): ?ActiveRecord

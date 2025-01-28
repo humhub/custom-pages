@@ -121,6 +121,9 @@ class TemplateElement extends ActiveRecord
         }
 
         $content->element_id = $this->id;
+        if ($owner instanceof TemplateInstance) {
+            $content->template_instance_id = $owner->id;
+        }
 
         return $content->save() ? $content : null;
     }

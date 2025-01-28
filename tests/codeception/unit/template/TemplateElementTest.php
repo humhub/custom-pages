@@ -6,7 +6,6 @@ use Codeception\Specify;
 use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
-use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use tests\codeception\_support\HumHubDbTestCase;
 
@@ -38,7 +37,8 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $this->assertStringContainsString('<p>Default</p>', $result);
         $this->assertStringContainsString('data-template-element="test_content"', $result);
-        $this->assertStringContainsString('data-template-owner="' . get_class($this->owner) . '"', $result);
+        $this->assertStringContainsString('data-template-instance-type="page"', $result);
+        $this->assertStringContainsString('data-template-instance-id="' . $this->owner->id . '"', $result);
         $this->assertStringContainsString('data-template-content="' . RichtextElement::class . '"', $result);
         $this->assertStringContainsString('data-template-empty="0"', $result);
     }
@@ -55,7 +55,8 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $this->assertStringContainsString('<p>Non Default</p>', $result);
         $this->assertStringContainsString('data-template-element="test_content"', $result);
-        $this->assertStringContainsString('data-template-owner="' . get_class($this->owner) . '"', $result);
+        $this->assertStringContainsString('data-template-instance-type="page"', $result);
+        $this->assertStringContainsString('data-template-instance-id="' . $this->owner->id . '"', $result);
         $this->assertStringContainsString('data-template-content="' . RichtextElement::class . '"', $result);
         $this->assertStringContainsString('data-template-empty="0"', $result);
         // Test empty element

@@ -4,7 +4,6 @@ namespace tests\codeception\unit\modules\custom_page\template;
 
 use Codeception\Specify;
 use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
-use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use tests\codeception\_support\HumHubDbTestCase;
 
@@ -25,26 +24,20 @@ class TemplateContentTest extends HumHubDbTestCase
         $content = new RichtextElement();
         $content->element_id = 1;
         $content->content = '<p>Test</p>';
+        $content->template_instance_id = $this->owner->id;
         $content->save();
 
-        $pageContent = new OwnerContent();
-        $pageContent->setOwner($this->owner);
-        $pageContent->setContent($content);
-        $pageContent->save();
-
-        $result = $pageContent->render([
+        $result = $content->render([
             'empty' => false,
             'editMode' => true,
             'element_name' => 'test',
-            'owner_model' => get_class($this->owner),
-            'owner_id' => $this->owner->id,
+            'template_instance_id' => $content->templateInstance->id,
         ]);
 
         $this->assertStringContainsString('<p>Test</p>', $result);
         $this->assertStringContainsString('data-template-element="test"', $result);
-        $this->assertStringContainsString('data-template-owner="' . get_class($this->owner) . '"', $result);
+        $this->assertStringContainsString('data-template-instance-id="' . $this->owner->id . '"', $result);
         $this->assertStringContainsString('data-template-content="' . get_class($content) . '"', $result);
         $this->assertStringContainsString('data-template-empty="0"', $result);
-
     }
 }

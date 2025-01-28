@@ -11,7 +11,6 @@ return [
         'elementContentContainer' => 'tests\codeception\fixtures\modules\custom_pages\template\ElementContentContainerFixture',
         'elementContentDefinitionContainer' => 'tests\codeception\fixtures\modules\custom_pages\template\ElementContentDefinitionContainerFixture',
         'elementContentContainerItem' => 'tests\codeception\fixtures\modules\custom_pages\template\ElementContentContainerItemFixture',
-        'ownerContent' => 'tests\codeception\fixtures\modules\custom_pages\template\OwnerContentFixture',
         'page' => 'tests\codeception\fixtures\modules\custom_pages\template\CustomPageFixture',
     ],
 ];

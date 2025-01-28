@@ -79,20 +79,13 @@ class ContentFormItem extends Model
             $fileList = $this->content->fileList;
             $this->content = $this->content->copy();
             $this->content->fileList = $fileList;
-            if ($owner instanceof TemplateInstance) {
-                $this->content->template_instance_id = $owner->id;
-            } elseif ($owner instanceof ContainerItem) {
-                $this->content->template_instance_id = $owner->templateInstance?->id;
-            }
         }
 
         if ($this->content->isNewRecord) {
-            $this->element->saveInstance($owner, $this->content);
-        } else {
-            $this->content->save(false);
+            return (bool) $this->element->saveInstance($owner, $this->content);
         }
 
-        return true;
+        return $this->content->save(false);
     }
 
 }

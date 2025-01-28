@@ -328,7 +328,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     protected function wrap($type, $content, $options = [], $attributes = [])
     {
         if ($this->getPrimaryKey() != null) {
-            $options['template-content-id'] = $this->getPrimaryKey();
+            $options['element_content_id'] = $this->getPrimaryKey();
         }
 
         return TemplateEditorElement::widget([
@@ -385,7 +385,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
      */
     public function isEmpty(): bool
     {
-        return false;
+        return $this->isNewRecord;
     }
 
     public function getElement(): ActiveQuery

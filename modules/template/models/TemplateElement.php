@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -123,6 +124,17 @@ class TemplateElement extends ActiveRecord
         $content->element_id = $this->id;
         if ($owner instanceof TemplateInstance) {
             $content->template_instance_id = $owner->id;
+        } elseif ($owner instanceof ContainerItem) {
+            $content->template_instance_id = $owner->templateInstance?->id;
+        }
+
+        if ($content->element_id && $content->template_instance_id) {
+            // Delete old content of the same element and template instance
+            $oldContent = BaseTemplateElementContent::findOne([
+                'element_id' => $content->element_id,
+                'template_instance_id' => $content->template_instance_id,
+            ]);
+            $oldContent && $oldContent->delete();
         }
 
         return $content->save() ? $content : null;
@@ -143,6 +155,15 @@ class TemplateElement extends ActiveRecord
         }
 
         $content->element_id = $this->id;
+
+        if ($content->element_id) {
+            // Delete old default content of the element
+            $oldDefaultContent = BaseTemplateElementContent::findOne([
+                'element_id' => $content->element_id,
+                'template_instance_id' => null,
+            ]);
+            $oldDefaultContent && $oldDefaultContent->delete();
+        }
 
         return $content->save() ? $content : null;
     }

@@ -26,10 +26,10 @@ use yii\helpers\ArrayHelper;
  *
  * A template can be related to multiple TemplateElements, which define the content type and name of the template placeholders.
  *
- * The template can define a default content for each placeholder, by creating an OwnerContent with the
+ * The template can define a default content for each placeholder, by creating an ElementContent with the
  * given placeholder name.
  *
- * If no default content is given, and a TemplateContentOwner does not define an own OwnerContent for the placeholder, the placeholder is
+ * If no default content is given, and a TemplateContentOwner does not define an own ElementContent for the placeholder, the placeholder is
  * either rendered empty if not in editmode or as default(empty) block if the edit mode is activated.
  *
  *
@@ -143,7 +143,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
         if (isset($changedAttributes['name'])) {
             // Update to new template name when it is used as Allowed Template in Container Element
             $definitions = ContainerDefinition::find()
-                ->where(['LIKE', 'dyn_attributes', '"templates":['])
+                ->andWhere(['LIKE', 'dyn_attributes', '"templates":['])
                 ->andWhere(['LIKE', 'dyn_attributes', '"' . $changedAttributes['name'] . '"']);
             foreach ($definitions->each() as $definition) {
                 /* @var ContainerDefinition $definition */
@@ -181,16 +181,13 @@ class Template extends ActiveRecord implements TemplateContentOwner
         return false;
     }
 
-    public function isInUse()
+    public function isInUse(): bool
     {
         if ($this->isLayout()) {
-            return TemplateInstance::findByTemplateId($this->id, Content::STATE_PUBLISHED)->count() > 0;
+            return TemplateInstance::findByTemplateId($this->id, Content::STATE_PUBLISHED)->exists();
         } else {
-            return TemplateElement::find()
-                ->leftJoin(ContainerElement::tableName(), TemplateElement::tableName() . '.id = ' . ContainerElement::tableName() . '.element_id')
-                ->leftJoin(ContainerDefinition::tableName(), ContainerElement::tableName() . '.definition_id = ' . ContainerDefinition::tableName() . '.id')
-                ->where([TemplateElement::tableName() . '.content_type' => ContainerElement::class])
-                ->andWhere(['REGEXP', ContainerDefinition::tableName() . '.dyn_attributes', '"templates":[^\\]]*' . $this->id . '[,\\]]'])
+            return ContainerDefinition::find()
+                ->andWhere(['REGEXP', 'dyn_attributes', '"templates":\\[.*"' . preg_quote($this->name, '/') . '".*\\]'])
                 ->exists();
         }
     }
@@ -202,10 +199,8 @@ class Template extends ActiveRecord implements TemplateContentOwner
         } else {
             return Template::find()
                 ->innerJoin(TemplateElement::tableName(), Template::tableName() . '.id = ' . TemplateElement::tableName() . '.template_id')
-                ->innerJoin(ContainerElement::tableName(), TemplateElement::tableName() . '.id = ' . ContainerElement::tableName() . '.element_id')
-                ->innerJoin(ContainerDefinition::tableName(), ContainerDefinition::tableName() . '.id = ' . ContainerElement::tableName() . '.definition_id')
                 ->where([TemplateElement::tableName() . '.content_type' => ContainerElement::class])
-                ->andWhere(['REGEXP', ContainerDefinition::tableName() . '.dyn_attributes', '"templates":\\[.*"' . preg_quote($this->name, '/') . '".*\\]']);
+                ->andWhere(['REGEXP', TemplateElement::tableName() . '.dyn_attributes', '"templates":\\[.*"' . preg_quote($this->name, '/') . '".*\\]']);
         }
     }
 
@@ -213,7 +208,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
      * Checks if this template is a root layout template.
      * @return bool
      */
-    public function isLayout()
+    public function isLayout(): bool
     {
         return $this->type === self::TYPE_LAYOUT || $this->type === self::TYPE_SNIPPET_LAYOUT;
     }
@@ -256,8 +251,8 @@ class Template extends ActiveRecord implements TemplateContentOwner
      * Renders the template for the given $owner or with all default content if
      * no $owner was given.
      *
-     * This is done by merging all default OwnerContent instances with the overwritten
-     * OwnerContent instances defined by the TemplateContentOwner $owner.
+     * This is done by merging all default ElementContent instances with the overwritten
+     * ElementContent instances defined by the TemplateContentOwner $owner.
      *
      * @param ActiveRecord $owner
      * @return string

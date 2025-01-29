@@ -30,7 +30,7 @@ class TemplateCache
     }
 
     /**
-     * Flushes all cache entries related to a given $ownerContent instance.
+     * Flushes all cache entries related to a given $elementContent instance.
      *
      * @param BaseTemplateElementContent $elementContent
      * @return void

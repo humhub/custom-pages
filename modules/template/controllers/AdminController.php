@@ -248,6 +248,9 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $elementContent = $element->getDefaultContent();
 
         if ($elementContent !== null) {
+            if ($elementContent->isDefinitionContent()) {
+                $element->updateAttributes(['dyn_attributes' => null]);
+            }
             $elementContent->delete();
         }
 

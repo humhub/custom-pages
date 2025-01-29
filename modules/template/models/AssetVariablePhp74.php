@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "custom_pages_template_content".
  *
- * A OwnerContent instance is used to assign a TemplateElement to a specific
+ * An ElementContent instance is used to assign a TemplateElement to a specific
  * Content of a specific type.
  *
  * @deprecated Use this only for PHP7.4 and older versions

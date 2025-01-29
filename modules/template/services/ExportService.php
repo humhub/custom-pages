@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContentDefinition;
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementDefinition;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\file\models\File;
 use Yii;
@@ -46,15 +46,6 @@ class ExportService
             unset($contentData['id']);
             unset($contentData['element_id']);
             unset($contentData['template_instance_id']);
-
-            if ($elementContent->hasDefinition()) {
-                $definition = $elementContent->getDefinition();
-                if ($definition instanceof BaseTemplateElementContentDefinition) {
-                    $contentData['definitionClass'] = get_class($definition);
-                    $contentData['definitionObject'] = $definition->attributes;
-                    unset($contentData['definitionObject']['id']);
-                }
-            }
 
             // Attach files
             $files = [];

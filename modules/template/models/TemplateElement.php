@@ -26,6 +26,7 @@ use yii\db\Expression;
  * @property string $name
  * @property string $content_type
  * @property string $title
+ * @property string $dyn_attributes
  *
  * @property-read BaseTemplateElementContent[] $contents
  */
@@ -98,7 +99,7 @@ class TemplateElement extends ActiveRecord
     }
 
     /**
-     * This function will create a new OwnerContent related to $owner for this placeholder.
+     * This function will create a new ElementContent related to $owner for this placeholder.
      * This will overwrite the default content of a template placeholder for the given
      * $owner instance.
      *
@@ -109,7 +110,7 @@ class TemplateElement extends ActiveRecord
      *
      * If the $owner is of type Template it will be saved as default content of the elements template.
      *
-     * Note that all current OwnerContent entries for this placeholder owned by $owner are delted.
+     * Note that all current ElementContent entries for this placeholder owned by $owner are delted.
      *
      * @param ActiveRecord $owner the owner
      * @param BaseTemplateElementContent $content
@@ -169,10 +170,10 @@ class TemplateElement extends ActiveRecord
     }
 
     /**
-     * Returns the default OwnerContent instance for this placeholder.
+     * Returns the default ElementContent instance for this placeholder.
      *
      * If no default content was found and $createDummy is set to true, this
-     * function will return an empty dummy OwnerContent instance.
+     * function will return an empty dummy ElementContent instance.
      *
      * @param bool $createDummy
      * @return BaseTemplateElementContent|null

@@ -158,15 +158,10 @@ class ImportService
         }
 
         foreach ($data as $name => $value) {
-            if ($name === 'id' || $name === 'definitionClass' || ($name !== 'dyn_attributes' && is_array($value))) {
+            if ($name === 'id' || ($name !== 'dyn_attributes' && is_array($value))) {
                 continue;
             }
             $object->$name = $value;
-        }
-
-        if (isset($data['definition_id'], $data['definitionClass'], $data['definitionObject']) && is_array($data['definitionObject'])) {
-            $definition = $this->createObjectByData($data['definitionClass'], $data['definitionObject']);
-            $object->definition_id = $definition?->id;
         }
 
         $object = $this->saveRecord($object);

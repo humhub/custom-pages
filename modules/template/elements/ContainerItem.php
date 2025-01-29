@@ -87,10 +87,10 @@ class ContainerItem extends ActiveRecord implements TemplateContentOwner
     /**
      * @inheritdoc
      */
-    public function afterDelete()
+    public function beforeDelete()
     {
         TemplateInstance::findOne(['container_item_id' => $this->id])?->delete();
-        parent::afterDelete();
+        return parent::beforeDelete();
     }
 
     public static function incrementIndex($containerId, $index)

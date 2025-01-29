@@ -26,11 +26,10 @@ use yii\db\ActiveQuery;
  *
  * @property int $id
  * @property int $element_id
- * @property int $definition_id
  * @property int|null $template_instance_id
  *
  * @property-read TemplateElement $element
- * @property-read BaseTemplateElementContentDefinition $definition
+ * @property-read BaseTemplateElementDefinition $definition
  * @property-read TemplateInstance|null $templateInstance
  */
 abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes implements ViewableInterface
@@ -45,7 +44,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     private $formName;
 
     /**
-     * @var BaseTemplateElementContentDefinition|null instance of the definition
+     * @var BaseTemplateElementDefinition|null instance of the definition
      */
     private $definitionInstance;
 
@@ -119,9 +118,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
 
     /**
      * Copies the values of this content type instance.
-     * This function can initiate the copy by using `createCopy`.
      *
-     * @see static::createCopy()
      * @return static instance copy.
      */
     public function copy(): static
@@ -129,7 +126,6 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
         $clone = new static();
         $clone->element_id = $this->element_id;
         $clone->dyn_attributes = $this->dyn_attributes;
-        $clone->definition_id = $this->definition_id;
         $clone->template_instance_id = $this->template_instance_id;
         return $clone;
     }
@@ -146,19 +142,6 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
         }
 
         return false;
-    }
-
-    /**
-     * Creates an empty copy of the current content type and adopts the definition_id (if present).
-     * @return static
-     */
-    protected function createCopy(): static
-    {
-        $copy = Yii::createObject(get_class($this));
-        if ($this->isDefinitionContent()) {
-            $copy->definition_id = $this->definition_id;
-        }
-        return $copy;
     }
 
     /**
@@ -186,9 +169,25 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     {
         $result = parent::load($data, $formName);
         if ($this->isDefinitionContent() && $this->definitionPostData != null) {
-            $this->definition->load(['content' => $this->definitionPostData], 'content');
+            $result = $this->definition->load(['content' => $this->definitionPostData], 'content') && $result;
         }
         return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function validate($attributeNames = null, $clearErrors = true)
+    {
+        if (!parent::validate($attributeNames, $clearErrors)) {
+            return false;
+        }
+
+        if ($this->isDefinitionContent()) {
+            return $this->definition->validate($attributeNames, $clearErrors);
+        }
+
+        return true;
     }
 
     /**
@@ -213,34 +212,35 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     }
 
     /**
-     * Returns the BaseTemplateElementContentDefinition instance of this instance. +
-     * This function will create an empty definition instance if this content type has an definitionModel and
-     * does not have a related definition_id.
+     * Returns the BaseTemplateElementDefinition instance of this instance. +
+     * This function will create an empty definition instance if this content type has an definitionModel
+     * but the definition record is not stored yet.
      *
-     * @return BaseTemplateElementContentDefinition|null the definition instance.
+     * @return BaseTemplateElementDefinition|null the definition instance.
      */
-    public function getDefinition(): ?BaseTemplateElementContentDefinition
+    public function getDefinition(): ?BaseTemplateElementDefinition
     {
         if (!$this->isDefinitionContent()) {
             return null;
         }
 
-        if ($this->definitionInstance) {
+        if ($this->definitionInstance instanceof BaseTemplateElementDefinition) {
+            if ($this->definitionInstance->isNewRecord && $this->element_id !== null) {
+                // Refresh instance to the recently stored definition/element record
+                $dynAttributes = $this->definitionInstance->dyn_attributes;
+                $this->definitionInstance = call_user_func($this->definitionModel . "::findOne", ['id' => $this->element_id]);
+                $this->definitionInstance->dyn_attributes = $dynAttributes;
+            }
             return $this->definitionInstance;
         }
 
-        if ($this->definition_id != null) {
-            $this->definitionInstance = call_user_func($this->definitionModel . "::findOne", ['id' => $this->definition_id]);
+        if ($this->element_id !== null) {
+            $this->definitionInstance = call_user_func($this->definitionModel . "::findOne", ['id' => $this->element_id]);
         }
 
-        // Create empty definition instance
-        if (!$this->definitionInstance) {
+        if ($this->definitionInstance === null) {
+            // Create empty definition instance
             $this->definitionInstance = Yii::createObject($this->definitionModel);
-        }
-
-        // Mark the definition instance as default if the content is created or edited by admin
-        if ($this->scenario === self::SCENARIO_EDIT_ADMIN || $this->scenario === self::SCENARIO_CREATE) {
-            $this->definitionInstance->is_default = true;
         }
 
         $this->definitionInstance->setFormName($this->formName() . '[definitionPostData]');
@@ -249,38 +249,11 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     }
 
     /**
-     * @return bool determines if this content instance has an definition instance relation.
+     * @return bool determines if this content type has a definition type.
      */
-    public function hasDefinition()
+    public function isDefinitionContent(): bool
     {
-        return isset($this->definition_id);
-    }
-
-    /**
-     * @return bool determines if this content type has an definition type.
-     */
-    public function isDefinitionContent()
-    {
-        return $this->definitionModel != null;
-    }
-
-    /**
-     * @ineritdoc
-     */
-    public function beforeSave($insert)
-    {
-        $definition = $this->definition;
-        if ($this->isDefinitionContent() && $definition->validate() && $definition->hasValues()) {
-            $definition->save(false);
-            $this->definition_id = $definition->getPrimaryKey();
-        } elseif ($this->isDefinitionContent() && !$definition->isNewRecord && !$definition->hasValues() && $this->scenario === self::SCENARIO_EDIT_ADMIN) {
-            // If we reset the default definition to an empty state we remove the definition settings, which will allow the content to define own definitions
-            self::updateAll(['definition_id' => null], ['definition_id' => $definition->id]);
-            $definition->delete();
-            return false;
-        }
-
-        return parent::beforeSave($insert);
+        return $this->definitionModel !== null;
     }
 
     /**
@@ -289,6 +262,11 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
+
+        if ($this->isDefinitionContent() && $this->isDefault() && $this->definition->hasValues()) {
+            $this->definition->save();
+        }
+
         if (!$this->filesSaved) {
             $this->filesSaved = true;
             $this->saveFiles();
@@ -312,10 +290,6 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
      */
     public function afterDelete()
     {
-        if ($this->hasDefinition() && !self::find()->where(['definition_id' => $this->definition_id])->exists()) {
-            $this->definition->delete();
-        }
-
         $files = $this->fileManager->findAll();
 
         foreach ($files as $file) {

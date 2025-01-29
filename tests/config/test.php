@@ -9,7 +9,6 @@ return [
         'templateElement' => 'tests\codeception\fixtures\modules\custom_pages\template\TemplateElementFixture',
         'elementContentRichtext' => 'tests\codeception\fixtures\modules\custom_pages\template\ElementContentRichtextFixture',
         'elementContentContainer' => 'tests\codeception\fixtures\modules\custom_pages\template\ElementContentContainerFixture',
-        'elementContentDefinitionContainer' => 'tests\codeception\fixtures\modules\custom_pages\template\ElementContentDefinitionContainerFixture',
         'elementContentContainerItem' => 'tests\codeception\fixtures\modules\custom_pages\template\ElementContentContainerItemFixture',
         'page' => 'tests\codeception\fixtures\modules\custom_pages\template\CustomPageFixture',
     ],

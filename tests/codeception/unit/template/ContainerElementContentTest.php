@@ -91,8 +91,6 @@ class ContainerElementContentTest extends HumHubDbTestCase
         $this->assertEquals(0, ContainerItem::find()->count());
         $this->assertEquals(0, ContainerElement::findByType()->count());
 
-        $this->assertEquals(0, ContainerDefinition::find()->count());
-
         $this->assertEquals(1, Template::findOne(['id' => 1])->delete());
         $this->assertEquals(1, Template::findOne(['id' => 2])->delete());
 

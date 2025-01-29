@@ -61,11 +61,13 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
     /**
      * @inheritdoc
      */
-    public function afterDelete()
+    public function beforeDelete()
     {
         foreach (BaseTemplateElementContent::findAll(['template_instance_id' => $this->id]) as $content) {
             $content->delete();
         }
+
+        return parent::beforeDelete();
     }
 
     public static function findByTemplateId($templateId, ?int $contentState = null): ActiveQuery

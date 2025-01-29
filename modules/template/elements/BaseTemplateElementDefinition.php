@@ -11,11 +11,9 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 use humhub\modules\custom_pages\modules\template\components\ActiveRecordDynamicAttributes;
 
 /**
- * Class for template element content definition
- *
- * @property bool $is_default
+ * Class for template element definition
  */
-abstract class BaseTemplateElementContentDefinition extends ActiveRecordDynamicAttributes
+abstract class BaseTemplateElementDefinition extends ActiveRecordDynamicAttributes
 {
     private $formName;
 
@@ -24,7 +22,7 @@ abstract class BaseTemplateElementContentDefinition extends ActiveRecordDynamicA
      */
     public static function tableName()
     {
-        return 'custom_pages_template_element_content_definition';
+        return 'custom_pages_template_element';
     }
 
     public function setFormName($formName): void
@@ -35,7 +33,7 @@ abstract class BaseTemplateElementContentDefinition extends ActiveRecordDynamicA
     public function hasValues(): bool
     {
         foreach ($this->attributes() as $key) {
-            if ($this->getAttribute($key) !== null && $key !== 'id' && $key !== 'is_default') {
+            if ($this->getAttribute($key) !== null && $key !== 'id') {
                 return true;
             }
         }

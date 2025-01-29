@@ -37,30 +37,17 @@ class TemplateElementForm extends \yii\base\Model
     public $content;
 
     /**
-     * OwnerContent use_default flag
-     * @var bool
-     */
-    public $use_default;
-
-    /**
      * @inheritdoc
      * @var string
      */
     public $scenario = 'edit';
 
-    public function rules()
-    {
-        return [
-            ['use_default', 'safe'],
-        ];
-    }
-
     public function scenarios()
     {
         return [
-            self::SCENARIO_CREATE => ['use_default'],
-            self::SCENARIO_EDIT_ADMIN => ['use_default'],
-            self::SCENARIO_EDIT => ['use_default'],
+            self::SCENARIO_CREATE => [],
+            self::SCENARIO_EDIT_ADMIN => [],
+            self::SCENARIO_EDIT => [],
         ];
     }
 
@@ -92,7 +79,9 @@ class TemplateElementForm extends \yii\base\Model
 
     public function validate($attributeNames = null, $clearErrors = true)
     {
-        return parent::validate() && $this->element->validate() && $this->content->validate();
+        return parent::validate($attributeNames, $clearErrors) &&
+            $this->element->validate($attributeNames, $clearErrors) &&
+            $this->content->validate($attributeNames, $clearErrors);
     }
 
     public function getLabel()

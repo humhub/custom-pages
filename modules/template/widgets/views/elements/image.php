@@ -18,7 +18,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 /* @var ActiveForm $form */
 /* @var bool $isAdminEdit */
 
-$disableDefinition = !$isAdminEdit && $model->definition->is_default;
+$disableDefinition = !$isAdminEdit;
 
 $id = 'imageElement-' . $model->id;
 ?>

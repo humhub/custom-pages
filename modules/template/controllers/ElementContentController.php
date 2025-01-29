@@ -45,10 +45,10 @@ class ElementContentController extends Controller
      *
      * @return Response
      */
-    public function actionEdit($elementContentId, $templateInstanceId)
+    public function actionEdit($elementId, $elementContentId = null, $templateInstanceId = null)
     {
         $form = new EditElementContentForm();
-        $form->setElementData($elementContentId, $templateInstanceId);
+        $form->setElementData($elementId, $elementContentId, $templateInstanceId);
         $form->setScenario('edit');
 
         if ($form->load(Yii::$app->request->post())) {
@@ -82,15 +82,16 @@ class ElementContentController extends Controller
     {
         $this->forcePostRequest();
 
+        $elementId = Yii::$app->request->post('elementId');
         $elementContentId = Yii::$app->request->post('elementContentId');
         $templateInstanceId = Yii::$app->request->post('templateInstanceId');
 
-        if (!$elementContentId || !$templateInstanceId) {
+        if (!$elementId || !$elementContentId || !$templateInstanceId) {
             throw new BadRequestHttpException('Invalid request data!');
         }
 
         $form = new EditElementContentForm();
-        $form->setElementData($elementContentId, $templateInstanceId);
+        $form->setElementData($elementId, $elementContentId, $templateInstanceId);
 
         $this->deleteElementContent($form->elementContent);
 

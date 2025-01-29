@@ -38,6 +38,7 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
         this.default = this.options.templateDefault;
         this.templateInstanceId = this.options.templateInstanceId;
         this.templateInstanceType = this.options.templateInstanceType;
+        this.elementId = this.options.templateElementId;
         this.elementContentId = this.options.templateElementContentId;
         this.label = this.options.templateLabel;
     };
@@ -127,6 +128,7 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
     TemplateElement.prototype.getEditData = function () {
         return {
             templateInstanceId: this.templateInstanceId,
+            elementId: this.elementId,
             elementContentId: this.elementContentId,
         };
     };

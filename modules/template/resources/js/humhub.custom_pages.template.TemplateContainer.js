@@ -50,6 +50,7 @@ humhub.module('custom_pages.template.TemplateContainer', function (module, requi
             dataType: 'json',
             data: {
                 templateInstanceId: this.templateInstanceId,
+                elementId: this.elementId,
                 elementContentId: this.elementContentId,
             }
         };

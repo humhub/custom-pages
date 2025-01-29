@@ -53,6 +53,7 @@ class ElementContentVariable extends Model
         if (isset($this->options['editMode']) && $this->options['editMode']) {
             $options = array_merge([
                 'empty' => $this->elementContent->isEmpty(),
+                'element_id' => $this->elementContent->element_id,
                 'element_content_id' => $this->elementContent->id,
                 'template_instance_id' => $this->elementContent->template_instance_id,
                 'element_name' => $this->elementContent->element->name,

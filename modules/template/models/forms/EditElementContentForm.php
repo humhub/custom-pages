@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 
 /**
  * This form is used for editing ElementContent entries.
@@ -35,13 +36,19 @@ class EditElementContentForm extends TemplateElementForm
     /**
      * Sets the initial form data as $elementContent and $element.
      *
-     * @param int $templateInstanceId
+     * @param int $elementId
      * @param int $elementContentId
+     * @param int $templateInstanceId
      */
-    public function setElementData($elementContentId, $templateInstanceId = null)
+    public function setElementData($elementId = null, $elementContentId = null, $templateInstanceId = null)
     {
-        $this->elementContent = BaseTemplateElementContent::findOne(['id' => $elementContentId]);
-        $this->element = $this->elementContent->element;
+        $this->elementContent = $elementContentId ? BaseTemplateElementContent::findOne(['id' => $elementContentId]) : null;
+        if ($this->elementContent) {
+            $this->element = $this->elementContent->element;
+        } else {
+            $this->element = TemplateElement::findOne(['id' => $elementId]);
+            $this->elementContent = $this->element->getDefaultContent(true);
+        }
 
         // If no content was found we either copy the default content or create a empty dummy instance otherwise just set our current content instance.
         if ($this->elementContent->isDefault()) {

@@ -7,6 +7,7 @@ use humhub\components\Controller;
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
+use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\forms\AddItemEditForm;
 use humhub\modules\custom_pages\modules\template\widgets\EditContainerItemModal;
@@ -19,6 +20,7 @@ use yii\base\InvalidRouteException;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 /**
@@ -44,29 +46,35 @@ class ContainerContentController extends Controller
      * This action accepts an $elementContentId, which is the id of the default BaseTemplateElementContent instance,
      * and $templateInstanceId, which defines the actual owner(Custom Page or Container Item) of the element.
      *
-     * @param int $elementContentId
+     * @param int $elementId
      * @param int $templateInstanceId
      * @param string|null $cguid
      * @return array
      * @throws InvalidRouteException
      * @throws \yii\db\Exception
      */
-    public function actionCreateContainer($elementContentId, $templateInstanceId, $cguid = null)
+    public function actionCreateContainer($elementId, $templateInstanceId, $cguid = null)
     {
         // Load actual template instance and default content
         $templateInstance = TemplateInstance::findOne(['id' => $templateInstanceId]);
-        $defaultElementContent = BaseTemplateElementContent::findOne(['id' => $elementContentId]);
+        if (!$templateInstance) {
+            throw new NotFoundHttpException('Template instance is not found!');
+        }
 
         // Check if element content already exists
         $elementContent = BaseTemplateElementContent::findOne([
-            'element_id' => $defaultElementContent->element_id,
+            'element_id' => $elementId,
             'template_instance_id' => $templateInstance->id,
         ]);
 
         // If there is no container content yet, we create an ElementContent instance by copying the default one.
         if (!$elementContent) {
             // Create a copy of the default content
-            $elementContent = $defaultElementContent->copy();
+            $element = TemplateElement::findOne(['id' => $elementId]);
+            if (!$element) {
+                throw new NotFoundHttpException('Template element is not found!');
+            }
+            $elementContent = $element->getDefaultContent(true)->copy();
             $elementContent->template_instance_id = $templateInstance->id;
             $elementContent->save();
         }

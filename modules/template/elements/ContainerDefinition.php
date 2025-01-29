@@ -35,8 +35,8 @@ class ContainerDefinition extends BaseTemplateElementDefinition
     {
         return [
             'templates' => null,
-            'allow_multiple' => null,
-            'is_inline' => null,
+            'allow_multiple' => false,
+            'is_inline' => false,
         ];
     }
 

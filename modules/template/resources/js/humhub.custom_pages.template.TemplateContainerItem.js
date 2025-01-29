@@ -145,6 +145,7 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
         var that = this;
         return {
             itemId: that.itemId,
+            elementId: that.getParentElement().elementId,
             elementContentId: that.getParentElement().elementContentId
         };
     };

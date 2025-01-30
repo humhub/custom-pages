@@ -12,7 +12,8 @@ class m250122_114504_template_instance extends Migration
     public function safeUp()
     {
         $this->safeAddColumn('custom_pages_template_instance', 'container_item_id', $this->integer()->unsigned());
-        $this->db->createCommand('INSERT INTO custom_pages_template_instance (container_item_id, template_id, page_id)
+        $this->db->createCommand(
+            'INSERT INTO custom_pages_template_instance (container_item_id, template_id, page_id)
             SELECT item.id, item.template_id, instance.page_id
             FROM custom_pages_template_element_container_item AS item
             LEFT JOIN custom_pages_template_owner_content AS owner

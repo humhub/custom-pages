@@ -36,7 +36,7 @@ class Module extends ContentContainerModule
      */
     public $enableTwiqSandboxExtensionConfig = [
         'allowedTags' => ['autoescape', 'apply', 'block', 'if', 'with', 'for', 'set'],
-        'allowedFilters' => ['capitalize', 'date', 'first', 'upper', 'escape', 'raw', 'nl2br', 'url_encode', 'round', 'u'],
+        'allowedFilters' => ['capitalize', 'date', 'first', 'upper', 'escape', 'raw', 'nl2br', 'url_encode', 'round', 'u', 'striptags'],
         'allowedFunctions' => ['range', 'max', 'min', 'random'],
         'allowedMethods' => [
             OwnerContentVariable::class => [

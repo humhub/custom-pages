@@ -77,11 +77,9 @@ class ImageElement extends FileElement
                 'alt' => $this->purify($this->alt),
             ];
 
-            if ($this->hasDefinition()) {
-                $options['htmlOptions']['height'] = $this->purify($this->definition->height);
-                $options['htmlOptions']['width'] = $this->purify($this->definition->width);
-                $options['htmlOptions']['style'] = $this->purify($this->definition->style);
-            }
+            $options['htmlOptions']['height'] = $this->purify($this->definition->height);
+            $options['htmlOptions']['width'] = $this->purify($this->definition->width);
+            $options['htmlOptions']['style'] = $this->purify($this->definition->style);
 
             return $this->wrap('img', '', $options);
         } elseif (isset($options['editMode']) && $options['editMode']) {

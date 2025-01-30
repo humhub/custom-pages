@@ -49,14 +49,11 @@ humhub.module('custom_pages.template.TemplateContainer', function (module, requi
             url:  (this.default) ? this.editor.options.createContainerUrl : this.editor.options.itemAddUrl,
             dataType: 'json',
             data: {
-                ownerContentId: this.ownerContentId
+                templateInstanceId: this.templateInstanceId,
+                elementId: this.elementId,
+                elementContentId: this.elementContentId,
             }
         };
-        
-        if (this.default) {
-            options.data.ownerModel = this.owner;
-            options.data.ownerId = this.ownerId;
-        }         
 
         modal.load(evt, options);
     };

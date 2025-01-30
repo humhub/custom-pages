@@ -158,7 +158,8 @@ class ContainerElement extends BaseTemplateElementContent
         $index = ($index == null) ? $this->getNextIndex() : $index;
 
         $item = new ContainerItem();
-        $item->template_id = $templateId;
+        $item->pageId = $this->templateInstance->page_id;
+        $item->templateId = $templateId;
         $item->element_content_id = $this->id;
         $item->sort_order = $index;
         return $item;

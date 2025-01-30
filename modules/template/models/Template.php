@@ -1,11 +1,18 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\lib\templates\TemplateEngineFactory;
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerDefinition;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use Yii;
@@ -19,10 +26,10 @@ use yii\helpers\ArrayHelper;
  *
  * A template can be related to multiple TemplateElements, which define the content type and name of the template placeholders.
  *
- * The template can define a default content for each placeholder, by creating an OwnerContent with the
+ * The template can define a default content for each placeholder, by creating an ElementContent with the
  * given placeholder name.
  *
- * If no default content is given, and a TemplateContentOwner does not define an own OwnerContent for the placeholder, the placeholder is
+ * If no default content is given, and a TemplateContentOwner does not define an own ElementContent for the placeholder, the placeholder is
  * either rendered empty if not in editmode or as default(empty) block if the edit mode is activated.
  *
  *
@@ -78,11 +85,11 @@ class Template extends ActiveRecord implements TemplateContentOwner
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'source' => 'Source',
-            'allow_for_spaces' => 'Allow this layout in spaces',
-            'allow_inline_activation' => 'Allow inline edit activation in inline editor',
-            'description' => 'Description',
+            'name' => Yii::t('CustomPagesModule.template', 'Name'),
+            'source' => Yii::t('CustomPagesModule.template', 'Source'),
+            'allow_for_spaces' => Yii::t('CustomPagesModule.template', 'Allow this layout in spaces'),
+            'allow_inline_activation' => Yii::t('CustomPagesModule.template', 'Allow inline edit activation in inline editor'),
+            'description' => Yii::t('CustomPagesModule.template', 'Description'),
         ];
     }
 
@@ -136,7 +143,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
         if (isset($changedAttributes['name'])) {
             // Update to new template name when it is used as Allowed Template in Container Element
             $definitions = ContainerDefinition::find()
-                ->where(['LIKE', 'dyn_attributes', '"templates":['])
+                ->andWhere(['LIKE', 'dyn_attributes', '"templates":['])
                 ->andWhere(['LIKE', 'dyn_attributes', '"' . $changedAttributes['name'] . '"']);
             foreach ($definitions->each() as $definition) {
                 /* @var ContainerDefinition $definition */
@@ -174,16 +181,13 @@ class Template extends ActiveRecord implements TemplateContentOwner
         return false;
     }
 
-    public function isInUse()
+    public function isInUse(): bool
     {
         if ($this->isLayout()) {
-            return TemplateInstance::findByTemplateId($this->id, Content::STATE_PUBLISHED)->count() > 0;
+            return TemplateInstance::findByTemplateId($this->id, Content::STATE_PUBLISHED)->exists();
         } else {
-            return TemplateElement::find()
-                ->leftJoin(ContainerElement::tableName(), TemplateElement::tableName() . '.id = ' . ContainerElement::tableName() . '.element_id')
-                ->leftJoin(ContainerDefinition::tableName(), ContainerElement::tableName() . '.definition_id = ' . ContainerDefinition::tableName() . '.id')
-                ->where([TemplateElement::tableName() . '.content_type' => ContainerElement::class])
-                ->andWhere(['REGEXP', ContainerDefinition::tableName() . '.dyn_attributes', '"templates":[^\\]]*' . $this->id . '[,\\]]'])
+            return ContainerDefinition::find()
+                ->andWhere(['REGEXP', 'dyn_attributes', '"templates":\\[.*"' . preg_quote($this->name, '/') . '".*\\]'])
                 ->exists();
         }
     }
@@ -194,12 +198,9 @@ class Template extends ActiveRecord implements TemplateContentOwner
             return $this->getContents();
         } else {
             return Template::find()
-                ->leftJoin(OwnerContent::tableName(), Template::tableName() . '.id = ' . OwnerContent::tableName() . '.owner_id')
-                ->leftJoin(ContainerElement::tableName(), ContainerElement::tableName() . '.id = ' . OwnerContent::tableName() . '.content_id')
-                ->leftJoin(ContainerDefinition::tableName(), ContainerDefinition::tableName() . '.id = ' . ContainerElement::tableName() . '.definition_id')
-                ->where([OwnerContent::tableName() . '.owner_model' => Template::class])
-                ->andWhere([OwnerContent::tableName() . '.content_type' => ContainerElement::class])
-                ->andWhere(['REGEXP', ContainerDefinition::tableName() . '.dyn_attributes', '"templates":[^\\]]*' . $this->id . '[,\\]]']);
+                ->innerJoin(TemplateElement::tableName(), Template::tableName() . '.id = ' . TemplateElement::tableName() . '.template_id')
+                ->where([TemplateElement::tableName() . '.content_type' => ContainerElement::class])
+                ->andWhere(['REGEXP', TemplateElement::tableName() . '.dyn_attributes', '"templates":\\[.*"' . preg_quote($this->name, '/') . '".*\\]']);
         }
     }
 
@@ -207,7 +208,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
      * Checks if this template is a root layout template.
      * @return bool
      */
-    public function isLayout()
+    public function isLayout(): bool
     {
         return $this->type === self::TYPE_LAYOUT || $this->type === self::TYPE_SNIPPET_LAYOUT;
     }
@@ -250,38 +251,30 @@ class Template extends ActiveRecord implements TemplateContentOwner
      * Renders the template for the given $owner or with all default content if
      * no $owner was given.
      *
-     * This is done by merging all default OwnerContent instances with the overwritten
-     * OwnerContent instances defined by the TemplateContentOwner $owner.
+     * This is done by merging all default ElementContent instances with the overwritten
+     * ElementContent instances defined by the TemplateContentOwner $owner.
      *
      * @param ActiveRecord $owner
      * @return string
      */
-    public function render(ActiveRecord $owner = null, $editMode = false, $containerItem = null)
+    public function render(TemplateInstance $templateInstance = null, $editMode = false, $containerItem = null)
     {
-        $contentElements = $this->getContentElements($owner);
-
-        if ($owner == null) {
-            $owner = $this;
-        }
+        $elementContents = $this->getElementContents($templateInstance);
 
         $content = [];
-        foreach ($contentElements as $contentElement) {
-            $options = [
-                'editMode' => $editMode,
-                'element_title' => $this->getElementTitle($contentElement->element_name),
-                'owner_model' => get_class($owner),
-                'owner_id' => $owner->id,
-                'item' => $containerItem,
-            ];
-
-            $content[$contentElement->element_name] = new OwnerContentVariable(['ownerContent' => $contentElement, 'options' => $options]);
+        foreach ($elementContents as $elementContent) {
+            $content[$elementContent->element->name] = new ElementContentVariable([
+                'elementContent' => $elementContent,
+                'options' => [
+                    'editMode' => $editMode,
+                    'element_title' => $elementContent->element->getTitle(),
+                    'template_instance_id' => $templateInstance->id,
+                    'item' => $containerItem,
+                ],
+            ]);
         }
 
         $content['assets'] = PHP_VERSION_ID >= 80000 ? new AssetVariable() : new AssetVariablePhp74();
-
-        if ($containerItem) {
-            //$content['item'] = new ContainerItemVariable(['item' => $containerItem]);
-        }
 
         $engine = TemplateEngineFactory::create($this->engine);
         $result = $engine->render($this->name, $content);
@@ -289,45 +282,43 @@ class Template extends ActiveRecord implements TemplateContentOwner
     }
 
     /**
-     * Merges the default OwnerContent instances with the OwnerContent instances of the given $owner.
-     * If there is no default OwnerContent and no OwnerContent for the given $owner this function will create an
-     * empty dummy content for the given placeholder.
-     *
-     * If no $owner is given, this function will just return default OwnerContent of this template and empty OwnerContent instances.
-     *
-     * @param ActiveRecord $owner the template owner
-     * @return array
+     * @param TemplateInstance|null $templateInstance
+     * @return BaseTemplateElementContent[]
      */
-    public function getContentElements(ActiveRecord $owner = null)
+    public function getElementContents(?TemplateInstance $templateInstance = null): array
     {
-        $result = [];
-        $this->_elements = $this->getElements()->all();
-
-        if (count($this->_elements) == 0) {
-            return $result;
+        if (!is_array($this->_elements)) {
+            $this->_elements = $this->getElements()->all();
         }
 
-        if ($owner != null) {
+        $elementContents = [];
+        if ($this->_elements === []) {
+            return $elementContents;
+        }
+
+        if ($templateInstance !== null) {
             // Non default content defined by owner
-            $result = OwnerContent::findByOwner($owner)->all();
+            $elementContents = BaseTemplateElementContent::find()
+                ->where(['template_instance_id' => $templateInstance->id])
+                ->all();
         }
 
-        $ownerElementNames = array_map(function ($contentInstance) {
-            return $contentInstance->element_name;
-        }, $result);
+        $elementNames = array_map(function ($elementContent) {
+            return $elementContent->element->name;
+        }, $elementContents);
 
         foreach ($this->_elements as $element) {
-            if (!in_array($element->name, $ownerElementNames)) {
-                $result[] = $element->getDefaultContent(true);
+            if (!in_array($element->name, $elementNames)) {
+                $elementContents[] = $element->getDefaultContent(true);
             }
         }
 
-        return $result;
+        return $elementContents;
     }
 
     private function getElementTitle($element_name)
     {
-        if (!$this->_elements) {
+        if (!is_array($this->_elements)) {
             $this->_elements = $this->getElements()->all();
         }
 

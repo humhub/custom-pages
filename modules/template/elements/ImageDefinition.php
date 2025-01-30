@@ -11,14 +11,14 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 use Yii;
 
 /**
- * Class for template Image element content definition
+ * Class for template Image element definition
  *
  * Dynamic attributes:
  * @property string $style
  * @property string $width
  * @property string $height
  */
-class ImageDefinition extends BaseTemplateElementContentDefinition
+class ImageDefinition extends BaseTemplateElementDefinition
 {
     /**
      * @inheritdoc
@@ -53,5 +53,13 @@ class ImageDefinition extends BaseTemplateElementContentDefinition
             'height' => Yii::t('CustomPagesModule.template', 'Height'),
             'width' => Yii::t('CustomPagesModule.template', 'Width'),
         ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function find()
+    {
+        return parent::find()->where([self::tableName() . '.content_type' => ImageElement::class]);
     }
 }

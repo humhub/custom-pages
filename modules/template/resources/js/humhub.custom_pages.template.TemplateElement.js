@@ -34,11 +34,12 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
         this.title = this.options.templateElementTitle || this.name;
         this.content = this.options.templateContent;
         this.contentId = this.options.templateContentId;
-        this.owner = this.options.templateOwner;
-        this.ownerId = this.options.templateOwnerId;
         this.empty = this.options.templateEmpty;
         this.default = this.options.templateDefault;
-        this.ownerContentId = this.options.templateOwnerContentId;
+        this.templateInstanceId = this.options.templateInstanceId;
+        this.templateInstanceType = this.options.templateInstanceType;
+        this.elementId = this.options.templateElementId;
+        this.elementContentId = this.options.templateElementContentId;
         this.label = this.options.templateLabel;
     };
 
@@ -124,13 +125,11 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
         return $(string.template(TemplateElement.template.editButton, {target: this.id, url: this.editUrl, btnSizeClass: btnSizeClass}));
     };
 
-
-
     TemplateElement.prototype.getEditData = function () {
         return {
-            ownerModel: this.owner,
-            ownerId: this.ownerId,
-            name: this.name
+            templateInstanceId: this.templateInstanceId,
+            elementId: this.elementId,
+            elementContentId: this.elementContentId,
         };
     };
 

@@ -1,8 +1,11 @@
 <?php
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 
 /* @var int $pageId */
+/* @var bool $editMode */
+/* @var TemplateInstance $templateInstance */
 ?>
 
 <?php if ($editMode) : ?>
@@ -25,7 +28,7 @@ use humhub\modules\content\helpers\ContentContainerHelper;
                 </li>
             <?php endif; ?>
             <li>
-                <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/owner-content/edit-multiple', 'id' => $templateInstance->id, 'sguid' => $sguid]) ?>" id="editAllElements" href="#">
+                <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/element-content/edit-multiple', 'id' => $templateInstance->id, 'sguid' => $sguid]) ?>" id="editAllElements" href="#">
                     <?= Yii::t('CustomPagesModule.view', 'Edit elements') ?>
                 </a>
             </li>

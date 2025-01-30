@@ -14,7 +14,7 @@ use yii\helpers\Url;
         <small>
             <span class="label label-success"><?= $model->getLabel() ?></span>
         </small>
-        <?php if (!$model->hasDefaultContent() || $model->defaultContent->use_default) : ?>
+        <?php if (!$model->hasDefaultContent()) : ?>
             <small>
                 <span class="label label-warning"><?= Yii::t('CustomPagesModule.base', 'Empty') ?></span>
             </small>

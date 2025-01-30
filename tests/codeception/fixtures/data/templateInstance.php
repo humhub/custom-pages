@@ -20,4 +20,8 @@
 return [
     ['id' => 1, 'page_id' => 1, 'template_id' => 1],
     ['id' => 2, 'page_id' => 2, 'template_id' => 2],
+    ['id' => 3, 'page_id' => 2, 'template_id' => 3, 'container_item_id' => 1],
+    ['id' => 4, 'page_id' => 2, 'template_id' => 4, 'container_item_id' => 2],
+    ['id' => 5, 'page_id' => 2, 'template_id' => 4, 'container_item_id' => 3],
+    ['id' => 6, 'page_id' => 2, 'template_id' => 4, 'container_item_id' => 4],
 ];

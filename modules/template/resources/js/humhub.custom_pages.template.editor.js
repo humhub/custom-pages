@@ -172,7 +172,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             return false;
         }
 
-        var hasRootOwner = element.owner === "humhub\\modules\\custom_pages\\modules\\template\\models\\TemplateInstance";
+        var hasRootOwner = element.templateInstanceType === 'page';
         var isActiveCotnainerItemContent = this.activeItem && this.activeItem.isParentOf(element);
         var isEmptyContainer = element.$.is('.emptyContainerBlock');
 

@@ -135,12 +135,6 @@ class m241220_101915_template_elements extends Migration
             );
 
             $this->updateSilent(
-                'custom_pages_template_element',
-                ['content_type' => $newContentType],
-                ['content_type' => $oldContentType],
-            );
-
-            $this->updateSilent(
                 'file',
                 ['object_model' => $newContentType, 'object_id' => $newElementId],
                 ['object_model' => $oldContentType, 'object_id' => $element['id']],
@@ -148,6 +142,12 @@ class m241220_101915_template_elements extends Migration
 
             $this->updateLinkedElementContentTables($element['id'], $newElementId, $updateLinkedElementContentTables);
         }
+
+        $this->updateSilent(
+            'custom_pages_template_element',
+            ['content_type' => $newContentType],
+            ['content_type' => $oldContentType],
+        );
 
         if ($deleteOldTable) {
             $this->safeDropTable($oldTable);

@@ -2,18 +2,26 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
+use Exception;
 use humhub\components\Controller;
+use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
-use Yii;
-use yii\helpers\Url;
+use humhub\modules\custom_pages\modules\template\models\TemplateElement;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\forms\AddItemEditForm;
 use humhub\modules\custom_pages\modules\template\widgets\EditContainerItemModal;
 use humhub\modules\custom_pages\modules\template\models\forms\EditItemForm;
-use humhub\modules\custom_pages\modules\template\models\OwnerContent;
-use humhub\modules\custom_pages\modules\template\models\OwnerContentVariable;
+use humhub\modules\custom_pages\modules\template\models\ElementContentVariable;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
+use Yii;
+use yii\base\InvalidRouteException;
+use yii\helpers\Url;
+use yii\web\BadRequestHttpException;
+use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * This controller is used to manage ContainerElement and ContainerItem instances.
@@ -35,76 +43,86 @@ class ContainerContentController extends Controller
     /**
      * This action is used for empty ContainerElement instances, which means there is only a default ContainerElement for the given owner.
      *
-     * This action accepts an $ownerContentId, which is the id of the default OwnerContent instance,
-     * and an owner definition ($ownerModel, $ownerId), which defines the actual owner of the element.
+     * This action accepts an $elementContentId, which is the id of the default BaseTemplateElementContent instance,
+     * and $templateInstanceId, which defines the actual owner(Custom Page or Container Item) of the element.
      *
-     * @param string $ownerModel
-     * @param int $ownerId
-     * @param int $ownerContentId
+     * @param int $elementId
+     * @param int $templateInstanceId
+     * @param string|null $cguid
      * @return array
-     * @throws \yii\base\InvalidRouteException
+     * @throws InvalidRouteException
+     * @throws \yii\db\Exception
      */
-    public function actionCreateContainer($ownerModel, $ownerId, $ownerContentId, $cguid = null)
+    public function actionCreateContainer($elementId, $templateInstanceId, $cguid = null)
     {
-        // Load actual owner and default content
-        $owner = OwnerContent::getOwnerModel($ownerModel, $ownerId);
-        $defaultOwnerContent = OwnerContent::findOne(['id' => $ownerContentId]);
-
-        // Check if owner content already exists
-        $ownerContent = OwnerContent::findOne(['owner_model' => $ownerModel, 'owner_id' => $owner->id, 'element_name' => $defaultOwnerContent->element_name]);
-
-        // If there is no container content yet, we create an OwnerContent isntance by copying the default one.
-        if (!$ownerContent) {
-            // Create a copy of the default content
-            $content = $defaultOwnerContent->copyContent();
-            $content->save();
-
-            // Copy default OwnerContent and set owner and new content
-            $ownerContent = $defaultOwnerContent->copy();
-            $ownerContent->setOwner($owner);
-            $ownerContent->setContent($content);
-            $ownerContent->save();
+        // Load actual template instance and default content
+        $templateInstance = TemplateInstance::findOne(['id' => $templateInstanceId]);
+        if (!$templateInstance) {
+            throw new NotFoundHttpException('Template instance is not found!');
         }
 
-        return $this->runAction('add-item', ['ownerContentId' => $ownerContent->id, 'ownerContent' => $ownerContent, 'cguid' => $cguid]);
+        // Check if element content already exists
+        $elementContent = BaseTemplateElementContent::findOne([
+            'element_id' => $elementId,
+            'template_instance_id' => $templateInstance->id,
+        ]);
+
+        // If there is no container content yet, we create an ElementContent instance by copying the default one.
+        if (!$elementContent) {
+            // Create a copy of the default content
+            $element = TemplateElement::findOne(['id' => $elementId]);
+            if (!$element) {
+                throw new NotFoundHttpException('Template element is not found!');
+            }
+            $elementContent = $element->getDefaultContent(true)->copy();
+            $elementContent->template_instance_id = $templateInstance->id;
+            $elementContent->save();
+        }
+
+        return $this->runAction('add-item', [
+            'elementContentId' => $elementContent->id,
+            'elementContent' => $elementContent,
+            'cguid' => $cguid,
+        ]);
     }
 
     /**
      * This action is used to add new ContainerItems to an element.
      *
-     * This action accepts either an $ownerContentId or an $ownerContent instance of type OwnerContent.
+     * This action accepts either an $elementContentId or an $elementContent instance of ContainerElement.
      *
-     * Note: The given ownerContent has to be the actual OwnerContent and not a default OwnerContent.
+     * Note: The given elementContent has to be the actual ContainerElement and not a default BaseTemplateElementContent.
      *
-     * @param int $ownerContentId id of actual ownerContent
-     * @param OwnerContent $ownerContent actual (non default) ownerContent instance
-     * @return mixed|\yii\web\Response
-     * @throws \yii\web\HttpException
-     * @throws \yii\base\InvalidRouteException
+     * @param int $elementContentId id of actual ContainerElement
+     * @param ContainerElement|null $elementContent actual (non default) BaseTemplateElementContent instance
+     * @param string|null $cguid
+     * @return mixed|Response|null
+     * @throws ForbiddenHttpException
+     * @throws InvalidRouteException
      */
-    public function actionAddItem($ownerContentId, $ownerContent = null, $cguid = null)
+    public function actionAddItem($elementContentId, $elementContent = null, $cguid = null)
     {
-        $ownerContent = (!$ownerContent) ? OwnerContent::findOne(['id' => $ownerContentId]) : $ownerContent;
+        if ($elementContent === null) {
+            $elementContent = ContainerElement::findOne(['id' => $elementContentId]);
+        }
 
-        /* @var ContainerElement $element */
-        $element = $ownerContent->instance;
-        if (!$element->canAddItem()) {
-            throw new \yii\web\HttpException(403, Yii::t('CustomPagesModule.base', 'This container does not allow any further items!'));
+        if (!$elementContent || !$elementContent->canAddItem()) {
+            throw new ForbiddenHttpException(Yii::t('CustomPagesModule.base', 'This container does not allow any further items!'));
         }
 
         // If the ContentContainerDefinition only allows one specific template, we skip the template selection.
-        if ($element->isSingleAllowedTemplate()) {
+        if ($elementContent->isSingleAllowedTemplate()) {
             return $this->runAction('edit-add-item', [
-                'templateId' => $element->allowedTemplates[0]->id,
-                'ownerContent' => $ownerContent,
+                'templateId' => $elementContent->allowedTemplates[0]->id,
+                'elementContent' => $elementContent,
                 'cguid' => $cguid,
             ]);
         }
 
         return $this->asJson([
             'output' => $this->renderAjax('addItemChooseTemplateModal', [
-                'allowedTemplateSelection' => $this->getAllowedTemplateSelection($element),
-                'action' => Url::to(['edit-add-item', 'ownerContentId' => $ownerContentId, 'cguid' => $cguid]),
+                'allowedTemplateSelection' => $this->getAllowedTemplateSelection($elementContent),
+                'action' => Url::to(['edit-add-item', 'elementContentId' => $elementContentId, 'cguid' => $cguid]),
             ]),
         ]);
     }
@@ -116,7 +134,7 @@ class ContainerContentController extends Controller
      * @param ContainerElement $containerElementContent
      * @return array
      */
-    protected function getAllowedTemplateSelection($containerElementContent)
+    protected function getAllowedTemplateSelection($containerElementContent): array
     {
         $result = [];
         foreach ($containerElementContent->definition->allowedTemplates as $allowedTemplate) {
@@ -132,32 +150,35 @@ class ContainerContentController extends Controller
      *
      * This function requires an
      *
-     * - OwnerContent - provided either as $ownerContentId or $ownerContent instance.
+     * - ContainerElement - provided either as $elementContentId or $elementContent instance.
      * - Template - provided as post/get templateId or as $itemTemplate instance.
      *
-     *
-     * @param int $ownerContentId id of the actual OwnerContent instance.
-     * @param type $ownerContent instance of the actual OwnerContent.
-     * @param int $templateId item template id.
-     * @param type $itemTemplate Template instance of the itemt template.
-     * @return \yii\web\Response
-     * @throws \yii\web\HttpException
+     * @param int|null $elementContentId id of the actual ContainerElement instance.
+     * @param ContainerElement|null $elementContent instance of the actual Container Element Content.
+     * @param int|null $templateId item template id.
+     * @param Template|null $itemTemplate Template instance of the itemt template.
+     * @param string|null $cguid
+     * @return Response
+     * @throws BadRequestHttpException
+     * @throws ForbiddenHttpException
      */
-    public function actionEditAddItem($ownerContentId = null, $ownerContent = null, $templateId = null, $itemTemplate = null, $cguid = null)
+    public function actionEditAddItem($elementContentId = null, $elementContent = null, $templateId = null, $itemTemplate = null, $cguid = null)
     {
         // First do some validation of the given data
-        if ($ownerContentId == null && $ownerContent == null) {
-            throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.base', 'This action requires an ownerContentId or ownerContent instance!'));
+        if ($elementContentId == null && $elementContent == null) {
+            throw new BadRequestHttpException('This action requires an elementContentId or elementContent instance!');
         }
 
-        $ownerContent = ($ownerContent == null) ? OwnerContent::findOne(['id' => $ownerContentId]) : $ownerContent;
+        if ($elementContent === null) {
+            $elementContent = ContainerElement::findOne(['id' => $elementContentId]);
+        }
 
-        if (!$ownerContent->instance->canAddItem()) {
-            throw new \yii\web\HttpException(403, Yii::t('CustomPagesModule.base', 'This container does not allow any further items!'));
+        if (!$elementContent->canAddItem()) {
+            throw new ForbiddenHttpException(Yii::t('CustomPagesModule.base', 'This container does not allow any further items!'));
         }
 
         if ($itemTemplate == null && $templateId == null && Yii::$app->request->post('templateId') == null) {
-            throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.base', 'This action requires an templateId or template instance!'));
+            throw new BadRequestHttpException('This action requires an templateId or template instance!');
         }
 
         // Initialize the itemTemplate
@@ -167,16 +188,16 @@ class ContainerContentController extends Controller
         }
 
         // Render form or handle form submission
-        $form = new AddItemEditForm(['ownerContent' => $ownerContent]);
+        $form = new AddItemEditForm(['elementContent' => $elementContent]);
         $form->setItemTemplate($itemTemplate);
         $form->setScenario('edit');
 
         if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
-            TemplateCache::flushByOwnerContent($ownerContent);
-            $variable = new OwnerContentVariable(['ownerContent' => $ownerContent]);
+            TemplateCache::flushByElementContent($elementContent);
+            $variable = new ElementContentVariable(['elementContent' => $elementContent]);
             return $this->asJson([
                 'success' => true,
-                'id' => $ownerContent->id,
+                'id' => $elementContent->id,
                 'output' => $variable->render(true),
             ]);
         }
@@ -185,15 +206,17 @@ class ContainerContentController extends Controller
             'output' => $this->renderAjaxPartial(EditContainerItemModal::widget([
                 'model' => $form,
                 'title' => Yii::t('CustomPagesModule.base', '<strong>Add</strong> {templateName} item', ['templateName' => $form->template->name]),
-                'action' => Url::to(['edit-add-item', 'ownerContentId' => $ownerContent->id, 'templateId' => $itemTemplate->id, 'cguid' => $cguid]),
+                'action' => Url::to(['edit-add-item', 'elementContentId' => $elementContent->id, 'templateId' => $itemTemplate->id, 'cguid' => $cguid]),
             ])),
         ]);
     }
 
     /**
-     * This action is used to edit an container item.
+     * This action is used to edit a Container Item.
      *
-     * @throws \Exception
+     * @param int $itemId
+     * @return Response
+     * @throws Exception
      */
     public function actionEditItem($itemId)
     {
@@ -202,12 +225,11 @@ class ContainerContentController extends Controller
         $form->setScenario('edit');
 
         if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
-            $ownerContent = OwnerContent::findByContent($form->owner->container);
-            TemplateCache::flushByOwnerContent($ownerContent);
+            TemplateCache::flushByTemplateInstance($form->item->templateInstance);
 
             return $this->asJson([
                 'success' => true,
-                'output' => $form->owner->render(true, $form->owner->container->definition->is_inline),
+                'output' => $form->item->render(true, $form->item->container->definition->is_inline),
             ]);
         }
 
@@ -221,18 +243,20 @@ class ContainerContentController extends Controller
 
     /**
      * This action is used to delete container items.
+     *
+     * @return Response
      */
     public function actionDeleteItem()
     {
         $this->forcePostRequest();
         $itemId = Yii::$app->request->post('itemId');
-        $ownerContentId = Yii::$app->request->post('ownerContentId');
+        $elementContentId = Yii::$app->request->post('elementContentId');
 
         ContainerItem::findOne(['id' => $itemId])->delete();
-        $ownerContent = OwnerContent::findOne(['id' => $ownerContentId]);
-        $variable = new OwnerContentVariable(['ownerContent' => $ownerContent]);
+        $elementContent = BaseTemplateElementContent::findOne(['id' => $elementContentId]);
+        $variable = new ElementContentVariable(['elementContent' => $elementContent]);
 
-        TemplateCache::flushByOwnerContent($ownerContent);
+        TemplateCache::flushByElementContent($elementContent);
 
         return $this->asJson([
             'success' => true,
@@ -241,27 +265,32 @@ class ContainerContentController extends Controller
     }
 
     /**
-     * Action for moving an containeritem position.
-     * @throws \yii\web\HttpException
+     * Action for moving a Container Item position.
+     *
+     * @param int $elementContentId
+     * @param int $itemId
+     * @param int $step
+     * @return Response
+     * @throws BadRequestHttpException
      */
-    public function actionMoveItem($ownerContentId, $itemId, $step)
+    public function actionMoveItem($elementContentId, $itemId, $step)
     {
-        Yii::$app->response->format = 'json';
-        $ownerContent = OwnerContent::findOne(['id' => $ownerContentId]);
+        $elementContent = BaseTemplateElementContent::findOne(['id' => $elementContentId]);
 
-        if ($ownerContent == null) {
-            throw new \yii\web\HttpException(400, Yii::t('CustomPagesModule.base', 'Invalid request data!'));
+        if ($elementContent === null) {
+            throw new BadRequestHttpException(Yii::t('CustomPagesModule.base', 'Invalid request data!'));
         }
 
-        $ownerContent->instance->moveItem($itemId, $step);
+        $elementContent->moveItem($itemId, $step);
 
-        TemplateCache::flushByOwnerContent($ownerContent);
+        TemplateCache::flushByElementContent($elementContent);
 
-        $variable = new OwnerContentVariable(['ownerContent' => $ownerContent]);
-        return [
+        $variable = new ElementContentVariable(['elementContent' => $elementContent]);
+
+        return $this->asJson([
             'success' => true,
             'output' => $variable->render(true),
-        ];
+        ]);
     }
 
 }

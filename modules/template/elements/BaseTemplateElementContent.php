@@ -12,10 +12,7 @@ use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\components\ActiveRecordDynamicAttributes;
-use humhub\modules\custom_pages\modules\template\models\OwnerContent;
 use humhub\modules\custom_pages\modules\template\models\PagePermission;
-use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateEditorElement;
@@ -29,10 +26,11 @@ use yii\db\ActiveQuery;
  *
  * @property int $id
  * @property int $element_id
- * @property int $definition_id
+ * @property int|null $template_instance_id
  *
- * @property-read OwnerContent $ownerContent
- * @property-read BaseTemplateElementContentDefinition $definition
+ * @property-read TemplateElement $element
+ * @property-read BaseTemplateElementDefinition $definition
+ * @property-read TemplateInstance|null $templateInstance
  */
 abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes implements ViewableInterface
 {
@@ -46,7 +44,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     private $formName;
 
     /**
-     * @var BaseTemplateElementContentDefinition|null instance of the definition
+     * @var BaseTemplateElementDefinition|null instance of the definition
      */
     private $definitionInstance;
 
@@ -95,6 +93,15 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     }
 
     /**
+     * @inheritdoc
+     */
+    public static function instantiate($row)
+    {
+        $element = TemplateElement::findOne(['id' => $row['element_id']]);
+        return $element ? Yii::createObject($element['content_type']) : null;
+    }
+
+    /**
      * Find records related only to the current element type
      *
      * @return ActiveQuery
@@ -111,9 +118,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
 
     /**
      * Copies the values of this content type instance.
-     * This function can initiate the copy by using `createCopy`.
      *
-     * @see static::createCopy()
      * @return static instance copy.
      */
     public function copy(): static
@@ -121,7 +126,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
         $clone = new static();
         $clone->element_id = $this->element_id;
         $clone->dyn_attributes = $this->dyn_attributes;
-        $clone->definition_id = $this->definition_id;
+        $clone->template_instance_id = $this->template_instance_id;
         return $clone;
     }
 
@@ -137,19 +142,6 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
         }
 
         return false;
-    }
-
-    /**
-     * Creates an empty copy of the current content type and adopts the definition_id (if present).
-     * @return static
-     */
-    protected function createCopy(): static
-    {
-        $copy = Yii::createObject(get_class($this));
-        if ($this->isDefinitionContent()) {
-            $copy->definition_id = $this->definition_id;
-        }
-        return $copy;
     }
 
     /**
@@ -177,9 +169,25 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     {
         $result = parent::load($data, $formName);
         if ($this->isDefinitionContent() && $this->definitionPostData != null) {
-            $this->definition->load(['content' => $this->definitionPostData], 'content');
+            $result = $this->definition->load(['content' => $this->definitionPostData], 'content') && $result;
         }
         return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function validate($attributeNames = null, $clearErrors = true)
+    {
+        if (!parent::validate($attributeNames, $clearErrors)) {
+            return false;
+        }
+
+        if ($this->isDefinitionContent()) {
+            return $this->definition->validate($attributeNames, $clearErrors);
+        }
+
+        return true;
     }
 
     /**
@@ -204,34 +212,35 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     }
 
     /**
-     * Returns the BaseTemplateElementContentDefinition instance of this instance. +
-     * This function will create an empty definition instance if this content type has an definitionModel and
-     * does not have a related definition_id.
+     * Returns the BaseTemplateElementDefinition instance of this instance. +
+     * This function will create an empty definition instance if this content type has an definitionModel
+     * but the definition record is not stored yet.
      *
-     * @return BaseTemplateElementContentDefinition|null the definition instance.
+     * @return BaseTemplateElementDefinition|null the definition instance.
      */
-    public function getDefinition(): ?BaseTemplateElementContentDefinition
+    public function getDefinition(): ?BaseTemplateElementDefinition
     {
         if (!$this->isDefinitionContent()) {
             return null;
         }
 
-        if ($this->definitionInstance) {
+        if ($this->definitionInstance instanceof BaseTemplateElementDefinition) {
+            if ($this->definitionInstance->isNewRecord && $this->element_id !== null) {
+                // Refresh instance to the recently stored definition/element record
+                $dynAttributes = $this->definitionInstance->dyn_attributes;
+                $this->definitionInstance = call_user_func($this->definitionModel . "::findOne", ['id' => $this->element_id]);
+                $this->definitionInstance->dyn_attributes = $dynAttributes;
+            }
             return $this->definitionInstance;
         }
 
-        if ($this->definition_id != null) {
-            $this->definitionInstance = call_user_func($this->definitionModel . "::findOne", ['id' => $this->definition_id]);
+        if ($this->element_id !== null) {
+            $this->definitionInstance = call_user_func($this->definitionModel . "::findOne", ['id' => $this->element_id]);
         }
 
-        // Create empty definition instance
-        if (!$this->definitionInstance) {
+        if ($this->definitionInstance === null) {
+            // Create empty definition instance
             $this->definitionInstance = Yii::createObject($this->definitionModel);
-        }
-
-        // Mark the definition instance as default if the content is created or edited by admin
-        if ($this->scenario === self::SCENARIO_EDIT_ADMIN || $this->scenario === self::SCENARIO_CREATE) {
-            $this->definitionInstance->is_default = true;
         }
 
         $this->definitionInstance->setFormName($this->formName() . '[definitionPostData]');
@@ -240,38 +249,11 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     }
 
     /**
-     * @return bool determines if this content instance has an definition instance relation.
+     * @return bool determines if this content type has a definition type.
      */
-    public function hasDefinition()
+    public function isDefinitionContent(): bool
     {
-        return isset($this->definition_id);
-    }
-
-    /**
-     * @return bool determines if this content type has an definition type.
-     */
-    public function isDefinitionContent()
-    {
-        return $this->definitionModel != null;
-    }
-
-    /**
-     * @ineritdoc
-     */
-    public function beforeSave($insert)
-    {
-        $definition = $this->definition;
-        if ($this->isDefinitionContent() && $definition->validate() && $definition->hasValues()) {
-            $definition->save(false);
-            $this->definition_id = $definition->getPrimaryKey();
-        } elseif ($this->isDefinitionContent() && !$definition->isNewRecord && !$definition->hasValues() && $this->scenario === self::SCENARIO_EDIT_ADMIN) {
-            // If we reset the default definition to an empty state we remove the definition settings, which will allow the content to define own definitions
-            self::updateAll(['definition_id' => null], ['definition_id' => $definition->id]);
-            $definition->delete();
-            return false;
-        }
-
-        return parent::beforeSave($insert);
+        return $this->definitionModel !== null;
     }
 
     /**
@@ -280,6 +262,11 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
+
+        if ($this->isDefinitionContent() && $this->isDefault() && $this->definition->hasValues()) {
+            $this->definition->save();
+        }
+
         if (!$this->filesSaved) {
             $this->filesSaved = true;
             $this->saveFiles();
@@ -303,12 +290,6 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
      */
     public function afterDelete()
     {
-        if ($this instanceof ContainerElement) {
-            if (self::find()->where(['definition_id' => $this->definition_id])->count() == 0) {
-                $this->definition->delete();
-            }
-        }
-
         $files = $this->fileManager->findAll();
 
         foreach ($files as $file) {
@@ -321,7 +302,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     protected function wrap($type, $content, $options = [], $attributes = [])
     {
         if ($this->getPrimaryKey() != null) {
-            $options['template-content-id'] = $this->getPrimaryKey();
+            $options['element_content_id'] = $this->getPrimaryKey();
         }
 
         return TemplateEditorElement::widget([
@@ -378,34 +359,22 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
      */
     public function isEmpty(): bool
     {
-        return false;
+        return $this->isNewRecord;
     }
 
-    public function getOwnerContent(): ActiveQuery
+    public function getElement(): ActiveQuery
     {
-        return $this->hasOne(OwnerContent::class, ['content_id' => 'id'])
-            ->andWhere([OwnerContent::tableName() . '.content_type' => get_class($this)]);
+        return $this->hasOne(TemplateElement::class, ['id' => 'element_id']);
     }
 
-    public function getOwner(): ?TemplateContentOwner
+    public function getTemplateInstance(): ActiveQuery
     {
-        $ownerContent = $this->ownerContent;
-        return $ownerContent instanceof OwnerContent ? $ownerContent->getOwner() : null;
+        return $this->hasOne(TemplateInstance::class, ['id' => 'template_instance_id']);
     }
 
     public function getPage(): ?CustomPage
     {
-        $ownerModel = $this->getOwner();
-
-        if ($ownerModel instanceof ContainerItem) {
-            $ownerModel = $ownerModel->getTemplateInstance();
-        }
-
-        if ($ownerModel instanceof TemplateInstance) {
-            return $ownerModel->getObject();
-        }
-
-        return null;
+        return $this->templateInstance?->page;
     }
 
     /**
@@ -423,7 +392,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
             return $page->content->canView($user);
         }
 
-        if ($page === null && $this->getOwner() instanceof Template) {
+        if ($this->template_instance_id === null) {
             // If this template content record is not linked to any container(Page, Snippet),
             // then it is from Template Layout, try to check if the user can manage Template Layouts
             return (new PermissionManager(['subject' => $user]))->can(ManagePages::class);
@@ -457,5 +426,22 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     public function getFormView(): string
     {
         return lcfirst(substr(strrchr(static::class, '\\'), 1, -7));
+    }
+
+    public function isDefault(): bool
+    {
+        return $this->template_instance_id === null;
+    }
+
+    public function getInstance(bool $createDummy = false): ?static
+    {
+        if ($this->isNewRecord && $createDummy) {
+            /* @var static $content */
+            $content = Yii::createObject($this->element->content_type);
+            $content->element_id = $this->element_id;
+            return $content;
+        }
+
+        return $this;
     }
 }

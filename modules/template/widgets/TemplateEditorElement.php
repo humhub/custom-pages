@@ -52,15 +52,16 @@ class TemplateEditorElement extends \humhub\widgets\JsWidget
     {
         return [
             'template-element-title' => $this->_getOption($this->renderOptions, 'element_title'),
-            'template-element'  => $this->_getOption($this->renderOptions, 'element_name'),
-            'template-owner'  => $this->_getOption($this->renderOptions, 'owner_model'),
-            'template-owner-id'  => $this->_getOption($this->renderOptions, 'owner_id'),
-            'template-id'  => $this->_getOption($this->renderOptions, 'template_id'),
-            'template-owner-content-id'  => $this->_getOption($this->renderOptions, 'owner_content_id'),
-            'template-default'  => $this->_getOption($this->renderOptions, 'default', '0'),
-            'template-empty'  => $this->_getOption($this->renderOptions, 'empty', '0'),
+            'template-element' => $this->_getOption($this->renderOptions, 'element_name'),
+            'template-id' => $this->_getOption($this->renderOptions, 'template_id'),
+            'template-instance-id' => $this->_getOption($this->renderOptions, 'template_instance_id'),
+            'template-instance-type' => $this->_getOption($this->renderOptions, 'template_instance_type'),
+            'template-element-id' => $this->_getOption($this->renderOptions, 'element_id'),
+            'template-element-content-id' => $this->_getOption($this->renderOptions, 'element_content_id'),
+            'template-default' => $this->_getOption($this->renderOptions, 'default', '0'),
+            'template-empty' => $this->_getOption($this->renderOptions, 'empty', '0'),
             'template-label' => $this->templateContent->getLabel(),
-            'template-content'  => get_class($this->templateContent),
+            'template-content' => get_class($this->templateContent),
         ];
     }
 

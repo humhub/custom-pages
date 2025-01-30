@@ -115,7 +115,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $model = Template::findOne(['id' => Yii::$app->request->get('id')]);
 
         if ($model == null) {
-            throw new \yii\web\HttpException(404, Yii::t('CustomPagesModule.template', 'Template not found!'));
+            throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template not found!'));
         }
 
         $model->scenario = 'source';
@@ -141,7 +141,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $model = Template::findOne(['id' => Yii::$app->request->get('id')]);
 
         if ($model == null) {
-            throw new \yii\web\HttpException(404, Yii::t('CustomPagesModule.template', 'Template not found!'));
+            throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template not found!'));
         }
 
         $dataProvider = new ActiveDataProvider([
@@ -237,18 +237,21 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
     /**
      * This action will reset the default content of a given TemplateElement
-     * @param type $id
-     * @return type
+     * @param int $id
+     * @return Response
      */
     public function actionResetElement($id)
     {
         $this->forcePostRequest();
 
         $element = TemplateElement::findOne(['id' => $id]);
-        $ownerContent = $element->getDefaultContent();
+        $elementContent = $element->getDefaultContent();
 
-        if ($ownerContent != null) {
-            $ownerContent->delete();
+        if ($elementContent !== null) {
+            if ($elementContent->isDefinitionContent()) {
+                $element->updateAttributes(['dyn_attributes' => null]);
+            }
+            $elementContent->delete();
         }
 
         return $this->asJson([
@@ -261,10 +264,10 @@ class AdminController extends \humhub\modules\admin\components\Controller
     /**
      * This action will render a preview of a given template.
      *
-     * @param type $id
-     * @param type $editView
-     * @param type $reload
-     * @return type
+     * @param int $id
+     * @param bool|null $editView
+     * @param bool|null $reload
+     * @return string
      */
     public function actionPreview($id, $editView = null, $reload = null)
     {

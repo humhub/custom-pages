@@ -21,7 +21,7 @@ use Yii;
  *
  * @property-read Template[] $allowedTemplates
  */
-class ContainerDefinition extends BaseTemplateElementContentDefinition
+class ContainerDefinition extends BaseTemplateElementDefinition
 {
     /**
      * @var Template[] Cached templates selected as allowed for this definition
@@ -35,8 +35,8 @@ class ContainerDefinition extends BaseTemplateElementContentDefinition
     {
         return [
             'templates' => null,
-            'allow_multiple' => null,
-            'is_inline' => null,
+            'allow_multiple' => false,
+            'is_inline' => false,
         ];
     }
 
@@ -91,6 +91,14 @@ class ContainerDefinition extends BaseTemplateElementContentDefinition
 
     public function isSingleAllowedTemplate(): bool
     {
-        return count($this->templates) === 1;
+        return is_array($this->templates) && count($this->templates) === 1;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function find()
+    {
+        return parent::find()->where([self::tableName() . '.content_type' => ContainerElement::class]);
     }
 }

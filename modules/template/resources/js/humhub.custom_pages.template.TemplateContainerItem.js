@@ -121,7 +121,7 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
         var options = {
             url: this.editor.options.itemMoveUrl,
             data : {
-                ownerContentId: parent.ownerContentId,
+                elementContentId: parent.elementContentId,
                 itemId: that.itemId,
                 step: evt.$trigger.data('step')
             }
@@ -145,7 +145,8 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
         var that = this;
         return {
             itemId: that.itemId,
-            ownerContentId: that.getParentElement().ownerContentId
+            elementId: that.getParentElement().elementId,
+            elementContentId: that.getParentElement().elementContentId
         };
     };
 

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.10.14 (Unreleased)
+1.10.14 (January 30, 2025)
 --------------------------
 - Fix #394: Fix visibility of attached images to default content of template
 

@@ -10,7 +10,7 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\components\ActiveRecord;
 use humhub\libs\Html;
-use humhub\modules\custom_pages\modules\template\models\TemplateContentIterable;
+use humhub\modules\custom_pages\modules\template\interfaces\TemplateElementContentIterable;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -21,7 +21,7 @@ use yii\db\ActiveQuery;
  * @property string $type
  * @property array $static
  */
-abstract class BaseRecordsElement extends BaseTemplateElementContent implements TemplateContentIterable
+abstract class BaseRecordsElement extends BaseTemplateElementContent implements TemplateElementContentIterable
 {
     public const RECORD_CLASS = null;
 

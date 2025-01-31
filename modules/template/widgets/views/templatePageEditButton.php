@@ -1,6 +1,7 @@
 <?php
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 
 /* @var int $pageId */
@@ -20,7 +21,7 @@ use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
                     <?= Yii::t('CustomPagesModule.view', 'Page configuration') ?>
                 </a>
             </li>
-            <?php if(humhub\modules\custom_pages\modules\template\models\PagePermission::canTemplate()): ?>
+            <?php if (PagePermissionHelper::canTemplate()) : ?>
                 <li>
                     <a target="_blank"  href="<?= Url::to(['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid]) ?>">
                         <?= Yii::t('CustomPagesModule.view', 'Edit template') ?>

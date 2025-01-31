@@ -29,8 +29,8 @@ use yii\helpers\ArrayHelper;
  * The template can define a default content for each placeholder, by creating an ElementContent with the
  * given placeholder name.
  *
- * If no default content is given, and a TemplateContentOwner does not define an own ElementContent for the placeholder, the placeholder is
- * either rendered empty if not in editmode or as default(empty) block if the edit mode is activated.
+ * If no default content is given, and a Template Instance does not define an own ElementContent for the placeholder,
+ * the placeholder is either rendered empty if not in edit mode or as default(empty) block if the edit mode is activated.
  *
  *
  * There are different types of templates:
@@ -49,7 +49,7 @@ use yii\helpers\ArrayHelper;
  *
  * @property-read TemplateElement[] $elements
  */
-class Template extends ActiveRecord implements TemplateContentOwner
+class Template extends ActiveRecord
 {
     public const TYPE_LAYOUT = 'layout';
     public const TYPE_SNIPPET_LAYOUT = 'snippet-layout';
@@ -252,7 +252,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
      * no $owner was given.
      *
      * This is done by merging all default ElementContent instances with the overwritten
-     * ElementContent instances defined by the TemplateContentOwner $owner.
+     * ElementContent instances defined by the Template Instance.
      *
      * @param ActiveRecord $owner
      * @return string
@@ -362,11 +362,6 @@ class Template extends ActiveRecord implements TemplateContentOwner
     public static function getSelection(array $condition = [], string $keyFieldName = 'id')
     {
         return ArrayHelper::map(self::find()->where($condition)->all(), $keyFieldName, 'name');
-    }
-
-    public function getTemplateId()
-    {
-        return $this->id;
     }
 
     public static function getTypeTitle(string $type): string

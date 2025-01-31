@@ -8,8 +8,8 @@
 
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
+use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use Yii;
-use humhub\modules\custom_pages\modules\template\models\PagePermission;
 
 /**
  * User Administration Menu
@@ -40,8 +40,8 @@ class PageConfigurationButton extends \humhub\components\Widget
 
     public function run()
     {
-        if (!PagePermission::canEdit()) {
-            return;
+        if (!PagePermissionHelper::canEdit()) {
+            return '';
         }
 
         $pageId = isset($this->pageId) ? $this->pageId : Yii::$app->request->get('id');

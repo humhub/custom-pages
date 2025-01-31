@@ -8,7 +8,6 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 
 /**
@@ -29,9 +28,7 @@ class AddItemEditForm extends EditItemForm
 
     public function save(): bool
     {
-        $this->owner->title = $this->title;
         $this->owner->save();
         return parent::save();
     }
-
 }

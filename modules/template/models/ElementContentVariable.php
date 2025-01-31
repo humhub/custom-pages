@@ -11,6 +11,7 @@ namespace humhub\modules\custom_pages\modules\template\models;
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\UserElement;
+use humhub\modules\custom_pages\modules\template\interfaces\TemplateElementContentIterable;
 use yii\base\Model;
 
 class ElementContentVariable extends Model
@@ -92,7 +93,7 @@ class ElementContentVariable extends Model
     public function items(): iterable
     {
         try {
-            yield from $this->elementContent instanceof TemplateContentIterable ? $this->elementContent->getItems() : [];
+            yield from $this->elementContent instanceof TemplateElementContentIterable ? $this->elementContent->getItems() : [];
         } catch (\Exception $e) {
             yield from [];
         }

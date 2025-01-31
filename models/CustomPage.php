@@ -77,9 +77,9 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     private $_target;
 
     /**
-     * @var int special field for template based pages specifying the layout template id
+     * @var int|null special field for template based pages specifying the layout template id
      */
-    public $templateId;
+    public ?int $templateId = null;
 
     /**
      * @var bool field only used in edit form
@@ -544,14 +544,13 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
         return $this->target === $targetId;
     }
 
-    public function getTemplateId()
+    public function getTemplateId(): ?int
     {
-        if (!$this->templateId) {
+        if ($this->templateId === null) {
             $templateInstance = TemplateInstance::findByOwner($this);
-            if ($templateInstance) {
-                $this->templateId = $templateInstance->template_id;
-            }
+            $this->templateId = $templateInstance ? $templateInstance->template_id : 0;
         }
+
         return $this->templateId;
     }
 

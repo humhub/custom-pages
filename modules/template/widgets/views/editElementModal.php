@@ -1,28 +1,27 @@
 <?php
 
+use humhub\modules\custom_pages\modules\template\models\forms\TemplateElementForm;
 use humhub\modules\custom_pages\modules\template\widgets\EditContentSeperator;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\ModalDialog;
 use yii\helpers\Html;
 
-/* @var $model humhub\modules\custom_pages\modules\template\models\forms\TemplateElementForm */
-
+/* @var TemplateElementForm $model */
+/* @var string $title */
+/* @var bool $isAdminEdit */
 ?>
-<?php humhub\widgets\ModalDialog::begin(['header' => $title, 'size' => 'large']) ?>
+<?php ModalDialog::begin(['header' => $title, 'size' => 'large']) ?>
 
     <?php $form = ActiveForm::begin(); ?>
         <div class="modal-body">
-            <div class="clearfix">
-                <?php if(!$model->element->isNewRecord) : ?>
-                    #<strong><?= Html::encode($model->element->name) ?></strong>
-                    <br />
-                 <?php endif; ?>
-                <small class="pull-right">
-                    <span class="label label-success"><?= $model->label ?></span>
-                </small>
-            </div>
+            <span class="label label-success pull-right"><?= $model->label ?></span>
+            <?php if (!$model->element->isNewRecord) : ?>
+                #<strong><?= Html::encode($model->element->name) ?></strong>
+             <?php endif; ?>
+            <div class="clearfix" style="margin-bottom:10px"></div>
 
-            <?php if($model->element->isNewRecord) : ?>
+            <?php if ($model->element->isNewRecord) : ?>
                 <?= $form->field($model->element, 'name')->textInput(['autofocus' => '']); ?>
             <?php else: ?>
                 <div style="display:none">
@@ -30,7 +29,9 @@ use yii\helpers\Html;
                 </div>
             <?php endif; ?>
 
-            <?= $form->field($model->element, 'title')->textInput(); ?>
+            <?php if ($isAdminEdit) : ?>
+                <?= $form->field($model->element, 'title')->textInput() ?>
+            <?php endif; ?>
 
             <?= EditContentSeperator::widget(['isAdminEdit' => $isAdminEdit]) ?>
 
@@ -58,4 +59,4 @@ use yii\helpers\Html;
         </div>
     <?php $form::end(); ?>
 
-<?php humhub\widgets\ModalDialog::end() ?>
+<?php ModalDialog::end() ?>

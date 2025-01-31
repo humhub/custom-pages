@@ -79,7 +79,13 @@ abstract class BaseRecordsElement extends BaseTemplateElementContent implements 
      */
     public function render($options = [])
     {
-        return Html::encode(static::RECORD_CLASS);
+        $result = Html::encode(static::RECORD_CLASS);
+
+        if ($this->isEditMode($options)) {
+            return $this->wrap('span', $result, $options);
+        }
+
+        return $result;
     }
 
     /**

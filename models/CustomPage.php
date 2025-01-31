@@ -324,10 +324,10 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     /**
      * @inheritdoc
      */
-    public function afterDelete()
+    public function beforeDelete()
     {
         $this->getContentType()->afterDelete($this);
-        parent::afterDelete();
+        return parent::beforeDelete();
     }
 
     /**

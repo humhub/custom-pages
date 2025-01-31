@@ -16,7 +16,7 @@ use Yii;
  * Dynamic attributes:
  * @property string $content
  */
-class RichtextElement extends BaseTemplateElementContent
+class RichtextElement extends BaseElementContent
 {
     /**
      * @inheritdoc

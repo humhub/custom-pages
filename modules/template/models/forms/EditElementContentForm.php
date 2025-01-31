@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 
 /**
@@ -23,7 +23,7 @@ class EditElementContentForm extends TemplateElementForm
      */
     public $scenario = 'edit';
 
-    public ?BaseTemplateElementContent $elementContent = null;
+    public ?BaseElementContent $elementContent = null;
 
     public function setScenario($value)
     {
@@ -42,7 +42,7 @@ class EditElementContentForm extends TemplateElementForm
      */
     public function setElementData($elementId = null, $elementContentId = null, $templateInstanceId = null)
     {
-        $this->elementContent = $elementContentId ? BaseTemplateElementContent::findOne(['id' => $elementContentId]) : null;
+        $this->elementContent = $elementContentId ? BaseElementContent::findOne(['id' => $elementContentId]) : null;
         if ($this->elementContent) {
             $this->element = $this->elementContent->element;
         } else {

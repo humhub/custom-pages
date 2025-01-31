@@ -12,9 +12,10 @@ use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\lib\templates\TemplateEngineFactory;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerDefinition;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
@@ -263,7 +264,7 @@ class Template extends ActiveRecord
 
         $content = [];
         foreach ($elementContents as $elementContent) {
-            $content[$elementContent->element->name] = new ElementContentVariable([
+            $content[$elementContent->element->name] = new BaseElementVariable([
                 'elementContent' => $elementContent,
                 'options' => [
                     'editMode' => $editMode,
@@ -283,7 +284,7 @@ class Template extends ActiveRecord
 
     /**
      * @param TemplateInstance|null $templateInstance
-     * @return BaseTemplateElementContent[]
+     * @return BaseElementContent[]
      */
     public function getElementContents(?TemplateInstance $templateInstance = null): array
     {
@@ -298,7 +299,7 @@ class Template extends ActiveRecord
 
         if ($templateInstance !== null) {
             // Non default content defined by owner
-            $elementContents = BaseTemplateElementContent::find()
+            $elementContents = BaseElementContent::find()
                 ->where(['template_instance_id' => $templateInstance->id])
                 ->all();
         }

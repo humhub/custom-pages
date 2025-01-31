@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementDefinition;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementDefinition;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\file\models\File;
 use Yii;

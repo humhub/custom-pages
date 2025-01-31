@@ -2,7 +2,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 
 /**
  * Description of TemplatePage
@@ -22,7 +22,7 @@ class TemplateEditorElement extends \humhub\widgets\JsWidget
     public $page;
 
     /**
-     * @var BaseTemplateElementContent
+     * @var BaseElementContent
      */
     public $templateContent;
 

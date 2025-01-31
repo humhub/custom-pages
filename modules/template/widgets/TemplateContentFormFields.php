@@ -9,7 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
 use humhub\components\Widget;
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use yii\widgets\ActiveForm;
 
 /**
@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
 class TemplateContentFormFields extends Widget
 {
     public ?ActiveForm $form = null;
-    public ?BaseTemplateElementContent $model = null;
+    public ?BaseElementContent $model = null;
 
     public function run()
     {

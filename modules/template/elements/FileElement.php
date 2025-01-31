@@ -17,7 +17,7 @@ use Yii;
  * Dynamic attributes:
  * @property string $file_guid
  */
-class FileElement extends BaseTemplateElementContent
+class FileElement extends BaseElementContent
 {
     /**
      * @inheritdoc

@@ -21,7 +21,7 @@ use yii\db\ActiveQuery;
  * @property string $type
  * @property array $static
  */
-abstract class BaseRecordsElement extends BaseTemplateElementContent implements TemplateElementContentIterable
+abstract class BaseRecordsElement extends BaseElementContent implements TemplateElementContentIterable
 {
     public const RECORD_CLASS = null;
 

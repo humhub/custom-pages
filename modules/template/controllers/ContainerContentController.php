@@ -4,7 +4,7 @@ namespace humhub\modules\custom_pages\modules\template\controllers;
 
 use Exception;
 use humhub\components\Controller;
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
@@ -12,7 +12,7 @@ use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\forms\AddItemEditForm;
 use humhub\modules\custom_pages\modules\template\widgets\EditContainerItemModal;
 use humhub\modules\custom_pages\modules\template\models\forms\EditItemForm;
-use humhub\modules\custom_pages\modules\template\models\ElementContentVariable;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use Yii;
@@ -62,7 +62,7 @@ class ContainerContentController extends Controller
         }
 
         // Check if element content already exists
-        $elementContent = BaseTemplateElementContent::findOne([
+        $elementContent = BaseElementContent::findOne([
             'element_id' => $elementId,
             'template_instance_id' => $templateInstance->id,
         ]);
@@ -194,7 +194,7 @@ class ContainerContentController extends Controller
 
         if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByElementContent($elementContent);
-            $variable = new ElementContentVariable(['elementContent' => $elementContent]);
+            $variable = new BaseElementVariable(['elementContent' => $elementContent]);
             return $this->asJson([
                 'success' => true,
                 'id' => $elementContent->id,
@@ -253,8 +253,8 @@ class ContainerContentController extends Controller
         $elementContentId = Yii::$app->request->post('elementContentId');
 
         ContainerItem::findOne(['id' => $itemId])->delete();
-        $elementContent = BaseTemplateElementContent::findOne(['id' => $elementContentId]);
-        $variable = new ElementContentVariable(['elementContent' => $elementContent]);
+        $elementContent = BaseElementContent::findOne(['id' => $elementContentId]);
+        $variable = new BaseElementVariable(['elementContent' => $elementContent]);
 
         TemplateCache::flushByElementContent($elementContent);
 
@@ -275,7 +275,7 @@ class ContainerContentController extends Controller
      */
     public function actionMoveItem($elementContentId, $itemId, $step)
     {
-        $elementContent = BaseTemplateElementContent::findOne(['id' => $elementContentId]);
+        $elementContent = BaseElementContent::findOne(['id' => $elementContentId]);
 
         if ($elementContent === null) {
             throw new BadRequestHttpException(Yii::t('CustomPagesModule.base', 'Invalid request data!'));
@@ -285,7 +285,7 @@ class ContainerContentController extends Controller
 
         TemplateCache::flushByElementContent($elementContent);
 
-        $variable = new ElementContentVariable(['elementContent' => $elementContent]);
+        $variable = new BaseElementVariable(['elementContent' => $elementContent]);
 
         return $this->asJson([
             'success' => true,

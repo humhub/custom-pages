@@ -29,10 +29,10 @@ use yii\db\ActiveQuery;
  * @property int|null $template_instance_id
  *
  * @property-read TemplateElement $element
- * @property-read BaseTemplateElementDefinition $definition
+ * @property-read BaseElementDefinition $definition
  * @property-read TemplateInstance|null $templateInstance
  */
-abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes implements ViewableInterface
+abstract class BaseElementContent extends ActiveRecordDynamicAttributes implements ViewableInterface
 {
     public const SCENARIO_CREATE = 'create';
     public const SCENARIO_EDIT = 'edit';
@@ -44,7 +44,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
     private $formName;
 
     /**
-     * @var BaseTemplateElementDefinition|null instance of the definition
+     * @var BaseElementDefinition|null instance of the definition
      */
     private $definitionInstance;
 
@@ -216,15 +216,15 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
      * This function will create an empty definition instance if this content type has an definitionModel
      * but the definition record is not stored yet.
      *
-     * @return BaseTemplateElementDefinition|null the definition instance.
+     * @return BaseElementDefinition|null the definition instance.
      */
-    public function getDefinition(): ?BaseTemplateElementDefinition
+    public function getDefinition(): ?BaseElementDefinition
     {
         if (!$this->isDefinitionContent()) {
             return null;
         }
 
-        if ($this->definitionInstance instanceof BaseTemplateElementDefinition) {
+        if ($this->definitionInstance instanceof BaseElementDefinition) {
             if ($this->definitionInstance->isNewRecord && $this->element_id !== null) {
                 // Refresh instance to the recently stored definition/element record
                 $dynAttributes = $this->definitionInstance->dyn_attributes;

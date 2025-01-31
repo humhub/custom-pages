@@ -19,7 +19,7 @@ use yii\db\IntegrityException;
  * Dynamic attributes:
  * @property string $guid
  */
-abstract class BaseContentContainerElement extends BaseTemplateElementContent
+abstract class BaseContentContainerElement extends BaseElementContent
 {
     public const CONTAINER_CLASS = null;
 

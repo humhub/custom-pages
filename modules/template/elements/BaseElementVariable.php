@@ -6,19 +6,17 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\custom_pages\modules\template\models;
+namespace humhub\modules\custom_pages\modules\template\elements;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
-use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
-use humhub\modules\custom_pages\modules\template\elements\UserElement;
 use humhub\modules\custom_pages\modules\template\interfaces\TemplateElementContentIterable;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use yii\base\Model;
 
-class ElementContentVariable extends Model
+class BaseElementVariable extends Model
 {
     public $options = [];
 
-    public ?BaseTemplateElementContent $elementContent = null;
+    public ?BaseElementContent $elementContent = null;
 
     public function getLabel()
     {

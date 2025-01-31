@@ -25,7 +25,7 @@ use yii\helpers\Html;
  * @property bool $showFileinfo
  * @property bool $showIcon
  */
-class FileDownloadElement extends BaseTemplateElementContent
+class FileDownloadElement extends BaseElementContent
 {
     /**
      * @inheritdoc

@@ -6,7 +6,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use yii\db\ActiveQuery;
 
@@ -63,7 +63,7 @@ class TemplateInstance extends ActiveRecord
      */
     public function beforeDelete()
     {
-        foreach (BaseTemplateElementContent::findAll(['template_instance_id' => $this->id]) as $content) {
+        foreach (BaseElementContent::findAll(['template_instance_id' => $this->id]) as $content) {
             $content->delete();
         }
 

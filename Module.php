@@ -15,7 +15,7 @@ use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\AssetVariable;
-use humhub\modules\custom_pages\modules\template\models\ElementContentVariable;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use humhub\modules\space\models\Space;
 use SimpleXMLElement;
 use Symfony\Component\String\UnicodeString;
@@ -45,7 +45,7 @@ class Module extends ContentContainerModule
         'allowedFilters' => ['capitalize', 'date', 'first', 'upper', 'escape', 'raw', 'nl2br', 'url_encode', 'round', 'u', 'striptags'],
         'allowedFunctions' => ['range', 'max', 'min', 'random'],
         'allowedMethods' => [
-            ElementContentVariable::class => [
+            BaseElementVariable::class => [
                 '__toString',
                 'items',
                 'profile',
@@ -62,7 +62,7 @@ class Module extends ContentContainerModule
             ],
         ],
         'allowedProperties' => [
-            ElementContentVariable::class => [
+            BaseElementVariable::class => [
                 'content',
                 'emptyContent',
                 'empty',

@@ -16,8 +16,6 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(['action' => $action, 'enableClientValidation' => false]); ?>
         <div class="modal-body media-body template-edit-multiple">
 
-            <?= $form->field($model, 'title')->textInput(['class' => 'form-control template-edit-multiple-title', 'placeholder' => Yii::t('CustomPagesModule.base', 'Item name'), 'autofocus' => ''])->label(false); ?>
-
             <?php $counter = 0 ?>
             <?php foreach ($model->contentMap as $key => $contentItem) : ?>
 

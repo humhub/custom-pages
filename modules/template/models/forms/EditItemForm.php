@@ -19,27 +19,18 @@ class EditItemForm extends EditMultipleElementsForm
 {
     public ?ContainerItem $item = null;
 
-    public $title;
     public $editDefault = false;
-
-    public function rules()
-    {
-        return [
-            ['title', 'string'],
-        ];
-    }
 
     public function scenarios()
     {
         return [
-            'edit' => ['title'],
+            'edit' => [],
         ];
     }
 
     public function setItem($itemId)
     {
         $this->item = ContainerItem::findOne(['id' => $itemId]);
-        $this->title = $this->item->title;
         $this->owner = $this->item->templateInstance;
         $this->setTemplate($this->owner->template_id);
     }
@@ -48,7 +39,6 @@ class EditItemForm extends EditMultipleElementsForm
     {
         if (parent::save()) {
             if ($this->item instanceof ContainerItem) {
-                $this->item->title = $this->title;
                 return $this->item->save();
             }
             return true;

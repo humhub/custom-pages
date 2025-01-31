@@ -274,7 +274,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
             ]);
         }
 
-        $content['assets'] = PHP_VERSION_ID >= 80000 ? new AssetVariable() : new AssetVariablePhp74();
+        $content['assets'] = new AssetVariable();
 
         $engine = TemplateEngineFactory::create($this->engine);
         $result = $engine->render($this->name, $content);

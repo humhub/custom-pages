@@ -41,7 +41,7 @@ class ElementContentController extends Controller
     }
 
     /**
-     * Edits the content of a specific Element Content for the given TemplateContentOwner.
+     * Edits the content of a specific Element Content for the given Template Instance.
      *
      * @return Response
      */

@@ -7,10 +7,10 @@ use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
+use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\types\LinkType;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
-use humhub\modules\custom_pages\modules\template\models\PagePermission;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\custom_pages\widgets\SnippetWidget;
 use humhub\modules\space\models\Space;
@@ -234,7 +234,7 @@ class Events
     {
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
-            $canEdit = PagePermission::canEdit();
+            $canEdit = PagePermissionHelper::canEdit();
             foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_DASHBOARD_SIDEBAR)->all() as $page) {
                 /* @var CustomPage $page */
                 if ($page->canView()) {
@@ -252,7 +252,7 @@ class Events
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
             $space = $event->sender->space;
-            $canEdit = PagePermission::canEdit();
+            $canEdit = PagePermissionHelper::canEdit();
             if ($space->moduleManager->isEnabled('custom_pages')) {
                 foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_SPACE_STREAM_SIDEBAR, $space)->all() as $page) {
                     /* @var CustomPage $page */

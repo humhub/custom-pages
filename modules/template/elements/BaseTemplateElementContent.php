@@ -12,7 +12,7 @@ use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\components\ActiveRecordDynamicAttributes;
-use humhub\modules\custom_pages\modules\template\models\PagePermission;
+use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateEditorElement;
@@ -407,7 +407,7 @@ abstract class BaseTemplateElementContent extends ActiveRecordDynamicAttributes 
      */
     public function canEdit($user = null): bool
     {
-        return PagePermission::canEdit();
+        return PagePermissionHelper::canEdit();
     }
 
     /**

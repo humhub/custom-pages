@@ -11,7 +11,6 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 use humhub\components\ActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\TemplateContentOwner;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use yii\db\ActiveQuery;
 use yii\helpers\Url;
@@ -29,7 +28,7 @@ use yii\helpers\Url;
  * @property-read Template $template
  * @property-read CustomPage $page
  */
-class ContainerItem extends ActiveRecord implements TemplateContentOwner
+class ContainerItem extends ActiveRecord
 {
     public ?int $pageId = null;
     public ?int $templateId = null;
@@ -157,10 +156,5 @@ class ContainerItem extends ActiveRecord implements TemplateContentOwner
                 'data-template-item-title' => $this->title,
             ],
         ]);
-    }
-
-    public function getTemplateId()
-    {
-        return $this->template->id;
     }
 }

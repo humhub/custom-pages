@@ -9,7 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\libs\Html;
-use humhub\modules\custom_pages\modules\template\models\TemplateContentIterable;
+use humhub\modules\custom_pages\modules\template\interfaces\TemplateElementContentIterable;
 use SimpleXMLElement;
 use Yii;
 
@@ -21,7 +21,7 @@ use Yii;
  * @property int $cache_time
  * @property int $limit
  */
-class RssElement extends BaseTemplateElementContent implements TemplateContentIterable
+class RssElement extends BaseTemplateElementContent implements TemplateElementContentIterable
 {
     /**
      * @inheritdoc

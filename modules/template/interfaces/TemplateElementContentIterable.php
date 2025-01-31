@@ -6,9 +6,9 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\custom_pages\modules\template\models;
+namespace humhub\modules\custom_pages\modules\template\interfaces;
 
-interface TemplateContentIterable
+interface TemplateElementContentIterable
 {
     /**
      * Get items of the iterable template content

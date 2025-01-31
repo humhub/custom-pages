@@ -10,7 +10,7 @@ namespace humhub\modules\custom_pages\modules\template\services;
 
 use humhub\modules\custom_pages\helpers\Html;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\modules\template\models\PagePermission;
+use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use Yii;
@@ -59,7 +59,7 @@ class TemplateInstanceRendererService
      */
     public function render($editMode = false): string
     {
-        $editMode = $editMode && PagePermission::canEdit();
+        $editMode = $editMode && PagePermissionHelper::canEdit();
 
         $cache = $this->isCacheable($editMode) ? Yii::$app->cache : new DummyCache();
 

@@ -10,7 +10,7 @@ namespace humhub\modules\custom_pages\modules\template\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
-use humhub\modules\custom_pages\modules\template\models\PagePermission;
+use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use yii\helpers\Url;
 
 class DeleteContentButton extends Widget
@@ -51,7 +51,7 @@ class DeleteContentButton extends Widget
             return false;
         }
 
-        return PagePermission::canEdit();
+        return PagePermissionHelper::canEdit();
     }
 
     private function getOptions(): array

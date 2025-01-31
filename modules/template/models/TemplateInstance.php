@@ -23,7 +23,7 @@ use yii\db\ActiveQuery;
  * @property-read CustomPage $page
  * @property-read ContainerItem|null $containerItem
  */
-class TemplateInstance extends ActiveRecord implements TemplateContentOwner
+class TemplateInstance extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -105,11 +105,6 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
     public function getContainerItem(): ActiveQuery
     {
         return $this->hasOne(ContainerItem::class, ['id' => 'container_item_id']);
-    }
-
-    public function getTemplateId()
-    {
-        return $this->template_id;
     }
 
     public static function findByOwner(ActiveRecord $owner): ?self

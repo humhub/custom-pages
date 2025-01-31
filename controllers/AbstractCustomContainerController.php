@@ -14,7 +14,7 @@ use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
-use humhub\modules\custom_pages\modules\template\models\PagePermission;
+use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\space\models\Space;
@@ -70,7 +70,7 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
      */
     public function viewTemplatePage(CustomPage $page, $view): string
     {
-        $canEdit = PagePermission::canEdit();
+        $canEdit = PagePermissionHelper::canEdit();
         if (!$canEdit && $page->admin_only) {
             throw new \yii\web\HttpException(403, 'Access denied!');
         }

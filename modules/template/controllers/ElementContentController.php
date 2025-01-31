@@ -67,7 +67,10 @@ class ElementContentController extends Controller
         return $this->asJson([
             'output' => $this->renderAjaxPartial(EditElementModal::widget([
                 'model' => $form,
-                'title' => Yii::t('CustomPagesModule.base', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()]),
+                'title' => Yii::t('CustomPagesModule.base', '<strong>Edit</strong> {type} element "{title}"', [
+                    'type' => $form->getLabel(),
+                    'title' => $form->element->title,
+                ]),
             ])),
         ]);
     }

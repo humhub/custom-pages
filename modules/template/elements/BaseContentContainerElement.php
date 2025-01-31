@@ -50,7 +50,13 @@ abstract class BaseContentContainerElement extends BaseTemplateElementContent
      */
     public function render($options = [])
     {
-        return Html::encode($this->getRecord()->getDisplayName());
+        $result = Html::encode($this->getRecord()->getDisplayName());
+
+        if ($this->isEditMode($options)) {
+            return $this->wrap('span', $result, $options);
+        }
+
+        return $result;
     }
 
     /**

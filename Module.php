@@ -49,6 +49,7 @@ class Module extends ContentContainerModule
                 '__toString',
                 'items',
                 'profile',
+                'getempty',
             ],
             UnicodeString::class => [
                 '__toString',

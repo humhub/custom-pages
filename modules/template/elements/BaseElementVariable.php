@@ -10,9 +10,8 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\custom_pages\modules\template\interfaces\TemplateElementContentIterable;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
-use yii\base\Component;
 
-class BaseElementVariable extends Component
+class BaseElementVariable
 {
     private $options = [];
 

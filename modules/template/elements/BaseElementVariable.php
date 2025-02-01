@@ -10,13 +10,20 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\custom_pages\modules\template\interfaces\TemplateElementContentIterable;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
-use yii\base\Model;
+use yii\base\Component;
 
-class BaseElementVariable extends Model
+class BaseElementVariable extends Component
 {
-    public $options = [];
+    private $options = [];
 
-    public ?BaseElementContent $elementContent = null;
+    private BaseElementContent $elementContent;
+
+    public function __construct(BaseElementContent $elementContent, bool $editMode = false)
+    {
+        $this->elementContent = $elementContent;
+        $this->options['editMode'] = $editMode;
+    }
+
 
     public function getLabel()
     {
@@ -56,6 +63,8 @@ class BaseElementVariable extends Model
                 'element_content_id' => $this->elementContent->id,
                 'template_instance_id' => $this->elementContent->template_instance_id,
                 'element_name' => $this->elementContent->element->name,
+                'element_title' => $this->elementContent->element->getTitle(),
+                'item' => $this->elementContent->templateInstance->containerItem ?? null,
                 'default' => $this->elementContent->isDefault(),
             ], $this->options);
 

@@ -194,7 +194,7 @@ class ContainerContentController extends Controller
 
         if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByElementContent($elementContent);
-            $variable = new BaseElementVariable(['elementContent' => $elementContent]);
+            $variable = new BaseElementVariable($elementContent);
             return $this->asJson([
                 'success' => true,
                 'id' => $elementContent->id,
@@ -254,7 +254,7 @@ class ContainerContentController extends Controller
 
         ContainerItem::findOne(['id' => $itemId])->delete();
         $elementContent = BaseElementContent::findOne(['id' => $elementContentId]);
-        $variable = new BaseElementVariable(['elementContent' => $elementContent]);
+        $variable = new BaseElementVariable($elementContent);
 
         TemplateCache::flushByElementContent($elementContent);
 
@@ -285,7 +285,7 @@ class ContainerContentController extends Controller
 
         TemplateCache::flushByElementContent($elementContent);
 
-        $variable = new BaseElementVariable(['elementContent' => $elementContent]);
+        $variable = new BaseElementVariable($elementContent);
 
         return $this->asJson([
             'success' => true,

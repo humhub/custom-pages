@@ -54,7 +54,7 @@ class ElementContentController extends Controller
         if ($form->load(Yii::$app->request->post())) {
             if ($form->save()) {
                 TemplateCache::flushByElementContent($form->content);
-                $wrapper = new BaseElementVariable(['elementContent' => $form->content]);
+                $wrapper = new BaseElementVariable($form->content);
                 return $this->getJsonEditElementResult(true, $wrapper->render(true));
             } else {
                 return $this->getJsonEditElementResult(false, $this->renderAjaxPartial(EditElementModal::widget([
@@ -99,13 +99,10 @@ class ElementContentController extends Controller
         $this->deleteElementContent($form->elementContent);
 
         // Set the default content for this element block
-        $variable = new BaseElementVariable([
-            'elementContent' => $form->element->getDefaultContent(true),
-            'options' => [
-                'template_instance_id' => $templateInstanceId,
-            ],
-        ]);
+        $elementContent = $form->element->getDefaultContent(true);
+        $elementContent->template_instance_id = $templateInstanceId;
 
+        $variable = new BaseElementVariable($elementContent);
         return $this->getJsonEditElementResult(true, $variable->render(true));
     }
 

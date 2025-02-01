@@ -47,4 +47,21 @@ class m250129_065352_content_definition extends Migration
 
         return false;
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function safeAddForeignKey(string $index, string $table, $columns, string $refTable, $refColumns, ?string $delete = null, ?string $update = null)
+    {
+        if (is_string($columns) && is_string($refColumns) && !str_contains($columns . $refColumns, ',')) {
+            // Delete wrong records if they haven't got a linked record in the ref table
+            $this->db
+                ->createCommand()
+                ->delete($table, $this->db->quoteColumnName($columns) . ' IS NOT NULL AND ' .
+                    $this->db->quoteColumnName($columns) . ' NOT IN (SELECT ' . $this->db->quoteColumnName($refColumns) . ' FROM ' . $this->db->quoteTableName($refTable) . ')')
+                ->execute();
+        }
+
+        return parent::safeAddForeignKey($index, $table, $columns, $refTable, $refColumns, $delete, $update);
+    }
 }

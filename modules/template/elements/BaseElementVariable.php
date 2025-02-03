@@ -13,16 +13,21 @@ use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 
 class BaseElementVariable
 {
-    private $options = [];
+    private array $options = [];
 
     private BaseElementContent $elementContent;
 
-    public function __construct(BaseElementContent $elementContent, bool $editMode = false)
+    /**
+     * @param BaseElementContent $elementContent
+     * @param int|null $templateInstanceId It is required only for new creating Element Content
+     * @param bool $editMode
+     */
+    public function __construct(BaseElementContent $elementContent, ?int $templateInstanceId = null, bool $editMode = false)
     {
         $this->elementContent = $elementContent;
+        $this->options['template_instance_id'] = $elementContent->template_instance_id ?? $templateInstanceId;
         $this->options['editMode'] = $editMode;
     }
-
 
     public function getLabel()
     {
@@ -71,7 +76,7 @@ class BaseElementVariable
 
             // We only need the template_id for container content elements
             if ($this->elementContent instanceof ContainerElement) {
-                $options['template_id'] = TemplateInstance::getTypeById($this->elementContent->templateInstance->id);
+                $options['template_id'] = $this->elementContent->templateInstance?->template_id;
             }
         } else {
             $options = $this->options;

@@ -85,9 +85,9 @@ class ElementContentController extends Controller
     {
         $this->forcePostRequest();
 
-        $elementId = Yii::$app->request->post('elementId');
-        $elementContentId = Yii::$app->request->post('elementContentId');
-        $templateInstanceId = Yii::$app->request->post('templateInstanceId');
+        $elementId = (int) Yii::$app->request->post('elementId');
+        $elementContentId = (int) Yii::$app->request->post('elementContentId');
+        $templateInstanceId = (int) Yii::$app->request->post('templateInstanceId');
 
         if (!$elementId || !$elementContentId || !$templateInstanceId) {
             throw new BadRequestHttpException('Invalid request data!');
@@ -100,9 +100,8 @@ class ElementContentController extends Controller
 
         // Set the default content for this element block
         $elementContent = $form->element->getDefaultContent(true);
-        $elementContent->template_instance_id = $templateInstanceId;
 
-        $variable = new BaseElementVariable($elementContent);
+        $variable = new BaseElementVariable($elementContent, $templateInstanceId);
         return $this->getJsonEditElementResult(true, $variable->render(true));
     }
 

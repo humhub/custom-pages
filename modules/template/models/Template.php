@@ -255,16 +255,17 @@ class Template extends ActiveRecord
      * This is done by merging all default ElementContent instances with the overwritten
      * ElementContent instances defined by the Template Instance.
      *
-     * @param ActiveRecord $owner
+     * @param TemplateInstance|null $templateInstance
+     * @param bool $editMode
      * @return string
      */
-    public function render(TemplateInstance $templateInstance = null, $editMode = false, $containerItem = null)
+    public function render(TemplateInstance $templateInstance = null, bool $editMode = false)
     {
         $elementContents = $this->getElementContents($templateInstance);
 
         $content = [];
         foreach ($elementContents as $elementContent) {
-            $content[$elementContent->element->name] = new BaseElementVariable($elementContent, $editMode);
+            $content[$elementContent->element->name] = new BaseElementVariable($elementContent, $templateInstance?->id, $editMode);
         }
 
         $content['assets'] = new AssetVariable();

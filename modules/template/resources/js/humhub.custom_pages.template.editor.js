@@ -172,12 +172,11 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             return false;
         }
 
-        var hasRootOwner = element.templateInstanceType === 'page';
-        var isActiveCotnainerItemContent = this.activeItem && this.activeItem.isParentOf(element);
+        var isActiveContainerItemContent = this.activeItem && this.activeItem.isParentOf(element);
         var isEmptyContainer = element.$.is('.emptyContainerBlock');
 
         // Only activate direct root elements or elements within the current activeItem or containerItems itself.
-        if (isEmptyContainer || hasRootOwner || element.isContainerItem || isActiveCotnainerItemContent) {
+        if (isEmptyContainer || element.isFromRoot() || element.isContainerItem || isActiveContainerItemContent) {
             this.setSelection(element);
             element.activate();
             this.activeElements.push(element);

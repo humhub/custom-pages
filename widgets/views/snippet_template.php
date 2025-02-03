@@ -14,6 +14,6 @@ $navigation = !$canEdit ? [] : [
 
 <?= SnippetContent::widget([
     'model' => $model,
-    'content' => TemplateInstanceRendererService::instance($model)->render(Yii::$app->request->get('editMode')),
+    'content' => TemplateInstanceRendererService::instance($model)->render((bool) Yii::$app->request->get('editMode')),
     'navigation' => $navigation,
 ]) ?>

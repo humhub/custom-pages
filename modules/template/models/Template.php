@@ -265,7 +265,7 @@ class Template extends ActiveRecord
 
         $content = [];
         foreach ($elementContents as $elementContent) {
-            $content[$elementContent->element->name] = new BaseElementVariable($elementContent, $templateInstance?->id, $editMode);
+            $content[$elementContent->element->name] = new BaseElementVariable($elementContent, $editMode);
         }
 
         $content['assets'] = new AssetVariable();

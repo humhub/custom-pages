@@ -20,7 +20,6 @@ humhub.module('custom_pages.template.TemplateContainer', function (module, requi
         this.super('init');
         this.isContainer = true;
         this.multiple = this.options.templateMultiple;
-        this.templateId = this.options.templateId;
         this.inline = this.$.hasClass('inline');
     };
 
@@ -49,7 +48,7 @@ humhub.module('custom_pages.template.TemplateContainer', function (module, requi
             url:  (this.default) ? this.editor.options.createContainerUrl : this.editor.options.itemAddUrl,
             dataType: 'json',
             data: {
-                templateInstanceId: this.templateInstanceId,
+                templateInstanceId: this.editor.options.templateInstanceId,
                 elementId: this.elementId,
                 elementContentId: this.elementContentId,
             }

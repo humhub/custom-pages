@@ -307,7 +307,7 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
 
         return TemplateEditorElement::widget([
             'container' => $type,
-            'templateContent' => $this,
+            'elementContent' => $this,
             'content' => $content,
             'renderOptions' => $options,
             'renderAttributes' => $attributes,

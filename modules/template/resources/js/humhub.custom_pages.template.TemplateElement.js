@@ -32,12 +32,8 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
         this.name = this.options.templateElement;
     
         this.title = this.options.templateElementTitle || this.name;
-        this.content = this.options.templateContent;
-        this.contentId = this.options.templateContentId;
         this.empty = this.options.templateEmpty;
         this.default = this.options.templateDefault;
-        this.templateInstanceId = this.options.templateInstanceId;
-        this.templateInstanceType = this.options.templateInstanceType;
         this.elementId = this.options.templateElementId;
         this.elementContentId = this.options.templateElementContentId;
         this.label = this.options.templateLabel;
@@ -50,6 +46,10 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
     TemplateElement.prototype.isActive = function () {
         return this.data('active') == true;
     };
+
+    TemplateElement.prototype.isFromRoot = function () {
+        return this.$.closest('[data-ui-widget="custom_pages.template.TemplateContainerItem"]').length === 0;
+    }
 
     TemplateElement.prototype.isParentOf = function (element) {
         var parent = element.getParent();
@@ -127,7 +127,7 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
 
     TemplateElement.prototype.getEditData = function () {
         return {
-            templateInstanceId: this.templateInstanceId,
+            templateInstanceId: this.editor.options.templateInstanceId,
             elementId: this.elementId,
             elementContentId: this.elementContentId,
         };

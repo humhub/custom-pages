@@ -101,7 +101,7 @@ class ElementContentController extends Controller
         // Set the default content for this element block
         $elementContent = $form->element->getDefaultContent(true);
 
-        $variable = new BaseElementVariable($elementContent, $templateInstanceId);
+        $variable = new BaseElementVariable($elementContent);
         return $this->getJsonEditElementResult(true, $variable->render(true));
     }
 

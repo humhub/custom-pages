@@ -9,7 +9,6 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\custom_pages\modules\template\interfaces\TemplateElementContentIterable;
-use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 
 class BaseElementVariable
 {
@@ -17,15 +16,9 @@ class BaseElementVariable
 
     private BaseElementContent $elementContent;
 
-    /**
-     * @param BaseElementContent $elementContent
-     * @param int|null $templateInstanceId It is required only for new creating Element Content
-     * @param bool $editMode
-     */
-    public function __construct(BaseElementContent $elementContent, ?int $templateInstanceId = null, bool $editMode = false)
+    public function __construct(BaseElementContent $elementContent, bool $editMode = false)
     {
         $this->elementContent = $elementContent;
-        $this->options['template_instance_id'] = $elementContent->template_instance_id ?? $templateInstanceId;
         $this->options['editMode'] = $editMode;
     }
 
@@ -56,30 +49,21 @@ class BaseElementVariable
 
     public function render(bool $editMode = false): string
     {
+        $options = $this->options;
+
         if ($editMode) {
-            $this->options['editMode'] = true;
+            $options['editMode'] = true;
         }
 
-        if (isset($this->options['editMode']) && $this->options['editMode']) {
+        if (!empty($options['editMode'])) {
             $options = array_merge([
                 'empty' => $this->elementContent->isEmpty(),
                 'element_id' => $this->elementContent->element_id,
                 'element_content_id' => $this->elementContent->id,
-                'template_instance_id' => $this->elementContent->template_instance_id,
                 'element_name' => $this->elementContent->element->name,
                 'element_title' => $this->elementContent->element->getTitle(),
-                'item' => $this->elementContent->templateInstance->containerItem ?? null,
                 'default' => $this->elementContent->isDefault(),
-            ], $this->options);
-
-            $options['template_instance_type'] = $this->elementContent->templateInstance?->getType() ?? TemplateInstance::TYPE_PAGE;
-
-            // We only need the template_id for container content elements
-            if ($this->elementContent instanceof ContainerElement) {
-                $options['template_id'] = $this->elementContent->templateInstance?->template_id;
-            }
-        } else {
-            $options = $this->options;
+            ], $options);
         }
 
         try {

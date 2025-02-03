@@ -25,6 +25,11 @@ use yii\db\ActiveQuery;
  */
 class TemplateInstance extends ActiveRecord
 {
+
+    const TYPE_PAGE = 'page';
+    const TYPE_CONTAINER = 'container';
+
+
     /**
      * @inheritdoc
      */
@@ -146,13 +151,8 @@ class TemplateInstance extends ActiveRecord
         return self::findOne(['page_id' => $this->page_id, 'container_item_id' => null]);
     }
 
-    public static function getTypeById($id): string
-    {
-        $instance = self::findOne($id);
-        if ($instance === null) {
-            return '';
-        }
-
-        return $instance->container_item_id === null ? 'page' : 'container';
+    public function getType() {
+        return $this->container_item_id === null ? self::TYPE_PAGE : self::TYPE_CONTAINER;
     }
+
 }

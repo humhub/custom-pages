@@ -71,7 +71,7 @@ class BaseElementVariable
 
             // We only need the template_id for container content elements
             if ($this->elementContent instanceof ContainerElement) {
-                $options['template_id'] = $this->elementContent->templateInstance?->template_id;
+                $options['template_id'] = TemplateInstance::getTypeById($this->elementContent->templateInstance->id);
             }
         } else {
             $options = $this->options;

@@ -67,7 +67,7 @@ class BaseElementVariable
                 'default' => $this->elementContent->isDefault(),
             ], $this->options);
 
-            $options['template_instance_type'] = $this->elementContent->templateInstance?->getType();
+            $options['template_instance_type'] = $this->elementContent->templateInstance?->getType() ?? TemplateInstance::TYPE_PAGE;
 
             // We only need the template_id for container content elements
             if ($this->elementContent instanceof ContainerElement) {

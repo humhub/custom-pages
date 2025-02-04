@@ -3,7 +3,7 @@
 namespace tests\codeception\unit\modules\custom_page\template;
 
 use Codeception\Specify;
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\Template;
@@ -129,7 +129,7 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $content2->content = '<p>Test</p>';
         $element2->saveInstance($templateInstance, $content2);
 
-        $contents = BaseTemplateElementContent::find()
+        $contents = BaseElementContent::find()
             ->where(['template_instance_id' => $templateInstance->id]);
 
         $this->assertEquals(2, $contents->count());

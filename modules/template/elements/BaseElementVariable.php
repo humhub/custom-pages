@@ -6,19 +6,21 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\custom_pages\modules\template\models;
+namespace humhub\modules\custom_pages\modules\template\elements;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
-use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
-use humhub\modules\custom_pages\modules\template\elements\UserElement;
 use humhub\modules\custom_pages\modules\template\interfaces\TemplateElementContentIterable;
-use yii\base\Model;
 
-class ElementContentVariable extends Model
+class BaseElementVariable
 {
-    public $options = [];
+    private array $options = [];
 
-    public ?BaseTemplateElementContent $elementContent = null;
+    private BaseElementContent $elementContent;
+
+    public function __construct(BaseElementContent $elementContent, bool $editMode = false)
+    {
+        $this->elementContent = $elementContent;
+        $this->options['editMode'] = $editMode;
+    }
 
     public function getLabel()
     {
@@ -47,28 +49,21 @@ class ElementContentVariable extends Model
 
     public function render(bool $editMode = false): string
     {
+        $options = $this->options;
+
         if ($editMode) {
-            $this->options['editMode'] = true;
+            $options['editMode'] = true;
         }
 
-        if (isset($this->options['editMode']) && $this->options['editMode']) {
+        if (!empty($options['editMode'])) {
             $options = array_merge([
                 'empty' => $this->elementContent->isEmpty(),
                 'element_id' => $this->elementContent->element_id,
                 'element_content_id' => $this->elementContent->id,
-                'template_instance_id' => $this->elementContent->template_instance_id,
                 'element_name' => $this->elementContent->element->name,
+                'element_title' => $this->elementContent->element->getTitle(),
                 'default' => $this->elementContent->isDefault(),
-            ], $this->options);
-
-            $options['template_instance_type'] = TemplateInstance::getTypeById($options['template_instance_id']);
-
-            // We only need the template_id for container content elements
-            if ($this->elementContent instanceof ContainerElement) {
-                $options['template_id'] = $this->elementContent->templateInstance?->template_id;
-            }
-        } else {
-            $options = $this->options;
+            ], $options);
         }
 
         try {

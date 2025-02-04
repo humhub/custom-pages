@@ -19,7 +19,7 @@ use yii\db\ActiveQuery;
  * @property-read Template[] $templates
  * @property-read Template[] $allowedTemplates
  */
-class ContainerElement extends BaseTemplateElementContent
+class ContainerElement extends BaseElementContent
 {
     /**
      * @inheritdoc

@@ -134,13 +134,13 @@ class ContainerItem extends ActiveRecord
         return $this->hasOne(ContainerElement::class, ['id' => 'element_content_id']);
     }
 
-    public function render($editMode, $inline = false)
+    public function render(bool $editMode, $inline = false)
     {
         if ($editMode) {
             return $this->wrap($this->template->render($this->templateInstance, $editMode), $inline);
         }
 
-        return $this->template->render($this->templateInstance, $editMode, $this);
+        return $this->template->render($this->templateInstance, $editMode);
     }
 
     public function wrap($content, $inline)

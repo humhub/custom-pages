@@ -6,7 +6,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use yii\db\ActiveQuery;
 
@@ -25,6 +25,9 @@ use yii\db\ActiveQuery;
  */
 class TemplateInstance extends ActiveRecord
 {
+    public const TYPE_PAGE = 'page';
+    public const TYPE_CONTAINER = 'container';
+
     /**
      * @inheritdoc
      */
@@ -63,7 +66,7 @@ class TemplateInstance extends ActiveRecord
      */
     public function beforeDelete()
     {
-        foreach (BaseTemplateElementContent::findAll(['template_instance_id' => $this->id]) as $content) {
+        foreach (BaseElementContent::findAll(['template_instance_id' => $this->id]) as $content) {
             $content->delete();
         }
 
@@ -87,7 +90,7 @@ class TemplateInstance extends ActiveRecord
         return $query;
     }
 
-    public function render($editMode = false)
+    public function render(bool $editMode = false)
     {
         return $this->template->render($this, $editMode);
     }
@@ -146,13 +149,8 @@ class TemplateInstance extends ActiveRecord
         return self::findOne(['page_id' => $this->page_id, 'container_item_id' => null]);
     }
 
-    public static function getTypeById($id): string
+    public function getType(): string
     {
-        $instance = self::findOne($id);
-        if ($instance === null) {
-            return '';
-        }
-
-        return $instance->container_item_id === null ? 'page' : 'container';
+        return $this->container_item_id === null ? self::TYPE_PAGE : self::TYPE_CONTAINER;
     }
 }

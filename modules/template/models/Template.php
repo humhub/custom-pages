@@ -12,9 +12,10 @@ use humhub\components\ActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\lib\templates\TemplateEngineFactory;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerDefinition;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
@@ -254,24 +255,17 @@ class Template extends ActiveRecord
      * This is done by merging all default ElementContent instances with the overwritten
      * ElementContent instances defined by the Template Instance.
      *
-     * @param ActiveRecord $owner
+     * @param TemplateInstance|null $templateInstance
+     * @param bool $editMode
      * @return string
      */
-    public function render(TemplateInstance $templateInstance = null, $editMode = false, $containerItem = null)
+    public function render(TemplateInstance $templateInstance = null, bool $editMode = false)
     {
         $elementContents = $this->getElementContents($templateInstance);
 
         $content = [];
         foreach ($elementContents as $elementContent) {
-            $content[$elementContent->element->name] = new ElementContentVariable([
-                'elementContent' => $elementContent,
-                'options' => [
-                    'editMode' => $editMode,
-                    'element_title' => $elementContent->element->getTitle(),
-                    'template_instance_id' => $templateInstance->id,
-                    'item' => $containerItem,
-                ],
-            ]);
+            $content[$elementContent->element->name] = new BaseElementVariable($elementContent, $editMode);
         }
 
         $content['assets'] = new AssetVariable();
@@ -283,7 +277,7 @@ class Template extends ActiveRecord
 
     /**
      * @param TemplateInstance|null $templateInstance
-     * @return BaseTemplateElementContent[]
+     * @return BaseElementContent[]
      */
     public function getElementContents(?TemplateInstance $templateInstance = null): array
     {
@@ -298,7 +292,7 @@ class Template extends ActiveRecord
 
         if ($templateInstance !== null) {
             // Non default content defined by owner
-            $elementContents = BaseTemplateElementContent::find()
+            $elementContents = BaseElementContent::find()
                 ->where(['template_instance_id' => $templateInstance->id])
                 ->all();
         }

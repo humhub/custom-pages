@@ -32,7 +32,7 @@ class TemplateType extends ContentType
     public function render(CustomPage $content, $options = []): string
     {
         return TemplateInstanceRendererService::instance($content)
-            ->render($options['editMode'] ?? Yii::$app->request->get('editMode'));
+            ->render(boolval($options['editMode'] ?? Yii::$app->request->get('editMode')));
     }
 
     public function getViewName(): string

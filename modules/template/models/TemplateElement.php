@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\models;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use Yii;
 use yii\db\ActiveQuery;
@@ -28,7 +28,7 @@ use yii\db\Expression;
  * @property string $title
  * @property string $dyn_attributes
  *
- * @property-read BaseTemplateElementContent[] $contents
+ * @property-read BaseElementContent[] $contents
  */
 class TemplateElement extends ActiveRecord
 {
@@ -113,10 +113,10 @@ class TemplateElement extends ActiveRecord
      * Note that all current ElementContent entries for this placeholder owned by $owner are delted.
      *
      * @param ActiveRecord $owner the owner
-     * @param BaseTemplateElementContent $content
-     * @return BaseTemplateElementContent|null the new created element content instance.
+     * @param BaseElementContent $content
+     * @return BaseElementContent|null the new created element content instance.
      */
-    public function saveInstance(ActiveRecord $owner, BaseTemplateElementContent $content): ?BaseTemplateElementContent
+    public function saveInstance(ActiveRecord $owner, BaseElementContent $content): ?BaseElementContent
     {
         if ($owner instanceof Template) {
             return $this->saveAsDefaultContent($content);
@@ -131,7 +131,7 @@ class TemplateElement extends ActiveRecord
 
         if ($content->element_id && $content->template_instance_id) {
             // Delete old content of the same element and template instance
-            $oldContent = BaseTemplateElementContent::findOne([
+            $oldContent = BaseElementContent::findOne([
                 'element_id' => $content->element_id,
                 'template_instance_id' => $content->template_instance_id,
             ]);
@@ -146,10 +146,10 @@ class TemplateElement extends ActiveRecord
      *
      * Note that the current default content of this placeholder will be delted.
      *
-     * @param BaseTemplateElementContent $content
-     * @return BaseTemplateElementContent|null
+     * @param BaseElementContent $content
+     * @return BaseElementContent|null
      */
-    public function saveAsDefaultContent($content): ?BaseTemplateElementContent
+    public function saveAsDefaultContent($content): ?BaseElementContent
     {
         if (get_class($content) != $this->content_type) {
             return null;
@@ -159,7 +159,7 @@ class TemplateElement extends ActiveRecord
 
         if ($content->element_id) {
             // Delete old default content of the element
-            $oldDefaultContent = BaseTemplateElementContent::findOne([
+            $oldDefaultContent = BaseElementContent::findOne([
                 'element_id' => $content->element_id,
                 'template_instance_id' => null,
             ]);
@@ -176,12 +176,12 @@ class TemplateElement extends ActiveRecord
      * function will return an empty dummy ElementContent instance.
      *
      * @param bool $createDummy
-     * @return BaseTemplateElementContent|null
+     * @return BaseElementContent|null
      */
-    public function getDefaultContent(bool $createDummy = false): ?BaseTemplateElementContent
+    public function getDefaultContent(bool $createDummy = false): ?BaseElementContent
     {
-        /* @var $content BaseTemplateElementContent */
-        $content = BaseTemplateElementContent::find()
+        /* @var $content BaseElementContent */
+        $content = BaseElementContent::find()
             ->where(['element_id' => $this->id])
             ->andWhere(['IS', 'template_instance_id', new Expression('NULL')])
             ->one();
@@ -201,7 +201,7 @@ class TemplateElement extends ActiveRecord
      */
     public function hasDefaultContent(): bool
     {
-        return BaseTemplateElementContent::find()
+        return BaseElementContent::find()
             ->where(['element_id' => $this->id])
             ->andWhere(['IS', 'template_instance_id', new Expression('NULL')])
             ->exists();
@@ -213,7 +213,7 @@ class TemplateElement extends ActiveRecord
      */
     public function getContents(): ActiveQuery
     {
-        return $this->hasMany(BaseTemplateElementContent::class, ['element_id' => 'id']);
+        return $this->hasMany(BaseElementContent::class, ['element_id' => 'id']);
     }
 
     /**
@@ -232,7 +232,7 @@ class TemplateElement extends ActiveRecord
         return true;
     }
 
-    public function getTemplateContent(): BaseTemplateElementContent
+    public function getTemplateContent(): BaseElementContent
     {
         return Yii::createObject($this->content_type);
     }

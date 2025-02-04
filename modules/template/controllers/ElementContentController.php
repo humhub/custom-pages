@@ -9,10 +9,10 @@
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
 use humhub\components\Controller;
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementContentForm;
 use humhub\modules\custom_pages\modules\template\widgets\EditElementModal;
-use humhub\modules\custom_pages\modules\template\models\ElementContentVariable;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElementsForm;
@@ -54,7 +54,7 @@ class ElementContentController extends Controller
         if ($form->load(Yii::$app->request->post())) {
             if ($form->save()) {
                 TemplateCache::flushByElementContent($form->content);
-                $wrapper = new ElementContentVariable(['elementContent' => $form->content]);
+                $wrapper = new BaseElementVariable($form->content);
                 return $this->getJsonEditElementResult(true, $wrapper->render(true));
             } else {
                 return $this->getJsonEditElementResult(false, $this->renderAjaxPartial(EditElementModal::widget([
@@ -85,9 +85,9 @@ class ElementContentController extends Controller
     {
         $this->forcePostRequest();
 
-        $elementId = Yii::$app->request->post('elementId');
-        $elementContentId = Yii::$app->request->post('elementContentId');
-        $templateInstanceId = Yii::$app->request->post('templateInstanceId');
+        $elementId = (int) Yii::$app->request->post('elementId');
+        $elementContentId = (int) Yii::$app->request->post('elementContentId');
+        $templateInstanceId = (int) Yii::$app->request->post('templateInstanceId');
 
         if (!$elementId || !$elementContentId || !$templateInstanceId) {
             throw new BadRequestHttpException('Invalid request data!');
@@ -99,13 +99,9 @@ class ElementContentController extends Controller
         $this->deleteElementContent($form->elementContent);
 
         // Set the default content for this element block
-        $variable = new ElementContentVariable([
-            'elementContent' => $form->element->getDefaultContent(true),
-            'options' => [
-                'template_instance_id' => $templateInstanceId,
-            ],
-        ]);
+        $elementContent = $form->element->getDefaultContent(true);
 
+        $variable = new BaseElementVariable($elementContent);
         return $this->getJsonEditElementResult(true, $variable->render(true));
     }
 
@@ -125,7 +121,7 @@ class ElementContentController extends Controller
             throw new BadRequestHttpException('Invalid request data!');
         }
 
-        $elementContent = BaseTemplateElementContent::findOne($elementContentId);
+        $elementContent = BaseElementContent::findOne($elementContentId);
 
         $this->deleteElementContent($elementContent);
 
@@ -134,7 +130,7 @@ class ElementContentController extends Controller
 
     private function deleteElementContent($elementContent)
     {
-        if (!$elementContent instanceof BaseTemplateElementContent) {
+        if (!$elementContent instanceof BaseElementContent) {
             throw new NotFoundHttpException();
         }
         // Do not allow the deletion of default content this is only allowed in admin controller.

@@ -13,7 +13,7 @@ use humhub\modules\custom_pages\modules\template\components\ActiveRecordDynamicA
 /**
  * Class for template element definition
  */
-abstract class BaseTemplateElementDefinition extends ActiveRecordDynamicAttributes
+abstract class BaseElementDefinition extends ActiveRecordDynamicAttributes
 {
     private $formName;
 

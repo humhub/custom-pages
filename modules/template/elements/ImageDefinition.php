@@ -18,7 +18,7 @@ use Yii;
  * @property string $width
  * @property string $height
  */
-class ImageDefinition extends BaseTemplateElementDefinition
+class ImageDefinition extends BaseElementDefinition
 {
     /**
      * @inheritdoc

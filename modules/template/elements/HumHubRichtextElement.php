@@ -17,7 +17,7 @@ use Yii;
  * Dynamic attributes:
  * @property string $content
  */
-class HumHubRichtextElement extends BaseTemplateElementContent
+class HumHubRichtextElement extends BaseElementContent
 {
     /**
      * @inheritdoc

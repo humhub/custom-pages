@@ -21,7 +21,7 @@ use Yii;
  *
  * @property-read Template[] $allowedTemplates
  */
-class ContainerDefinition extends BaseTemplateElementDefinition
+class ContainerDefinition extends BaseElementDefinition
 {
     /**
      * @var Template[] Cached templates selected as allowed for this definition

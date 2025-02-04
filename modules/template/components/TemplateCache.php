@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\components;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use Yii;
 
@@ -32,10 +32,10 @@ class TemplateCache
     /**
      * Flushes all cache entries related to a given $elementContent instance.
      *
-     * @param BaseTemplateElementContent $elementContent
+     * @param BaseElementContent $elementContent
      * @return void
      */
-    public static function flushByElementContent(BaseTemplateElementContent $elementContent): void
+    public static function flushByElementContent(BaseElementContent $elementContent): void
     {
         $templateInstance = $elementContent->templateInstance;
         $templateInstance && self::flushByTemplateInstance($templateInstance);

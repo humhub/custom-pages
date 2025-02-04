@@ -57,7 +57,7 @@ class TemplateInstanceRendererService
      * @param bool $editMode
      * @return string
      */
-    public function render($editMode = false): string
+    public function render(bool $editMode = false): string
     {
         $editMode = $editMode && PagePermissionHelper::canEdit();
 

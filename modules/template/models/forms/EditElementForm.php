@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 
 /**
@@ -32,7 +32,7 @@ class EditElementForm extends TemplateElementForm
     public function save()
     {
         if ($this->validate() && $this->element->save()) {
-            if ($this->content instanceof BaseTemplateElementContent) {
+            if ($this->content instanceof BaseElementContent) {
                 $this->content->element_id = $this->element->id;
             }
             return $this->content->save();

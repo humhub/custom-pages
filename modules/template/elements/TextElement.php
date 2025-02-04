@@ -18,7 +18,7 @@ use Yii;
  * @property bool $inline_text
  * @property string $content
  */
-class TextElement extends BaseTemplateElementContent
+class TextElement extends BaseElementContent
 {
     /**
      * @inheritdoc

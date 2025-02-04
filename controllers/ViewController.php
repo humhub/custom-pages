@@ -137,7 +137,7 @@ class ViewController extends AbstractCustomContainerController
      */
     public function viewTemplatePage(CustomPage $page, $view): string
     {
-        $editMode = Yii::$app->request->get('editMode');
+        $editMode = (bool) Yii::$app->request->get('editMode');
         $canEdit = $page->content->canEdit();
 
         if ($editMode && !$canEdit) {

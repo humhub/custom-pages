@@ -9,13 +9,13 @@
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
 use humhub\components\Widget;
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use yii\helpers\Url;
 
 class DeleteContentButton extends Widget
 {
-    public ?BaseTemplateElementContent $model = null;
+    public ?BaseElementContent $model = null;
     public string $previewId = '';
 
     /**
@@ -39,7 +39,7 @@ class DeleteContentButton extends Widget
 
     private function canDelete(): bool
     {
-        if (!$this->model instanceof BaseTemplateElementContent) {
+        if (!$this->model instanceof BaseElementContent) {
             return false;
         }
 

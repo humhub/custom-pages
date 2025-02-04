@@ -4,6 +4,7 @@ namespace humhub\modules\custom_pages\modules\template\widgets;
 
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\widgets\JsWidget;
 use Yii;
 
@@ -120,6 +121,7 @@ class TemplatePage extends JsWidget
     {
         if ($this->canEdit && $this->editMode) {
             return [
+                'template-instance-id' => TemplateInstance::findByOwner($this->page)?->id,
                 'element-edit-url' => $this->createUrl('/custom_pages/template/element-content/edit'),
                 'element-delete-url' => $this->createUrl('/custom_pages/template/element-content/delete'),
                 'create-container-url' => $this->createUrl('/custom_pages/template/container-content/create-container'),

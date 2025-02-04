@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseTemplateElementContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
@@ -21,9 +21,9 @@ use yii\base\Model;
  */
 class ContentFormItem extends Model
 {
-    public ?BaseTemplateElementContent $elementContent = null;
+    public ?BaseElementContent $elementContent = null;
     public bool $editDefault = true;
-    public ?BaseTemplateElementContent $content = null;
+    public ?BaseElementContent $content = null;
     public ?TemplateElement $element = null;
     public bool $isLoaded = false;
     public $key;

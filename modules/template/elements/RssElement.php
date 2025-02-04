@@ -21,7 +21,7 @@ use Yii;
  * @property int $cache_time
  * @property int $limit
  */
-class RssElement extends BaseTemplateElementContent implements TemplateElementContentIterable
+class RssElement extends BaseElementContent implements TemplateElementContentIterable
 {
     /**
      * @inheritdoc

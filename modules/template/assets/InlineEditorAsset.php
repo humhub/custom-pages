@@ -20,6 +20,5 @@ class InlineEditorAsset extends AssetBundle
     ];
     public $depends = [
         'humhub\modules\custom_pages\modules\template\assets\TemplateCoreAsset',
-        'humhub\modules\custom_pages\modules\template\assets\SwitchAssetBundle',
     ];
 }

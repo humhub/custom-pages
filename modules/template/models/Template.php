@@ -46,7 +46,6 @@ use yii\helpers\ArrayHelper;
  * @property $description string
  * @property $type string
  * @property $allow_for_spaces boolean
- * @property $allow_inline_activation boolean
  *
  * @property-read TemplateElement[] $elements
  */
@@ -89,7 +88,6 @@ class Template extends ActiveRecord
             'name' => Yii::t('CustomPagesModule.template', 'Name'),
             'source' => Yii::t('CustomPagesModule.template', 'Source'),
             'allow_for_spaces' => Yii::t('CustomPagesModule.template', 'Allow this layout in spaces'),
-            'allow_inline_activation' => Yii::t('CustomPagesModule.template', 'Allow inline edit activation in inline editor'),
             'description' => Yii::t('CustomPagesModule.template', 'Description'),
         ];
     }
@@ -102,7 +100,7 @@ class Template extends ActiveRecord
         return [
             [['name', 'type'], 'required', 'on' => ['edit']],
             ['description', 'safe'],
-            [['allow_for_spaces', 'allow_inline_activation'], 'integer'],
+            [['allow_for_spaces'], 'boolean'],
             [['name'], 'unique'],
             [['name', 'type'], 'string', 'max' => 100],
             [['type'], 'validType'],
@@ -116,7 +114,7 @@ class Template extends ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['edit'] = ['name', 'description', 'allow_for_spaces', 'allow_inline_activation'];
+        $scenarios['edit'] = ['name', 'description', 'allow_for_spaces'];
         $scenarios['source'] = ['source'];
         return $scenarios;
     }

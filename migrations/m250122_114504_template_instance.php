@@ -18,13 +18,14 @@ class m250122_114504_template_instance extends Migration
             FROM custom_pages_template_element_container_item AS item
             LEFT JOIN custom_pages_template_owner_content AS owner
                    ON item.element_content_id = owner.content_id
-                  AND owner.content_type = :containerElementClass
+                  AND (owner.content_type = :containerElementClass OR owner.content_type = :oldContainerElementClass)
                   AND owner.owner_model = :templateInstanceClass
             LEFT JOIN custom_pages_template_instance AS instance
                    ON owner.owner_id = instance.id
             ORDER BY item.id ASC',
             [
                 'containerElementClass' => 'humhub\\modules\\custom_pages\\modules\\template\\elements\\ContainerElement',
+                'oldContainerElementClass' => 'humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent',
                 'templateInstanceClass' => 'humhub\\modules\\custom_pages\\modules\\template\\models\\TemplateInstance',
             ],
         )->execute();

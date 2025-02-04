@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\Url;
 
@@ -136,11 +137,14 @@ class ContainerItem extends ActiveRecord
 
     public function render(bool $editMode, $inline = false)
     {
-        if ($editMode) {
-            return $this->wrap($this->template->render($this->templateInstance, $editMode), $inline);
+        try {
+            $result = $this->template->render($this->templateInstance, $editMode);
+            return $editMode ? $this->wrap($result, $inline) : $result;
+        } catch (\Throwable $ex) {
+            Yii::error('Broken Container Item #' . $this->id . ' has lost Template Instance. ' .
+                'Error: ' . $ex->getMessage() . ' ' . $ex->getFile() . '(' . $ex->getLine() . ') ' . $ex->getTraceAsString(), 'custom-pages');
+            return 'Broken Container Item #' . $this->id . ', please delete and create it again.';
         }
-
-        return $this->template->render($this->templateInstance, $editMode);
     }
 
     public function wrap($content, $inline)

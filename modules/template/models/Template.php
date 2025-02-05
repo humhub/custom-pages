@@ -269,8 +269,8 @@ class Template extends ActiveRecord
         $content['assets'] = new AssetVariable();
 
         $engine = TemplateEngineFactory::create($this->engine);
-        $result = $engine->render($this->name, $content);
-        return $result;
+
+        return $engine->render($this->name, $content);
     }
 
     /**

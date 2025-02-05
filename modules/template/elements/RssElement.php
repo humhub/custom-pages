@@ -86,7 +86,13 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
      */
     public function render($options = [])
     {
-        return Html::encode($this->getRssData()->channel->title ?: $this->url);
+        $result = Html::encode($this->getRssData()->channel->title ?: $this->url);
+
+        if ($this->isEditMode($options)) {
+            return $this->wrap('span', $result, $options);
+        }
+
+        return $result;
     }
 
     /**

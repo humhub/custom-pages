@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
+use humhub\libs\Html;
 use Yii;
 
 /**
@@ -81,8 +82,10 @@ class ImageElement extends FileElement
             $options['htmlOptions']['width'] = $this->purify($this->definition->width);
             $options['htmlOptions']['style'] = $this->purify($this->definition->style);
 
-            return $this->wrap('img', '', $options);
-        } elseif (isset($options['editMode']) && $options['editMode']) {
+            return $this->isEditMode($options)
+                ? $this->wrap('img', '', $options)
+                : Html::tag('img', '', $options['htmlOptions']);
+        } elseif ($this->isEditMode($options)) {
             $options['empty'] = true;
             return $this->renderEmpty($options);
         }

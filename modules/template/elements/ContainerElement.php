@@ -76,24 +76,23 @@ class ContainerElement extends BaseElementContent
     {
         $items = $this->items;
 
-        $result = '';
-
-        $editMode = isset($options['editMode']) ? $options['editMode'] : false;
+        $editMode = $this->isEditMode($options);
 
         if (empty($items) && $editMode) {
             return $this->renderEmpty($options);
         }
 
+        $result = '';
         foreach ($this->items as $containerItem) {
             $result .= $containerItem->render($editMode, $this->definition->is_inline);
         }
 
-        if ($this->isEditMode($options)) {
+        if ($editMode) {
             $options['jsWidget'] = 'custom_pages.template.TemplateContainer';
             return $this->wrap('div', $result, $options, ['data-template-multiple' => $this->definition->allow_multiple]);
-        } else {
-            return $result;
         }
+
+        return $result;
     }
 
     /**

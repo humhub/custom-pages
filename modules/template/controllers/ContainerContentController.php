@@ -197,7 +197,7 @@ class ContainerContentController extends Controller
             return $this->asJson([
                 'success' => true,
                 'id' => $elementContent->id,
-                'output' => (new BaseElementVariable($elementContent, true))->render(),
+                'output' => (new BaseElementVariable($elementContent))->render(),
             ]);
         }
 

@@ -125,6 +125,7 @@ class ImportService
         $element->name = $data['name'] ?? '';
         $element->content_type = $data['content_type'] ?? '';
         $element->title = $data['title'] ?? '';
+        $element->dyn_attributes = $data['dyn_attributes'] ?? '';
 
         if (!$this->saveRecord($element)) {
             return null;

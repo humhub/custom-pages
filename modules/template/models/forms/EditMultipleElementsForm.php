@@ -8,7 +8,6 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 
@@ -81,7 +80,7 @@ class EditMultipleElementsForm extends \yii\base\Model
 
     public function load($data, $formName = null)
     {
-        // This prevents items without elements from beeing rejected
+        // This prevents items without elements from being rejected
         if (parent::load($data) && empty($this->contentMap)) {
             return true;
         }
@@ -90,7 +89,6 @@ class EditMultipleElementsForm extends \yii\base\Model
 
         // If one of the content was loaded we expect a successful form submit
         foreach ($this->contentMap as $contentItem) {
-            /* @var $contentItem ContentFormItem */
             if ($contentItem->load($data)) {
                 $result = true;
             }
@@ -110,7 +108,6 @@ class EditMultipleElementsForm extends \yii\base\Model
 
         // If one of the content is not valid we cannot submit a form completely
         foreach ($this->contentMap as $contentItem) {
-            /* @var $contentItem ContentFormItem */
             if (!$contentItem->validate($attributeNames, $clearErrors)) {
                 $result = false;
             }
@@ -129,7 +126,6 @@ class EditMultipleElementsForm extends \yii\base\Model
 
         try {
             foreach ($this->contentMap as $contentItem) {
-                /* @var $contentItem ContentFormItem */
                 $contentItem->save($this->owner);
             }
             $transaction->commit();

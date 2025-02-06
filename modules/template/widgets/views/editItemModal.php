@@ -9,11 +9,11 @@ use yii\widgets\ActiveForm;
 /* @var $model EditItemForm */
 /* @var $action string */
 /* @var $title string */
-
 ?>
 
 <?php humhub\widgets\ModalDialog::begin(['header' => $title, 'size' => 'large']) ?>
     <?php $form = ActiveForm::begin(['action' => $action, 'enableClientValidation' => false]); ?>
+        <?= $form->field($model, 'submitFlag')->hiddenInput()->label(false) ?>
         <div class="modal-body media-body template-edit-multiple">
 
             <?php $counter = 0 ?>

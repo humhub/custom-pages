@@ -21,10 +21,16 @@ class EditItemForm extends EditMultipleElementsForm
 
     public $editDefault = false;
 
+    /**
+     * @var bool This flag is mandatory to know this form was submitted for case when Container has no Elements,
+     *           in order to parent::load($data) returns true on real submitting.
+     */
+    public bool $submitFlag = false;
+
     public function scenarios()
     {
         return [
-            'edit' => [],
+            'edit' => ['submitFlag'],
         ];
     }
 

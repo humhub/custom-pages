@@ -432,7 +432,7 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
      */
     public function getFormView(): string
     {
-        return lcfirst(substr(strrchr(static::class, '\\'), 1, -7));
+        return 'elements/' . lcfirst(substr(strrchr(static::class, '\\'), 1, -7));
     }
 
     public function isDefault(): bool

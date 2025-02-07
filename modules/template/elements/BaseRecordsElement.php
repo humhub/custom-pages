@@ -101,7 +101,7 @@ abstract class BaseRecordsElement extends BaseElementContent implements Template
      */
     public function getFormView(): string
     {
-        return 'records';
+        return 'elements/records';
     }
 
     /**

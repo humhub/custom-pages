@@ -8,9 +8,23 @@
 
 namespace humhub\modules\custom_pages\modules\template\models;
 
+use humhub\libs\ParameterEvent;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
+use humhub\modules\custom_pages\modules\template\elements\FileDownloadElement;
+use humhub\modules\custom_pages\modules\template\elements\FileElement;
+use humhub\modules\custom_pages\modules\template\elements\HumHubRichtextElement;
+use humhub\modules\custom_pages\modules\template\elements\ImageElement;
+use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
+use humhub\modules\custom_pages\modules\template\elements\RssElement;
+use humhub\modules\custom_pages\modules\template\elements\SpaceElement;
+use humhub\modules\custom_pages\modules\template\elements\SpacesElement;
+use humhub\modules\custom_pages\modules\template\elements\TextElement;
+use humhub\modules\custom_pages\modules\template\elements\UserElement;
+use humhub\modules\custom_pages\modules\template\elements\UsersElement;
 use Yii;
+use yii\base\Event;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
@@ -32,6 +46,8 @@ use yii\db\Expression;
  */
 class TemplateElement extends ActiveRecord
 {
+    public const EVENT_AVAILABLE_TYPES = 'availableTypes';
+
     public const SCENARIO_CREATE = 'create';
     public const SCENARIO_EDIT = 'edit';
     public const SCENARIO_EDIT_ADMIN = 'edit-admin';
@@ -244,5 +260,27 @@ class TemplateElement extends ActiveRecord
     public function getLabel()
     {
         return $this->getTemplateContent()->getLabel();
+    }
+
+    public static function getAvailableTypes(): array
+    {
+        $event = new ParameterEvent(['types' => [
+            TextElement::class,
+            RichtextElement::class,
+            HumHubRichtextElement::class,
+            ImageElement::class,
+            FileElement::class,
+            FileDownloadElement::class,
+            ContainerElement::class,
+            RssElement::class,
+            UserElement::class,
+            SpaceElement::class,
+            UsersElement::class,
+            SpacesElement::class,
+        ]]);
+
+        Event::trigger(static::class, self::EVENT_AVAILABLE_TYPES, $event);
+
+        return $event->parameters['types'];
     }
 }

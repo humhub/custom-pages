@@ -8,18 +8,6 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
-use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
-use humhub\modules\custom_pages\modules\template\elements\FileDownloadElement;
-use humhub\modules\custom_pages\modules\template\elements\FileElement;
-use humhub\modules\custom_pages\modules\template\elements\HumHubRichtextElement;
-use humhub\modules\custom_pages\modules\template\elements\ImageElement;
-use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
-use humhub\modules\custom_pages\modules\template\elements\RssElement;
-use humhub\modules\custom_pages\modules\template\elements\SpaceElement;
-use humhub\modules\custom_pages\modules\template\elements\SpacesElement;
-use humhub\modules\custom_pages\modules\template\elements\TextElement;
-use humhub\modules\custom_pages\modules\template\elements\UserElement;
-use humhub\modules\custom_pages\modules\template\elements\UsersElement;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\ImportForm;
@@ -129,7 +117,6 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         return $this->render('@custom_pages/modules/template/views/admin/editSource', [
             'model' => $model,
-            'contentTypes' => $this->getContentTypes(),
         ]);
     }
 
@@ -155,28 +142,6 @@ class AdminController extends \humhub\modules\admin\components\Controller
             'model' => $model,
             'dataProvider' => $dataProvider,
         ]);
-    }
-
-    /**
-     * Returns a selection of all available template content types.
-     * @return array
-     */
-    private function getContentTypes(): array
-    {
-        return [
-            TextElement::class,
-            RichtextElement::class,
-            HumHubRichtextElement::class,
-            ImageElement::class,
-            FileElement::class,
-            FileDownloadElement::class,
-            ContainerElement::class,
-            RssElement::class,
-            UserElement::class,
-            SpaceElement::class,
-            UsersElement::class,
-            SpacesElement::class,
-        ];
     }
 
     /**

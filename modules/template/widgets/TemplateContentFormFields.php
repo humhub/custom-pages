@@ -24,7 +24,7 @@ class TemplateContentFormFields extends Widget
 
     public function run()
     {
-        return $this->render('elements/' . $this->model->getFormView(), [
+        return $this->render($this->model->getFormView(), [
             'form' => $this->form,
             'model' => $this->model,
             'isAdminEdit' =>  $this->model->scenario === 'edit-admin' || $this->model->scenario === 'create',

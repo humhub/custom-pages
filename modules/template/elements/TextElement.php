@@ -54,6 +54,23 @@ class TextElement extends BaseElementContent
     /**
      * @inheritdoc
      */
+    public function __get($name)
+    {
+        $value = parent::__get($name);
+
+        if ($name === 'inline_text' && !$this->isDefault()) {
+            // Always get this dynamic attribute from default content
+            // TODO: for normal work we should move the option to definition,
+            //       because it is editable only from back-office
+            $value = $this->element?->getDefaultContent(true)?->inline_text;
+        }
+
+        return $value;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
@@ -86,6 +103,9 @@ class TextElement extends BaseElementContent
         $result = $this->inline_text ? $this->purify($this->content) : Html::encode($this->content);
 
         if ($this->isEditMode($options) && $this->inline_text) {
+            if (empty($result)) {
+                $result = $this->renderEmpty($options);
+            }
             return $this->wrap('span', $result, $options);
         }
 

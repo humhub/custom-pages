@@ -301,6 +301,13 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
 
     protected function wrap($type, $content, $options = [], $attributes = [])
     {
+        if ($this->templateInstance?->getType() === TemplateInstance::TYPE_CONTAINER &&
+            !$this instanceof ContainerElement) {
+            // Apply the wrap for editing inside Container Item only for Container Element,
+            // other elements like Text, Image are not editable inside Container Item.
+            return $content;
+        }
+
         if ($this->getPrimaryKey() != null) {
             $options['element_content_id'] = $this->getPrimaryKey();
         }
@@ -314,9 +321,9 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
         ]);
     }
 
-    public function isEditMode($options = [])
+    public function isEditMode(array $options = []): bool
     {
-        return isset($options['editMode']) && $options['editMode'];
+        return $options['editMode'] ?? false;
     }
 
     public function purify($content)

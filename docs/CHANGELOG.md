@@ -14,6 +14,7 @@ Changelog
 - Fix #376: Use template name for allowed templates in the container element dynamic attributes
 - Fix #377: Rename "snipped" to "snippet"
 - Enh #378: Refactor template instance and owner content
+- Enh #387: Remove inline editing of container item elements
 
 1.10.11 (Unreleased)
 --------------------------

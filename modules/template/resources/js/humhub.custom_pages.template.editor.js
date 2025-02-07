@@ -30,19 +30,6 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             evt.stopPropagation();
         });
 
-        this.$.on('custom_pages.afterActivateContainer', function (event, item) {
-            that.activeItem = item;
-            that.setActivateElement(item.$);
-            that.clearExcept(item);
-        });
-
-        this.$.on('custom_pages.afterDeactivateContainer', function (event, item) {
-            that.activeItem = undefined;
-            if (item.getParent()) {
-                that.setActivateElement(item.getParent().$);
-            }
-        });
-
         // Set the currentElement when menu buttons are used.
         $(document).off('click.custom_pages').on('click.custom_pages', '.template-menu-button', function () {
             var $this = $(this);
@@ -135,28 +122,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     };
 
     TemplateInlineEditor.prototype.replaceElement = function (element, content) {
-        var $content = $(content);
-        element.$.replaceWith($content);
-        var newElement = this.getElement($content);
-
-        if (this.isActiveItem(element)) {
-            this.activeItem = undefined;
-            this.clearExcept();
-            newElement.data('isActiveItem', true);
-            this.setActivateElement($content);
-            newElement.startInlineEdit(true);
-        }
-
-    };
-
-    TemplateInlineEditor.prototype.clearExcept = function (element) {
-        $.each(this.activeElements, function (index, active) {
-            if (!element || !active.isEqual(element)) {
-                active.deactivate();
-            }
-        });
-
-        this.activeEllements = [element];
+        element.$.replaceWith($(content));
     };
 
     TemplateInlineEditor.prototype.setActivateElement = function ($element) {
@@ -167,16 +133,8 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             return true;
         }
 
-        // Only activate elements within the current activeItem if there is an activeItem
-        if (this.activeItem && !this.activeItem.isParentOf(element) && (!element.itemId || !this.activeItem.$.find(element.$).length)) {
-            return false;
-        }
-
-        var isActiveContainerItemContent = this.activeItem && this.activeItem.isParentOf(element);
-        var isEmptyContainer = element.$.is('.emptyContainerBlock');
-
-        // Only activate direct root elements or elements within the current activeItem or containerItems itself.
-        if (isEmptyContainer || element.isFromRoot() || element.isContainerItem || isActiveContainerItemContent) {
+        // Only activate root element or Container Item or empty Container Element.
+        if (element.isContainerItem || element.$.is('.emptyContainerBlock') || element.isFromRoot()) {
             this.setSelection(element);
             element.activate();
             this.activeElements.push(element);
@@ -199,16 +157,12 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
         var oldActiveElements = this.activeElements;
         this.activeElements = [];
         $.each(oldActiveElements, function (index, active) {
-            if (active.isParentOf(element) || element.isEqual(active) || that.isActiveItem(active)) {
+            if (active.isParentOf(element) || element.isEqual(active)) {
                 that.activeElements.push(active);
             } else {
                 active.deactivate();
             }
         });
-    };
-
-    TemplateInlineEditor.prototype.isActiveItem = function (element) {
-        return this.activeItem && this.activeItem.isEqual(element);
     };
 
     TemplateInlineEditor.prototype.getElement = function ($elem) {

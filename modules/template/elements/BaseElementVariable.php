@@ -16,7 +16,7 @@ class BaseElementVariable
 
     private BaseElementContent $elementContent;
 
-    public function __construct(BaseElementContent $elementContent, bool $editMode = false)
+    public function __construct(BaseElementContent $elementContent, bool $editMode = true)
     {
         $this->elementContent = $elementContent;
         $this->options['editMode'] = $editMode;
@@ -47,21 +47,17 @@ class BaseElementVariable
         return $this->elementContent;
     }
 
-    public function render(bool $editMode = false): string
+    public function render(): string
     {
         $options = $this->options;
 
-        if ($editMode) {
-            $options['editMode'] = true;
-        }
-
-        if (!empty($options['editMode'])) {
+        if ($this->isEditMode()) {
             $options = array_merge([
-                'empty' => $this->elementContent->isEmpty(),
                 'element_id' => $this->elementContent->element_id,
                 'element_content_id' => $this->elementContent->id,
                 'element_name' => $this->elementContent->element->name,
                 'element_title' => $this->elementContent->element->getTitle(),
+                'empty' => $this->elementContent->isEmpty(),
                 'default' => $this->elementContent->isDefault(),
             ], $options);
         }

@@ -110,7 +110,6 @@ class ImportService
         $template->description = $data['description'] ?? '';
         $template->source = $data['source'] ?? '';
         $template->allow_for_spaces = $data['allow_for_spaces'] ?? false;
-        $template->allow_inline_activation = $data['allow_inline_activation'] ?? false;
 
         $this->template = $this->saveRecord($template);
 

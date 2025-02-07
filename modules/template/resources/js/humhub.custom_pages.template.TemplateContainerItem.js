@@ -21,7 +21,6 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
             this.name = this.title = this.getParent().name + ':' + this.$.index();
         }
 
-        this.editTemplateUrl = this.data('template-edit-url');
         this.editUrl = this.editor.options.itemEditUrl;
         this.deleteUrl = this.editor.options.itemDeleteUrl;
         this.isContainerItem = true;
@@ -53,10 +52,6 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
 
         var that = this;
         var items = [];
-        
-        if(this.options.allowInlineActivation) {
-            items.push(this.createContainerToggle());
-        }
 
         if (!this.isFirst()) {
             items.push(this.createMoveButton(-1));
@@ -75,16 +70,6 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
             position: 'lt',
             outside: true,
             leftAlign: -13,
-
-            'afterInsert': function () {
-                var $containerEditToggle = that.$menu.find('#containerEditToggle');
-                $containerEditToggle.bootstrapSwitch({
-                    'size': 'mini',
-                    'state': that.data('isActiveItem'),
-                    'onText': customPage.text('toggleOnText'),
-                    'offText': customPage.text('toggleOffText')
-                });
-            },
             beforeShow: function () {
                 that.$menu.css('left', '+=13px');
             }
@@ -142,42 +127,11 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
     };
     
     TemplateContainerItem.prototype.getEditData = function () {
-        var that = this;
         return {
-            itemId: that.itemId,
-            elementId: that.getParentElement().elementId,
-            elementContentId: that.getParentElement().elementContentId
+            itemId: this.itemId,
+            elementId: this.getParentElement().elementId,
+            elementContentId: this.getParentElement().elementContentId
         };
-    };
-
-    TemplateContainerItem.prototype.startInlineEdit = function () {
-        if ($('#overlay').length) {
-            $('#overlay').remove();
-        }
-
-        $('.editMenu').css('z-index', '1028');
-        this.$.css('background-color', '#fff');
-        this.$.css('z-index', '1027');
-        $('<div id="overlay" style="display:none;"></div>').insertBefore(this.$).fadeIn('fast');
-
-        this.data('isActiveItem', true);
-        this.data('active', true);
-        this.$root.trigger('custom_pages.afterActivateContainer', [this]);
-    };
-
-    TemplateContainerItem.prototype.stopInlineEdit = function () {
-        $('.editMenu').css('z-index', '0');
-        this.data('isActiveItem', false);
-        var that = this;
-        var $overlay = $('#overlay');
-        if ($overlay.length) {
-            $overlay.fadeOut('fast', function () {
-                $overlay.remove();
-                that.$root.trigger('custom_pages.afterDeactivateContainer', [that]);
-            });
-        }
-        this.$.css('background-color', '');
-        this.$.css('z-index', '0');
     };
 
     TemplateContainerItem.prototype.getUniqueId = function ($element) {
@@ -188,18 +142,6 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
         return 'templateContainerItem' + ':' + $element.data('template-item');
     };
 
-    TemplateContainerItem.prototype.createContainerToggle = function () {
-        var that = this;
-        return $('<input id="containerEditToggle" type="checkbox" />')
-                .on('switchChange.bootstrapSwitch', function (event, state) {
-                    if (state) {
-                        that.startInlineEdit();
-                    } else {
-                        that.stopInlineEdit();
-                    }
-                });
-    };
-    
     TemplateElement.prototype.getDeleteConfirmOptions = function () {
         return {
             confirmHeader: customPage.text('confirmDeleteItemHeader'),

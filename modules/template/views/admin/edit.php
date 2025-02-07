@@ -44,10 +44,6 @@ use humhub\modules\custom_pages\modules\template\models\Template;
             <?= $form->field($model, 'allow_for_spaces')->checkbox(); ?>
         <?php endif; ?>
 
-        <?php if ($model->type === Template::TYPE_CONTAINER) : ?>
-            <?= $form->field($model, 'allow_inline_activation')->checkbox(); ?>
-        <?php endif; ?>
-
         <?= Html::submitButton(Yii::t('CustomPagesModule.template', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
         <?php $form::end(); ?>

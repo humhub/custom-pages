@@ -179,18 +179,6 @@ div[data-template-element].highlightAdd {
     float:left;
 }
 
-
-.bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-handle-off, 
-.bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-handle-on, 
-.bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-label {
-    white-space: nowrap;
-}
-
-.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary, 
-.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
-    background-color: #97d271 !important;
-}
-
 .btn-info-source {
     color: #708fa0;
     padding: 0 10px !important;

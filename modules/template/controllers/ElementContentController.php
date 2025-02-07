@@ -54,8 +54,7 @@ class ElementContentController extends Controller
         if ($form->load(Yii::$app->request->post())) {
             if ($form->save()) {
                 TemplateCache::flushByElementContent($form->content);
-                $wrapper = new BaseElementVariable($form->content);
-                return $this->getJsonEditElementResult(true, $wrapper->render(true));
+                return $this->getJsonEditElementResult(true, (new BaseElementVariable($form->content))->render());
             } else {
                 return $this->getJsonEditElementResult(false, $this->renderAjaxPartial(EditElementModal::widget([
                     'model' => $form,
@@ -101,8 +100,7 @@ class ElementContentController extends Controller
         // Set the default content for this element block
         $elementContent = $form->element->getDefaultContent(true);
 
-        $variable = new BaseElementVariable($elementContent);
-        return $this->getJsonEditElementResult(true, $variable->render(true));
+        return $this->getJsonEditElementResult(true, (new BaseElementVariable($elementContent))->render());
     }
 
     /**

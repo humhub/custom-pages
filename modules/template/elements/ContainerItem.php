@@ -14,7 +14,6 @@ use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use Yii;
 use yii\db\ActiveQuery;
-use yii\helpers\Url;
 
 /**
  * This is the model class for table "custom_pages_template_element_container_item".
@@ -154,9 +153,7 @@ class ContainerItem extends ActiveRecord
             'content' => $content,
             'options' => [
                 'class' => ($inline) ? 'inline' : '',
-                'data-allow-inline-activation' => $this->template->allow_inline_activation,
                 'data-template-item' => $this->id,
-                'data-template-edit-url' => Url::to(['/custom_pages/template/container-admin/edit-source', 'id' => $this->template->id]),
                 'data-template-item-title' => $this->title,
             ],
         ]);

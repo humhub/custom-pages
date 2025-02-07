@@ -44,7 +44,7 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
     };
 
     TemplateElement.prototype.isActive = function () {
-        return this.data('active') == true;
+        return this.data('active') === true;
     };
 
     TemplateElement.prototype.isFromRoot = function () {
@@ -76,22 +76,7 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
         }
     };
 
-    TemplateElement.prototype.isPartOfInlineEdit = function () {
-        return !this.editor.activeItem || this.editor.activeItem.isParentOf(this);
-    };
-
-    TemplateElement.prototype.activate = function (prevenParentActivation) {
-        if (!prevenParentActivation) {
-            var parent = this.getParentElement();
-
-            if (parent) {
-                if (!parent.isActive() && parent.isPartOfInlineEdit()) {
-                    parent.activate(true);
-                    this.editor.activeElements.push(parent);
-                }
-            }
-        }
-
+    TemplateElement.prototype.activate = function () {
         if (this.isActive()) {
             return;
         }
@@ -112,17 +97,11 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
     };
 
     TemplateElement.prototype.createEditButton = function (size) {
-        var btnSizeClass;
-        switch (size) {
-            case 'small':
-                btnSizeClass = 'btn-xs';
-                break;
-            default:
-                btnSizeClass = 'btn-sm';
-                break;
-        }
-
-        return $(string.template(TemplateElement.template.editButton, {target: this.id, url: this.editUrl, btnSizeClass: btnSizeClass}));
+        return $(string.template(TemplateElement.template.editButton, {
+            target: this.id,
+            url: this.editUrl,
+            btnSizeClass: size === 'small' ? 'btn-xs' : 'btn-sm',
+        }));
     };
 
     TemplateElement.prototype.getEditData = function () {
@@ -134,23 +113,12 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
     };
 
     TemplateElement.prototype.createDeleteButton = function (size) {
-        var btnSizeClass;
-        switch (size) {
-            case 'small':
-                btnSizeClass = 'btn-xs';
-                break;
-            default:
-                btnSizeClass = 'btn-sm';
-                break;
-        }
-        
         var options = {
-            
             target: this.id,
             url: this.deleteUrl,
-            btnSizeClass: btnSizeClass
+            btnSizeClass: size === 'small' ? 'btn-xs' : 'btn-sm',
         };
-        
+
         options = $.extend(options, this.getDeleteConfirmOptions());
 
         return $(string.template(TemplateElement.template.deleteButton, options));
@@ -206,10 +174,6 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
             } else {
                 that.$menu.css('z-index', '1');
             }
-        });
-
-        this.$menu.on('click', function (evt) {
-            //evt.stopPropagation();
         });
 
         this.$menu.on('mouseout', function (evt) {

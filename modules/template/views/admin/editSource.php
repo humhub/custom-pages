@@ -2,7 +2,7 @@
 
 use humhub\modules\custom_pages\modules\template\assets\SourceEditorAsset;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\TemplateElement;
+use humhub\modules\custom_pages\modules\template\services\ElementTypeService;
 use humhub\modules\custom_pages\widgets\AdminMenu;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Html;
@@ -11,6 +11,8 @@ use yii\helpers\Url;
 SourceEditorAsset::register($this);
 
 /* @var $model Template */
+
+$elementTypeService = new ElementTypeService();
 
 $this->registerJsConfig('custom_pages.template.source', [
     'text' => [
@@ -75,10 +77,10 @@ $this->registerJsConfig('custom_pages.template.source', [
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" id="addElementSelect">
-                    <?php foreach (TemplateElement::getAvailableTypes() as $type) : ?>
+                    <?php foreach ($elementTypeService->getTypeInstances() as $elementType) : ?>
                         <li>
                             <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/add-element', 'templateId' => $model->id, 'type' => $type]) ?>" href="#">
-                                <?= (new $type())->getLabel() ?>
+                                <?= $elementType->getLabel() ?>
                             </a>
                         </li>
                     <?php endforeach; ?>

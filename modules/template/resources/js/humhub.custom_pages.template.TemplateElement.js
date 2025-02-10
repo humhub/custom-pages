@@ -47,13 +47,16 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
         return this.data('active') === true;
     };
 
-    TemplateElement.prototype.isFromRoot = function () {
-        return this.$.closest('[data-ui-widget="custom_pages.template.TemplateContainerItem"]').length === 0;
-    }
-
     TemplateElement.prototype.isParentOf = function (element) {
         var parent = element.getParent();
-        return parent && parent.id === this.id;
+        while (parent) {
+            if (parent.id === this.id) {
+                return true;
+            }
+            parent = parent.getParent();
+        }
+
+        return false;
     };
 
     TemplateElement.prototype.highlight = function () {

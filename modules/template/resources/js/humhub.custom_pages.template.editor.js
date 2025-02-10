@@ -127,21 +127,26 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
 
     TemplateInlineEditor.prototype.setActivateElement = function ($element) {
         var element = this.getElement($element);
+        this.setSelection(element);
 
         if (element.isActive()) {
-            this.setSelection(element);
             return true;
         }
 
-        // Only activate root element or Container Item or empty Container Element.
-        if (element.isContainerItem || element.$.is('.emptyContainerBlock') || element.isFromRoot()) {
-            this.setSelection(element);
-            element.activate();
-            this.activeElements.push(element);
-            return true;
+        element.activate();
+        this.activeElements.push(element);
+
+        var parent = element.getParent();
+        while (parent)
+        {
+            if (!parent.isActive()) {
+                parent.activate();
+                this.activeElements.push(parent);
+            }
+            parent = parent.getParent();
         }
 
-        return false;
+        return true;
     };
 
     /**

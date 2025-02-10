@@ -79,7 +79,7 @@ $this->registerJsConfig('custom_pages.template.source', [
                 <ul class="dropdown-menu" id="addElementSelect">
                     <?php foreach ($elementTypeService->getTypeInstances() as $elementType) : ?>
                         <li>
-                            <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/add-element', 'templateId' => $model->id, 'type' => $type]) ?>" href="#">
+                            <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/add-element', 'templateId' => $model->id, 'type' => get_class($elementType)]) ?>" href="#">
                                 <?= $elementType->getLabel() ?>
                             </a>
                         </li>

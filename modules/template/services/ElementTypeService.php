@@ -35,9 +35,9 @@ use yii\base\Component;
  * `Events.php`:
  *
  * ```php
- *  public static function onCustomPagesTemplateElementAvailableTypes(Event $event)
+ *      public static function onCustomPagesTemplateElementAvailableTypes(Event $event)
  *      {
- *         $elementTypeService = $this->sender;
+ *         $elementTypeService = $event->sender;
  *         $elementTypeService->addType(CalendarsElement::class);
  *      }
  *  }

@@ -1,9 +1,13 @@
 Changelog
 =========
 
+1.10.15 (Unreleased)
+--------------------------
+- Fix #391: Fix image view permission from sub container
+
 1.10.14 (January 30, 2025)
 --------------------------
-- Fix #394: Fix visibility of attached images to default content of template
+- Fix #379: Fix visibility of attached images to default content of template
 
 1.10.13 (January 16, 2025)
 --------------------------

@@ -114,12 +114,15 @@ class ContainerContentItem extends \humhub\components\ActiveRecord implements Te
     public function getTemplateInstance(): ?TemplateInstance
     {
         $container = $this->container;
-        if ($container instanceof ContainerContent) {
+        while ($container instanceof ContainerContent) {
             $ownerContent = $container->ownerContent;
             if ($ownerContent instanceof OwnerContent) {
                 $owner = $ownerContent->getOwner();
                 if ($owner instanceof TemplateInstance) {
                     return $owner;
+                }
+                if ($owner instanceof self) {
+                    $container = $owner->container;
                 }
             }
         }

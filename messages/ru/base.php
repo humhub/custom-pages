@@ -101,7 +101,7 @@ return [
   'Style Class' => '',
   'Submit' => 'Принять',
   'Target Url' => '',
-  'Template' => '',
+  'Template' => 'Шаблон',
   'Template Layout' => '',
   'Templates' => '',
   'Templates allow you to define combinable page fragments with inline edit functionality.' => '',

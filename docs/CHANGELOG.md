@@ -16,7 +16,19 @@ Changelog
 - Enh #378: Refactor template instance and owner content
 - Enh #387: Remove inline editing of container item elements
 
-1.10.11 (Unreleased)
+1.10.15 (February 11, 2025)
+---------------------------
+- Fix #391: Fix image view permission from sub container
+
+1.10.14 (January 30, 2025)
+--------------------------
+- Fix #379: Fix visibility of attached images to default content of template
+
+1.10.13 (January 16, 2025)
+--------------------------
+- Fix #374: Fix allowed properties for Twig v3.14.1+
+
+1.10.12 (January 16, 2025)
 --------------------------
 - Enh #353: Reduce translation message categories
 - Fix #355: Fix visibility of attached images to Template Layout

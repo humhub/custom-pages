@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages;
 
+use humhub\components\ActiveRecord;
 use humhub\libs\ProfileImage;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
@@ -73,7 +74,7 @@ class Module extends ContentContainerModule
                 'bgImage2.jpg',
             ],
             SimpleXMLElement::class => '*',
-            ContentContainerActiveRecord::class => '*',
+            ActiveRecord::class => '*',
             ProfileImage::class => '*',
         ],
     ];

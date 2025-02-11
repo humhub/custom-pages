@@ -72,7 +72,7 @@ abstract class BaseContentContainerElement extends BaseElementContent
      */
     public function getFormView(): string
     {
-        return strtolower(substr(strrchr(static::CONTAINER_CLASS, '\\'), 1));
+        return 'elements/' . strtolower(substr(strrchr(static::CONTAINER_CLASS, '\\'), 1));
     }
 
     /**

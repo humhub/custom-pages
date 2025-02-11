@@ -58,8 +58,8 @@ class TemplateElement extends ActiveRecord
                 'pattern' => '/^[a-zA-Z][a-zA-Z0-9_]+$/',
                 'message' => Yii::t(
                     'CustomPagesModule.model',
-                    'The element name must contain at least two characters without spaces or special signs except \'_\''
-                )
+                    'The element name must contain at least two characters without spaces or special signs except \'_\'',
+                ),
             ],
             ['name', 'uniqueTemplateElementName', 'on' => ['create']],
             [['template_id'], 'integer'],
@@ -100,12 +100,13 @@ class TemplateElement extends ActiveRecord
      */
     public function uniqueTemplateElementName($attribute, $params)
     {
-        $templateElementCount = self::find()->where(['template_id' => $this->template_id, 'name' => $this->name]
+        $templateElementCount = self::find()->where(
+            ['template_id' => $this->template_id, 'name' => $this->name],
         )->count();
         if ($templateElementCount > 0) {
             $this->addError(
                 $attribute,
-                Yii::t('CustomPagesModule.model', 'The given element name is already in use for this template.')
+                Yii::t('CustomPagesModule.model', 'The given element name is already in use for this template.'),
             );
         }
     }

@@ -13,6 +13,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\components\ActiveRecordDynamicAttributes;
 use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
+use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateEditorElement;
@@ -301,8 +302,10 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
 
     protected function wrap($type, $content, $options = [], $attributes = [])
     {
-        if ($this->templateInstance?->getType() === TemplateInstance::TYPE_CONTAINER &&
-            !$this instanceof ContainerElement) {
+        if (!$this instanceof ContainerElement && (
+            $this->templateInstance?->getType() === TemplateInstance::TYPE_CONTAINER ||
+            ($this->template_instance_id === null && $this->element?->template?->type === Template::TYPE_CONTAINER)
+        )) {
             // Apply the wrap for editing inside Container Item only for Container Element,
             // other elements like Text, Image are not editable inside Container Item.
             return $content;
@@ -400,9 +403,9 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
         }
 
         if ($this->template_instance_id === null) {
-            // If this template content record is not linked to any container(Page, Snippet),
-            // then it is from Template Layout, try to check if the user can manage Template Layouts
-            return (new PermissionManager(['subject' => $user]))->can(ManagePages::class);
+            // It is a default content of the Template, and it is not linked to any container(Page, Snippet) yet,
+            // we cannot check a permission here, so we should allow everyone to view such content.
+            return true;
         }
 
         return false;

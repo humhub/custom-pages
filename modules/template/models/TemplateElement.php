@@ -28,6 +28,7 @@ use yii\db\Expression;
  * @property string $dyn_attributes
  *
  * @property-read BaseElementContent[] $contents
+ * @property-read Template|null $template
  */
 class TemplateElement extends ActiveRecord
 {
@@ -241,6 +242,11 @@ class TemplateElement extends ActiveRecord
         }
 
         return true;
+    }
+
+    public function getTemplate(): ActiveQuery
+    {
+        return $this->hasOne(Template::class, ['id' => 'template_id']);
     }
 
     public function getTemplateContent(): BaseElementContent

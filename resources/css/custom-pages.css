@@ -99,7 +99,7 @@ div[data-template-element] {
 }
 
 div[data-template-element].highlightEdit {
-    border: 1px dashed #708fa0 !important;
+    border: 1px dashed var(--danger) !important;
 }
 
 div[data-template-element] .emptyBlock {

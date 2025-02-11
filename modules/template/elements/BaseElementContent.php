@@ -403,9 +403,9 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
         }
 
         if ($this->template_instance_id === null) {
-            // If this template content record is not linked to any container(Page, Snippet),
-            // then it is from Template Layout, try to check if the user can manage Template Layouts
-            return (new PermissionManager(['subject' => $user]))->can(ManagePages::class);
+            // It is a default content of the Template, and it is not linked to any container(Page, Snippet) yet,
+            // we cannot check a permission here, so we should allow everyone to view such content.
+            return true;
         }
 
         return false;

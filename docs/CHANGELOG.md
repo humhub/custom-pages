@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.10.15 (Unreleased)
---------------------------
+1.10.15 (February 11, 2025)
+---------------------------
 - Fix #391: Fix image view permission from sub container
 
 1.10.14 (January 30, 2025)

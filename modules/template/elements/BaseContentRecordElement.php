@@ -53,7 +53,7 @@ abstract class BaseContentRecordElement extends BaseElementContent
      */
     public function renderEmpty($options = [])
     {
-        return '';
+        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty'), $options);
     }
 
     /**

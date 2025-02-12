@@ -11,6 +11,7 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentContainer;
+use Yii;
 use yii\db\IntegrityException;
 
 /**
@@ -64,7 +65,7 @@ abstract class BaseContentContainerElement extends BaseElementContent
      */
     public function renderEmpty($options = [])
     {
-        return '';
+        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty'), $options);
     }
 
     /**

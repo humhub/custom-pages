@@ -104,7 +104,7 @@ class TextElement extends BaseElementContent
 
         if ($this->isEditMode($options) && $this->inline_text) {
             if (empty($result)) {
-                $result = $this->renderEmpty($options);
+                return $this->renderEmpty($options);
             }
             return $this->wrap('span', $result, $options);
         }

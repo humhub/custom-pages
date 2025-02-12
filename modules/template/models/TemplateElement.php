@@ -200,7 +200,7 @@ class TemplateElement extends ActiveRecord
             ->one();
 
         if ($content === null && $createDummy) {
-            $content = Yii::createObject($this->content_type);
+            $content = BaseElementContent::createByType($this->content_type);
             $content->element_id = $this->id;
         }
 
@@ -252,7 +252,7 @@ class TemplateElement extends ActiveRecord
 
     public function getTemplateContent(): BaseElementContent
     {
-        return Yii::createObject($this->content_type);
+        return BaseElementContent::createByType($this->content_type);
     }
 
     /**

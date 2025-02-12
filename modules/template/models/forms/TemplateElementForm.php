@@ -9,7 +9,6 @@
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
-use Yii;
 
 /**
  * Description of UserGroupForm
@@ -86,6 +85,6 @@ class TemplateElementForm extends \yii\base\Model
 
     public function getLabel()
     {
-        return Yii::createObject($this->element->content_type)->getLabel();
+        return BaseElementContent::createByType($this->element->content_type)->getLabel();
     }
 }

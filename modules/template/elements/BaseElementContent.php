@@ -17,8 +17,6 @@ use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateEditorElement;
-use humhub\modules\custom_pages\permissions\ManagePages;
-use humhub\modules\user\components\PermissionManager;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -99,7 +97,25 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
     public static function instantiate($row)
     {
         $element = TemplateElement::findOne(['id' => $row['element_id']]);
-        return $element ? Yii::createObject($element['content_type']) : null;
+
+        return BaseElementContent::createByType($element ? $element['content_type'] : null);
+    }
+
+    /**
+     * Create by class name
+     *
+     * @param string|null $className
+     * @return static
+     */
+    public static function createByType(?string $className): static
+    {
+        if (empty($className) || !class_exists($className)) {
+            // Use Text Element by default if the requested Element lost by some unknown reason,
+            // e.g. if external module with the Element was uninstalled
+            $className = TextElement::class;
+        }
+
+        return Yii::createObject($className);
     }
 
     /**
@@ -447,7 +463,7 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
     {
         if ($this->isNewRecord && $createDummy) {
             /* @var static $content */
-            $content = Yii::createObject($this->element->content_type);
+            $content = self::createByType($this->element->content_type);
             $content->element_id = $this->element_id;
             return $content;
         }

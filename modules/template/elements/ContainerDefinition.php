@@ -84,6 +84,13 @@ class ContainerDefinition extends BaseElementDefinition
                 $condition['name'] = $this->templates;
             }
             $this->_templates = Template::findAll($condition);
+
+            if (empty($this->_templates) && !empty($this->templates)) {
+                // If templates aren't found by the names it means such templates don't exist anymore,
+                // we should allow to use all templates like the option "Allowed Templates" is not filled.
+                unset($condition['name']);
+                $this->_templates = Template::findAll($condition);
+            }
         }
 
         return $this->_templates;
@@ -91,7 +98,7 @@ class ContainerDefinition extends BaseElementDefinition
 
     public function isSingleAllowedTemplate(): bool
     {
-        return is_array($this->templates) && count($this->templates) === 1;
+        return is_array($this->allowedTemplates) && count($this->allowedTemplates) === 1;
     }
 
     /**

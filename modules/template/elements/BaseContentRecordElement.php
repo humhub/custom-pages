@@ -12,7 +12,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 
 /**
- * Class to manage Element Content of the ContentActiveRecord
+ * Abstract class to manage Element Content of the ContentActiveRecord
  *
  * @property-read ContentActiveRecord|null $record
  *

@@ -141,6 +141,12 @@ abstract class BaseRecordsElement extends BaseElementContent implements Template
         yield from $this->records;
     }
 
+    /**
+     * Filter the list with static selected record
+     *
+     * @param ActiveQuery $query
+     * @return ActiveQuery
+     */
     protected function filterStatic(ActiveQuery $query): ActiveQuery
     {
         return $query->andWhere(['guid' => $this->static]);

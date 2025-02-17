@@ -9,8 +9,10 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\content\components\ActiveQueryContent;
+use humhub\modules\stream\models\filters\DefaultStreamFilter;
 use Yii;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 /**
  * Abstract class to manage Element Content list of the ContentActiveRecords
@@ -19,6 +21,7 @@ use yii\db\ActiveQuery;
  * @property array $space
  * @property array $author
  * @property array $topic
+ * @property array $filter
  * @property int $limit
  */
 abstract class BaseContentRecordsElement extends BaseRecordsElement
@@ -32,6 +35,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             'space' => null,
             'author' => null,
             'topic' => null,
+            'filter' => null,
             'limit' => null,
         ]);
     }
@@ -45,6 +49,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             'space' => Yii::t('CustomPagesModule.base', 'Spaces'),
             'author' => Yii::t('CustomPagesModule.base', 'Authors'),
             'topic' => Yii::t('CustomPagesModule.base', 'Topics'),
+            'filter' => Yii::t('CustomPagesModule.base', 'Content filters'),
             'limit' => Yii::t('CustomPagesModule.base', 'Limit'),
         ]);
     }
@@ -83,7 +88,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
     public function isCacheable(): bool
     {
         // Don't cache because the filter `ContentActiveRecord::find()->readable()` is used here
-        return true;
+        return false;
     }
 
     /**
@@ -109,6 +114,8 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
     }
 
     /**
+     * Filter by options
+     *
      * @param ActiveQueryContent $query
      * @return ActiveQuery
      */
@@ -135,6 +142,37 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
                 ->andWhere(['content_tag_relation.tag_id' => $this->topic]);
         }
 
+        if (!Yii::$app->user->isGuest) {
+            if ($this->hasFilter(DefaultStreamFilter::FILTER_INVOLVED)) {
+                $query->leftJoin('user_follow AS user_involved', 'content.object_model = user_involved.object_model AND content.object_id = user_involved.object_id AND user_involved.user_id = :userId', [
+                    'userId' => Yii::$app->user->id,
+                ]);
+                $query->andWhere(['IS NOT', 'user_involved.id', new Expression('NULL')]);
+            }
+
+            if ($this->hasFilter(DefaultStreamFilter::FILTER_MINE)) {
+                $query->andWhere(['content.created_by' => Yii::$app->user->id]);
+            }
+        }
+
         return $query;
+    }
+
+    /**
+     * Get options to filter the content record
+     *
+     * @return array
+     */
+    public function getContentFilterOptions(): array
+    {
+        return [
+            DefaultStreamFilter::FILTER_INVOLVED => Yii::t('ContentModule.base', 'I\'m involved'),
+            DefaultStreamFilter::FILTER_MINE => Yii::t('ContentModule.base', 'Created by me'),
+        ];
+    }
+
+    public function hasFilter(string $name): bool
+    {
+        return is_array($this->filter) && in_array($name, $this->filter);
     }
 }

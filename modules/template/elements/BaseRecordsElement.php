@@ -31,7 +31,7 @@ abstract class BaseRecordsElement extends BaseElementContent implements Template
     protected ?array $records = null;
 
     /**
-     * @var string Prefix for view file to render a widget with form fields
+     * @var string A view file to render a widget with form fields for the Records
      */
     public string $subFormView = '';
 

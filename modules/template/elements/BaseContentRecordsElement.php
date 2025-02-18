@@ -29,6 +29,16 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
     /**
      * @inheritdoc
      */
+    public string $subFormView = 'baseContentRecords';
+
+    /**
+     * @var string A view file to render a widget with form fields for the Content Records
+     */
+    public string $contentFormView = '';
+
+    /**
+     * @inheritdoc
+     */
     protected function getDynamicAttributes(): array
     {
         return array_merge(parent::getDynamicAttributes(), [

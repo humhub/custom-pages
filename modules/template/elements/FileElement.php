@@ -43,7 +43,6 @@ class FileElement extends BaseElementContent
     public function rules()
     {
         return [
-            [['file_guid'], 'required'],
             [['file_guid'], 'string'],
         ];
     }

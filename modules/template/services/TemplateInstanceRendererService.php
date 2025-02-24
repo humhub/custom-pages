@@ -54,17 +54,19 @@ class TemplateInstanceRendererService
     /**
      * Render the template content
      *
-     * @param bool $editMode
+     * @param string $mode
      * @return string
      */
-    public function render(bool $editMode = false): string
+    public function render(string $mode = ''): string
     {
-        $editMode = $editMode && PagePermissionHelper::canEdit();
+        if (($mode === 'edit' || $mode === 'structure') && PagePermissionHelper::canEdit()) {
+            $this->ignoreCache();
+        }
 
-        $cache = $this->isCacheable($editMode) ? Yii::$app->cache : new DummyCache();
+        $cache = $this->isCacheable() ? Yii::$app->cache : new DummyCache();
 
-        $html = $cache->getOrSet($this->templateInstance->getCacheKey(), function () use ($editMode) {
-            return $this->templateInstance->render($editMode);
+        $html = $cache->getOrSet($this->templateInstance->getCacheKey(), function () use ($mode) {
+            return $this->templateInstance->render($mode);
         });
 
         if ($this->applyScriptNonce) {
@@ -74,9 +76,9 @@ class TemplateInstanceRendererService
         return $html;
     }
 
-    private function isCacheable($editMode = false): bool
+    private function isCacheable(): bool
     {
-        if ($this->ignoreCache || $editMode) {
+        if ($this->ignoreCache) {
             return false;
         }
 

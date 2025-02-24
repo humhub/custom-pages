@@ -36,9 +36,9 @@ class TemplatePage extends JsWidget
     public $canEdit;
 
     /**
-     * @var bool defines the editmode is active
+     * @var string defines what mode is active: 'edit', 'structure'
      */
-    public $editMode;
+    public $mode;
 
     /**
      * @var CustomPage page instance
@@ -61,7 +61,7 @@ class TemplatePage extends JsWidget
     public function init()
     {
         parent::init();
-        $this->init = $this->canEdit && $this->editMode;
+        $this->init = $this->canEdit && $this->mode === 'edit';
         ob_start();
         ob_implicit_flush(false);
     }
@@ -73,7 +73,7 @@ class TemplatePage extends JsWidget
     {
         \humhub\modules\custom_pages\modules\template\assets\TemplatePageStyleAsset::register($this->getView());
 
-        if ($this->canEdit && $this->editMode) {
+        if ($this->canEdit && $this->mode === 'edit') {
             \humhub\modules\custom_pages\modules\template\assets\InlineEditorAsset::register($this->getView());
 
             $this->getView()->registerJsConfig('custom_pages.template.editor', [
@@ -119,7 +119,7 @@ class TemplatePage extends JsWidget
      */
     public function getData()
     {
-        if ($this->canEdit && $this->editMode) {
+        if ($this->canEdit && $this->mode === 'edit') {
             return [
                 'template-instance-id' => TemplateInstance::findByOwner($this->page)?->id,
                 'element-edit-url' => $this->createUrl('/custom_pages/template/element-content/edit'),

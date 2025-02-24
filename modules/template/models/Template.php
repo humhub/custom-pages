@@ -16,6 +16,7 @@ use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerDefinition;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
+use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
@@ -254,16 +255,20 @@ class Template extends ActiveRecord
      * ElementContent instances defined by the Template Instance.
      *
      * @param TemplateInstance|null $templateInstance
-     * @param bool $editMode
+     * @param string $mode
      * @return string
      */
-    public function render(TemplateInstance $templateInstance = null, bool $editMode = false)
+    public function render(TemplateInstance $templateInstance = null, string $mode = '')
     {
+        if ($mode === 'structure') {
+            return TemplateStructure::widget(['templateInstance' => $templateInstance]);
+        }
+
         $elementContents = $this->getElementContents($templateInstance);
 
         $content = [];
         foreach ($elementContents as $elementContent) {
-            $content[$elementContent->element->name] = new BaseElementVariable($elementContent, $editMode);
+            $content[$elementContent->element->name] = new BaseElementVariable($elementContent, $mode);
         }
 
         $content['assets'] = new AssetVariable();

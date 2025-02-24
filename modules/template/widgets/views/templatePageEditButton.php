@@ -5,11 +5,11 @@ use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 
 /* @var int $pageId */
-/* @var bool $editMode */
+/* @var string $mode */
 /* @var TemplateInstance $templateInstance */
 ?>
 
-<?php if ($editMode) : ?>
+<?php if ($mode === 'edit' || $mode === 'structure') : ?>
 
     <div id="editPageButton" class="btn-group">
         <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -29,12 +29,17 @@ use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
                 </li>
             <?php endif; ?>
             <li>
+                <a href="<?= Url::to(['view', 'id' => $pageId, 'mode' => 'structure', 'sguid' => $sguid]); ?>">
+                    <?= Yii::t('CustomPagesModule.view', 'Structure Overview') ?>
+                </a>
+            </li>
+            <li>
                 <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/element-content/edit-multiple', 'id' => $templateInstance->id, 'sguid' => $sguid]) ?>" id="editAllElements" href="#">
                     <?= Yii::t('CustomPagesModule.view', 'Edit elements') ?>
                 </a>
             </li>
             <li>
-                <a href="<?= Url::to(['view', 'id' => $pageId, 'editMode' => false, 'sguid' => $sguid]); ?>">
+                <a href="<?= Url::to(['view', 'id' => $pageId, 'sguid' => $sguid]); ?>">
                     <?= Yii::t('CustomPagesModule.view', 'Turn edit off') ?>
                 </a>
             </li>
@@ -42,7 +47,7 @@ use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
     </div>
 
 <?php else: ?>
-    <a id="editPageButton" class="btn btn-primary btn-xs" data-ui-loader style="color:var(--text-color-highlight)" href="<?= Url::to(['view', 'id' => $pageId, 'editMode' => true, 'sguid' => $sguid]); ?>">
+    <a id="editPageButton" class="btn btn-primary btn-xs" data-ui-loader style="color:var(--text-color-highlight)" href="<?= Url::to(['view', 'id' => $pageId, 'mode' => 'edit', 'sguid' => $sguid]); ?>">
         <i class="fa fa-pencil"></i>
         <?= Yii::t('CustomPagesModule.template', 'Edit Page') ?>
     </a>

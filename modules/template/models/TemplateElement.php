@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;

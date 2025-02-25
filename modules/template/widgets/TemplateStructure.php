@@ -8,11 +8,18 @@
 
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
-use humhub\components\Widget;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\widgets\JsWidget;
+use Yii;
 
-class TemplateStructure extends Widget
+class TemplateStructure extends JsWidget
 {
+    /**
+     * @inheritdoc
+     */
+    public $jsWidget = 'custom_pages.template.TemplateStructure';
+
     /**
      * @var TemplateInstance|null
      */
@@ -34,6 +41,26 @@ class TemplateStructure extends Widget
         return $this->render('templateStructure', [
             'templateInstance' => $this->templateInstance,
             'elementContents' => $this->templateInstance->template->getElementContents($this->templateInstance),
+            'sguid' => Yii::$app->controller->contentContainer->guid ?? null,
+            'options' => $this->getOptions(),
         ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getData()
+    {
+        $data = parent::getData();
+        $data['template-instance-id'] = $this->templateInstance->id;
+
+        $containerItem = $this->templateInstance->containerItem;
+        if ($containerItem instanceof ContainerItem) {
+            $data['container-item-id'] = $containerItem->id;
+            $data['element-id'] = $containerItem->container->element_id;
+            $data['element-content-id'] = $containerItem->element_content_id;
+        }
+
+        return $data;
     }
 }

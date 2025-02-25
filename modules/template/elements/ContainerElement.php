@@ -18,6 +18,7 @@ use yii\db\ActiveQuery;
  * @property-read ContainerItem[] $items
  * @property-read Template[] $templates
  * @property-read Template[] $allowedTemplates
+ * @property-read ContainerDefinition $definition
  */
 class ContainerElement extends BaseElementContent
 {

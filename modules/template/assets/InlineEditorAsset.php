@@ -9,7 +9,7 @@ class InlineEditorAsset extends AssetBundle
     public $sourcePath = '@custom_pages/modules/template/resources';
 
     public $publishOptions = [
-        'forceCopy' => false,
+        'forceCopy' => true,
     ];
     public $jsOptions = ['position' => \yii\web\View::POS_END];
     public $js = [
@@ -17,6 +17,7 @@ class InlineEditorAsset extends AssetBundle
         'js/humhub.custom_pages.template.TemplateElement.js',
         'js/humhub.custom_pages.template.TemplateContainer.js',
         'js/humhub.custom_pages.template.TemplateContainerItem.js',
+        'js/humhub.custom_pages.template.TemplateStructure.js',
     ];
     public $depends = [
         'humhub\modules\custom_pages\modules\template\assets\TemplateCoreAsset',

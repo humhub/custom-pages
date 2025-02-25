@@ -350,11 +350,6 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
         return isset($options['mode']) && $options['mode'] === 'edit';
     }
 
-    public function isStructureMode(array $options = []): bool
-    {
-        return isset($options['mode']) && $options['mode'] === 'structure';
-    }
-
     public function purify($content)
     {
         $config = \HTMLPurifier_Config::createDefault();

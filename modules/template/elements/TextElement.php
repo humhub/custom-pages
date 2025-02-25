@@ -109,10 +109,6 @@ class TextElement extends BaseElementContent
             return $this->wrap('span', $result, $options);
         }
 
-        if ($this->isStructureMode($options)) {
-            return $this->renderStructure($options);
-        }
-
         return $result;
     }
 

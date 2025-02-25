@@ -31,11 +31,9 @@ class TemplateStructure extends Widget
      */
     public function run()
     {
-        $template = $this->templateInstance->template;
-
         return $this->render('templateStructure', [
-            'template' => $template,
-            'elementContents' => $template->getElementContents($this->templateInstance),
+            'templateInstance' => $this->templateInstance,
+            'elementContents' => $this->templateInstance->template->getElementContents($this->templateInstance),
         ]);
     }
 }

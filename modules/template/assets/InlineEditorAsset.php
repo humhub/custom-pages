@@ -9,7 +9,7 @@ class InlineEditorAsset extends AssetBundle
     public $sourcePath = '@custom_pages/modules/template/resources';
 
     public $publishOptions = [
-        'forceCopy' => true,
+        'forceCopy' => false,
     ];
     public $jsOptions = ['position' => \yii\web\View::POS_END];
     public $js = [

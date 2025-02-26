@@ -21,3 +21,25 @@
 #templatePageRoot img {
     max-width: 100%;
 }
+
+.custom-pages-template-structure {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.custom-pages-template-structure ul {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 20px;
+}
+.custom-pages-template-structure li {
+    border-left: 1px solid transparent;
+    padding: 3px 5px;
+}
+.custom-pages-template-structure > li {
+    padding-left: 0;
+}
+.custom-pages-template-structure li[data-element-id]:hover,
+.custom-pages-template-structure ul[data-template-type=container] > li:hover {
+    border-left: 1px dashed var(--text-color-secondary);
+}

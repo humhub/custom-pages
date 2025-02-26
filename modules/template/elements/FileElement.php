@@ -115,14 +115,6 @@ class FileElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function renderEmpty($options = [])
-    {
-        return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function isEmpty(): bool
     {
         return !$this->hasFile();

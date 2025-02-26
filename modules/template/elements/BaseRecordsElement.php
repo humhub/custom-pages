@@ -79,21 +79,7 @@ abstract class BaseRecordsElement extends BaseElementContent implements Template
      */
     public function render($options = [])
     {
-        $result = Html::encode(static::RECORD_CLASS);
-
-        if ($this->isEditMode($options)) {
-            return $this->wrap('span', $result, $options);
-        }
-
-        return $result;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderEmpty($options = [])
-    {
-        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty'), $options);
+        return Html::encode(static::RECORD_CLASS);
     }
 
     /**

@@ -86,13 +86,7 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
      */
     public function render($options = [])
     {
-        $result = Html::encode($this->getRssData()->channel->title ?: $this->url);
-
-        if ($this->isEditMode($options)) {
-            return $this->wrap('span', $result, $options);
-        }
-
-        return $result;
+        return Html::encode($this->getRssData()->channel->title ?: $this->url);
     }
 
     /**
@@ -101,14 +95,6 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
     public function isEmpty(): bool
     {
         return empty($this->url);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderEmpty($options = [])
-    {
-        return '';
     }
 
     private function getRssFileContent(): string

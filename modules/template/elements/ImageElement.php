@@ -72,32 +72,16 @@ class ImageElement extends FileElement
      */
     public function render($options = [])
     {
-        if ($this->hasFile() != null) {
-            $options['htmlOptions'] = [
-                'src' => $this->getFile()->getUrl(),
-                'alt' => $this->purify($this->alt),
-            ];
-
-            $options['htmlOptions']['height'] = $this->purify($this->definition->height);
-            $options['htmlOptions']['width'] = $this->purify($this->definition->width);
-            $options['htmlOptions']['style'] = $this->purify($this->definition->style);
-
-            return $this->isEditMode($options)
-                ? $this->wrap('img', '', $options)
-                : Html::tag('img', '', $options['htmlOptions']);
-        } elseif ($this->isEditMode($options)) {
-            $options['empty'] = true;
-            return $this->renderEmpty($options);
+        if (!$this->hasFile()) {
+            return '';
         }
 
-        return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderEmpty($options = [])
-    {
-        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty Image'), $options);
+        return Html::tag('img', '', [
+            'src' => $this->getFile()->getUrl(),
+            'alt' => $this->purify($this->alt),
+            'height' => $this->purify($this->definition->height),
+            'width' => $this->purify($this->definition->width),
+            'style' => $this->purify($this->definition->style),
+        ]);
     }
 }

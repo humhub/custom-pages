@@ -61,18 +61,6 @@ class RichtextElement extends BaseElementContent
      */
     public function render($options = [])
     {
-        if ($this->isEditMode($options)) {
-            return $this->wrap('div', $this->purify($this->content), $options);
-        }
-
         return $this->purify($this->content);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderEmpty($options = [])
-    {
-        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty Richtext'), $options);
     }
 }

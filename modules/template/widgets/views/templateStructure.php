@@ -21,7 +21,6 @@ use humhub\widgets\Label;
 
 /* @var TemplateInstance $templateInstance */
 /* @var BaseElementContent[] $elementContents */
-/* @var string $sguid */
 /* @var array $options */
 /* @var View $this */
 
@@ -36,29 +35,31 @@ InlineEditorAsset::register($this);
         <?= Label::warning(Yii::t('CustomPagesModule.template', 'Template')) ?>
         <?= Template::getTypeTitle($templateInstance->template->type) ?>:
         <strong><?= $templateInstance->template->name ?></strong>
-        <?= Label::success('#' . $templateInstance->id)->tooltip(Yii::t('CustomPagesModule.template', 'Template Instance Id')) ?>
-        <?= Button::primary(Yii::t('CustomPagesModule.view', 'Edit elements'))
-            ->icon('pencil')
-            ->action('ui.modal.load', ['/custom_pages/template/element-content/edit-multiple', 'id' => $templateInstance->id, 'sguid' => $sguid])
-            ->xs() ?>
+        <?= Label::warning('#' . $templateInstance->id)
+            ->tooltip(Yii::t('CustomPagesModule.template', 'Template Instance Id')) ?>
+
         <?php if ($templateInstance->container_item_id !== null) : ?>
-            <?= Button::danger()
-                ->icon('times')
-                ->action('deleteContainerItem', ['/custom_pages/template/container-content/delete-item', 'id' => $templateInstance->container_item_id, 'sguid' => $sguid])
+            <?= Button::success()->icon('caret-up')->action('moveUpContainerItem')->xs()->loader(false) ?>
+            <?= Button::success()->icon('caret-down')->action('moveDownContainerItem')->xs()->loader(false) ?>
+        <?php endif; ?>
+
+        <?= Button::primary()->icon('pencil')->action('editElements')->xs() ?>
+
+        <?php if ($templateInstance->container_item_id !== null) : ?>
+            <?= Button::danger()->icon('times')->action('deleteContainerItem')->xs()
                 ->confirm(
                     Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> container item deletion'),
                     Yii::t('CustomPagesModule.template', 'Are you sure you want to delete this container item?'),
                     Yii::t('CustomPagesModule.base', 'Delete'),
-                )
-                ->xs() ?>
+                ) ?>
         <?php endif; ?>
 
         <?= Html::beginTag('ul') ?>
             <?php foreach ($elementContents as $elementContent) : ?>
             <?= Html::beginTag('li', $widget->getElementContentOptions($elementContent)) ?>
                 <?= Label::info($elementContent->getLabel()) ?>
-                <?= empty($elementContent->element->title) ? '' : '- ' . $elementContent->element->title ?>
-                - <code><?= $elementContent->element->name ?></code>
+                <?= empty($elementContent->element->title) ? '' : $elementContent->element->title . ' -' ?>
+                <code><?= $elementContent->element->name ?></code>
 
                 <?php if ($elementContent instanceof ContainerElement) : ?>
                     - <?= Yii::t('CustomPagesModule.template', 'Multiple') ?>:

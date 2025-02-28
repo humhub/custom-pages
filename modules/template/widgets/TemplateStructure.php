@@ -11,7 +11,6 @@ namespace humhub\modules\custom_pages\modules\template\widgets;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
-use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\widgets\JsWidget;
 use Yii;
@@ -50,7 +49,6 @@ class TemplateStructure extends JsWidget
         return $this->render('templateStructure', [
             'templateInstance' => $this->templateInstance,
             'elementContents' => $this->templateInstance->template->getElementContents($this->templateInstance),
-            'sguid' => Yii::$app->controller->contentContainer->guid ?? null,
             'options' => $this->getOptions(),
         ]);
     }
@@ -70,8 +68,11 @@ class TemplateStructure extends JsWidget
             $data['element-id'] = $containerItem->container->element_id;
             $data['element-content-id'] = $containerItem->element_content_id;
         } else {
+            $data['elements-edit-url'] = $this->createUrl('/custom_pages/template/element-content/edit-multiple');
             $data['create-container-url'] = $this->createUrl('/custom_pages/template/container-content/create-container');
             $data['item-add-url'] = $this->createUrl('/custom_pages/template/container-content/add-item');
+            $data['item-move-url'] = $this->createUrl('/custom_pages/template/container-content/move-item');
+            $data['item-delete-url'] = $this->createUrl('/custom_pages/template/container-content/delete-item');
         }
 
         return $data;

@@ -15,6 +15,7 @@ Changelog
 - Fix #377: Rename "snipped" to "snippet"
 - Enh #378: Refactor template instance and owner content
 - Enh #387: Remove inline editing of container item elements
+- Enh #396: Structure overview
 
 1.10.15 (February 11, 2025)
 ---------------------------

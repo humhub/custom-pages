@@ -16,10 +16,10 @@ class BaseElementVariable
 
     private BaseElementContent $elementContent;
 
-    public function __construct(BaseElementContent $elementContent, bool $editMode = true)
+    public function __construct(BaseElementContent $elementContent, string $mode = 'edit')
     {
         $this->elementContent = $elementContent;
-        $this->options['editMode'] = $editMode;
+        $this->options['mode'] = $mode;
     }
 
     public function getLabel()
@@ -29,7 +29,7 @@ class BaseElementVariable
 
     public function isEditMode(): bool
     {
-        return $this->options['editMode'] ?? false;
+        return isset($this->options['mode']) && $this->options['mode'] === 'edit';
     }
 
     public function getEmptyContent()

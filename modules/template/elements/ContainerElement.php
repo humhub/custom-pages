@@ -18,6 +18,7 @@ use yii\db\ActiveQuery;
  * @property-read ContainerItem[] $items
  * @property-read Template[] $templates
  * @property-read Template[] $allowedTemplates
+ * @property-read ContainerDefinition $definition
  */
 class ContainerElement extends BaseElementContent
 {
@@ -76,18 +77,16 @@ class ContainerElement extends BaseElementContent
     {
         $items = $this->items;
 
-        $editMode = $this->isEditMode($options);
-
-        if (empty($items) && $editMode) {
+        if (empty($items) && $this->isEditMode($options)) {
             return $this->renderEmpty($options);
         }
 
         $result = '';
         foreach ($this->items as $containerItem) {
-            $result .= $containerItem->render($editMode, $this->definition->is_inline);
+            $result .= $containerItem->render($options['mode'] ?? '', $this->definition->is_inline);
         }
 
-        if ($editMode) {
+        if ($this->isEditMode($options)) {
             $options['jsWidget'] = 'custom_pages.template.TemplateContainer';
             return $this->wrap('div', $result, $options, ['data-template-multiple' => $this->definition->allow_multiple]);
         }

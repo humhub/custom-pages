@@ -90,9 +90,9 @@ class TemplateInstance extends ActiveRecord
         return $query;
     }
 
-    public function render(bool $editMode = false)
+    public function render(string $mode = '')
     {
-        return $this->template->render($this, $editMode);
+        return $this->template->render($this, $mode);
     }
 
     public function getTemplate()

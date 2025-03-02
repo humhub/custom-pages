@@ -134,11 +134,11 @@ class ContainerItem extends ActiveRecord
         return $this->hasOne(ContainerElement::class, ['id' => 'element_content_id']);
     }
 
-    public function render(bool $editMode, $inline = false)
+    public function render(string $mode, $inline = false)
     {
         try {
-            $result = $this->template->render($this->templateInstance, $editMode);
-            return $editMode ? $this->wrap($result, $inline) : $result;
+            $result = $this->template->render($this->templateInstance, $mode);
+            return $mode === 'edit' ? $this->wrap($result, $inline) : $result;
         } catch (\Throwable $ex) {
             Yii::error('Broken Container Item #' . $this->id . ' has lost Template Instance. ' .
                 'Error: ' . $ex->getMessage() . ' ' . $ex->getFile() . '(' . $ex->getLine() . ') ' . $ex->getTraceAsString(), 'custom-pages');

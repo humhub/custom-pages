@@ -3,13 +3,16 @@ use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\widgets\Button;
+use humhub\widgets\Link;
 
 /* @var int $pageId */
-/* @var bool $editMode */
+/* @var string $mode */
 /* @var TemplateInstance $templateInstance */
+/* @var string $sguid */
 ?>
 
-<?php if ($editMode) : ?>
+<?php if ($mode === 'edit' || $mode === 'structure') : ?>
 
     <div id="editPageButton" class="btn-group">
         <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -17,33 +20,48 @@ use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
         </button>
         <ul class="dropdown-menu">
             <li>
-                <a target="_blank"  href="<?= Url::toEditPage($pageId, ContentContainerHelper::getCurrent()) ?>">
-                    <?= Yii::t('CustomPagesModule.view', 'Page configuration') ?>
-                </a>
+                <?= Link::to(
+                        Yii::t('CustomPagesModule.view', 'Page configuration'),
+                        Url::toEditPage($pageId, ContentContainerHelper::getCurrent()),
+                    )->blank() ?>
             </li>
             <?php if (PagePermissionHelper::canTemplate()) : ?>
                 <li>
-                    <a target="_blank"  href="<?= Url::to(['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid]) ?>">
-                        <?= Yii::t('CustomPagesModule.view', 'Edit template') ?>
-                    </a>
+                    <?= Link::to(
+                            Yii::t('CustomPagesModule.view', 'Edit template'),
+                            ['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid],
+                        )->blank() ?>
                 </li>
             <?php endif; ?>
             <li>
-                <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/element-content/edit-multiple', 'id' => $templateInstance->id, 'sguid' => $sguid]) ?>" id="editAllElements" href="#">
-                    <?= Yii::t('CustomPagesModule.view', 'Edit elements') ?>
-                </a>
+                <?= Link::to(
+                    $mode === 'edit'
+                        ? Yii::t('CustomPagesModule.view', 'Structure Overview')
+                        : Yii::t('CustomPagesModule.view', 'Edit mode'),
+                    ['view', 'id' => $pageId, 'mode' => $mode === 'edit' ? 'structure' : 'edit', 'sguid' => $sguid],
+                ) ?>
             </li>
             <li>
-                <a href="<?= Url::to(['view', 'id' => $pageId, 'editMode' => false, 'sguid' => $sguid]); ?>">
-                    <?= Yii::t('CustomPagesModule.view', 'Turn edit off') ?>
-                </a>
+                <?= Link::to(Yii::t('CustomPagesModule.view', 'Edit elements'))->action(
+                    'ui.modal.load',
+                    ['/custom_pages/template/element-content/edit-multiple', 'id' => $templateInstance->id, 'sguid' => $sguid],
+                ) ?>
+            </li>
+            <li>
+                <?= Link::to(
+                    $mode === 'edit'
+                        ? Yii::t('CustomPagesModule.view', 'Turn edit off')
+                        : Yii::t('CustomPagesModule.view', 'Turn structure off'),
+                    ['view', 'id' => $pageId, 'sguid' => $sguid],
+                ) ?>
             </li>
         </ul>
     </div>
 
 <?php else: ?>
-    <a id="editPageButton" class="btn btn-primary btn-xs" data-ui-loader style="color:var(--text-color-highlight)" href="<?= Url::to(['view', 'id' => $pageId, 'editMode' => true, 'sguid' => $sguid]); ?>">
-        <i class="fa fa-pencil"></i>
-        <?= Yii::t('CustomPagesModule.template', 'Edit Page') ?>
-    </a>
+    <?= Button::primary(Yii::t('CustomPagesModule.template', 'Edit Page'))
+        ->icon('pencil')
+        ->link(['view', 'id' => $pageId, 'mode' => 'edit', 'sguid' => $sguid])
+        ->id('editPageButton')
+        ->xs() ?>
 <?php endif; ?>

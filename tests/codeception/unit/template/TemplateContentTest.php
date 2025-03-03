@@ -35,7 +35,8 @@ class TemplateContentTest extends HumHubDbTestCase
         ]);
 
         $this->assertStringContainsString('<p>Test</p>', $result);
-        $this->assertStringContainsString('data-template-element="test"', $result);
-        $this->assertStringContainsString('data-template-empty="0"', $result);
+        // Edit mode is not allowed for elements except of Container
+        $this->assertStringNotContainsString('data-template-element="test"', $result);
+        $this->assertStringNotContainsString('data-template-empty="0"', $result);
     }
 }

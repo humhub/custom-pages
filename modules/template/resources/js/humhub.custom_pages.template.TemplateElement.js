@@ -26,8 +26,6 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
         this.$root = this.editor.$;
 
         this.id = this.$.attr('id');
-        this.editUrl = this.editor.options.elementEditUrl;
-        this.deleteUrl = this.editor.options.elementDeleteUrl;
 
         this.name = this.options.templateElement;
     
@@ -128,11 +126,7 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
     };
     
     TemplateElement.prototype.getDeleteConfirmOptions = function () {
-        return {
-            confirmHeader: customPage.text('confirmDeleteContentHeader'),
-            confirmBody: customPage.text('confirmDeleteContentBody'),
-            confirmText: customPage.text('confirmDeleteButton')
-        };
+        return {};
     };
 
     TemplateElement.prototype.editAction = function (evt) {

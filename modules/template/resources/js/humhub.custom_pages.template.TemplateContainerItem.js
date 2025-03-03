@@ -23,7 +23,6 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
 
         this.editUrl = this.editor.options.itemEditUrl;
         this.deleteUrl = this.editor.options.itemDeleteUrl;
-        this.isContainerItem = true;
     };
 
     object.inherits(TemplateContainerItem, TemplateElement);

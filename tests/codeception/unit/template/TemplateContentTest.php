@@ -29,7 +29,7 @@ class TemplateContentTest extends HumHubDbTestCase
 
         $result = $content->render([
             'empty' => false,
-            'editMode' => true,
+            'mode' => 'edit',
             'element_name' => 'test',
             'template_instance_id' => $content->templateInstance->id,
         ]);

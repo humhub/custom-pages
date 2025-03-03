@@ -20,6 +20,7 @@ use yii\db\ActiveQuery;
  * @property-read ContainerItem[] $items
  * @property-read Template[] $templates
  * @property-read Template[] $allowedTemplates
+ * @property-read ContainerDefinition $definition
  */
 class ContainerElement extends BaseElementContent
 {
@@ -78,9 +79,7 @@ class ContainerElement extends BaseElementContent
     {
         $items = $this->items;
 
-        $editMode = $this->isEditMode($options);
-
-        if (empty($items) && $editMode) {
+        if (empty($items) && $this->isEditMode($options)) {
             $content = Html::tag('strong', Yii::t('CustomPagesModule.model', 'Empty <br />Container'));
             $content = Html::tag('div', $content, ['class' => 'emptyBlock']);
             return $this->renderEditBlock($content, $options, ['class' => 'emptyContainerBlock']);
@@ -88,10 +87,10 @@ class ContainerElement extends BaseElementContent
 
         $result = '';
         foreach ($this->items as $containerItem) {
-            $result .= $containerItem->render($editMode, $this->definition->is_inline);
+            $result .= $containerItem->render($options['mode'] ?? '', $this->definition->is_inline);
         }
 
-        if ($editMode) {
+        if ($this->isEditMode($options)) {
             return $this->renderEditBlock($result, $options);
         }
 

@@ -36,7 +36,7 @@ class Url extends BaseUrl
         if ($content->getPageType() === PageType::Snippet) {
             return static::create(static::ROUTE_SNIPPET_INLINE_EDIT, ['id' => $content->id], $container);
         } else {
-            return static::create(static::ROUTE_PAGE_INLINE_EDIT, ['id' => $content->id, 'editMode' => 1], $container);
+            return static::create(static::ROUTE_PAGE_INLINE_EDIT, ['id' => $content->id, 'mode' => 'edit'], $container);
         }
     }
 

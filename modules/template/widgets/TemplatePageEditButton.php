@@ -31,9 +31,9 @@ class TemplatePageEditButton extends Widget
     public $canEdit;
 
     /**
-     * @var bool
+     * @var string
      */
-    public $editMode;
+    public $mode;
 
     /**
      * @inheritdoc
@@ -51,7 +51,7 @@ class TemplatePageEditButton extends Widget
         return $this->render('templatePageEditButton', [
             'canEdit' => $this->canEdit,
             'sguid' => $space ? $space->guid : null,
-            'editMode' => $this->editMode,
+            'mode' => $this->mode,
             'pageId' => $this->page->id,
             'templateInstance' => $templateInstance,
         ]);

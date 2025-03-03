@@ -335,9 +335,14 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
         ]);
     }
 
+    protected function renderStructure($options = [], $attributes = []): string
+    {
+        return $this->getLabel();
+    }
+
     public function isEditMode(array $options = []): bool
     {
-        return $options['editMode'] ?? false;
+        return isset($options['mode']) && $options['mode'] === 'edit';
     }
 
     public function purify($content)

@@ -75,13 +75,13 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
             throw new \yii\web\HttpException(403, 'Access denied!');
         }
 
-        $editMode = Yii::$app->request->get('editMode') && $canEdit;
+        $mode = $canEdit ? Yii::$app->request->get('mode', '') : '';
 
         return $this->owner->render('template', [
             'page' => $page,
-            'editMode' => $editMode,
+            'mode' => $mode,
             'canEdit' => $canEdit,
-            'html' => TemplateInstanceRendererService::instance($page)->render($editMode),
+            'html' => TemplateInstanceRendererService::instance($page)->render($mode),
         ]);
     }
 

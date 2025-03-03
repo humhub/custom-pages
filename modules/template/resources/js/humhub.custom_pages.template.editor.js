@@ -122,7 +122,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     };
 
     TemplateInlineEditor.prototype.replaceElement = function (element, content) {
-        element.$.replaceWith($(content));
+        element ? element.$.replaceWith($(content)) : location.reload();
     };
 
     TemplateInlineEditor.prototype.setActivateElement = function ($element) {

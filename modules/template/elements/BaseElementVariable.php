@@ -32,11 +32,6 @@ class BaseElementVariable
         return isset($this->options['mode']) && $this->options['mode'] === 'edit';
     }
 
-    public function getEmptyContent()
-    {
-        return $this->elementContent->renderEmpty();
-    }
-
     public function getEmpty()
     {
         return $this->elementContent->isEmpty();
@@ -65,8 +60,6 @@ class BaseElementVariable
         try {
             if (!$this->elementContent->isEmpty()) {
                 return $this->elementContent->render($options);
-            } elseif ($this->isEditMode()) {
-                return $this->elementContent->renderEmpty($options);
             }
         } catch (\Exception $e) {
             return strval($e);

@@ -146,16 +146,6 @@ class FileDownloadElement extends BaseElementContent
             $content .= Html::tag('small', ' - ' . $fileInfo['size_format'], ['class' => 'file-fileInfo']);
         }
 
-        return $this->isEditMode($options)
-            ? $this->wrap('a', $content, $options)
-            : Html::tag('a', $content, $options['htmlOptions']);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderEmpty($options = [])
-    {
-        return '';
+        return Html::tag('a', $content, $options['htmlOptions']);
     }
 }

@@ -62,10 +62,6 @@ class HumHubRichtextElement extends BaseElementContent
      */
     public function render($options = [])
     {
-        if ($this->isEditMode($options)) {
-            return $this->wrap('div', Richtext::output($this->content), $options);
-        }
-
         return Richtext::output($this->content);
     }
 
@@ -75,13 +71,5 @@ class HumHubRichtextElement extends BaseElementContent
     public function saveFiles()
     {
         Richtext::postProcess($this->content, $this);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderEmpty($options = [])
-    {
-        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty HumHub Richtext'), $options);
     }
 }

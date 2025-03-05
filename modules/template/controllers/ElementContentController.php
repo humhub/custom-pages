@@ -10,9 +10,6 @@ namespace humhub\modules\custom_pages\modules\template\controllers;
 
 use humhub\components\Controller;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
-use humhub\modules\custom_pages\modules\template\models\forms\EditElementContentForm;
-use humhub\modules\custom_pages\modules\template\widgets\EditElementModal;
-use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElementsForm;
@@ -38,69 +35,6 @@ class ElementContentController extends Controller
         return [
             ['class' => 'humhub\modules\custom_pages\modules\template\components\TemplateAccessFilter'],
         ];
-    }
-
-    /**
-     * Edits the content of a specific Element Content for the given Template Instance.
-     *
-     * @return Response
-     */
-    public function actionEdit($elementId, $elementContentId = null, $templateInstanceId = null)
-    {
-        $form = new EditElementContentForm();
-        $form->setElementData($elementId, $elementContentId, $templateInstanceId);
-        $form->setScenario('edit');
-
-        if ($form->load(Yii::$app->request->post())) {
-            if ($form->save()) {
-                TemplateCache::flushByElementContent($form->content);
-                return $this->getJsonEditElementResult(true, (new BaseElementVariable($form->content))->render());
-            } else {
-                return $this->getJsonEditElementResult(false, $this->renderAjaxPartial(EditElementModal::widget([
-                    'model' => $form,
-                    'title' => Yii::t('CustomPagesModule.base', '<strong>Edit</strong> {type} element', ['type' => $form->getLabel()]),
-                ])));
-            }
-        }
-
-        return $this->asJson([
-            'output' => $this->renderAjaxPartial(EditElementModal::widget([
-                'model' => $form,
-                'title' => Yii::t('CustomPagesModule.base', '<strong>Edit</strong> {type} element "{title}"', [
-                    'type' => $form->getLabel(),
-                    'title' => $form->element->title,
-                ]),
-            ])),
-        ]);
-    }
-
-    /**
-     * Used to delete element content record.
-     *
-     * @return Response
-     * @throws BadRequestHttpException
-     */
-    public function actionDelete()
-    {
-        $this->forcePostRequest();
-
-        $elementId = (int) Yii::$app->request->post('elementId');
-        $elementContentId = (int) Yii::$app->request->post('elementContentId');
-        $templateInstanceId = (int) Yii::$app->request->post('templateInstanceId');
-
-        if (!$elementId || !$elementContentId || !$templateInstanceId) {
-            throw new BadRequestHttpException('Invalid request data!');
-        }
-
-        $form = new EditElementContentForm();
-        $form->setElementData($elementId, $elementContentId, $templateInstanceId);
-
-        $this->deleteElementContent($form->elementContent);
-
-        // Set the default content for this element block
-        $elementContent = $form->element->getDefaultContent(true);
-
-        return $this->getJsonEditElementResult(true, (new BaseElementVariable($elementContent))->render());
     }
 
     /**
@@ -170,20 +104,4 @@ class ElementContentController extends Controller
             ])),
         ]);
     }
-
-    /**
-     * Creates a json result array used by multiple actions.
-     *
-     * @param bool $success defines if the process was successful e.g. saving an element
-     * @param mixed $content content result
-     * @return Response
-     */
-    private function getJsonEditElementResult(bool $success, string $content): Response
-    {
-        return $this->asJson([
-            'success' => $success,
-            'output' => $content,
-        ]);
-    }
-
 }

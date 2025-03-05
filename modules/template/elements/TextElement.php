@@ -100,28 +100,6 @@ class TextElement extends BaseElementContent
      */
     public function render($options = [])
     {
-        $result = $this->inline_text ? $this->purify($this->content) : Html::encode($this->content);
-
-        if ($this->isEditMode($options) && $this->inline_text) {
-            if (empty($result)) {
-                return $this->renderEmpty($options);
-            }
-            return $this->wrap('span', $result, $options);
-        }
-
-        return $result;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderEmpty($options = [])
-    {
-        if ($this->inline_text) {
-            $options['class'] = 'emptyBlock text';
-            return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty Text'), $options);
-        }
-
-        return '';
+        return $this->inline_text ? $this->purify($this->content) : Html::encode($this->content);
     }
 }

@@ -11,7 +11,6 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentContainer;
-use Yii;
 use yii\db\IntegrityException;
 
 /**
@@ -51,21 +50,7 @@ abstract class BaseContentContainerElement extends BaseElementContent
      */
     public function render($options = [])
     {
-        $result = Html::encode($this->getRecord()->getDisplayName());
-
-        if ($this->isEditMode($options)) {
-            return $this->wrap('span', $result, $options);
-        }
-
-        return $result;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderEmpty($options = [])
-    {
-        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty'), $options);
+        return Html::encode($this->getRecord()->getDisplayName());
     }
 
     /**

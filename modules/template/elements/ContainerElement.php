@@ -8,7 +8,9 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
+use humhub\libs\Html;
 use humhub\modules\custom_pages\modules\template\models\Template;
+use humhub\modules\custom_pages\modules\template\widgets\TemplateEditorElement;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -78,7 +80,9 @@ class ContainerElement extends BaseElementContent
         $items = $this->items;
 
         if (empty($items) && $this->isEditMode($options)) {
-            return $this->renderEmpty($options);
+            $content = Html::tag('strong', Yii::t('CustomPagesModule.model', 'Empty <br />Container'));
+            $content = Html::tag('div', $content, ['class' => 'emptyBlock']);
+            return $this->renderEditBlock($content, $options, ['class' => 'emptyContainerBlock']);
         }
 
         $result = '';
@@ -87,38 +91,36 @@ class ContainerElement extends BaseElementContent
         }
 
         if ($this->isEditMode($options)) {
-            $options['jsWidget'] = 'custom_pages.template.TemplateContainer';
-            return $this->wrap('div', $result, $options, ['data-template-multiple' => $this->definition->allow_multiple]);
+            return $this->renderEditBlock($result, $options);
         }
 
         return $result;
     }
 
     /**
-     * @inheritdoc
+     * Render block for inline editing
+     *
+     * @param string $content
+     * @param array $options
+     * @param array $attributes
+     * @return string
      */
-    public function renderEmpty($options = [])
+    protected function renderEditBlock(string $content, array $options = [], array $attributes = []): string
     {
         $options['jsWidget'] = 'custom_pages.template.TemplateContainer';
-        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty <br />Container'), $options, [
-            'class' => 'emptyContainerBlock',
-            'data-template-multiple' => $this->definition->allow_multiple,
+        $attributes['data-template-multiple'] = $this->definition->allow_multiple;
+
+        if ($this->getPrimaryKey() !== null) {
+            $options['element_content_id'] = $this->getPrimaryKey();
+        }
+
+        return TemplateEditorElement::widget([
+            'container' => 'div',
+            'elementContent' => $this,
+            'content' => $content,
+            'renderOptions' => $options,
+            'renderAttributes' => $attributes,
         ]);
-    }
-
-    public function addContainerItem($templateId, $index = null)
-    {
-        $index = ($index == null) ? $this->getNextIndex() : $index;
-
-        ContainerItem::incrementIndex($this->id, $index);
-
-        $item = new ContainerItem();
-        $item->template_id = $templateId;
-        $item->element_content_id = $this->id;
-        $item->sort_order = $index;
-        $item->save();
-
-        return $item;
     }
 
     public function moveItem($itemId, $step)
@@ -151,7 +153,7 @@ class ContainerElement extends BaseElementContent
         }
     }
 
-    public function createEmptyItem($templateId, $index = null)
+    public function createEmptyItem($templateId, $index = null): ContainerItem
     {
         $index = ($index == null) ? $this->getNextIndex() : $index;
 

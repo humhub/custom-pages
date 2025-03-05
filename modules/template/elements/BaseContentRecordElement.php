@@ -51,14 +51,6 @@ abstract class BaseContentRecordElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function renderEmpty($options = [])
-    {
-        return $this->renderEmptyDiv(Yii::t('CustomPagesModule.model', 'Empty'), $options);
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function setAttributes($values, $safeOnly = true)
     {
         if (isset($values['id'])) {

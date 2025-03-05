@@ -74,11 +74,6 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
     abstract public function render($options = []);
 
     /**
-     * @return string empty block representation of this content type.
-     */
-    abstract public function renderEmpty($options = []);
-
-    /**
      * @return string the label of this content type
      */
     abstract public function getLabel(): string;
@@ -357,16 +352,6 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
         $config->set('Attr.AllowedFrameTargets', ['_blank']);
 
         return \yii\helpers\HtmlPurifier::process($content, $config);
-    }
-
-    protected function renderEmptyDiv($title, $options = [], $attributes = [])
-    {
-        if ($this->isEditMode($options)) {
-            $class = $this->getOption($options, 'class', 'emptyBlock');
-            $defaultContent = '<div class="' . $class . '"><strong>' . $title . '</strong></div>';
-            return $this->wrap('div', $defaultContent, $options, $attributes);
-        }
-        return '';
     }
 
     public function getOption($options, $key, $default = null)

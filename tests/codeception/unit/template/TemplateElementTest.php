@@ -36,8 +36,9 @@ class TemplateElementTest extends HumHubDbTestCase
         $result = $this->template->render($this->owner, 'edit');
 
         $this->assertStringContainsString('<p>Default</p>', $result);
-        $this->assertStringContainsString('data-template-element="test_content"', $result);
-        $this->assertStringContainsString('data-template-empty="0"', $result);
+        // Edit mode is not allowed for elements except of Container
+        $this->assertStringNotContainsString('data-template-element="test_content"', $result);
+        $this->assertStringNotContainsString('data-template-empty="0"', $result);
     }
 
     public function testOverwriteDefaultContent()
@@ -50,10 +51,10 @@ class TemplateElementTest extends HumHubDbTestCase
         $result = $this->template->render($this->owner, 'edit');
 
         $this->assertStringContainsString('<p>Non Default</p>', $result);
-        $this->assertStringContainsString('data-template-element="test_content"', $result);
-        $this->assertStringContainsString('data-template-empty="0"', $result);
-        // Test empty element
-        $this->assertStringContainsString('data-template-empty="1"', $result);
+        // Edit mode is not allowed for elements except of Container
+        $this->assertStringNotContainsString('data-template-element="test_content"', $result);
+        $this->assertStringNotContainsString('data-template-empty="0"', $result);
+        $this->assertStringNotContainsString('data-template-empty="1"', $result);
     }
 
     public function testOverwriteEmptyDefaultContent()
@@ -66,7 +67,8 @@ class TemplateElementTest extends HumHubDbTestCase
         $result = $this->template->render($this->owner, 'edit');
 
         $this->assertStringContainsString('<p>Non Default2</p>', $result);
-        $this->assertStringContainsString('data-template-element="test_text"', $result);
+        // Edit mode is not allowed for elements except of Container
+        $this->assertStringNotContainsString('data-template-element="test_text"', $result);
         $this->assertStringNotContainsString('data-template-empty="1"', $result);
     }
 

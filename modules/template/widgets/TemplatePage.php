@@ -78,14 +78,8 @@ class TemplatePage extends JsWidget
 
             $this->getView()->registerJsConfig('custom_pages.template.editor', [
                 'text' => [
-                    'toggleOnText' => Yii::t('CustomPagesModule.base', 'On'),
-                    'toggleOffText' => Yii::t('CustomPagesModule.base', 'Off'),
                     'editTemplateText' => Yii::t('CustomPagesModule.view', 'Edit Template'),
                     'confirmDeleteButton' => Yii::t('CustomPagesModule.base', 'Delete'),
-                    'confirmDeleteContentHeader' => Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> content deletion'),
-                    'confirmDeleteContentBody' => Yii::t('CustomPagesModule.template', 'Do you really want to delete this content?'),
-                    'confirmDeleteElementHeader' => Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> element deletion'),
-                    'confirmDeleteElementBody' => Yii::t('CustomPagesModule.template', 'Do you really want to delete this content?'),
                     'confirmDeleteItemHeader' => Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> container item deletion'),
                     'confirmDeleteItemBody' => Yii::t('CustomPagesModule.template', 'Are you sure you want to delete this container item?'),
                 ],
@@ -122,8 +116,6 @@ class TemplatePage extends JsWidget
         if ($this->canEdit && $this->mode === 'edit') {
             return [
                 'template-instance-id' => TemplateInstance::findByOwner($this->page)?->id,
-                'element-edit-url' => $this->createUrl('/custom_pages/template/element-content/edit'),
-                'element-delete-url' => $this->createUrl('/custom_pages/template/element-content/delete'),
                 'create-container-url' => $this->createUrl('/custom_pages/template/container-content/create-container'),
                 'item-delete-url' => $this->createUrl('/custom_pages/template/container-content/delete-item'),
                 'item-edit-url' => $this->createUrl('/custom_pages/template/container-content/edit-item'),

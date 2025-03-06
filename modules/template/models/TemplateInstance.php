@@ -153,4 +153,14 @@ class TemplateInstance extends ActiveRecord
     {
         return $this->container_item_id === null ? self::TYPE_PAGE : self::TYPE_CONTAINER;
     }
+
+    public function isPage(): bool
+    {
+        return $this->getType() === self::TYPE_PAGE;
+    }
+
+    public function isContainer(): bool
+    {
+        return $this->getType() === self::TYPE_CONTAINER;
+    }
 }

@@ -46,10 +46,15 @@ class TemplateStructure extends JsWidget
      */
     public function run()
     {
+        $elementContents = array_filter($this->templateInstance->template->getElementContents($this->templateInstance), function ($element) {
+            return $element instanceof ContainerElement;
+        });
+
         return $this->render('templateStructure', [
             'templateInstance' => $this->templateInstance,
-            'elementContents' => $this->templateInstance->template->getElementContents($this->templateInstance),
+            'elementContents' => $elementContents,
             'options' => $this->getOptions(),
+            'templateInstanceOptions' => $this->getTemplateInstanceOptions(),
         ]);
     }
 
@@ -58,35 +63,39 @@ class TemplateStructure extends JsWidget
      */
     protected function getData()
     {
-        $data = parent::getData();
-        $data['template-instance-id'] = $this->templateInstance->id;
-        $data['template-type'] = $this->templateInstance->template->type;
-
-        $containerItem = $this->templateInstance->containerItem;
-        if ($containerItem instanceof ContainerItem) {
-            $data['container-item-id'] = $containerItem->id;
-            $data['element-id'] = $containerItem->container->element_id;
-            $data['element-content-id'] = $containerItem->element_content_id;
-        } else {
-            $data['elements-edit-url'] = $this->createUrl('/custom_pages/template/element-content/edit-multiple');
-            $data['create-container-url'] = $this->createUrl('/custom_pages/template/container-content/create-container');
-            $data['item-add-url'] = $this->createUrl('/custom_pages/template/container-content/add-item');
-            $data['item-move-url'] = $this->createUrl('/custom_pages/template/container-content/move-item');
-            $data['item-delete-url'] = $this->createUrl('/custom_pages/template/container-content/delete-item');
-        }
-
-        return $data;
+        return [
+            'elements-edit-url' => $this->createUrl('/custom_pages/template/element-content/edit-multiple'),
+            'create-container-url' => $this->createUrl('/custom_pages/template/container-content/create-container'),
+            'item-add-url' => $this->createUrl('/custom_pages/template/container-content/add-item'),
+            'item-move-url' => $this->createUrl('/custom_pages/template/container-content/move-item'),
+            'item-delete-url' => $this->createUrl('/custom_pages/template/container-content/delete-item'),
+        ];
     }
 
     /**
      * @inheritdoc
      */
-    protected function getOptions()
+    protected function getAttributes()
     {
-        $options = parent::getOptions();
+        return [
+            'class' => 'panel custom-pages-template-structure',
+        ];
+    }
 
-        if ($this->templateInstance->container_item_id === null) {
-            $options['class'] = 'custom-pages-template-structure';
+    public function getTemplateInstanceOptions(): array
+    {
+        $options = [
+            'data-template-instance-id' => $this->templateInstance->id,
+            'data-template-type' => $this->templateInstance->template->type,
+        ];
+
+        if ($this->templateInstance->isContainer()) {
+            $containerItem = $this->templateInstance->containerItem;
+            if ($containerItem instanceof ContainerItem) {
+                $options['data-container-item-id'] = $containerItem->id;
+                $options['data-element-id'] = $containerItem->container->element_id;
+                $options['data-element-content-id'] = $containerItem->element_content_id;
+            }
         }
 
         return $options;
@@ -94,15 +103,11 @@ class TemplateStructure extends JsWidget
 
     public function getElementContentOptions(BaseElementContent $elementContent): array
     {
-        $options = [];
-
-        if ($elementContent instanceof ContainerElement) {
-            $options['data-element-id'] = $elementContent->element_id;
-            $options['data-element-content-id'] = $elementContent->id;
-            $options['data-default'] = $elementContent->isDefault();
-        }
-
-        return $options;
+        return [
+            'data-element-id' => $elementContent->element_id,
+            'data-element-content-id' => $elementContent->id,
+            'data-default' => $elementContent->isDefault(),
+        ];
     }
 
     private function createUrl($route): string

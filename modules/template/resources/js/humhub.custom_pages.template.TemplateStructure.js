@@ -12,23 +12,16 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
     object.inherits(TemplateStructure, Widget);
 
     TemplateStructure.prototype.init = function () {
-        const rootTemplate = this.$.closest('[data-template-type="layout"][data-template-instance-id]');
-        this.rootTemplateInstanceId = rootTemplate.data('template-instance-id');
-        this.elementsEditUrl = rootTemplate.data('elements-edit-url');
-        this.createContainerUrl = rootTemplate.data('create-container-url');
-        this.itemAddUrl = rootTemplate.data('item-add-url');
-        this.itemMoveUrl = rootTemplate.data('item-move-url');
-        this.itemDeleteUrl = rootTemplate.data('item-delete-url');
     }
 
     TemplateStructure.prototype.addContainerItem = function (evt) {
         const container = evt.$target.closest('[data-element-id]');
 
         modal.load(evt, {
-            url:  container.data('default') !== undefined ? this.createContainerUrl : this.itemAddUrl,
+            url:  container.data('default') !== undefined ? this.data('create-container-url') : this.data('item-add-url'),
             dataType: 'json',
             data: {
-                templateInstanceId: this.rootTemplateInstanceId,
+                templateInstanceId: this.data('template-instance-id'),
                 elementId: container.data('element-id'),
                 elementContentId: container.data('element-content-id'),
             }
@@ -37,7 +30,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
 
     TemplateStructure.prototype.editElements = function (evt) {
         modal.load(evt, {
-            url:  this.elementsEditUrl,
+            url:  this.data('elements-edit-url'),
             dataType: 'json',
             data: {
                 id: evt.$target.closest('[data-template-instance-id]').data('template-instance-id'),
@@ -48,7 +41,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
     TemplateStructure.prototype.moveContainerItem = function (evt, direction) {
         const container = evt.$target.closest('[data-element-id]');
         const options = {
-            url: this.itemMoveUrl,
+            url: this.data('item-move-url'),
             data : {
                 elementContentId: container.data('element-content-id'),
                 itemId: container.data('container-item-id'),
@@ -81,7 +74,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
     TemplateStructure.prototype.deleteContainerItem = function (evt) {
         const containerItem = evt.$target.closest('[data-container-item-id]');
         const options = {
-            url: this.itemDeleteUrl,
+            url: this.data('item-delete-url'),
             data: {
                 itemId: containerItem.data('container-item-id'),
                 elementId: containerItem.data('element-id'),

@@ -314,7 +314,7 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
     protected function wrap($type, $content, $options = [], $attributes = [])
     {
         if (!$this instanceof ContainerElement && (
-            $this->templateInstance?->getType() === TemplateInstance::TYPE_CONTAINER ||
+            $this->templateInstance?->isContainer() ||
             ($this->template_instance_id === null && $this->element?->template?->type === Template::TYPE_CONTAINER)
         )) {
             // Apply the wrap for editing inside Container Item only for Container Element,

@@ -22,6 +22,7 @@ use humhub\widgets\Label;
 /* @var TemplateInstance $templateInstance */
 /* @var BaseElementContent[] $elementContents */
 /* @var array $options */
+/* @var array $templateInstanceOptions */
 /* @var View $this */
 
 /* @var TemplateStructure $widget */
@@ -30,7 +31,12 @@ $widget = $this->context;
 Assets::register($this);
 InlineEditorAsset::register($this);
 ?>
-<?= Html::beginTag('ul', $options) ?>
+<?php if ($templateInstance->isPage()) : ?>
+<?= Html::beginTag('div', $options) ?>
+    <?= Html::beginTag('div', ['class' => 'panel-body']) ?>
+<?php endif; ?>
+
+<?= Html::beginTag('ul', $templateInstanceOptions) ?>
     <?= Html::beginTag('li') ?>
         <?= Label::warning(Yii::t('CustomPagesModule.template', 'Template')) ?>
         <?= Template::getTypeTitle($templateInstance->template->type) ?>:
@@ -38,14 +44,14 @@ InlineEditorAsset::register($this);
         <?= Label::warning('#' . $templateInstance->id)
             ->tooltip(Yii::t('CustomPagesModule.template', 'Template Instance Id')) ?>
 
-        <?php if ($templateInstance->container_item_id !== null) : ?>
+        <?php if ($templateInstance->isContainer()) : ?>
             <?= Button::success()->icon('caret-up')->action('moveUpContainerItem')->xs()->loader(false) ?>
             <?= Button::success()->icon('caret-down')->action('moveDownContainerItem')->xs()->loader(false) ?>
         <?php endif; ?>
 
         <?= Button::primary()->icon('pencil')->action('editElements')->xs() ?>
 
-        <?php if ($templateInstance->container_item_id !== null) : ?>
+        <?php if ($templateInstance->isContainer()) : ?>
             <?= Button::danger()->icon('times')->action('deleteContainerItem')->xs()
                 ->confirm(
                     Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> container item deletion'),
@@ -85,3 +91,8 @@ InlineEditorAsset::register($this);
 
     <?= Html::endTag('li') ?>
 <?= Html::endTag('ul') ?>
+
+<?php if ($templateInstance->isPage()) : ?>
+    <?= Html::endTag('div') ?>
+<?= Html::endTag('div') ?>
+<?php endif; ?>

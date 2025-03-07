@@ -12,6 +12,9 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
     object.inherits(TemplateStructure, Widget);
 
     TemplateStructure.prototype.init = function () {
+        this.$.draggable({
+            handle: '.cp-ts-header',
+        });
     }
 
     TemplateStructure.prototype.addContainerItem = function (evt) {

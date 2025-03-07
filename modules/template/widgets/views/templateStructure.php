@@ -10,14 +10,12 @@ use humhub\libs\Html;
 use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\modules\template\assets\InlineEditorAsset;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
-use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
-use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
-use humhub\widgets\Label;
+use humhub\widgets\Link;
 
 /* @var TemplateInstance $templateInstance */
 /* @var BaseElementContent[] $elementContents */
@@ -33,57 +31,64 @@ InlineEditorAsset::register($this);
 ?>
 <?php if ($templateInstance->isPage()) : ?>
 <?= Html::beginTag('div', $options) ?>
-    <?= Html::beginTag('div', ['class' => 'panel-body']) ?>
+    <div class="cp-ts-header cp-ts-row">
+        <div class="cp-ts-text"><?= Yii::t('CustomPagesModule.template', 'Structure View') ?></div>
+        <?= Icon::get('arrows') ?>
+    </div>
 <?php endif; ?>
 
 <?= Html::beginTag('ul', $templateInstanceOptions) ?>
     <?= Html::beginTag('li') ?>
-        <?= Label::warning(Yii::t('CustomPagesModule.template', 'Template')) ?>
-        <?= Template::getTypeTitle($templateInstance->template->type) ?>:
-        <strong><?= $templateInstance->template->name ?></strong>
-        <?= Label::warning('#' . $templateInstance->id)
-            ->tooltip(Yii::t('CustomPagesModule.template', 'Template Instance Id')) ?>
-
-        <?php if ($templateInstance->isContainer()) : ?>
-            <?= Button::success()->icon('caret-up')->action('moveUpContainerItem')->xs()->loader(false) ?>
-            <?= Button::success()->icon('caret-down')->action('moveDownContainerItem')->xs()->loader(false) ?>
-        <?php endif; ?>
-
-        <?= Button::primary()->icon('pencil')->action('editElements')->xs() ?>
-
-        <?php if ($templateInstance->isContainer()) : ?>
-            <?= Button::danger()->icon('times')->action('deleteContainerItem')->xs()
-                ->confirm(
-                    Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> container item deletion'),
-                    Yii::t('CustomPagesModule.template', 'Are you sure you want to delete this container item?'),
-                    Yii::t('CustomPagesModule.base', 'Delete'),
-                ) ?>
-        <?php endif; ?>
+        <div class="cp-ts-template cp-ts-row">
+            <?= Icon::get('circle') ?>
+            <div class="cp-ts-text"><?= $templateInstance->template->name ?></div>
+            <?php if ($templateInstance->isContainer()) : ?>
+                <div class="cp-ts-actions dropdown">
+                    <?= Icon::get('ellipsis-h', ['htmlOptions' => ['data-toggle' => 'dropdown']])
+                        ->class('dropdown-toggle cp-ts-action') ?>
+                    <ul class="dropdown-menu">
+                        <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Edit'))
+                            ->icon('pencil')
+                            ->action('editElements') ?></li>
+                        <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Move Up'))
+                            ->icon('chevron-up')
+                            ->action('moveUpContainerItem') ?></li>
+                        <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Move Down'))
+                            ->icon('chevron-down')
+                            ->action('moveDownContainerItem') ?></li>
+                        <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Delete'))
+                            ->icon('trash')
+                            ->action('deleteContainerItem')
+                            ->confirm(
+                                Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> container item deletion'),
+                                Yii::t('CustomPagesModule.template', 'Are you sure you want to delete this container item?'),
+                                Yii::t('CustomPagesModule.base', 'Delete'),
+                            ) ?></li>
+                    </ul>
+                </div>
+            <?php else : ?>
+                <?= Icon::get('pencil', ['htmlOptions' => ['data-action-click' => 'editElements']])
+                    ->class('cp-ts-action') ?>
+            <?php endif; ?>
+        </div>
 
         <?= Html::beginTag('ul') ?>
             <?php foreach ($elementContents as $elementContent) : ?>
             <?= Html::beginTag('li', $widget->getElementContentOptions($elementContent)) ?>
-                <?= Label::info($elementContent->getLabel()) ?>
-                <?= empty($elementContent->element->title) ? '' : $elementContent->element->title . ' -' ?>
-                <code><?= $elementContent->element->name ?></code>
-
-                <?php if ($elementContent instanceof ContainerElement) : ?>
-                    - <?= Yii::t('CustomPagesModule.template', 'Multiple') ?>:
-                    <?= $elementContent->definition->allow_multiple
-                        ? Yii::t('CustomPagesModule.template', 'Yes')
-                        : Yii::t('CustomPagesModule.template', 'No') ?>
-                    <?= Button::success()
-                        ->action('addContainerItem')
-                        ->icon('plus')
-                        ->xs() ?>
-
-                    <?php if ($elementContent->hasItems()) : ?>
-                        <?php foreach ($elementContent->items as $item) : ?>
-                            <?php /* @var ContainerItem $item */ ?>
-                            <?= TemplateStructure::widget(['templateInstance' => $item->templateInstance]) ?>
-                        <?php endforeach; ?>
+                <div class="cp-ts-container cp-ts-row">
+                    <?= Icon::get('circle') ?>
+                    <div class="cp-ts-text"><?= $elementContent->element->title ?></div>
+                    <?php if ($elementContent->canAddItem()) : ?>
+                        <?= Icon::get('plus', ['htmlOptions' => ['data-action-click' => 'addContainerItem']])
+                            ->class('cp-ts-action') ?>
                     <?php endif; ?>
+                </div>
 
+                <?php if ($elementContent->hasItems()) : ?>
+                    <?php foreach ($elementContent->items as $item) : ?>
+                        <?php /* @var ContainerItem $item */ ?>
+                        <?= TemplateStructure::widget(['templateInstance' => $item->templateInstance]) ?>
+                    <?php endforeach; ?>
                 <?php endif; ?>
             <?= Html::endTag('li') ?>
             <?php endforeach; ?>
@@ -92,7 +97,4 @@ InlineEditorAsset::register($this);
     <?= Html::endTag('li') ?>
 <?= Html::endTag('ul') ?>
 
-<?php if ($templateInstance->isPage()) : ?>
-    <?= Html::endTag('div') ?>
-<?= Html::endTag('div') ?>
-<?php endif; ?>
+<?= $templateInstance->isPage() ? Html::endTag('div') : '' ?>

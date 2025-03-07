@@ -260,8 +260,10 @@ class Template extends ActiveRecord
      */
     public function render(TemplateInstance $templateInstance = null, string $mode = '')
     {
-        if ($mode === 'structure') {
-            return TemplateStructure::widget(['templateInstance' => $templateInstance]);
+        $result = '';
+
+        if ($mode === 'structure' && $templateInstance->isPage()) {
+            $result = TemplateStructure::widget(['templateInstance' => $templateInstance]);
         }
 
         $elementContents = $this->getElementContents($templateInstance);
@@ -275,7 +277,7 @@ class Template extends ActiveRecord
 
         $engine = TemplateEngineFactory::create($this->engine);
 
-        return $engine->render($this->name, $content);
+        return $result . $engine->render($this->name, $content);
     }
 
     /**

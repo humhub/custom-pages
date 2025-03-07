@@ -22,33 +22,71 @@
     max-width: 100%;
 }
 
+/* Structure view */
 .custom-pages-template-structure {
+    position: absolute;
     margin: 0;
-    padding: 0;
+    padding: 8px;
     list-style: none;
+    font-size: 11px;
 }
 .custom-pages-template-structure ul {
     list-style: none;
     margin: 0;
-    padding: 0 0 0 20px;
+    padding: 0 0 0 10px;
 }
 .custom-pages-template-structure li {
-    border-left: 1px solid transparent;
-    padding: 3px 5px;
+    padding: 0;
 }
-.custom-pages-template-structure > li {
-    padding-left: 0;
-}
-.custom-pages-template-structure li[data-element-id]:hover,
-.custom-pages-template-structure ul[data-template-type=container] > li:hover {
-    border-left: 1px dashed var(--text-color-secondary);
-}
-.custom-pages-template-structure [data-action-click^=moveUp] {
+.custom-pages-template-structure .cp-ts-container + [data-template-type] > li > .cp-ts-template [data-action-click^=moveUp],
+.custom-pages-template-structure [data-element-content-id] [data-template-type]:last-child [data-action-click^=moveDown] {
     display: none;
 }
-.custom-pages-template-structure [data-template-type] + [data-template-type] > li > [data-action-click^=move] {
-    display: inline-block;
+.cp-ts-row {
+    display: flex;
+    align-items: center;
+    padding: 8px;
 }
-.custom-pages-template-structure [data-template-type]:last-child > li > [data-action-click^=moveDown] {
-    display: none;
+.cp-ts-row > div {
+    flex: 1;
+}
+.cp-ts-row > .fa,
+.cp-ts-actions > .fa {
+    width: 18px;
+    text-align: center;
+}
+.cp-ts-row .cp-ts-actions {
+    flex: 0;
+    white-space: nowrap;
+    visibility: hidden;
+}
+.cp-ts-row:hover .cp-ts-actions {
+    visibility: visible;
+}
+.cp-ts-row .cp-ts-actions .dropdown-menu {
+    padding: 0;
+}
+.cp-ts-header {
+    cursor: move;
+}
+.cp-ts-header .cp-ts-text,
+.cp-ts-container .cp-ts-text {
+    font-weight: 600;
+}
+.cp-ts-row .cp-ts-action {
+    font-size: 14px;
+    visibility: hidden;
+    cursor: pointer;
+}
+.cp-ts-row:hover .cp-ts-action {
+    visibility: visible;
+}
+.cp-ts-row .fa-circle {
+    font-size: 70%;
+}
+.cp-ts-template .fa-circle {
+    color: #FF9F0A;
+}
+.cp-ts-container .fa-circle {
+    color: #B31317;
 }

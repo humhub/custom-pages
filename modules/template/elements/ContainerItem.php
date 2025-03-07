@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\components\ActiveRecord;
+use humhub\libs\Html;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
@@ -138,7 +139,11 @@ class ContainerItem extends ActiveRecord
     {
         try {
             $result = $this->template->render($this->templateInstance, $mode);
-            return $mode === 'edit' ? $this->wrap($result, $inline) : $result;
+            return match($mode) {
+                'edit' => $this->renderEditBlock($result, $inline),
+                'structure' => $this->renderStructureBlock($result),
+                default => $result,
+            };
         } catch (\Throwable $ex) {
             Yii::error('Broken Container Item #' . $this->id . ' has lost Template Instance. ' .
                 'Error: ' . $ex->getMessage() . ' ' . $ex->getFile() . '(' . $ex->getLine() . ') ' . $ex->getTraceAsString(), 'custom-pages');
@@ -146,7 +151,7 @@ class ContainerItem extends ActiveRecord
         }
     }
 
-    public function wrap($content, $inline)
+    public function renderEditBlock(string $content, $inline)
     {
         return \humhub\widgets\JsWidget::widget([
             'jsWidget' => 'custom_pages.template.TemplateContainerItem',
@@ -156,6 +161,14 @@ class ContainerItem extends ActiveRecord
                 'data-template-item' => $this->id,
                 'data-template-item-title' => $this->title,
             ],
+        ]);
+    }
+
+    public function renderStructureBlock(string $content)
+    {
+        return Html::tag('div', $content, [
+            'class' => 'cp-ts-ci',
+            'data-container-item-id' => $this->id,
         ]);
     }
 }

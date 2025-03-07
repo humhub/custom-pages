@@ -95,3 +95,6 @@
     border-radius: 4px;
     background: #F9F9F9;
 }
+.cp-ts-ci.cp-ts-ci-highlighted {
+    border: 1px dashed #216EFF;
+}

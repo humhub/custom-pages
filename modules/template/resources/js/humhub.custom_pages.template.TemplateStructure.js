@@ -13,21 +13,17 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
 
     TemplateStructure.prototype.init = function () {
         this.initDraggable();
+        this.initHighlight();
     }
 
     TemplateStructure.prototype.initDraggable = function () {
         const that = this;
         const rootTemplateInstanceId = that.$.find('[data-template-type=layout]').data('template-instance-id');
 
-        const data = that.getStoredData();
-        if (data[rootTemplateInstanceId]) {
-            that.$.css(data[rootTemplateInstanceId]);
-        } else {
-            that.$.css({
-                top: $('#editPageButton').position().top,
-                left: '20px',
-            });
-        }
+        that.$.css(that.getStoredData()[rootTemplateInstanceId] ?? {
+            top: $('#editPageButton').position().top,
+            left: '20px',
+        });
 
         this.$.draggable({
             handle: '.cp-ts-header',
@@ -36,6 +32,16 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
                 data[rootTemplateInstanceId] = $(e.target).position();
                 window.localStorage.setItem('cp-structure', JSON.stringify(data));
             }
+        });
+    }
+
+    TemplateStructure.prototype.initHighlight = function () {
+        this.$.on('mouseover', '.cp-ts-template', function () {
+            const elementId = $(this).closest('[data-container-item-id]').data('container-item-id');
+            $('.cp-ts-ci[data-container-item-id]').removeClass('cp-ts-ci-highlighted');
+            $('.cp-ts-ci[data-container-item-id=' + elementId + ']').addClass('cp-ts-ci-highlighted');
+        }).on('mouseout', '.cp-ts-template', function () {
+            $('.cp-ts-ci[data-container-item-id]').removeClass('cp-ts-ci-highlighted');
         });
     }
 

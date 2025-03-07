@@ -90,3 +90,8 @@
 .cp-ts-container .fa-circle {
     color: #B31317;
 }
+.cp-ts-template:hover,
+.cp-ts-container:hover {
+    border-radius: 4px;
+    background: #F9F9F9;
+}

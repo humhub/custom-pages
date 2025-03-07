@@ -12,9 +12,36 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
     object.inherits(TemplateStructure, Widget);
 
     TemplateStructure.prototype.init = function () {
+        this.initDraggable();
+    }
+
+    TemplateStructure.prototype.initDraggable = function () {
+        const that = this;
+        const rootTemplateInstanceId = that.$.find('[data-template-type=layout]').data('template-instance-id');
+
+        const data = that.getStoredData();
+        if (data[rootTemplateInstanceId]) {
+            that.$.css(data[rootTemplateInstanceId]);
+        } else {
+            that.$.css({
+                top: $('#editPageButton').position().top,
+                left: '20px',
+            });
+        }
+
         this.$.draggable({
             handle: '.cp-ts-header',
+            stop: function (e) {
+                const data = that.getStoredData();
+                data[rootTemplateInstanceId] = $(e.target).position();
+                window.localStorage.setItem('cp-structure', JSON.stringify(data));
+            }
         });
+    }
+
+    TemplateStructure.prototype.getStoredData = function () {
+        const data = window.localStorage.getItem('cp-structure');
+        return data ? JSON.parse(data) : {};
     }
 
     TemplateStructure.prototype.addContainerItem = function (evt) {

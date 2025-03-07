@@ -311,35 +311,6 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
         parent::afterDelete();
     }
 
-    protected function wrap($type, $content, $options = [], $attributes = [])
-    {
-        if (!$this instanceof ContainerElement && (
-            $this->templateInstance?->isContainer() ||
-            ($this->template_instance_id === null && $this->element?->template?->type === Template::TYPE_CONTAINER)
-        )) {
-            // Apply the wrap for editing inside Container Item only for Container Element,
-            // other elements like Text, Image are not editable inside Container Item.
-            return $content;
-        }
-
-        if ($this->getPrimaryKey() != null) {
-            $options['element_content_id'] = $this->getPrimaryKey();
-        }
-
-        return TemplateEditorElement::widget([
-            'container' => $type,
-            'elementContent' => $this,
-            'content' => $content,
-            'renderOptions' => $options,
-            'renderAttributes' => $attributes,
-        ]);
-    }
-
-    protected function renderStructure($options = [], $attributes = []): string
-    {
-        return $this->getLabel();
-    }
-
     public function isEditMode(array $options = []): bool
     {
         return isset($options['mode']) && $options['mode'] === 'edit';

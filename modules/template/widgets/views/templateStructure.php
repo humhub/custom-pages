@@ -21,6 +21,7 @@ use humhub\widgets\Link;
 /* @var BaseElementContent[] $elementContents */
 /* @var array $options */
 /* @var array $templateInstanceOptions */
+/* @var int $level */
 /* @var View $this */
 
 /* @var TemplateStructure $widget */
@@ -39,7 +40,7 @@ InlineEditorAsset::register($this);
 
 <?= Html::beginTag('ul', $templateInstanceOptions) ?>
     <?= Html::beginTag('li') ?>
-        <div class="cp-ts-template cp-ts-row">
+        <div class="cp-ts-template cp-ts-row" style="padding-left:<?= $level * 20 + 8 ?>px">
             <?= Icon::get('circle') ?>
             <div class="cp-ts-text"><?= $templateInstance->template->name ?></div>
             <?php if ($templateInstance->isContainer()) : ?>
@@ -75,9 +76,9 @@ InlineEditorAsset::register($this);
         <?= Html::beginTag('ul') ?>
             <?php foreach ($elementContents as $elementContent) : ?>
             <?= Html::beginTag('li', $widget->getElementContentOptions($elementContent)) ?>
-                <div class="cp-ts-container cp-ts-row">
+                <div class="cp-ts-container cp-ts-row" style="padding-left:<?= ($level + 1) * 20 + 8 ?>px">
                     <?= Icon::get('circle') ?>
-                    <div class="cp-ts-text"><?= $elementContent->element->title ?></div>
+                    <div class="cp-ts-text"><?= $level . '-' . $elementContent->element->title ?></div>
                     <?php if ($elementContent->canAddItem()) : ?>
                         <?= Icon::get('plus', ['htmlOptions' => ['data-action-click' => 'addContainerItem']])
                             ->class('cp-ts-action') ?>
@@ -87,7 +88,10 @@ InlineEditorAsset::register($this);
                 <?php if ($elementContent->hasItems()) : ?>
                     <?php foreach ($elementContent->items as $item) : ?>
                         <?php /* @var ContainerItem $item */ ?>
-                        <?= TemplateStructure::widget(['templateInstance' => $item->templateInstance]) ?>
+                        <?= TemplateStructure::widget([
+                            'templateInstance' => $item->templateInstance,
+                            'level' => $level + 2,
+                        ]) ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
             <?= Html::endTag('li') ?>

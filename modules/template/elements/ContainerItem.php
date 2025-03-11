@@ -9,10 +9,10 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\components\ActiveRecord;
-use humhub\libs\Html;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\widgets\JsWidget;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -135,15 +135,11 @@ class ContainerItem extends ActiveRecord
         return $this->hasOne(ContainerElement::class, ['id' => 'element_content_id']);
     }
 
-    public function render(string $mode, $inline = false)
+    public function render(string $mode, $inline = false): string
     {
         try {
             $result = $this->template->render($this->templateInstance, $mode);
-            return match($mode) {
-                'edit' => $this->renderEditBlock($result, $inline),
-                'structure' => $this->renderStructureBlock($result),
-                default => $result,
-            };
+            return $mode === 'edit' ? $this->renderEditBlock($result, $inline) : $result;
         } catch (\Throwable $ex) {
             Yii::error('Broken Container Item #' . $this->id . ' has lost Template Instance. ' .
                 'Error: ' . $ex->getMessage() . ' ' . $ex->getFile() . '(' . $ex->getLine() . ') ' . $ex->getTraceAsString(), 'custom-pages');
@@ -151,24 +147,16 @@ class ContainerItem extends ActiveRecord
         }
     }
 
-    public function renderEditBlock(string $content, $inline)
+    public function renderEditBlock(string $content, $inline): string
     {
-        return \humhub\widgets\JsWidget::widget([
+        return JsWidget::widget([
             'jsWidget' => 'custom_pages.template.TemplateContainerItem',
             'content' => $content,
             'options' => [
-                'class' => ($inline) ? 'inline' : '',
+                'class' => $inline ? 'inline' : '',
                 'data-template-item' => $this->id,
                 'data-template-item-title' => $this->title,
             ],
-        ]);
-    }
-
-    public function renderStructureBlock(string $content)
-    {
-        return Html::tag('div', $content, [
-            'class' => 'cp-ts-ci',
-            'data-container-item-id' => $this->id,
         ]);
     }
 }

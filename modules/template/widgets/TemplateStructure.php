@@ -33,6 +33,8 @@ class TemplateStructure extends JsWidget
      */
     public ?TemplateInstance $templateInstance = null;
 
+    public int $level = 0;
+
     /**
      * @inheritdoc
      */
@@ -55,6 +57,7 @@ class TemplateStructure extends JsWidget
             'elementContents' => $elementContents,
             'options' => $this->getOptions(),
             'templateInstanceOptions' => $this->getTemplateInstanceOptions(),
+            'level' => $this->level,
         ]);
     }
 

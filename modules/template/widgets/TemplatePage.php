@@ -36,7 +36,7 @@ class TemplatePage extends JsWidget
     public $canEdit;
 
     /**
-     * @var string defines what mode is active: 'edit', 'structure'
+     * @var string defines what mode is active: 'edit'
      */
     public $mode;
 

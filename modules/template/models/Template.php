@@ -262,7 +262,7 @@ class Template extends ActiveRecord
     {
         $result = '';
 
-        if ($mode === 'structure' && $templateInstance->isPage()) {
+        if ($mode === 'edit' && $templateInstance->isPage()) {
             $result = TemplateStructure::widget(['templateInstance' => $templateInstance]);
         }
 

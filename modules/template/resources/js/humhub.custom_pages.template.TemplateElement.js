@@ -244,6 +244,7 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
         this.data('active', false);
 
         this.$.removeClass('highlightAdd').removeClass('highlightEdit');
+        $('.cp-ts-template-active').removeClass('cp-ts-template-active');
     };
 
     TemplateElement.prototype.data = function (key, value) {

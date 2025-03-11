@@ -89,6 +89,9 @@ div[data-template-item].inline {
 div[data-template-item].highlightEdit {
     border: 1px dashed #708fa0 !important;
 }
+div[data-template-item].highlightStructure {
+    border: 1px dashed #216EFF !important;
+}
 
 div[data-template-element] {
     border: 1px solid rgba(210, 210, 210, 0.5);

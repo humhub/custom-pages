@@ -37,11 +37,14 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
 
     TemplateStructure.prototype.initHighlight = function () {
         this.$.on('mouseover', '.cp-ts-template', function () {
-            const elementId = $(this).closest('[data-container-item-id]').data('container-item-id');
-            $('.cp-ts-ci[data-container-item-id]').removeClass('cp-ts-ci-highlighted');
-            $('.cp-ts-ci[data-container-item-id=' + elementId + ']').addClass('cp-ts-ci-highlighted');
+            const itemId = $(this).closest('[data-container-item-id]').data('container-item-id');
+            $('.highlightStructure').removeClass('highlightStructure');
+            $('[data-template-item=' + itemId + ']').addClass('highlightStructure');
+            $('[data-template-element], [data-template-item]').each(function () {
+                Widget.instance(this).deactivate();
+            })
         }).on('mouseout', '.cp-ts-template', function () {
-            $('.cp-ts-ci[data-container-item-id]').removeClass('cp-ts-ci-highlighted');
+            $('.highlightStructure').removeClass('highlightStructure');
         });
     }
 

@@ -141,6 +141,14 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
         return 'templateContainerItem' + ':' + $element.data('template-item');
     };
 
+    TemplateContainerItem.prototype.highlight = function () {
+        TemplateElement.prototype.highlight.call(this);
+        const itemId = this.$.data('template-item');
+        $('.cp-ts-template-active').removeClass('cp-ts-template-active');
+        $('.custom-pages-template-structure [data-container-item-id=' + itemId + '] > li > .cp-ts-template')
+            .addClass('cp-ts-template-active');
+    };
+
     TemplateElement.prototype.getDeleteConfirmOptions = function () {
         return {
             confirmHeader: customPage.text('confirmDeleteItemHeader'),

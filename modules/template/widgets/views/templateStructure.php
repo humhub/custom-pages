@@ -40,7 +40,7 @@ InlineEditorAsset::register($this);
 
 <?= Html::beginTag('ul', $templateInstanceOptions) ?>
     <?= Html::beginTag('li') ?>
-        <div class="cp-ts-template cp-ts-row" style="padding-left:<?= $level * 20 + 8 ?>px">
+        <div class="cp-ts-template cp-ts-row" style="padding-left:<?= $level * 10 + 8 ?>px">
             <?= Icon::get('circle') ?>
             <div class="cp-ts-text"><?= $templateInstance->template->name ?></div>
             <?php if ($templateInstance->isContainer()) : ?>
@@ -73,10 +73,11 @@ InlineEditorAsset::register($this);
             <?php endif; ?>
         </div>
 
+        <?php if (count($elementContents)) : ?>
         <?= Html::beginTag('ul') ?>
             <?php foreach ($elementContents as $elementContent) : ?>
             <?= Html::beginTag('li', $widget->getElementContentOptions($elementContent)) ?>
-                <div class="cp-ts-container cp-ts-row" style="padding-left:<?= ($level + 1) * 20 + 8 ?>px">
+                <div class="cp-ts-container cp-ts-row" style="padding-left:<?= ($level + 1) * 10 + 8 ?>px">
                     <?= Icon::get('circle') ?>
                     <div class="cp-ts-text"><?= $elementContent->element->title ?></div>
                     <?php if ($elementContent->canAddItem()) : ?>
@@ -97,6 +98,7 @@ InlineEditorAsset::register($this);
             <?= Html::endTag('li') ?>
             <?php endforeach; ?>
         <?= Html::endTag('ul') ?>
+        <?php endif; ?>
 
     <?= Html::endTag('li') ?>
 <?= Html::endTag('ul') ?>

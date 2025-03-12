@@ -55,7 +55,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
 
     TemplateStructure.prototype.addContainerItem = function (evt) {
         const container = evt.$target.closest('[data-element-id]');
-
+        this.setCurrentEditorElement(container);
         modal.load(evt, {
             url:  container.data('default') !== undefined ? this.data('create-container-url') : this.data('item-add-url'),
             dataType: 'json',
@@ -136,6 +136,13 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         }).catch(function (e) {
             module.log.error(e, true);
         });
+    }
+
+    TemplateStructure.prototype.setCurrentEditorElement = function (container) {
+        const editor = Widget.instance('[data-ui-widget="custom_pages.template.editor.TemplateInlineEditor"]');
+        if (editor) {
+            editor.currentElement = editor.getElement($('[data-ui-widget="custom_pages.template.TemplateContainer"][data-template-element-content-id=' + container.data('element-content-id') + ']'));
+        }
     }
 
     module.export = TemplateStructure;

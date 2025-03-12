@@ -33,7 +33,7 @@ class TemplateStructure extends JsWidget
      */
     public ?TemplateInstance $templateInstance = null;
 
-    public int $level = 0;
+    public ?int $level = null;
 
     /**
      * @inheritdoc
@@ -57,7 +57,7 @@ class TemplateStructure extends JsWidget
             'elementContents' => $elementContents,
             'options' => $this->getOptions(),
             'templateInstanceOptions' => $this->getTemplateInstanceOptions(),
-            'level' => $this->level,
+            'level' => $this->getLevel(),
         ]);
     }
 
@@ -115,8 +115,21 @@ class TemplateStructure extends JsWidget
 
     private function createUrl($route): string
     {
-        return Yii::$app->controller->contentContainer
-            ? Yii::$app->controller->contentContainer->createUrl($route)
-            : Url::to([$route]);
+        $container = Yii::$app->controller->contentContainer ?? $this->templateInstance?->page?->content?->container;
+        return $container ? $container->createUrl($route) : Url::to([$route]);
+    }
+
+    private function getLevel(): int
+    {
+        if ($this->level === null) {
+            $this->level = 0;
+            $containerItem = $this->templateInstance->containerItem;
+            while ($containerItem) {
+                $containerItem = $containerItem->container->templateInstance->containerItem;
+                $this->level += 2;
+            }
+        }
+
+        return $this->level;
     }
 }

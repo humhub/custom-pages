@@ -88,10 +88,13 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
     };
     
     TemplateContainerItem.prototype.deleteAction = function (evt) {
-        var that = this;
+        const that = this;
+        const structureItem = that.getStructureContainerItem(that.itemId);
+
         client.post(evt, {data: this.getEditData()}).then(function (response) {
             if (response.success) {
                 that.editor.replaceElement(that.getParent(), response.output);
+                structureItem.fadeOut('fast', () => structureItem.remove());
             }
         }).catch(function (e) {
             module.log.error(e, true);
@@ -99,15 +102,17 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
     };
 
     TemplateContainerItem.prototype.moveItem = function (evt) {
-        var that = this;
-        var parent = this.getParent();
-        
+        const that = this;
+        const parent = this.getParent();
+        const step = evt.$trigger.data('step');
+        const structureItem = that.getStructureContainerItem(that.itemId);
+
         var options = {
             url: this.editor.options.itemMoveUrl,
             data : {
                 elementContentId: parent.elementContentId,
                 itemId: that.itemId,
-                step: evt.$trigger.data('step')
+                step,
             }
         };
         
@@ -117,6 +122,9 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
                 that.deactivate();
                 parent.$.replaceWith(response.output);
                 parent.highlight();
+                step === -1
+                    ? structureItem.prev().before(structureItem)
+                    : structureItem.next().after(structureItem);
             }
         }).catch(function (e) {
             module.log.error(e, true);
@@ -124,7 +132,11 @@ humhub.module('custom_pages.template.TemplateContainerItem', function (module, r
             that.loader(false);
         });
     };
-    
+
+    TemplateContainerItem.prototype.getStructureContainerItem = function (itemId) {
+        return $('.custom-pages-template-structure').find('[data-container-item-id=' + itemId + ']');
+    }
+
     TemplateContainerItem.prototype.getEditData = function () {
         return {
             itemId: this.itemId,

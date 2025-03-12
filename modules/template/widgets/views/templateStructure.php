@@ -78,7 +78,7 @@ InlineEditorAsset::register($this);
             <?= Html::beginTag('li', $widget->getElementContentOptions($elementContent)) ?>
                 <div class="cp-ts-container cp-ts-row" style="padding-left:<?= ($level + 1) * 20 + 8 ?>px">
                     <?= Icon::get('circle') ?>
-                    <div class="cp-ts-text"><?= $level . '-' . $elementContent->element->title ?></div>
+                    <div class="cp-ts-text"><?= $elementContent->element->title ?></div>
                     <?php if ($elementContent->canAddItem()) : ?>
                         <?= Icon::get('plus', ['htmlOptions' => ['data-action-click' => 'addContainerItem']])
                             ->class('cp-ts-action') ?>

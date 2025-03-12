@@ -93,6 +93,24 @@ class ContainerItem extends ActiveRecord
         return parent::beforeDelete();
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        // Refresh sort orders of the rest items after deletion
+        $items = self::find()
+            ->where(['element_content_id' => $this->element_content_id])
+            ->orderBy(['sort_order' => SORT_ASC]);
+        $sortOrder = 0;
+        foreach ($items->each() as $item) {
+            $item->sort_order = $sortOrder++;
+            $item->update();
+        }
+    }
+
     public static function incrementIndex($containerId, $index)
     {
         self::updateAllCounters(['sort_order' => 1], ['and', ['>=', 'sort_order', $index], ['element_content_id' => $containerId]]);

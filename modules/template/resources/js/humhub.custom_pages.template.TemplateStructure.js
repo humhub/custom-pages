@@ -78,6 +78,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
     };
 
     TemplateStructure.prototype.moveContainerItem = function (evt, direction) {
+        const that = this;
         const container = evt.$target.closest('[data-element-id]');
         const options = {
             url: this.data('item-move-url'),
@@ -94,12 +95,17 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
                 direction === 'up'
                     ? container.prev().before(container)
                     : container.next().after(container);
+                that.getParentContainer(container).replaceWith(response.output);
             }
         }).catch(function (e) {
             module.log.error(e, true);
         }).finally(function() {
             loader.reset(container);
         });
+    }
+
+    TemplateStructure.prototype.getParentContainer = function (container) {
+        return $('[data-ui-widget="custom_pages.template.TemplateContainer"][data-template-element-content-id=' + container.data('element-content-id') + ']')
     }
 
     TemplateStructure.prototype.moveUpContainerItem = function (evt) {
@@ -111,6 +117,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
     }
 
     TemplateStructure.prototype.deleteContainerItem = function (evt) {
+        const that = this;
         const containerItem = evt.$target.closest('[data-container-item-id]');
         const options = {
             url: this.data('item-delete-url'),
@@ -124,6 +131,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         client.post(evt, options).then(function (response) {
             if (response.success) {
                 containerItem.fadeOut('fast', () => containerItem.remove());
+                that.getParentContainer(containerItem).replaceWith(response.output);
             }
         }).catch(function (e) {
             module.log.error(e, true);

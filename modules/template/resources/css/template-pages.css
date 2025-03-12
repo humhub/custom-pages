@@ -24,7 +24,7 @@
 
 /* Structure view */
 .custom-pages-template-structure {
-    position: absolute;
+    position: fixed;
     margin: 0;
     padding: 8px;
     list-style: none;

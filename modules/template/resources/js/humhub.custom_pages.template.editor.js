@@ -72,7 +72,10 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
                 } else {
                     // called for addItem actions where currentElement is the container
                     that.replaceElement(that.currentElement, $result);
-                    $('.custom-pages-template-structure li[data-element-content-id=' + $result.data('template-element-content-id') + ']')
+                    that.getStructure().currentContainer
+                        .data('element-content-id', $result.data('template-element-content-id'))
+                        .attr('data-element-content-id', $result.data('template-element-content-id'))
+                        .removeAttr('data-default')
                         .append($(response.structure));
                 }
                 modal.global.close();
@@ -174,6 +177,10 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
 
     TemplateInlineEditor.prototype.getElement = function ($elem) {
         return Widget.instance($elem);
+    };
+
+    TemplateInlineEditor.prototype.getStructure = function () {
+        return Widget.instance('[data-ui-widget="custom_pages.template.TemplateStructure"]');
     };
 
     TemplateSourceEditor = function (node, options) {

@@ -86,13 +86,13 @@
 .cp-ts-row:hover .cp-ts-action {
     visibility: visible;
 }
-.cp-ts-row .fa-circle {
+.cp-ts-row .fa-circle, .cp-ts-row .fa-circle-o {
     font-size: 70%;
 }
 .cp-ts-template .fa-circle {
     color: #FF9F0A;
 }
-.cp-ts-container .fa-circle {
+.cp-ts-container .fa-circle-o {
     color: #B31317;
 }
 .cp-ts-template:hover,

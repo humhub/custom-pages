@@ -156,12 +156,12 @@ humhub.module('custom_pages.template.TemplateElement', function (module, require
 
         if (this.name) {
             this.$menu.append($('<span>' + string.encode(this.title) + '</span>'));
-        } 
-        
+        }
+
         if(this.label) {
             this.$menu.append($('<span class="label label-warning">' + string.encode(this.label) + '</span>'));
         }
-        
+
         this.$menu.append(options.items);
 
         this.$menu.on('mouseover', function (evt) {

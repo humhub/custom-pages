@@ -78,8 +78,8 @@ InlineEditorAsset::register($this);
             <?php foreach ($elementContents as $elementContent) : ?>
             <?= Html::beginTag('li', $widget->getElementContentOptions($elementContent)) ?>
                 <div class="cp-ts-container cp-ts-row" style="padding-left:<?= ($level + 1) * 10 + 8 ?>px">
-                    <?= Icon::get('circle') ?>
-                    <div class="cp-ts-text"><?= $elementContent->element->title ?></div>
+                    <?= Icon::get('circle-o') ?>
+                    <div class="cp-ts-text"><?= $elementContent->element->title === null || $elementContent->element->title === '' ? $elementContent->element->name : $elementContent->element->title ?></div>
                     <?php if ($elementContent->canAddItem()) : ?>
                         <?= Icon::get('plus', ['htmlOptions' => ['data-action-click' => 'addContainerItem']])
                             ->class('cp-ts-action') ?>

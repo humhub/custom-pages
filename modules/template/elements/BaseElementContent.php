@@ -13,10 +13,8 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\components\ActiveRecordDynamicAttributes;
 use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
-use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
-use humhub\modules\custom_pages\modules\template\widgets\TemplateEditorElement;
 use Yii;
 use yii\db\ActiveQuery;
 

@@ -32,21 +32,21 @@ InlineEditorAsset::register($this);
 ?>
 <?php if ($templateInstance->isPage()) : ?>
 <?= Html::beginTag('div', $options) ?>
-    <div class="cp-ts-header cp-ts-row">
-        <div class="cp-ts-text"><?= Yii::t('CustomPagesModule.template', 'Structure View') ?></div>
+    <div class="cp-structure-header cp-structure-row">
+        <div class="cp-structure-text"><?= Yii::t('CustomPagesModule.template', 'Structure View') ?></div>
         <?= Icon::get('arrows') ?>
     </div>
 <?php endif; ?>
 
 <?= Html::beginTag('ul', $templateInstanceOptions) ?>
     <?= Html::beginTag('li') ?>
-        <div class="cp-ts-template cp-ts-row" style="padding-left:<?= $level * 10 + 8 ?>px">
+        <div class="cp-structure-template cp-structure-row" style="padding-left:<?= $level * 10 + 8 ?>px">
             <?= Icon::get('circle') ?>
-            <div class="cp-ts-text"><?= $templateInstance->template->name ?></div>
+            <div class="cp-structure-text"><?= $templateInstance->template->name ?></div>
             <?php if ($templateInstance->isContainer()) : ?>
-                <div class="cp-ts-actions dropdown">
+                <div class="cp-structure-actions dropdown">
                     <?= Icon::get('ellipsis-h', ['htmlOptions' => ['data-toggle' => 'dropdown']])
-                        ->class('dropdown-toggle cp-ts-action') ?>
+                        ->class('dropdown-toggle cp-structure-action') ?>
                     <ul class="dropdown-menu">
                         <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Edit'))
                             ->icon('pencil')
@@ -69,7 +69,7 @@ InlineEditorAsset::register($this);
                 </div>
             <?php else : ?>
                 <?= Icon::get('pencil', ['htmlOptions' => ['data-action-click' => 'editElements']])
-                    ->class('cp-ts-action') ?>
+                    ->class('cp-structure-action') ?>
             <?php endif; ?>
         </div>
 
@@ -77,12 +77,12 @@ InlineEditorAsset::register($this);
         <?= Html::beginTag('ul') ?>
             <?php foreach ($elementContents as $elementContent) : ?>
             <?= Html::beginTag('li', $widget->getElementContentOptions($elementContent)) ?>
-                <div class="cp-ts-container cp-ts-row" style="padding-left:<?= ($level + 1) * 10 + 8 ?>px">
+                <div class="cp-structure-container cp-structure-row" style="padding-left:<?= ($level + 1) * 10 + 8 ?>px">
                     <?= Icon::get('circle-o') ?>
-                    <div class="cp-ts-text"><?= $elementContent->element->title === null || $elementContent->element->title === '' ? $elementContent->element->name : $elementContent->element->title ?></div>
+                    <div class="cp-structure-text"><?= $elementContent->element->title === null || $elementContent->element->title === '' ? $elementContent->element->name : $elementContent->element->title ?></div>
                     <?php if ($elementContent->canAddItem()) : ?>
                         <?= Icon::get('plus', ['htmlOptions' => ['data-action-click' => 'addContainerItem']])
-                            ->class('cp-ts-action') ?>
+                            ->class('cp-structure-action') ?>
                     <?php endif; ?>
                 </div>
 

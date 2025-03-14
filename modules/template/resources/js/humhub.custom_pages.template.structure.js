@@ -16,6 +16,13 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         this.initHighlight();
     }
 
+    TemplateStructure.prototype.editor = function () {
+        if (typeof(this._editor) === 'undefined') {
+            this._editor = Widget.instance('[data-ui-widget="custom_pages.template.editor.TemplateInlineEditor"]');
+        }
+        return this._editor;
+    }
+
     TemplateStructure.prototype.initDraggable = function () {
         const that = this;
         const rootTemplateInstanceId = that.$.find('[data-template-type=layout]').data('template-instance-id');
@@ -23,10 +30,10 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         that.$.css(that.getStoredData()[rootTemplateInstanceId] ?? {
             top: $('#editPageButton').position().top,
             left: '20px',
-        });
+        }).show();
 
         this.$.draggable({
-            handle: '.cp-ts-header',
+            handle: '.cp-structure-header',
             stop: function (e) {
                 const data = that.getStoredData();
                 data[rootTemplateInstanceId] = $(e.target).position();
@@ -36,15 +43,15 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
     }
 
     TemplateStructure.prototype.initHighlight = function () {
-        this.$.on('mouseover', '.cp-ts-template', function () {
-            const itemId = $(this).closest('[data-container-item-id]').data('container-item-id');
-            $('.highlightStructure').removeClass('highlightStructure');
-            $('[data-template-item=' + itemId + ']').addClass('highlightStructure');
-            $('[data-template-element], [data-template-item]').each(function () {
-                Widget.instance(this).deactivate();
-            })
-        }).on('mouseout', '.cp-ts-template', function () {
-            $('.highlightStructure').removeClass('highlightStructure');
+        const activeClass = 'cp-editor-container-active';
+        this.$.on('mouseover', '.cp-structure-template, .cp-structure-container', function () {
+            const obj = $(this).hasClass('cp-structure-container')
+                ? $('[data-editor-container-id=' + $(this).closest('[data-container-id]').data('container-id') + ']')
+                : $('[data-editor-container-item-id=' + $(this).closest('[data-container-item-id]').data('container-item-id') + ']');
+            $('.' + activeClass).removeClass(activeClass);
+            obj.addClass(activeClass).parents('[data-editor-container-item-id]').addClass(activeClass);
+        }).on('mouseout', '.cp-structure-template, .cp-structure-container', function () {
+            $('.' + activeClass).removeClass(activeClass);
         });
     }
 
@@ -55,14 +62,14 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
 
     TemplateStructure.prototype.addContainerItem = function (evt) {
         const container = evt.$target.closest('[data-element-id]');
-        this.setCurrentElement(container);
+        this.setCurrent(container);
         modal.load(evt, {
             url:  container.data('default') !== undefined ? this.data('create-container-url') : this.data('item-add-url'),
             dataType: 'json',
             data: {
-                templateInstanceId: this.data('template-instance-id'),
+                templateInstanceId: container.closest('[data-template-instance-id]').data('template-instance-id'),
                 elementId: container.data('element-id'),
-                elementContentId: container.data('element-content-id'),
+                elementContentId: container.data('container-id'),
             }
         });
     };
@@ -83,7 +90,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         const options = {
             url: this.data('item-move-url'),
             data : {
-                elementContentId: container.data('element-content-id'),
+                elementContentId: container.data('container-id'),
                 itemId: container.data('container-item-id'),
                 step: direction === 'up' ? -1 : 1
             }
@@ -95,7 +102,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
                 direction === 'up'
                     ? container.prev().before(container)
                     : container.next().after(container);
-                that.getParentContainer(container).replaceWith(response.output);
+                that.getEditorContainer(container).replaceWith(response.output);
             }
         }).catch(function (e) {
             module.log.error(e, true);
@@ -104,8 +111,8 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         });
     }
 
-    TemplateStructure.prototype.getParentContainer = function (container) {
-        return $('[data-ui-widget="custom_pages.template.TemplateContainer"][data-template-element-content-id=' + container.data('element-content-id') + ']')
+    TemplateStructure.prototype.getEditorContainer = function (container) {
+        return $('[data-editor-container-id=' + container.data('container-id') + ']')
     }
 
     TemplateStructure.prototype.moveUpContainerItem = function (evt) {
@@ -124,26 +131,32 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
             data: {
                 itemId: containerItem.data('container-item-id'),
                 elementId: containerItem.data('element-id'),
-                elementContentId: containerItem.data('element-content-id'),
+                elementContentId: containerItem.data('container-id'),
             }
         };
 
         client.post(evt, options).then(function (response) {
             if (response.success) {
                 containerItem.fadeOut('fast', () => containerItem.remove());
-                that.getParentContainer(containerItem).replaceWith(response.output);
+                that.getEditorContainer(containerItem).replaceWith(response.output);
             }
         }).catch(function (e) {
             module.log.error(e, true);
         });
     }
 
-    TemplateStructure.prototype.setCurrentElement = function (container) {
-        this.currentContainer = container;
-        const editor = Widget.instance('[data-ui-widget="custom_pages.template.editor.TemplateInlineEditor"]');
-        if (editor) {
-            editor.currentElement = editor.getElement($('[data-ui-widget="custom_pages.template.TemplateContainer"][data-template-element-content-id=' + container.data('element-content-id') + ']'));
-        }
+    TemplateStructure.prototype.setCurrent = function (container) {
+        this.current = container;
+        const editor = this.editor();
+        editor.current = editor.getElement($('[data-editor-container-id=' + container.data('container-id') + ']'));
+    }
+
+    TemplateStructure.prototype.appendContainerItem = function (containerId, item) {
+        this.current
+            .data('container-id', containerId)
+            .attr('data-container-id', containerId)
+            .removeAttr('data-default')
+            .append(item);
     }
 
     module.export = TemplateStructure;

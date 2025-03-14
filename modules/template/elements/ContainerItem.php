@@ -9,10 +9,10 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\components\ActiveRecord;
+use humhub\libs\Html;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
-use humhub\widgets\JsWidget;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -167,14 +167,11 @@ class ContainerItem extends ActiveRecord
 
     public function renderEditBlock(string $content, $inline): string
     {
-        return JsWidget::widget([
-            'jsWidget' => 'custom_pages.template.TemplateContainerItem',
-            'content' => $content,
-            'options' => [
-                'class' => $inline ? 'inline' : '',
-                'data-template-item' => $this->id,
-                'data-template-item-title' => $this->title,
-            ],
-        ]);
+        $options = ['data-editor-container-item-id' => $this->id];
+        if ($inline) {
+            $options['class'] = 'inline';
+        }
+
+        return Html::tag('div', $content, $options);
     }
 }

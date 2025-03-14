@@ -1,9 +1,9 @@
 humhub.module('custom_pages.template.editor', function (module, require, $) {
-    var Widget = require('ui.widget').Widget;
-    var object = require('util').object;
-    var client = require('client');
-    var modal = require('ui.modal');
-    var additions = require('ui.additions');
+    const Widget = require('ui.widget').Widget;
+    const object = require('util').object;
+    const client = require('client');
+    const modal = require('ui.modal');
+    const additions = require('ui.additions');
 
     TemplateInlineEditor = function (node, options) {
         Widget.call(this, node, options);
@@ -13,70 +13,37 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     object.inherits(TemplateInlineEditor, Widget);
 
     TemplateInlineEditor.prototype.init = function () {
-        this.activeElements = [];
-        this.initEvents();
+        this.initHighlight();
     };
 
-    TemplateInlineEditor.prototype.initEvents = function () {
-        var that = this;
-        this.$.on('mouseover', '[data-template-element], [data-template-item]', function (evt) {
-            if (that.setActivateElement($(this))) {
-                evt.stopPropagation();
-            }
+    TemplateInlineEditor.prototype.initHighlight = function () {
+        const activeClass = 'cp-structure-active';
+        this.$.on('mouseover', '[data-editor-container-item-id]', function () {
+            const item = $('.cp-structure [data-container-item-id=' + $(this).data('editor-container-item-id') + '] > li > .cp-structure-row');
+            $('.' + activeClass).removeClass(activeClass);
+            item.addClass(activeClass);
+        }).on('mouseout', '[data-editor-container-item-id]', function () {
+            $('.' + activeClass).removeClass(activeClass);
         });
-
-        this.$.on('click', '[data-template-element], [data-template-item]', function (evt) {
-            evt.preventDefault();
-            evt.stopPropagation();
-        });
-
-        // Set the currentElement when menu buttons are used.
-        $(document).off('click.custom_pages').on('click.custom_pages', '.template-menu-button', function () {
-            var $this = $(this);
-            if ($this.data('action-target')) {
-                that.currentElement = Widget.instance($this.data('action-target'));
-            }
-        });
-    };
-
-    TemplateInlineEditor.prototype.editElementSubmit = function (evt) {
-        this._updateInputValue();
-
-        var that = this;
-        client.submit(evt, {dataType: 'json'}).then(function (response) {
-            that._destroyInput();
-            if (response.success) {
-                modal.global.close();
-                that.replaceElement(that.currentElement, response.output);
-            } else {
-                modal.global.setDialog(response.output);
-            }
-        }).catch(function(e) {
-            module.log.error(e, true);
-        });
-    };
+    }
 
     TemplateInlineEditor.prototype.editItemSubmit = function (evt) {
-        this._updateInputValue();
-        this._removeDisabledFields(evt.$form);
+        const that = this;
+        that._updateInputValue();
+        that._removeDisabledFields(evt.$form);
 
-        var that = this;
         client.submit(evt, {dataType: 'json'}).then(function (response) {
             that._destroyInput();
             if (response.success) {
-                var $result = $(response.output);
-                if ($result.is('[data-template-item]')) {
+                const $result = $(response.output);
+                if ($result.is('[data-template-item-id]')) {
                     // called for normal edit actions
-                    var itemId = $result.data('template-item');
+                    const itemId = $result.data('template-item-id');
                     that.replaceElement(that.getItemById(itemId), $result);
                 } else {
                     // called for addItem actions where currentElement is the container
-                    that.replaceElement(that.currentElement, $result);
-                    that.getStructure().currentContainer
-                        .data('element-content-id', $result.data('template-element-content-id'))
-                        .attr('data-element-content-id', $result.data('template-element-content-id'))
-                        .removeAttr('data-default')
-                        .append($(response.structure));
+                    that.replaceElement(that.current, $result);
+                    that.structure().appendContainerItem($result.data('editor-container-id'), $(response.structure));
                 }
                 modal.global.close();
                 additions.applyTo(that.$);
@@ -88,18 +55,16 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
 
     TemplateInlineEditor.prototype._removeDisabledFields = function ($form) {
         // Remove disabled items, before submit, otherwise they are submitted empty.
-        var $disabled = $form.find(':disabled');
-        $disabled.each(function () {
-            var name = $(this).attr('name');
-            $form.find('[name="' + name + '"]').remove();
+        $form.find(':disabled').each(function () {
+            $form.find('[name="' + $(this).attr('name') + '"]').remove();
         });
     };
 
     TemplateInlineEditor.prototype.editMultipleElementsSubmit = function (evt) {
-        this._updateInputValue();
-        this._removeDisabledFields(evt.$form);
+        const that = this;
+        that._updateInputValue();
+        that._removeDisabledFields(evt.$form);
 
-        var that = this;
         client.submit(evt, {dataType: 'json'}).then(function (response) {
             that._destroyInput();
             if (response.success) {
@@ -111,7 +76,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     };
 
     TemplateInlineEditor.prototype.getItemById = function (id) {
-        return this.getElement($('[data-template-item="' + id + '"]'));
+        return this.getElement($('[data-template-item-id="' + id + '"]'));
     };
 
     TemplateInlineEditor.prototype._updateInputValue = function () {
@@ -130,119 +95,26 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
         element.$.replaceWith($(content));
     };
 
-    TemplateInlineEditor.prototype.setActivateElement = function ($element) {
-        var element = this.getElement($element);
-        this.setSelection(element);
-
-        if (element.isActive()) {
-            return true;
-        }
-
-        element.activate();
-        this.activeElements.push(element);
-
-        var parent = element.getParent();
-        while (parent)
-        {
-            if (!parent.isActive()) {
-                parent.activate();
-                this.activeElements.push(parent);
-            }
-            parent = parent.getParent();
-        }
-
-        return true;
-    };
-
-    /**
-     * Activates the given element and checks the current selection.
-     * This function will deactivate all selected elements, which are not parent of the new selection element.
-     * This function will furthermore not deselect an active container item.
-     * 
-     * @param {type} element
-     * @returns {undefined}
-     */
-    TemplateInlineEditor.prototype.setSelection = function (element) {
-        var that = this;
-        var oldActiveElements = this.activeElements;
-        this.activeElements = [];
-        $.each(oldActiveElements, function (index, active) {
-            if (active.isParentOf(element) || element.isEqual(active)) {
-                that.activeElements.push(active);
-            } else {
-                active.deactivate();
-            }
-        });
-    };
-
     TemplateInlineEditor.prototype.getElement = function ($elem) {
         return Widget.instance($elem);
     };
 
-    TemplateInlineEditor.prototype.getStructure = function () {
-        return Widget.instance('[data-ui-widget="custom_pages.template.TemplateStructure"]');
+    TemplateInlineEditor.prototype.structure = function () {
+        if (typeof(this._structure) === 'undefined') {
+            this._structure = Widget.instance('[data-ui-widget="custom_pages.template.TemplateStructure"]');
+        }
+        return this._structure;
     };
 
-    TemplateSourceEditor = function (node, options) {
-        Widget.call(this, node, options);
-    };
-
-    object.inherits(TemplateSourceEditor, Widget);
-
-
-    module.initOnPjaxLoad = true;
-    var init = function () {
-        $('.editMenu, .elementMenu').remove();
+    const init = function () {
         if ($('#templatePageRoot').length && require('ui.view').getState().action !== 'edit-source') {
             module.editor = Widget.instance('#templatePageRoot');
-            _initEvents();
         }
     };
 
-    var _initEvents = function () {
-        // Tab logic in edit item modal
-        $(document).on('keyup.custom_pages', '.template-edit-multiple-tab', function (e) {
-            switch (e.which) {
-                case 13:
-                    e.preventDefault();
-                    $(this).trigger('click');
-                    break;
-                case 39:
-                case 40:
-                    e.preventDefault();
-                    if (!$(this).next('.panel-body').is(':visible')) {
-                        $(this).trigger('click');
-                    }
-                    break;
-                case 37:
-                case 38:
-                    e.preventDefault();
-                    if ($(this).next('.panel-body').is(':visible')) {
-                        $(this).trigger('click');
-                    }
-                    break;
-            }
-        }).on('click.custom_pages', '.template-edit-multiple-tab', function () {
-            $(this).next('.panel-body').slideToggle('fast');
-            var $switchIcon = $(this).find('.switchIcon');
-            if ($switchIcon.hasClass('fa-caret-down')) {
-                $switchIcon.removeClass('fa-caret-down');
-                $switchIcon.addClass('fa-caret-up');
-            } else {
-                $switchIcon.removeClass('fa-caret-up');
-                $switchIcon.addClass('fa-caret-down');
-            }
-        });
-    };
-
-    var unload = function () {
-        $('.editMenu, .elementMenu').remove();
-        $(document).off('.custom_pages');
-    };
-
     module.export({
-        init: init,
-        unload: unload,
-        TemplateInlineEditor: TemplateInlineEditor
+        initOnPjaxLoad: true,
+        init,
+        TemplateInlineEditor,
     });
 });

@@ -1,12 +1,19 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\modules\custom_pages\modules\template\assets\InlineEditorAsset;
+use humhub\modules\custom_pages\modules\template\assets\TemplatePageStyleAsset;
 use humhub\widgets\JsWidget;
-use Yii;
+use yii\helpers\Html;
 
 /**
  * Description of TemplatePage
@@ -71,22 +78,13 @@ class TemplatePage extends JsWidget
      */
     public function run()
     {
-        \humhub\modules\custom_pages\modules\template\assets\TemplatePageStyleAsset::register($this->getView());
+        TemplatePageStyleAsset::register($this->getView());
 
         if ($this->canEdit && $this->mode === 'edit') {
-            \humhub\modules\custom_pages\modules\template\assets\InlineEditorAsset::register($this->getView());
-
-            $this->getView()->registerJsConfig('custom_pages.template.editor', [
-                'text' => [
-                    'editTemplateText' => Yii::t('CustomPagesModule.view', 'Edit Template'),
-                    'confirmDeleteButton' => Yii::t('CustomPagesModule.base', 'Delete'),
-                    'confirmDeleteItemHeader' => Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> container item deletion'),
-                    'confirmDeleteItemBody' => Yii::t('CustomPagesModule.template', 'Are you sure you want to delete this container item?'),
-                ],
-            ]);
+            InlineEditorAsset::register($this->getView());
         }
 
-        return \yii\helpers\Html::tag('div', ob_get_clean(), $this->getOptions());
+        return Html::tag('div', ob_get_clean(), $this->getOptions());
     }
 
     /**
@@ -94,41 +92,19 @@ class TemplatePage extends JsWidget
      */
     public function getAttributes()
     {
+        $cssClass = '';
+
         //TODO: fullscreen flag
         if ($this->page instanceof CustomPage && !$this->contentContainer && $this->page->getTargetId() !== PageType::TARGET_ACCOUNT_MENU) {
-            $cssClass = 'container ';
-        } else {
-            $cssClass = '';
+            $cssClass .= 'container ';
         }
 
+        $cssClass .= $this->page->hasAttribute('cssClass') && !empty($this->page->cssClass)
+            ? $this->page->cssClass
+            : 'custom-pages-page';
 
-        $cssClass .= ($this->page->hasAttribute('cssClass') && !empty($this->page->cssClass)) ? $this->page->cssClass : 'custom-pages-page';
         return [
             'class' => $cssClass,
         ];
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getData()
-    {
-        if ($this->canEdit && $this->mode === 'edit') {
-            return [
-                'template-instance-id' => TemplateInstance::findByOwner($this->page)?->id,
-                'create-container-url' => $this->createUrl('/custom_pages/template/container-content/create-container'),
-                'item-delete-url' => $this->createUrl('/custom_pages/template/container-content/delete-item'),
-                'item-edit-url' => $this->createUrl('/custom_pages/template/container-content/edit-item'),
-                'item-add-url' => $this->createUrl('/custom_pages/template/container-content/add-item'),
-                'item-move-url' => $this->createUrl('/custom_pages/template/container-content/move-item'),
-            ];
-        }
-        return [];
-    }
-
-    private function createUrl($route)
-    {
-        return ($this->contentContainer) ? $this->contentContainer->createUrl($route) : \yii\helpers\Url::to([$route]);
-    }
-
 }

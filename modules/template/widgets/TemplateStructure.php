@@ -81,7 +81,7 @@ class TemplateStructure extends JsWidget
     protected function getAttributes()
     {
         return [
-            'class' => 'panel custom-pages-template-structure',
+            'class' => 'panel cp-structure',
         ];
     }
 
@@ -97,7 +97,7 @@ class TemplateStructure extends JsWidget
             if ($containerItem instanceof ContainerItem) {
                 $options['data-container-item-id'] = $containerItem->id;
                 $options['data-element-id'] = $containerItem->container->element_id;
-                $options['data-element-content-id'] = $containerItem->element_content_id;
+                $options['data-container-id'] = $containerItem->element_content_id;
             }
         }
 
@@ -108,7 +108,7 @@ class TemplateStructure extends JsWidget
     {
         return [
             'data-element-id' => $elementContent->element_id,
-            'data-element-content-id' => $elementContent->id,
+            'data-container-id' => $elementContent->id,
             'data-default' => $elementContent->isDefault(),
         ];
     }

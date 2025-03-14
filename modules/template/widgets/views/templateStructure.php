@@ -47,7 +47,7 @@ InlineEditorAsset::register($this);
                 <div class="cp-structure-actions dropdown">
                     <?= Icon::get('ellipsis-h', ['htmlOptions' => ['data-toggle' => 'dropdown']])
                         ->class('dropdown-toggle cp-structure-action') ?>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu dropdown-menu-right">
                         <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Edit'))
                             ->icon('pencil')
                             ->action('editElements') ?></li>

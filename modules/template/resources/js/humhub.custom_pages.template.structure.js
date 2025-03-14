@@ -48,10 +48,22 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
             const obj = $(this).hasClass('cp-structure-container')
                 ? $('[data-editor-container-id=' + $(this).closest('[data-container-id]').data('container-id') + ']')
                 : $('[data-editor-container-item-id=' + $(this).closest('[data-container-item-id]').data('container-item-id') + ']');
-            $('.' + activeClass).removeClass(activeClass);
-            obj.addClass(activeClass).parents('[data-editor-container-item-id]').addClass(activeClass);
+            if (!obj.length) {
+                return;
+            }
+
+            const copy = obj.clone();
+            copy.addClass(activeClass).css({
+                width: obj.outerWidth() + 2,
+                minHeight: obj.outerHeight() + 2,
+                top: obj.position().top - 1,
+                left: obj.position().left - 1,
+            });
+
+            $('.cp-structure-overlay, .' + activeClass).remove();
+            obj.parent().append('<div class="cp-structure-overlay"></div>').append(copy);
         }).on('mouseout', '.cp-structure-template, .cp-structure-container', function () {
-            $('.' + activeClass).removeClass(activeClass);
+            $('.cp-structure-overlay, .' + activeClass).remove();
         });
     }
 

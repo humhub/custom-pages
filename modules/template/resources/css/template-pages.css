@@ -24,9 +24,13 @@
 
 /* Editor */
 div[data-editor-container-id] .cp-editor-container-empty:hover,
-div[data-editor-container-id].cp-editor-container-active > .cp-editor-container-empty,
-div[data-editor-container-item-id]:hover,
-div[data-editor-container-item-id].cp-editor-container-active {
+div[data-editor-container-item-id]:hover {
+    border: 1px dashed #216EFF !important;
+}
+.cp-editor-container-active {
+    z-index: 1032;
+    position: absolute;
+    background: #FFF;
     border: 1px dashed #216EFF !important;
 }
 div[data-editor-container-id] .cp-editor-container-empty {
@@ -53,7 +57,7 @@ div[data-editor-container-id] .cp-editor-container-empty.text {
     padding: 8px;
     list-style: none;
     font-size: 11px;
-    z-index: 1000;
+    z-index: 1033;
 }
 .cp-structure ul {
     list-style: none;
@@ -125,4 +129,14 @@ div[data-editor-container-id] .cp-editor-container-empty.text {
     border-radius: 4px;
     background: #F9F9F9;
     transition: background 0.3s;
+}
+
+.cp-structure-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1031;
 }

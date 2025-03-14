@@ -33,6 +33,10 @@ div[data-editor-container-item-id]:hover {
     background: #FFF;
     border: 1px dashed #216EFF !important;
 }
+.cp-editor-container-active > div:first-child,
+.cp-editor-container-active > div[data-editor-container-item-id]:first-child > div:first-child {
+    margin-top: 0 !important;
+}
 div[data-editor-container-id] .cp-editor-container-empty {
     background-color:silver;
     border:1px solid orange;

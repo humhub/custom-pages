@@ -20,7 +20,6 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
         const activeClass = 'cp-structure-active';
         this.$.on('mouseover', '[data-editor-container-item-id]', function () {
             const item = $('.cp-structure [data-container-item-id=' + $(this).data('editor-container-item-id') + '] > li > .cp-structure-row');
-            $('.' + activeClass).removeClass(activeClass);
             item.addClass(activeClass);
         }).on('mouseout', '[data-editor-container-item-id]', function () {
             $('.' + activeClass).removeClass(activeClass);

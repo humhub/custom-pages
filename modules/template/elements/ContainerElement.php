@@ -80,9 +80,8 @@ class ContainerElement extends BaseElementContent
 
         if (empty($items)) {
             if ($this->isEditMode($options)) {
-                $content = Html::tag('strong', Yii::t('CustomPagesModule.model', 'Empty <br />Container'));
-                $content = Html::tag('div', $content, ['class' => 'cp-editor-container-empty']);
-                return $this->renderEditBlock($content);
+                $content = Html::tag('div', Yii::t('CustomPagesModule.model', 'Empty <br />Container'));
+                return $this->renderEditBlock($content, ['class' => 'cp-editor-container-empty']);
             }
             return '';
         }
@@ -105,11 +104,11 @@ class ContainerElement extends BaseElementContent
      * @param string $content
      * @return string
      */
-    protected function renderEditBlock(string $content): string
+    protected function renderEditBlock(string $content, array $options = []): string
     {
-        return Html::tag('div', $content, [
+        return Html::tag('div', $content, array_merge([
             'data-editor-container-id' => $this->id,
-        ]);
+        ], $options));
     }
 
     public function moveItem($itemId, $step)

@@ -68,6 +68,10 @@ div[data-editor-container-id].cp-editor-container-empty > div {
 .cp-structure::-webkit-scrollbar {
     display: none;
 }
+.cp-structure .dropdown-menu-top {
+    top: inherit;
+    bottom: 100%;
+}
 .cp-structure ul {
     list-style: none;
     margin: 0;

@@ -14,6 +14,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
     TemplateStructure.prototype.init = function () {
         this.initDraggable();
         this.initHighlight();
+        this.initMenuAlignment();
     }
 
     TemplateStructure.prototype.editor = function () {
@@ -65,6 +66,16 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
             copy.fadeIn('fast');
         }).on('mouseleave', '.cp-structure-template, .cp-structure-container', function () {
             $('.cp-structure-overlay, .' + activeClass).remove();
+        });
+    }
+
+    TemplateStructure.prototype.initMenuAlignment = function () {
+        const that = this;
+        that.$.on('mouseenter', '.dropdown-toggle', function () {
+            const menu = $(this).next();
+            $(this).parent().position().top + menu.outerHeight() + 10 > that.$.outerHeight()
+                ? menu.addClass('dropdown-menu-top')
+                : menu.removeClass('dropdown-menu-top');
         });
     }
 

@@ -597,11 +597,11 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
             return false;
         }
 
-        if (!($type instanceof ContentType)) {
+        if (!is_int($type) && !($type instanceof ContentType)) {
             $type = $this->type;
         }
 
-        if (HtmlType::isType($type) && !Yii::$app->user->isAdmin()) {
+        if ((HtmlType::isType($type) || IframeType::isType($type)) && !Yii::$app->user->isAdmin()) {
             return false;
         }
 

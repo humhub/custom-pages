@@ -17,12 +17,9 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     };
 
     TemplateInlineEditor.prototype.initHighlight = function () {
-        const activeClass = 'cp-structure-active';
-        this.$.on('mouseover', '[data-editor-container-item-id]', function () {
-            const item = $('.cp-structure [data-container-item-id=' + $(this).data('editor-container-item-id') + '] > li > .cp-structure-row');
-            item.addClass(activeClass);
-        }).on('mouseout', '[data-editor-container-item-id]', function () {
-            $('.' + activeClass).removeClass(activeClass);
+        this.$.on('mouseenter mouseleave', '[data-editor-container-item-id]', function () {
+            $('.cp-structure [data-container-item-id=' + $(this).data('editor-container-item-id') + '] > li > .cp-structure-row')
+                .toggleClass('cp-structure-active');
         });
     }
 

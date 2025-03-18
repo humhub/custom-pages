@@ -44,7 +44,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
 
     TemplateStructure.prototype.initHighlight = function () {
         const activeClass = 'cp-editor-container-active';
-        this.$.on('mouseover', '.cp-structure-template, .cp-structure-container', function () {
+        this.$.on('mouseenter', '.cp-structure-template, .cp-structure-container', function () {
             const obj = $(this).hasClass('cp-structure-container')
                 ? $('[data-editor-container-id=' + $(this).closest('[data-container-id]').data('container-id') + ']')
                 : $('[data-editor-container-item-id=' + $(this).closest('[data-container-item-id]').data('container-item-id') + ']');
@@ -62,7 +62,8 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
 
             $('.cp-structure-overlay, .' + activeClass).remove();
             obj.parent().append('<div class="cp-structure-overlay"></div>').append(copy);
-        }).on('mouseout', '.cp-structure-template, .cp-structure-container', function () {
+            copy.fadeIn('fast');
+        }).on('mouseleave', '.cp-structure-template, .cp-structure-container', function () {
             $('.cp-structure-overlay, .' + activeClass).remove();
         });
     }

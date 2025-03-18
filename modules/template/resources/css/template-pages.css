@@ -29,6 +29,7 @@ div[data-editor-container-item-id]:hover {
     margin: -1px;
 }
 .cp-editor-container-active {
+    display: none;
     z-index: 1032;
     position: absolute;
     background: #FFF;
@@ -62,6 +63,7 @@ div[data-editor-container-id].cp-editor-container-empty > div {
     max-height: 80%;
     overflow-y: auto;
     scrollbar-width: none;
+    outline: none;
 }
 .cp-structure::-webkit-scrollbar {
     display: none;

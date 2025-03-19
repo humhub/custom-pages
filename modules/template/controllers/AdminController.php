@@ -85,7 +85,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         // If the form was submitted try to save/validate and flush the template cache
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             TemplateCache::flushByTemplateId($model->id);
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('CustomPagesModule.base', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['edit-source', 'id' => $model->id]);
         }
 
@@ -111,7 +111,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         // If the form was submitted try to save/validate and flush the template cache
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             TemplateCache::flushByTemplateId($model->id);
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('CustomPagesModule.base', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['edit-source', 'id' => $model->id]);
         }
 
@@ -187,7 +187,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByTemplateId($form->element->template_id);
-            return $this->getJsonEditElementResult(true, TemplateElementAdminRow::widget(['form' => $form, 'saved' => true]), $form);
+            return $this->getJsonEditElementResult(true, TemplateElementAdminRow::widget(['form' => $form]), $form);
         }
 
         $result = $this->renderAjaxPartial(EditElementModal::widget([
@@ -221,8 +221,9 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         return $this->asJson([
             'success' => true,
+            'message' => Yii::t('CustomPagesModule.template', 'Reset'),
             'id' => $id,
-            'output' => $this->renderAjaxPartial(TemplateElementAdminRow::widget(['model' => $element, 'saved' => true])),
+            'output' => $this->renderAjaxPartial(TemplateElementAdminRow::widget(['model' => $element])),
         ]);
     }
 
@@ -266,6 +267,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
     {
         return $this->asJson([
             'success' => $success,
+            'message' => Yii::t('base', 'Saved'),
             'output' => $content,
             'name' => $form->element->name,
             'id' => $form->element->id,
@@ -327,7 +329,8 @@ class AdminController extends \humhub\modules\admin\components\Controller
             TemplateCache::flushByTemplateId($id);
             return $this->asJson([
                 'success' => true,
-                'output' => $this->renderAjaxPartial(TemplateContentTable::widget(['template' => $form->template, 'saved' => true])),
+                'message' => Yii::t('base', 'Saved'),
+                'output' => $this->renderAjaxPartial(TemplateContentTable::widget(['template' => $form->template])),
             ]);
         }
 

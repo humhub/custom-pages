@@ -3,6 +3,7 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
     var modal = require('ui.modal');
     var Widget = require('ui.widget').Widget;
     var object = require('util').object;
+    var status = require('ui.status');
 
     var TemplateSourceEditor = function (node, options) {
         Widget.call(this, node, options);
@@ -66,6 +67,7 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
             if (response.success) {
                 that.updateElement(response);
                 modal.global.close();
+                status.success(response.message);
             } else {
                 modal.global.setDialog(response);
             }
@@ -82,6 +84,7 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
             if (response.success) {
                 that.$elements.replaceWith(response.output);
                 modal.global.close();
+                status.success(response.message);
             } else {
                 modal.global.setDialog(response);
             }
@@ -138,6 +141,7 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
             if (response.success) {
                 that.updateElement(response);
                 modal.global.close();
+                status.success(response.message);
             }
         }).catch(function (e) {
             module.log.error(e, true);

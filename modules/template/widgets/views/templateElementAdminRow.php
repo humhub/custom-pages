@@ -23,9 +23,6 @@ use yii\helpers\Url;
                 <span class="label btn-success"><?= Yii::t('CustomPagesModule.base', 'Default') ?></span>
             </small>
         <?php endif; ?>
-        <?php if ($saved) : ?> 
-            <?= \humhub\widgets\DataSaved::widget() ?>
-        <?php endif; ?>
     </td>
 
     <td>

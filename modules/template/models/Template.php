@@ -187,7 +187,7 @@ class Template extends ActiveRecord
             return TemplateInstance::findByTemplateId($this->id, Content::STATE_PUBLISHED)->exists();
         } else {
             return ContainerDefinition::find()
-                ->andWhere(['REGEXP', 'dyn_attributes', '"templates":\\[.*"' . preg_quote($this->name, '/') . '".*\\]'])
+                ->andWhere(['REGEXP', 'dyn_attributes', '"templates":\\[.*"' . addslashes(preg_quote($this->name, '/')) . '".*\\]'])
                 ->exists();
         }
     }

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\file\models\FileContent;
@@ -73,10 +74,21 @@ class ImportService
             return false;
         }
 
+        $importedElementNames = [];
         if (isset($data['elements']) && is_array($data['elements'])) {
             foreach ($data['elements'] as $element) {
-                $this->importElement($element);
+                if ($element = $this->importElement($element)) {
+                    $importedElementNames[] = $element->name;
+                }
             }
+        }
+
+        // Delete old template elements that are not found in the new template
+        $oldElements = TemplateElement::find()
+            ->where(['template_id' => $this->template->id])
+            ->andWhere(['NOT IN', 'name', $importedElementNames]);
+        foreach ($oldElements->each() as $oldElement) {
+            $oldElement->delete();
         }
 
         return !$this->hasErrors();
@@ -94,16 +106,8 @@ class ImportService
 
     private function importTemplate(array $data): bool
     {
-        $template = Template::findOne(['name' => $data['name']]);
-        if ($template instanceof Template) {
-            // Delete old template and its linked elements before importing a new one with the same name
-            if (!$template->delete()) {
-                $this->addError('Cannot delete the old template "' . $data['name'] . '"!');
-                return false;
-            }
-        }
+        $template = Template::findOne(['name' => $data['name']]) ?? new Template();
 
-        $template = new Template();
         $template->type = $this->type;
         $template->name = $data['name'];
         $template->engine = $data['engine'] ?? 'twig';
@@ -118,15 +122,26 @@ class ImportService
 
     private function importElement(array $data): ?TemplateElement
     {
-        $element = new TemplateElement();
-        $element->setScenario(TemplateElement::SCENARIO_CREATE);
+        $element = TemplateElement::findOne([
+            'template_id' => $this->template->id,
+            'name' => $data['name'],
+        ]);
+
+        if ($element) {
+            $element->setScenario(TemplateElement::SCENARIO_EDIT_ADMIN);
+        } else {
+            $element = new TemplateElement();
+            $element->setScenario(TemplateElement::SCENARIO_CREATE);
+        }
+
         $element->template_id = $this->template->id;
         $element->name = $data['name'] ?? '';
         $element->content_type = $data['content_type'] ?? '';
         $element->title = $data['title'] ?? '';
         $element->dyn_attributes = $data['dyn_attributes'] ?? '';
 
-        if (!$this->saveRecord($element)) {
+        if (!class_exists($element->content_type)) {
+            $this->addError('Element content class "' . $element->content_type . '" does not exist!');
             return null;
         }
 
@@ -135,45 +150,38 @@ class ImportService
             return null;
         }
 
+        if (!$this->saveRecord($element)) {
+            return null;
+        }
+
         $data['elementContent']['element_id'] = $element->id;
 
-        $this->createObjectByData($element->content_type, $data['elementContent']);
+        $this->importElementContent($element, $data['elementContent']);
 
         return $element;
     }
 
-    private function createObjectByData(string $class, array $data): ?ActiveRecord
+    private function importElementContent(TemplateElement $element, array $data): ?ActiveRecord
     {
-        if (!class_exists($class)) {
-            $this->addError('Wrong object class "' . $class . '"!');
-            return null;
-        }
-
-        try {
-            /* @var ActiveRecord $object */
-            $object = Yii::createObject($class);
-        } catch (InvalidConfigException $e) {
-            $this->addError('Cannot init object class "' . $class . '"!');
-            return null;
-        }
+        $elementContent = $element->getDefaultContent(true);
 
         foreach ($data as $name => $value) {
             if ($name === 'id' || ($name !== 'dyn_attributes' && is_array($value))) {
                 continue;
             }
-            $object->$name = $value;
+            $elementContent->$name = $value;
         }
 
-        $object = $this->saveRecord($object);
-        if (!$object) {
+        $elementContent = $this->saveRecord($elementContent);
+        if (!$elementContent) {
             return null;
         }
 
         if (isset($data['attachedFiles']) && is_array($data['attachedFiles'])) {
-            $this->attachFiles($object, $data['attachedFiles']);
+            $this->attachFiles($elementContent, $data['attachedFiles']);
         }
 
-        return $object;
+        return $elementContent;
     }
 
     private function attachFiles(ActiveRecord $record, array $files)

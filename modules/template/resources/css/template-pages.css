@@ -22,33 +22,136 @@
     max-width: 100%;
 }
 
-.custom-pages-template-structure {
+/* Editor */
+div[data-editor-container-id].cp-editor-container-empty:hover,
+div[data-editor-container-item-id]:hover {
+    border: 1px dashed #216EFF !important;
+    margin: -1px;
+}
+.cp-editor-container-active {
+    display: none;
+    z-index: 1032;
+    position: absolute;
+    background: #FFF;
+    border: 1px dashed #216EFF !important;
+}
+.cp-editor-container-active > div:first-child,
+.cp-editor-container-active > div[data-editor-container-item-id]:first-child > div:first-child {
+    margin-top: 0 !important;
+}
+div[data-editor-container-id].cp-editor-container-empty > div {
+    background-color: silver;
+    border: 1px solid orange;
+    min-height: 150px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Structure */
+.cp-structure {
+    display: none;
+    position: fixed;
+    margin: 0;
+    padding: 8px;
+    list-style: none;
+    font-size: 11px;
+    z-index: 1033;
+    max-height: 80%;
+    overflow-y: auto;
+    scrollbar-width: none;
+    outline: none;
+}
+.cp-structure::-webkit-scrollbar {
+    display: none;
+}
+.cp-structure .dropdown-menu-top {
+    top: inherit;
+    bottom: 100%;
+}
+.cp-structure ul {
+    list-style: none;
     margin: 0;
     padding: 0;
-    list-style: none;
 }
-.custom-pages-template-structure ul {
-    list-style: none;
-    margin: 0;
-    padding: 0 0 0 20px;
+.cp-structure li {
+    padding: 0;
 }
-.custom-pages-template-structure li {
-    border-left: 1px solid transparent;
-    padding: 3px 5px;
-}
-.custom-pages-template-structure > li {
-    padding-left: 0;
-}
-.custom-pages-template-structure li[data-element-id]:hover,
-.custom-pages-template-structure ul[data-template-type=container] > li:hover {
-    border-left: 1px dashed var(--text-color-secondary);
-}
-.custom-pages-template-structure [data-action-click^=moveUp] {
+.cp-structure .cp-structure-container + [data-template-type] > li > .cp-structure-template [data-action-click^=moveUp],
+.cp-structure [data-container-id] [data-template-type]:last-child > li > .cp-structure-template [data-action-click^=moveDown] {
     display: none;
 }
-.custom-pages-template-structure [data-template-type] + [data-template-type] > li > [data-action-click^=move] {
-    display: inline-block;
+.cp-structure-row {
+    display: flex;
+    align-items: center;
+    padding: 8px;
 }
-.custom-pages-template-structure [data-template-type]:last-child > li > [data-action-click^=moveDown] {
-    display: none;
+.cp-structure-row > div {
+    flex: 1;
+}
+.cp-structure-row > .fa,
+.cp-structure-actions > .fa {
+    width: 18px;
+    text-align: center;
+}
+.cp-structure-row .cp-structure-actions {
+    flex: 0;
+    white-space: nowrap;
+    visibility: hidden;
+}
+.cp-structure-row:hover .cp-structure-actions {
+    visibility: visible;
+}
+.cp-structure-row .cp-structure-actions .dropdown-menu {
+    padding: 0;
+}
+.cp-structure-header {
+    cursor: move;
+}
+.cp-structure-header .cp-structure-text,
+.cp-structure-container .cp-structure-text {
+    font-weight: 600;
+}
+.cp-structure-template .cp-structure-text,
+.cp-structure-container .cp-structure-text {
+    padding: 0 8px;
+    cursor: default;
+}
+.cp-structure-row .cp-structure-action {
+    font-size: 14px;
+    visibility: hidden;
+    cursor: pointer;
+}
+.cp-structure-row:hover .cp-structure-action,
+.cp-structure-row .cp-structure-action.fa-plus {
+    visibility: visible;
+}
+.cp-structure-row .fa-circle, .cp-structure-row .fa-circle-o {
+    font-size: 70%;
+}
+.cp-structure-template .fa-circle {
+    color: #FF9F0A;
+}
+.cp-structure-container .fa-circle-o {
+    color: #B31317;
+}
+.cp-structure-template:hover,
+.cp-structure-container:hover,
+.cp-structure-active {
+    border-radius: 4px;
+    background: #F9F9F9;
+    transition: background 0.3s;
+}
+
+.cp-structure-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1031;
 }

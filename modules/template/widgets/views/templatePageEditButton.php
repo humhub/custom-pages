@@ -12,7 +12,7 @@ use humhub\widgets\Link;
 /* @var string $sguid */
 ?>
 
-<?php if ($mode === 'edit' || $mode === 'structure') : ?>
+<?php if ($mode === 'edit') : ?>
 
     <div id="editPageButton" class="btn-group">
         <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -21,26 +21,18 @@ use humhub\widgets\Link;
         <ul class="dropdown-menu">
             <li>
                 <?= Link::to(
-                        Yii::t('CustomPagesModule.view', 'Page configuration'),
-                        Url::toEditPage($pageId, ContentContainerHelper::getCurrent()),
-                    )->blank() ?>
+                    Yii::t('CustomPagesModule.view', 'Page configuration'),
+                    Url::toEditPage($pageId, ContentContainerHelper::getCurrent()),
+                )->blank() ?>
             </li>
             <?php if (PagePermissionHelper::canTemplate()) : ?>
                 <li>
                     <?= Link::to(
-                            Yii::t('CustomPagesModule.view', 'Edit template'),
-                            ['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid],
-                        )->blank() ?>
+                        Yii::t('CustomPagesModule.view', 'Edit template'),
+                        ['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid],
+                    )->blank() ?>
                 </li>
             <?php endif; ?>
-            <li>
-                <?= Link::to(
-                    $mode === 'edit'
-                        ? Yii::t('CustomPagesModule.view', 'Structure Overview')
-                        : Yii::t('CustomPagesModule.view', 'Edit mode'),
-                    ['view', 'id' => $pageId, 'mode' => $mode === 'edit' ? 'structure' : 'edit', 'sguid' => $sguid],
-                ) ?>
-            </li>
             <li>
                 <?= Link::to(Yii::t('CustomPagesModule.view', 'Edit elements'))->action(
                     'ui.modal.load',
@@ -48,12 +40,7 @@ use humhub\widgets\Link;
                 ) ?>
             </li>
             <li>
-                <?= Link::to(
-                    $mode === 'edit'
-                        ? Yii::t('CustomPagesModule.view', 'Turn edit off')
-                        : Yii::t('CustomPagesModule.view', 'Turn structure off'),
-                    ['view', 'id' => $pageId, 'sguid' => $sguid],
-                ) ?>
+                <?= Link::to(Yii::t('CustomPagesModule.view', 'Turn edit off'), ['view', 'id' => $pageId, 'sguid' => $sguid]) ?>
             </li>
         </ul>
     </div>

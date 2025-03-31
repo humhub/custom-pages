@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 
 /**
  * Form model used for adding container items.
@@ -18,6 +19,11 @@ use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 class AddItemEditForm extends EditItemForm
 {
     public ?ContainerElement $elementContent = null;
+
+    /**
+     * @var ContainerItem $owner
+     */
+    public $owner;
 
     public function setItemTemplate($itemTemplate)
     {

@@ -59,7 +59,7 @@ class TemplateInstanceRendererService
      */
     public function render(string $mode = ''): string
     {
-        if (($mode === 'edit' || $mode === 'structure') && PagePermissionHelper::canEdit()) {
+        if ($mode === 'edit' && PagePermissionHelper::canEdit()) {
             $this->ignoreCache();
         }
 

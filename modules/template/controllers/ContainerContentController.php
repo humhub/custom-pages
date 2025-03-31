@@ -15,6 +15,7 @@ use humhub\modules\custom_pages\modules\template\models\forms\EditItemForm;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
+use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
 use Yii;
 use yii\base\InvalidRouteException;
 use yii\helpers\Url;
@@ -198,6 +199,7 @@ class ContainerContentController extends Controller
                 'success' => true,
                 'id' => $elementContent->id,
                 'output' => (new BaseElementVariable($elementContent))->render(),
+                'structure' => TemplateStructure::widget(['templateInstance' => $form->owner->templateInstance]),
             ]);
         }
 

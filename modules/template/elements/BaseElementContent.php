@@ -13,10 +13,8 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\components\ActiveRecordDynamicAttributes;
 use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
-use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
-use humhub\modules\custom_pages\modules\template\widgets\TemplateEditorElement;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -309,35 +307,6 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
         }
 
         parent::afterDelete();
-    }
-
-    protected function wrap($type, $content, $options = [], $attributes = [])
-    {
-        if (!$this instanceof ContainerElement && (
-            $this->templateInstance?->getType() === TemplateInstance::TYPE_CONTAINER ||
-            ($this->template_instance_id === null && $this->element?->template?->type === Template::TYPE_CONTAINER)
-        )) {
-            // Apply the wrap for editing inside Container Item only for Container Element,
-            // other elements like Text, Image are not editable inside Container Item.
-            return $content;
-        }
-
-        if ($this->getPrimaryKey() != null) {
-            $options['element_content_id'] = $this->getPrimaryKey();
-        }
-
-        return TemplateEditorElement::widget([
-            'container' => $type,
-            'elementContent' => $this,
-            'content' => $content,
-            'renderOptions' => $options,
-            'renderAttributes' => $attributes,
-        ]);
-    }
-
-    protected function renderStructure($options = [], $attributes = []): string
-    {
-        return $this->getLabel();
     }
 
     public function isEditMode(array $options = []): bool

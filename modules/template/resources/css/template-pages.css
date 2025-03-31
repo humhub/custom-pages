@@ -118,13 +118,15 @@ div[data-editor-container-id].cp-editor-container-empty > div {
 .cp-structure-template .cp-structure-text,
 .cp-structure-container .cp-structure-text {
     padding: 0 8px;
+    cursor: default;
 }
 .cp-structure-row .cp-structure-action {
     font-size: 14px;
     visibility: hidden;
     cursor: pointer;
 }
-.cp-structure-row:hover .cp-structure-action {
+.cp-structure-row:hover .cp-structure-action,
+.cp-structure-row .cp-structure-action.fa-plus {
     visibility: visible;
 }
 .cp-structure-row .fa-circle, .cp-structure-row .fa-circle-o {

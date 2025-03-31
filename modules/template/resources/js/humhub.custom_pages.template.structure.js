@@ -13,6 +13,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
 
     TemplateStructure.prototype.init = function () {
         this.initDraggable();
+        this.initEditableRows();
         this.initHighlight();
         this.initMenuAlignment();
     }
@@ -39,6 +40,17 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
                 const data = that.getStoredData();
                 data[rootTemplateInstanceId] = $(e.target).position();
                 window.localStorage.setItem('cp-structure', JSON.stringify(data));
+            }
+        });
+    }
+
+    TemplateStructure.prototype.initEditableRows = function () {
+        const that = this;
+        this.$.on('click', '.cp-structure-template', function (evt) {
+            evt.$target = $(evt.target);
+            if (evt.$target.is('.cp-structure-template, .cp-structure-text, .fa-circle')) {
+                evt.$trigger = $(this);
+                that.editElements(evt);
             }
         });
     }

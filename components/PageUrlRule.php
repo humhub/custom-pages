@@ -63,10 +63,17 @@ class PageUrlRule extends Component implements UrlRuleInterface
     public function parseRequest($manager, $request)
     {
         $pathInfo = $request->getPathInfo();
-        if (substr($pathInfo, 0, 2) == "p/") {
+        if (substr($pathInfo, 0, 2) === 'p/') {
             $parts = explode('/', $pathInfo, 3);
             if (isset($parts[1])) {
-                $page = Page::find()->where(['id' => $parts[1]])->orWhere(['url' => $parts[1]])->one();
+                $page = Page::find()
+                    ->readable()
+                    ->andWhere([
+                        'OR',
+                        [Page::tableName() . '.id' => $parts[1]],
+                        [Page::tableName() . '.url' => $parts[1]],
+                    ])
+                    ->one();
                 if ($page !== null) {
                     if (!isset($parts[2]) || $parts[2] == "") {
                         $parts[2] = $this->defaultRoutes[0];

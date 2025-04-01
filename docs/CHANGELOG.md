@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.16 (Unreleased)
+---------------------------
+- Fix #400: Fix page loading by url shortcut
+
 1.10.15 (February 11, 2025)
 ---------------------------
 - Fix #391: Fix image view permission from sub container

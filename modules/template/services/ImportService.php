@@ -8,11 +8,9 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\file\models\FileContent;
-use yii\base\InvalidConfigException;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -166,7 +164,9 @@ class ImportService
         $elementContent = $element->getDefaultContent(true);
 
         foreach ($data as $name => $value) {
-            if ($name === 'id' || ($name !== 'dyn_attributes' && is_array($value))) {
+            if ($name === 'id' ||
+                ($name !== 'dyn_attributes' && is_array($value)) ||
+                !$elementContent->hasAttribute($name)) {
                 continue;
             }
             $elementContent->$name = $value;
@@ -186,14 +186,14 @@ class ImportService
 
     private function attachFiles(ActiveRecord $record, array $files)
     {
-        $recordAttributes = $record->attributes;
         $updateRecord = false;
 
         $newFiles = [];
         foreach ($files as $fileData) {
             $file = new FileContent();
             foreach ($fileData as $attribute => $value) {
-                if (in_array($attribute, ['guid', 'object_model', 'object_id'])) {
+                if (in_array($attribute, ['guid', 'object_model', 'object_id']) ||
+                    !$file->hasAttribute($attribute)) {
                     continue;
                 }
                 if ($attribute === 'base64Content') {
@@ -209,7 +209,7 @@ class ImportService
                 $newGuid = '';
             }
 
-            foreach ($recordAttributes as $attribute => $value) {
+            foreach ($record->attributes as $attribute => $value) {
                 if ($value === $fileData['guid']) {
                     $record->$attribute = $newGuid;
                     $updateRecord = true;

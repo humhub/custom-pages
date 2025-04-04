@@ -56,7 +56,7 @@ class FileDownloadElement extends BaseElementContent
     public function rules()
     {
         return [
-            [['file_guid'], 'required'],
+            [['file_guid'], 'safe'],
             [['title', 'style', 'cssClass'], 'string'],
             [['showFileinfo', 'showIcon'], 'integer'],
         ];

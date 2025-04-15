@@ -310,6 +310,8 @@ class Template extends ActiveRecord
             }
         }
 
+        usort($elementContents, fn($a, $b) => $a->element_id <=> $b->element_id);
+
         return $elementContents;
     }
 

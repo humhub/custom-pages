@@ -2,7 +2,7 @@
 return [
   'Abstract' => '',
   'Activate PHP based Pages and Snippets' => '',
-  'Attach Files' => '',
+  'Attach Files' => 'Vedhæft filer',
   'Content' => 'Indhold',
   'Empty <br />Container' => '',
   'Empty HumHub Richtext' => '',

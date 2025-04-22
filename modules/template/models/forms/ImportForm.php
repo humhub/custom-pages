@@ -62,7 +62,7 @@ class ImportForm extends Model
             return false;
         }
 
-        if (!$this->getService()->run()) {
+        if (!$this->getService()->importFromFile($this->file->tempName)) {
             $this->addError('file', implode(' ', $this->getService()->getErrors()));
             return false;
         }
@@ -73,7 +73,7 @@ class ImportForm extends Model
     public function getService(): ImportService
     {
         if ($this->service === null) {
-            $this->service = new ImportService($this->type, $this->file->tempName);
+            $this->service = new ImportService($this->type);
         }
 
         return $this->service;

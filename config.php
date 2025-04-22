@@ -2,6 +2,7 @@
 
 use humhub\components\Application;
 use humhub\modules\custom_pages\Events;
+use humhub\modules\custom_pages\events\DefaultTemplateEvents;
 use humhub\modules\dashboard\widgets\Sidebar as DashboardSidebar;
 use humhub\modules\space\widgets\HeaderControlsMenu;
 use humhub\modules\space\widgets\Menu;
@@ -39,5 +40,6 @@ return [
 
         ['class' => DashboardSidebar::class, 'event' => BaseMenu::EVENT_INIT, 'callback' => [Events::class, 'onDashboardSidebarInit']],
         ['class' => SpaceSidebar::class, 'event' => BaseMenu::EVENT_INIT, 'callback' => [Events::class, 'onSpaceSidebarInit']],
+        ['class' => 'humhub\modules\custom_pages\modules\template\services\ImportService', 'event' => 'fetchTemplates', 'callback' => [DefaultTemplateEvents::class, 'onImportServiceFetchTemplates']],
     ],
 ];

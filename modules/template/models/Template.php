@@ -40,13 +40,14 @@ use yii\helpers\ArrayHelper;
  *  - Layout: Root template which is not combinable with other templates.
  *  - Container: Template which is combinable with other templates.
  *
- * @property $id int
- * @property $name string
- * @property $source string
- * @property $engine string
- * @property $description string
- * @property $type string
- * @property $allow_for_spaces boolean
+ * @property int $id
+ * @property string $name
+ * @property string $source
+ * @property string $engine
+ * @property string $description
+ * @property string $type
+ * @property bool $allow_for_spaces
+ * @property bool $is_default
  *
  * @property-read TemplateElement[] $elements
  */
@@ -68,7 +69,7 @@ class Template extends ActiveRecord
     public function init()
     {
         // Set default engine
-        $this->engine = "twig";
+        $this->engine = 'twig';
     }
 
     /**

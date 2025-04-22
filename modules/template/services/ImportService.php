@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
+use humhub\modules\custom_pages\events\DefaultTemplateEvent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\file\models\FileContent;
@@ -16,15 +17,16 @@ use yii\db\ActiveRecord;
 
 class ImportService
 {
-    private string $type;
-    private string $filePath;
+    public const EVENT_FETCH_TEMPLATES = 'fetchTemplates';
+
+    private ?string $type = null;
     private array $errors = [];
     public ?Template $template = null;
+    public bool $allowUpdateDefaultTemplate = false;
 
-    public function __construct(string $type, string $filePath)
+    public function __construct(?string $type = null)
     {
         $this->type = $type;
-        $this->filePath = $filePath;
     }
 
     public function addError(string $error): void
@@ -42,15 +44,15 @@ class ImportService
         return $this->errors;
     }
 
-    public function run(): bool
+    public function importFromFile(string $filePath): bool
     {
-        if (!file_exists($this->filePath)) {
+        if (!file_exists($filePath)) {
             $this->addError('The import file is not found!');
             return false;
         }
 
         try {
-            $data = json_decode(file_get_contents($this->filePath), true);
+            $data = json_decode(file_get_contents($filePath), true);
         } catch (\Exception $e) {
             $this->addError('The import file is not readable! Error: ' . $e->getMessage());
             return false;
@@ -68,6 +70,11 @@ class ImportService
             return false;
         }
 
+        return $this->runImport($data);
+    }
+
+    public function runImport(array $data): bool
+    {
         if (!$this->importTemplate($data)) {
             return false;
         }
@@ -106,12 +113,18 @@ class ImportService
     {
         $template = Template::findOne(['name' => $data['name']]) ?? new Template();
 
-        $template->type = $this->type;
+        if ($template->is_default && !$template->isNewRecord && !$this->allowUpdateDefaultTemplate) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'Cannot import default template!'));
+            return false;
+        }
+
+        $template->type = $data['type'];
         $template->name = $data['name'];
         $template->engine = $data['engine'] ?? 'twig';
         $template->description = $data['description'] ?? '';
         $template->source = $data['source'] ?? '';
         $template->allow_for_spaces = $data['allow_for_spaces'] ?? false;
+        $template->is_default = $data['is_default'] ?? false;
 
         $this->template = $this->saveRecord($template);
 
@@ -137,6 +150,9 @@ class ImportService
         $element->content_type = $data['content_type'] ?? '';
         $element->title = $data['title'] ?? '';
         $element->dyn_attributes = $data['dyn_attributes'] ?? '';
+        if (is_array($element->dyn_attributes)) {
+            $element->dyn_attributes = json_encode($element->dyn_attributes);
+        }
 
         if (!class_exists($element->content_type)) {
             $this->addError('Element content class "' . $element->content_type . '" does not exist!');
@@ -220,5 +236,24 @@ class ImportService
         if ($updateRecord) {
             $record->save();
         }
+    }
+
+    public function importDefaultTemplates(): bool
+    {
+        $event = new DefaultTemplateEvent();
+        DefaultTemplateEvent::trigger($this, self::EVENT_FETCH_TEMPLATES, $event);
+
+        $this->allowUpdateDefaultTemplate = true;
+
+        $result = true;
+        foreach ($event->getTemplates() as $name => $template) {
+            $template['name'] = $name;
+            $template['is_default'] = true;
+            $result = $this->runImport($template) && $result;
+        }
+
+        $this->allowUpdateDefaultTemplate = false;
+
+        return $result;
     }
 }

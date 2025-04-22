@@ -143,18 +143,14 @@ class ImportService
             return null;
         }
 
-        if (!isset($data['elementContent'])) {
-            $this->addError('Missed content for element with name "' . $data['name'] . '"!');
-            return null;
-        }
-
         if (!$this->saveRecord($element)) {
             return null;
         }
 
-        $data['elementContent']['element_id'] = $element->id;
-
-        $this->importElementContent($element, $data['elementContent']);
+        if (isset($data['elementContent'])) {
+            $data['elementContent']['element_id'] = $element->id;
+            $this->importElementContent($element, $data['elementContent']);
+        }
 
         return $element;
     }

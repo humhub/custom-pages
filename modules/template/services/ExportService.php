@@ -42,6 +42,10 @@ class ExportService
 
             $elementContent = $element->getDefaultContent();
 
+            if (!$elementContent) {
+                continue;
+            }
+
             $contentData = $elementContent->attributes;
             unset($contentData['id']);
             unset($contentData['element_id']);

@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
-use humhub\modules\custom_pages\events\DefaultTemplateEvent;
+use humhub\components\Module;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\file\models\FileContent;
@@ -17,8 +17,6 @@ use yii\db\ActiveRecord;
 
 class ImportService
 {
-    public const EVENT_FETCH_TEMPLATES = 'fetchTemplates';
-
     private ?string $type = null;
     private array $errors = [];
     public ?Template $template = null;
@@ -238,15 +236,30 @@ class ImportService
         }
     }
 
-    public function importDefaultTemplates(): bool
+    public function importDefaultTemplates(Module $module): bool
     {
-        $event = new DefaultTemplateEvent();
-        DefaultTemplateEvent::trigger($this, self::EVENT_FETCH_TEMPLATES, $event);
+        if (!isset($module->customPagesDefaultTemplatesPath)) {
+            $this->addError('Default templates path is not defined for the module "' . $module->id . '"!');
+            return false;
+        }
+
+        $defaultTemplatesPath = $module->basePath . DIRECTORY_SEPARATOR . $module->customPagesDefaultTemplatesPath;
+        if (!file_exists($defaultTemplatesPath)) {
+            $this->addError('Default templates file "' . $defaultTemplatesPath . '" does not exist!');
+            return false;
+        }
+
+        try {
+            $defaultTemplates = require $defaultTemplatesPath;
+        } catch (\Exception $e) {
+            $this->addError('Default templates file "' . $defaultTemplatesPath . '" is broken! Error: ' . $e->getMessage());
+            return false;
+        }
 
         $this->allowUpdateDefaultTemplate = true;
 
         $result = true;
-        foreach ($event->getTemplates() as $name => $template) {
+        foreach ($defaultTemplates as $name => $template) {
             $template['name'] = $name;
             $template['is_default'] = true;
             $result = $this->runImport($template) && $result;

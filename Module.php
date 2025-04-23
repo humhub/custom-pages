@@ -31,6 +31,7 @@ class Module extends ContentContainerModule
 
     public $resourcesPath = 'resources';
 
+    public string $customPagesDefaultTemplatesPath = 'modules/template/defaultTemplates.php';
 
     /**
      * @see https://twig.symfony.com/doc/3.x/api.html#sandbox-extension
@@ -180,7 +181,7 @@ class Module extends ContentContainerModule
      */
     public function enable()
     {
-        return parent::enable() && (new ImportService())->importDefaultTemplates();
+        return parent::enable() && (new ImportService())->importDefaultTemplates($this);
     }
 
     /**
@@ -189,6 +190,6 @@ class Module extends ContentContainerModule
     public function update()
     {
         parent::update();
-        (new ImportService())->importDefaultTemplates();
+        (new ImportService())->importDefaultTemplates($this);
     }
 }

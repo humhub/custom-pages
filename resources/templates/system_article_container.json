@@ -1,0 +1,19 @@
+{
+  "name": "system_article_container",
+  "description": "Simple richtext article.",
+  "source": "\u003Cdiv style=\"margin-top:15px;\"\u003E\n\t\u003Cdiv style=\"padding:0 15px;\"\u003E\n\t\t{{ content }}\n\t\u003C/div\u003E\n\u003C/div\u003E",
+  "type": "container",
+  "is_default": 1,
+  "allow_for_spaces": 0,
+  "elements": [
+    {
+      "name": "content",
+      "content_type": "humhub\\modules\\custom_pages\\modules\\template\\elements\\RichtextElement",
+      "elementContent": {
+        "dyn_attributes": {
+          "content": "\u003Cp\u003ELorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\u003C/p\u003E"
+        }
+      }
+    }
+  ]
+}

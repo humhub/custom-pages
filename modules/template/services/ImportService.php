@@ -8,7 +8,6 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
-use humhub\components\Module;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\file\models\FileContent;
@@ -42,15 +41,36 @@ class ImportService
         return $this->errors;
     }
 
-    public function importFromFile(string $filePath): bool
+    public function importFromFolder(string $path): bool
     {
-        if (!file_exists($filePath)) {
+        if (!is_dir($path)) {
+            $this->addError('Wrong default templates path "' . $path . '"!');
+            return false;
+        }
+
+        $this->allowUpdateDefaultTemplate = true;
+
+        $result = true;
+        foreach (scandir($path) as $file) {
+            if ($file !== '.' && $file !== '..') {
+                $result = $this->importFromFile($path . '/' . $file) && $result;
+            }
+        }
+
+        $this->allowUpdateDefaultTemplate = false;
+
+        return $result;
+    }
+
+    public function importFromFile(string $path): bool
+    {
+        if (!file_exists($path)) {
             $this->addError('The import file is not found!');
             return false;
         }
 
         try {
-            $data = json_decode(file_get_contents($filePath), true);
+            $data = json_decode(file_get_contents($path), true);
         } catch (\Exception $e) {
             $this->addError('The import file is not readable! Error: ' . $e->getMessage());
             return false;
@@ -61,7 +81,7 @@ class ImportService
             return false;
         }
 
-        if (isset($data['type']) && $data['type'] !== $this->type) {
+        if (isset($data['type'], $this->type) && $data['type'] !== $this->type) {
             $this->addError(Yii::t('CustomPagesModule.template', 'The template can be imported only as {type}!', [
                 'type' => Template::getTypeTitle($data['type']),
             ]));
@@ -234,39 +254,5 @@ class ImportService
         if ($updateRecord) {
             $record->save();
         }
-    }
-
-    public function importDefaultTemplates(Module $module): bool
-    {
-        if (!isset($module->customPagesDefaultTemplatesPath)) {
-            $this->addError('Default templates path is not defined for the module "' . $module->id . '"!');
-            return false;
-        }
-
-        $defaultTemplatesPath = $module->basePath . DIRECTORY_SEPARATOR . $module->customPagesDefaultTemplatesPath;
-        if (!file_exists($defaultTemplatesPath)) {
-            $this->addError('Default templates file "' . $defaultTemplatesPath . '" does not exist!');
-            return false;
-        }
-
-        try {
-            $defaultTemplates = require $defaultTemplatesPath;
-        } catch (\Exception $e) {
-            $this->addError('Default templates file "' . $defaultTemplatesPath . '" is broken! Error: ' . $e->getMessage());
-            return false;
-        }
-
-        $this->allowUpdateDefaultTemplate = true;
-
-        $result = true;
-        foreach ($defaultTemplates as $name => $template) {
-            $template['name'] = $name;
-            $template['is_default'] = true;
-            $result = $this->runImport($template) && $result;
-        }
-
-        $this->allowUpdateDefaultTemplate = false;
-
-        return $result;
     }
 }

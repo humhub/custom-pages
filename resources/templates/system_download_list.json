@@ -1,0 +1,16 @@
+{
+  "name": "system_download_list",
+  "description": "File download list.",
+  "source": "\u003Cdiv class=\"download-list\"\u003E\r\n\t{{ download_list }}\r\n\u003C/div\u003E",
+  "type": "container",
+  "is_default": 1,
+  "allow_for_spaces": 0,
+  "elements": [
+    {
+      "name": "download_list",
+      "content_type": "humhub\\modules\\custom_pages\\modules\\template\\elements\\ContainerElement",
+      "title": "File List",
+      "dyn_attributes": "{\"allow_multiple\":1,\"is_inline\":0,\"templates\":[\"system_download_item\"]}"
+    }
+  ]
+}

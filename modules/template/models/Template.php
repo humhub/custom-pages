@@ -105,7 +105,7 @@ class Template extends ActiveRecord
             [['allow_for_spaces'], 'boolean'],
             [['name'], 'unique'],
             [['name', 'type'], 'string', 'max' => 100],
-            [['type'], 'validType'],
+            [['type'], 'in', 'range' => [self::TYPE_CONTAINER, self::TYPE_LAYOUT, self::TYPE_SNIPPET_LAYOUT, self::TYPE_NAVIGATION]],
             [['source'], 'required', 'on' => ['source']],
         ];
     }
@@ -119,19 +119,6 @@ class Template extends ActiveRecord
         $scenarios['edit'] = ['name', 'description', 'allow_for_spaces'];
         $scenarios['source'] = ['source'];
         return $scenarios;
-    }
-
-    /**
-     * Validates the template type against allowed types.
-     * @param type $attribute
-     * @param type $model
-     */
-    public function validType($attribute, $model)
-    {
-        $validTypes = [self::TYPE_CONTAINER, self::TYPE_LAYOUT, self::TYPE_NAVIGATION];
-        if (!in_array($this->type, $validTypes)) {
-            $this->addError($attribute, 'Invalid template type!');
-        }
     }
 
     /**

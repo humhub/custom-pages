@@ -35,13 +35,20 @@ class Module extends ContentContainerModule
      * @see https://twig.symfony.com/doc/3.x/api.html#sandbox-extension
      * @var bool
      */
-    public $enableTwiqSandboxExtension = true;
+    public bool $enableTwiqSandboxExtension = true;
+
+    /**
+     * Enable it only when required to edit default templates before
+     * exporting and updating them in the folder "resources/templates/"
+     * @var bool
+     */
+    public bool $allowEditDefaultTemplates = false;
 
     /**
      * @see https://twig.symfony.com/doc/3.x/api.html#sandbox-extension
      * @var array
      */
-    public $enableTwiqSandboxExtensionConfig = [
+    public array $enableTwiqSandboxExtensionConfig = [
         'allowedTags' => ['autoescape', 'apply', 'block', 'if', 'with', 'for', 'set'],
         'allowedFilters' => ['capitalize', 'date', 'first', 'slice', 'upper', 'escape', 'raw', 'nl2br', 'url_encode', 'round', 'u', 'striptags'],
         'allowedFunctions' => ['range', 'max', 'min', 'random'],

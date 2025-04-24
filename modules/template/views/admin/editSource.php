@@ -3,8 +3,10 @@
 use humhub\modules\custom_pages\modules\template\assets\SourceEditorAsset;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\services\ElementTypeService;
+use humhub\modules\custom_pages\modules\template\widgets\TemplateContentTable;
 use humhub\modules\custom_pages\widgets\AdminMenu;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -64,8 +66,9 @@ $this->registerJsConfig('custom_pages.template.source', [
             'rows' => 15
         ])->label(false); ?>
 
+        <?php if ($model->canEdit()) : ?>
         <div class="clearfix">
-            <?= Html::submitButton(Yii::t('CustomPagesModule.base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+            <?= Button::save()->submit() ?>
             <div class="dropdown pull-right">
                 <button data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/edit-multiple', 'id' => $model->id]) ?>" class="btn btn-primary">
                     <i aria-hidden="true" class="fa fa-pencil"></i>
@@ -87,9 +90,11 @@ $this->registerJsConfig('custom_pages.template.source', [
                 </ul>
             </div>
         </div>
-        <br />
+        <br>
+        <?php endif; ?>
+
         <?php ActiveForm::end(); ?>
 
-        <?= \humhub\modules\custom_pages\modules\template\widgets\TemplateContentTable::widget(['template' => $model]) ?>
+        <?= TemplateContentTable::widget(['template' => $model]) ?>
     </div>
 </div>

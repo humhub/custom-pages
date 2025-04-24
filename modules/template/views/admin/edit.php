@@ -2,10 +2,12 @@
 
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\custom_pages\widgets\AdminMenu;
+use humhub\widgets\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\modules\custom_pages\modules\template\models\Template;
 
+/* @var Template $model */
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
@@ -44,7 +46,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
             <?= $form->field($model, 'allow_for_spaces')->checkbox(); ?>
         <?php endif; ?>
 
-        <?= Html::submitButton(Yii::t('CustomPagesModule.template', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
+        <?= $model->canEdit() ? Button::save()->submit() : '' ?>
 
         <?php $form::end(); ?>
         <?= Html::script(' $(\'#template-form-description\').autosize();') ?>

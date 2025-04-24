@@ -80,6 +80,10 @@ class EditMultipleElementsForm extends \yii\base\Model
 
     public function load($data, $formName = null)
     {
+        if (!$this->template->canEdit()) {
+            return false;
+        }
+
         // This prevents items without elements from being rejected
         if (parent::load($data) && empty($this->contentMap)) {
             return true;

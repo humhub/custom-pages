@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\lib\templates\TemplateEngineFactory;
 use humhub\modules\custom_pages\models\CustomPage;
@@ -17,6 +18,7 @@ use humhub\modules\custom_pages\modules\template\elements\ContainerDefinition;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
+use humhub\modules\custom_pages\permissions\ManagePages;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
@@ -124,6 +126,14 @@ class Template extends ActiveRecord
     /**
      * @inheritdoc
      */
+    public function load($data, $formName = null)
+    {
+        return $this->canEdit() && parent::load($data, $formName);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
@@ -152,6 +162,10 @@ class Template extends ActiveRecord
     public function beforeDelete()
     {
         if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        if (!$this->canDelete()) {
             return false;
         }
 
@@ -361,4 +375,34 @@ class Template extends ActiveRecord
         };
     }
 
+    /**
+     * Checks if this template and its elements can be edited
+     *
+     * @return bool
+     * @since 1.11
+     */
+    public function canEdit(): bool
+    {
+        if (!$this->isNewRecord && $this->is_default &&
+            !Yii::$app->getModule('custom_pages')->allowEditDefaultTemplates) {
+            return false;
+        }
+
+        return Yii::$app->user->can([ManageModules::class, ManagePages::class]);
+    }
+
+    /**
+     * Checks if this template and its elements can be deleted
+     *
+     * @return bool
+     * @since 1.11
+     */
+    public function canDelete(): bool
+    {
+        if (!$this->isNewRecord && $this->is_default) {
+            return false;
+        }
+
+        return Yii::$app->user->can([ManageModules::class, ManagePages::class]);
+    }
 }

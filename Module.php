@@ -42,7 +42,7 @@ class Module extends ContentContainerModule
      * exporting and updating them in the folder "resources/templates/"
      * @var bool
      */
-    public bool $allowEditDefaultTemplates = false;
+    public bool $allowUpdateDefaultTemplates = false;
 
     /**
      * @see https://twig.symfony.com/doc/3.x/api.html#sandbox-extension
@@ -200,6 +200,8 @@ class Module extends ContentContainerModule
 
     private function importDefaultTemplates(): bool
     {
-        return (new ImportService())->importFromFolder(Yii::getAlias('@custom_pages/resources/templates'));
+        return (new ImportService())
+            ->allowUpdateDefaultTemplates()
+            ->importFromFolder(Yii::getAlias('@custom_pages/resources/templates'));
     }
 }

@@ -28,7 +28,7 @@
     },
     {
       "name": "background",
-      "content_type": "humhub\\modules\\custom_pages\\modules\\template\\elements\\FileElement",
+      "content_type": "humhub\\modules\\custom_pages\\modules\\template\\elements\\FileElement"
     }
   ]
 }

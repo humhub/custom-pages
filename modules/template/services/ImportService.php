@@ -19,11 +19,12 @@ class ImportService
     private ?string $type = null;
     private array $errors = [];
     public ?Template $template = null;
-    public bool $allowUpdateDefaultTemplate = false;
+    public bool $allowUpdateDefaultTemplates = false;
 
     public function __construct(?string $type = null)
     {
         $this->type = $type;
+        $this->allowUpdateDefaultTemplates = Yii::$app->getModule('custom_pages')->allowUpdateDefaultTemplates;
     }
 
     public function addError(string $error): void
@@ -48,16 +49,12 @@ class ImportService
             return false;
         }
 
-        $this->allowUpdateDefaultTemplate = true;
-
         $result = true;
         foreach (scandir($path) as $file) {
-            if ($file !== '.' && $file !== '..') {
+            if (str_ends_with($file, '.json')) {
                 $result = $this->importFromFile($path . '/' . $file) && $result;
             }
         }
-
-        $this->allowUpdateDefaultTemplate = false;
 
         return $result;
     }
@@ -131,9 +128,27 @@ class ImportService
     {
         $template = Template::findOne(['name' => $data['name']]) ?? new Template();
 
-        if ($template->is_default && !$template->isNewRecord && !$this->allowUpdateDefaultTemplate) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'Cannot import default template!'));
-            return false;
+        if ($template->is_default && !$template->isNewRecord) {
+            // Check if default templates can be updated
+            if (!$this->allowUpdateDefaultTemplates) {
+                $this->addError(Yii::t('CustomPagesModule.template', 'Cannot import default template!'));
+                return false;
+            }
+
+            // If the default template was modified
+            if ($template->updated_at !== null || $template->updated_by !== null) {
+                // Rename the modified default template
+                $uniqueName = $template->name . ' (Modified)';
+                $uniqueIndex = 1;
+                while (Template::findOne(['name' => $uniqueName])) {
+                    $uniqueName = $template->name . ' (Modified ' . ++$uniqueIndex . ')';
+                }
+                $template->name = $uniqueName;
+                $template->save();
+
+                // Create new default template
+                $template = new Template();
+            }
         }
 
         $template->type = $data['type'];
@@ -254,5 +269,11 @@ class ImportService
         if ($updateRecord) {
             $record->save();
         }
+    }
+
+    public function allowUpdateDefaultTemplates(): self
+    {
+        $this->allowUpdateDefaultTemplates = true;
+        return $this;
     }
 }

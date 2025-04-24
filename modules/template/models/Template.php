@@ -50,6 +50,10 @@ use yii\helpers\ArrayHelper;
  * @property string $type
  * @property bool $allow_for_spaces
  * @property bool $is_default
+ * @property string $created_at
+ * @property int $created_by
+ * @property string $updated_at
+ * @property int $updated_by
  *
  * @property-read TemplateElement[] $elements
  */
@@ -153,6 +157,14 @@ class Template extends ActiveRecord
                     $definition->save();
                 }
             }
+        }
+
+        if ($this->is_default) {
+            // Keep each default template as not updated in order to don't create a copy on next auto updating
+            $this->updateAttributes([
+                'updated_at' => null,
+                'updated_by' => null,
+            ]);
         }
     }
 
@@ -384,7 +396,7 @@ class Template extends ActiveRecord
     public function canEdit(): bool
     {
         if (!$this->isNewRecord && $this->is_default &&
-            !Yii::$app->getModule('custom_pages')->allowEditDefaultTemplates) {
+            !Yii::$app->getModule('custom_pages')->allowUpdateDefaultTemplates) {
             return false;
         }
 

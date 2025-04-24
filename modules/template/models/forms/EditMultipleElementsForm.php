@@ -80,7 +80,7 @@ class EditMultipleElementsForm extends \yii\base\Model
 
     public function load($data, $formName = null)
     {
-        if (!$this->template->canEdit()) {
+        if (($this->owner instanceof Template) && !$this->template->canEdit()) {
             return false;
         }
 

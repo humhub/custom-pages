@@ -28,6 +28,9 @@ div[data-editor-container-item-id]:hover {
     border: 1px dashed #216EFF !important;
     margin: -1px;
 }
+div[data-editor-container-item-id].inline {
+    display: inline-block;
+}
 .cp-editor-container-active {
     display: none;
     z-index: 1032;

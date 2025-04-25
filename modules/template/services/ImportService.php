@@ -28,7 +28,10 @@ class ImportService
     public function __construct(?string $type = null)
     {
         $this->type = $type;
-        $this->allowUpdateDefaultTemplates = Yii::$app->getModule('custom_pages')->allowUpdateDefaultTemplates;
+
+        if ($module = $this->getModule()) {
+            $this->allowUpdateDefaultTemplates = $module->allowUpdateDefaultTemplates;
+        }
     }
 
     public static function instance(?string $type = null): self
@@ -282,8 +285,7 @@ class ImportService
 
     public function importDefaultTemplates(): bool
     {
-        $module = Yii::$app->getModule('custom_pages');
-        if (!($module instanceof Module) || !$module->isEnabled) {
+        if (!$this->getModule()) {
             // Check because it may be called from other external module
             return true;
         }
@@ -300,5 +302,11 @@ class ImportService
         }
 
         return $result;
+    }
+
+    private function getModule(): ?Module
+    {
+        $module = Yii::$app->getModule('custom_pages');
+        return $module instanceof Module && $module->isEnabled ? $module : null;
     }
 }

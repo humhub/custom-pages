@@ -186,7 +186,7 @@ class Module extends ContentContainerModule
      */
     public function enable()
     {
-        return parent::enable() && $this->importDefaultTemplates();
+        return parent::enable() && ImportService::instance()->importDefaultTemplates();
     }
 
     /**
@@ -195,13 +195,6 @@ class Module extends ContentContainerModule
     public function update()
     {
         parent::update();
-        $this->importDefaultTemplates();
-    }
-
-    private function importDefaultTemplates(): bool
-    {
-        return (new ImportService())
-            ->allowUpdateDefaultTemplates()
-            ->importFromFolder(Yii::getAlias('@custom_pages/resources/templates'));
+        ImportService::instance()->importDefaultTemplates();
     }
 }

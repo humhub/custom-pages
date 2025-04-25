@@ -8,6 +8,8 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
+use humhub\modules\custom_pages\Module;
+use humhub\modules\custom_pages\modules\template\events\DefaultTemplateEvent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\file\models\FileContent;
@@ -16,6 +18,8 @@ use yii\db\ActiveRecord;
 
 class ImportService
 {
+    public const EVENT_DEFAULT_TEMPLATES = 'defaultTemplates';
+
     private ?string $type = null;
     private array $errors = [];
     public ?Template $template = null;
@@ -25,6 +29,11 @@ class ImportService
     {
         $this->type = $type;
         $this->allowUpdateDefaultTemplates = Yii::$app->getModule('custom_pages')->allowUpdateDefaultTemplates;
+    }
+
+    public static function instance(?string $type = null): self
+    {
+        return new self($type);
     }
 
     public function addError(string $error): void
@@ -271,9 +280,25 @@ class ImportService
         }
     }
 
-    public function allowUpdateDefaultTemplates(): self
+    public function importDefaultTemplates(): bool
     {
+        $module = Yii::$app->getModule('custom_pages');
+        if (!($module instanceof Module) || !$module->isEnabled) {
+            // Check because it may be called from other external module
+            return true;
+        }
+
+        $event = new DefaultTemplateEvent();
+        $event->addPath('@custom_pages/resources/templates');
+        DefaultTemplateEvent::trigger($this, self::EVENT_DEFAULT_TEMPLATES, $event);
+
         $this->allowUpdateDefaultTemplates = true;
-        return $this;
+
+        $result = true;
+        foreach ($event->getPaths() as $path) {
+            $result = $this->importFromFolder(Yii::getAlias($path)) && $result;
+        }
+
+        return $result;
     }
 }

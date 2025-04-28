@@ -67,14 +67,15 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
 
             const copy = obj.clone();
             copy.addClass(activeClass).css({
-                width: obj.outerWidth() + 2,
-                minHeight: obj.outerHeight() + 2,
-                top: obj.position().top - 1,
-                left: obj.position().left - 1,
+                width: obj.outerWidth(),
+                minHeight: obj.outerHeight(),
+                top: obj.position().top,
+                left: obj.position().left,
             });
 
             $('.cp-structure-overlay, .' + activeClass).remove();
-            obj.parent().append('<div class="cp-structure-overlay"></div>').append(copy);
+            $('body').append('<div class="cp-structure-overlay"></div>');
+            obj.after(copy);
             copy.fadeIn('fast');
         }).on('mouseleave', '.cp-structure-template, .cp-structure-container', function () {
             $('.cp-structure-overlay, .' + activeClass).remove();

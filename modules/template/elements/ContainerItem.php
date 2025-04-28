@@ -153,11 +153,11 @@ class ContainerItem extends ActiveRecord
         return $this->hasOne(ContainerElement::class, ['id' => 'element_content_id']);
     }
 
-    public function render(string $mode, $inline = false): string
+    public function render(string $mode): string
     {
         try {
             $result = $this->template->render($this->templateInstance, $mode);
-            return $mode === 'edit' ? $this->renderEditBlock($result, $inline) : $result;
+            return $mode === 'edit' ? $this->renderEditBlock($result) : $result;
         } catch (\Throwable $ex) {
             Yii::error('Broken Container Item #' . $this->id . ' has lost Template Instance. ' .
                 'Error: ' . $ex->getMessage() . ' ' . $ex->getFile() . '(' . $ex->getLine() . ') ' . $ex->getTraceAsString(), 'custom-pages');
@@ -165,13 +165,14 @@ class ContainerItem extends ActiveRecord
         }
     }
 
-    public function renderEditBlock(string $content, $inline): string
+    public function renderEditBlock(string $content): string
     {
-        $options = ['data-editor-container-item-id' => $this->id];
-        if ($inline) {
-            $options['class'] = 'inline';
+        if (preg_match('#^(<([a-z]+))(.*?>.*?</\2>)$#is', trim($content), $m)) {
+            // Use original tag as wrapper instead of adding <div> in order to don't break such tags as <tr>
+            return $m[1] . ' data-editor-container-item-id="' . $this->id . '"' . $m[3];
         }
 
-        return Html::tag('div', $content, $options);
+        // Use inline tag <span> for case if the content is not wrapped to html tag
+        return Html::tag('span', $content, ['data-editor-container-item-id' => $this->id]);
     }
 }

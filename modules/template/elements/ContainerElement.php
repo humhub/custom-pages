@@ -88,7 +88,7 @@ class ContainerElement extends BaseElementContent
 
         $result = '';
         foreach ($items as $containerItem) {
-            $result .= $containerItem->render($options['mode'] ?? '', $this->definition->is_inline);
+            $result .= $containerItem->render($options['mode'] ?? '');
         }
 
         if ($this->isEditMode($options)) {
@@ -106,7 +106,13 @@ class ContainerElement extends BaseElementContent
      */
     protected function renderEditBlock(string $content, array $options = []): string
     {
-        return Html::tag('div', $content, array_merge([
+        if (preg_match('#<(tr).+?</\1>#is', $content)) {
+            $tagName = 'tbody';
+        } else {
+            $tagName = 'div';
+        }
+
+        return Html::tag($tagName, $content, array_merge([
             'data-editor-container-id' => $this->id,
         ], $options));
     }

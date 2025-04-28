@@ -213,36 +213,6 @@ class ContainerContentController extends Controller
     }
 
     /**
-     * This action is used to edit a Container Item.
-     *
-     * @param int $itemId
-     * @return Response
-     * @throws Exception
-     */
-    public function actionEditItem($itemId)
-    {
-        $form = new EditItemForm();
-        $form->setItem($itemId);
-        $form->setScenario('edit');
-
-        if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
-            TemplateCache::flushByTemplateInstance($form->item->templateInstance);
-
-            return $this->asJson([
-                'success' => true,
-                'output' => $form->item->render(true, $form->item->container->definition->is_inline),
-            ]);
-        }
-
-        return $this->asJson([
-            'output' => $this->renderAjaxPartial(EditContainerItemModal::widget([
-                'model' => $form,
-                'title' => Yii::t('CustomPagesModule.base', '<strong>Edit</strong> item'),
-            ])),
-        ]);
-    }
-
-    /**
      * This action is used to delete container items.
      *
      * @return Response

@@ -373,4 +373,31 @@ class Template extends ActiveRecord
         };
     }
 
+    public function saveCopy(): bool
+    {
+        $elements = $this->elements;
+        unset($this->id);
+
+        if (!$this->save()) {
+            return false;
+        }
+
+        foreach ($elements as $element) {
+            $defaultContent = $element->getDefaultContent();
+            unset($element->id);
+            $element->setOldAttributes(null);
+            $element->template_id = $this->id;
+            $element->scenario = TemplateElement::SCENARIO_EDIT_ADMIN;
+            if ($element->save() && $defaultContent) {
+                unset($defaultContent->id);
+                $defaultContent->setOldAttributes(null);
+                $defaultContent->scenario = BaseElementContent::SCENARIO_EDIT_ADMIN;
+                $defaultContent->element_id = $element->id;
+                $defaultContent->save();
+            }
+        }
+
+        return true;
+    }
+
 }

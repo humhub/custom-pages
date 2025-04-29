@@ -6,18 +6,23 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\modules\custom_pages\modules\template\models\Template;
 
+/* @var Template $model */
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
     <?= AdminMenu::widget(); ?>
 
     <div class="panel-body">
-        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default pull-right')); ?>
+        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), ['class' => 'btn btn-default pull-right']) ?>
+        <h4>
         <?php if ($model->isNewRecord): ?>
-            <h4><?= Yii::t('CustomPagesModule.template', 'Create new {type}', ['type' => Template::getTypeTitle($model->type)]); ?></h4>
+            <?= $model->id
+                ? Yii::t('CustomPagesModule.template', 'Copy {type}', ['type' => Template::getTypeTitle($model->type)])
+                : Yii::t('CustomPagesModule.template', 'Create new {type}', ['type' => Template::getTypeTitle($model->type)]) ?>
         <?php else: ?>
-            <h4><?= Yii::t('CustomPagesModule.template', 'Edit template \'{templateName}\'', ['templateName' => Html::encode($model->name)]); ?></h4>
+            <?= Yii::t('CustomPagesModule.template', 'Edit template \'{templateName}\'', ['templateName' => Html::encode($model->name)]) ?>
         <?php endif; ?>
+        </h4>
 
     <?php if (!$model->isNewRecord): ?>
         </div>

@@ -93,6 +93,33 @@ class AdminController extends \humhub\modules\admin\components\Controller
     }
 
     /**
+     * Action used for copying Template instances.
+     *
+     * @return string result view
+     */
+    public function actionCopy($id = null)
+    {
+        $model = Template::findOne(['id' => $id]);
+
+        if ($model == null) {
+            throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template not found!'));
+        }
+
+        $model->setOldAttributes(null);
+        $model->scenario = 'edit';
+
+        if (!$model->load(Yii::$app->request->post())) {
+            $model->name = $model->name . ' (Copied)';
+        } elseif ($model->saveCopy()) {
+            TemplateCache::flushByTemplateId($model->id);
+            $this->view->success(Yii::t('CustomPagesModule.template', 'Copied'));
+            return $this->redirect(['edit-source', 'id' => $model->id]);
+        }
+
+        return $this->render('@custom_pages/modules/template/views/admin/edit', ['model' => $model]);
+    }
+
+    /**
      * Used to edit the source of a template.
      *
      * @return string

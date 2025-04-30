@@ -57,6 +57,7 @@ use yii\helpers\Url;
                     'header' => Yii::t('CustomPagesModule.template', 'Actions'),
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['style' => 'width:80px; min-width:80px;'],
+                    'contentOptions' => ['class' => 'text-nowrap'],
                     'template' => '{export} {update} {delete}',
                     'buttons' => [
                         'export' => function ($url, $model) {

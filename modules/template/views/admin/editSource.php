@@ -66,9 +66,12 @@ $this->registerJsConfig('custom_pages.template.source', [
             'rows' => 15
         ])->label(false); ?>
 
-        <?php if ($model->canEdit()) : ?>
         <div class="clearfix">
-            <?= Button::save()->submit() ?>
+            <?= $model->canEdit() ? Button::save()->submit() : '' ?>
+            <?= $model->isNewRecord ? '' : Button::defaultType(Yii::t('CustomPagesModule.template', 'Copy'))
+                ->icon('copy')
+                ->link(Url::toRoute(['copy', 'id' => $model->id])) ?>
+            <?php if ($model->canEdit()) : ?>
             <div class="dropdown pull-right">
                 <button data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/edit-multiple', 'id' => $model->id]) ?>" class="btn btn-primary">
                     <i aria-hidden="true" class="fa fa-pencil"></i>
@@ -89,9 +92,9 @@ $this->registerJsConfig('custom_pages.template.source', [
                     <?php endforeach; ?>
                 </ul>
             </div>
+            <?php endif; ?>
         </div>
         <br>
-        <?php endif; ?>
 
         <?php ActiveForm::end(); ?>
 

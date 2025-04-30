@@ -326,17 +326,22 @@ class AdminController extends \humhub\modules\admin\components\Controller
      *
      * This action requres a confirmation.
      *
-     * @return type
+     * @return Response
      * @throws \yii\web\HttpException
      */
     public function actionDeleteElement($id)
     {
         $element = TemplateElement::findOne(['id' => $id]);
-        TemplateCache::flushByTemplateId($element->template_id);
-        $element->delete();
 
-        $this->asJson([
-            'success' => true,
+        if ($element->template->canEdit()) {
+            TemplateCache::flushByTemplateId($element->template_id);
+            $result = (bool) $element->delete();
+        } else {
+            $result = false;
+        }
+
+        return $this->asJson([
+            'success' => $result,
             'id' => $id,
         ]);
     }
@@ -352,7 +357,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $form = new EditMultipleElementsForm(['scenario' => 'edit-admin']);
         $form->setOwnerTemplateId($id);
 
-        if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByTemplateId($id);
             return $this->asJson([
                 'success' => true,

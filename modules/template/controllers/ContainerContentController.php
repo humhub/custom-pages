@@ -192,7 +192,7 @@ class ContainerContentController extends Controller
         $form->setItemTemplate($itemTemplate);
         $form->setScenario('edit');
 
-        if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByElementContent($elementContent);
             return $this->asJson([
                 'success' => true,
@@ -223,7 +223,7 @@ class ContainerContentController extends Controller
         $form->setItem($itemId);
         $form->setScenario('edit');
 
-        if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByTemplateInstance($form->item->templateInstance);
 
             return $this->asJson([

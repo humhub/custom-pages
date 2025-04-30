@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\lib\templates\TemplateEngineFactory;
 use humhub\modules\custom_pages\models\CustomPage;
@@ -17,6 +18,7 @@ use humhub\modules\custom_pages\modules\template\elements\ContainerDefinition;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
+use humhub\modules\custom_pages\permissions\ManagePages;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
@@ -40,13 +42,18 @@ use yii\helpers\ArrayHelper;
  *  - Layout: Root template which is not combinable with other templates.
  *  - Container: Template which is combinable with other templates.
  *
- * @property $id int
- * @property $name string
- * @property $source string
- * @property $engine string
- * @property $description string
- * @property $type string
- * @property $allow_for_spaces boolean
+ * @property int $id
+ * @property string $name
+ * @property string $source
+ * @property string $engine
+ * @property string $description
+ * @property string $type
+ * @property bool $allow_for_spaces
+ * @property bool $is_default
+ * @property string $created_at
+ * @property int $created_by
+ * @property string $updated_at
+ * @property int $updated_by
  *
  * @property-read TemplateElement[] $elements
  */
@@ -68,7 +75,7 @@ class Template extends ActiveRecord
     public function init()
     {
         // Set default engine
-        $this->engine = "twig";
+        $this->engine = 'twig';
     }
 
     /**
@@ -104,7 +111,7 @@ class Template extends ActiveRecord
             [['allow_for_spaces'], 'boolean'],
             [['name'], 'unique'],
             [['name', 'type'], 'string', 'max' => 100],
-            [['type'], 'validType'],
+            [['type'], 'in', 'range' => [self::TYPE_CONTAINER, self::TYPE_LAYOUT, self::TYPE_SNIPPET_LAYOUT, self::TYPE_NAVIGATION]],
             [['source'], 'required', 'on' => ['source']],
         ];
     }
@@ -121,16 +128,11 @@ class Template extends ActiveRecord
     }
 
     /**
-     * Validates the template type against allowed types.
-     * @param type $attribute
-     * @param type $model
+     * @inheritdoc
      */
-    public function validType($attribute, $model)
+    public function load($data, $formName = null)
     {
-        $validTypes = [self::TYPE_CONTAINER, self::TYPE_LAYOUT, self::TYPE_NAVIGATION];
-        if (!in_array($this->type, $validTypes)) {
-            $this->addError($attribute, 'Invalid template type!');
-        }
+        return $this->canEdit() && parent::load($data, $formName);
     }
 
     /**
@@ -156,6 +158,14 @@ class Template extends ActiveRecord
                 }
             }
         }
+
+        if ($this->is_default) {
+            // Keep each default template as not updated in order to don't create a copy on next auto updating
+            $this->updateAttributes([
+                'updated_at' => null,
+                'updated_by' => null,
+            ]);
+        }
     }
 
     /**
@@ -164,6 +174,10 @@ class Template extends ActiveRecord
     public function beforeDelete()
     {
         if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        if (!$this->canDelete()) {
             return false;
         }
 
@@ -373,10 +387,42 @@ class Template extends ActiveRecord
         };
     }
 
+    /**
+     * Checks if this template and its elements can be edited
+     *
+     * @return bool
+     * @since 1.11
+     */
+    public function canEdit(): bool
+    {
+        if (!$this->isNewRecord && $this->is_default &&
+            !Yii::$app->getModule('custom_pages')->allowUpdateDefaultTemplates) {
+            return false;
+        }
+
+        return Yii::$app->user->can([ManageModules::class, ManagePages::class]);
+    }
+
+    /**
+     * Checks if this template and its elements can be deleted
+     *
+     * @return bool
+     * @since 1.11
+     */
+    public function canDelete(): bool
+    {
+        if (!$this->isNewRecord && $this->is_default) {
+            return false;
+        }
+
+        return Yii::$app->user->can([ManageModules::class, ManagePages::class]);
+    }
+
     public function saveCopy(): bool
     {
         $elements = $this->elements;
         unset($this->id);
+        $this->is_default = 0;
 
         if (!$this->save()) {
             return false;
@@ -399,5 +445,4 @@ class Template extends ActiveRecord
 
         return true;
     }
-
 }

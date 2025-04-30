@@ -8,6 +8,8 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
+use humhub\modules\custom_pages\Module;
+use humhub\modules\custom_pages\modules\template\events\DefaultTemplateEvent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\file\models\FileContent;
@@ -16,15 +18,25 @@ use yii\db\ActiveRecord;
 
 class ImportService
 {
-    private string $type;
-    private string $filePath;
+    public const EVENT_DEFAULT_TEMPLATES = 'defaultTemplates';
+
+    private ?string $type = null;
     private array $errors = [];
     public ?Template $template = null;
+    public bool $allowUpdateDefaultTemplates = false;
 
-    public function __construct(string $type, string $filePath)
+    public function __construct(?string $type = null)
     {
         $this->type = $type;
-        $this->filePath = $filePath;
+
+        if ($module = $this->getModule()) {
+            $this->allowUpdateDefaultTemplates = $module->allowUpdateDefaultTemplates;
+        }
+    }
+
+    public static function instance(?string $type = null): self
+    {
+        return new self($type);
     }
 
     public function addError(string $error): void
@@ -42,15 +54,32 @@ class ImportService
         return $this->errors;
     }
 
-    public function run(): bool
+    public function importFromFolder(string $path): bool
     {
-        if (!file_exists($this->filePath)) {
+        if (!is_dir($path)) {
+            $this->addError('Wrong default templates path "' . $path . '"!');
+            return false;
+        }
+
+        $result = true;
+        foreach (scandir($path) as $file) {
+            if (str_ends_with($file, '.json')) {
+                $result = $this->importFromFile($path . '/' . $file) && $result;
+            }
+        }
+
+        return $result;
+    }
+
+    public function importFromFile(string $path): bool
+    {
+        if (!file_exists($path)) {
             $this->addError('The import file is not found!');
             return false;
         }
 
         try {
-            $data = json_decode(file_get_contents($this->filePath), true);
+            $data = json_decode(file_get_contents($path), true);
         } catch (\Exception $e) {
             $this->addError('The import file is not readable! Error: ' . $e->getMessage());
             return false;
@@ -61,13 +90,18 @@ class ImportService
             return false;
         }
 
-        if (isset($data['type']) && $data['type'] !== $this->type) {
+        if (isset($data['type'], $this->type) && $data['type'] !== $this->type) {
             $this->addError(Yii::t('CustomPagesModule.template', 'The template can be imported only as {type}!', [
                 'type' => Template::getTypeTitle($data['type']),
             ]));
             return false;
         }
 
+        return $this->runImport($data);
+    }
+
+    public function runImport(array $data): bool
+    {
         if (!$this->importTemplate($data)) {
             return false;
         }
@@ -106,12 +140,36 @@ class ImportService
     {
         $template = Template::findOne(['name' => $data['name']]) ?? new Template();
 
-        $template->type = $this->type;
+        if ($template->is_default && !$template->isNewRecord) {
+            // Check if default templates can be updated
+            if (!$this->allowUpdateDefaultTemplates) {
+                $this->addError(Yii::t('CustomPagesModule.template', 'Cannot import default template!'));
+                return false;
+            }
+
+            // If the default template was modified
+            if ($template->updated_at !== null || $template->updated_by !== null) {
+                // Rename the modified default template
+                $uniqueName = $template->name . ' (Modified)';
+                $uniqueIndex = 1;
+                while (Template::findOne(['name' => $uniqueName])) {
+                    $uniqueName = $template->name . ' (Modified ' . ++$uniqueIndex . ')';
+                }
+                $template->name = $uniqueName;
+                $template->save();
+
+                // Create new default template
+                $template = new Template();
+            }
+        }
+
+        $template->type = $data['type'];
         $template->name = $data['name'];
         $template->engine = $data['engine'] ?? 'twig';
         $template->description = $data['description'] ?? '';
         $template->source = $data['source'] ?? '';
         $template->allow_for_spaces = $data['allow_for_spaces'] ?? false;
+        $template->is_default = $data['is_default'] ?? false;
 
         $this->template = $this->saveRecord($template);
 
@@ -137,6 +195,9 @@ class ImportService
         $element->content_type = $data['content_type'] ?? '';
         $element->title = $data['title'] ?? '';
         $element->dyn_attributes = $data['dyn_attributes'] ?? '';
+        if (is_array($element->dyn_attributes)) {
+            $element->dyn_attributes = json_encode($element->dyn_attributes);
+        }
 
         if (!class_exists($element->content_type)) {
             $this->addError('Element content class "' . $element->content_type . '" does not exist!');
@@ -220,5 +281,32 @@ class ImportService
         if ($updateRecord) {
             $record->save();
         }
+    }
+
+    public function importDefaultTemplates(): bool
+    {
+        if (!$this->getModule()) {
+            // Check because it may be called from other external module
+            return true;
+        }
+
+        $event = new DefaultTemplateEvent();
+        $event->addPath('@custom_pages/resources/templates');
+        DefaultTemplateEvent::trigger($this, self::EVENT_DEFAULT_TEMPLATES, $event);
+
+        $this->allowUpdateDefaultTemplates = true;
+
+        $result = true;
+        foreach ($event->getPaths() as $path) {
+            $result = $this->importFromFolder(Yii::getAlias($path)) && $result;
+        }
+
+        return $result;
+    }
+
+    private function getModule(): ?Module
+    {
+        $module = Yii::$app->getModule('custom_pages');
+        return $module instanceof Module && $module->isEnabled ? $module : null;
     }
 }

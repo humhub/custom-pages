@@ -1,0 +1,15 @@
+{
+  "name": "system_download_item",
+  "description": "Single download item.",
+  "source": "\u003Cdiv class=\"download-item\"\u003E\r\n\t{{ file_download }}\r\n\u003C/div\u003E",
+  "type": "container",
+  "is_default": 1,
+  "allow_for_spaces": 0,
+  "elements": [
+    {
+      "name": "file_download",
+      "content_type": "humhub\\modules\\custom_pages\\modules\\template\\elements\\FileDownloadElement",
+      "title": "File"
+    }
+  ]
+}

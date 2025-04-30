@@ -50,7 +50,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
             <?= $form->field($model, 'allow_for_spaces')->checkbox(); ?>
         <?php endif; ?>
 
-        <?= Button::save()->submit() ?>
+        <?= $model->canEdit() ? Button::save()->submit() : '' ?>
         <?= $model->isNewRecord ? '' : Button::defaultType(Yii::t('CustomPagesModule.template', 'Copy'))
             ->icon('copy')
             ->link(Url::toRoute(['copy', 'id' => $model->id])) ?>

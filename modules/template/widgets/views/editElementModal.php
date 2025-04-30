@@ -4,12 +4,14 @@ use humhub\modules\custom_pages\modules\template\models\forms\TemplateElementFor
 use humhub\modules\custom_pages\modules\template\widgets\EditContentSeperator;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\Button;
 use humhub\widgets\ModalDialog;
 use yii\helpers\Html;
 
 /* @var TemplateElementForm $model */
 /* @var string $title */
 /* @var bool $isAdminEdit */
+/* @var string $resetUrl */
 ?>
 <?php ModalDialog::begin(['header' => $title, 'size' => 'large']) ?>
 
@@ -40,20 +42,19 @@ use yii\helpers\Html;
         </div>
         <div class="modal-footer">
 
-            <?php if(!$model->content->isNewRecord && $resetUrl != null) : ?>
-                <button class="btn btn-danger pull-left" style="background:transparent" ><?= Yii::t('CustomPagesModule.base', 'Reset'); ?></button>
-            <?php endif; ?>
+            <?= $canEdit = $model->element->template->canEdit() ? Button::save()
+                ->action('editElementSubmit')
+                ->options(['data-action-target' => '#templatePageRoot'])
+                ->submit() : '' ?>
 
-            <button type="submit" data-action-click="editElementSubmit" data-action-target="#templatePageRoot" data-ui-loader class="btn btn-primary">
-                <?= Yii::t('CustomPagesModule.base', 'Save'); ?>
-            </button>
+            <?= Button::defaultType(Yii::t('CustomPagesModule.base', 'Cancel'))
+                ->options(['data-dismiss' => 'modal']) ?>
 
-            <button class="btn btn-default" data-dismiss="modal"><?= Yii::t('CustomPagesModule.base', 'Cancel'); ?></button>
-
-            <?php if(!$model->content->isNewRecord && $resetUrl != null) : ?>
-                <button data-action-click="reset" data-action-url="<?= $resetUrl ?>" data-action-target="#templatePageRoot"  class="btn btn-danger pull-right" data-ui-loader>
-                    <?= Yii::t('CustomPagesModule.base', 'Reset'); ?>
-                </button>
+            <?php if ($canEdit && !$model->content->isNewRecord && $resetUrl != null) : ?>
+                <?= Button::danger(Yii::t('CustomPagesModule.base', 'Reset'))
+                    ->action('reset', $resetUrl)
+                    ->options(['data-action-target' => '#templatePageRoot'])
+                    ->right() ?>
             <?php endif; ?>
 
         </div>

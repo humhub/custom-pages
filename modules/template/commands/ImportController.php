@@ -13,7 +13,6 @@ use yii\console\Controller;
 
 class ImportController extends Controller
 {
-
     /**
      * Refresh default templates from all active modules
      */

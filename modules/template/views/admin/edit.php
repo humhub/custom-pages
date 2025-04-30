@@ -2,6 +2,7 @@
 
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\custom_pages\widgets\AdminMenu;
+use humhub\widgets\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\modules\custom_pages\modules\template\models\Template;
@@ -49,7 +50,10 @@ use humhub\modules\custom_pages\modules\template\models\Template;
             <?= $form->field($model, 'allow_for_spaces')->checkbox(); ?>
         <?php endif; ?>
 
-        <?= Html::submitButton(Yii::t('CustomPagesModule.template', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
+        <?= Button::save()->submit() ?>
+        <?= $model->isNewRecord ? '' : Button::defaultType(Yii::t('CustomPagesModule.template', 'Copy'))
+            ->icon('copy')
+            ->link(Url::toRoute(['copy', 'id' => $model->id])) ?>
 
         <?php $form::end(); ?>
         <?= Html::script(' $(\'#template-form-description\').autosize();') ?>

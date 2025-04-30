@@ -58,7 +58,7 @@ use yii\helpers\Url;
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['style' => 'width:80px; min-width:80px;'],
                     'contentOptions' => ['class' => 'text-nowrap'],
-                    'template' => '{export} {update} {copy} {delete}',
+                    'template' => '{export} {update} {delete}',
                     'buttons' => [
                         'export' => function ($url, $model) {
                             return Button::defaultType()->icon('upload')
@@ -70,11 +70,6 @@ use yii\helpers\Url;
                         'update' => function ($url, $model) {
                             return Button::primary()->icon('fa-pencil')
                                 ->link(Url::toRoute(['edit-source', 'id' => $model->id]))
-                                ->xs();
-                        },
-                        'copy' => function ($url, $model) {
-                            return Button::warning()->icon('copy')
-                                ->link(Url::toRoute(['copy', 'id' => $model->id]))
                                 ->xs();
                         },
                         'delete' => function ($url, $model) {

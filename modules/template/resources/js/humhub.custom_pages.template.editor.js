@@ -17,10 +17,77 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     };
 
     TemplateInlineEditor.prototype.initHighlight = function () {
-        this.$.on('mouseenter mouseleave', '[data-editor-container-item-id]', function () {
-            $('.cp-structure [data-container-item-id=' + $(this).data('editor-container-item-id') + '] > li > .cp-structure-row')
-                .toggleClass('cp-structure-active');
-        });
+        const that = this;
+
+        this.$.on('mouseenter', '[data-editor-container-id]', function () {
+            if ($(this).hasClass('cp-editor-container-selected')) {
+                return;
+            }
+
+            $(this).addClass('cp-editor-container-selected');
+
+            const addButton = $('.cp-structure [data-container-id=' + $(this).data('editor-container-id') + '] > div.cp-structure-container > [data-action-click="addContainerItem"]');
+            if (addButton.length) {
+                const actions = $('<div>').addClass('cp-editor-container-actions');
+                $('body').append(actions.append(addButton.clone()
+                    .removeAttr('data-action-click')
+                    .on('click', () => addButton.click())));
+                actions.css({
+                    top: $(this).offset().top - actions.outerHeight(),
+                    left: $(this).offset().left + $(this).outerWidth() - actions.outerWidth(),
+                });
+            }
+        })
+        .on('mouseleave', '[data-editor-container-id]', (e) => leaveContainer(e));
+        $(document).on('mouseleave', '.cp-editor-container-actions', (e) => leaveContainer(e));
+        const leaveContainer = function (e) {
+            if (isOutside(e, ['[data-editor-container-id]', '.cp-editor-container-actions'])) {
+                $('.cp-editor-container-selected').removeClass('cp-editor-container-selected');
+                $('.cp-editor-container-actions').remove();
+            }
+        }
+
+        this.$.on('mouseenter', '[data-editor-container-item-id]', function () {
+            const containerItem = $('.cp-structure [data-container-item-id=' + $(this).data('editor-container-item-id') + '] > li > .cp-structure-row');
+            containerItem.addClass('cp-structure-active');
+
+            const editButton = containerItem.find('[data-action-click="editElements"] > .fa');
+            if (editButton.length) {
+                const actions = $('<div>').addClass('cp-editor-container-item-actions');
+                $('body').append(actions.append(editButton.clone()
+                    .removeAttr('data-action-click')
+                    .on('click', () => editButton.parent().click())));
+                actions.css({
+                    top: $(this).offset().top - actions.outerHeight(),
+                    left: $(this).offset().left + $(this).outerWidth() - actions.outerWidth(),
+                });
+                const containerActions = $('.cp-editor-container-actions');
+                if (containerActions.length &&
+                    actions.position().top > containerActions.position().top - actions.outerHeight() &&
+                    actions.position().top < containerActions.position().top + actions.outerHeight()) {
+                    actions.css('left', containerActions.position().left - actions.outerWidth());
+                }
+            }
+        }).on('mouseleave', '[data-editor-container-item-id]', (e) => leaveContainerItem(e));
+        $(document).on('mouseleave', '.cp-editor-container-item-actions', (e) => leaveContainerItem(e));
+        const leaveContainerItem = function (e) {
+            if (isOutside(e, ['[data-editor-container-item-id]', '.cp-editor-container-item-actions'])) {
+                $('.cp-structure-active').removeClass('cp-structure-active');
+                $('.cp-editor-container-item-actions').remove();
+            }
+        }
+
+        const isOutside = function(e, selectors) {
+            const target = e.relatedTarget;
+            if (!target) {
+                return true;
+            }
+
+            return selectors.every(selector => {
+                const el = document.querySelector(selector);
+                return el && !el.contains(target);
+            });
+        }
     }
 
     TemplateInlineEditor.prototype.editItemSubmit = function (evt) {

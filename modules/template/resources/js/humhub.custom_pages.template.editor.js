@@ -47,7 +47,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             }
         }).on('mouseleave', '[data-editor-container-id], [data-actions-container-id]', function (e) {
             const containerId = $(this).data('editor-container-id') ?? $(this).data('actions-container-id');
-            if (isOutside(e, ['[data-editor-container-id="' + containerId+ '"]', '[data-actions-container-id="' + containerId+ '"]', '[data-actions-container-item-id]'])) {
+            if (isOutside(e, ['[data-editor-container-id="' + containerId+ '"]', '[data-actions-container-id="' + containerId+ '"]', '[data-editor-container-item-id]', '[data-actions-container-item-id]'])) {
                 $('[data-editor-container-id=' + containerId+ ']').removeClass('cp-editor-container-hover');
                 $('[data-actions-container-id=' + containerId+ ']').hide();
             }

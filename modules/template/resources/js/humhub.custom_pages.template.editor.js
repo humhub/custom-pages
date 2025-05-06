@@ -24,7 +24,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             $(this).addClass('cp-editor-container-hover');
 
             const containerId = $(this).data('editor-container-id');
-            let actions = $('[data-actions-container-id=' + containerId+ ']');
+            const actions = $('[data-actions-container-id=' + containerId+ ']');
             if (actions.length) {
                 actions.show();
                 return;
@@ -32,13 +32,14 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
 
             const addButton = $('.cp-structure [data-container-id=' + containerId + '] > div.cp-structure-container > [data-action-click="addContainerItem"]');
             if (addButton.length) {
-                actions = $('<div>').attr('data-actions-container-id', containerId);
+                const pos = this.getBoundingClientRect();
+                const actions = $('<div>').attr('data-actions-container-id', containerId);
                 $('body').append(actions.append(addButton.clone()
                     .removeAttr('data-action-click')
                     .on('click', () => addButton.click())));
                 actions.css({
-                    top: $(this).offset().top - actions.outerHeight(),
-                    left: $(this).offset().left + $(this).outerWidth() - actions.outerWidth(),
+                    top: pos.top - actions.outerHeight(),
+                    left: pos.left + pos.width - actions.outerWidth(),
                 });
                 $(this).find('[data-editor-container-item-id]').each(function () {
                     const itemActions = $('[data-actions-container-item-id=' + $(this).data('editor-container-item-id')+ ']');
@@ -47,7 +48,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             }
         }).on('mouseleave', '[data-editor-container-id], [data-actions-container-id]', function (e) {
             const containerId = $(this).data('editor-container-id') ?? $(this).data('actions-container-id');
-            if (isOutside(e, ['[data-editor-container-id="' + containerId+ '"]', '[data-actions-container-id="' + containerId+ '"]', '[data-editor-container-item-id]', '[data-actions-container-item-id]'])) {
+            if (isOutside(e, ['[data-editor-container-id="' + containerId+ '"]', '[data-actions-container-id="' + containerId+ '"]'])) {
                 $('[data-editor-container-id=' + containerId+ ']').removeClass('cp-editor-container-hover');
                 $('[data-actions-container-id=' + containerId+ ']').hide();
             }
@@ -61,7 +62,8 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             const containerItem = $('.cp-structure [data-container-item-id=' + containerItemId + '] > li > .cp-structure-row');
             containerItem.addClass('cp-structure-active');
 
-            const actions = $('[data-actions-container-item-id=' + containerItemId+ ']');
+            $('[data-actions-container-item-id]').hide();
+            const actions = $('[data-actions-container-item-id=' + containerItemId + ']');
             if (actions.length) {
                 actions.show();
                 return;
@@ -69,13 +71,14 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
 
             const editButton = containerItem.find('[data-action-click="editElements"] > .fa');
             if (editButton.length) {
+                const pos = this.getBoundingClientRect();
                 const actions = $('<div>').attr('data-actions-container-item-id', containerItemId);
                 $('body').append(actions.append(editButton.clone()
                     .removeAttr('data-action-click')
                     .on('click', () => editButton.parent().click())));
                 actions.css({
-                    top: $(this).offset().top - actions.outerHeight(),
-                    left: $(this).offset().left + $(this).outerWidth() - actions.outerWidth(),
+                    top: pos.top - actions.outerHeight(),
+                    left: pos.left + pos.width - actions.outerWidth(),
                 });
                 const containerActions = $('[data-actions-container-id=' + $(this).closest('[data-editor-container-id]').data('editor-container-id') + ']');
                 alignActions(actions, containerActions);
@@ -86,6 +89,19 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
                 $('[data-editor-container-item-id=' + containerItemId+ ']').removeClass('cp-editor-container-hover');
                 $('[data-actions-container-item-id=' + containerItemId+ ']').hide();
                 $('.cp-structure-active').removeClass('cp-structure-active');
+            }
+        }).on('mouseenter mouseleave', '[data-actions-container-item-id]', function (e) {
+            const containerItemId = $(this).data('actions-container-item-id');
+            const container = $('[data-editor-container-item-id=' + containerItemId + ']').closest('[data-editor-container-id]');
+            if (container.length) {
+                const containerId = container.data('editor-container-id');
+                if (e.type === 'mouseenter') {
+                    container.addClass('cp-editor-container-hover');
+                    $('[data-actions-container-id=' + container.data('editor-container-id') + ']').show();
+                } else if (isOutside(e, ['[data-editor-container-id="' + containerId+ '"]', '[data-actions-container-id="' + containerId+ '"]'])) {
+                    container.removeClass('cp-editor-container-hover');
+                    $('[data-actions-container-id=' + container.data('editor-container-id') + ']').hide();
+                }
             }
         });
 

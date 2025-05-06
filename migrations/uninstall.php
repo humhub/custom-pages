@@ -6,6 +6,10 @@ class uninstall extends Migration
 {
     public function up()
     {
+        $this->safeDropForeignKey('fk-tmpl-container-item-element-content', 'custom_pages_template_element_container_item');
+        $this->safeDropForeignKey('fk-container_item_id', 'custom_pages_template_instance');
+        $this->safeDropForeignKey('fk-element_id', 'custom_pages_template_element_content');
+
         $this->safeDropTable('custom_pages_template_element_container_item');
         $this->safeDropTable('custom_pages_template_element');
         $this->safeDropTable('custom_pages_template_element_content');

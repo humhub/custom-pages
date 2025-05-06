@@ -16,13 +16,11 @@ namespace humhub\modules\custom_pages\modules\template\widgets;
 class TemplateContentTable extends \humhub\components\Widget
 {
     public $template;
-    public $saved;
 
     public function run()
     {
         return $this->render('templateElementAdminTable', [
             'template' => $this->template,
-            'saved' => $this->saved,
         ]);
     }
 

@@ -213,7 +213,9 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
                     $element = array_merge($element, (array) $element['@attributes']);
                     unset($element['@attributes']);
                 }
-                $array[$a] = $this->convertSimpleXMLElementsToArray($element);
+                $array[$a] = $element === []
+                    ? '' // Fix wrong empty array when an empty string is expected from data like <description><![CDATA[]]></description>
+                    : $this->convertSimpleXMLElementsToArray($element);
             }
         }
 

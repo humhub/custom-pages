@@ -33,6 +33,10 @@ class ExportService
     {
         $this->data = $this->template->attributes;
         unset($this->data['id']);
+        unset($this->data['created_at']);
+        unset($this->data['created_by']);
+        unset($this->data['updated_at']);
+        unset($this->data['updated_by']);
 
         $this->data['elements'] = [];
         foreach ($this->template->elements as $e => $element) {
@@ -41,6 +45,10 @@ class ExportService
             unset($this->data['elements'][$e]['template_id']);
 
             $elementContent = $element->getDefaultContent();
+
+            if (!$elementContent) {
+                continue;
+            }
 
             $contentData = $elementContent->attributes;
             unset($contentData['id']);

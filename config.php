@@ -21,6 +21,9 @@ return [
             'class' => 'humhub\modules\custom_pages\modules\template\Module',
         ],
     ],
+    'consoleControllerMap' => [
+        'custom-pages' => 'humhub\modules\custom_pages\modules\template\commands\ImportController',
+    ],
     'urlManagerRules' => [
         ['class' => 'humhub\modules\custom_pages\components\PageUrlRule'],
     ],

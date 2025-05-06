@@ -16,6 +16,8 @@ Changelog
 - Enh #378: Refactor template instance and owner content
 - Enh #387: Remove inline editing of container item elements
 - Enh #396: Structure overview
+- Enh #399: Remove deprecated widget `DataSaved`
+- Enh #404: Copy templates
 
 1.10.15 (February 11, 2025)
 ---------------------------

@@ -145,6 +145,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
     public function testDeleteTemplate()
     {
+        $this->becomeUser('Admin');
         $content = new RichtextElement();
         $content->content = '<p>Non Default</p>';
 

@@ -83,11 +83,12 @@ class ContainerElementContentTest extends HumHubDbTestCase
 
     public function testDeleteAll()
     {
+        $this->becomeUser('Admin');
         CustomPage::findOne(['id' => 2])->hardDelete();
         CustomPage::findOne(['id' => 1])->hardDelete();
 
         $this->assertEquals(0, TemplateInstance::find()->count());
-        $this->assertEquals(1, RichtextElement::findByType()->count());
+        $this->assertEquals(3, RichtextElement::findByType()->count());
         $this->assertEquals(0, ContainerItem::find()->count());
         $this->assertEquals(0, ContainerElement::findByType()->count());
 
@@ -97,7 +98,10 @@ class ContainerElementContentTest extends HumHubDbTestCase
         $this->assertEquals(1, Template::findOne(['id' => 3])->delete());
         $this->assertEquals(1, Template::findOne(['id' => 4])->delete());
 
-        $this->assertEquals(0, RichtextElement::findByType()->count());
-        $this->assertEquals(0, TemplateElement::find()->count());
+        $this->assertEquals(2, RichtextElement::findByType()->count());
+        $this->assertEquals(12, TemplateElement::find()->count());
+
+        // Cannot delete default templates
+        $this->assertEquals(false, Template::findOne(['is_default' => 1])->delete());
     }
 }

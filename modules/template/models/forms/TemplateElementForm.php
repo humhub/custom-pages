@@ -63,6 +63,10 @@ class TemplateElementForm extends \yii\base\Model
 
     public function load($data, $formName = null)
     {
+        if (!$this->element->template->canEdit()) {
+            return false;
+        }
+
         parent::load($data);
 
         $result = false;

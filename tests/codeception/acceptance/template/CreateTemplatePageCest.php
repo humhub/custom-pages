@@ -87,6 +87,7 @@ class CreateTemplatePageCest
     {
         $I->click('Add Element');
         $I->wait(1);
+        $I->scrollToBottom();
         $I->click($type);
         $I->waitForElementVisible('#templateelement-name');
     }

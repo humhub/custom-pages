@@ -85,7 +85,34 @@ class AdminController extends \humhub\modules\admin\components\Controller
         // If the form was submitted try to save/validate and flush the template cache
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             TemplateCache::flushByTemplateId($model->id);
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('CustomPagesModule.base', 'Saved'));
+            $this->view->saved();
+            return $this->redirect(['edit-source', 'id' => $model->id]);
+        }
+
+        return $this->render('@custom_pages/modules/template/views/admin/edit', ['model' => $model]);
+    }
+
+    /**
+     * Action used for copying Template instances.
+     *
+     * @return string result view
+     */
+    public function actionCopy($id = null)
+    {
+        $model = Template::findOne(['id' => $id]);
+
+        if ($model == null) {
+            throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template not found!'));
+        }
+
+        $model->setOldAttributes(null);
+        $model->scenario = 'edit';
+
+        if (!$model->load(Yii::$app->request->post())) {
+            $model->name = $model->name . ' (Copied)';
+        } elseif ($model->saveCopy()) {
+            TemplateCache::flushByTemplateId($model->id);
+            $this->view->success(Yii::t('CustomPagesModule.template', 'Copied'));
             return $this->redirect(['edit-source', 'id' => $model->id]);
         }
 
@@ -111,7 +138,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         // If the form was submitted try to save/validate and flush the template cache
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             TemplateCache::flushByTemplateId($model->id);
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('CustomPagesModule.base', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['edit-source', 'id' => $model->id]);
         }
 
@@ -187,7 +214,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByTemplateId($form->element->template_id);
-            return $this->getJsonEditElementResult(true, TemplateElementAdminRow::widget(['form' => $form, 'saved' => true]), $form);
+            return $this->getJsonEditElementResult(true, TemplateElementAdminRow::widget(['form' => $form]), $form);
         }
 
         $result = $this->renderAjaxPartial(EditElementModal::widget([
@@ -221,8 +248,9 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         return $this->asJson([
             'success' => true,
+            'message' => Yii::t('CustomPagesModule.template', 'Reset'),
             'id' => $id,
-            'output' => $this->renderAjaxPartial(TemplateElementAdminRow::widget(['model' => $element, 'saved' => true])),
+            'output' => $this->renderAjaxPartial(TemplateElementAdminRow::widget(['model' => $element])),
         ]);
     }
 
@@ -266,6 +294,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
     {
         return $this->asJson([
             'success' => $success,
+            'message' => Yii::t('base', 'Saved'),
             'output' => $content,
             'name' => $form->element->name,
             'id' => $form->element->id,
@@ -297,17 +326,22 @@ class AdminController extends \humhub\modules\admin\components\Controller
      *
      * This action requres a confirmation.
      *
-     * @return type
+     * @return Response
      * @throws \yii\web\HttpException
      */
     public function actionDeleteElement($id)
     {
         $element = TemplateElement::findOne(['id' => $id]);
-        TemplateCache::flushByTemplateId($element->template_id);
-        $element->delete();
 
-        $this->asJson([
-            'success' => true,
+        if ($element->template->canEdit()) {
+            TemplateCache::flushByTemplateId($element->template_id);
+            $result = (bool) $element->delete();
+        } else {
+            $result = false;
+        }
+
+        return $this->asJson([
+            'success' => $result,
             'id' => $id,
         ]);
     }
@@ -323,11 +357,12 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $form = new EditMultipleElementsForm(['scenario' => 'edit-admin']);
         $form->setOwnerTemplateId($id);
 
-        if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByTemplateId($id);
             return $this->asJson([
                 'success' => true,
-                'output' => $this->renderAjaxPartial(TemplateContentTable::widget(['template' => $form->template, 'saved' => true])),
+                'message' => Yii::t('base', 'Saved'),
+                'output' => $this->renderAjaxPartial(TemplateContentTable::widget(['template' => $form->template])),
             ]);
         }
 

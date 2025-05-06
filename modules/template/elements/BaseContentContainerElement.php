@@ -50,7 +50,7 @@ abstract class BaseContentContainerElement extends BaseElementContent
      */
     public function render($options = [])
     {
-        return Html::encode($this->getRecord()->getDisplayName());
+        return Html::encode($this->getRecord()?->getDisplayName());
     }
 
     /**

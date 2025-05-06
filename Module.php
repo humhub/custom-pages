@@ -17,6 +17,7 @@ use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\AssetVariable;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
+use humhub\modules\custom_pages\modules\template\services\ImportService;
 use humhub\modules\space\models\Space;
 use SimpleXMLElement;
 use Symfony\Component\String\UnicodeString;
@@ -30,20 +31,26 @@ class Module extends ContentContainerModule
 
     public $resourcesPath = 'resources';
 
-
     /**
      * @see https://twig.symfony.com/doc/3.x/api.html#sandbox-extension
      * @var bool
      */
-    public $enableTwiqSandboxExtension = true;
+    public bool $enableTwiqSandboxExtension = true;
+
+    /**
+     * Enable it only when required to edit default templates before
+     * exporting and updating them in the folder "resources/templates/"
+     * @var bool
+     */
+    public bool $allowUpdateDefaultTemplates = false;
 
     /**
      * @see https://twig.symfony.com/doc/3.x/api.html#sandbox-extension
      * @var array
      */
-    public $enableTwiqSandboxExtensionConfig = [
+    public array $enableTwiqSandboxExtensionConfig = [
         'allowedTags' => ['autoescape', 'apply', 'block', 'if', 'with', 'for', 'set'],
-        'allowedFilters' => ['capitalize', 'date', 'first', 'upper', 'escape', 'raw', 'nl2br', 'url_encode', 'round', 'u', 'striptags'],
+        'allowedFilters' => ['capitalize', 'date', 'first', 'slice', 'upper', 'escape', 'raw', 'nl2br', 'url_encode', 'round', 'u', 'striptags'],
         'allowedFunctions' => ['range', 'max', 'min', 'random'],
         'allowedMethods' => [
             BaseElementVariable::class => [
@@ -172,5 +179,22 @@ class Module extends ContentContainerModule
         }
 
         return [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function enable()
+    {
+        return parent::enable() && ImportService::instance()->importDefaultTemplates();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update()
+    {
+        parent::update();
+        ImportService::instance()->importDefaultTemplates();
     }
 }

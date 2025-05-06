@@ -105,4 +105,19 @@ class ContainerDefinition extends BaseElementDefinition
     {
         return parent::find()->where([self::tableName() . '.content_type' => ContainerElement::class]);
     }
+
+    public function getAllowedTemplateOptions(): array
+    {
+        $options = Template::getSelection(['type' => Template::TYPE_CONTAINER], 'name');
+
+        if (is_array($this->templates)) {
+            // Include also templates which are not found in DB but still linked to this container,
+            // it may happen after import parent template until child containers are not imported yet
+            foreach ($this->templates as $template) {
+                $options[$template] = $template;
+            }
+        }
+
+        return $options;
+    }
 }

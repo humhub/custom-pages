@@ -57,6 +57,7 @@ use yii\helpers\Url;
                     'header' => Yii::t('CustomPagesModule.template', 'Actions'),
                     'class' => 'yii\grid\ActionColumn',
                     'options' => ['style' => 'width:80px; min-width:80px;'],
+                    'contentOptions' => ['class' => 'text-nowrap'],
                     'template' => '{export} {update} {delete}',
                     'buttons' => [
                         'export' => function ($url, $model) {
@@ -66,16 +67,20 @@ use yii\helpers\Url;
                                 ->loader(false)
                                 ->xs();
                         },
-                        'update' => function ($url, $model) {
-                            return Button::primary()->icon('fa-pencil')
-                                ->link(Url::toRoute(['edit-source', 'id' => $model->id]))
-                                ->xs();
+                        'update' => function ($url, Template $model) {
+                            return $model->canEdit()
+                                ? Button::primary()->icon('pencil')
+                                    ->link(Url::toRoute(['edit-source', 'id' => $model->id]))
+                                    ->xs()
+                                : Button::info()->icon('eye')
+                                    ->link(Url::toRoute(['edit-source', 'id' => $model->id]))
+                                    ->xs();
                         },
-                        'delete' => function ($url, $model) {
-                            return Button::danger()->icon('fa-times')
+                        'delete' => function ($url, Template $model) {
+                            return $model->canDelete() ? Button::danger()->icon('fa-times')
                                 ->link(Url::toRoute(['delete-template', 'id' => $model->id]))
                                 ->xs()
-                                ->confirm();
+                                ->confirm() : '';
                         },
                     ],
                 ],

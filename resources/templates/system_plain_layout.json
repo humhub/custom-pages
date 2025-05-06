@@ -1,0 +1,16 @@
+{
+  "name": "system_plain_layout",
+  "description": "Simple container layout.",
+  "source": "{{ content }}",
+  "type": "layout",
+  "is_default": 1,
+  "allow_for_spaces": 0,
+  "elements": [
+    {
+      "name": "content",
+      "content_type": "humhub\\modules\\custom_pages\\modules\\template\\elements\\ContainerElement",
+      "title": null,
+      "dyn_attributes": "{\"allow_multiple\":1,\"is_inline\":0,\"templates\":[]}"
+    }
+  ]
+}

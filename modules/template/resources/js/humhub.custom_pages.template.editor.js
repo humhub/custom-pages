@@ -17,18 +17,22 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     };
 
     TemplateInlineEditor.prototype.initHighlight = function () {
-        const that = this;
+        $(document).on('mouseenter', '[data-editor-container-id]', function () {
+            if ($(this).hasClass('cp-editor-container-hover')) {
+                return;
+            }
+            $(this).addClass('cp-editor-container-hover');
 
-        this.$.on('mouseenter', '[data-editor-container-id]', function () {
-            if ($(this).hasClass('cp-editor-container-selected')) {
+            const containerId = $(this).data('editor-container-id');
+            let actions = $('[data-actions-container-id=' + containerId+ ']');
+            if (actions.length) {
+                actions.show();
                 return;
             }
 
-            $(this).addClass('cp-editor-container-selected');
-
-            const addButton = $('.cp-structure [data-container-id=' + $(this).data('editor-container-id') + '] > div.cp-structure-container > [data-action-click="addContainerItem"]');
+            const addButton = $('.cp-structure [data-container-id=' + containerId + '] > div.cp-structure-container > [data-action-click="addContainerItem"]');
             if (addButton.length) {
-                const actions = $('<div>').addClass('cp-editor-container-actions');
+                actions = $('<div>').attr('data-actions-container-id', containerId);
                 $('body').append(actions.append(addButton.clone()
                     .removeAttr('data-action-click')
                     .on('click', () => addButton.click())));
@@ -36,24 +40,36 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
                     top: $(this).offset().top - actions.outerHeight(),
                     left: $(this).offset().left + $(this).outerWidth() - actions.outerWidth(),
                 });
+                $(this).find('[data-editor-container-item-id]').each(function () {
+                    const itemActions = $('[data-actions-container-item-id=' + $(this).data('editor-container-item-id')+ ']');
+                    alignActions(itemActions, actions);
+                });
             }
-        })
-        .on('mouseleave', '[data-editor-container-id]', (e) => leaveContainer(e));
-        $(document).on('mouseleave', '.cp-editor-container-actions', (e) => leaveContainer(e));
-        const leaveContainer = function (e) {
-            if (isOutside(e, ['[data-editor-container-id]', '.cp-editor-container-actions'])) {
-                $('.cp-editor-container-selected').removeClass('cp-editor-container-selected');
-                $('.cp-editor-container-actions').remove();
+        }).on('mouseleave', '[data-editor-container-id], [data-actions-container-id]', function (e) {
+            const containerId = $(this).data('editor-container-id') ?? $(this).data('actions-container-id');
+            if (isOutside(e, ['[data-editor-container-id="' + containerId+ '"]', '[data-actions-container-id="' + containerId+ '"]', '[data-actions-container-item-id]'])) {
+                $('[data-editor-container-id=' + containerId+ ']').removeClass('cp-editor-container-hover');
+                $('[data-actions-container-id=' + containerId+ ']').hide();
             }
-        }
+        }).on('mouseenter', '[data-editor-container-item-id]', function () {
+            if ($(this).hasClass('cp-editor-container-hover')) {
+                return;
+            }
+            $(this).addClass('cp-editor-container-hover');
 
-        this.$.on('mouseenter', '[data-editor-container-item-id]', function () {
-            const containerItem = $('.cp-structure [data-container-item-id=' + $(this).data('editor-container-item-id') + '] > li > .cp-structure-row');
+            const containerItemId = $(this).data('editor-container-item-id');
+            const containerItem = $('.cp-structure [data-container-item-id=' + containerItemId + '] > li > .cp-structure-row');
             containerItem.addClass('cp-structure-active');
+
+            const actions = $('[data-actions-container-item-id=' + containerItemId+ ']');
+            if (actions.length) {
+                actions.show();
+                return;
+            }
 
             const editButton = containerItem.find('[data-action-click="editElements"] > .fa');
             if (editButton.length) {
-                const actions = $('<div>').addClass('cp-editor-container-item-actions');
+                const actions = $('<div>').attr('data-actions-container-item-id', containerItemId);
                 $('body').append(actions.append(editButton.clone()
                     .removeAttr('data-action-click')
                     .on('click', () => editButton.parent().click())));
@@ -61,29 +77,34 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
                     top: $(this).offset().top - actions.outerHeight(),
                     left: $(this).offset().left + $(this).outerWidth() - actions.outerWidth(),
                 });
-                const containerActions = $('.cp-editor-container-actions');
-                if (containerActions.length &&
-                    actions.position().top > containerActions.position().top - actions.outerHeight() &&
-                    actions.position().top < containerActions.position().top + actions.outerHeight()) {
-                    actions.css('left', containerActions.position().left - actions.outerWidth());
-                }
+                const containerActions = $('[data-actions-container-id=' + $(this).closest('[data-editor-container-id]').data('editor-container-id') + ']');
+                alignActions(actions, containerActions);
             }
-        }).on('mouseleave', '[data-editor-container-item-id]', (e) => leaveContainerItem(e));
-        $(document).on('mouseleave', '.cp-editor-container-item-actions', (e) => leaveContainerItem(e));
-        const leaveContainerItem = function (e) {
-            if (isOutside(e, ['[data-editor-container-item-id]', '.cp-editor-container-item-actions'])) {
+        }).on('mouseleave', '[data-editor-container-item-id], [data-actions-container-item-id]', function (e) {
+            const containerItemId = $(this).data('editor-container-item-id') ?? $(this).data('actions-container-item-id');
+            if (isOutside(e, ['[data-editor-container-item-id="' + containerItemId + '"]', '[data-actions-container-item-id="' + containerItemId + '"]'])) {
+                $('[data-editor-container-item-id=' + containerItemId+ ']').removeClass('cp-editor-container-hover');
+                $('[data-actions-container-item-id=' + containerItemId+ ']').hide();
                 $('.cp-structure-active').removeClass('cp-structure-active');
-                $('.cp-editor-container-item-actions').remove();
+            }
+        });
+
+        const alignActions = function (itemActions, contActions) {
+            if (itemActions.length && contActions.length) {
+                const posItem = itemActions[0].getBoundingClientRect();
+                const posCont = contActions[0].getBoundingClientRect();
+                if (posItem.right >= posCont.left &&
+                    posItem.right <= posCont.right &&
+                    posItem.top >= posCont.top &&
+                    posItem.top <= posCont.bottom) {
+                    itemActions.css('left', posCont.left - posItem.width);
+                }
             }
         }
 
         const isOutside = function(e, selectors) {
             const target = e.relatedTarget;
-            if (!target) {
-                return true;
-            }
-
-            return selectors.every(selector => {
+            return !target || selectors.every(selector => {
                 const el = document.querySelector(selector);
                 return el && !el.contains(target);
             });

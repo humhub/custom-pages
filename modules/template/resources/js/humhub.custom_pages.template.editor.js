@@ -18,34 +18,21 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
 
     TemplateInlineEditor.prototype.initHighlight = function () {
         $(document).on('mouseenter', '[data-editor-container-id]', function () {
-            if ($(this).hasClass('cp-editor-container-hover')) {
-                return;
-            }
+            const containerId = $(this).data('editor-container-id');
             $(this).addClass('cp-editor-container-hover');
 
-            const containerId = $(this).data('editor-container-id');
-            const actions = $('[data-actions-container-id=' + containerId+ ']');
-            if (actions.length) {
-                actions.show();
-                return;
+            if (!$('[data-actions-container-id=' + containerId + ']').length) {
+                const addButton = $('.cp-structure [data-container-id=' + containerId + '] > div.cp-structure-container > [data-action-click="addContainerItem"]');
+                if (addButton.length) {
+                    $('body').append($('<div>')
+                        .attr('data-actions-container-id', containerId)
+                        .append(addButton.clone()
+                        .removeAttr('data-action-click')
+                        .on('click', () => addButton.click())));
+                }
             }
 
-            const addButton = $('.cp-structure [data-container-id=' + containerId + '] > div.cp-structure-container > [data-action-click="addContainerItem"]');
-            if (addButton.length) {
-                const pos = this.getBoundingClientRect();
-                const actions = $('<div>').attr('data-actions-container-id', containerId);
-                $('body').append(actions.append(addButton.clone()
-                    .removeAttr('data-action-click')
-                    .on('click', () => addButton.click())));
-                actions.css({
-                    top: pos.top - actions.outerHeight(),
-                    left: pos.left + pos.width - actions.outerWidth(),
-                });
-                $(this).find('[data-editor-container-item-id]').each(function () {
-                    const itemActions = $('[data-actions-container-item-id=' + $(this).data('editor-container-item-id')+ ']');
-                    alignActions(itemActions, actions);
-                });
-            }
+            alignActions(this, $('[data-actions-container-id=' + containerId + ']'));
         }).on('mouseleave', '[data-editor-container-id], [data-actions-container-id]', function (e) {
             const containerId = $(this).data('editor-container-id') ?? $(this).data('actions-container-id');
             if (isOutside(e, ['[data-editor-container-id="' + containerId+ '"]', '[data-actions-container-id="' + containerId+ '"]'])) {
@@ -53,36 +40,24 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
                 $('[data-actions-container-id=' + containerId+ ']').hide();
             }
         }).on('mouseenter', '[data-editor-container-item-id]', function () {
-            if ($(this).hasClass('cp-editor-container-hover')) {
-                return;
-            }
-            $(this).addClass('cp-editor-container-hover');
-
             const containerItemId = $(this).data('editor-container-item-id');
             const containerItem = $('.cp-structure [data-container-item-id=' + containerItemId + '] > li > .cp-structure-row');
             containerItem.addClass('cp-structure-active');
-
+            $(this).addClass('cp-editor-container-hover');
             $('[data-actions-container-item-id]').hide();
-            const actions = $('[data-actions-container-item-id=' + containerItemId + ']');
-            if (actions.length) {
-                actions.show();
-                return;
+
+            if (!$('[data-actions-container-item-id=' + containerItemId + ']').length) {
+                const editButton = containerItem.find('[data-action-click="editElements"] > .fa');
+                if (editButton.length) {
+                    $('body').append($('<div>')
+                        .attr('data-actions-container-item-id', containerItemId)
+                        .append(editButton.clone()
+                        .removeAttr('data-action-click')
+                        .on('click', () => editButton.parent().click())));
+                }
             }
 
-            const editButton = containerItem.find('[data-action-click="editElements"] > .fa');
-            if (editButton.length) {
-                const pos = this.getBoundingClientRect();
-                const actions = $('<div>').attr('data-actions-container-item-id', containerItemId);
-                $('body').append(actions.append(editButton.clone()
-                    .removeAttr('data-action-click')
-                    .on('click', () => editButton.parent().click())));
-                actions.css({
-                    top: pos.top - actions.outerHeight(),
-                    left: pos.left + pos.width - actions.outerWidth(),
-                });
-                const containerActions = $('[data-actions-container-id=' + $(this).closest('[data-editor-container-id]').data('editor-container-id') + ']');
-                alignActions(actions, containerActions);
-            }
+            alignActions(this, $('[data-actions-container-item-id=' + containerItemId + ']'));
         }).on('mouseleave', '[data-editor-container-item-id], [data-actions-container-item-id]', function (e) {
             const containerItemId = $(this).data('editor-container-item-id') ?? $(this).data('actions-container-item-id');
             if (isOutside(e, ['[data-editor-container-item-id="' + containerItemId + '"]', '[data-actions-container-item-id="' + containerItemId + '"]'])) {
@@ -105,17 +80,38 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             }
         });
 
-        const alignActions = function (itemActions, contActions) {
-            if (itemActions.length && contActions.length) {
-                const posItem = itemActions[0].getBoundingClientRect();
-                const posCont = contActions[0].getBoundingClientRect();
-                if (posItem.right >= posCont.left &&
-                    posItem.right <= posCont.right &&
-                    posItem.top >= posCont.top &&
-                    posItem.top <= posCont.bottom) {
-                    itemActions.css('left', posCont.left - posItem.width);
-                }
+        const alignActions = function (block, actions) {
+            actions.show();
+            const posBlock = block.getBoundingClientRect();
+            const posActions = actions[0].getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            actions.css({
+                top: posBlock.top + scrollTop - posActions.height,
+                left: posBlock.left + scrollLeft + posBlock.width - posActions.width,
+            });
+
+            const allActions = $('[data-actions-container-item-id]:visible, [data-actions-container-id]:visible');
+            if (allActions.length < 2) {
+                return;
             }
+
+            allActions.each(function () {
+                if ($(this).is(actions)) {
+                    return;
+                }
+                const posThis = this.getBoundingClientRect();
+                if (posActions.right >= posThis.left &&
+                    posActions.right <= posThis.right &&
+                    posActions.top >= posThis.top &&
+                    posActions.top <= posThis.bottom) {
+                    if (actions.is('[data-actions-container-id]')) {
+                        $(this).css('left', posActions.left + scrollLeft - posThis.width);
+                    } else {
+                        actions.css('left', posThis.left + scrollLeft - posActions.width);
+                    }
+                }
+            });
         }
 
         const isOutside = function(e, selectors) {

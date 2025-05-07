@@ -9,7 +9,7 @@
 use humhub\libs\Html;
 use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\modules\template\assets\InlineEditorAsset;
-use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
@@ -18,7 +18,7 @@ use humhub\modules\ui\view\components\View;
 use humhub\widgets\Link;
 
 /* @var TemplateInstance $templateInstance */
-/* @var BaseElementContent[] $elementContents */
+/* @var ContainerElement[] $containers */
 /* @var array $options */
 /* @var array $templateInstanceOptions */
 /* @var int $level */
@@ -73,21 +73,20 @@ InlineEditorAsset::register($this);
             <?php endif; ?>
         </div>
 
-        <?php if (count($elementContents)) : ?>
+        <?php if (count($containers)) : ?>
         <?= Html::beginTag('ul') ?>
-            <?php foreach ($elementContents as $elementContent) : ?>
-            <?= Html::beginTag('li', $widget->getElementContentOptions($elementContent)) ?>
+            <?php foreach ($containers as $container) : ?>
+            <?= Html::beginTag('li', $widget->getContainerOptions($container)) ?>
                 <div class="cp-structure-container cp-structure-row" style="padding-left:<?= ($level + 1) * 10 + 8 ?>px">
                     <?= Icon::get('circle-o') ?>
-                    <div class="cp-structure-text"><?= $elementContent->element->title === null || $elementContent->element->title === '' ? $elementContent->element->name : $elementContent->element->title ?></div>
-                    <?php if ($elementContent->canAddItem()) : ?>
-                        <?= Icon::get('plus', ['htmlOptions' => ['data-action-click' => 'addContainerItem']])
-                            ->class('cp-structure-action') ?>
-                    <?php endif; ?>
+                    <div class="cp-structure-text"><?= $container->element->title === null || $container->element->title === '' ? $container->element->name : $container->element->title ?></div>
+                    <?= Icon::get('plus', ['htmlOptions' => ['data-action-click' => 'addContainerItem']])
+                        ->class('cp-structure-action')
+                        ->style($container->canAddItem() ? '' : 'display:none') ?>
                 </div>
 
-                <?php if ($elementContent->hasItems()) : ?>
-                    <?php foreach ($elementContent->items as $item) : ?>
+                <?php if ($container->hasItems()) : ?>
+                    <?php foreach ($container->items as $item) : ?>
                         <?php /* @var ContainerItem $item */ ?>
                         <?= TemplateStructure::widget([
                             'templateInstance' => $item->templateInstance,

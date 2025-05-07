@@ -48,13 +48,13 @@ class TemplateStructure extends JsWidget
      */
     public function run()
     {
-        $elementContents = array_filter($this->templateInstance->template->getElementContents($this->templateInstance), function ($element) {
+        $containers = array_filter($this->templateInstance->template->getElementContents($this->templateInstance), function ($element) {
             return $element instanceof ContainerElement;
         });
 
         return $this->render('templateStructure', [
             'templateInstance' => $this->templateInstance,
-            'elementContents' => $elementContents,
+            'containers' => $containers,
             'options' => $this->getOptions(),
             'templateInstanceOptions' => $this->getTemplateInstanceOptions(),
             'level' => $this->getLevel(),
@@ -104,12 +104,13 @@ class TemplateStructure extends JsWidget
         return $options;
     }
 
-    public function getElementContentOptions(BaseElementContent $elementContent): array
+    public function getContainerOptions(ContainerElement $element): array
     {
         return [
-            'data-element-id' => $elementContent->element_id,
-            'data-container-id' => $elementContent->id,
-            'data-default' => $elementContent->isDefault(),
+            'data-element-id' => $element->element_id,
+            'data-container-id' => $element->id,
+            'data-default' => $element->isDefault(),
+            'data-allow-multiple' => $element->definition->allow_multiple,
         ];
     }
 

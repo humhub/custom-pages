@@ -174,8 +174,11 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
 
         client.post(evt, options).then(function (response) {
             if (response.success) {
-                containerItem.fadeOut('fast', () => containerItem.remove());
                 that.getEditorContainer(containerItem).replaceWith(response.output);
+                containerItem.fadeOut('fast', () => {
+                    containerItem.remove();
+                    that.refreshAddItemButton(containerItem.data('container-id'));
+                });
             }
         }).catch(function (e) {
             module.log.error(e, true);
@@ -194,6 +197,14 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
             .attr('data-container-id', containerId)
             .removeAttr('data-default')
             .append(item);
+        this.refreshAddItemButton(containerId);
+    }
+
+    TemplateStructure.prototype.refreshAddItemButton = function (containerId) {
+        const container = this.$.find('[data-container-id=' + containerId + ']');
+        const allowAddItem = container.data('allow-multiple') === 1 || !container.find('[data-container-item-id]').length;
+        container.find('> .cp-structure-container [data-action-click=addContainerItem]').toggle(allowAddItem);
+        $('[data-actions-container-id], [data-actions-container-item-id]').remove();
     }
 
     module.export = TemplateStructure;

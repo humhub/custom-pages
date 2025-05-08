@@ -86,12 +86,11 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
         const alignActions = function (block, actions) {
             actions.show();
             const posBlock = block.getBoundingClientRect();
-            const posActions = actions[0].getBoundingClientRect();
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
             actions.css({
-                top: posBlock.top + scrollTop - posActions.height,
-                left: posBlock.left + scrollLeft + posBlock.width - posActions.width,
+                top: posBlock.top + scrollTop - actions.outerHeight(),
+                left: posBlock.left + scrollLeft + posBlock.width - actions.outerWidth(),
             });
 
             const allActions = $('[data-actions-container-item-id]:visible, [data-actions-container-id]:visible');
@@ -99,6 +98,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
                 return;
             }
 
+            const posActions = actions[0].getBoundingClientRect();
             allActions.each(function () {
                 if ($(this).is(actions)) {
                     return;

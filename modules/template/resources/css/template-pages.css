@@ -76,6 +76,7 @@ span[data-editor-container-item-id] {
     position: absolute;
     display: inline-block;
     max-width: max-content;
+    z-index: 1;
 }
 [data-actions-container-id] > i.fa,
 [data-actions-container-item-id] > i.fa {

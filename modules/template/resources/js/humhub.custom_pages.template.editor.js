@@ -40,6 +40,9 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
                 $('[data-actions-container-id=' + containerId+ ']').hide();
             }
         }).on('mouseenter', '[data-editor-container-item-id]', function () {
+            if ($(this).find('[data-editor-container-item-id].cp-editor-container-hover').length) {
+                return;
+            }
             const containerItemId = $(this).data('editor-container-item-id');
             const containerItem = $('.cp-structure [data-container-item-id=' + containerItemId + '] > li > .cp-structure-row');
             containerItem.addClass('cp-structure-active');

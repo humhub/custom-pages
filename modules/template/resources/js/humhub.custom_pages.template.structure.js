@@ -61,14 +61,14 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
             const obj = $(this).hasClass('cp-structure-container')
                 ? $('[data-editor-container-id=' + $(this).closest('[data-container-id]').data('container-id') + ']')
                 : $('[data-editor-container-item-id=' + $(this).closest('[data-container-item-id]').data('container-item-id') + ']');
-            if (!obj.length) {
+            if (!obj.length || ['STYLE', 'SCRIPT'].includes(obj[0].tagName)) {
                 return;
             }
 
             const copy = obj.clone();
             copy.addClass(activeClass).css({
                 width: obj.outerWidth(),
-                minHeight: obj.outerHeight(),
+                minHeight: obj.outerHeight() > 2 ? obj.outerHeight() : 2,
                 top: obj.position().top,
                 left: obj.position().left,
             });

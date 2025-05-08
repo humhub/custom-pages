@@ -19,20 +19,22 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     TemplateInlineEditor.prototype.initHighlight = function () {
         $(document).on('mouseenter', '[data-editor-container-id]', function () {
             const containerId = $(this).data('editor-container-id');
+            const actionsSelector = '[data-actions-container-id=' + containerId + ']';
             $(this).addClass('cp-editor-container-hover');
 
-            if (!$('[data-actions-container-id=' + containerId + ']').length) {
-                const addButton = $('.cp-structure [data-container-id=' + containerId + '] > div.cp-structure-container > [data-action-click="addContainerItem"]');
+            if (!$(actionsSelector).length) {
+                const addButtonSelector = '.cp-structure [data-container-id=' + containerId + '] > div.cp-structure-container > [data-action-click="addContainerItem"]';
+                const addButton = $(addButtonSelector);
                 if (addButton.length) {
                     $('body').append($('<div>')
                         .attr('data-actions-container-id', containerId)
                         .append(addButton.clone()
                         .removeAttr('data-action-click')
-                        .on('click', () => addButton.click())));
+                        .on('click', () => $(addButtonSelector).click())));
                 }
             }
 
-            alignActions(this, $('[data-actions-container-id=' + containerId + ']'));
+            alignActions(this, actionsSelector);
         }).on('mouseleave', '[data-editor-container-id], [data-actions-container-id]', function (e) {
             const containerId = $(this).data('editor-container-id') ?? $(this).data('actions-container-id');
             if (isOutside(e, ['[data-editor-container-id="' + containerId+ '"]', '[data-actions-container-id="' + containerId+ '"]'])) {
@@ -44,23 +46,25 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
                 return;
             }
             const containerItemId = $(this).data('editor-container-item-id');
-            const containerItem = $('.cp-structure [data-container-item-id=' + containerItemId + '] > li > .cp-structure-row');
+            const actionsSelector = '[data-actions-container-item-id=' + containerItemId + ']';
+            const containerItemSelector = '.cp-structure [data-container-item-id=' + containerItemId + '] > li > .cp-structure-row';
+            const containerItem = $(containerItemSelector);
             containerItem.addClass('cp-structure-active');
             $(this).addClass('cp-editor-container-hover');
             $('[data-actions-container-item-id]').hide();
 
-            if (!$('[data-actions-container-item-id=' + containerItemId + ']').length) {
+            if (!$(actionsSelector).length) {
                 const editButton = containerItem.find('[data-action-click="editElements"] > .fa');
                 if (editButton.length) {
                     $('body').append($('<div>')
                         .attr('data-actions-container-item-id', containerItemId)
                         .append(editButton.clone()
                         .removeAttr('data-action-click')
-                        .on('click', () => editButton.parent().click())));
+                        .on('click', () => $(containerItemSelector).click())));
                 }
             }
 
-            alignActions(this, $('[data-actions-container-item-id=' + containerItemId + ']'));
+            alignActions(this, actionsSelector);
         }).on('mouseleave', '[data-editor-container-item-id], [data-actions-container-item-id]', function (e) {
             const containerItemId = $(this).data('editor-container-item-id') ?? $(this).data('actions-container-item-id');
             if (isOutside(e, ['[data-editor-container-item-id="' + containerItemId + '"]', '[data-actions-container-item-id="' + containerItemId + '"]'])) {
@@ -83,7 +87,8 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             }
         });
 
-        const alignActions = function (block, actions) {
+        const alignActions = function (block, actionsSelector) {
+            const actions = $(actionsSelector);
             actions.show();
             const posBlock = block.getBoundingClientRect();
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;

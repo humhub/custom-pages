@@ -38,11 +38,6 @@ use humhub\libs\Html;
                                 <span class="label label-success"><?= Yii::t('CustomPagesModule.view', 'Multiple') ?></span>
                             </small>
                         <?php endif; ?>
-                        <?php if ($isContainer && $contentItem->content->definition->is_inline): ?>
-                            <small class="pull-right" style="margin-right: 2px">
-                                <span class="label label-success"><?= Yii::t('CustomPagesModule.view', 'Inline') ?></span>
-                            </small>
-                        <?php endif; ?>
                     </div>
                     <?php // This was only set for container elements before. ?>
                     <div class="panel-body" data-element-index="<?= $counter ?>" style="<?= ($counter != 0) ? 'display:none' : '' ?>">

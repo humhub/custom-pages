@@ -17,7 +17,6 @@ use Yii;
  * Dynamic attributes:
  * @property array $templates IDs of allowed templates
  * @property bool $allow_multiple
- * @property bool $is_inline
  *
  * @property-read Template[] $allowedTemplates
  */
@@ -36,7 +35,6 @@ class ContainerDefinition extends BaseElementDefinition
         return [
             'templates' => null,
             'allow_multiple' => false,
-            'is_inline' => false,
         ];
     }
 
@@ -47,7 +45,7 @@ class ContainerDefinition extends BaseElementDefinition
     {
         return [
             [['templates'], 'safe'],
-            [['allow_multiple', 'is_inline'], 'boolean'],
+            [['allow_multiple'], 'boolean'],
         ];
     }
 
@@ -59,7 +57,6 @@ class ContainerDefinition extends BaseElementDefinition
         return [
             'templates' => Yii::t('CustomPagesModule.template', 'Allowed Templates'),
             'allow_multiple' => Yii::t('CustomPagesModule.template', 'Allow multiple items?'),
-            'is_inline' => Yii::t('CustomPagesModule.template', 'Render items as inline-blocks within the inline editor?'),
         ];
     }
 

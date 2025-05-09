@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\components\ActiveRecord;
+use humhub\libs\Html;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
@@ -92,6 +93,24 @@ class ContainerItem extends ActiveRecord
         return parent::beforeDelete();
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        // Refresh sort orders of the rest items after deletion
+        $items = self::find()
+            ->where(['element_content_id' => $this->element_content_id])
+            ->orderBy(['sort_order' => SORT_ASC]);
+        $sortOrder = 0;
+        foreach ($items->each() as $item) {
+            $item->sort_order = $sortOrder++;
+            $item->update();
+        }
+    }
+
     public static function incrementIndex($containerId, $index)
     {
         self::updateAllCounters(['sort_order' => 1], ['and', ['>=', 'sort_order', $index], ['element_content_id' => $containerId]]);
@@ -134,11 +153,11 @@ class ContainerItem extends ActiveRecord
         return $this->hasOne(ContainerElement::class, ['id' => 'element_content_id']);
     }
 
-    public function render(string $mode, $inline = false)
+    public function render(string $mode): string
     {
         try {
             $result = $this->template->render($this->templateInstance, $mode);
-            return $mode === 'edit' ? $this->wrap($result, $inline) : $result;
+            return $mode === 'edit' ? $this->renderEditBlock($result) : $result;
         } catch (\Throwable $ex) {
             Yii::error('Broken Container Item #' . $this->id . ' has lost Template Instance. ' .
                 'Error: ' . $ex->getMessage() . ' ' . $ex->getFile() . '(' . $ex->getLine() . ') ' . $ex->getTraceAsString(), 'custom-pages');
@@ -146,16 +165,14 @@ class ContainerItem extends ActiveRecord
         }
     }
 
-    public function wrap($content, $inline)
+    public function renderEditBlock(string $content): string
     {
-        return \humhub\widgets\JsWidget::widget([
-            'jsWidget' => 'custom_pages.template.TemplateContainerItem',
-            'content' => $content,
-            'options' => [
-                'class' => ($inline) ? 'inline' : '',
-                'data-template-item' => $this->id,
-                'data-template-item-title' => $this->title,
-            ],
-        ]);
+        if (preg_match('#^(<([a-z]+))(.*?>.*?</\2>)$#is', trim($content), $m)) {
+            // Use original tag as wrapper instead of adding <div> in order to don't break such tags as <tr>
+            return $m[1] . ' data-editor-container-item-id="' . $this->id . '"' . $m[3];
+        }
+
+        // Use inline tag <span> for case if the content is not wrapped to html tag
+        return Html::tag('span', $content, ['data-editor-container-item-id' => $this->id]);
     }
 }

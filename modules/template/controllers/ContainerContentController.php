@@ -15,6 +15,7 @@ use humhub\modules\custom_pages\modules\template\models\forms\EditItemForm;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
+use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
 use Yii;
 use yii\base\InvalidRouteException;
 use yii\helpers\Url;
@@ -198,6 +199,7 @@ class ContainerContentController extends Controller
                 'success' => true,
                 'id' => $elementContent->id,
                 'output' => (new BaseElementVariable($elementContent))->render(),
+                'structure' => TemplateStructure::widget(['templateInstance' => $form->owner->templateInstance]),
             ]);
         }
 
@@ -206,36 +208,6 @@ class ContainerContentController extends Controller
                 'model' => $form,
                 'title' => Yii::t('CustomPagesModule.base', '<strong>Add</strong> {templateName} item', ['templateName' => $form->template->name]),
                 'action' => Url::to(['edit-add-item', 'elementContentId' => $elementContent->id, 'templateId' => $itemTemplate->id, 'cguid' => $cguid]),
-            ])),
-        ]);
-    }
-
-    /**
-     * This action is used to edit a Container Item.
-     *
-     * @param int $itemId
-     * @return Response
-     * @throws Exception
-     */
-    public function actionEditItem($itemId)
-    {
-        $form = new EditItemForm();
-        $form->setItem($itemId);
-        $form->setScenario('edit');
-
-        if ($form->load(Yii::$app->request->post()) && $form->save()) {
-            TemplateCache::flushByTemplateInstance($form->item->templateInstance);
-
-            return $this->asJson([
-                'success' => true,
-                'output' => $form->item->render(true, $form->item->container->definition->is_inline),
-            ]);
-        }
-
-        return $this->asJson([
-            'output' => $this->renderAjaxPartial(EditContainerItemModal::widget([
-                'model' => $form,
-                'title' => Yii::t('CustomPagesModule.base', '<strong>Edit</strong> item'),
             ])),
         ]);
     }

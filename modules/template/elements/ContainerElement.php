@@ -10,7 +10,6 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\libs\Html;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\widgets\TemplateEditorElement;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -79,19 +78,21 @@ class ContainerElement extends BaseElementContent
     {
         $items = $this->items;
 
-        if (empty($items) && $this->isEditMode($options)) {
-            $content = Html::tag('strong', Yii::t('CustomPagesModule.model', 'Empty <br />Container'));
-            $content = Html::tag('div', $content, ['class' => 'emptyBlock']);
-            return $this->renderEditBlock($content, $options, ['class' => 'emptyContainerBlock']);
+        if (empty($items)) {
+            if ($this->isEditMode($options)) {
+                $content = Html::tag('div', Yii::t('CustomPagesModule.model', 'Empty <br />Container'));
+                return $this->renderEditBlock($content, ['class' => 'cp-editor-container-empty']);
+            }
+            return '';
         }
 
         $result = '';
-        foreach ($this->items as $containerItem) {
-            $result .= $containerItem->render($options['mode'] ?? '', $this->definition->is_inline);
+        foreach ($items as $containerItem) {
+            $result .= $containerItem->render($options['mode'] ?? '');
         }
 
         if ($this->isEditMode($options)) {
-            return $this->renderEditBlock($result, $options);
+            return $this->renderEditBlock($result);
         }
 
         return $result;
@@ -101,26 +102,19 @@ class ContainerElement extends BaseElementContent
      * Render block for inline editing
      *
      * @param string $content
-     * @param array $options
-     * @param array $attributes
      * @return string
      */
-    protected function renderEditBlock(string $content, array $options = [], array $attributes = []): string
+    protected function renderEditBlock(string $content, array $options = []): string
     {
-        $options['jsWidget'] = 'custom_pages.template.TemplateContainer';
-        $attributes['data-template-multiple'] = $this->definition->allow_multiple;
-
-        if ($this->getPrimaryKey() !== null) {
-            $options['element_content_id'] = $this->getPrimaryKey();
+        if (preg_match('#<(tr).+?</\1>#is', $content)) {
+            $tagName = 'tbody';
+        } else {
+            $tagName = 'div';
         }
 
-        return TemplateEditorElement::widget([
-            'container' => 'div',
-            'elementContent' => $this,
-            'content' => $content,
-            'renderOptions' => $options,
-            'renderAttributes' => $attributes,
-        ]);
+        return Html::tag($tagName, $content, array_merge([
+            'data-editor-container-id' => $this->id,
+        ], $options));
     }
 
     public function moveItem($itemId, $step)

@@ -16,6 +16,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         this.initEditableRows();
         this.initHighlight();
         this.initMenuAlignment();
+        this.initResize();
     }
 
     TemplateStructure.prototype.editor = function () {
@@ -27,20 +28,15 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
 
     TemplateStructure.prototype.initDraggable = function () {
         const that = this;
-        const rootTemplateInstanceId = that.$.find('[data-template-type=layout]').data('template-instance-id');
 
-        that.$.css(that.getStoredData()[rootTemplateInstanceId] ?? {
+        that.$.css(that.getPositionData()[that.getRootTemplateInstanceId()] ?? {
             top: $('#editPageButton').position().top,
             left: '20px',
         }).show();
 
         this.$.draggable({
             handle: '.cp-structure-header',
-            stop: function (e) {
-                const data = that.getStoredData();
-                data[rootTemplateInstanceId] = $(e.target).position();
-                window.localStorage.setItem('cp-structure', JSON.stringify(data));
-            }
+            stop: () => that.updatePositionData(),
         });
     }
 
@@ -79,6 +75,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
             copy.fadeIn('fast');
         }).on('mouseleave', '.cp-structure-template, .cp-structure-container', function () {
             $('.cp-structure-overlay, .' + activeClass).remove();
+            $('.cp-structure-actions.dropdown.open').removeClass('open');
         });
     }
 
@@ -92,9 +89,34 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         });
     }
 
-    TemplateStructure.prototype.getStoredData = function () {
+    TemplateStructure.prototype.initResize = function () {
+        const that = this;
+        const shift = (shift) => shift > 0 ? shift : 0;
+        $(window).resize(function () {
+            const pos = that.$[0].getBoundingClientRect();
+            const newPos = {};
+            if (pos.right > $(this).width()) {
+                newPos.left = shift($(this).width() - pos.width);
+            }
+            if (pos.bottom > window.innerHeight) {
+                newPos.top = shift(window.innerHeight - pos.height);
+            }
+            if (Object.keys(newPos).length) {
+                that.$.css(newPos);
+                that.updatePositionData();
+            }
+        });
+    }
+
+    TemplateStructure.prototype.getPositionData = function () {
         const data = window.localStorage.getItem('cp-structure');
         return data ? JSON.parse(data) : {};
+    }
+
+    TemplateStructure.prototype.updatePositionData = function () {
+        const data = this.getPositionData();
+        data[this.getRootTemplateInstanceId()] = this.$.position();
+        window.localStorage.setItem('cp-structure', JSON.stringify(data));
     }
 
     TemplateStructure.prototype.addContainerItem = function (evt) {
@@ -150,6 +172,10 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
 
     TemplateStructure.prototype.getEditorContainer = function (container) {
         return $('[data-editor-container-id=' + container.data('container-id') + ']')
+    }
+
+    TemplateStructure.prototype.getRootTemplateInstanceId = function () {
+        return this.$.find('[data-template-type=layout]').data('template-instance-id');
     }
 
     TemplateStructure.prototype.moveUpContainerItem = function (evt) {

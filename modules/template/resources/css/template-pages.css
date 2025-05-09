@@ -102,6 +102,7 @@ span[data-editor-container-item-id] {
     list-style: none;
     font-size: 11px;
     z-index: 1033;
+    min-width: 280px;
     max-height: 80%;
     overflow-y: auto;
     scrollbar-width: none;

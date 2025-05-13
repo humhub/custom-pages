@@ -18,6 +18,7 @@ Changelog
 - Enh #396: Structure overview
 - Enh #399: Remove deprecated widget `DataSaved`
 - Enh #404: Copy templates
+- Enh #406: Twig extension to process markdown text
 
 1.10.15 (February 11, 2025)
 ---------------------------

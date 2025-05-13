@@ -39,6 +39,7 @@ class TwigEngine implements TemplateEngine
         if ($securityPolicy !== null) {
             $twig->addExtension(new SandboxExtension($securityPolicy, true));
             $twig->addExtension(new StringExtension());
+            $twig->addExtension(new MarkdownExtension());
         }
         return $twig->render($template, $content);
     }

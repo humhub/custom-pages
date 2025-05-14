@@ -52,8 +52,11 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
     }
 
     TemplateStructure.prototype.initHighlight = function () {
-        const activeClass = 'cp-editor-container-active';
-        this.$.on('mouseenter', '.cp-structure-template, .cp-structure-container', function () {
+        this.$.on('mouseenter', function () {
+            $('body').append('<div class="cp-structure-overlay"></div>');
+        }).on('mouseleave', function () {
+            $('.cp-structure-overlay').remove();
+        }).on('mouseenter', '.cp-structure-template, .cp-structure-container', function () {
             const obj = $(this).hasClass('cp-structure-container')
                 ? $('[data-editor-container-id=' + $(this).closest('[data-container-id]').data('container-id') + ']')
                 : $('[data-editor-container-item-id=' + $(this).closest('[data-container-item-id]').data('container-item-id') + ']');
@@ -62,19 +65,17 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
             }
 
             const copy = obj.clone();
-            copy.addClass(activeClass).css({
+            copy.addClass('cp-editor-container-active').css({
                 width: obj.outerWidth(),
                 minHeight: obj.outerHeight() > 2 ? obj.outerHeight() : 2,
                 top: obj.position().top,
                 left: obj.position().left,
             });
 
-            $('.cp-structure-overlay, .' + activeClass).remove();
-            $('body').append('<div class="cp-structure-overlay"></div>');
             obj.after(copy);
             copy.fadeIn('fast');
         }).on('mouseleave', '.cp-structure-template, .cp-structure-container', function () {
-            $('.cp-structure-overlay, .' + activeClass).remove();
+            $('.cp-editor-container-active').remove();
             $('.cp-structure-actions.dropdown.open').removeClass('open');
         });
     }

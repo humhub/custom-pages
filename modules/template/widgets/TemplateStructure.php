@@ -8,7 +8,6 @@
 
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
@@ -72,6 +71,7 @@ class TemplateStructure extends JsWidget
             'item-add-url' => $this->createUrl('/custom_pages/template/container-content/add-item'),
             'item-move-url' => $this->createUrl('/custom_pages/template/container-content/move-item'),
             'item-delete-url' => $this->createUrl('/custom_pages/template/container-content/delete-item'),
+            'item-export-url' => $this->createUrl('/custom_pages/template/container-content/export-instance'),
         ];
     }
 

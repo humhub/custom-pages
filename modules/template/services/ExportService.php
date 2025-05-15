@@ -29,6 +29,11 @@ class ExportService
         return new self($template);
     }
 
+    public function getData(): ?array
+    {
+        return $this->data;
+    }
+
     public function export(): self
     {
         $this->data = $this->template->attributes;
@@ -85,6 +90,6 @@ class ExportService
 
     public function send(): Response
     {
-        return Yii::$app->response->sendContentAsFile(json_encode($this->data), $this->getFileName());
+        return Yii::$app->response->sendContentAsFile(json_encode($this->getData()), $this->getFileName());
     }
 }

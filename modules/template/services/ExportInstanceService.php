@@ -9,8 +9,9 @@
 namespace humhub\modules\custom_pages\modules\template\services;
 
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
-use humhub\modules\file\models\File;
 use Yii;
 use yii\web\Response;
 
@@ -35,7 +36,7 @@ class ExportInstanceService
             ->exportInstance()
             ->exportPage()
             ->exportTemplate()
-            ->exportContents();
+            ->exportContainer();
     }
 
     private function getFileName(): string
@@ -45,6 +46,8 @@ class ExportInstanceService
 
     public function send(): Response
     {
+        return Yii::$app->controller->asJson($this->data);
+
         return Yii::$app->response->sendContentAsFile(json_encode($this->data), $this->getFileName());
     }
 
@@ -60,7 +63,9 @@ class ExportInstanceService
 
     private function exportTemplate(): self
     {
-        $this->data['template'] = ExportService::instance($this->instance->template)->export()->getData();
+        $template = $this->instance->template;
+        $this->data['template'] = $template->name;
+        $this->data['templates'][$template->name] = ExportService::instance($template)->export()->getData();
         return $this;
     }
 
@@ -75,40 +80,50 @@ class ExportInstanceService
         return $this;
     }
 
-    private function exportContents(): self
+    private function exportContainer(): self
     {
-        $elementContents = BaseElementContent::find()->where(['template_instance_id' => $this->instance->id]);
-        if (!$elementContents->exists()) {
-            return $this;
-        }
-
-        $this->data['contents'] = [];
-        foreach ($elementContents->each() as $elementContent) {
-            $content = $elementContent->attributes;
-            unset($content['id']);
-            unset($content['element_id']);
-            unset($content['template_instance_id']);
-
-            // Attach files
-            $files = [];
-            foreach ($elementContent->fileManager->find()->each() as $f => $file) {
-                /* @var File $file */
-                if ($file->store->has()) {
-                    foreach ($file->attributes() as $attribute) {
-                        if ($attribute !== 'id' && $attribute !== 'metadata') {
-                            $files[$f][$attribute] = $file->$attribute;
-                        }
-                    }
-                    $files[$f]['base64Content'] = base64_encode(file_get_contents($file->store->get()));
-                }
-            }
-            if ($files !== []) {
-                $content['attachedFiles'] = $files;
-            }
-
-            $this->data['contents'][$elementContent->element->name] = $content;
+        if ($this->instance->isContainer()) {
+            $this->data['containerItem'] = $this->getContainerItemData($this->instance->containerItem);
+        } else {
+            $this->data['contents'] = $this->getContentsData($this->instance);
         }
 
         return $this;
+    }
+
+    private function getContentsData(TemplateInstance $templateInstance): array
+    {
+        $elementContents = BaseElementContent::find()->where(['template_instance_id' => $templateInstance->id]);
+
+        $data = [];
+        foreach ($elementContents->each() as $elementContent) {
+            $contentData = ExportService::getElementContentData($elementContent);
+            if ($elementContent instanceof ContainerElement) {
+                $contentData['containerItems'] = [];
+                foreach ($elementContent->items as $containerItem) {
+                    $contentData['containerItems'][] = $this->getContainerItemData($containerItem);
+                }
+            }
+            $data[$elementContent->element->name] = $contentData;
+        }
+
+        return $data;
+    }
+
+    private function getContainerItemData(ContainerItem $containerItem): array
+    {
+        $data = $containerItem->attributes;
+        unset($data['id']);
+        unset($data['element_content_id']);
+
+        $template = $containerItem->template;
+        $data['template'] = $template->name;
+        if (!isset($this->data['templates'][$template->name])) {
+            $this->data['templates'][$template->name] = ExportService::instance($template)->export()->getData();
+        }
+
+        $data['contents'] = $this->getContentsData($containerItem->templateInstance);
+
+        return $data;
     }
 }

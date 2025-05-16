@@ -212,6 +212,12 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         });
     }
 
+    TemplateStructure.prototype.exportTemplateInstance = function (evt) {
+        const url = this.data('item-export-url');
+        const templateInstanceId = evt.$target.closest('[data-template-instance-id]').data('template-instance-id');
+        document.location = url + (url.indexOf('?') > -1 ? '&' : '?') + 'id=' + templateInstanceId;
+    }
+
     TemplateStructure.prototype.setCurrent = function (container) {
         this.current = container;
         const editor = this.editor();

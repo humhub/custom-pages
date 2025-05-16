@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseElementDefinition;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\file\models\File;
 use Yii;
@@ -29,6 +29,11 @@ class ExportService
         return new self($template);
     }
 
+    public function getData(): ?array
+    {
+        return $this->data;
+    }
+
     public function export(): self
     {
         $this->data = $this->template->attributes;
@@ -44,38 +49,39 @@ class ExportService
             unset($this->data['elements'][$e]['id']);
             unset($this->data['elements'][$e]['template_id']);
 
-            $elementContent = $element->getDefaultContent();
-
-            if (!$elementContent) {
-                continue;
+            if ($elementContent = $element->getDefaultContent()) {
+                $this->data['elements'][$e]['elementContent'] = self::getElementContentData($elementContent);
             }
-
-            $contentData = $elementContent->attributes;
-            unset($contentData['id']);
-            unset($contentData['element_id']);
-            unset($contentData['template_instance_id']);
-
-            // Attach files
-            $files = [];
-            foreach ($elementContent->fileManager->find()->each() as $f => $file) {
-                /* @var File $file */
-                if ($file->store->has()) {
-                    foreach ($file->attributes() as $attribute) {
-                        if ($attribute !== 'id' && $attribute !== 'metadata') {
-                            $files[$f][$attribute] = $file->$attribute;
-                        }
-                    }
-                    $files[$f]['base64Content'] = base64_encode(file_get_contents($file->store->get()));
-                }
-            }
-            if ($files !== []) {
-                $contentData['attachedFiles'] = $files;
-            }
-
-            $this->data['elements'][$e]['elementContent'] = $contentData;
         }
 
         return $this;
+    }
+
+    public static function getElementContentData(BaseElementContent $elementContent): array
+    {
+        $data = $elementContent->attributes;
+        unset($data['id']);
+        unset($data['element_id']);
+        unset($data['template_instance_id']);
+
+        // Attach files
+        $files = [];
+        foreach ($elementContent->fileManager->find()->each() as $f => $file) {
+            /* @var File $file */
+            if ($file->store->has()) {
+                foreach ($file->attributes() as $attribute) {
+                    if ($attribute !== 'id' && $attribute !== 'metadata') {
+                        $files[$f][$attribute] = $file->$attribute;
+                    }
+                }
+                $files[$f]['base64Content'] = base64_encode(file_get_contents($file->store->get()));
+            }
+        }
+        if ($files !== []) {
+            $data['attachedFiles'] = $files;
+        }
+
+        return $data;
     }
 
     private function getFileName(): string
@@ -85,6 +91,6 @@ class ExportService
 
     public function send(): Response
     {
-        return Yii::$app->response->sendContentAsFile(json_encode($this->data), $this->getFileName());
+        return Yii::$app->response->sendContentAsFile(json_encode($this->getData()), $this->getFileName());
     }
 }

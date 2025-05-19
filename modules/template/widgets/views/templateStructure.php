@@ -75,6 +75,9 @@ InlineEditorAsset::register($this);
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Export'))
                         ->icon('upload')
                         ->action('exportTemplateInstance') ?></li>
+                    <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Import'))
+                            ->icon('download')
+                            ->action('importTemplateInstance') ?></li>
                 <?php endif; ?>
                 </ul>
             </div>
@@ -87,6 +90,8 @@ InlineEditorAsset::register($this);
                 <div class="cp-structure-container cp-structure-row" style="padding-left:<?= ($level + 1) * 10 + 8 ?>px">
                     <?= Icon::get('circle-o') ?>
                     <div class="cp-structure-text"><?= $container->element->title === null || $container->element->title === '' ? $container->element->name : $container->element->title ?></div>
+                    <?= Icon::get('download', ['htmlOptions' => ['data-action-click' => 'importTemplateInstance']])
+                        ->class('cp-structure-action') ?>
                     <?= Icon::get('plus', ['htmlOptions' => ['data-action-click' => 'addContainerItem']])
                         ->class('cp-structure-action')
                         ->style($container->canAddItem() ? '' : 'display:none') ?>

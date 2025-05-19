@@ -11,6 +11,7 @@ namespace humhub\modules\custom_pages\modules\template\services;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
+use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use Yii;
 use yii\web\Response;
@@ -46,6 +47,7 @@ class ExportInstanceService
 
     public function send(): Response
     {
+//        return Yii::$app->controller->asJson($this->data);
         return Yii::$app->response->sendContentAsFile(json_encode($this->data), $this->getFileName());
     }
 
@@ -63,8 +65,20 @@ class ExportInstanceService
     {
         $template = $this->instance->template;
         $this->data['template'] = $template->name;
-        $this->data['templates'][$template->name] = ExportService::instance($template)->export()->getData();
+        $this->data['templates'][$template->name] = $this->getTemplateData($template);
         return $this;
+    }
+
+    private function getTemplateData(Template $template): array
+    {
+        $data = ['source' => $template->source];
+
+        $data['elements'] = [];
+        foreach ($template->elements as $element) {
+            $data['elements'][$element->name] = $element->content_type;
+        }
+
+        return $data;
     }
 
     private function exportPage(): self
@@ -117,7 +131,7 @@ class ExportInstanceService
         $template = $containerItem->template;
         $data['template'] = $template->name;
         if (!isset($this->data['templates'][$template->name])) {
-            $this->data['templates'][$template->name] = ExportService::instance($template)->export()->getData();
+            $this->data['templates'][$template->name] = $this->getTemplateData($template);
         }
 
         $data['contents'] = $this->getContentsData($containerItem->templateInstance);

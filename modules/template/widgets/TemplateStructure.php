@@ -71,7 +71,8 @@ class TemplateStructure extends JsWidget
             'item-add-url' => $this->createUrl('/custom_pages/template/container-content/add-item'),
             'item-move-url' => $this->createUrl('/custom_pages/template/container-content/move-item'),
             'item-delete-url' => $this->createUrl('/custom_pages/template/container-content/delete-item'),
-            'item-export-url' => $this->createUrl('/custom_pages/template/container-content/export-instance'),
+            'instance-export-url' => $this->createUrl('/custom_pages/template/container-content/export-instance'),
+            'instance-import-url' => $this->createUrl('/custom_pages/template/container-content/import-instance'),
         ];
     }
 

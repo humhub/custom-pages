@@ -8,7 +8,11 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use humhub\modules\custom_pages\modules\template\models\Template;
+use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\file\models\FileContent;
 use Yii;
@@ -17,16 +21,13 @@ use yii\db\ActiveRecord;
 class ImportInstanceService
 {
     private TemplateInstance $instance;
+    private ?TemplateElement $element = null;
     private array $errors = [];
 
-    public function __construct(TemplateInstance $instance)
+    public function __construct(TemplateInstance $instance, ?TemplateElement $element = null)
     {
         $this->instance = $instance;
-    }
-
-    public static function instance(TemplateInstance $instance): self
-    {
-        return new self($instance);
+        $this->element = $element;
     }
 
     public function addError(string $error): void
@@ -67,8 +68,37 @@ class ImportInstanceService
 
     private function validateCompatibility(array $data): bool
     {
+        if (empty($data['template'])) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'Main template is not defined for importing!'));
+            return false;
+        }
+
         if (empty($data['templates']) || !is_array($data['templates'])) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'Wrong file structure without templates!'));
+            $this->addError(Yii::t('CustomPagesModule.template', 'Wrong import file structure without templates!'));
+            return false;
+        }
+
+        // Check allowed templates
+        $mainTemplateIsAllowed = false;
+        if ($this->instance->isPage() && !($this->element instanceof TemplateElement)) {
+            $mainTemplateIsAllowed = $this->instance->template->name === $data['template'];
+        } else {
+            if (!($this->element instanceof TemplateElement) ||
+                $this->element->content_type !== ContainerElement::class) {
+                $this->addError(Yii::t('CustomPagesModule.template', 'Wrong selected container for importing!'));
+                return false;
+            }
+            /* @var ContainerElement $content */
+            $content = $this->element->getDefaultContent(true);
+            $mainTemplateIsAllowed = !isset($content->definition->templates) ||
+                !is_array($content->definition->templates) ||
+                !in_array($data['template'], $content->definition->templates);
+        }
+
+        if (!$mainTemplateIsAllowed) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'Template {name} is not allowed for the instance!', [
+                'name' => '"' . $data['template'] . '"',
+            ]));
             return false;
         }
 
@@ -138,14 +168,8 @@ class ImportInstanceService
 
     public function runImport(array $data): bool
     {
-        if (!$this->importTemplateInstance($data)) {
-            return false;
-        }
-
-        if (isset($data['contents']) && is_array($data['contents'])) {
-            foreach ($data['contents'] as $content) {
-                $this->importElementContent($content);
-            }
+        if (isset($data['elements']) && is_array($data['elements'])) {
+            $this->importElements($this->instance, $data['elements']);
         }
 
         return !$this->hasErrors();
@@ -161,17 +185,80 @@ class ImportInstanceService
         return null;
     }
 
-    private function importTemplateInstance(array $data): bool
+    private function importElements(TemplateInstance $templateInstance, array $elements): void
     {
-        return true;
+        foreach ($templateInstance->template->elements as $element) {
+            if (isset($elements[$element->name])) {
+                $this->importElement($templateInstance, $element, $elements[$element->name]);
+            }
+        }
     }
 
-    private function importElementContent(array $data): bool
+    private function importElement(TemplateInstance $templateInstance, TemplateElement $element, array $data): void
     {
-        return true;
+        $content = BaseElementContent::findOne([
+            'element_id' => $element->id,
+            'template_instance_id' => $templateInstance->id,
+        ]);
+
+        if (!$content) {
+            $content = BaseElementContent::createByType($element->content_type);
+            $content->element_id = $element->id;
+            $content->template_instance_id = $templateInstance->id;
+        }
+
+        $content->dyn_attributes = $data['dyn_attributes'];
+
+        if (!$content->save()) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'Cannot import element {element} of the template {template}!', [
+                'element' => '"' . $element->name . '"',
+                'template' => '"' . $templateInstance->template->name . '"',
+            ]));
+            return;
+        }
+
+        if (isset($data['attachedFiles']) && is_array($data['attachedFiles'])) {
+            $this->attachFiles($content, $data['attachedFiles']);
+        }
+
+        if ($content instanceof ContainerElement) {
+            foreach ($content->items as $oldItem) {
+                $oldItem->delete();
+            }
+
+            if (isset($data['items']) && is_array($data['items'])) {
+                foreach ($data['items'] as $i => $itemData) {
+                    if (!$content->canAddItem()) {
+                        $this->addError(Yii::t('CustomPagesModule.template', 'Cannot add item {itemNumber} with template {template} because the container doesn\'t allow multiple items!', [
+                            'itemNumber' => $i,
+                            'template' => $itemData['template'] ?? '',
+                        ]));
+                        continue;
+                    }
+
+                    $item = new ContainerItem();
+                    $item->pageId = $templateInstance->page_id;
+                    $item->templateId = Template::findOne(['name' => $itemData['template']])->id;
+                    $item->element_content_id = $content->id;
+                    $item->sort_order = $itemData['sort_order'] ?? 0;
+                    $item->title = $itemData['title'] ?? 0;
+                    if (!$item->save()) {
+                        $this->addError(Yii::t('CustomPagesModule.template', 'Cannot import container item {itemNumber} with template {template}!', [
+                            'itemNumber' => $i,
+                            'template' => $itemData['template'] ?? '',
+                        ]));
+                        continue;
+                    }
+
+                    if (isset($itemData['elements']) && is_array($itemData['elements'])) {
+                        $this->importElements($item->templateInstance, $itemData['elements']);
+                    }
+                }
+            }
+        }
     }
 
-    private function attachFiles(ActiveRecord $record, array $files)
+    private function attachFiles(ActiveRecord $record, array $files): void
     {
         $updateRecord = false;
 

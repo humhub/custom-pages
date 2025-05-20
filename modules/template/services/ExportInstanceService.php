@@ -35,9 +35,8 @@ class ExportInstanceService
     {
         return $this
             ->exportInstance()
-            ->exportPage()
             ->exportTemplate()
-            ->exportContainer();
+            ->exportElements();
     }
 
     private function getFileName(): string
@@ -69,6 +68,19 @@ class ExportInstanceService
         return $this;
     }
 
+    private function exportElements(): self
+    {
+        $templateInstance = $this->instance;
+
+        if ($templateInstance->isContainer()) {
+            $templateInstance = $templateInstance->containerItem->templateInstance;
+        }
+
+        $this->data['elements'] = $this->getElementsData($templateInstance);
+
+        return $this;
+    }
+
     private function getTemplateData(Template $template): array
     {
         $data = ['source' => $template->source];
@@ -81,29 +93,7 @@ class ExportInstanceService
         return $data;
     }
 
-    private function exportPage(): self
-    {
-        if ($this->instance->isPage()) {
-            $this->data['page'] = $this->instance->page->attributes;
-            unset($this->data['page']['id']);
-            unset($this->data['page']['type']);
-        }
-
-        return $this;
-    }
-
-    private function exportContainer(): self
-    {
-        if ($this->instance->isContainer()) {
-            $this->data['containerItem'] = $this->getContainerItemData($this->instance->containerItem);
-        } else {
-            $this->data['contents'] = $this->getContentsData($this->instance);
-        }
-
-        return $this;
-    }
-
-    private function getContentsData(TemplateInstance $templateInstance): array
+    private function getElementsData(TemplateInstance $templateInstance): array
     {
         $elementContents = BaseElementContent::find()->where(['template_instance_id' => $templateInstance->id]);
 
@@ -111,9 +101,9 @@ class ExportInstanceService
         foreach ($elementContents->each() as $elementContent) {
             $contentData = ExportService::getElementContentData($elementContent);
             if ($elementContent instanceof ContainerElement) {
-                $contentData['containerItems'] = [];
+                $contentData['items'] = [];
                 foreach ($elementContent->items as $containerItem) {
-                    $contentData['containerItems'][] = $this->getContainerItemData($containerItem);
+                    $contentData['items'][] = $this->getContainerItemData($containerItem);
                 }
             }
             $data[$elementContent->element->name] = $contentData;
@@ -134,7 +124,7 @@ class ExportInstanceService
             $this->data['templates'][$template->name] = $this->getTemplateData($template);
         }
 
-        $data['contents'] = $this->getContentsData($containerItem->templateInstance);
+        $data['elements'] = $this->getElementsData($containerItem->templateInstance);
 
         return $data;
     }

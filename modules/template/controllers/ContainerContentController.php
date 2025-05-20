@@ -275,12 +275,22 @@ class ContainerContentController extends Controller
     public function actionImportInstance()
     {
         $instance = TemplateInstance::findOne(['id' => Yii::$app->request->get('id')]);
-
         if ($instance === null) {
             throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template instance is not found!'));
         }
 
-        $form = new ImportInstanceForm(['instance' => $instance]);
+        $elementId = Yii::$app->request->get('elementId');
+        if ($elementId > 0) {
+            $element = TemplateElement::findOne(['id' => $elementId]);
+            if ($element === null) {
+                throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template element is not found!'));
+            }
+        }
+
+        $form = new ImportInstanceForm([
+            'instance' => $instance,
+            'element' => $element ?? null,
+        ]);
 
         if ($form->load(Yii::$app->request->post()) && $form->import()) {
             $this->view->success(Yii::t('CustomPagesModule.template', 'Imported.'));

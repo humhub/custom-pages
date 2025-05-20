@@ -224,6 +224,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
             url: this.data('instance-import-url'),
             data: {
                 id: evt.$target.closest('[data-template-instance-id]').data('template-instance-id'),
+                elementId: evt.$target.closest('[data-element-id]').data('element-id'),
             }
         });
     }

@@ -46,7 +46,6 @@ class ExportInstanceService
 
     public function send(): Response
     {
-//        return Yii::$app->controller->asJson($this->data);
         return Yii::$app->response->sendContentAsFile(json_encode($this->data), $this->getFileName());
     }
 
@@ -63,6 +62,11 @@ class ExportInstanceService
     private function exportTemplate(): self
     {
         $template = $this->instance->template;
+        if ($this->instance->isContainer()) {
+            $containerItem = $this->instance->containerItem;
+            $this->data['sort_order'] = $containerItem->sort_order ?? 0;
+            $this->data['title'] = $containerItem->title ?? '';
+        }
         $this->data['template'] = $template->name;
         $this->data['templates'][$template->name] = $this->getTemplateData($template);
         return $this;

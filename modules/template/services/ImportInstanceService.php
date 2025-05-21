@@ -14,35 +14,20 @@ use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
-use humhub\modules\file\models\FileContent;
 use Yii;
-use yii\db\ActiveRecord;
 
-class ImportInstanceService
+/**
+ * Service to import Template Instance (Custom Page or Container Item)
+ */
+class ImportInstanceService extends BaseImportService
 {
     private TemplateInstance $instance;
     private ?TemplateElement $element = null;
-    private array $errors = [];
 
     public function __construct(TemplateInstance $instance, ?TemplateElement $element = null)
     {
         $this->instance = $instance;
         $this->element = $element;
-    }
-
-    public function addError(string $error): void
-    {
-        $this->errors[] = $error;
-    }
-
-    public function hasErrors(): bool
-    {
-        return $this->getErrors() !== [];
-    }
-
-    public function getErrors(): array
-    {
-        return $this->errors;
     }
 
     public function importFromFile(string $path): bool
@@ -63,7 +48,7 @@ class ImportInstanceService
             return false;
         }
 
-        return $this->runImport($data);
+        return $this->run($data);
     }
 
     private function validateCompatibility(array $data): bool
@@ -166,23 +151,26 @@ class ImportInstanceService
         return !$hasError;
     }
 
-    public function runImport(array $data): bool
+    /**
+     * @inheritdoc
+     */
+    public function run(array $data): bool
     {
         if (isset($data['elements']) && is_array($data['elements'])) {
-            $this->importElements($this->instance, $data['elements']);
+            if ($this->element instanceof TemplateElement) {
+                // Import Container Item
+                unset($data['templates']);
+                $this->importElement($this->instance, $this->element, [
+                    'dyn_attributes' => [],
+                    'items' => [$data],
+                ]);
+            } else {
+                // Import Custom Page
+                $this->importElements($this->instance, $data['elements']);
+            }
         }
 
         return !$this->hasErrors();
-    }
-
-    private function saveRecord(ActiveRecord $record): ?ActiveRecord
-    {
-        if ($record->validate() && $record->save()) {
-            return $record;
-        }
-
-        $this->addError(implode(' ', $record->getErrorSummary(true)));
-        return null;
     }
 
     private function importElements(TemplateInstance $templateInstance, array $elements): void
@@ -208,8 +196,9 @@ class ImportInstanceService
         }
 
         $content->dyn_attributes = $data['dyn_attributes'];
+        $content = $this->saveRecord($content);
 
-        if (!$content->save()) {
+        if ($content === null) {
             $this->addError(Yii::t('CustomPagesModule.template', 'Cannot import element {element} of the template {template}!', [
                 'element' => '"' . $element->name . '"',
                 'template' => '"' . $templateInstance->template->name . '"',
@@ -222,8 +211,11 @@ class ImportInstanceService
         }
 
         if ($content instanceof ContainerElement) {
-            foreach ($content->items as $oldItem) {
-                $oldItem->delete();
+            if ($this->element === null) {
+                // Remove old container items only on import full custom page
+                foreach ($content->items as $oldItem) {
+                    $oldItem->delete();
+                }
             }
 
             if (isset($data['items']) && is_array($data['items'])) {
@@ -242,7 +234,9 @@ class ImportInstanceService
                     $item->element_content_id = $content->id;
                     $item->sort_order = $itemData['sort_order'] ?? 0;
                     $item->title = $itemData['title'] ?? 0;
-                    if (!$item->save()) {
+                    $item = $this->saveRecord($item);
+
+                    if ($item === null) {
                         $this->addError(Yii::t('CustomPagesModule.template', 'Cannot import container item {itemNumber} with template {template}!', [
                             'itemNumber' => $i,
                             'template' => $itemData['template'] ?? '',
@@ -255,48 +249,6 @@ class ImportInstanceService
                     }
                 }
             }
-        }
-    }
-
-    private function attachFiles(ActiveRecord $record, array $files): void
-    {
-        $updateRecord = false;
-
-        $newFiles = [];
-        foreach ($files as $fileData) {
-            $file = new FileContent();
-            foreach ($fileData as $attribute => $value) {
-                if (in_array($attribute, ['guid', 'object_model', 'object_id']) ||
-                    !$file->hasAttribute($attribute)) {
-                    continue;
-                }
-                if ($attribute === 'base64Content') {
-                    $file->newFileContent = base64_decode($value);
-                } else {
-                    $file->$attribute = $value;
-                }
-            }
-            if ($file->save()) {
-                $newGuid = $file->guid;
-                $newFiles[] = $file;
-            } else {
-                $newGuid = '';
-            }
-
-            foreach ($record->attributes as $attribute => $value) {
-                if ($value === $fileData['guid']) {
-                    $record->$attribute = $newGuid;
-                    $updateRecord = true;
-                }
-            }
-        }
-
-        if ($newFiles !== []) {
-            $record->fileManager->attach($newFiles);
-        }
-
-        if ($updateRecord) {
-            $record->save();
         }
     }
 }

@@ -2,23 +2,23 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
-use Exception;
 use humhub\components\Controller;
+use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
+use humhub\modules\custom_pages\modules\template\models\forms\ImportInstanceForm;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\forms\AddItemEditForm;
+use humhub\modules\custom_pages\modules\template\services\ExportInstanceService;
 use humhub\modules\custom_pages\modules\template\widgets\EditContainerItemModal;
-use humhub\modules\custom_pages\modules\template\models\forms\EditItemForm;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
 use Yii;
 use yii\base\InvalidRouteException;
-use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
@@ -258,6 +258,47 @@ class ContainerContentController extends Controller
         return $this->asJson([
             'success' => true,
             'output' => (new BaseElementVariable($elementContent))->render(),
+        ]);
+    }
+
+    public function actionExportInstance()
+    {
+        $model = TemplateInstance::findOne(['id' => Yii::$app->request->get('id')]);
+
+        if ($model === null) {
+            throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template instance is not found!'));
+        }
+
+        return ExportInstanceService::instance($model)->export()->send();
+    }
+
+    public function actionImportInstance()
+    {
+        $instance = TemplateInstance::findOne(['id' => Yii::$app->request->get('id')]);
+        if ($instance === null) {
+            throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template instance is not found!'));
+        }
+
+        $elementId = Yii::$app->request->get('elementId');
+        if ($elementId > 0) {
+            $element = TemplateElement::findOne(['id' => $elementId]);
+            if ($element === null) {
+                throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template element is not found!'));
+            }
+        }
+
+        $form = new ImportInstanceForm([
+            'instance' => $instance,
+            'element' => $element ?? null,
+        ]);
+
+        if ($form->load(Yii::$app->request->post()) && $form->import()) {
+            $this->view->success(Yii::t('CustomPagesModule.template', 'Imported.'));
+            return $this->redirect(Url::toInlineEdit($instance->page));
+        }
+
+        return $this->asJson([
+            'output' => $this->renderAjax('importTemplateInstance', ['model' => $form]),
         ]);
     }
 

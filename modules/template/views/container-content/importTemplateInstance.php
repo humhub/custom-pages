@@ -15,7 +15,10 @@ use yii\widgets\ActiveForm;
 /* @var ImportInstanceForm $model */
 ?>
 <?php ModalDialog::begin(['header' => Yii::t('CustomPagesModule.template', 'Import a template instance')]) ?>
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+    <?php $form = ActiveForm::begin([
+        'enableClientValidation' => false,
+        'options' => ['enctype' => 'multipart/form-data'],
+    ]) ?>
         <div class="modal-body">
             <?= $form->field($model, 'file')->fileInput() ?>
         </div>

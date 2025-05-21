@@ -91,7 +91,8 @@ InlineEditorAsset::register($this);
                     <?= Icon::get('circle-o') ?>
                     <div class="cp-structure-text"><?= $container->element->title === null || $container->element->title === '' ? $container->element->name : $container->element->title ?></div>
                     <?= Icon::get('download', ['htmlOptions' => ['data-action-click' => 'importTemplateInstance']])
-                        ->class('cp-structure-action') ?>
+                        ->class('cp-structure-action')
+                        ->style($container->canAddItem() ? '' : 'display:none') ?>
                     <?= Icon::get('plus', ['htmlOptions' => ['data-action-click' => 'addContainerItem']])
                         ->class('cp-structure-action')
                         ->style($container->canAddItem() ? '' : 'display:none') ?>

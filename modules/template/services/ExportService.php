@@ -45,21 +45,25 @@ class ExportService
             unset($this->data['elements'][$e]['template_id']);
 
             if ($elementContent = $element->getDefaultContent()) {
-                $this->data['elements'][$e]['elementContent'] = self::getElementContentData($elementContent);
+                $contentData = $elementContent->attributes;
+                unset($contentData['id']);
+                unset($contentData['element_id']);
+                unset($contentData['template_instance_id']);
+
+                $files = self::getElementContentFiles($elementContent);
+                if ($files !== []) {
+                    $contentData['attachedFiles'] = $files;
+                }
+
+                $this->data['elements'][$e]['elementContent'] = $contentData;
             }
         }
 
         return $this;
     }
 
-    public static function getElementContentData(BaseElementContent $elementContent): array
+    public static function getElementContentFiles(BaseElementContent $elementContent): array
     {
-        $data = $elementContent->attributes;
-        unset($data['id']);
-        unset($data['element_id']);
-        unset($data['template_instance_id']);
-
-        // Attach files
         $files = [];
         foreach ($elementContent->fileManager->find()->each() as $f => $file) {
             /* @var File $file */
@@ -72,11 +76,8 @@ class ExportService
                 $files[$f]['base64Content'] = base64_encode(file_get_contents($file->store->get()));
             }
         }
-        if ($files !== []) {
-            $data['attachedFiles'] = $files;
-        }
 
-        return $data;
+        return $files;
     }
 
     private function getFileName(): string

@@ -44,111 +44,87 @@ class ImportInstanceService extends BaseImportService
             return false;
         }
 
-        if (!$this->validateCompatibility($data)) {
+        if (!$this->validateCompatibility($this->element, $data)) {
             return false;
         }
 
         return $this->run($data);
     }
 
-    private function validateCompatibility(array $data): bool
+    private function validateCompatibility(?TemplateElement $element, array $data): bool
     {
         if (empty($data['template'])) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'Main template is not defined for importing!'));
+            $this->addError(Yii::t('CustomPagesModule.template', 'Template is not defined!'));
             return false;
         }
 
-        if (empty($data['templates']) || !is_array($data['templates'])) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'Wrong import file structure without templates!'));
-            return false;
-        }
-
-        // Check allowed templates
-        $mainTemplateIsAllowed = false;
-        if ($this->instance->isPage() && !($this->element instanceof TemplateElement)) {
-            $mainTemplateIsAllowed = $this->instance->template->name === $data['template'];
-        } else {
-            if (!($this->element instanceof TemplateElement) ||
-                $this->element->content_type !== ContainerElement::class) {
-                $this->addError(Yii::t('CustomPagesModule.template', 'Wrong selected container for importing!'));
-                return false;
-            }
-            /* @var ContainerElement $content */
-            $content = $this->element->getDefaultContent(true);
-            $mainTemplateIsAllowed = !isset($content->definition->templates) ||
-                !is_array($content->definition->templates) ||
-                !in_array($data['template'], $content->definition->templates);
-        }
-
-        if (!$mainTemplateIsAllowed) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'Template {name} is not allowed for the instance!', [
-                'name' => '"' . $data['template'] . '"',
+        $template = Template::findOne(['name' => $data['template']]);
+        if (!$template) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'Template "{name}" is not found in system!', [
+                'name' => $data['template'],
             ]));
             return false;
         }
 
-        $nonExistentTemplates = [];
-        $differentSourceTemplates = [];
-        $differentCountElements = [];
-        $incompatibleElements = [];
-        foreach ($data['templates'] as $jsonTemplateName => $jsonTemplate) {
-            $template = Template::findOne(['name' => $jsonTemplateName]);
-            if (!$template) {
-                $nonExistentTemplates[] = $jsonTemplateName;
-                continue;
+        if ($element instanceof TemplateElement) {
+            if ($element->content_type !== ContainerElement::class) {
+                $this->addError(Yii::t('CustomPagesModule.template', 'Element "{name}" cannot be used as container!', [
+                    'name' => $element->name,
+                ]));
+                return false;
             }
-            if ($template->source !== $jsonTemplate['source']) {
-                $differentSourceTemplates[] = $jsonTemplateName;
-                continue;
+            $allowedTemplates = $element->getDefaultContent(true)?->definition?->templates;
+            $templateIsAllowed = empty($allowedTemplates) || in_array($data['template'], $allowedTemplates);
+        } else {
+            $templateIsAllowed = $this->instance->template->name === $data['template'];
+        }
+
+        if (!$templateIsAllowed) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'Template "{name}" is not allowed for the selected instance!', [
+                'name' => $data['template'],
+            ]));
+            return false;
+        }
+
+        if (isset($data['elements']) && is_array($data['elements'])) {
+            $systemElements = $template->elements;
+
+            if (count($systemElements) !== count($data['elements'])) {
+                $this->addError(Yii::t('CustomPagesModule.template', 'Mismatch number of elements for the template "{name}"!', [
+                    'name' => $data['template'],
+                ]));
+                return false;
             }
-            if (isset($jsonTemplate['elements']) && is_array($jsonTemplate['elements'])) {
-                $systemElements = $template->elements;
-                if (count($systemElements) !== count($jsonTemplate['elements'])) {
-                    $differentCountElements[] = $jsonTemplateName;
+
+            $incompatibleElements = [];
+            foreach ($systemElements as $systemElement) {
+                $jsonElement = $data['elements'][$systemElement->name] ?? null;
+                if ($jsonElement === null ||
+                    !isset($jsonElement['__element_type']) ||
+                    $jsonElement['__element_type'] !== $systemElement->content_type) {
+                    $incompatibleElements[] = $systemElement->name;
                     continue;
                 }
-                foreach ($systemElements as $systemElement) {
-                    foreach ($jsonTemplate['elements'] as $jsonElementName => $jsonElementType) {
-                        if ($jsonElementName === $systemElement->name && $jsonElementType !== $systemElement->content_type) {
-                            $incompatibleElements[$jsonTemplateName][] = $jsonElementName;
-                        }
+
+                if ($jsonElement['__element_type'] === ContainerElement::class &&
+                    isset($jsonElement['__element_items']) &&
+                    is_array($jsonElement['__element_items'])) {
+                    foreach ($jsonElement['__element_items'] as $elementItem) {
+                        $this->validateCompatibility($systemElement, $elementItem);
                     }
                 }
             }
+
+            if ($incompatibleElements !== []) {
+                $this->addError(Yii::t('CustomPagesModule.template', 'Template "{name}" has incompatible elements {elements}!', [
+                    'name' => $data['template'],
+                    'elements' => '"' . implode('", "', $incompatibleElements) . '"',
+                ]));
+                return false;
+            }
         }
 
-        $hasError = false;
-
-        if ($nonExistentTemplates !== []) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'Templates {names} don\'t exist in system!', [
-                'names' => '"' . implode('", "', $nonExistentTemplates) . '"',
-            ]));
-            $hasError = true;
-        }
-
-        if ($differentSourceTemplates !== []) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'Sources of the templates {names} don\'t match with system versions!', [
-                'names' => '"' . implode('", "', $differentSourceTemplates) . '"',
-            ]));
-            $hasError = true;
-        }
-
-        if ($differentCountElements !== []) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'Templates {names} have different number of elements!', [
-                'names' => '"' . implode('", "', $differentCountElements) . '"',
-            ]));
-            $hasError = true;
-        }
-
-        foreach ($incompatibleElements as $jsonTemplateName => $jsonElementNames) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'Template {name} has incompatible elements {elements}!', [
-                'name' => '"' . $jsonTemplateName . '"',
-                'elements' => '"' . implode('", "', $jsonElementNames) . '"',
-            ]));
-            $hasError = true;
-        }
-
-        return !$hasError;
+        return !$this->hasErrors();
     }
 
     /**
@@ -159,10 +135,8 @@ class ImportInstanceService extends BaseImportService
         if (isset($data['elements']) && is_array($data['elements'])) {
             if ($this->element instanceof TemplateElement) {
                 // Import Container Item
-                unset($data['templates']);
                 $this->importElement($this->instance, $this->element, [
-                    'dyn_attributes' => [],
-                    'items' => [$data],
+                    '__element_items' => [$data],
                 ]);
             } else {
                 // Import Custom Page
@@ -195,7 +169,11 @@ class ImportInstanceService extends BaseImportService
             $content->template_instance_id = $templateInstance->id;
         }
 
-        $content->dyn_attributes = $data['dyn_attributes'];
+        foreach ($data as $attrName => $attrValue) {
+            if ($content->hasDynamicAttribute($attrName)) {
+                $content->$attrName = $attrValue;
+            }
+        }
         $content = $this->saveRecord($content);
 
         if ($content === null) {
@@ -206,8 +184,8 @@ class ImportInstanceService extends BaseImportService
             return;
         }
 
-        if (isset($data['attachedFiles']) && is_array($data['attachedFiles'])) {
-            $this->attachFiles($content, $data['attachedFiles']);
+        if (isset($data['__element_files']) && is_array($data['__element_files'])) {
+            $this->attachFiles($content, $data['__element_files']);
         }
 
         if ($content instanceof ContainerElement) {
@@ -218,8 +196,8 @@ class ImportInstanceService extends BaseImportService
                 }
             }
 
-            if (isset($data['items']) && is_array($data['items'])) {
-                foreach ($data['items'] as $i => $itemData) {
+            if (isset($data['__element_items']) && is_array($data['__element_items'])) {
+                foreach ($data['__element_items'] as $i => $itemData) {
                     if (!$content->canAddItem()) {
                         $this->addError(Yii::t('CustomPagesModule.template', 'Cannot add item {itemNumber} with template {template} because the container doesn\'t allow multiple items!', [
                             'itemNumber' => $i,

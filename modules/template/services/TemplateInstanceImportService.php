@@ -15,17 +15,22 @@ use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use Yii;
+use yii\web\NotFoundHttpException;
 
 /**
  * Service to import Template Instance (Custom Page or Container Item)
  */
-class ImportInstanceService extends BaseImportService
+class TemplateInstanceImportService extends BaseImportService
 {
     private TemplateInstance $instance;
     private ?TemplateElement $element = null;
 
     public function __construct(TemplateInstance $instance, ?TemplateElement $element = null)
     {
+        if ($element !== null && $instance->template_id !== $element->template_id) {
+            throw new NotFoundHttpException('Element "' . $element->name . '" is not found in the template "' . $instance->template->name . '"!');
+        }
+
         $this->instance = $instance;
         $this->element = $element;
     }

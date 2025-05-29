@@ -14,7 +14,7 @@ use humhub\modules\custom_pages\modules\template\models\forms\ImportForm;
 use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
-use humhub\modules\custom_pages\modules\template\services\ExportService;
+use humhub\modules\custom_pages\modules\template\services\TemplateExportService;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateElementAdminRow;
 use humhub\modules\custom_pages\modules\template\widgets\EditElementModal;
 use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElementsForm;
@@ -397,7 +397,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template not found!'));
         }
 
-        return ExportService::instance($model)->export()->send();
+        return TemplateExportService::instance($model)->export()->send();
     }
 
     /**

@@ -14,7 +14,7 @@ use humhub\modules\file\models\File;
 use Yii;
 use yii\web\Response;
 
-class ExportService
+class TemplateExportService
 {
     private Template $template;
     private ?array $data = null;

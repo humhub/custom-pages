@@ -18,7 +18,7 @@ use yii\db\ActiveRecord;
 /**
  * Service to import Template
  */
-class ImportService extends BaseImportService
+class TemplateImportService extends BaseImportService
 {
     public const EVENT_DEFAULT_TEMPLATES = 'defaultTemplates';
 

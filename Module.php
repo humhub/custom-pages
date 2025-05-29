@@ -17,7 +17,7 @@ use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\AssetVariable;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
-use humhub\modules\custom_pages\modules\template\services\ImportService;
+use humhub\modules\custom_pages\modules\template\services\TemplateImportService;
 use humhub\modules\space\models\Space;
 use SimpleXMLElement;
 use Symfony\Component\String\UnicodeString;
@@ -187,7 +187,7 @@ class Module extends ContentContainerModule
      */
     public function enable()
     {
-        return parent::enable() && ImportService::instance()->importDefaultTemplates();
+        return parent::enable() && TemplateImportService::instance()->importDefaultTemplates();
     }
 
     /**
@@ -196,6 +196,6 @@ class Module extends ContentContainerModule
     public function update()
     {
         parent::update();
-        ImportService::instance()->importDefaultTemplates();
+        TemplateImportService::instance()->importDefaultTemplates();
     }
 }

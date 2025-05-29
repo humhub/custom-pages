@@ -9,7 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\services\ImportService;
+use humhub\modules\custom_pages\modules\template\services\TemplateImportService;
 use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
@@ -19,7 +19,7 @@ class ImportForm extends Model
     public $type;
     public $file;
 
-    public ?ImportService $service = null;
+    public ?TemplateImportService $service = null;
 
     /**
      * @inheritdoc
@@ -70,10 +70,10 @@ class ImportForm extends Model
         return true;
     }
 
-    public function getService(): ImportService
+    public function getService(): TemplateImportService
     {
         if ($this->service === null) {
-            $this->service = new ImportService($this->type);
+            $this->service = new TemplateImportService($this->type);
         }
 
         return $this->service;

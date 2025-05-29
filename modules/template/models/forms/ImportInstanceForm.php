@@ -10,7 +10,7 @@ namespace humhub\modules\custom_pages\modules\template\models\forms;
 
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
-use humhub\modules\custom_pages\modules\template\services\ImportInstanceService;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceImportService;
 use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
@@ -32,7 +32,7 @@ class ImportInstanceForm extends Model
      */
     public $file;
 
-    public ?ImportInstanceService $service = null;
+    public ?TemplateInstanceImportService $service = null;
 
     /**
      * @inheritdoc
@@ -82,10 +82,10 @@ class ImportInstanceForm extends Model
         return true;
     }
 
-    public function getService(): ImportInstanceService
+    public function getService(): TemplateInstanceImportService
     {
         if ($this->service === null) {
-            $this->service = new ImportInstanceService($this->instance, $this->element);
+            $this->service = new TemplateInstanceImportService($this->instance, $this->element);
         }
 
         return $this->service;

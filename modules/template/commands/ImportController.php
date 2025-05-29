@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\commands;
 
-use humhub\modules\custom_pages\modules\template\services\ImportService;
+use humhub\modules\custom_pages\modules\template\services\TemplateImportService;
 use yii\console\Controller;
 
 class ImportController extends Controller
@@ -18,6 +18,6 @@ class ImportController extends Controller
      */
     public function actionRefreshDefaultTemplates()
     {
-        ImportService::instance()->importDefaultTemplates();
+        TemplateImportService::instance()->importDefaultTemplates();
     }
 }

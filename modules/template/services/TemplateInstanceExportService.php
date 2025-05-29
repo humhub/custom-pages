@@ -15,7 +15,7 @@ use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use Yii;
 use yii\web\Response;
 
-class ExportInstanceService
+class TemplateInstanceExportService
 {
     private TemplateInstance $instance;
     private ?array $data = null;
@@ -100,7 +100,7 @@ class ExportInstanceService
                 }
             }
 
-            $files = ExportService::getElementContentFiles($elementContent);
+            $files = TemplateExportService::getElementContentFiles($elementContent);
             if ($files !== []) {
                 $contentData['__element_files'] = $files;
             }

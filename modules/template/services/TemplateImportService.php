@@ -76,6 +76,13 @@ class TemplateImportService extends BaseImportService
             return false;
         }
 
+        if (!$this->checkVersion(TemplateExportService::VERSION, $data)) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'Version {version} is required for importing JSON file.', [
+                'version' => TemplateExportService::VERSION,
+            ]));
+            return false;
+        }
+
         if (isset($data['type'], $this->type) && $data['type'] !== $this->type) {
             $this->addError(Yii::t('CustomPagesModule.template', 'The template can be imported only as {type}!', [
                 'type' => Template::getTypeTitle($data['type']),

@@ -88,4 +88,16 @@ abstract class BaseImportService
             $this->saveRecord($record);
         }
     }
+
+    /**
+     * Check the importing file is compatible with current version
+     *
+     * @param string $version
+     * @param array $data
+     * @return bool
+     */
+    protected function checkVersion(string $version, array $data): bool
+    {
+        return isset($data['version']) && $version === $data['version'];
+    }
 }

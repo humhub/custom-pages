@@ -17,6 +17,12 @@ use yii\web\Response;
 
 class TemplateInstanceExportService
 {
+    /**
+     * Version for exporting JSON files
+     * NOTE: Update it when JSON structure is changed, to avoid errors on import
+     */
+    public const VERSION = '1.0';
+
     private TemplateInstance $instance;
     private ?array $data = null;
 
@@ -50,11 +56,14 @@ class TemplateInstanceExportService
 
     private function exportInstance(): self
     {
-        $this->data = $this->instance->attributes;
+        $this->data = ['version' => self::VERSION];
+
+        $this->data += $this->instance->attributes;
         unset($this->data['id']);
         unset($this->data['template_id']);
         unset($this->data['page_id']);
         unset($this->data['container_item_id']);
+
         return $this;
     }
 

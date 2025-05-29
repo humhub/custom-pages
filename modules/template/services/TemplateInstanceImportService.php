@@ -49,6 +49,13 @@ class TemplateInstanceImportService extends BaseImportService
             return false;
         }
 
+        if (!$this->checkVersion(TemplateInstanceExportService::VERSION, $data)) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'Version {version} is required for importing JSON file.', [
+                'version' => TemplateExportService::VERSION,
+            ]));
+            return false;
+        }
+
         if (!$this->validateCompatibility($this->element, $data)) {
             return false;
         }

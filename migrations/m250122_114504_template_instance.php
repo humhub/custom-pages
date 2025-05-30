@@ -60,6 +60,23 @@ class m250122_114504_template_instance extends Migration
             }
         }
 
+        // Set page ID for Template Instances of child Container Items
+        $childContainerItems = (new Query())
+            ->select('id, container_item_id')
+            ->from('custom_pages_template_instance')
+            ->where(['page_id' => 0])
+            ->all();
+        foreach ($childContainerItems as $childContainerItem) {
+            $parentContainerItem = $this->findParentContainerItem($childContainerItem['container_item_id']);
+            if ($parentContainerItem && $parentContainerItem['page_id'] > 0) {
+                $this->updateSilent(
+                    'custom_pages_template_instance',
+                    ['page_id' => $parentContainerItem['page_id']],
+                    ['id' => $childContainerItem['id']],
+                );
+            }
+        }
+
         $this->safeDropForeignKey('fk-tmpl-container-item-tmpl', 'custom_pages_template_element_container_item');
         $this->safeDropColumn('custom_pages_template_element_container_item', 'template_id');
 
@@ -74,5 +91,24 @@ class m250122_114504_template_instance extends Migration
         echo "m250122_114504_template_instance cannot be reverted.\n";
 
         return false;
+    }
+
+    private function findParentContainerItem(int $childContainerItemId)
+    {
+        $parentContainerItem = (new Query())
+            ->select('ti.page_id, ti.container_item_id')
+            ->from('custom_pages_template_element_container_item AS ci')
+            ->innerJoin('custom_pages_template_element_content AS ec', 'ec.id = ci.element_content_id')
+            ->innerJoin('custom_pages_template_instance AS ti', 'ti.id = ec.template_instance_id')
+            ->where(['ci.id' => $childContainerItemId])
+            ->one();
+
+        if ($parentContainerItem &&
+            $parentContainerItem['page_id'] === 0 &&
+            $parentContainerItem['container_item_id'] > 0) {
+            $parentContainerItem = $this->findParentContainerItem($parentContainerItem['container_item_id']);
+        }
+
+        return $parentContainerItem;
     }
 }

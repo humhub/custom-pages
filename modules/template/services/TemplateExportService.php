@@ -8,14 +8,20 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
-use humhub\modules\custom_pages\modules\template\elements\BaseElementDefinition;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\file\models\File;
 use Yii;
 use yii\web\Response;
 
-class ExportService
+class TemplateExportService
 {
+    /**
+     * Version for exporting JSON files
+     * NOTE: Update it when JSON structure is changed, to avoid errors on import
+     */
+    public const VERSION = '1.0';
+
     private Template $template;
     private ?array $data = null;
 
@@ -31,7 +37,9 @@ class ExportService
 
     public function export(): self
     {
-        $this->data = $this->template->attributes;
+        $this->data = ['version' => self::VERSION];
+
+        $this->data += $this->template->attributes;
         unset($this->data['id']);
         unset($this->data['created_at']);
         unset($this->data['created_by']);
@@ -44,38 +52,40 @@ class ExportService
             unset($this->data['elements'][$e]['id']);
             unset($this->data['elements'][$e]['template_id']);
 
-            $elementContent = $element->getDefaultContent();
+            if ($elementContent = $element->getDefaultContent()) {
+                $contentData = $elementContent->attributes;
+                unset($contentData['id']);
+                unset($contentData['element_id']);
+                unset($contentData['template_instance_id']);
 
-            if (!$elementContent) {
-                continue;
-            }
-
-            $contentData = $elementContent->attributes;
-            unset($contentData['id']);
-            unset($contentData['element_id']);
-            unset($contentData['template_instance_id']);
-
-            // Attach files
-            $files = [];
-            foreach ($elementContent->fileManager->find()->each() as $f => $file) {
-                /* @var File $file */
-                if ($file->store->has()) {
-                    foreach ($file->attributes() as $attribute) {
-                        if ($attribute !== 'id' && $attribute !== 'metadata') {
-                            $files[$f][$attribute] = $file->$attribute;
-                        }
-                    }
-                    $files[$f]['base64Content'] = base64_encode(file_get_contents($file->store->get()));
+                $files = self::getElementContentFiles($elementContent);
+                if ($files !== []) {
+                    $contentData['attachedFiles'] = $files;
                 }
-            }
-            if ($files !== []) {
-                $contentData['attachedFiles'] = $files;
-            }
 
-            $this->data['elements'][$e]['elementContent'] = $contentData;
+                $this->data['elements'][$e]['elementContent'] = $contentData;
+            }
         }
 
         return $this;
+    }
+
+    public static function getElementContentFiles(BaseElementContent $elementContent): array
+    {
+        $files = [];
+        foreach ($elementContent->fileManager->find()->each() as $f => $file) {
+            /* @var File $file */
+            if ($file->store->has()) {
+                foreach ($file->attributes() as $attribute) {
+                    if ($attribute !== 'id' && $attribute !== 'metadata') {
+                        $files[$f][$attribute] = $file->$attribute;
+                    }
+                }
+                $files[$f]['base64Content'] = base64_encode(file_get_contents($file->store->get()));
+            }
+        }
+
+        return $files;
     }
 
     private function getFileName(): string

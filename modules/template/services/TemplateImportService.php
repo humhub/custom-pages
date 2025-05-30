@@ -12,16 +12,17 @@ use humhub\modules\custom_pages\Module;
 use humhub\modules\custom_pages\modules\template\events\DefaultTemplateEvent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
-use humhub\modules\file\models\FileContent;
 use Yii;
 use yii\db\ActiveRecord;
 
-class ImportService
+/**
+ * Service to import Template
+ */
+class TemplateImportService extends BaseImportService
 {
     public const EVENT_DEFAULT_TEMPLATES = 'defaultTemplates';
 
     private ?string $type = null;
-    private array $errors = [];
     public ?Template $template = null;
     public bool $allowUpdateDefaultTemplates = false;
 
@@ -37,21 +38,6 @@ class ImportService
     public static function instance(?string $type = null): self
     {
         return new self($type);
-    }
-
-    public function addError(string $error): void
-    {
-        $this->errors[] = $error;
-    }
-
-    public function hasErrors(): bool
-    {
-        return $this->getErrors() !== [];
-    }
-
-    public function getErrors(): array
-    {
-        return $this->errors;
     }
 
     public function importFromFolder(string $path): bool
@@ -85,23 +71,21 @@ class ImportService
             return false;
         }
 
-        if (empty($data['name'])) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'Wrong import data!'));
-            return false;
-        }
+        return $this->run($data);
+    }
 
-        if (isset($data['type'], $this->type) && $data['type'] !== $this->type) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'The template can be imported only as {type}!', [
-                'type' => Template::getTypeTitle($data['type']),
+    /**
+     * @inheritdoc
+     */
+    public function run(array $data): bool
+    {
+        if (!$this->checkVersion(TemplateExportService::VERSION, $data)) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'Version {version} is required for importing JSON file.', [
+                'version' => TemplateExportService::VERSION,
             ]));
             return false;
         }
 
-        return $this->runImport($data);
-    }
-
-    public function runImport(array $data): bool
-    {
         if (!$this->importTemplate($data)) {
             return false;
         }
@@ -126,18 +110,20 @@ class ImportService
         return !$this->hasErrors();
     }
 
-    private function saveRecord(ActiveRecord $record): ?ActiveRecord
-    {
-        if ($record->validate() && $record->save()) {
-            return $record;
-        }
-
-        $this->addError(implode(' ', $record->getErrorSummary(true)));
-        return null;
-    }
-
     private function importTemplate(array $data): bool
     {
+        if (empty($data['name'])) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'Wrong import data!'));
+            return false;
+        }
+
+        if (isset($data['type'], $this->type) && $data['type'] !== $this->type) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'The template can be imported only as {type}!', [
+                'type' => Template::getTypeTitle($data['type']),
+            ]));
+            return false;
+        }
+
         $template = Template::findOne(['name' => $data['name']]) ?? new Template();
 
         if ($template->is_default && !$template->isNewRecord) {
@@ -239,48 +225,6 @@ class ImportService
         }
 
         return $elementContent;
-    }
-
-    private function attachFiles(ActiveRecord $record, array $files)
-    {
-        $updateRecord = false;
-
-        $newFiles = [];
-        foreach ($files as $fileData) {
-            $file = new FileContent();
-            foreach ($fileData as $attribute => $value) {
-                if (in_array($attribute, ['guid', 'object_model', 'object_id']) ||
-                    !$file->hasAttribute($attribute)) {
-                    continue;
-                }
-                if ($attribute === 'base64Content') {
-                    $file->newFileContent = base64_decode($value);
-                } else {
-                    $file->$attribute = $value;
-                }
-            }
-            if ($file->save()) {
-                $newGuid = $file->guid;
-                $newFiles[] = $file;
-            } else {
-                $newGuid = '';
-            }
-
-            foreach ($record->attributes as $attribute => $value) {
-                if ($value === $fileData['guid']) {
-                    $record->$attribute = $newGuid;
-                    $updateRecord = true;
-                }
-            }
-        }
-
-        if ($newFiles !== []) {
-            $record->fileManager->attach($newFiles);
-        }
-
-        if ($updateRecord) {
-            $record->save();
-        }
     }
 
     public function importDefaultTemplates(): bool

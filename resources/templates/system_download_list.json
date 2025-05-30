@@ -1,4 +1,5 @@
 {
+  "version": "1.0",
   "name": "system_download_list",
   "description": "File download list.",
   "source": "\u003Cdiv class=\"download-list\"\u003E\r\n\t{{ download_list }}\r\n\u003C/div\u003E",

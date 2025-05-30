@@ -2,23 +2,25 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
-use Exception;
-use humhub\components\Controller;
+use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\custom_pages\helpers\Url;
+use humhub\modules\custom_pages\modules\template\components\TemplateAccessFilter;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
+use humhub\modules\custom_pages\modules\template\models\forms\ImportInstanceForm;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\forms\AddItemEditForm;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceExportService;
 use humhub\modules\custom_pages\modules\template\widgets\EditContainerItemModal;
-use humhub\modules\custom_pages\modules\template\models\forms\EditItemForm;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
+use humhub\modules\space\models\Space;
 use Yii;
 use yii\base\InvalidRouteException;
-use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
@@ -29,15 +31,20 @@ use yii\web\Response;
  *
  * @author buddha
  */
-class ContainerContentController extends Controller
+class ContainerContentController extends ContentContainerController
 {
+    /**
+     * @inerhitdoc
+     */
+    public $requireContainer = false;
+
     /**
      * @inerhitdoc
      */
     public function behaviors()
     {
         return [
-            ['class' => 'humhub\modules\custom_pages\modules\template\components\TemplateAccessFilter'],
+            ['class' => TemplateAccessFilter::class],
         ];
     }
 
@@ -60,6 +67,10 @@ class ContainerContentController extends Controller
         $templateInstance = TemplateInstance::findOne(['id' => $templateInstanceId]);
         if (!$templateInstance) {
             throw new NotFoundHttpException('Template instance is not found!');
+        }
+
+        if (!$this->isValidTemplateInstance($templateInstance)) {
+            throw new BadRequestHttpException('Invalid template instance!');
         }
 
         // Check if element content already exists
@@ -109,6 +120,10 @@ class ContainerContentController extends Controller
 
         if (!$elementContent || !$elementContent->canAddItem()) {
             throw new ForbiddenHttpException(Yii::t('CustomPagesModule.base', 'This container does not allow any further items!'));
+        }
+
+        if (!$this->isValidTemplateInstance($elementContent->templateInstance)) {
+            throw new BadRequestHttpException('Invalid template instance!');
         }
 
         // If the ContentContainerDefinition only allows one specific template, we skip the template selection.
@@ -178,6 +193,10 @@ class ContainerContentController extends Controller
             throw new ForbiddenHttpException(Yii::t('CustomPagesModule.base', 'This container does not allow any further items!'));
         }
 
+        if (!$this->isValidTemplateInstance($elementContent->templateInstance)) {
+            throw new BadRequestHttpException('Invalid template instance!');
+        }
+
         if ($itemTemplate == null && $templateId == null && Yii::$app->request->post('templateId') == null) {
             throw new BadRequestHttpException('This action requires an templateId or template instance!');
         }
@@ -223,7 +242,16 @@ class ContainerContentController extends Controller
         $itemId = Yii::$app->request->post('itemId');
         $elementContentId = Yii::$app->request->post('elementContentId');
 
-        ContainerItem::findOne(['id' => $itemId])->delete();
+        $item = ContainerItem::findOne(['id' => $itemId]);
+        if (!$item) {
+            throw new NotFoundHttpException('Item is not found!');
+        }
+
+        if (!$this->isValidTemplateInstance($item->templateInstance)) {
+            throw new BadRequestHttpException('Invalid template instance!');
+        }
+
+        $item->delete();
         $elementContent = BaseElementContent::findOne(['id' => $elementContentId]);
 
         TemplateCache::flushByElementContent($elementContent);
@@ -251,6 +279,10 @@ class ContainerContentController extends Controller
             throw new BadRequestHttpException(Yii::t('CustomPagesModule.base', 'Invalid request data!'));
         }
 
+        if (!$this->isValidTemplateInstance($elementContent->templateInstance)) {
+            throw new BadRequestHttpException('Invalid template instance!');
+        }
+
         $elementContent->moveItem($itemId, $step);
 
         TemplateCache::flushByElementContent($elementContent);
@@ -259,6 +291,69 @@ class ContainerContentController extends Controller
             'success' => true,
             'output' => (new BaseElementVariable($elementContent))->render(),
         ]);
+    }
+
+    public function actionExportInstance()
+    {
+        return TemplateInstanceExportService::instance($this->getTemplateInstance())
+            ->export()
+            ->send();
+    }
+
+    public function actionImportInstance()
+    {
+        $instance = $this->getTemplateInstance();
+
+        $elementId = Yii::$app->request->get('elementId');
+        if ($elementId > 0) {
+            $element = TemplateElement::findOne(['id' => $elementId]);
+            if ($element === null || $element->template_id !== $instance->template_id) {
+                throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template element is not found!'));
+            }
+        }
+
+        $form = new ImportInstanceForm([
+            'instance' => $instance,
+            'element' => $element ?? null,
+        ]);
+
+        if ($form->load(Yii::$app->request->post()) && $form->import()) {
+            $this->view->success(Yii::t('CustomPagesModule.template', 'Imported.'));
+            return $this->redirect(Url::toInlineEdit($instance->page, $this->contentContainer));
+        }
+
+        return $this->asJson([
+            'output' => $this->renderAjax('importTemplateInstance', ['model' => $form]),
+        ]);
+    }
+
+    private function getTemplateInstance(): TemplateInstance
+    {
+        $instance = TemplateInstance::findOne(['id' => Yii::$app->request->get('id')]);
+
+        if ($instance === null) {
+            throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template instance is not found!'));
+        }
+
+        if (!$this->isValidTemplateInstance($instance)) {
+            throw new BadRequestHttpException('Invalid template instance!');
+        }
+
+        return $instance;
+    }
+
+    /**
+     * Check if the requested template instance is linked to current Space or Global
+     *
+     * @param TemplateInstance $instance
+     * @return bool
+     */
+    private function isValidTemplateInstance(TemplateInstance $instance): bool
+    {
+        $instanceContainer = $instance->page?->content?->container;
+
+        return !($instanceContainer instanceof Space) || // Global template instance
+            $instanceContainer->is($this->contentContainer); // Space template instance
     }
 
 }

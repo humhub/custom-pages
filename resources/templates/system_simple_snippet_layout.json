@@ -1,4 +1,5 @@
 {
+  "version": "1.0",
   "name": "system_simple_snippet_layout",
   "description": "Simple snippet layout with head container and richtext.",
   "source": "\u003Cdiv\u003E\r\n\t{{ heading }}\r\n\u003C/div\u003E\r\n\u003Cdiv style=\"margin-top:15px;\"\u003E\r\n\t{{ content }}\r\n\u003C/div\u003E",

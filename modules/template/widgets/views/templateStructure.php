@@ -43,34 +43,44 @@ InlineEditorAsset::register($this);
         <div class="cp-structure-template cp-structure-row" style="padding-left:<?= $level * 10 + 8 ?>px">
             <?= Icon::get('circle') ?>
             <div class="cp-structure-text"><?= $templateInstance->template->name ?></div>
-            <?php if ($templateInstance->isContainer()) : ?>
-                <div class="cp-structure-actions dropdown">
-                    <?= Icon::get('ellipsis-h', ['htmlOptions' => ['data-toggle' => 'dropdown']])
-                        ->class('dropdown-toggle cp-structure-action') ?>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Edit'))
-                            ->icon('pencil')
-                            ->action('editElements') ?></li>
-                        <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Move Up'))
-                            ->icon('chevron-up')
-                            ->action('moveUpContainerItem') ?></li>
-                        <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Move Down'))
-                            ->icon('chevron-down')
-                            ->action('moveDownContainerItem') ?></li>
-                        <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Delete'))
-                            ->icon('trash')
-                            ->action('deleteContainerItem')
-                            ->confirm(
-                                Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> container item deletion'),
-                                Yii::t('CustomPagesModule.template', 'Are you sure you want to delete this container item?'),
-                                Yii::t('CustomPagesModule.base', 'Delete'),
-                            ) ?></li>
-                    </ul>
-                </div>
-            <?php else : ?>
-                <?= Icon::get('pencil', ['htmlOptions' => ['data-action-click' => 'editElements']])
-                    ->class('cp-structure-action') ?>
-            <?php endif; ?>
+            <div class="cp-structure-actions dropdown">
+                <?= Icon::get('ellipsis-h', ['htmlOptions' => ['data-toggle' => 'dropdown']])
+                    ->class('dropdown-toggle cp-structure-action') ?>
+                <ul class="dropdown-menu dropdown-menu-right">
+                <?php if ($templateInstance->isContainer()) : ?>
+                    <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Edit'))
+                        ->icon('pencil')
+                        ->action('editElements') ?></li>
+                    <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Move Up'))
+                        ->icon('chevron-up')
+                        ->action('moveUpContainerItem') ?></li>
+                    <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Move Down'))
+                        ->icon('chevron-down')
+                        ->action('moveDownContainerItem') ?></li>
+                    <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Export'))
+                            ->icon('upload')
+                            ->action('exportTemplateInstance') ?></li>
+                    <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Delete'))
+                        ->icon('trash')
+                        ->action('deleteContainerItem')
+                        ->confirm(
+                            Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> container item deletion'),
+                            Yii::t('CustomPagesModule.template', 'Are you sure you want to delete this container item?'),
+                            Yii::t('CustomPagesModule.base', 'Delete'),
+                        ) ?></li>
+                <?php else : ?>
+                    <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Edit'))
+                        ->icon('pencil')
+                        ->action('editElements') ?></li>
+                    <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Export'))
+                        ->icon('upload')
+                        ->action('exportTemplateInstance') ?></li>
+                    <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Import'))
+                            ->icon('download')
+                            ->action('importTemplateInstance') ?></li>
+                <?php endif; ?>
+                </ul>
+            </div>
         </div>
 
         <?php if (count($containers)) : ?>
@@ -80,6 +90,9 @@ InlineEditorAsset::register($this);
                 <div class="cp-structure-container cp-structure-row" style="padding-left:<?= ($level + 1) * 10 + 8 ?>px">
                     <?= Icon::get('circle-o') ?>
                     <div class="cp-structure-text"><?= $container->element->title === null || $container->element->title === '' ? $container->element->name : $container->element->title ?></div>
+                    <?= Icon::get('download', ['htmlOptions' => ['data-action-click' => 'importTemplateInstance']])
+                        ->class('cp-structure-action')
+                        ->style($container->canAddItem() ? '' : 'display:none') ?>
                     <?= Icon::get('plus', ['htmlOptions' => ['data-action-click' => 'addContainerItem']])
                         ->class('cp-structure-action')
                         ->style($container->canAddItem() ? '' : 'display:none') ?>

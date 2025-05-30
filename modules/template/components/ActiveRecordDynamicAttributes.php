@@ -93,7 +93,7 @@ abstract class ActiveRecordDynamicAttributes extends ActiveRecord
         return $validators;
     }
 
-    private function hasDynamicAttribute(string $name): bool
+    public function hasDynamicAttribute(string $name): bool
     {
         return array_key_exists($name, $this->getDynamicAttributes());
     }

@@ -49,17 +49,6 @@ class TemplateInstanceImportService extends BaseImportService
             return false;
         }
 
-        if (!$this->checkVersion(TemplateInstanceExportService::VERSION, $data)) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'Version {version} is required for importing JSON file.', [
-                'version' => TemplateExportService::VERSION,
-            ]));
-            return false;
-        }
-
-        if (!$this->validateCompatibility($this->element, $data)) {
-            return false;
-        }
-
         return $this->run($data);
     }
 
@@ -128,7 +117,7 @@ class TemplateInstanceImportService extends BaseImportService
             }
 
             if ($incompatibleElements !== []) {
-                $this->addError(Yii::t('CustomPagesModule.template', 'Template "{name}" has incompatible elements {elements}!', [
+                $this->addError(Yii::t('CustomPagesModule.template', 'Template "{name}" has incompatible or missed elements {elements}!', [
                     'name' => $data['template'],
                     'elements' => '"' . implode('", "', $incompatibleElements) . '"',
                 ]));
@@ -144,6 +133,17 @@ class TemplateInstanceImportService extends BaseImportService
      */
     public function run(array $data): bool
     {
+        if (!$this->checkVersion(TemplateInstanceExportService::VERSION, $data)) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'Version {version} is required for importing JSON file.', [
+                'version' => TemplateExportService::VERSION,
+            ]));
+            return false;
+        }
+
+        if (!$this->validateCompatibility($this->element, $data)) {
+            return false;
+        }
+
         if (isset($data['elements']) && is_array($data['elements'])) {
             if ($this->element instanceof TemplateElement) {
                 // Import Container Item

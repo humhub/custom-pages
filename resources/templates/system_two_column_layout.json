@@ -1,4 +1,5 @@
 {
+  "version": "1.0",
   "name": "system_two_column_layout",
   "description": "Simple two column layout.",
   "source": "\u003Cdiv class=\"row\"\u003E\n\t\u003Cdiv class=\"col-md-8\"\u003E\n\t\t\u003Cdiv class=\"panel panel-default\"\u003E\n\t\t\t\u003Cdiv class=\"panel-body\"\u003E\n\t\t\t\t{{ content }}\n\t\t\t\u003C/div\u003E\n\t\t\u003C/div\u003E\n\t\u003C/div\u003E\n\t\u003Cdiv class=\"col-md-4\"\u003E\n\t\t\u003Cdiv class=\"panel panel-default\"\u003E\n\t\t\t\u003Cdiv class=\"panel-body\"\u003E\n\t\t\t\t{{ sidebar_container }}\n\t\t\t\u003C/div\u003E\n\t\t\u003C/div\u003E\n\t\u003C/div\u003E\n\u003C/div\u003E",

@@ -71,25 +71,6 @@ class TemplateImportService extends BaseImportService
             return false;
         }
 
-        if (empty($data['name'])) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'Wrong import data!'));
-            return false;
-        }
-
-        if (!$this->checkVersion(TemplateExportService::VERSION, $data)) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'Version {version} is required for importing JSON file.', [
-                'version' => TemplateExportService::VERSION,
-            ]));
-            return false;
-        }
-
-        if (isset($data['type'], $this->type) && $data['type'] !== $this->type) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'The template can be imported only as {type}!', [
-                'type' => Template::getTypeTitle($data['type']),
-            ]));
-            return false;
-        }
-
         return $this->run($data);
     }
 
@@ -98,6 +79,13 @@ class TemplateImportService extends BaseImportService
      */
     public function run(array $data): bool
     {
+        if (!$this->checkVersion(TemplateExportService::VERSION, $data)) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'Version {version} is required for importing JSON file.', [
+                'version' => TemplateExportService::VERSION,
+            ]));
+            return false;
+        }
+
         if (!$this->importTemplate($data)) {
             return false;
         }
@@ -124,6 +112,18 @@ class TemplateImportService extends BaseImportService
 
     private function importTemplate(array $data): bool
     {
+        if (empty($data['name'])) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'Wrong import data!'));
+            return false;
+        }
+
+        if (isset($data['type'], $this->type) && $data['type'] !== $this->type) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'The template can be imported only as {type}!', [
+                'type' => Template::getTypeTitle($data['type']),
+            ]));
+            return false;
+        }
+
         $template = Template::findOne(['name' => $data['name']]) ?? new Template();
 
         if ($template->is_default && !$template->isNewRecord) {

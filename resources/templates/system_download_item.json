@@ -1,4 +1,5 @@
 {
+  "version": "1.0",
   "name": "system_download_item",
   "description": "Single download item.",
   "source": "\u003Cdiv class=\"download-item\"\u003E\r\n\t{{ file_download }}\r\n\u003C/div\u003E",

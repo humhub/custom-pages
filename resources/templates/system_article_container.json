@@ -1,4 +1,5 @@
 {
+  "version": "1.0",
   "name": "system_article_container",
   "description": "Simple richtext article.",
   "source": "\u003Cdiv style=\"margin-top:15px;\"\u003E\n\t\u003Cdiv style=\"padding:0 15px;\"\u003E\n\t\t{{ content }}\n\t\u003C/div\u003E\n\u003C/div\u003E",

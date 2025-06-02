@@ -126,7 +126,7 @@ class TemplateImportService extends BaseImportService
 
         $template = Template::findOne(['name' => $data['name']]) ?? new Template();
 
-        if ($template->is_default && !$template->isNewRecord) {
+        if (($template->is_default || !empty($data['is_default'])) && !$template->isNewRecord) {
             // Check if default templates can be updated
             if (!$this->allowUpdateDefaultTemplates) {
                 $this->addError(Yii::t('CustomPagesModule.template', 'Cannot import default template!'));

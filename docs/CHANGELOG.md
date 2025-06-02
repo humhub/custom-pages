@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.11.0-beta.1 (June 2, 2025)
+1.11.0-beta.2 (June 2, 2025)
 ----------------------------
 - Enh #354: Template - Add RSS Element Type
 - Enh #357: Refactor all snippets and container pages to single page class

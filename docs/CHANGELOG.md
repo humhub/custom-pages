@@ -1,6 +1,25 @@
 Changelog
 =========
 
+1.11.0-beta.1 (June 2, 2025)
+----------------------------
+- Enh #354: Template - Add RSS Element Type
+- Enh #357: Refactor all snippets and container pages to single page class
+- Enh #358: Refactor page content types
+- Enh #359: Template - Add Space Element Type
+- Enh #360: Template - Spaces and Users Element Type
+- Enh #362: Template - Rendering & Caching
+- Fix #365: Fix allowed properties for Twig v3.14.1+
+- Enh #367: Migrate all element contents to single table
+- Fix #376: Use template name for allowed templates in the container element dynamic attributes
+- Fix #377: Rename "snipped" to "snippet"
+- Enh #378: Refactor template instance and owner content
+- Enh #387: Remove inline editing of container item elements
+- Enh #396: Structure overview
+- Enh #399: Remove deprecated widget `DataSaved`
+- Enh #404: Copy templates
+- Enh #406: Twig extension to process markdown text
+
 1.10.16 (Unreleased)
 ---------------------------
 - Fix #400: Fix page loading by url shortcut

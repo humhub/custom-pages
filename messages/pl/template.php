@@ -22,7 +22,7 @@ return [
   'Edit template \'{templateName}\'' => 'Edytuj szablon \'{templateName}\'',
   'Height' => 'Wysokość',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => 'Tutaj możesz edytować źródło twojego szablonu ustalając układ szablonu i dodawać elementy z treścią. Każdy element może być przypisany z domyślną zawartością i dodatkowymi funkcjami.',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Tutaj możesz zarządzać układem fragmentów. Układ fragmentów to szablony, który mogą być dołączane do pasków bocznych.',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Tutaj możesz zarządzać układem fragmentów. Układ fragmentów to szablony, który mogą być dołączane do pasków bocznych.',
   'Here you can manage your template container elements.' => 'Tutaj możesz zarządzać elementami szablonów kontenera.',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'Tutaj możesz zarządzać układem szablonów. Układ jest podstawą stron szablonów i nie może być łączony z innymi szablonami.',
   'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'Więcej informacji o składni twig\'a jest dostępnych pod <strong> <a href="{twig_tmpl_url}">tym</a></strong> adresem',

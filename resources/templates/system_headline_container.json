@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "name": "system_headline_container",
+  "description": "Simple headline row with background image.",
+  "source": "{% if background.empty %}\r\n    {% set bg = assets['bgImage2.jpg']  %}\r\n{% else %}\r\n    {% set bg =  background %}\r\n{% endif %}\r\n\r\n\u003Cdiv style=\"height:218px;overflow:hidden;color:#fff;background-image: url('{{ bg }}');background-position:50% 50%;text-align:center;\"\u003E\r\n\t\u003Cdiv style=\"padding-top:40px;\"\u003E\r\n\t\t\u003Ch1 style=\"color:#fff;font-size:36px;margin:20px 0 10px;\"\u003E{{ heading }}\u003C/h1\u003E\r\n\t\t\u003Chr style=\"max-width:100px;border-width:3px;\"\u003E\r\n\t\t\u003Cspan\u003E{{ subheading }}\u003C/span\u003E\r\n  \t \u003C/div\u003E\r\n\u003C/div\u003E",
+  "type": "container",
+  "is_default": 1,
+  "allow_for_spaces": 0,
+  "elements": [
+    {
+      "name": "heading",
+      "content_type": "humhub\\modules\\custom_pages\\modules\\template\\elements\\TextElement",
+      "elementContent": {
+        "dyn_attributes": {
+          "content": "My Headline",
+          "inline_text": 1
+        }
+      }
+    },
+    {
+      "name": "subheading",
+      "content_type": "humhub\\modules\\custom_pages\\modules\\template\\elements\\TextElement",
+      "elementContent": {
+        "dyn_attributes": {
+          "content": "My Subheadline",
+          "inline_text": 1
+        }
+      }
+    },
+    {
+      "name": "background",
+      "content_type": "humhub\\modules\\custom_pages\\modules\\template\\elements\\FileElement"
+    }
+  ]
+}

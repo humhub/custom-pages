@@ -1,10 +1,13 @@
 <?php
 
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElementsForm;
+use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
 use humhub\widgets\ModalDialog;
 use yii\widgets\ActiveForm;
 use humhub\libs\Html;
 
-/* @var $model humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElementsForm */
+/* @var $model EditMultipleElementsForm */
 ?>
 <?php ModalDialog::begin(['size' => (empty($model->contentMap)) ? 'normal' : 'large', 'header' => $title])?>
     <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
@@ -14,16 +17,16 @@ use humhub\libs\Html;
             <?php $counter = 0 ?>
             <?php foreach ($model->contentMap as $key => $contentItem) : ?>
 
-                <?php $isContainer = $contentItem->content instanceof humhub\modules\custom_pages\modules\template\models\ContainerContent; ?>
+                <?php $isContainer = $contentItem->content instanceof ContainerElement; ?>
 
                 <div class="panel panel-default">
                     <div class="template-edit-multiple-tab panel-heading" tabindex="0">
                         <strong>
-                            <?= Html::encode($model->getElement($contentItem->ownerContent->element_name)->getTitle()) ?>&nbsp;
+                            <?= Html::encode($model->getElement($contentItem->elementContent->element->name)->getTitle()) ?>&nbsp;
                             <i class="switchIcon fa fa-caret-down" aria-hidden="true"></i>
                         </strong>
                         <small class="pull-right">
-                            <span class="label label-success"><?= $contentItem->ownerContent->label ?></span>
+                            <span class="label label-success"><?= $contentItem->elementContent->label ?></span>
                         </small>
                         <?php if ($contentItem->content->isNewRecord): ?>
                             <small class="pull-right" style="margin-right: 2px">
@@ -35,15 +38,10 @@ use humhub\libs\Html;
                                 <span class="label label-success"><?= Yii::t('CustomPagesModule.view', 'Multiple') ?></span>
                             </small>
                         <?php endif; ?>
-                        <?php if ($isContainer && $contentItem->content->definition->is_inline): ?>
-                            <small class="pull-right" style="margin-right: 2px">
-                                <span class="label label-success"><?= Yii::t('CustomPagesModule.view', 'Inline') ?></span>
-                            </small>
-                        <?php endif; ?>
                     </div>
                     <?php // This was only set for container elements before. ?>
                     <div class="panel-body" data-element-index="<?= $counter ?>" style="<?= ($counter != 0) ? 'display:none' : '' ?>">
-                        <?= $contentItem->content->renderForm($form); ?>
+                        <?= TemplateContentFormFields::widget(['form' => $form, 'model' => $contentItem->content]) ?>
                     </div>
                     <div class="panel-footer">&nbsp;</div>
                 </div>

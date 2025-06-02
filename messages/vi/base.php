@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => '',
   'Settings' => 'Cài đặt',
   'Show additional file information (size)' => 'Hiện thêm thông tin file (kích thước)',
-  'Snipped-Layouts' => 'Snipped-Layouts',
+  'Snippet Layouts' => 'Snippet Layouts',
   'Snippet' => 'Khối thông tin',
   'Snippets' => 'Snippets',
   'Sort Order' => 'Thứ tự sắp xếp',

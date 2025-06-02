@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => '',
   'Settings' => 'Ρυθμίσεις',
   'Show additional file information (size)' => 'Εμφάνιση επιπρόσθετων πληροφοριών αρχείου (μέγεθος)',
-  'Snipped-Layouts' => 'Αποσπασματικές-διατάξεις',
+  'Snippet Layouts' => 'Αποσπασματικές-διατάξεις',
   'Snippet' => 'Απόσπασμα',
   'Snippets' => 'Αποσπάσματα',
   'Sort Order' => 'Σειρά ταξινόμησης',

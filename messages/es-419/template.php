@@ -23,7 +23,7 @@ return [
     'Edit template \'{templateName}\'' => '',
     'Height' => '',
     'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => '',
-    'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => '',
+    'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => '',
     'Here you can manage your template container elements.' => '',
     'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => '',
     'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => '',

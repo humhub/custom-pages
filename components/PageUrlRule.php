@@ -10,7 +10,7 @@ namespace humhub\modules\custom_pages\components;
 
 use yii\base\Component;
 use yii\web\UrlRuleInterface;
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\CustomPage;
 
 /**
  * CustomPages URL Rule
@@ -66,12 +66,12 @@ class PageUrlRule extends Component implements UrlRuleInterface
         if (substr($pathInfo, 0, 2) === 'p/') {
             $parts = explode('/', $pathInfo, 3);
             if (isset($parts[1])) {
-                $page = Page::find()
+                $page = CustomPage::find()
                     ->readable()
                     ->andWhere([
                         'OR',
-                        [Page::tableName() . '.id' => $parts[1]],
-                        [Page::tableName() . '.url' => $parts[1]],
+                        [CustomPage::tableName() . '.id' => $parts[1]],
+                        [CustomPage::tableName() . '.url' => $parts[1]],
                     ])
                     ->one();
                 if ($page !== null) {
@@ -101,7 +101,7 @@ class PageUrlRule extends Component implements UrlRuleInterface
             return static::$pageUrlMap[$id];
         }
 
-        $page = Page::findOne(['id' => $id]);
+        $page = CustomPage::findOne(['id' => $id]);
         if ($page !== null) {
             static::$pageUrlMap[$page->id] = !empty($page->url) ? $page->url : $page->id;
             return static::$pageUrlMap[$page->id];

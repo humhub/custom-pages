@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => 'この設定は表示されているテキスト ノードに対してのみ選択します。この要素がHTML属性値などとして使用される場合は、この設定をオフにします。',
   'Settings' => '設定',
   'Show additional file information (size)' => '追加のファイル情報を表示 (size)',
-  'Snipped-Layouts' => '切り取ったレイアウト',
+  'Snippet Layouts' => '切り取ったレイアウト',
   'Snippet' => 'スニペット',
   'Snippets' => 'スニペット',
   'Sort Order' => '並べ替え順序',

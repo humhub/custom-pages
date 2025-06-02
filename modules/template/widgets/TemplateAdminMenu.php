@@ -8,45 +8,46 @@
 
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
+use humhub\helpers\ControllerHelper;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\Menu;
 use Yii;
-use yii\helpers\Url;
 
 /**
- * Tepmlate AdminMenu
+ * Template AdminMenu
  */
-class TemplateAdminMenu extends \humhub\widgets\BaseMenu
+class TemplateAdminMenu extends Menu
 {
     /**
      * @inheritdoc
      */
-    public $template = "@humhub/widgets/views/subTabMenu";
+    public $template = '@humhub/widgets/views/subTabMenu';
 
     /**
      * @inheritdoc
      */
     public function init()
     {
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('CustomPagesModule.base', 'Layouts'),
-            'url' => Url::to(['/custom_pages/template/layout-admin']),
+            'url' => ['/custom_pages/template/layout-admin'],
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template' && Yii::$app->controller->id == 'layout-admin'),
-        ]);
+            'isActive' => ControllerHelper::isActivePath('template', 'layout-admin'),
+        ]));
 
-        $this->addItem([
-            'label' => Yii::t('CustomPagesModule.base', 'Snipped-Layouts'),
-            'url' => Url::to(['/custom_pages/template/snipped-layout-admin']),
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('CustomPagesModule.base', 'Snippet Layouts'),
+            'url' => ['/custom_pages/template/snippet-layout-admin'],
             'sortOrder' => 200,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template' && Yii::$app->controller->id == 'snipped-layout-admin'),
-        ]);
+            'isActive' => ControllerHelper::isActivePath('template', 'snippet-layout-admin'),
+        ]));
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('CustomPagesModule.base', 'Containers'),
-            'url' => Url::to(['/custom_pages/template/container-admin']),
+            'url' => ['/custom_pages/template/container-admin'],
             'sortOrder' => 300,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template' && Yii::$app->controller->id == 'container-admin'),
-        ]);
-
+            'isActive' => ControllerHelper::isActivePath('template', 'container-admin'),
+        ]));
 
         parent::init();
     }

@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => 'Toto nastavenie vyberte len pre viditeľné textové uzly. Zrušte začiarknutie tohto nastavenia v prípade, že sa tento prvok používa napríklad ako hodnota atribútu HTML.',
   'Settings' => 'Nastavenie',
   'Show additional file information (size)' => 'Zobraziť ďalšie informácie o súbore (veľkosť)',
-  'Snipped-Layouts' => 'Úryvok - Zobrazenia',
+  'Snippet Layouts' => 'Úryvok - Zobrazenia',
   'Snippet' => 'Úryvok',
   'Snippets' => 'Úryvky',
   'Sort Order' => 'Poradie zoradenia',

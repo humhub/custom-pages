@@ -22,7 +22,7 @@ return [
   'Edit template \'{templateName}\'' => 'የ\'{templateName}\' አብነትን አስተካክል',
   'Height' => 'ቁመት',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => 'የአብነቱን አቀማመጥ በመወሰን እና የይዘት አካላትን በማከል እዚህ የአብነትዎን ምንጭ ማስተካከል ይችላሉ። እያንዳንዱ አካላት ከነባሪ ይዘቶች እና ተጨማሪ ብያኔዎች ጋር በመሆን ሊደለደሉ ይችላሉ።',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'የቁንፅልመረጃዎን አቀማመጥ እዚህ ማስተካከል ይችላሉ። ቁንፅልመረጃዎች በጎን ገፅታ ላይ መካተት የሚችሉ አብነቶች ናቸው። ',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'የቁንፅልመረጃዎን አቀማመጥ እዚህ ማስተካከል ይችላሉ። ቁንፅልመረጃዎች በጎን ገፅታ ላይ መካተት የሚችሉ አብነቶች ናቸው። ',
   'Here you can manage your template container elements.' => 'የአብነትዎን የማዕቀፍ አካላትን እዚህ ማስተካከል ይችላሉ።',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'የአብነትዎን አቀማመጥ እዚህ ማስተካከል ይችላሉ። አቀማመጦች የአብነትዎ መሰረቶች ናቸው። እናም ከሌሎች አብነቶች ጋር ሊቀናጁ አይችሉም።',
   'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'ስለtwig አገባብ <strong><a href="{twig_tmpl_url}">እዚህ</a></strong> እዚህ ይገኛል።',

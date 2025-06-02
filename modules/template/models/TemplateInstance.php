@@ -3,22 +3,31 @@
 namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\components\ActiveRecord;
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\models\Content;
-use humhub\modules\custom_pages\models\CustomContentContainer;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use yii\db\ActiveQuery;
 
 /**
- * A TemplateInstance represents an acutal instantiation of an Template model.
+ * A TemplateInstance represents an actual instantiation of a Template model.
  * The TemplateInstance can be for example a Page or Snippet related by the PolymorphicRelation behaviour.
  *
  * @property int $id
- * @property string object_model
- * @property int object_id
- * @property int template_id
+ * @property int $page_id
+ * @property int $template_id
+ * @property int|null $container_item_id
  *
+ * @property-read Template $template
+ * @property-read CustomPage $page
+ * @property-read ContainerItem|null $containerItem
  */
-class TemplateInstance extends ActiveRecord implements TemplateContentOwner
+class TemplateInstance extends ActiveRecord
 {
+    public const TYPE_PAGE = 'page';
+    public const TYPE_CONTAINER = 'container';
+
     /**
      * @inheritdoc
      */
@@ -26,18 +35,18 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::class,
+                'class' => PolymorphicRelation::class,
                 'mustBeInstanceOf' => [ActiveRecord::class],
             ],
         ];
     }
 
     /**
-     * @return string the associated database table name
+     * @inheritdoc
      */
     public static function tableName()
     {
-        return 'custom_pages_template_container';
+        return 'custom_pages_template_instance';
     }
 
     /**
@@ -46,32 +55,22 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
     public function rules()
     {
         return [
-            [['template_id', 'object_model', 'object_id'], 'required'],
-            [['template_id'], 'integer'],
+            [['template_id', 'page_id'], 'required'],
+            [['template_id', 'page_id'], 'integer'],
+            [['container_item_id'], 'safe'],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function afterDelete()
+    public function beforeDelete()
     {
-        foreach (OwnerContent::findByOwner($this)->all() as $content) {
+        foreach (BaseElementContent::findAll(['template_instance_id' => $this->id]) as $content) {
             $content->delete();
         }
-    }
 
-    /**
-     * Returns the default element of the element identified by $elementName of the given TemplateInstance identified by $id.
-     *
-     * @param \humhub\modules\custom_pages\modules\template\models\TemplateInstance|int $id
-     * @param string $elementName
-     * @return type
-     */
-    public static function getDefaultElement($id, $elementName)
-    {
-        $pageTemplate = ($id instanceof TemplateInstance) ? $id : self::find()->where(['custom_pages_page_template.id' => $id])->joinWith('template')->one();
-        return $pageTemplate->template->getElement($elementName);
+        return parent::beforeDelete();
     }
 
     public static function findByTemplateId($templateId, ?int $contentState = null): ActiveQuery
@@ -81,18 +80,19 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
         if ($contentState !== null) {
             $query->leftJoin(
                 Content::tableName(),
-                Content::tableName() . '.object_model = ' . self::tableName() . '.object_model AND ' .
-                Content::tableName() . '.object_id = ' . self::tableName() . '.object_id',
+                Content::tableName() . '.object_model = :object_model AND ' .
+                Content::tableName() . '.object_id = ' . self::tableName() . '.page_id',
+                ['object_model' => CustomPage::class],
             )
-                ->andWhere([Content::tableName() . '.state' => $contentState]);
+            ->andWhere([Content::tableName() . '.state' => $contentState]);
         }
 
         return $query;
     }
 
-    public function render($editMode = false)
+    public function render(string $mode = '')
     {
-        return $this->template->render($this, $editMode);
+        return $this->template->render($this, $mode);
     }
 
     public function getTemplate()
@@ -100,32 +100,67 @@ class TemplateInstance extends ActiveRecord implements TemplateContentOwner
         return $this->hasOne(Template::class, ['id' => 'template_id']);
     }
 
-    public function getObject(): ?CustomContentContainer
+    public function getPage(): ActiveQuery
     {
-        if (empty($this->object_model) || empty($this->object_id)) {
-            return null;
+        return $this->hasOne(CustomPage::class, ['id' => 'page_id']);
+    }
+
+    public function getContainerItem(): ActiveQuery
+    {
+        return $this->hasOne(ContainerItem::class, ['id' => 'container_item_id']);
+    }
+
+    public static function findByOwner(ActiveRecord $owner): ?self
+    {
+        if ($owner instanceof CustomPage) {
+            return self::findOne(['page_id' => $owner->id, 'container_item_id' => null]);
         }
 
-        return call_user_func($this->object_model . '::findOne', ['id' => $this->object_id]);
-    }
+        if ($owner instanceof ContainerItem) {
+            return self::findOne(['container_item_id' => $owner->id]);
+        }
 
-    public function getTemplateId()
-    {
-        return $this->template_id;
-    }
-
-    public static function findByOwner(ActiveRecord $owner)
-    {
-        return self::findOne(['object_model' => get_class($owner), 'object_id' => $owner->getPrimaryKey()]);
+        return null;
     }
 
     public static function deleteByOwner(ActiveRecord $owner)
     {
-        $container = self::findOne(['object_model' => get_class($owner), 'object_id' => $owner->getPrimaryKey()]);
-        if ($container) {
-            return $container->delete();
-        }
-        return false;
+        $templateInstance = self::findByOwner($owner);
+        return $templateInstance ? $templateInstance->delete() : false;
     }
 
+    public function getCacheKey(): string
+    {
+        return get_class($this) . $this->getPrimaryKey();
+    }
+
+    /**
+     * Get root template instance of the Container Item,
+     * Return this if the instance is already a root of the Custom Page
+     *
+     * @return self|null
+     */
+    public function getRoot(): ?self
+    {
+        if ($this->container_item_id === null) {
+            return $this;
+        }
+
+        return self::findOne(['page_id' => $this->page_id, 'container_item_id' => null]);
+    }
+
+    public function getType(): string
+    {
+        return $this->container_item_id === null ? self::TYPE_PAGE : self::TYPE_CONTAINER;
+    }
+
+    public function isPage(): bool
+    {
+        return $this->getType() === self::TYPE_PAGE;
+    }
+
+    public function isContainer(): bool
+    {
+        return $this->getType() === self::TYPE_CONTAINER;
+    }
 }

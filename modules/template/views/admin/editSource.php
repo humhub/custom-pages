@@ -1,13 +1,20 @@
 <?php
 
 use humhub\modules\custom_pages\modules\template\assets\SourceEditorAsset;
+use humhub\modules\custom_pages\modules\template\models\Template;
+use humhub\modules\custom_pages\modules\template\services\ElementTypeService;
+use humhub\modules\custom_pages\modules\template\widgets\TemplateContentTable;
+use humhub\modules\custom_pages\widgets\AdminMenu;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 SourceEditorAsset::register($this);
 
-/* @var $model humhub\modules\custom_pages\modules\template\models\Template */
+/* @var $model Template */
+
+$elementTypeService = new ElementTypeService();
 
 $this->registerJsConfig('custom_pages.template.source', [
     'text' => [
@@ -18,7 +25,7 @@ $this->registerJsConfig('custom_pages.template.source', [
 <div id="templatePageRoot" class="panel panel-default" data-ui-widget="custom_pages.template.source.TemplateSourceEditor" data-ui-init="1">
     <div class="panel-heading"><?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
 
-    <?= \humhub\modules\custom_pages\widgets\AdminMenu::widget([]); ?>
+    <?= AdminMenu::widget(); ?>
 
     <div class="panel-body">
         <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), ['class' => 'btn btn-default pull-right', 'data-ui-loader' => '']); ?>
@@ -60,7 +67,11 @@ $this->registerJsConfig('custom_pages.template.source', [
         ])->label(false); ?>
 
         <div class="clearfix">
-            <?= Html::submitButton(Yii::t('CustomPagesModule.base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+            <?= $model->canEdit() ? Button::save()->submit() : '' ?>
+            <?= $model->isNewRecord ? '' : Button::defaultType(Yii::t('CustomPagesModule.template', 'Copy'))
+                ->icon('copy')
+                ->link(Url::toRoute(['copy', 'id' => $model->id])) ?>
+            <?php if ($model->canEdit()) : ?>
             <div class="dropdown pull-right">
                 <button data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/edit-multiple', 'id' => $model->id]) ?>" class="btn btn-primary">
                     <i aria-hidden="true" class="fa fa-pencil"></i>
@@ -72,19 +83,21 @@ $this->registerJsConfig('custom_pages.template.source', [
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" id="addElementSelect">
-                    <?php foreach ($contentTypes as $label => $type) : ?>
+                    <?php foreach ($elementTypeService->getTypeInstances() as $elementType) : ?>
                         <li>
-                            <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/add-element', 'templateId' => $model->id, 'type' => $type]) ?>" href="#">
-                                <?= $label ?>
+                            <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/add-element', 'templateId' => $model->id, 'type' => get_class($elementType)]) ?>" href="#">
+                                <?= $elementType->getLabel() ?>
                             </a>
                         </li>
                     <?php endforeach; ?>
                 </ul>
             </div>
+            <?php endif; ?>
         </div>
-        <br />
+        <br>
+
         <?php ActiveForm::end(); ?>
 
-        <?= \humhub\modules\custom_pages\modules\template\widgets\TemplateContentTable::widget(['template' => $model]) ?>
+        <?= TemplateContentTable::widget(['template' => $model]) ?>
     </div>
 </div>

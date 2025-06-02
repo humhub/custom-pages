@@ -2,16 +2,16 @@
 
 namespace humhub\modules\custom_pages\components;
 
-use HttpException;
-use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
-use humhub\modules\custom_pages\models\PhpType;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\types\PhpType;
 use humhub\modules\file\libs\FileHelper;
 use Yii;
 use yii\helpers\Html;
+use yii\web\ForbiddenHttpException;
 
 /**
- * @used-by CustomContentContainer
+ * @used-by CustomPage
  */
 trait PhpPageContainer
 {
@@ -27,11 +27,11 @@ trait PhpPageContainer
         if (PhpType::isType($this->type)) {
             $settings = new SettingsForm();
             if ($this->isNewRecord && !$settings->phpPagesActive) {
-                throw new HttpException(403);
+                throw new ForbiddenHttpException();
             }
 
             if (!$this->validatePhpViewFile()) {
-                $this->addError($this->getPageContentProperty(), Yii::t('CustomPagesModule.base', 'Invalid view file selection!'));
+                $this->addError('page_content', Yii::t('CustomPagesModule.base', 'Invalid view file selection!'));
             }
         }
     }
@@ -45,7 +45,7 @@ trait PhpPageContainer
     public function validatePhpViewFile()
     {
         $allowedFiles = $this->getAllowedPhpViewFileSelection();
-        return array_key_exists(Html::getAttributeValue($this, $this->getPageContentProperty()), $allowedFiles);
+        return array_key_exists(Html::getAttributeValue($this, 'page_content'), $allowedFiles);
     }
 
     /**
@@ -57,7 +57,7 @@ trait PhpPageContainer
     {
         if (PhpType::isType($this->type)) {
             $viewFiles = $this->getAllowedPhpViewFileSelection(true);
-            $viewName = Html::getAttributeValue($this, $this->getPageContentProperty());
+            $viewName = Html::getAttributeValue($this, 'page_content');
 
             if (array_key_exists($viewName, $viewFiles)) {
                 return $this->getPhpViewPathByView(basename($viewFiles[$viewName]), true);

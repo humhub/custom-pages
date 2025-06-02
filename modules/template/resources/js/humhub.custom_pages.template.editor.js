@@ -1,9 +1,9 @@
 humhub.module('custom_pages.template.editor', function (module, require, $) {
-    var Widget = require('ui.widget').Widget;
-    var object = require('util').object;
-    var client = require('client');
-    var modal = require('ui.modal');
-    var additions = require('ui.additions');
+    const Widget = require('ui.widget').Widget;
+    const object = require('util').object;
+    const client = require('client');
+    const modal = require('ui.modal');
+    const additions = require('ui.additions');
 
     TemplateInlineEditor = function (node, options) {
         Widget.call(this, node, options);
@@ -13,78 +13,141 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     object.inherits(TemplateInlineEditor, Widget);
 
     TemplateInlineEditor.prototype.init = function () {
-        this.activeElements = [];
-        this.initEvents();
+        this.initHighlight();
     };
 
-    TemplateInlineEditor.prototype.initEvents = function () {
-        var that = this;
-        this.$.on('mouseover', '[data-template-element], [data-template-item]', function (evt) {
-            if (that.setActivateElement($(this))) {
-                evt.stopPropagation();
+    TemplateInlineEditor.prototype.initHighlight = function () {
+        $(document).on('mouseenter', '[data-editor-container-id]', function () {
+            const containerId = $(this).data('editor-container-id');
+            const actionsSelector = '[data-actions-container-id=' + containerId + ']';
+            $(this).addClass('cp-editor-container-hover');
+
+            if (!$(actionsSelector).length) {
+                const addButtonSelector = '.cp-structure [data-container-id=' + containerId + '] > div.cp-structure-container > [data-action-click="addContainerItem"]';
+                const addButton = $(addButtonSelector);
+                if (addButton.length) {
+                    $('body').append($('<div>')
+                        .attr('data-actions-container-id', containerId)
+                        .append(addButton.clone()
+                        .removeAttr('data-action-click')
+                        .on('click', () => $(addButtonSelector).click())));
+                }
+            }
+
+            alignActions(this, actionsSelector);
+        }).on('mouseleave', '[data-editor-container-id], [data-actions-container-id]', function (e) {
+            const containerId = $(this).data('editor-container-id') ?? $(this).data('actions-container-id');
+            if (isOutside(e, ['[data-editor-container-id="' + containerId+ '"]', '[data-actions-container-id="' + containerId+ '"]'])) {
+                $('[data-editor-container-id=' + containerId+ ']').removeClass('cp-editor-container-hover');
+                $('[data-actions-container-id=' + containerId+ ']').hide();
+            }
+        }).on('mouseenter', '[data-editor-container-item-id]', function () {
+            if ($(this).find('[data-editor-container-item-id].cp-editor-container-hover').length) {
+                return;
+            }
+            const containerItemId = $(this).data('editor-container-item-id');
+            const actionsSelector = '[data-actions-container-item-id=' + containerItemId + ']';
+            const containerItemSelector = '.cp-structure [data-container-item-id=' + containerItemId + '] > li > .cp-structure-row';
+            const containerItem = $(containerItemSelector);
+            containerItem.addClass('cp-structure-active');
+            $(this).addClass('cp-editor-container-hover');
+            $('[data-actions-container-item-id]').hide();
+
+            if (!$(actionsSelector).length) {
+                const editButton = containerItem.find('[data-action-click="editElements"] > .fa');
+                if (editButton.length) {
+                    $('body').append($('<div>')
+                        .attr('data-actions-container-item-id', containerItemId)
+                        .append(editButton.clone()
+                        .removeAttr('data-action-click')
+                        .on('click', () => $(containerItemSelector).click())));
+                }
+            }
+
+            alignActions(this, actionsSelector);
+        }).on('mouseleave', '[data-editor-container-item-id], [data-actions-container-item-id]', function (e) {
+            const containerItemId = $(this).data('editor-container-item-id') ?? $(this).data('actions-container-item-id');
+            if (isOutside(e, ['[data-editor-container-item-id="' + containerItemId + '"]', '[data-actions-container-item-id="' + containerItemId + '"]'])) {
+                $('[data-editor-container-item-id=' + containerItemId+ ']').removeClass('cp-editor-container-hover');
+                $('[data-actions-container-item-id=' + containerItemId+ ']').hide();
+                $('.cp-structure-active').removeClass('cp-structure-active');
+            }
+        }).on('mouseenter mouseleave', '[data-actions-container-item-id]', function (e) {
+            const containerItemId = $(this).data('actions-container-item-id');
+            const container = $('[data-editor-container-item-id=' + containerItemId + ']').closest('[data-editor-container-id]');
+            if (container.length) {
+                const containerId = container.data('editor-container-id');
+                if (e.type === 'mouseenter') {
+                    container.addClass('cp-editor-container-hover');
+                    $('[data-actions-container-id=' + container.data('editor-container-id') + ']').show();
+                } else if (isOutside(e, ['[data-editor-container-id="' + containerId+ '"]', '[data-actions-container-id="' + containerId+ '"]'])) {
+                    container.removeClass('cp-editor-container-hover');
+                    $('[data-actions-container-id=' + container.data('editor-container-id') + ']').hide();
+                }
             }
         });
 
-        this.$.on('click', '[data-template-element], [data-template-item]', function (evt) {
-            evt.preventDefault();
-            evt.stopPropagation();
-        });
+        const alignActions = function (block, actionsSelector) {
+            const actions = $(actionsSelector);
+            actions.show();
+            const posBlock = block.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            actions.css({
+                top: posBlock.top + scrollTop - actions.outerHeight(),
+                left: posBlock.left + scrollLeft + posBlock.width - actions.outerWidth(),
+            });
 
-        this.$.on('custom_pages.afterActivateContainer', function (event, item) {
-            that.activeItem = item;
-            that.setActivateElement(item.$);
-            that.clearExcept(item);
-        });
-
-        this.$.on('custom_pages.afterDeactivateContainer', function (event, item) {
-            that.activeItem = undefined;
-            if (item.getParent()) {
-                that.setActivateElement(item.getParent().$);
+            const allActions = $('[data-actions-container-item-id]:visible, [data-actions-container-id]:visible');
+            if (allActions.length < 2) {
+                return;
             }
-        });
 
-        // Set the currentElement when menu buttons are used.
-        $(document).off('click.custom_pages').on('click.custom_pages', '.template-menu-button', function () {
-            var $this = $(this);
-            if ($this.data('action-target')) {
-                that.currentElement = Widget.instance($this.data('action-target'));
-            }
-        });
-    };
+            const posActions = actions[0].getBoundingClientRect();
+            allActions.each(function () {
+                if ($(this).is(actions)) {
+                    return;
+                }
+                const posThis = this.getBoundingClientRect();
+                if (posActions.right >= posThis.left &&
+                    posActions.right <= posThis.right &&
+                    posActions.top >= posThis.top &&
+                    posActions.top <= posThis.bottom) {
+                    if (actions.is('[data-actions-container-id]')) {
+                        $(this).css('left', posActions.left + scrollLeft - posThis.width);
+                    } else {
+                        actions.css('left', posThis.left + scrollLeft - posActions.width);
+                    }
+                }
+            });
+        }
 
-    TemplateInlineEditor.prototype.editElementSubmit = function (evt) {
-        this._updateInputValue();
-
-        var that = this;
-        client.submit(evt, {dataType: 'json'}).then(function (response) {
-            that._destroyInput();
-            if (response.success) {
-                modal.global.close();
-                that.replaceElement(that.currentElement, response.output);
-            } else {
-                modal.global.setDialog(response.output);
-            }
-        }).catch(function(e) {
-            module.log.error(e, true);
-        });
-    };
+        const isOutside = function(e, selectors) {
+            const target = e.relatedTarget;
+            return !target || selectors.every(selector => {
+                const el = document.querySelector(selector);
+                return el && !el.contains(target);
+            });
+        }
+    }
 
     TemplateInlineEditor.prototype.editItemSubmit = function (evt) {
-        this._updateInputValue();
-        this._removeDisabledFields(evt.$form);
+        const that = this;
+        that._updateInputValue();
+        that._removeDisabledFields(evt.$form);
 
-        var that = this;
         client.submit(evt, {dataType: 'json'}).then(function (response) {
             that._destroyInput();
             if (response.success) {
-                var $result = $(response.output);
-                if ($result.is('[data-template-item]')) {
+                const $result = $(response.output);
+                if ($result.is('[data-template-item-id]')) {
                     // called for normal edit actions
-                    var itemId = $result.data('template-item');
+                    const itemId = $result.data('template-item-id');
                     that.replaceElement(that.getItemById(itemId), $result);
                 } else {
                     // called for addItem actions where currentElement is the container
-                    that.replaceElement(that.currentElement, $result);
+                    that.replaceElement(that.current, $result);
+                    that.structure().appendContainerItem($result.data('editor-container-id'), $(response.structure));
                 }
                 modal.global.close();
                 additions.applyTo(that.$);
@@ -96,18 +159,16 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
 
     TemplateInlineEditor.prototype._removeDisabledFields = function ($form) {
         // Remove disabled items, before submit, otherwise they are submitted empty.
-        var $disabled = $form.find(':disabled');
-        $disabled.each(function () {
-            var name = $(this).attr('name');
-            $form.find('[name="' + name + '"]').remove();
+        $form.find(':disabled').each(function () {
+            $form.find('[name="' + $(this).attr('name') + '"]').remove();
         });
     };
 
     TemplateInlineEditor.prototype.editMultipleElementsSubmit = function (evt) {
-        this._updateInputValue();
-        this._removeDisabledFields(evt.$form);
+        const that = this;
+        that._updateInputValue();
+        that._removeDisabledFields(evt.$form);
 
-        var that = this;
         client.submit(evt, {dataType: 'json'}).then(function (response) {
             that._destroyInput();
             if (response.success) {
@@ -119,7 +180,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     };
 
     TemplateInlineEditor.prototype.getItemById = function (id) {
-        return this.getElement($('[data-template-item="' + id + '"]'));
+        return this.getElement($('[data-template-item-id="' + id + '"]'));
     };
 
     TemplateInlineEditor.prototype._updateInputValue = function () {
@@ -135,147 +196,29 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     };
 
     TemplateInlineEditor.prototype.replaceElement = function (element, content) {
-        var $content = $(content);
-        element.$.replaceWith($content);
-        var newElement = this.getElement($content);
-
-        if (this.isActiveItem(element)) {
-            this.activeItem = undefined;
-            this.clearExcept();
-            newElement.data('isActiveItem', true);
-            this.setActivateElement($content);
-            newElement.startInlineEdit(true);
-        }
-
-    };
-
-    TemplateInlineEditor.prototype.clearExcept = function (element) {
-        $.each(this.activeElements, function (index, active) {
-            if (!element || !active.isEqual(element)) {
-                active.deactivate();
-            }
-        });
-
-        this.activeEllements = [element];
-    };
-
-    TemplateInlineEditor.prototype.setActivateElement = function ($element) {
-        var element = this.getElement($element);
-
-        if (element.isActive()) {
-            this.setSelection(element);
-            return true;
-        }
-
-        // Only activate elements within the current activeItem if there is an activeItem
-        if (this.activeItem && !this.activeItem.isParentOf(element) && (!element.itemId || !this.activeItem.$.find(element.$).length)) {
-            return false;
-        }
-
-        var hasRootOwner = element.owner === "humhub\\modules\\custom_pages\\modules\\template\\models\\TemplateInstance";
-        var isActiveCotnainerItemContent = this.activeItem && this.activeItem.isParentOf(element);
-        var isEmptyContainer = element.$.is('.emptyContainerBlock');
-
-        // Only activate direct root elements or elements within the current activeItem or containerItems itself.
-        if (isEmptyContainer || hasRootOwner || element.isContainerItem || isActiveCotnainerItemContent) {
-            this.setSelection(element);
-            element.activate();
-            this.activeElements.push(element);
-            return true;
-        }
-
-        return false;
-    };
-
-    /**
-     * Activates the given element and checks the current selection.
-     * This function will deactivate all selected elements, which are not parent of the new selection element.
-     * This function will furthermore not deselect an active container item.
-     * 
-     * @param {type} element
-     * @returns {undefined}
-     */
-    TemplateInlineEditor.prototype.setSelection = function (element) {
-        var that = this;
-        var oldActiveElements = this.activeElements;
-        this.activeElements = [];
-        $.each(oldActiveElements, function (index, active) {
-            if (active.isParentOf(element) || element.isEqual(active) || that.isActiveItem(active)) {
-                that.activeElements.push(active);
-            } else {
-                active.deactivate();
-            }
-        });
-    };
-
-    TemplateInlineEditor.prototype.isActiveItem = function (element) {
-        return this.activeItem && this.activeItem.isEqual(element);
+        element.$.replaceWith($(content));
     };
 
     TemplateInlineEditor.prototype.getElement = function ($elem) {
         return Widget.instance($elem);
     };
 
-    TemplateSourceEditor = function (node, options) {
-        Widget.call(this, node, options);
+    TemplateInlineEditor.prototype.structure = function () {
+        if (typeof(this._structure) === 'undefined') {
+            this._structure = Widget.instance('[data-ui-widget="custom_pages.template.TemplateStructure"]');
+        }
+        return this._structure;
     };
 
-    object.inherits(TemplateSourceEditor, Widget);
-
-
-    module.initOnPjaxLoad = true;
-    var init = function () {
-        $('.editMenu, .elementMenu').remove();
+    const init = function () {
         if ($('#templatePageRoot').length && require('ui.view').getState().action !== 'edit-source') {
             module.editor = Widget.instance('#templatePageRoot');
-            _initEvents();
         }
     };
 
-    var _initEvents = function () {
-        // Tab logic in edit item modal
-        $(document).on('keyup.custom_pages', '.template-edit-multiple-tab', function (e) {
-            switch (e.which) {
-                case 13:
-                    e.preventDefault();
-                    $(this).trigger('click');
-                    break;
-                case 39:
-                case 40:
-                    e.preventDefault();
-                    if (!$(this).next('.panel-body').is(':visible')) {
-                        $(this).trigger('click');
-                    }
-                    break;
-                case 37:
-                case 38:
-                    e.preventDefault();
-                    if ($(this).next('.panel-body').is(':visible')) {
-                        $(this).trigger('click');
-                    }
-                    break;
-            }
-        }).on('click.custom_pages', '.template-edit-multiple-tab', function () {
-            $(this).next('.panel-body').slideToggle('fast');
-            var $switchIcon = $(this).find('.switchIcon');
-            if ($switchIcon.hasClass('fa-caret-down')) {
-                $switchIcon.removeClass('fa-caret-down');
-                $switchIcon.addClass('fa-caret-up');
-            } else {
-                $switchIcon.removeClass('fa-caret-up');
-                $switchIcon.addClass('fa-caret-down');
-            }
-        });
-    };
-
-    var unload = function () {
-        $('.editMenu, .elementMenu').remove();
-        $(document).off('.custom_pages');
-    };
-
     module.export({
-        init: init,
-        unload: unload,
-        TemplateInlineEditor: TemplateInlineEditor
+        initOnPjaxLoad: true,
+        init,
+        TemplateInlineEditor,
     });
 });

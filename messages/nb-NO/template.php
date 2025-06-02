@@ -22,7 +22,7 @@ return [
   'Edit template \'{templateName}\'' => 'Rediger mal \'{templateName}\'',
   'Height' => 'Høyde',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => 'Her kan du redigere kilden til malen din ved å definere maloppsettet og legge til innholdselementer. Hvert element kan tilordnes med standardinnhold og ytterligere definisjoner.',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Her kan du administrere dine oppgraderte layouter. Utklippsoppsett er maler, som kan inkluderes i sidebarer.',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Her kan du administrere dine oppgraderte layouter. Utklippsoppsett er maler, som kan inkluderes i sidebarer.',
   'Here you can manage your template container elements.' => 'Her kan du administrere dine container element for maler.',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'Her kan du administrere dine standard maler. Husk at standard malene ikke kan kombineres med andre maler.',
   'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'Mer informasjon om twig-syntaxen er tilgjengelig <strong><a href="%7Btwig_tmpl_url%7D">her</a></strong>',

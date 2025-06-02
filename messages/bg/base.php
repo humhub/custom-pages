@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => 'Изберете тази настройка само за видими текстови разклонения. Премахнете отметката от тази настройка, в случай че този елемент се използва например като стойност на атрибута HTML.',
   'Settings' => 'Настройки',
   'Show additional file information (size)' => 'Показване на допълнителна информация за файла (размер)',
-  'Snipped-Layouts' => 'Изрязани фрагменти',
+  'Snippet Layouts' => 'Изрязани фрагменти',
   'Snippet' => 'Фрагмент',
   'Snippets' => 'Фрагменти',
   'Sort Order' => 'Сортирай ред',

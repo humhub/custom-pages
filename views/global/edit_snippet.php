@@ -1,10 +1,11 @@
 <?php
 
 use humhub\modules\custom_pages\helpers\Url;
+use humhub\modules\custom_pages\models\CustomPage;
 use yii\helpers\Html;
 use humhub\modules\custom_pages\modules\template\widgets\TemplatePage;
 
-/* @var $snippet \humhub\modules\custom_pages\models\CustomContentContainer */
+/* @var $snippet CustomPage */
 /* @var $html string */
 
 $backUrl = Url::to(['/dashboard/dashboard']);
@@ -14,7 +15,7 @@ $editUrl = Url::toEditSnippet($snippet, $snippet->content->container);
 ?>
 
 <div>
-    <?php TemplatePage::begin(['page' => $snippet, 'canEdit' => true, 'editMode' => true]) ?>
+    <?php TemplatePage::begin(['page' => $snippet, 'canEdit' => true, 'mode' => 'edit']) ?>
         <div class="panel panel default">
             <div class="panel-body">
                 <a href="<?= $backUrl ?>" class="btn btn-default pull-right" data-ui-loader><i class="fa fa-arrow-left"></i> <?= $backText ?></a>

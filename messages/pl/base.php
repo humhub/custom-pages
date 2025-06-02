@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => 'Wybierz to ustawienie dla widoczności wyłącznie tekstowych węzłów.',
   'Settings' => 'Ustawienia',
   'Show additional file information (size)' => 'Pokaż dodatkowe informacje o pliku (rozmiar)',
-  'Snipped-Layouts' => 'Fragmenty-Wygląd',
+  'Snippet Layouts' => 'Fragmenty-Wygląd',
   'Snippet' => 'Panel',
   'Snippets' => 'Fragmenty',
   'Sort Order' => 'Kolejność Sortowania',

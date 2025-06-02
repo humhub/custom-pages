@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => '',
   'Settings' => 'Asetukset',
   'Show additional file information (size)' => 'Näytä lisää tiedostotietoja (koko)',
-  'Snipped-Layouts' => 'Laatikoiden Ulkoasut',
+  'Snippet Layouts' => 'Laatikoiden Ulkoasut',
   'Snippet' => 'Laatikko',
   'Snippets' => 'Laatikot',
   'Sort Order' => 'Lajittelujärjestys',

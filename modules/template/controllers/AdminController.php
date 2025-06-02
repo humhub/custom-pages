@@ -8,18 +8,13 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
-use humhub\modules\custom_pages\modules\template\models\ContainerContent;
-use humhub\modules\custom_pages\modules\template\models\FileContent;
-use humhub\modules\custom_pages\modules\template\models\FileDownloadContent;
-use humhub\modules\custom_pages\modules\template\models\HumHubRichtextContent;
-use humhub\modules\custom_pages\modules\template\models\ImageContent;
-use humhub\modules\custom_pages\modules\template\models\RichtextContent;
-use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
-use humhub\modules\custom_pages\modules\template\models\TextContent;
-use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
+use humhub\modules\custom_pages\modules\template\models\forms\ImportForm;
+use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
+use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
+use humhub\modules\custom_pages\modules\template\services\TemplateExportService;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateElementAdminRow;
 use humhub\modules\custom_pages\modules\template\widgets\EditElementModal;
 use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElementsForm;
@@ -29,6 +24,7 @@ use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use Yii;
 use yii\base\Response;
 use yii\data\ActiveDataProvider;
+use yii\web\NotFoundHttpException;
 
 /**
  * Admin controller for managing templates.
@@ -56,7 +52,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
     /**
      * Returns a searchable gridview with all avialable templates of the given type.
      *
-     * @return type
+     * @return string
      */
     public function actionIndex()
     {
@@ -89,7 +85,34 @@ class AdminController extends \humhub\modules\admin\components\Controller
         // If the form was submitted try to save/validate and flush the template cache
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             TemplateCache::flushByTemplateId($model->id);
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('CustomPagesModule.base', 'Saved'));
+            $this->view->saved();
+            return $this->redirect(['edit-source', 'id' => $model->id]);
+        }
+
+        return $this->render('@custom_pages/modules/template/views/admin/edit', ['model' => $model]);
+    }
+
+    /**
+     * Action used for copying Template instances.
+     *
+     * @return string result view
+     */
+    public function actionCopy($id = null)
+    {
+        $model = Template::findOne(['id' => $id]);
+
+        if ($model == null) {
+            throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template not found!'));
+        }
+
+        $model->setOldAttributes(null);
+        $model->scenario = 'edit';
+
+        if (!$model->load(Yii::$app->request->post())) {
+            $model->name = $model->name . ' (Copied)';
+        } elseif ($model->saveCopy()) {
+            TemplateCache::flushByTemplateId($model->id);
+            $this->view->success(Yii::t('CustomPagesModule.template', 'Copied'));
             return $this->redirect(['edit-source', 'id' => $model->id]);
         }
 
@@ -99,7 +122,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
     /**
      * Used to edit the source of a template.
      *
-     * @return type
+     * @return string
      * @throws \yii\web\HttpException
      */
     public function actionEditSource()
@@ -107,7 +130,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $model = Template::findOne(['id' => Yii::$app->request->get('id')]);
 
         if ($model == null) {
-            throw new \yii\web\HttpException(404, Yii::t('CustomPagesModule.template', 'Template not found!'));
+            throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template not found!'));
         }
 
         $model->scenario = 'source';
@@ -115,13 +138,12 @@ class AdminController extends \humhub\modules\admin\components\Controller
         // If the form was submitted try to save/validate and flush the template cache
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             TemplateCache::flushByTemplateId($model->id);
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('CustomPagesModule.base', 'Saved'));
+            $this->view->saved();
             return $this->redirect(['edit-source', 'id' => $model->id]);
         }
 
         return $this->render('@custom_pages/modules/template/views/admin/editSource', [
             'model' => $model,
-            'contentTypes' => $this->getContentTypes(),
         ]);
     }
 
@@ -133,7 +155,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $model = Template::findOne(['id' => Yii::$app->request->get('id')]);
 
         if ($model == null) {
-            throw new \yii\web\HttpException(404, Yii::t('CustomPagesModule.template', 'Template not found!'));
+            throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template not found!'));
         }
 
         $dataProvider = new ActiveDataProvider([
@@ -147,23 +169,6 @@ class AdminController extends \humhub\modules\admin\components\Controller
             'model' => $model,
             'dataProvider' => $dataProvider,
         ]);
-    }
-
-    /**
-     * Returns a selection of all available template content types.
-     * @return type
-     */
-    private function getContentTypes()
-    {
-        return [
-            TextContent::$label => TextContent::class,
-            RichtextContent::$label => RichtextContent::class,
-            HumHubRichtextContent::$label => HumHubRichtextContent::class,
-            ImageContent::$label => ImageContent::class,
-            FileContent::$label => FileContent::class,
-            FileDownloadContent::$label => FileDownloadContent::class,
-            ContainerContent::$label => ContainerContent::class,
-        ];
     }
 
     /**
@@ -209,7 +214,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByTemplateId($form->element->template_id);
-            return $this->getJsonEditElementResult(true, TemplateElementAdminRow::widget(['form' => $form, 'saved' => true]), $form);
+            return $this->getJsonEditElementResult(true, TemplateElementAdminRow::widget(['form' => $form]), $form);
         }
 
         $result = $this->renderAjaxPartial(EditElementModal::widget([
@@ -224,34 +229,38 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
     /**
      * This action will reset the default content of a given TemplateElement
-     * @param type $id
-     * @return type
+     * @param int $id
+     * @return Response
      */
     public function actionResetElement($id)
     {
         $this->forcePostRequest();
 
         $element = TemplateElement::findOne(['id' => $id]);
-        $ownerContent = $element->getDefaultContent();
+        $elementContent = $element->getDefaultContent();
 
-        if ($ownerContent != null) {
-            $ownerContent->delete();
+        if ($elementContent !== null) {
+            if ($elementContent->isDefinitionContent()) {
+                $element->updateAttributes(['dyn_attributes' => null]);
+            }
+            $elementContent->delete();
         }
 
         return $this->asJson([
             'success' => true,
+            'message' => Yii::t('CustomPagesModule.template', 'Reset'),
             'id' => $id,
-            'output' => $this->renderAjaxPartial(TemplateElementAdminRow::widget(['model' => $element, 'saved' => true])),
+            'output' => $this->renderAjaxPartial(TemplateElementAdminRow::widget(['model' => $element])),
         ]);
     }
 
     /**
      * This action will render a preview of a given template.
      *
-     * @param type $id
-     * @param type $editView
-     * @param type $reload
-     * @return type
+     * @param int $id
+     * @param bool|null $editView
+     * @param bool|null $reload
+     * @return string
      */
     public function actionPreview($id, $editView = null, $reload = null)
     {
@@ -285,6 +294,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
     {
         return $this->asJson([
             'success' => $success,
+            'message' => Yii::t('base', 'Saved'),
             'output' => $content,
             'name' => $form->element->name,
             'id' => $form->element->id,
@@ -316,17 +326,22 @@ class AdminController extends \humhub\modules\admin\components\Controller
      *
      * This action requres a confirmation.
      *
-     * @return type
+     * @return Response
      * @throws \yii\web\HttpException
      */
     public function actionDeleteElement($id)
     {
         $element = TemplateElement::findOne(['id' => $id]);
-        TemplateCache::flushByTemplateId($element->template_id);
-        $element->delete();
 
-        $this->asJson([
-            'success' => true,
+        if ($element->template->canEdit()) {
+            TemplateCache::flushByTemplateId($element->template_id);
+            $result = (bool) $element->delete();
+        } else {
+            $result = false;
+        }
+
+        return $this->asJson([
+            'success' => $result,
             'id' => $id,
         ]);
     }
@@ -342,11 +357,12 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $form = new EditMultipleElementsForm(['scenario' => 'edit-admin']);
         $form->setOwnerTemplateId($id);
 
-        if (Yii::$app->request->post() && $form->load(Yii::$app->request->post()) && $form->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByTemplateId($id);
             return $this->asJson([
                 'success' => true,
-                'output' => $this->renderAjaxPartial(TemplateContentTable::widget(['template' => $form->template, 'saved' => true])),
+                'message' => Yii::t('base', 'Saved'),
+                'output' => $this->renderAjaxPartial(TemplateContentTable::widget(['template' => $form->template])),
             ]);
         }
 
@@ -366,6 +382,44 @@ class AdminController extends \humhub\modules\admin\components\Controller
     public function actionInfo()
     {
         return $this->renderPartial('@custom_pages/modules/template/views/admin/info');
+    }
+
+    /**
+     * Used to export the source of a template.
+     *
+     * @return Response
+     */
+    public function actionExportSource()
+    {
+        $model = Template::findOne(['id' => Yii::$app->request->get('id')]);
+
+        if ($model === null) {
+            throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template not found!'));
+        }
+
+        return TemplateExportService::instance($model)->export()->send();
+    }
+
+    /**
+     * Used to import the source of a template.
+     *
+     * @return string
+     */
+    public function actionImportSource(string $type)
+    {
+        $form = new ImportForm(['type' => $type]);
+
+        if ($form->load(Yii::$app->request->post())) {
+            if ($form->import()) {
+                $this->view->success(Yii::t('CustomPagesModule.template', 'Imported.'));
+                return $this->redirect(['edit-source', 'id' => $form->getService()->template->id]);
+            } else {
+                $this->view->error(implode(' ', $form->getErrorSummary(true)));
+                return $this->redirect(['/custom_pages/template/' . $type . '-admin']);
+            }
+        }
+
+        return $this->renderAjax('@custom_pages/modules/template/views/admin/importSource', ['model' => $form]);
     }
 
 }

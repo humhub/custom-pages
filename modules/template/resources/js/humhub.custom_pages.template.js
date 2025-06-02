@@ -87,8 +87,7 @@ humhub.module('custom_pages.template', function (module, require, $) {
     const deleteElementContent = function (evt) {
         const btn = evt.$trigger;
         const data = {
-            contentModel: btn.data('owner-content'),
-            contentId: btn.data('owner-content-id'),
+            elementContentId: btn.data('element-content-id'),
         }
 
         client.post(evt, {data}).then(function (response) {

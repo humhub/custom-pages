@@ -2,10 +2,6 @@
 
 use humhub\components\Migration;
 use humhub\modules\content\models\Content;
-use humhub\modules\custom_pages\models\ContainerPage;
-use humhub\modules\custom_pages\models\ContainerSnippet;
-use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\models\Snippet;
 
 /**
  * Class m240805_130544_stream_channel
@@ -19,7 +15,12 @@ class m240805_130544_stream_channel extends Migration
     {
         Content::updateAll(
             ['stream_channel' => 'default'],
-            ['IN', 'object_model', [Page::class, Snippet::class, ContainerPage::class, ContainerSnippet::class]],
+            ['IN', 'object_model', [
+                'humhub\\modules\\custom_pages\\models\\Page',
+                'humhub\\modules\\custom_pages\\models\\Snippet',
+                'humhub\\modules\\custom_pages\\models\\ContainerPage',
+                'humhub\\modules\\custom_pages\\models\\ContainerSnippet',
+            ]],
         );
     }
 

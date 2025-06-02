@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\widgets;
 
-use humhub\modules\custom_pages\models\ContentType;
+use humhub\modules\custom_pages\types\ContentType;
 use humhub\modules\custom_pages\models\Target;
 
 /**

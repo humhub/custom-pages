@@ -1,25 +1,47 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\custom_pages\modules\template\assets;
 
 use yii\web\AssetBundle;
+use yii\web\View;
 
 class InlineEditorAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
     public $sourcePath = '@custom_pages/modules/template/resources';
 
+    /**
+     * @inheritdoc
+     */
     public $publishOptions = [
         'forceCopy' => false,
     ];
-    public $jsOptions = ['position' => \yii\web\View::POS_END];
+
+    /**
+     * @inheritdoc
+     */
+    public $jsOptions = ['position' => View::POS_END];
+
+    /**
+     * @inheritdoc
+     */
     public $js = [
         'js/humhub.custom_pages.template.editor.js',
-        'js/humhub.custom_pages.template.TemplateElement.js',
-        'js/humhub.custom_pages.template.TemplateContainer.js',
-        'js/humhub.custom_pages.template.TemplateContainerItem.js',
+        'js/humhub.custom_pages.template.structure.js',
     ];
+
+    /**
+     * @inheritdoc
+     */
     public $depends = [
-        'humhub\modules\custom_pages\modules\template\assets\TemplateCoreAsset',
-        'humhub\modules\custom_pages\modules\template\assets\SwitchAssetBundle',
+        TemplateCoreAsset::class,
     ];
 }

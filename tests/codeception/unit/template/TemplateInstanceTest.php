@@ -2,13 +2,13 @@
 
 namespace tests\codeception\unit\modules\custom_page\template;
 
-use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
-use humhub\modules\custom_pages\modules\template\models\OwnerContent;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
+use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\custom_pages\modules\template\models\RichtextContent;
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\models\CustomPage;
+use tests\codeception\_support\HumHubDbTestCase;
 
 class TemplateInstanceTest extends HumHubDbTestCase
 {
@@ -24,75 +24,60 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
     }
 
-    public function testDeleteOwner()
+    public function testDeleteTemplateInstance()
     {
-        $owner = new Template([
+        $template = new Template([
             'scenario' => 'edit',
             'name' => 'containerTestTmpl',
             'description' => 'My Test Template',
             'type' => Template::TYPE_LAYOUT,
         ]);
+        $template->save();
 
-        $owner->save();
-
-        $page = new Page([
+        $page = new CustomPage([
             'type' => '5',
             'title' => 'test2',
             'target' => 'TopMenuWidget',
-            'templateId' => $owner->id]);
-
+            'templateId' => $template->id,
+        ]);
         $page->save(false);
 
-        $owner2 = new TemplateInstance([
-            'object_model' => Page::class,
-            'object_id' => $page->id,
-            'template_id' => $owner->id,
-        ]);
-
-        $owner2->save();
+        $templateInstance = TemplateInstance::findByOwner($page);
 
         $template = Template::findOne(['id' => 1]);
         $element = $template->getElement('test_content');
-        $richtext = new RichtextContent(['content' => 'testContent']);
-        $ownerContent = $element->saveInstance($owner2, $richtext);
+        $richtext = new RichtextElement(['content' => 'testContent']);
+        $elementContent = $element->saveInstance($templateInstance, $richtext);
 
-        $ownerTestContent = $element->getOwnerContent($owner2);
+        $this->assertNotNull($elementContent);
+        $this->assertEquals($elementContent->id, $richtext->id);
 
-        $content = $ownerContent->instance;
+        $templateInstance->delete();
 
-        $this->assertNotNull($content);
-        $this->assertEquals($ownerContent->id, $ownerTestContent->id);
-
-        $owner2->delete();
-
-        $this->assertNull(OwnerContent::findOne(['id' => $ownerContent->id]));
-        $this->assertNull(RichtextContent::findOne(['id' => $richtext->id]));
+        $this->assertNull(RichtextElement::findOne(['id' => $elementContent->id]));
     }
-
 
     public function testDeleteByOwner()
     {
         $template = Template::findOne(['id' => 1]);
         $element = $template->getElement('test_content');
 
-        $page = new Page([
+        $page = new CustomPage([
             'type' => '5',
             'title' => 'test2',
             'target' => 'TopMenuWidget',
             'templateId' => $template->id]);
-
         $page->save(false);
 
-        $owner = TemplateInstance::findOne(['object_model' => Page::class, 'object_id' => $page->id]);
+        $owner = TemplateInstance::findByOwner($page);
 
-        $richtext = new RichtextContent(['content' => 'testContent']);
-        $ownerContent = $element->saveInstance($owner, $richtext);
+        $richtext = new RichtextElement(['content' => 'testContent']);
+        $elementContent = $element->saveInstance($owner, $richtext);
 
         TemplateInstance::deleteByOwner($page);
 
         $this->assertNull(TemplateInstance::findOne(['id' => $owner->id]));
-        $this->assertNull(OwnerContent::findOne(['id' => $ownerContent->id]));
-        $this->assertNull(RichtextContent::findOne(['id' => $richtext->id]));
+        $this->assertNull(RichtextElement::findOne(['id' => $elementContent->id]));
     }
 
     public function testDeletePage()
@@ -100,90 +85,53 @@ class TemplateInstanceTest extends HumHubDbTestCase
         $template = Template::findOne(['id' => 1]);
         $element = $template->getElement('test_content');
 
-        $page = new Page([
+        $page = new CustomPage([
             'type' => '5',
             'title' => 'test2',
             'target' => 'TopMenuWidget',
             'templateId' => $template->id]);
-
         $page->save(false);
 
-        $owner = TemplateInstance::findOne(['object_model' => Page::class, 'object_id' => $page->id]);
+        $owner = TemplateInstance::findByOwner($page);
 
-        $richtext = new RichtextContent(['content' => 'testContent']);
-        $ownerContent = $element->saveInstance($owner, $richtext);
+        $richtext = new RichtextElement(['content' => 'testContent']);
+        $elementContent = $element->saveInstance($owner, $richtext);
 
         $this->assertFalse($richtext->isNewRecord);
-        $this->assertFalse($ownerContent->isNewRecord);
+        $this->assertFalse($elementContent->isNewRecord);
 
         $page->hardDelete();
 
         $this->assertNull(TemplateInstance::findOne(['id' => $owner->id]));
-        $this->assertNull(OwnerContent::findOne(['id' => $ownerContent->id]));
-        $this->assertNull(RichtextContent::findOne(['id' => $richtext->id]));
+        $this->assertNull(RichtextElement::findOne(['id' => $elementContent->id]));
     }
 
     public function testFindByOwner()
     {
-        $owner = new Template([
-            'scenario' => 'edit',
-            'name' => 'containerTestTmpl',
-            'description' => 'My Test Template',
-            'type' => Template::TYPE_LAYOUT,
-        ]);
+        $template = Template::findOne(['id' => 1]);
+        $element = $template->getElement('test_content');
+        $element2 = $template->getElement('test_text');
 
-        $owner->save();
-
-        $page = new Page([
+        $page = new CustomPage([
             'type' => '5',
             'title' => 'test2',
             'target' => 'TopMenuWidget',
-            'templateId' => $owner->id]);
-
+            'templateId' => $template->id]);
         $page->save(false);
 
-        $owner2 = new TemplateInstance([
-            'object_model' => Page::class,
-            'object_id' => $page->id,
-            'template_id' => $owner->id,
-        ]);
+        $templateInstance = TemplateInstance::findByOwner($page);
 
-        $owner2->save();
-
-        $content = new RichtextContent();
+        $content = new RichtextElement();
         $content->content = '<p>Test</p>';
-        $content->save();
+        $element->saveInstance($templateInstance, $content);
 
-        $content2 = new RichtextContent();
+        $content2 = new RichtextElement();
         $content2->content = '<p>Test</p>';
-        $content2->save();
+        $element2->saveInstance($templateInstance, $content2);
 
-        $content3 = new RichtextContent();
-        $content3->content = '<p>Test</p>';
-        $content3->save();
+        $contents = BaseElementContent::find()
+            ->where(['template_instance_id' => $templateInstance->id]);
 
-        $instance = new OwnerContent();
-        $instance->element_name = 'test';
-        $instance->setOwner($owner);
-        $instance->setContent($content);
-        $instance->save();
-
-        $instance2 = new OwnerContent();
-        $instance2->element_name = 'test_2';
-        $instance2->setOwner($owner);
-        $instance2->setContent($content2);
-        $instance2->save();
-
-        $instance3 = new OwnerContent();
-        $instance3->element_name = 'test';
-        $instance3->setOwner($owner2);
-        $instance3->setContent($content3);
-        $instance3->save();
-
-        $contentOwner1 = OwnerContent::findByOwner($owner)->all();
-        $contentOwner2 = OwnerContent::findByOwner($owner2)->all();
-
-        $this->assertEquals(2, count($contentOwner1));
-        $this->assertEquals(1, count($contentOwner2));
+        $this->assertEquals(2, $contents->count());
     }
 }

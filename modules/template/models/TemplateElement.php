@@ -1,20 +1,35 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\custom_pages\modules\template\models;
 
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use Yii;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "custom_pages_template".
  *
  * TemplateElements represent the placeholders of a template.
- * A TemplateElement consists of an name which is unique within the template and content type definition.
+ * A TemplateElement consists of a name which is unique within the template and content type definition.
  *
- * @var $name string
- * @var $content_type string
- * @var $template_id int
- * @var $title string
+ * @property int $id
+ * @property int $template_id
+ * @property string $name
+ * @property string $content_type
+ * @property string $title
+ * @property string $dyn_attributes
+ *
+ * @property-read BaseElementContent[] $contents
+ * @property-read Template|null $template
  */
 class TemplateElement extends ActiveRecord
 {
@@ -38,7 +53,15 @@ class TemplateElement extends ActiveRecord
         return [
             [['name', 'content_type', 'template_id'], 'required'],
             [['name', 'title', 'content_type'], 'string', 'length' => [2, 100]],
-            ['name', 'match', 'pattern' => '/^[a-zA-Z][a-zA-Z0-9_]+$/', 'message' => Yii::t('CustomPagesModule.model', 'The element name must contain at least two characters without spaces or special signs except \'_\'')],
+            [
+                'name',
+                'match',
+                'pattern' => '/^[a-zA-Z][a-zA-Z0-9_]+$/',
+                'message' => Yii::t(
+                    'CustomPagesModule.model',
+                    'The element name must contain at least two characters without spaces or special signs except \'_\'',
+                ),
+            ],
             ['name', 'uniqueTemplateElementName', 'on' => ['create']],
             [['template_id'], 'integer'],
         ];
@@ -78,48 +101,58 @@ class TemplateElement extends ActiveRecord
      */
     public function uniqueTemplateElementName($attribute, $params)
     {
-        $templateElementCount = self::find()->where(['template_id' => $this->template_id, 'name' => $this->name])->count();
+        $templateElementCount = self::find()->where(
+            ['template_id' => $this->template_id, 'name' => $this->name],
+        )->count();
         if ($templateElementCount > 0) {
-            $this->addError($attribute, Yii::t('CustomPagesModule.model', 'The given element name is already in use for this template.'));
+            $this->addError(
+                $attribute,
+                Yii::t('CustomPagesModule.model', 'The given element name is already in use for this template.'),
+            );
         }
     }
 
     /**
-     * This function will create a new OwnerContent related to $owner for this placeholder.
+     * This function will create a new ElementContent related to $owner for this placeholder.
      * This will overwrite the default content of a template placeholder for the given
      * $owner instance.
      *
-     * $content is the actual content instance of type TemplateContentActiveRecord which will
+     * $content is the actual content instance of type BaseTemplateElementContent which will
      * be assigned to this placeholder for the given $owner.
      *
      * If the given $content instance was not persisted yet, it will be saved first.
      *
      * If the $owner is of type Template it will be saved as default content of the elements template.
      *
-     * Note that all current OwnerContent entries for this placeholder owned by $owner are delted.
+     * Note that all current ElementContent entries for this placeholder owned by $owner are delted.
      *
      * @param ActiveRecord $owner the owner
-     * @param TemplateContentActiveRecord $content
-     * @return OwnerContent the new created owner content instance.
+     * @param BaseElementContent $content
+     * @return BaseElementContent|null the new created element content instance.
      */
-    public function saveInstance(ActiveRecord $owner, TemplateContentActiveRecord $content, $useDefault = false)
+    public function saveInstance(ActiveRecord $owner, BaseElementContent $content): ?BaseElementContent
     {
-        $content->save();
-
         if ($owner instanceof Template) {
             return $this->saveAsDefaultContent($content);
         }
 
-        // Delete all current default content.
-        OwnerContent::deleteByOwner($owner, $this->name);
+        $content->element_id = $this->id;
+        if ($owner instanceof TemplateInstance) {
+            $content->template_instance_id = $owner->id;
+        } elseif ($owner instanceof ContainerItem) {
+            $content->template_instance_id = $owner->templateInstance?->id;
+        }
 
-        $ownerContent = new OwnerContent();
-        $ownerContent->use_default = $useDefault;
-        $ownerContent->setOwner($owner);
-        $ownerContent->setContent($content);
-        $ownerContent->element_name = $this->name;
-        $ownerContent->save();
-        return $ownerContent;
+        if ($content->element_id && $content->template_instance_id) {
+            // Delete old content of the same element and template instance
+            $oldContent = BaseElementContent::findOne([
+                'element_id' => $content->element_id,
+                'template_instance_id' => $content->template_instance_id,
+            ]);
+            $oldContent && $oldContent->delete();
+        }
+
+        return $content->save() ? $content : null;
     }
 
     /**
@@ -127,84 +160,100 @@ class TemplateElement extends ActiveRecord
      *
      * Note that the current default content of this placeholder will be delted.
      *
-     * @param TemplateContentActiveRecord $content
-     * @return bool
+     * @param BaseElementContent $content
+     * @return BaseElementContent|null
      */
-    public function saveAsDefaultContent(TemplateContentActiveRecord $content)
+    public function saveAsDefaultContent($content): ?BaseElementContent
     {
         if (get_class($content) != $this->content_type) {
-            return false;
+            return null;
         }
 
-        // Delete all current default content elements.
-        OwnerContent::deleteByOwner(Template::class, $this->template_id, $this->name);
+        $content->element_id = $this->id;
 
-        if ($content->save()) {
-            $contentInstance = new OwnerContent();
-            $contentInstance->element_name = $this->name;
-            $contentInstance->setOwner(Template::class, $this->template_id);
-            $contentInstance->setContent($content);
-            return $contentInstance->save();
-        } else {
-            return false;
+        if ($content->element_id) {
+            // Delete old default content of the element
+            $oldDefaultContent = BaseElementContent::findOne([
+                'element_id' => $content->element_id,
+                'template_instance_id' => null,
+            ]);
+            $oldDefaultContent && $oldDefaultContent->delete();
         }
+
+        return $content->save() ? $content : null;
     }
 
     /**
-     * Returns the default OwnerContent instance for this placeholder.
+     * Returns the default ElementContent instance for this placeholder.
      *
      * If no default content was found and $createDummy is set to true, this
-     * function will return an empty dummy OwnerContent instance.
+     * function will return an empty dummy ElementContent instance.
      *
      * @param bool $createDummy
-     * @return OwnerContent
+     * @return BaseElementContent|null
      */
-    public function getDefaultContent($createDummy = false)
+    public function getDefaultContent(bool $createDummy = false): ?BaseElementContent
     {
-        $content = OwnerContent::findByOwner(Template::class, $this->template_id, $this->name)->one();
-        if ($content == null && $createDummy) {
-            $content = new OwnerContent();
-            $content->setOwner(Template::class, $this->template_id);
-            $content->element_name = $this->name;
-            $content->content_type = $this->content_type;
+        /* @var $content BaseElementContent */
+        $content = BaseElementContent::find()
+            ->where(['element_id' => $this->id])
+            ->andWhere(['IS', 'template_instance_id', new Expression('NULL')])
+            ->one();
+
+        if ($content === null && $createDummy) {
+            $content = BaseElementContent::createByType($this->content_type);
+            $content->element_id = $this->id;
         }
+
         return $content;
     }
 
     /**
      * Checks if there is a default content for this placeholder
-     * @return type
+     *
+     * @return bool
      */
-    public function hasDefaultContent()
+    public function hasDefaultContent(): bool
     {
-        return OwnerContent::findByOwner(Template::class, $this->template_id, $this->name)->count() > 0;
+        return BaseElementContent::find()
+            ->where(['element_id' => $this->id])
+            ->andWhere(['IS', 'template_instance_id', new Expression('NULL')])
+            ->exists();
     }
 
     /**
-     * Returns the OwnerContent of this placeholder owned by the given $owner or
-     * null if no OwnerContent was found.
-     *
-     * @param ActiveRecord $owner
-     * @return OwnerContent
+     * Returns all TemplateElement definitions for this template.
+     * @return ActiveQuery
      */
-    public function getOwnerContent(ActiveRecord $owner)
+    public function getContents(): ActiveQuery
     {
-        return OwnerContent::findByOwner(get_class($owner), $owner->getPrimaryKey(), $this->name)->one();
+        return $this->hasMany(BaseElementContent::class, ['element_id' => 'id']);
     }
 
     /**
      * @inhertidoc
      */
-    public function afterDelete()
+    public function beforeDelete()
     {
-        OwnerContent::deleteByOwner(Template::class, $this->template_id, $this->name);
-        $templateOwners = TemplateInstance::findByTemplateId($this->template_id)->all();
-
-        foreach ($templateOwners as $owner) {
-            OwnerContent::deleteByOwner($owner, $this->name);
+        if (!parent::beforeDelete()) {
+            return false;
         }
 
-        parent::afterDelete();
+        foreach ($this->contents as $elementContent) {
+            $elementContent->delete();
+        }
+
+        return true;
+    }
+
+    public function getTemplate(): ActiveQuery
+    {
+        return $this->hasOne(Template::class, ['id' => 'template_id']);
+    }
+
+    public function getTemplateContent(): BaseElementContent
+    {
+        return BaseElementContent::createByType($this->content_type);
     }
 
     /**
@@ -213,7 +262,6 @@ class TemplateElement extends ActiveRecord
      */
     public function getLabel()
     {
-        return Yii::createObject($this->content_type)->getLabel();
+        return $this->getTemplateContent()->getLabel();
     }
-
 }

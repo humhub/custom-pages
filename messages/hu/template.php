@@ -22,7 +22,7 @@ return [
   'Edit template \'{templateName}\'' => '\'{templateName}\' téma szerkesztése',
   'Height' => 'Magasság',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => 'Itt módosíthatod a sablon forráskódját a sablonelrendezés meghatározásával és a tartalomelemek hozzáadásával. Minden egyes elem hozzárendelhető egy alapértelmezett tartalomhoz és további definíciókhoz.',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Itt kezelheted snippeteid elrendezését. A snippet elrendezések sablonok, amelyek az oldalsávokba illeszthetők.',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Itt kezelheted snippeteid elrendezését. A snippet elrendezések sablonok, amelyek az oldalsávokba illeszthetők.',
   'Here you can manage your template container elements.' => 'Itt kezelheted sablontároló elemeidet.',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'Itt kezelheted sablon elrendezéseidet. Az elrendezések a sablon oldalainak gyökereként funkcionálnak, és nem kombinálhatók más sablonokkal.',
   'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'További információ a twig szintaxisról <strong><a href="twig_tmpl_url%7D">itt</a></strong> érhető el',

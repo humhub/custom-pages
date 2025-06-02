@@ -22,7 +22,7 @@ return [
   'Edit template \'{templateName}\'' => 'Vorlage \'{templateName}\' bearbeiten',
   'Height' => 'Höhe',
   'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.' => 'Hier kannst du die Quelle deiner Vorlage bearbeiten, indem du das Layout der Vorlage definierst und Inhaltselemente hinzufügst. Jedes Element kann mit einem Standardinhalt und zusätzlichen Definitionen versehen werden.',
-  'Here you can manage your snipped layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Hier kannst du deine Snippet-Layouts verwalten. Snippet-Layouts sind Vorlagen, die in Sidebars eingebunden werden können.',
+  'Here you can manage your snippet layouts. Snippet layouts are templates, which can be included into sidebars.' => 'Hier kannst du deine Snippet Layouts verwalten. Snippet Layouts sind Vorlagen, die in Sidebars eingebunden werden können.',
   'Here you can manage your template container elements.' => 'Hier kannst du deine Container Vorlagen-Elemente verwalten',
   'Here you can manage your template layouts. Layouts are the root of your template pages and can not be combined with other templates.' => 'Hier kannst du deine Vorlagen-Layouts verwalten. Layouts sind die Grundlage deiner Vorlagenseiten und können nicht mit anderen Vorlagen kombiniert werden.',
   'More infos about the twig syntax is available <strong><a href="{twig_tmpl_url}">here</a></strong>' => 'Mehr Infos zur Zweigsyntax gibt es <strong><a href="{twig_tmpl_url}">hier</a></strong>',

@@ -8,28 +8,35 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
+use humhub\modules\custom_pages\modules\template\models\TemplateElement;
+use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use yii\base\Model;
+
 /**
  * Form model used to add new TemplateElement instances to a Template.
  *
  * @author buddha
  */
-class ContentFormItem extends \yii\base\Model
+class ContentFormItem extends Model
 {
-    public $ownerContent;
-    public $editDefault = true;
-    public $content;
-    public $element;
-    public $isLoaded = false;
+    public ?BaseElementContent $elementContent = null;
+    public bool $editDefault = true;
+    public ?BaseElementContent $content = null;
+    public ?TemplateElement $element = null;
+    public bool $isLoaded = false;
     public $key;
 
     public function init()
     {
-        $this->content = $this->ownerContent->getInstance(true);
+        $this->content = $this->elementContent->getInstance(true);
+        $this->content->element_id = $this->element->id;
 
-        if ($this->ownerContent->isNewRecord) {
-            $this->key = $this->ownerContent->element_name;
+        if ($this->elementContent->isNewRecord) {
+            $this->key = $this->elementContent->element->name;
         } else {
-            $this->key = $this->ownerContent->id;
+            $this->key = $this->elementContent->id;
         }
 
         $this->content->setFormName('Content[' . $this->key . ']');
@@ -68,19 +75,17 @@ class ContentFormItem extends \yii\base\Model
             return true;
         }
 
-        if ($this->ownerContent->isDefault() && !$this->editDefault) {
+        if ($this->elementContent->isDefault() && !$this->editDefault) {
             $fileList = $this->content->fileList;
             $this->content = $this->content->copy();
             $this->content->fileList = $fileList;
         }
 
         if ($this->content->isNewRecord) {
-            $this->element->saveInstance($owner, $this->content);
-        } else {
-            $this->content->save(false);
+            return (bool) $this->element->saveInstance($owner, $this->content);
         }
 
-        return true;
+        return $this->content->save(false);
     }
 
 }

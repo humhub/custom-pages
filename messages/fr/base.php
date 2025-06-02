@@ -85,7 +85,7 @@ return [
   'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => 'Cochez cette case uniquement pour les nœuds de texte. Décochez cette case si cet élément sert, par exemple, de valeur pour un attribut HTML.',
   'Settings' => 'Configuration',
   'Show additional file information (size)' => 'Afficher des informations supplémentaires du fichier (taille)',
-  'Snipped-Layouts' => 'Dispositions des extraits',
+  'Snippet Layouts' => 'Dispositions des extraits',
   'Snippet' => 'Extrait',
   'Snippets' => 'Extraits',
   'Sort Order' => 'Ordre de tri',

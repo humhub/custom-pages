@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
-use Yii;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 
 /**
  * Description of UserGroupForm
@@ -31,15 +31,9 @@ class TemplateElementForm extends \yii\base\Model
     /**
      * Default content instance.
      *
-     * @var \humhub\modules\custom_pages\modules\template\models\TemplateContentActiveRecord
+     * @var BaseElementContent
      */
     public $content;
-
-    /**
-     * OwnerContent use_default flag
-     * @var bool
-     */
-    public $use_default;
 
     /**
      * @inheritdoc
@@ -47,19 +41,12 @@ class TemplateElementForm extends \yii\base\Model
      */
     public $scenario = 'edit';
 
-    public function rules()
-    {
-        return [
-            ['use_default', 'safe'],
-        ];
-    }
-
     public function scenarios()
     {
         return [
-            self::SCENARIO_CREATE => ['use_default'],
-            self::SCENARIO_EDIT_ADMIN => ['use_default'],
-            self::SCENARIO_EDIT => ['use_default'],
+            self::SCENARIO_CREATE => [],
+            self::SCENARIO_EDIT_ADMIN => [],
+            self::SCENARIO_EDIT => [],
         ];
     }
 
@@ -76,6 +63,10 @@ class TemplateElementForm extends \yii\base\Model
 
     public function load($data, $formName = null)
     {
+        if (!$this->element->template->canEdit()) {
+            return false;
+        }
+
         parent::load($data);
 
         $result = false;
@@ -91,11 +82,13 @@ class TemplateElementForm extends \yii\base\Model
 
     public function validate($attributeNames = null, $clearErrors = true)
     {
-        return parent::validate() && $this->element->validate();
+        return parent::validate($attributeNames, $clearErrors) &&
+            $this->element->validate($attributeNames, $clearErrors) &&
+            $this->content->validate($attributeNames, $clearErrors);
     }
 
     public function getLabel()
     {
-        return Yii::createObject($this->element->content_type)->getLabel();
+        return BaseElementContent::createByType($this->element->content_type)->getLabel();
     }
 }

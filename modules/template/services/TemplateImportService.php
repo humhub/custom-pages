@@ -31,7 +31,7 @@ class TemplateImportService extends BaseImportService
         $this->type = $type;
 
         if ($module = $this->getModule()) {
-            $this->allowUpdateDefaultTemplates = $module->allowUpdateDefaultTemplates;
+            $this->allowUpdateDefaultTemplates = $module->allowUpdateDefaultTemplates ?? false;
         }
     }
 

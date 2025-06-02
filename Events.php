@@ -101,7 +101,7 @@ class Events
                             && Yii::$app->controller->module->id === 'custom_pages'
                             && Yii::$app->controller->id === 'view'
                             && Yii::$app->controller->action->id === 'index' && Yii::$app->request->get('id') == $page->id),
-                        'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
+                        'sortOrder' => $page->sort_order ?: 1000 + $page->id,
                     ]);
                 }
             }
@@ -284,7 +284,7 @@ class Events
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
                     'url' => Url::to(['/custom_pages/view', 'id' => $page->id], true),
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
-                    'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
+                    'sortOrder' => $page->sort_order ?: 1000 + $page->id,
                 ]);
             }
         } catch (Throwable $e) {
@@ -306,7 +306,7 @@ class Events
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
                     'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
-                    'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
+                    'sortOrder' => $page->sort_order ?: 1000 + $page->id,
                     'icon' => $page->icon,
                 ]));
             }

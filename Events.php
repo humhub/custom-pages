@@ -143,6 +143,7 @@ class Events
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
             foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_TOP_MENU)->all() as $page) {
+                /* @var CustomPage $page */
                 if (!$page->canView()) {
                     continue;
                 }
@@ -161,7 +162,7 @@ class Events
                         )
                         || static::isCurrentTargetUrl($page)
                     ),
-                    'sortOrder' => $page->sort_order ?: 1000,
+                    'sortOrder' => $page->sort_order ?: 1000 + $page->id,
                 ]));
             }
         } catch (Throwable $e) {
@@ -200,6 +201,7 @@ class Events
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
             foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_ACCOUNT_MENU)->all() as $page) {
+                /* @var CustomPage $page */
                 if (!$page->canView()) {
                     continue;
                 }
@@ -212,7 +214,7 @@ class Events
                     'isActive' => (Yii::$app->controller->module
                         && Yii::$app->controller->module->id === 'custom_pages'
                         && Yii::$app->controller->id === 'view' && Yii::$app->request->get('id') == $page->id),
-                    'sortOrder' => ($page->sort_order != '') ? $page->sort_order : 1000,
+                    'sortOrder' => $page->sort_order ?: 1000 + $page->id,
                 ]);
             }
         } catch (Throwable $e) {
@@ -238,7 +240,9 @@ class Events
             foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_DASHBOARD_SIDEBAR)->all() as $page) {
                 /* @var CustomPage $page */
                 if ($page->canView()) {
-                    $event->sender->addWidget(SnippetWidget::class, ['model' => $page, 'canEdit' => $canEdit], ['sortOrder' => $page->sort_order]);
+                    $event->sender->addWidget(SnippetWidget::class, ['model' => $page, 'canEdit' => $canEdit], [
+                        'sortOrder' => $page->sort_order ?: 1000 + $page->id,
+                    ]);
                 }
             }
         } catch (Throwable $e) {
@@ -257,7 +261,9 @@ class Events
                 foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_SPACE_STREAM_SIDEBAR, $space)->all() as $page) {
                     /* @var CustomPage $page */
                     if ($page->canView()) {
-                        $event->sender->addWidget(SnippetWidget::class, ['model' => $page, 'canEdit' => $canEdit], ['sortOrder' => $page->sort_order]);
+                        $event->sender->addWidget(SnippetWidget::class, ['model' => $page, 'canEdit' => $canEdit], [
+                            'sortOrder' => $page->sort_order ?: 1000 + $page->id,
+                        ]);
                     }
                 }
             }

@@ -32,6 +32,11 @@ class ImportInstanceForm extends Model
      */
     public $file;
 
+    /**
+     * @var bool
+     */
+    public $replace;
+
     public ?TemplateInstanceImportService $service = null;
 
     /**
@@ -48,6 +53,7 @@ class ImportInstanceForm extends Model
     {
         return [
             'file' => Yii::t('CustomPagesModule.template', 'Upload file'),
+            'replace' => Yii::t('CustomPagesModule.template', 'Replace existing children'),
         ];
     }
 

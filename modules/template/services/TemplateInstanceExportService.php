@@ -11,6 +11,7 @@ namespace humhub\modules\custom_pages\modules\template\services;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
+use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use Yii;
 use yii\web\Response;
@@ -24,20 +25,28 @@ class TemplateInstanceExportService
     public const VERSION = '1.0';
 
     private TemplateInstance $instance;
+    private ?TemplateElement $element = null;
     private ?array $data = null;
 
-    public function __construct(TemplateInstance $instance)
+    public function __construct(TemplateInstance $instance, ?TemplateElement $element = null)
     {
         $this->instance = $instance;
+        $this->element = $element;
     }
 
-    public static function instance(TemplateInstance $instance): self
+    public static function instance(TemplateInstance $instance, ?TemplateElement $element = null): self
     {
-        return new self($instance);
+        return new self($instance, $element);
     }
 
     public function export(): self
     {
+        $this->data = ['version' => self::VERSION];
+
+        if ($this->element instanceof TemplateElement) {
+            return $this->exportElementItems();
+        }
+
         return $this
             ->exportInstance()
             ->exportTemplate()
@@ -51,13 +60,12 @@ class TemplateInstanceExportService
 
     public function send(): Response
     {
+        return Yii::$app->controller->asJson($this->data);
         return Yii::$app->response->sendContentAsFile(json_encode($this->data), $this->getFileName());
     }
 
     private function exportInstance(): self
     {
-        $this->data = ['version' => self::VERSION];
-
         $this->data += $this->instance->attributes;
         unset($this->data['id']);
         unset($this->data['template_id']);
@@ -92,6 +100,18 @@ class TemplateInstanceExportService
         return $this;
     }
 
+    private function exportElementItems(): self
+    {
+        $elementContent = BaseElementContent::find()
+            ->where(['template_instance_id' => $this->instance->id])
+            ->andWhere(['element_id' => $this->element->id])
+            ->one();
+
+        $this->data += $this->getContainerItems($elementContent);
+
+        return $this;
+    }
+
     private function getElementsData(TemplateInstance $templateInstance): array
     {
         $elementContents = BaseElementContent::find()->where(['template_instance_id' => $templateInstance->id]);
@@ -101,13 +121,7 @@ class TemplateInstanceExportService
             /* @var BaseElementContent $elementContent */
             $contentData = ['__element_type' => get_class($elementContent)];
             $contentData += $elementContent->dyn_attributes;
-
-            if ($elementContent instanceof ContainerElement) {
-                $contentData['__element_items'] = [];
-                foreach ($elementContent->items as $containerItem) {
-                    $contentData['__element_items'][] = $this->getContainerItemData($containerItem);
-                }
-            }
+            $contentData += $this->getContainerItems($elementContent);
 
             $files = TemplateExportService::getElementContentFiles($elementContent);
             if ($files !== []) {
@@ -115,6 +129,20 @@ class TemplateInstanceExportService
             }
 
             $data[$elementContent->element->name] = $contentData;
+        }
+
+        return $data;
+    }
+
+    private function getContainerItems(?BaseElementContent $elementContent): array
+    {
+        $data = [];
+
+        if ($elementContent instanceof ContainerElement) {
+            $data['__element_items'] = [];
+            foreach ($elementContent->items as $containerItem) {
+                $data['__element_items'][] = $this->getContainerItemData($containerItem);
+            }
         }
 
         return $data;

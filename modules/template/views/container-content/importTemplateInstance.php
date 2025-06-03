@@ -21,6 +21,7 @@ use yii\widgets\ActiveForm;
     ]) ?>
         <div class="modal-body">
             <?= $form->field($model, 'file')->fileInput() ?>
+            <?= $form->field($model, 'replace')->checkbox() ?>
         </div>
         <div class="modal-footer">
             <?= ModalButton::cancel() ?>

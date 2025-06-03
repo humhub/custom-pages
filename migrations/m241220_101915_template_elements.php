@@ -124,7 +124,7 @@ class m241220_101915_template_elements extends Migration
             if ($element['elementId'] === null) {
                 $element['elementId'] = $this->findElementIdByOwner($element['ownerElementName'], $element['ownerModel'], $element['ownerId']);
                 if ($element['elementId'] === null) {
-                    $this->logWarning('Failed migration element ' . $type . ' #' . $element['id'] . '(owner ID: ' . $element['ownerContentId']. ')');
+                    $this->logWarning('Failed migration element ' . $type . ' #' . $element['id'] . '(owner ID: ' . $element['ownerContentId'] . ')');
                     continue;
                 }
             }

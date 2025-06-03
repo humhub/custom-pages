@@ -60,7 +60,6 @@ class TemplateInstanceExportService
 
     public function send(): Response
     {
-        return Yii::$app->controller->asJson($this->data);
         return Yii::$app->response->sendContentAsFile(json_encode($this->data), $this->getFileName());
     }
 

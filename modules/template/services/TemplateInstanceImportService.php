@@ -24,6 +24,7 @@ class TemplateInstanceImportService extends BaseImportService
 {
     private TemplateInstance $instance;
     private ?TemplateElement $element = null;
+    public bool $replace = false;
 
     public function __construct(TemplateInstance $instance, ?TemplateElement $element = null)
     {
@@ -54,6 +55,15 @@ class TemplateInstanceImportService extends BaseImportService
 
     private function validateCompatibility(?TemplateElement $element, array $data): bool
     {
+        // Validate JSON with multi elements structure
+        if (isset($data['__element_items']) && is_array($data['__element_items'])) {
+            foreach ($data['__element_items'] as $elementItem) {
+                $this->validateCompatibility($element, $elementItem);
+            }
+            return !$this->hasErrors();
+        }
+
+        // Validate JSON with single element structure
         if (empty($data['template'])) {
             $this->addError(Yii::t('CustomPagesModule.template', 'Template is not defined!'));
             return false;
@@ -144,12 +154,13 @@ class TemplateInstanceImportService extends BaseImportService
             return false;
         }
 
-        if (isset($data['elements']) && is_array($data['elements'])) {
+        if (isset($data['__element_items']) && is_array($data['__element_items']) && $this->element instanceof TemplateElement) {
+            // Import Multi Container Items
+            $this->importElement($this->instance, $this->element, $data);
+        } elseif (isset($data['elements']) && is_array($data['elements'])) {
             if ($this->element instanceof TemplateElement) {
-                // Import Container Item
-                $this->importElement($this->instance, $this->element, [
-                    '__element_items' => [$data],
-                ]);
+                // Import Single Container Item
+                $this->importElement($this->instance, $this->element, ['__element_items' => [$data]]);
             } else {
                 // Import Custom Page
                 $this->importElements($this->instance, $data['elements']);
@@ -201,8 +212,8 @@ class TemplateInstanceImportService extends BaseImportService
         }
 
         if ($content instanceof ContainerElement) {
-            if ($this->element === null) {
-                // Remove old container items only on import full custom page
+            if ($this->isReplaced()) {
+                // Remove old container items
                 foreach ($content->items as $oldItem) {
                     $oldItem->delete();
                 }
@@ -240,5 +251,24 @@ class TemplateInstanceImportService extends BaseImportService
                 }
             }
         }
+    }
+
+    /**
+     * Check if old data must be replaced with new imported
+     *
+     * @return bool
+     */
+    public function isReplaced(): bool
+    {
+        if (!$this->replace) {
+            // Check if the replacing must be forced
+            $this->replace =
+                // Elements of Custom Pages must be always replaced
+                ($this->element === null && $this->instance->isPage()) ||
+                // If Container can has only single Item then it must be always replaced
+                ($this->element instanceof TemplateElement && !$this->element->getDefaultContent(true)->definition->allow_multiple);
+        }
+
+        return $this->replace;
     }
 }

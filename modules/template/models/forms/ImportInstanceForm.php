@@ -32,12 +32,18 @@ class ImportInstanceForm extends Model
      */
     public $file;
 
-    /**
-     * @var bool
-     */
-    public $replace;
+    public bool $replace = false;
 
     public ?TemplateInstanceImportService $service = null;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+        $this->replace = $this->getService()->isReplaced();
+    }
 
     /**
      * @inheritdoc
@@ -46,6 +52,7 @@ class ImportInstanceForm extends Model
     {
         return [
             [['file'], 'file', 'extensions' => 'json', 'checkExtensionByMimeType' => false, 'skipOnEmpty' => false],
+            [['replace'], 'boolean'],
         ];
     }
 
@@ -80,7 +87,7 @@ class ImportInstanceForm extends Model
             return false;
         }
 
-        if (!$this->getService()->importFromFile($this->file->tempName)) {
+        if (!$this->getService($this->replace)->importFromFile($this->file->tempName)) {
             $this->addError('file', implode(' ', $this->getService()->getErrors()));
             return false;
         }
@@ -88,10 +95,14 @@ class ImportInstanceForm extends Model
         return true;
     }
 
-    public function getService(): TemplateInstanceImportService
+    public function getService(?bool $replace = null): TemplateInstanceImportService
     {
         if ($this->service === null) {
             $this->service = new TemplateInstanceImportService($this->instance, $this->element);
+        }
+
+        if ($replace !== null) {
+            $this->service->replace = $replace;
         }
 
         return $this->service;

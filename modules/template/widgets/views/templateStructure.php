@@ -97,8 +97,7 @@ InlineEditorAsset::register($this);
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Import'))
                                     ->icon('download')
-                                    ->action('importTemplateInstance')
-                                    ->style($container->canAddItem() ? '' : 'display:none') ?></li>
+                                    ->action('importTemplateInstance') ?></li>
                             <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Export'))
                                     ->icon('upload')
                                     ->action('exportTemplateInstance') ?></li>

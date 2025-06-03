@@ -267,7 +267,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         const container = this.$.find('[data-container-id=' + containerId + ']');
         const allowAddItem = container.data('allow-multiple') === 1 || !container.find('[data-container-item-id]').length;
         container.find('> .cp-structure-container')
-            .find('[data-action-click=addContainerItem], [data-action-click=importTemplateInstance]')
+            .find('[data-action-click=addContainerItem]')
             .toggle(allowAddItem);
         $('[data-actions-container-id]').remove();
     }

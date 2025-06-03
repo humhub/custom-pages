@@ -23,6 +23,7 @@ class m241220_101915_template_elements extends Migration
         ]);
         $this->safeAddForeignKey('fk-element_id', 'custom_pages_template_element_content', 'element_id', 'custom_pages_template_element', 'id', 'CASCADE');
         $this->safeAddForeignKey('fk-definition_id', 'custom_pages_template_element_content', 'definition_id', 'custom_pages_template_element_content_definition', 'id', 'CASCADE');
+        $this->renameTable('custom_pages_template_container_content_item', 'custom_pages_template_element_container_item');
 
         $this->migrateElements('custom_pages_template_text_content', 'Text', ['content', 'inline_text']);
         $this->migrateElements('custom_pages_template_richtext_content', 'Richtext', ['content']);
@@ -37,7 +38,6 @@ class m241220_101915_template_elements extends Migration
         $this->migrateElements('custom_pages_template_image_content', 'Image', ['file_guid', 'alt'], true, 'custom_pages_template_image_content_definition', ['height', 'width', 'style']);
 
         // Migrate Container Elements:
-        $this->renameTable('custom_pages_template_container_content_item', 'custom_pages_template_element_container_item');
         $this->safeDropForeignKey('fk-tmpl-container-item-content', 'custom_pages_template_element_container_item');
         $this->safeAddColumn('custom_pages_template_element_container_item', 'element_content_id', $this->integer()->after('container_content_id'));
         $this->migrateElements(
@@ -90,10 +90,10 @@ class m241220_101915_template_elements extends Migration
         $newContentType = 'humhub\\modules\\custom_pages\\modules\\template\\elements\\' . $type . 'Element';
 
         $elements = (new Query())
-            ->select('ot.*, e.id AS elementId, oc.id AS ownerContentId')
+            ->select('ot.*, e.id AS elementId, oc.id AS ownerContentId, oc.element_name AS ownerElementName, oc.owner_model AS ownerModel, oc.owner_id AS ownerId')
             ->from($oldTable . ' AS ot')
             ->innerJoin('custom_pages_template_owner_content AS oc', 'ot.id = oc.content_id AND oc.content_type = :contentType', ['contentType' => $oldContentType])
-            ->innerJoin('custom_pages_template_element AS e', 'e.content_type = oc.content_type AND e.name = oc.element_name');
+            ->leftJoin('custom_pages_template_element AS e', 'e.content_type = oc.content_type AND e.name = oc.element_name AND oc.owner_model = :templateClass AND oc.owner_id = e.template_id', ['templateClass' => 'humhub\\modules\\custom_pages\\modules\\template\\models\\Template']);
 
         // Map between old and new definition Ids; Key - old, Value - new.
         $definitionIds = [];
@@ -118,6 +118,14 @@ class m241220_101915_template_elements extends Migration
                     }
                 } elseif (isset($element[$attrName])) {
                     $dynValues[$attrName] = $element[$attrName];
+                }
+            }
+
+            if ($element['elementId'] === null) {
+                $element['elementId'] = $this->findElementIdByOwner($element['ownerElementName'], $element['ownerModel'], $element['ownerId']);
+                if ($element['elementId'] === null) {
+                    $this->logWarning('Failed migration element ' . $type . ' #' . $element['id'] . '(owner ID: ' . $element['ownerContentId']. ')');
+                    continue;
                 }
             }
 
@@ -207,5 +215,29 @@ class m241220_101915_template_elements extends Migration
                 [$columns['old'] => $oldElementContentId],
             );
         }
+    }
+
+    private function findElementIdByOwner(?string $elementName, ?string $ownerClass, ?int $ownerId): ?int
+    {
+        if (!$elementName || !$ownerClass || !$ownerId) {
+            return null;
+        }
+
+        $query = (new Query())
+            ->select('e.id')
+            ->from('custom_pages_template_element AS e')
+            ->where(['e.name' => $elementName]);
+
+        return match ($ownerClass) {
+            'humhub\modules\custom_pages\modules\template\models\TemplateInstance' => $query
+                ->innerJoin('custom_pages_template_instance AS ti', 'ti.template_id = e.template_id')
+                ->andWhere(['ti.id' => $ownerId])
+                ->scalar() ?: null,
+            'humhub\modules\custom_pages\modules\template\models\ContainerContentItem' => $query
+                ->innerJoin('custom_pages_template_element_container_item AS ci', 'ci.template_id = e.template_id')
+                ->andWhere(['ci.id' => $ownerId])
+                ->scalar() ?: null,
+            default => null,
+        };
     }
 }

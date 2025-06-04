@@ -43,14 +43,9 @@ class TemplateInstanceExportService
     {
         $this->data = ['version' => self::VERSION];
 
-        if ($this->element instanceof TemplateElement) {
-            return $this->exportElementItems();
-        }
-
-        return $this
-            ->exportInstance()
-            ->exportTemplate()
-            ->exportElements();
+        return $this->element instanceof TemplateElement
+            ? $this->exportContainerItems()
+            : $this->exportTemplateInstance();
     }
 
     private function getFileName(): string
@@ -63,50 +58,36 @@ class TemplateInstanceExportService
         return Yii::$app->response->sendContentAsFile(json_encode($this->data), $this->getFileName());
     }
 
-    private function exportInstance(): self
+    private function exportTemplateInstance(): self
     {
-        $this->data += $this->instance->attributes;
-        unset($this->data['id']);
-        unset($this->data['template_id']);
-        unset($this->data['page_id']);
-        unset($this->data['container_item_id']);
-
-        return $this;
-    }
-
-    private function exportTemplate(): self
-    {
-        $template = $this->instance->template;
         if ($this->instance->isContainer()) {
-            $containerItem = $this->instance->containerItem;
-            $this->data['sort_order'] = $containerItem->sort_order ?? 0;
-            $this->data['title'] = $containerItem->title ?? '';
-        }
-        $this->data['template'] = $template->name;
-        return $this;
-    }
-
-    private function exportElements(): self
-    {
-        $templateInstance = $this->instance;
-
-        if ($templateInstance->isContainer()) {
-            $templateInstance = $templateInstance->containerItem->templateInstance;
+            $data = $this->getContainerItemData($this->instance->containerItem);
+        } else {
+            $data = [
+                'template' => $this->instance->template->name,
+                'elements' => $this->getElementsData($this->instance),
+            ];
         }
 
-        $this->data['elements'] = $this->getElementsData($templateInstance);
+        $this->data['templateInstances'] = [$data];
 
         return $this;
     }
 
-    private function exportElementItems(): self
+    private function exportContainerItems(): self
     {
         $elementContent = BaseElementContent::find()
             ->where(['template_instance_id' => $this->instance->id])
             ->andWhere(['element_id' => $this->element->id])
             ->one();
 
-        $this->data += $this->getContainerItems($elementContent);
+        $this->data['templateInstances'] = [];
+
+        if ($elementContent instanceof ContainerElement) {
+            foreach ($elementContent->items as $containerItem) {
+                $this->data['templateInstances'][] = $this->getContainerItemData($containerItem);
+            }
+        }
 
         return $this;
     }
@@ -120,7 +101,13 @@ class TemplateInstanceExportService
             /* @var BaseElementContent $elementContent */
             $contentData = ['__element_type' => get_class($elementContent)];
             $contentData += $elementContent->dyn_attributes;
-            $contentData += $this->getContainerItems($elementContent);
+
+            if ($elementContent instanceof ContainerElement) {
+                $contentData['__element_items'] = [];
+                foreach ($elementContent->items as $containerItem) {
+                    $contentData['__element_items'][] = $this->getContainerItemData($containerItem);
+                }
+            }
 
             $files = TemplateExportService::getElementContentFiles($elementContent);
             if ($files !== []) {
@@ -128,20 +115,6 @@ class TemplateInstanceExportService
             }
 
             $data[$elementContent->element->name] = $contentData;
-        }
-
-        return $data;
-    }
-
-    private function getContainerItems(?BaseElementContent $elementContent): array
-    {
-        $data = [];
-
-        if ($elementContent instanceof ContainerElement) {
-            $data['__element_items'] = [];
-            foreach ($elementContent->items as $containerItem) {
-                $data['__element_items'][] = $this->getContainerItemData($containerItem);
-            }
         }
 
         return $data;

@@ -72,12 +72,12 @@ InlineEditorAsset::register($this);
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Edit'))
                         ->icon('pencil')
                         ->action('editElements') ?></li>
-                    <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Export'))
-                        ->icon('upload')
-                        ->action('exportTemplateInstance') ?></li>
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Import'))
                             ->icon('download')
                             ->action('importTemplateInstance') ?></li>
+                    <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Export'))
+                        ->icon('upload')
+                        ->action('exportTemplateInstance') ?></li>
                 <?php endif; ?>
                 </ul>
             </div>

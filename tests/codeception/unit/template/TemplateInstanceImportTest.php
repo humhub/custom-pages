@@ -64,39 +64,58 @@ class TemplateInstanceImportTest extends HumHubDbTestCase
 
         $service = $this->getService();
         $service->run(['version' => TemplateInstanceExportService::VERSION]);
+        $this->assertEquals(['Template instances are not found in the JSON file!'], $service->getErrors());
+
+        $service = $this->getService();
+        $service->run([
+            'version' => TemplateInstanceExportService::VERSION,
+            'templateInstances' => [[]],
+        ]);
         $this->assertEquals(['Template is not defined!'], $service->getErrors());
 
         $service = $this->getService();
         $service->run([
             'version' => TemplateInstanceExportService::VERSION,
-            'template' => 'wrong_template_name',
+            'templateInstances' => [
+                ['template' => 'wrong_template_name'],
+            ],
         ]);
         $this->assertEquals(['Template "wrong_template_name" is not found in system!'], $service->getErrors());
 
         $service = $this->getService();
         $service->run([
             'version' => TemplateInstanceExportService::VERSION,
-            'template' => 'system_one_column_layout',
+            'templateInstances' => [
+                ['template' => 'system_one_column_layout'],
+            ],
         ]);
         $this->assertEquals(['Template "system_one_column_layout" is not allowed for the selected instance!'], $service->getErrors());
 
         $service = $this->getService();
         $service->run([
             'version' => TemplateInstanceExportService::VERSION,
-            'template' => 'system_two_column_layout',
-            'elements' => [],
+            'templateInstances' => [
+                [
+                    'template' => 'system_two_column_layout',
+                    'elements' => [],
+                ],
+            ],
         ]);
         $this->assertEquals(['Mismatch number of elements for the template "system_two_column_layout"!'], $service->getErrors());
 
         $service = $this->getService();
         $service->run([
             'version' => TemplateInstanceExportService::VERSION,
-            'template' => 'system_two_column_layout',
-            'elements' => [
-                'content' => [
-                    '__element_type' => ContainerElement::class,
+            'templateInstances' => [
+                [
+                    'template' => 'system_two_column_layout',
+                    'elements' => [
+                        'content' => [
+                            '__element_type' => ContainerElement::class,
+                        ],
+                        'wrong' => [],
+                    ],
                 ],
-                'wrong' => [],
             ],
         ]);
         $this->assertEquals(['Template "system_two_column_layout" has incompatible or missed elements "sidebar_container"!'], $service->getErrors());

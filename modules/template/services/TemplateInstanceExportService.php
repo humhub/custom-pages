@@ -11,6 +11,7 @@ namespace humhub\modules\custom_pages\modules\template\services;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
+use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use Yii;
 use yii\web\Response;
@@ -24,29 +25,42 @@ class TemplateInstanceExportService
     public const VERSION = '1.0';
 
     private TemplateInstance $instance;
+    private ?TemplateElement $element = null;
     private ?array $data = null;
 
-    public function __construct(TemplateInstance $instance)
+    public function __construct(TemplateInstance $instance, ?TemplateElement $element = null)
     {
         $this->instance = $instance;
+        $this->element = $element;
     }
 
-    public static function instance(TemplateInstance $instance): self
+    public static function instance(TemplateInstance $instance, ?TemplateElement $element = null): self
     {
-        return new self($instance);
+        return new self($instance, $element);
     }
 
     public function export(): self
     {
-        return $this
-            ->exportInstance()
-            ->exportTemplate()
-            ->exportElements();
+        $this->data = ['version' => self::VERSION];
+
+        return $this->element instanceof TemplateElement
+            ? $this->exportContainerItems()
+            : $this->exportTemplateInstance();
     }
 
     private function getFileName(): string
     {
-        return $this->instance->getType() . '_' . $this->instance->template->name . '_' . date('Y-m-d_H-i') . '.json';
+        if ($this->element instanceof TemplateElement) {
+            // Full container with all items
+            $prefix = 'container_' . $this->element->name;
+        } elseif ($this->instance->isContainer()) {
+            // Single container item
+            $prefix = 'item_' . $this->instance->template->name;
+        } else {
+            // Full page
+            $prefix = 'page_' . $this->instance->template->name;
+        }
+        return $prefix . '_' . date('Y-m-d_H-i') . '.json';
     }
 
     public function send(): Response
@@ -54,40 +68,36 @@ class TemplateInstanceExportService
         return Yii::$app->response->sendContentAsFile(json_encode($this->data), $this->getFileName());
     }
 
-    private function exportInstance(): self
+    private function exportTemplateInstance(): self
     {
-        $this->data = ['version' => self::VERSION];
-
-        $this->data += $this->instance->attributes;
-        unset($this->data['id']);
-        unset($this->data['template_id']);
-        unset($this->data['page_id']);
-        unset($this->data['container_item_id']);
-
-        return $this;
-    }
-
-    private function exportTemplate(): self
-    {
-        $template = $this->instance->template;
         if ($this->instance->isContainer()) {
-            $containerItem = $this->instance->containerItem;
-            $this->data['sort_order'] = $containerItem->sort_order ?? 0;
-            $this->data['title'] = $containerItem->title ?? '';
+            $data = $this->getContainerItemData($this->instance->containerItem);
+        } else {
+            $data = [
+                'template' => $this->instance->template->name,
+                'elements' => $this->getElementsData($this->instance),
+            ];
         }
-        $this->data['template'] = $template->name;
+
+        $this->data['templateInstances'] = [$data];
+
         return $this;
     }
 
-    private function exportElements(): self
+    private function exportContainerItems(): self
     {
-        $templateInstance = $this->instance;
+        $elementContent = BaseElementContent::find()
+            ->where(['template_instance_id' => $this->instance->id])
+            ->andWhere(['element_id' => $this->element->id])
+            ->one();
 
-        if ($templateInstance->isContainer()) {
-            $templateInstance = $templateInstance->containerItem->templateInstance;
+        $this->data['templateInstances'] = [];
+
+        if ($elementContent instanceof ContainerElement) {
+            foreach ($elementContent->items as $containerItem) {
+                $this->data['templateInstances'][] = $this->getContainerItemData($containerItem);
+            }
         }
-
-        $this->data['elements'] = $this->getElementsData($templateInstance);
 
         return $this;
     }

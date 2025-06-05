@@ -24,6 +24,7 @@ class TemplateInstanceImportService extends BaseImportService
 {
     private TemplateInstance $instance;
     private ?TemplateElement $element = null;
+    public bool $replace = false;
 
     public function __construct(TemplateInstance $instance, ?TemplateElement $element = null)
     {
@@ -140,20 +141,38 @@ class TemplateInstanceImportService extends BaseImportService
             return false;
         }
 
-        if (!$this->validateCompatibility($this->element, $data)) {
+        if (!isset($data['templateInstances']) ||
+            !is_array($data['templateInstances']) ||
+            $data['templateInstances'] === []) {
+            $this->addError(Yii::t('CustomPagesModule.template', 'Template instances are not found in the JSON file!'));
             return false;
         }
 
-        if (isset($data['elements']) && is_array($data['elements'])) {
-            if ($this->element instanceof TemplateElement) {
-                // Import Container Item
-                $this->importElement($this->instance, $this->element, [
-                    '__element_items' => [$data],
-                ]);
-            } else {
-                // Import Custom Page
-                $this->importElements($this->instance, $data['elements']);
+        foreach ($data['templateInstances'] as $templateInstance) {
+            if (!$this->validateCompatibility($this->element, $templateInstance)) {
+                return false;
             }
+        }
+
+        if ($this->element instanceof TemplateElement) {
+            // Import Container Item/Items
+            $elementContent = $this->element->getDefaultContent();
+            if (!$elementContent instanceof ContainerElement) {
+                $this->addError('Wrong container selected!');
+                return false;
+            }
+            if (count($data['templateInstances']) > 1 && !$elementContent->definition->allow_multiple) {
+                $this->addError(Yii::t('CustomPagesModule.template', 'The container supports only single template instance for importing!.'));
+                return false;
+            }
+            $this->importElement($this->instance, $this->element, ['__element_items' => $data['templateInstances']]);
+        } else {
+            // Import Custom Page
+            if (count($data['templateInstances']) > 1) {
+                $this->addError(Yii::t('CustomPagesModule.template', 'Custom page supports only single template instance for importing!.'));
+                return false;
+            }
+            $this->importElements($this->instance, $data['templateInstances'][0]['elements'] ?? []);
         }
 
         return !$this->hasErrors();
@@ -201,8 +220,8 @@ class TemplateInstanceImportService extends BaseImportService
         }
 
         if ($content instanceof ContainerElement) {
-            if ($this->element === null) {
-                // Remove old container items only on import full custom page
+            if ($this->isReplaced()) {
+                // Remove old container items
                 foreach ($content->items as $oldItem) {
                     $oldItem->delete();
                 }
@@ -240,5 +259,24 @@ class TemplateInstanceImportService extends BaseImportService
                 }
             }
         }
+    }
+
+    /**
+     * Check if old data must be replaced with new imported
+     *
+     * @return bool
+     */
+    public function isReplaced(): bool
+    {
+        if (!$this->replace) {
+            // Check if the replacing must be forced
+            $this->replace =
+                // Elements of Custom Pages must be always replaced
+                ($this->element === null && $this->instance->isPage()) ||
+                // If Container can has only single Item then it must be always replaced
+                ($this->element instanceof TemplateElement && !$this->element->getDefaultContent(true)->definition->allow_multiple);
+        }
+
+        return $this->replace;
     }
 }

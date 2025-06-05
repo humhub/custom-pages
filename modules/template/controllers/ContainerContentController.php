@@ -295,7 +295,17 @@ class ContainerContentController extends ContentContainerController
 
     public function actionExportInstance()
     {
-        return TemplateInstanceExportService::instance($this->getTemplateInstance())
+        $instance = $this->getTemplateInstance();
+
+        $elementId = Yii::$app->request->get('elementId');
+        if ($elementId > 0) {
+            $element = TemplateElement::findOne(['id' => $elementId]);
+            if ($element === null || $element->template_id !== $instance->template_id) {
+                throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template element is not found!'));
+            }
+        }
+
+        return TemplateInstanceExportService::instance($instance, $element ?? null)
             ->export()
             ->send();
     }

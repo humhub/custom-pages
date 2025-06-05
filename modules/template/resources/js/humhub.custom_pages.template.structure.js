@@ -215,7 +215,10 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
     TemplateStructure.prototype.exportTemplateInstance = function (evt) {
         const url = this.data('instance-export-url');
         const templateInstanceId = evt.$target.closest('[data-template-instance-id]').data('template-instance-id');
-        document.location = url + (url.indexOf('?') > -1 ? '&' : '?') + 'id=' + templateInstanceId;
+        const elementId = evt.$target.closest('.cp-structure-actions').parent('.cp-structure-container').parent().data('element-id');
+        document.location = url + (url.indexOf('?') > -1 ? '&' : '?') +
+            'id=' + templateInstanceId +
+            (elementId ? '&elementId=' + elementId : '');
     }
 
     TemplateStructure.prototype.importTemplateInstance = function (evt) {
@@ -264,7 +267,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         const container = this.$.find('[data-container-id=' + containerId + ']');
         const allowAddItem = container.data('allow-multiple') === 1 || !container.find('[data-container-item-id]').length;
         container.find('> .cp-structure-container')
-            .find('[data-action-click=addContainerItem], [data-action-click=importTemplateInstance]')
+            .find('[data-action-click=addContainerItem]')
             .toggle(allowAddItem);
         $('[data-actions-container-id]').remove();
     }

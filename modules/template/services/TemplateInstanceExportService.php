@@ -50,7 +50,17 @@ class TemplateInstanceExportService
 
     private function getFileName(): string
     {
-        return $this->instance->getType() . '_' . $this->instance->template->name . '_' . date('Y-m-d_H-i') . '.json';
+        if ($this->element instanceof TemplateElement) {
+            // Full container with all items
+            $prefix = 'container_' . $this->element->name;
+        } elseif ($this->instance->isContainer()) {
+            // Single container item
+            $prefix = 'item_' . $this->instance->template->name;
+        } else {
+            // Full page
+            $prefix = 'page_' . $this->instance->template->name;
+        }
+        return $prefix . '_' . date('Y-m-d_H-i') . '.json';
     }
 
     public function send(): Response

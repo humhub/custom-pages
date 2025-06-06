@@ -217,7 +217,7 @@ class ContainerContentController extends ContentContainerController
             return $this->asJson([
                 'success' => true,
                 'id' => $elementContent->id,
-                'output' => (new BaseElementVariable($elementContent))->render(),
+                'output' => $elementContent->getTemplateVariable(true),
                 'structure' => TemplateStructure::widget(['templateInstance' => $form->owner->templateInstance]),
             ]);
         }
@@ -258,7 +258,7 @@ class ContainerContentController extends ContentContainerController
 
         return $this->asJson([
             'success' => true,
-            'output' => (new BaseElementVariable($elementContent))->render(),
+            'output' => $elementContent->getTemplateVariable(true),
         ]);
     }
 
@@ -289,7 +289,7 @@ class ContainerContentController extends ContentContainerController
 
         return $this->asJson([
             'success' => true,
-            'output' => (new BaseElementVariable($elementContent))->render(),
+            'output' => $elementContent->getTemplateVariable(true),
         ]);
     }
 

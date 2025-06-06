@@ -48,7 +48,7 @@ abstract class BaseContentContainerElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function render($options = [])
+    public function __toString()
     {
         return Html::encode($this->getRecord()?->getDisplayName());
     }

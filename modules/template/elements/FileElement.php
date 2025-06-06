@@ -104,7 +104,7 @@ class FileElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function render($options = [])
+    public function __toString()
     {
         if ($this->hasFile()) {
             return $this->getFile()->getUrl();

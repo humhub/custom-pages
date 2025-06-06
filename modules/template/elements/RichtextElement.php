@@ -59,7 +59,7 @@ class RichtextElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function render($options = [])
+    public function __toString()
     {
         return $this->purify($this->content);
     }

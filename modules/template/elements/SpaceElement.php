@@ -35,4 +35,8 @@ class SpaceElement extends BaseContentContainerElement
             'guid' => Yii::t('CustomPagesModule.template', 'Select space'),
         ];
     }
+
+    public function getTemplateVariable($mode): BaseElementVariable {
+        return new SpaceElementVariable($this, $mode);
+    }
 }

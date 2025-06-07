@@ -48,7 +48,7 @@ abstract class BaseContentContainerElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function render($options = [])
+    public function __toString()
     {
         return Html::encode($this->getRecord()?->getDisplayName());
     }
@@ -94,5 +94,9 @@ abstract class BaseContentContainerElement extends BaseElementContent
         }
 
         return $this->record;
+    }
+
+    public function getTemplateVariable($mode): BaseElementVariable {
+        return new BaseContentContainerElementVariable($this, $mode);
     }
 }

@@ -67,11 +67,6 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
     public $filesSaved = false;
 
     /**
-     * @return string rendered content type by means of the given $options.
-     */
-    abstract public function render($options = []);
-
-    /**
      * @return string the label of this content type
      */
     abstract public function getLabel(): string;
@@ -309,11 +304,6 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
         parent::afterDelete();
     }
 
-    public function isEditMode(array $options = []): bool
-    {
-        return isset($options['mode']) && $options['mode'] === 'edit';
-    }
-
     public function purify($content)
     {
         $config = \HTMLPurifier_Config::createDefault();
@@ -323,19 +313,6 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
         return \yii\helpers\HtmlPurifier::process($content, $config);
     }
 
-    public function getOption($options, $key, $default = null)
-    {
-        if (isset($options[$key])) {
-            if (is_bool($options[$key])) {
-                return ($options[$key]) ? '1' : '0';
-            } else {
-                return $options[$key];
-            }
-        } else {
-            return $default;
-        }
-        return isset($options[$key]) ? strval($options[$key]) : $default;
-    }
 
     /**
      * Check if the Element is empty
@@ -428,5 +405,9 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
         }
 
         return $this;
+    }
+
+    public function getTemplateVariable($mode): BaseElementVariable {
+        return new BaseElementVariable($this, $mode);
     }
 }

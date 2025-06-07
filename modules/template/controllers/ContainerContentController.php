@@ -14,7 +14,6 @@ use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\forms\AddItemEditForm;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceExportService;
 use humhub\modules\custom_pages\modules\template\widgets\EditContainerItemModal;
-use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
@@ -217,7 +216,7 @@ class ContainerContentController extends ContentContainerController
             return $this->asJson([
                 'success' => true,
                 'id' => $elementContent->id,
-                'output' => (new BaseElementVariable($elementContent))->render(),
+                'output' => $elementContent->getTemplateVariable(),
                 'structure' => TemplateStructure::widget(['templateInstance' => $form->owner->templateInstance]),
             ]);
         }
@@ -258,7 +257,7 @@ class ContainerContentController extends ContentContainerController
 
         return $this->asJson([
             'success' => true,
-            'output' => (new BaseElementVariable($elementContent))->render(),
+            'output' => $elementContent->getTemplateVariable(),
         ]);
     }
 
@@ -289,7 +288,7 @@ class ContainerContentController extends ContentContainerController
 
         return $this->asJson([
             'success' => true,
-            'output' => (new BaseElementVariable($elementContent))->render(),
+            'output' => $elementContent->getTemplateVariable(),
         ]);
     }
 

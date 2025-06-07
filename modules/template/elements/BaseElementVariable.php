@@ -12,6 +12,9 @@ class BaseElementVariable
 {
     protected BaseElementContent $elementContent;
 
+    public int $id;
+
+    public bool $empty;
     protected bool $inEditMode = false;
 
     public function __construct(BaseElementContent $elementContent, string $mode = 'edit')
@@ -20,6 +23,10 @@ class BaseElementVariable
         if ($mode === 'edit') {
             $this->inEditMode = true;
         }
+
+        $this->id = $elementContent->id;
+        $this->empty = $elementContent->isEmpty();
+
     }
 
     public function __toString()

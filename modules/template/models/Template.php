@@ -16,7 +16,6 @@ use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerDefinition;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
-use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use Yii;

@@ -29,7 +29,7 @@ abstract class BaseContentRecordElement extends BaseElementContent
     protected function getDynamicAttributes(): array
     {
         return [
-            'id' => null,
+            'contentRecordId' => null,
         ];
     }
 
@@ -39,7 +39,7 @@ abstract class BaseContentRecordElement extends BaseElementContent
     public function rules()
     {
         return [
-            [['id'], 'integer'],
+            [['contentRecordId'], 'integer'],
         ];
     }
 
@@ -53,8 +53,8 @@ abstract class BaseContentRecordElement extends BaseElementContent
      */
     public function setAttributes($values, $safeOnly = true)
     {
-        if (isset($values['id'])) {
-            $values['id'] = is_array($values['id']) ? array_shift($values['id']) : null;
+        if (isset($values['contentRecordId'])) {
+            $values['contentRecordId'] = is_array($values['contentRecordId']) ? array_shift($values['contentRecordId']) : null;
         }
 
         parent::setAttributes($values, $safeOnly);
@@ -62,12 +62,18 @@ abstract class BaseContentRecordElement extends BaseElementContent
 
     protected function getRecord(): ?ContentActiveRecord
     {
-        if (empty($this->id)) {
+        if (empty($this->contentRecordId)) {
             return null;
         }
 
-        return Yii::$app->runtimeCache->getOrSet(static::class . static::RECORD_CLASS . $this->id, function () {
-            return static::RECORD_CLASS::findOne($this->id);
+        return Yii::$app->runtimeCache->getOrSet(static::class . static::RECORD_CLASS . $this->contentRecordId, function () {
+            return static::RECORD_CLASS::findOne($this->contentRecordId);
         });
+    }
+
+    public function getTemplateVariable($mode): BaseElementVariable {
+        $variable = new BaseContentRecordElementVariable($this, $mode);
+        $variable->setContent($this->getRecord());
+        return $variable;
     }
 }

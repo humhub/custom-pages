@@ -12,7 +12,7 @@ class BaseElementVariable
 {
     protected BaseElementContent $elementContent;
 
-    public int $id;
+    public int $elementContentId;
 
     public bool $empty;
     protected bool $inEditMode = false;
@@ -24,7 +24,7 @@ class BaseElementVariable
             $this->inEditMode = true;
         }
 
-        $this->id = $elementContent->id;
+        $this->elementContentId = $elementContent->id;
         $this->empty = $elementContent->isEmpty();
 
     }

@@ -12,15 +12,6 @@ class BaseContentContainerElementVariable extends BaseElementVariable
 
     protected ?ContentContainerActiveRecord $contentContainer = null;
 
-    public function __construct(BaseElementContent $elementContent, string $mode = 'edit')
-    {
-        parent::__construct($elementContent, $mode);
-
-        if ($elementContent instanceof BaseContentContainerElement) {
-            $this->setContentContainer($elementContent->getRecord());
-        }
-    }
-
     public function setContentContainer(?ContentContainerActiveRecord $contentContainer): void
     {
         $this->contentContainer = $contentContainer;

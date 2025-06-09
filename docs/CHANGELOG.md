@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.11.1 (Unreleased)
+---------------------------
+- Enh #415: Display "Edit template" menu on structure view
+
 1.11.0-beta.3 (June 3, 2025)
 ----------------------------
 - Enh #354: Template - Add RSS Element Type

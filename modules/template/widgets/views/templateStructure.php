@@ -11,6 +11,7 @@ use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\modules\template\assets\InlineEditorAsset;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
+use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
 use humhub\modules\ui\icon\widgets\Icon;
@@ -78,6 +79,13 @@ InlineEditorAsset::register($this);
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Export'))
                         ->icon('upload')
                         ->action('exportTemplateInstance') ?></li>
+                <?php endif; ?>
+
+                <?php if (PagePermissionHelper::canTemplate()) : ?>
+                    <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Edit template'))
+                            ->icon('pencil-square-o')
+                            ->link(['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id])
+                            ->blank() ?></li>
                 <?php endif; ?>
                 </ul>
             </div>

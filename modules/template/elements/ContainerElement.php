@@ -151,7 +151,8 @@ class ContainerElement extends BaseElementContent
         return false;
     }
 
-    public function getTemplateVariable($mode): BaseElementVariable {
+    public function getTemplateVariable($mode): BaseElementVariable
+    {
         return new ContainerElementVariable($this, $mode);
     }
 }

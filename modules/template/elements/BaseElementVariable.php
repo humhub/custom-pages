@@ -24,7 +24,7 @@ class BaseElementVariable
             $this->inEditMode = true;
         }
 
-        $this->elementContentId = $elementContent->id;
+        $this->elementContentId = $elementContent->id ?? 0;
         $this->empty = $elementContent->isEmpty();
 
     }

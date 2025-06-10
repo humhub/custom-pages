@@ -36,7 +36,10 @@ class SpaceElement extends BaseContentContainerElement
         ];
     }
 
-    public function getTemplateVariable($mode): BaseElementVariable {
-        return new SpaceElementVariable($this, $mode);
+    public function getTemplateVariable($mode): BaseElementVariable
+    {
+        $variable = new SpaceElementVariable($this, $mode);
+        $variable->setContentContainer($this->getRecord());
+        return $variable;
     }
 }

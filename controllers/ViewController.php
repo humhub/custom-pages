@@ -146,9 +146,8 @@ class ViewController extends AbstractCustomContainerController
 
         return $this->owner->render($view, [
             'page' => $page,
-            'mode' => $mode,
             'canEdit' => $canEdit,
-            'html' => TemplateInstanceRendererService::instance($page)->render($mode),
+            'html' => TemplateInstanceRendererService::instance($page, $mode)->render(),
         ]);
     }
 

@@ -8,17 +8,15 @@ use humhub\modules\user\models\User;
 
 class UserElementVariable extends BaseContentContainerElementVariable
 {
-    public function __construct(BaseElementContent $elementContent, string $mode = 'edit')
+    public function __construct(BaseElementContent $elementContent)
     {
-        parent::__construct($elementContent, $mode);
+        parent::__construct($elementContent);
         TwigEngine::registerSandboxExtensionAllowedFunctions(static::class, ['getFriendCount']);
     }
 
     private function getUser(): ?User
     {
-        if ($this->contentContainer instanceof User) {
-            return $this->contentContainer;
-        }
+        return $this->contentContainer instanceof User ? $this->contentContainer : null;
     }
 
     public function getFriendCount(): int

@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\widgets;
 
-use Yii;
+use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\models\CustomPage;
 use yii\base\Widget;
 
@@ -28,10 +28,9 @@ class SnippetWidget extends Widget
 
     public function run()
     {
-        $contentContainer = property_exists(Yii::$app->controller, 'contentContainer') ? Yii::$app->controller->contentContainer : null;
         return $this->render('snippet_' . $this->model->getContentType()->getViewName(), [
             'model' => $this->model,
-            'contentContainer' => $contentContainer,
+            'contentContainer' => ContentContainerHelper::getCurrent(),
             'canEdit' => $this->canEdit,
         ]);
     }

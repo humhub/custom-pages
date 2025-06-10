@@ -16,6 +16,7 @@ use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerDefinition;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use Yii;
@@ -268,14 +269,13 @@ class Template extends ActiveRecord
      * ElementContent instances defined by the Template Instance.
      *
      * @param TemplateInstance|null $templateInstance
-     * @param string $mode
      * @return string
      */
-    public function render(TemplateInstance $templateInstance = null, string $mode = '')
+    public function render(TemplateInstance $templateInstance = null)
     {
         $result = '';
 
-        if ($mode === 'edit' && $templateInstance->isPage()) {
+        if (TemplateInstanceRendererService::inEditMode() && $templateInstance->isPage()) {
             $result = TemplateStructure::widget(['templateInstance' => $templateInstance]);
         }
 
@@ -283,7 +283,7 @@ class Template extends ActiveRecord
 
         $content = [];
         foreach ($elementContents as $elementContent) {
-            $content[$elementContent->element->name] = $elementContent->getTemplateVariable($mode);
+            $content[$elementContent->element->name] = $elementContent->getTemplateVariable();
         }
 
         $content['assets'] = new AssetVariable();

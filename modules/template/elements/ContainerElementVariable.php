@@ -3,6 +3,7 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\libs\Html;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use Yii;
 
 class ContainerElementVariable extends BaseElementVariable
@@ -12,7 +13,7 @@ class ContainerElementVariable extends BaseElementVariable
         // Note that the editMode can be set to $this->options in this case
         $options = [];
 
-        if ($this->inEditMode) {
+        if (TemplateInstanceRendererService::inEditMode()) {
             $options = array_merge([
                 'element_id' => $this->elementContent->element_id,
                 'element_content_id' => $this->elementContent->id,
@@ -39,7 +40,7 @@ class ContainerElementVariable extends BaseElementVariable
         $items = $this->elementContent->items;
 
         if (empty($items)) {
-            if ($this->inEditMode) {
+            if (TemplateInstanceRendererService::inEditMode()) {
                 $content = Html::tag('div', Yii::t('CustomPagesModule.model', 'Empty <br />Container'));
                 return $this->renderEditBlock($content, ['class' => 'cp-editor-container-empty']);
             }
@@ -48,10 +49,10 @@ class ContainerElementVariable extends BaseElementVariable
 
         $result = '';
         foreach ($items as $containerItem) {
-            $result .= $containerItem->render(($this->inEditMode) ? 'edit' : '');
+            $result .= $containerItem->render();
         }
 
-        if ($this->inEditMode) {
+        if (TemplateInstanceRendererService::inEditMode()) {
             return $this->renderEditBlock($result);
         }
 
@@ -76,6 +77,4 @@ class ContainerElementVariable extends BaseElementVariable
             'data-editor-container-id' => $this->elementContent->id,
         ], $options));
     }
-
-
 }

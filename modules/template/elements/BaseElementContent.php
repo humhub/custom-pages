@@ -407,8 +407,8 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
         return $this;
     }
 
-    public function getTemplateVariable($mode): BaseElementVariable
+    public function getTemplateVariable(): BaseElementVariable
     {
-        return new BaseElementVariable($this, $mode);
+        return new BaseElementVariable($this);
     }
 }

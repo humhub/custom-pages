@@ -8,7 +8,6 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
-use humhub\libs\Html;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use Yii;
 use yii\db\ActiveQuery;
@@ -151,8 +150,8 @@ class ContainerElement extends BaseElementContent
         return false;
     }
 
-    public function getTemplateVariable($mode): BaseElementVariable
+    public function getTemplateVariable(): BaseElementVariable
     {
-        return new ContainerElementVariable($this, $mode);
+        return new ContainerElementVariable($this);
     }
 }

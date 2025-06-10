@@ -7,6 +7,7 @@ use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use tests\codeception\_support\HumHubDbTestCase;
 
 class TemplateElementTest extends HumHubDbTestCase
@@ -22,6 +23,8 @@ class TemplateElementTest extends HumHubDbTestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->becomeUser('Admin');
+
         $this->template = Template::findOne(['id' => 1]);
         $this->element = TemplateElement::findOne(['id' => 1]);
         $this->element2 = TemplateElement::findOne(['id' => 2]);
@@ -33,7 +36,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
     public function testRenderDefaultContent()
     {
-        $result = $this->template->render($this->owner, 'edit');
+        $result = TemplateInstanceRendererService::instance($this->owner->page, 'edit')->render();
 
         $this->assertStringContainsString('<p>Default</p>', $result);
         // Edit mode is not allowed for elements except of Container
@@ -48,7 +51,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $this->element->saveInstance($this->owner, $content);
 
-        $result = $this->template->render($this->owner, 'edit');
+        $result = TemplateInstanceRendererService::instance($this->owner->page, 'edit')->render();
 
         $this->assertStringContainsString('<p>Non Default</p>', $result);
         // Edit mode is not allowed for elements except of Container
@@ -64,7 +67,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $this->element2->saveInstance($this->owner, $content);
 
-        $result = $this->template->render($this->owner, 'edit');
+        $result = TemplateInstanceRendererService::instance($this->owner->page, 'edit')->render();
 
         $this->assertStringContainsString('<p>Non Default2</p>', $result);
         // Edit mode is not allowed for elements except of Container
@@ -82,7 +85,7 @@ class TemplateElementTest extends HumHubDbTestCase
         $content2->content = '<p>Non Default New</p>';
         $this->element2->saveInstance($this->owner, $content2);
 
-        $result = $this->template->render($this->owner, 'edit');
+        $result = TemplateInstanceRendererService::instance($this->owner->page, 'edit')->render();
 
         $this->assertStringContainsString('<p>Non Default New</p>', $result);
         $this->assertNull(RichtextElement::findOne(['id' => $content->id]));
@@ -94,7 +97,7 @@ class TemplateElementTest extends HumHubDbTestCase
         $content->content = '<p>Default2</p>';
         $this->element->saveAsDefaultContent($content);
 
-        $result = $this->template->render($this->owner, 'edit');
+        $result = TemplateInstanceRendererService::instance($this->owner->page, 'edit')->render();
 
         $this->assertStringContainsString('<p>Default2</p>', $result);
         // Get sure the old default content was removed

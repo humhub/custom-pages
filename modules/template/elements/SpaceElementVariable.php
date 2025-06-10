@@ -8,9 +8,9 @@ use humhub\modules\space\services\MemberListService;
 
 class SpaceElementVariable extends BaseContentContainerElementVariable
 {
-    public function __construct(BaseElementContent $elementContent, string $mode = 'edit')
+    public function __construct(BaseElementContent $elementContent)
     {
-        parent::__construct($elementContent, $mode);
+        parent::__construct($elementContent);
         TwigEngine::registerSandboxExtensionAllowedFunctions(static::class, ['getMemberCount']);
     }
 

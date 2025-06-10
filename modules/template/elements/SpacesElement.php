@@ -156,8 +156,8 @@ class SpacesElement extends BaseRecordsElement
         return false;
     }
 
-    public function getTemplateVariable($mode): BaseElementVariable
+    public function getTemplateVariable(): BaseElementVariable
     {
-        return new SpacesElementVariable($this, $mode);
+        return new SpacesElementVariable($this);
     }
 }

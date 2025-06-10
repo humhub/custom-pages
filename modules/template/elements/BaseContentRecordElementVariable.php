@@ -15,7 +15,7 @@ class BaseContentRecordElementVariable extends BaseElementVariable
         $this->contentActiveRecord = $contentActiveRecord;
 
         if ($this->contentActiveRecord !== null) {
-            $authorVariable = new UserElementVariable($this->elementContent, ($this->inEditMode) ? 'edit' : null);
+            $authorVariable = new UserElementVariable($this->elementContent);
             $authorVariable->setContentContainer($contentActiveRecord->getCreatedBy());
             $this->author = $authorVariable;
         }

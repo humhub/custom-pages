@@ -96,9 +96,9 @@ abstract class BaseContentContainerElement extends BaseElementContent
         return $this->record;
     }
 
-    public function getTemplateVariable($mode): BaseElementVariable
+    public function getTemplateVariable(): BaseElementVariable
     {
-        $variable = new BaseContentContainerElementVariable($this, $mode);
+        $variable = new BaseContentContainerElementVariable($this);
         $variable->setContentContainer($this->getRecord());
         return $variable;
     }

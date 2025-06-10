@@ -1,9 +1,13 @@
 <?php
 
-humhub\modules\custom_pages\modules\template\assets\SourceEditorAsset::register($this);
+use humhub\modules\custom_pages\modules\template\assets\SourceEditorAsset;
+use humhub\modules\custom_pages\modules\template\models\Template;
+
+/* @var Template $template */
+
+SourceEditorAsset::register($this);
 
 $class = ($template->isLayout()) ? 'prview-layout' : 'priview-container';
-
 ?>
 
 <div id="templatePageRoot" data-ui-widget="custom_pages.template.source.TemplateSourcePreview" class="container">
@@ -21,14 +25,12 @@ $class = ($template->isLayout()) ? 'prview-layout' : 'priview-container';
             <br />
             <div id="stage">
                 <div id="nonEditModePreview" style="<?= ($editView) ? 'display:none;' : '' ?>"  class="preview <?= $class ?>">
-                    <?= $template->render(null, false); ?>
+                    <?= $template->render() ?>
                 </div>
                 <div id="editModePreview" style="<?= ($editView) ? '' : 'display:none;' ?>" class="preview <?= $class ?>">
-                    <?= $template->render(null, true); ?>
+                    <?= $template->render() ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-

@@ -27,7 +27,7 @@ class TemplateContentTest extends HumHubDbTestCase
         $content->template_instance_id = $this->owner->id;
         $content->save();
 
-        $result = $content->getTemplateVariable('edit');
+        $result = $content->getTemplateVariable();
 
         $this->assertStringContainsString('<p>Test</p>', $result);
         // Edit mode is not allowed for elements except of Container

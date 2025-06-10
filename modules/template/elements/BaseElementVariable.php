@@ -15,18 +15,12 @@ class BaseElementVariable
     public int $elementContentId;
 
     public bool $empty;
-    protected bool $inEditMode = false;
 
-    public function __construct(BaseElementContent $elementContent, string $mode = 'edit')
+    public function __construct(BaseElementContent $elementContent)
     {
         $this->elementContent = $elementContent;
-        if ($mode === 'edit') {
-            $this->inEditMode = true;
-        }
-
         $this->elementContentId = $elementContent->id ?? 0;
         $this->empty = $elementContent->isEmpty();
-
     }
 
     public function __toString()

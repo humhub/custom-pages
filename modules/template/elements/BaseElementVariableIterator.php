@@ -8,9 +8,9 @@ class BaseElementVariableIterator extends BaseElementVariable implements \Iterat
 
     private int $position;
 
-    public function __construct(BaseElementContent $elementContent, string $mode = 'edit')
+    public function __construct(BaseElementContent $elementContent)
     {
-        parent::__construct($elementContent, $mode);
+        parent::__construct($elementContent);
 
         $this->items = [];
         $this->position = 0;

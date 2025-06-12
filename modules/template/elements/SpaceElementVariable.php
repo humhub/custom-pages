@@ -12,7 +12,7 @@ use humhub\modules\custom_pages\lib\templates\twig\TwigEngine;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\services\MemberListService;
 
-class SpaceElementVariable extends BaseContentContainerElementVariable
+class SpaceElementVariable extends BaseRecordElementVariable
 {
     public function __construct(BaseElementContent $elementContent)
     {
@@ -22,7 +22,7 @@ class SpaceElementVariable extends BaseContentContainerElementVariable
 
     private function getSpace(): ?Space
     {
-        return $this->contentContainer instanceof Space ? $this->contentContainer : null;
+        return $this->record instanceof Space ? $this->record : null;
     }
 
     public function getMemberCount(): int

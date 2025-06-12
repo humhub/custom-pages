@@ -9,31 +9,21 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\content\components\ContentActiveRecord;
+use yii\db\ActiveRecord;
 
-class BaseContentRecordElementVariable extends BaseElementVariable
+class BaseContentRecordElementVariable extends BaseRecordElementVariable
 {
-    protected ?ContentActiveRecord $contentActiveRecord = null;
-
     public ?UserElementVariable $author;
 
-    public function setContent(?ContentActiveRecord $contentActiveRecord): void
+    public function setRecord(?ActiveRecord $record): self
     {
-        $this->contentActiveRecord = $contentActiveRecord;
+        parent::setRecord($record);
 
-        if ($this->contentActiveRecord !== null) {
-            $authorVariable = new UserElementVariable($this->elementContent);
-            $authorVariable->setContentContainer($contentActiveRecord->createdBy);
-            $this->author = $authorVariable;
+        if ($this->record instanceof ContentActiveRecord) {
+            $this->author = UserElementVariable::instance($this->elementContent)
+                ->setRecord($this->record->createdBy);
         }
-    }
 
-    public function __isset($name): bool
-    {
-        return property_exists($this, $name) || isset($this->contentActiveRecord->$name);
-    }
-
-    public function __get($name)
-    {
-        return $this->$name ?? $this->contentActiveRecord->$name ?? null;
+        return $this;
     }
 }

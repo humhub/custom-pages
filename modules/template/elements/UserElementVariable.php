@@ -12,7 +12,7 @@ use humhub\modules\custom_pages\lib\templates\twig\TwigEngine;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\user\models\User;
 
-class UserElementVariable extends BaseContentContainerElementVariable
+class UserElementVariable extends BaseRecordElementVariable
 {
     public function __construct(BaseElementContent $elementContent)
     {
@@ -22,7 +22,7 @@ class UserElementVariable extends BaseContentContainerElementVariable
 
     private function getUser(): ?User
     {
-        return $this->contentContainer instanceof User ? $this->contentContainer : null;
+        return $this->record instanceof User ? $this->record : null;
     }
 
     public function getFriendCount(): int

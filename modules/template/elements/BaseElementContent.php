@@ -407,6 +407,11 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
         return $this;
     }
 
+    /**
+     * Get template variable to render in Twig templates
+     *
+     * @return BaseElementVariable
+     */
     public function getTemplateVariable(): BaseElementVariable
     {
         return new BaseElementVariable($this);

@@ -24,9 +24,7 @@ use Yii;
  */
 class TwigEngine implements TemplateEngine
 {
-
     private static $sandboxExtensionConfig = [];
-
 
     /**
      * @inheritdoc
@@ -65,10 +63,10 @@ class TwigEngine implements TemplateEngine
             $module->enableTwiqSandboxExtensionConfig['allowedFilters'],
             ArrayHelper::merge(
                 $module->enableTwiqSandboxExtensionConfig['allowedMethods'],
-                static::$sandboxExtensionConfig['allowedMethods'] ?? []
+                static::$sandboxExtensionConfig['allowedMethods'] ?? [],
             ),
             $module->enableTwiqSandboxExtensionConfig['allowedProperties'],
-            $module->enableTwiqSandboxExtensionConfig['allowedFunctions']
+            $module->enableTwiqSandboxExtensionConfig['allowedFunctions'],
         );
     }
 

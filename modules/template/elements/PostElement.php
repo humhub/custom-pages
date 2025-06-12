@@ -11,6 +11,9 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 use humhub\modules\post\models\Post;
 use Yii;
 
+/**
+ * Class to manage content records of the Post elements
+ */
 class PostElement extends BaseContentRecordElement
 {
     protected const RECORD_CLASS = Post::class;
@@ -38,8 +41,7 @@ class PostElement extends BaseContentRecordElement
      */
     public function __toString()
     {
-        return "Post". $this->contentRecordId;
+        return $this->getRecord()?->message ?? '';
     }
-
 
 }

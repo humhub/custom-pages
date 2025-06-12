@@ -150,6 +150,9 @@ class ContainerElement extends BaseElementContent
         return false;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getTemplateVariable(): BaseElementVariable
     {
         return new ContainerElementVariable($this);

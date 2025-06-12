@@ -17,7 +17,7 @@ use Yii;
  * @property-read ContentActiveRecord|null $record
  *
  * Dynamic attributes:
- * @property string $id
+ * @property string $contentRecordId
  */
 abstract class BaseContentRecordElement extends BaseElementContent
 {
@@ -54,7 +54,7 @@ abstract class BaseContentRecordElement extends BaseElementContent
     public function setAttributes($values, $safeOnly = true)
     {
         if (isset($values['contentRecordId'])) {
-            $values['contentRecordId'] = is_array($values['contentRecordId']) ? array_shift($values['contentRecordId']) : null;
+            $values['contentRecordId'] = is_array($values['contentRecordId']) ? array_shift($values['contentRecordId']) : $values['contentRecordId'];
         }
 
         parent::setAttributes($values, $safeOnly);
@@ -71,6 +71,9 @@ abstract class BaseContentRecordElement extends BaseElementContent
         });
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getTemplateVariable(): BaseElementVariable
     {
         $variable = new BaseContentRecordElementVariable($this);

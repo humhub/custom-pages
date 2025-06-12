@@ -36,6 +36,9 @@ class SpaceElement extends BaseContentContainerElement
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getTemplateVariable(): BaseElementVariable
     {
         $variable = new SpaceElementVariable($this);

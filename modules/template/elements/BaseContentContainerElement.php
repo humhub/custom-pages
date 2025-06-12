@@ -74,14 +74,6 @@ abstract class BaseContentContainerElement extends BaseElementContent
     }
 
     /**
-     * @inheritdoc
-     */
-    public function beforeValidate()
-    {
-        return parent::beforeValidate();
-    }
-
-    /**
      * Get a related record(User or Space) to the container
      *
      * @return ContentContainerActiveRecord|null
@@ -96,6 +88,9 @@ abstract class BaseContentContainerElement extends BaseElementContent
         return $this->record;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getTemplateVariable(): BaseElementVariable
     {
         $variable = new BaseContentContainerElementVariable($this);

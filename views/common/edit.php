@@ -95,7 +95,10 @@ $contentType = $page->getContentType();
 
         <?= $form->field($page, 'visibility')->radioList($page->getVisibilitySelection()) ?>
 
-        <?= Button::save()->submit() ?>
+        <?= Button::save(!$page->isNewRecord ? null : ($page->id
+            ? Yii::t('CustomPagesModule.view', 'Copy')
+            : Yii::t('CustomPagesModule.view', 'Create'))
+        )->submit() ?>
 
         <?php if (!$page->isNewRecord) : ?>
             <?= Link::danger(Yii::t('CustomPagesModule.view', 'Delete'))->post(Url::toDeletePage($page, $target->container))->pjax(false)->confirm() ?>

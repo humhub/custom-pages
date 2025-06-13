@@ -18,8 +18,8 @@ use yii\helpers\Html;
 
 <div class="target-page-list <?= Html::encode($target->id) ?>">
     <div class="target-page-list-head">
-        <strong><?= $target->icon ? '<i class="fa '.Html::encode($target->icon).'"></i> ' : '' ?><?= Html::encode($target->name) ?></strong>
-        <?= Button::success()->icon('fa-plus')->right()->link(Url::toChooseContentType($target, $pageType))->xs(); ?>
+        <strong><?= $target->icon ? '<i class="fa ' . Html::encode($target->icon) . '"></i> ' : '' ?><?= Html::encode($target->name) ?></strong>
+        <?= Button::success()->icon('plus')->right()->link(Url::toChooseContentType($target, $pageType))->xs() ?>
     </div>
     <div class="target-page-list-grid">
         <?= GridView::widget([
@@ -30,39 +30,35 @@ use yii\helpers\Html;
                     'class' => DataColumn::class,
                     'label' => Yii::t('CustomPagesModule.base', 'Title'),
                     'format' => 'raw',
-                    'value' => function ($data) {
-                        /*  @var $data CustomPage */
+                    'value' => function (CustomPage $data) {
                         return Link::to(Html::encode($data->getTitle()), $data->getUrl())->icon(Html::encode($data->icon));
-                    }
+                    },
                 ],
                 [
                     'class' => DataColumn::class,
                     'label' => Yii::t('CustomPagesModule.base', 'Type'),
                     'headerOptions' => ['style' => 'width:10%'],
-                    'value' => function ($data) {
-                        /*  @var $data CustomPage */
+                    'value' => function (CustomPage $data) {
                         return $data->getContentType()->getLabel();
-                    }
+                    },
                 ],
                 [
                     'class' => ActionColumn::class,
                     'options' => ['width' => '80px'],
+                    'contentOptions' => ['class' => 'text-right'],
+                    'template' => '{update} {copy}',
                     'buttons' => [
-                        'update' => function ($url, $model) {
-                            /*  @var $model CustomPage */
+                        'update' => function ($url, CustomPage $model) {
                             return $model->canEdit()
-                                ? Link::primary()->icon('fa-pencil')->link($model->getEditUrl())->xs()->right()
+                                ? Link::primary()->icon('pencil')->link($model->getEditUrl())->xs()
                                 : '';
                         },
-                        'view' => function () {
-                            return '';
-                        },
-                        'delete' => function () {
-                            return '';
+                        'copy' => function ($url, CustomPage $model) {
+                            return Link::defaultType()->icon('copy')->link(Url::toCopyPage($model))->xs();
                         },
                     ],
                 ],
-            ]
+            ],
         ]) ?>
     </div>
 </div>

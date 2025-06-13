@@ -12,7 +12,7 @@ use humhub\modules\custom_pages\lib\templates\twig\TwigEngine;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\user\models\User;
 
-class UserElementVariable extends BaseRecordElementVariable
+class UserElementVariable extends BaseContentContainerElementVariable
 {
     public function __construct(BaseElementContent $elementContent)
     {

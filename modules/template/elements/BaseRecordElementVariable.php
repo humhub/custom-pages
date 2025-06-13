@@ -19,14 +19,4 @@ class BaseRecordElementVariable extends BaseElementVariable
         $this->record = $record;
         return $this;
     }
-
-    public function __isset($name): bool
-    {
-        return property_exists($this, $name) || isset($this->record->$name);
-    }
-
-    public function __get($name)
-    {
-        return $this->$name ?? $this->record->$name ?? null;
-    }
 }

@@ -12,7 +12,7 @@ use humhub\modules\custom_pages\lib\templates\twig\TwigEngine;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\services\MemberListService;
 
-class SpaceElementVariable extends BaseRecordElementVariable
+class SpaceElementVariable extends BaseContentContainerElementVariable
 {
     public function __construct(BaseElementContent $elementContent)
     {

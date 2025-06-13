@@ -17,6 +17,8 @@ use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use Yii;
 use yii\db\ActiveQuery;
+use humhub\modules\ui\form\widgets\ActiveForm;
+
 
 /**
  * This is the base class for all Template Element Content types.
@@ -381,14 +383,20 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
     }
 
     /**
-     * Get a view file name to render a form with fields for this Element Content
+     * Renders the form when the element content is being edited.
      *
+     * @param ActiveForm $form
      * @return string
      */
-    public function getFormView(): string
-    {
-        return 'elements/' . lcfirst(substr(strrchr(static::class, '\\'), 1, -7));
-    }
+    abstract public function renderEditForm(ActiveForm $form): string;
+
+    /**
+     * Renders the form when the element definition is being edited.
+     *
+     * @param ActiveForm $form
+     * @return string
+     */
+    abstract public function renderDefinitionEditForm(ActiveForm $form): string;
 
     public function isDefault(): bool
     {

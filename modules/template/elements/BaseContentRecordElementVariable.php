@@ -9,21 +9,25 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\content\components\ContentActiveRecord;
-use yii\db\ActiveRecord;
+use humhub\modules\custom_pages\lib\templates\twig\TwigEngine;
 
 class BaseContentRecordElementVariable extends BaseRecordElementVariable
 {
-    public ?UserElementVariable $author;
+    public ?UserElementVariable $_author = null;
 
-    public function setRecord(?ActiveRecord $record): self
+    public function __construct(BaseElementContent $elementContent)
     {
-        parent::setRecord($record);
+        parent::__construct($elementContent);
+        TwigEngine::registerSandboxExtensionAllowedFunctions(static::class, ['getAuthor']);
+    }
 
-        if ($this->record instanceof ContentActiveRecord) {
-            $this->author = UserElementVariable::instance($this->elementContent)
+    public function getAuthor(): ?UserElementVariable
+    {
+        if ($this->_author === null && $this->record instanceof ContentActiveRecord) {
+            $this->_author = UserElementVariable::instance($this->elementContent)
                 ->setRecord($this->record->createdBy);
         }
 
-        return $this;
+        return $this->_author;
     }
 }

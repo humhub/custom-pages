@@ -16,6 +16,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\custom_pages\widgets\AdminMenu;
 use humhub\modules\custom_pages\models\forms\AddPageForm;
 use Yii;
+use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
@@ -200,10 +201,74 @@ class PageController extends AbstractCustomContainerController
         if (!$page->load(Yii::$app->request->post())) {
             return false;
         }
+
         $transaction = CustomPage::getDb()->beginTransaction();
 
         try {
             $saved = $page->save();
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
+
+        return $saved;
+    }
+
+    /**
+     * Action for copying pages.
+     *
+     * @param int $id
+     */
+    public function actionCopy($id)
+    {
+        $sourcePage = $this->findByid($id);
+
+        if (!$sourcePage) {
+            throw new BadRequestHttpException('Invalid request data!');
+        }
+
+        if (!$sourcePage->canEdit()) {
+            throw new ForbiddenHttpException('You cannot manage the page!');
+        }
+
+        $copyPage = clone $sourcePage;
+        $copyPage->setIsNewRecord(true);
+
+        if ($this->copyPage($sourcePage, $copyPage)) {
+            return (TemplateType::isType($copyPage->type))
+                ? $this->redirect(Url::toInlineEdit($copyPage, $this->contentContainer))
+                : $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));
+        }
+
+        return $this->render('@custom_pages/views/common/edit', [
+            'page' => $copyPage,
+            'pageType' => $this->getPageType(),
+            'subNav' => $this->getSubNav(),
+        ]);
+    }
+
+    /**
+     * @param $page CustomPage
+     * @return bool
+     * @throws \Throwable
+     * @throws \yii\db\Exception
+     */
+    protected function copyPage($sourcePage, $copyPage)
+    {
+        if (!$copyPage->load(Yii::$app->request->post())) {
+            return false;
+        }
+
+        $transaction = CustomPage::getDb()->beginTransaction();
+
+        try {
+            if ($saved = $copyPage->save()) {
+                // TODO: Copy Content and Template Element Contents from $sourcePage
+            }
             $transaction->commit();
         } catch (\Exception $e) {
             $transaction->rollBack();

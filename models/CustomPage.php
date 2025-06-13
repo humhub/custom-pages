@@ -124,6 +124,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
             'page_content' => Yii::t('CustomPagesModule.base', 'Page Content'),
             'iframe_attrs' => Yii::t('CustomPagesModule.base', 'Additional IFrame Attributes'),
             'sort_order' => Yii::t('CustomPagesModule.base', 'Sort Order'),
+            'target' => Yii::t('CustomPagesModule.base', 'Category'),
             'admin_only' => Yii::t('CustomPagesModule.model', 'Only visible for admins'),
             'in_new_window' => Yii::t('CustomPagesModule.model', 'Open in new window'),
             'cssClass' => Yii::t('CustomPagesModule.base', 'Style Class'),
@@ -540,6 +541,12 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     public function getTargetId(): ?string
     {
         return $this->target;
+    }
+
+    public function getAvailableTargetOptions(): array
+    {
+        $targets = CustomPagesService::instance()->getTargets($this->getPageType(), $this->content->container);
+        return array_column($targets, 'name', 'id');
     }
 
     public function hasTarget($targetId): bool

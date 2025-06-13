@@ -36,7 +36,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
     public function testRenderDefaultContent()
     {
-        $result = TemplateInstanceRendererService::instance($this->owner->page, 'edit')->render();
+        $result = TemplateInstanceRendererService::instance($this->owner->page, true)->render();
 
         $this->assertStringContainsString('<p>Default</p>', $result);
         // Edit mode is not allowed for elements except of Container
@@ -51,7 +51,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $this->element->saveInstance($this->owner, $content);
 
-        $result = TemplateInstanceRendererService::instance($this->owner->page, 'edit')->render();
+        $result = TemplateInstanceRendererService::instance($this->owner->page, true)->render();
 
         $this->assertStringContainsString('<p>Non Default</p>', $result);
         // Edit mode is not allowed for elements except of Container
@@ -67,7 +67,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $this->element2->saveInstance($this->owner, $content);
 
-        $result = TemplateInstanceRendererService::instance($this->owner->page, 'edit')->render();
+        $result = TemplateInstanceRendererService::instance($this->owner->page, true)->render();
 
         $this->assertStringContainsString('<p>Non Default2</p>', $result);
         // Edit mode is not allowed for elements except of Container
@@ -85,7 +85,7 @@ class TemplateElementTest extends HumHubDbTestCase
         $content2->content = '<p>Non Default New</p>';
         $this->element2->saveInstance($this->owner, $content2);
 
-        $result = TemplateInstanceRendererService::instance($this->owner->page, 'edit')->render();
+        $result = TemplateInstanceRendererService::instance($this->owner->page, true)->render();
 
         $this->assertStringContainsString('<p>Non Default New</p>', $result);
         $this->assertNull(RichtextElement::findOne(['id' => $content->id]));
@@ -97,7 +97,7 @@ class TemplateElementTest extends HumHubDbTestCase
         $content->content = '<p>Default2</p>';
         $this->element->saveAsDefaultContent($content);
 
-        $result = TemplateInstanceRendererService::instance($this->owner->page, 'edit')->render();
+        $result = TemplateInstanceRendererService::instance($this->owner->page, true)->render();
 
         $this->assertStringContainsString('<p>Default2</p>', $result);
         // Get sure the old default content was removed

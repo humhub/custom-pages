@@ -81,7 +81,7 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
         return $this->owner->render('template', [
             'page' => $page,
             'canEdit' => $canEdit,
-            'html' => TemplateInstanceRendererService::instance($page, $mode)->render(),
+            'html' => TemplateInstanceRendererService::instance($page, $mode === 'edit')->render(),
         ]);
     }
 

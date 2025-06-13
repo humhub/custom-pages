@@ -34,7 +34,7 @@ class SnippetController extends PageController
         return $this->render($view, [
             'snippet' => $snippet,
             'contentContainer' => $this->contentContainer,
-            'html' => TemplateInstanceRendererService::instance($snippet, 'edit')->render(),
+            'html' => TemplateInstanceRendererService::instance($snippet, true)->render(),
         ]);
     }
 

@@ -35,10 +35,10 @@ class TemplateInstanceRendererService
         }
     }
 
-    public static function instance(CustomPage $customPage, ?string $mode = null): self
+    public static function instance(CustomPage $customPage, bool $enableEditMode = false): self
     {
-        if ($mode !== null) {
-            self::$inEditMode = $mode === 'edit' && PagePermissionHelper::canEdit();
+        if ($enableEditMode) {
+            self::$inEditMode = PagePermissionHelper::canEdit();
         }
 
         return new self($customPage);

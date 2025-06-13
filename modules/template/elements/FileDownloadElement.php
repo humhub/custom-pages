@@ -118,8 +118,10 @@ class FileDownloadElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function render($options = [])
+    public function __toString()
     {
+        $options = [];
+
         if (!$this->hasFile()) {
             return '';
         }

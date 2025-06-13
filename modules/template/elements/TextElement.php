@@ -98,7 +98,7 @@ class TextElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function render($options = [])
+    public function __toString()
     {
         return $this->inline_text ? $this->purify($this->content) : Html::encode($this->content);
     }

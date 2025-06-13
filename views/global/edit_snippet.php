@@ -15,7 +15,7 @@ $editUrl = Url::toEditSnippet($snippet, $snippet->content->container);
 ?>
 
 <div>
-    <?php TemplatePage::begin(['page' => $snippet, 'canEdit' => true, 'mode' => 'edit']) ?>
+    <?php TemplatePage::begin(['page' => $snippet]) ?>
         <div class="panel panel default">
             <div class="panel-body">
                 <a href="<?= $backUrl ?>" class="btn btn-default pull-right" data-ui-loader><i class="fa fa-arrow-left"></i> <?= $backText ?></a>

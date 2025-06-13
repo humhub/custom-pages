@@ -70,7 +70,7 @@ class ImageElement extends FileElement
     /**
      * @inheritdoc
      */
-    public function render($options = [])
+    public function __toString()
     {
         if (!$this->hasFile()) {
             return '';

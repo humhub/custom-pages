@@ -22,6 +22,7 @@ class TemplateInstanceRendererService
     private ?TemplateInstance $templateInstance = null;
     private bool $applyScriptNonce = true;
     private bool $ignoreCache = false;
+    private static ?bool $inEditMode = null;
 
     public function __construct(CustomPage $customPage)
     {
@@ -34,8 +35,12 @@ class TemplateInstanceRendererService
         }
     }
 
-    public static function instance(CustomPage $customPage): self
+    public static function instance(CustomPage $customPage, bool $enableEditMode = false): self
     {
+        if ($enableEditMode) {
+            self::$inEditMode = PagePermissionHelper::canEdit();
+        }
+
         return new self($customPage);
     }
 
@@ -54,19 +59,18 @@ class TemplateInstanceRendererService
     /**
      * Render the template content
      *
-     * @param string $mode
      * @return string
      */
-    public function render(string $mode = ''): string
+    public function render(): string
     {
-        if ($mode === 'edit' && PagePermissionHelper::canEdit()) {
+        if (self::inEditMode() && PagePermissionHelper::canEdit()) {
             $this->ignoreCache();
         }
 
         $cache = $this->isCacheable() ? Yii::$app->cache : new DummyCache();
 
-        $html = $cache->getOrSet($this->templateInstance->getCacheKey(), function () use ($mode) {
-            return $this->templateInstance->render($mode);
+        $html = $cache->getOrSet($this->templateInstance->getCacheKey(), function () {
+            return $this->templateInstance->render();
         });
 
         if ($this->applyScriptNonce) {
@@ -93,5 +97,15 @@ class TemplateInstanceRendererService
         }
 
         return true;
+    }
+
+    public static function setEditMode(): void
+    {
+        self::$inEditMode = true;
+    }
+
+    public static function inEditMode(): bool
+    {
+        return self::$inEditMode === true;
     }
 }

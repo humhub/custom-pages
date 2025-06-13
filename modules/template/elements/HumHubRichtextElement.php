@@ -60,7 +60,7 @@ class HumHubRichtextElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function render($options = [])
+    public function __toString()
     {
         return Richtext::output($this->content);
     }

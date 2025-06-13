@@ -74,10 +74,7 @@ abstract class BaseRecordsElement extends BaseElementContent implements Template
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function render($options = [])
+    public function __toString()
     {
         return Html::encode(static::RECORD_CLASS);
     }

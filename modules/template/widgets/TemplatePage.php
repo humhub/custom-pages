@@ -8,10 +8,12 @@
 
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
+use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\assets\InlineEditorAsset;
 use humhub\modules\custom_pages\modules\template\assets\TemplatePageStyleAsset;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use humhub\widgets\JsWidget;
 use yii\helpers\Html;
 
@@ -38,29 +40,9 @@ class TemplatePage extends JsWidget
     public $init = true;
 
     /**
-     * @var bool defines if this page can be edited by the current user
-     */
-    public $canEdit;
-
-    /**
-     * @var string defines what mode is active: 'edit'
-     */
-    public $mode;
-
-    /**
      * @var CustomPage page instance
      */
     public $page;
-
-    /**
-     * @var \humhub\modules\content\components\ContentContainerActiveRecord
-     */
-    public $contentContainer;
-
-    /**
-     * fast
-     */
-    //public $fadeIn = 'slow';
 
     /**
      * @inheritdoc
@@ -68,7 +50,7 @@ class TemplatePage extends JsWidget
     public function init()
     {
         parent::init();
-        $this->init = $this->canEdit && $this->mode === 'edit';
+        $this->init = TemplateInstanceRendererService::inEditMode();
         ob_start();
         ob_implicit_flush(false);
     }
@@ -80,7 +62,7 @@ class TemplatePage extends JsWidget
     {
         TemplatePageStyleAsset::register($this->getView());
 
-        if ($this->canEdit && $this->mode === 'edit') {
+        if (TemplateInstanceRendererService::inEditMode()) {
             InlineEditorAsset::register($this->getView());
         }
 
@@ -95,7 +77,9 @@ class TemplatePage extends JsWidget
         $cssClass = '';
 
         //TODO: fullscreen flag
-        if ($this->page instanceof CustomPage && !$this->contentContainer && $this->page->getTargetId() !== PageType::TARGET_ACCOUNT_MENU) {
+        if ($this->page instanceof CustomPage &&
+            ContentContainerHelper::getCurrent() === null &&
+            $this->page->getTargetId() !== PageType::TARGET_ACCOUNT_MENU) {
             $cssClass .= 'container ';
         }
 

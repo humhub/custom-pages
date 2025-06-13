@@ -31,27 +31,24 @@ class TemplatePageEditButton extends Widget
     public $canEdit;
 
     /**
-     * @var string
+     * @inheritdoc
      */
-    public $mode;
+    public function beforeRun()
+    {
+        return parent::beforeRun() && $this->canEdit;
+    }
 
     /**
      * @inheritdoc
      */
     public function run()
     {
-        if (!$this->canEdit) {
-            return '';
-        }
-
         $space = Yii::$app->controller->contentContainer ?? null;
 
         $templateInstance = TemplateInstance::findOne(['page_id' => $this->page->id]);
 
         return $this->render('templatePageEditButton', [
-            'canEdit' => $this->canEdit,
             'sguid' => $space ? $space->guid : null,
-            'mode' => $this->mode,
             'pageId' => $this->page->id,
             'templateInstance' => $templateInstance,
         ]);

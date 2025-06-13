@@ -8,7 +8,6 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
-use humhub\libs\Html;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use Yii;
 use yii\db\ActiveQuery;
@@ -69,52 +68,6 @@ class ContainerElement extends BaseElementContent
         }
 
         return parent::beforeDelete();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function render($options = [])
-    {
-        $items = $this->items;
-
-        if (empty($items)) {
-            if ($this->isEditMode($options)) {
-                $content = Html::tag('div', Yii::t('CustomPagesModule.model', 'Empty <br />Container'));
-                return $this->renderEditBlock($content, ['class' => 'cp-editor-container-empty']);
-            }
-            return '';
-        }
-
-        $result = '';
-        foreach ($items as $containerItem) {
-            $result .= $containerItem->render($options['mode'] ?? '');
-        }
-
-        if ($this->isEditMode($options)) {
-            return $this->renderEditBlock($result);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Render block for inline editing
-     *
-     * @param string $content
-     * @return string
-     */
-    protected function renderEditBlock(string $content, array $options = []): string
-    {
-        if (preg_match('#<(tr).+?</\1>#is', $content)) {
-            $tagName = 'tbody';
-        } else {
-            $tagName = 'div';
-        }
-
-        return Html::tag($tagName, $content, array_merge([
-            'data-editor-container-id' => $this->id,
-        ], $options));
     }
 
     public function moveItem($itemId, $step)
@@ -195,5 +148,13 @@ class ContainerElement extends BaseElementContent
     public function isCacheable(): bool
     {
         return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTemplateVariable(): BaseElementVariable
+    {
+        return new ContainerElementVariable($this);
     }
 }

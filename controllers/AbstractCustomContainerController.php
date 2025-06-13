@@ -19,6 +19,7 @@ use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRender
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\space\models\Space;
 use Yii;
+use yii\web\ForbiddenHttpException;
 
 abstract class AbstractCustomContainerController extends ContentContainerController
 {
@@ -72,16 +73,15 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
     {
         $canEdit = PagePermissionHelper::canEdit();
         if (!$canEdit && $page->admin_only) {
-            throw new \yii\web\HttpException(403, 'Access denied!');
+            throw new ForbiddenHttpException('Access denied!');
         }
 
         $mode = $canEdit ? Yii::$app->request->get('mode', '') : '';
 
         return $this->owner->render('template', [
             'page' => $page,
-            'mode' => $mode,
             'canEdit' => $canEdit,
-            'html' => TemplateInstanceRendererService::instance($page)->render($mode),
+            'html' => TemplateInstanceRendererService::instance($page, $mode === 'edit')->render(),
         ]);
     }
 

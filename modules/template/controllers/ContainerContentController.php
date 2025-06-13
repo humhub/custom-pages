@@ -13,8 +13,8 @@ use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\forms\AddItemEditForm;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceExportService;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use humhub\modules\custom_pages\modules\template\widgets\EditContainerItemModal;
-use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
@@ -214,10 +214,11 @@ class ContainerContentController extends ContentContainerController
 
         if ($form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByElementContent($elementContent);
+            TemplateInstanceRendererService::setEditMode();
             return $this->asJson([
                 'success' => true,
                 'id' => $elementContent->id,
-                'output' => (new BaseElementVariable($elementContent))->render(),
+                'output' => (string) $elementContent->getTemplateVariable(),
                 'structure' => TemplateStructure::widget(['templateInstance' => $form->owner->templateInstance]),
             ]);
         }
@@ -255,10 +256,11 @@ class ContainerContentController extends ContentContainerController
         $elementContent = BaseElementContent::findOne(['id' => $elementContentId]);
 
         TemplateCache::flushByElementContent($elementContent);
+        TemplateInstanceRendererService::setEditMode();
 
         return $this->asJson([
             'success' => true,
-            'output' => (new BaseElementVariable($elementContent))->render(),
+            'output' => (string) $elementContent->getTemplateVariable(),
         ]);
     }
 
@@ -286,10 +288,11 @@ class ContainerContentController extends ContentContainerController
         $elementContent->moveItem($itemId, $step);
 
         TemplateCache::flushByElementContent($elementContent);
+        TemplateInstanceRendererService::setEditMode();
 
         return $this->asJson([
             'success' => true,
-            'output' => (new BaseElementVariable($elementContent))->render(),
+            'output' => (string) $elementContent->getTemplateVariable(),
         ]);
     }
 

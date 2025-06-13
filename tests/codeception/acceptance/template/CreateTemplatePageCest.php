@@ -51,8 +51,9 @@ class CreateTemplatePageCest
         $I->jsShow('.uploadElementImage', 'type');
         #$I->wait(20);
         $I->attachFile('files[]', 'test.jpg');
+        $I->waitForElementVisible('.file-preview-item');
         $I->click('.collapsableTrigger'); //Show more
-        $I->wait(2);
+        $I->waitForElementVisible('#imageelement-definitionpostdata-height');
         $I->fillField('ImageElement[definitionPostData][height]', '100');
         $I->fillField('ImageElement[definitionPostData][width]', '100');
         $I->fillField('ImageElement[definitionPostData][style]', 'border:1px solid black');

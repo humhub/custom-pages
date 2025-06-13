@@ -3,16 +3,16 @@ use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use humhub\widgets\Button;
 use humhub\widgets\Link;
 
 /* @var int $pageId */
-/* @var string $mode */
 /* @var TemplateInstance $templateInstance */
 /* @var string $sguid */
 ?>
 
-<?php if ($mode === 'edit') : ?>
+<?php if (TemplateInstanceRendererService::inEditMode()) : ?>
 
     <div id="editPageButton" class="btn-group">
         <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

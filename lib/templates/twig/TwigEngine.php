@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\lib\templates\twig;
 
+use humhub\helpers\ArrayHelper;
 use humhub\modules\custom_pages\lib\templates\TemplateEngine;
 use humhub\modules\custom_pages\Module;
 use Twig\Environment;
@@ -23,6 +24,8 @@ use Yii;
  */
 class TwigEngine implements TemplateEngine
 {
+    private static $sandboxExtensionConfig = [];
+
     /**
      * @inheritdoc
      *
@@ -53,13 +56,23 @@ class TwigEngine implements TemplateEngine
             return null;
         }
 
+
+
         return new SecurityPolicy(
             $module->enableTwiqSandboxExtensionConfig['allowedTags'],
             $module->enableTwiqSandboxExtensionConfig['allowedFilters'],
-            $module->enableTwiqSandboxExtensionConfig['allowedMethods'],
+            ArrayHelper::merge(
+                $module->enableTwiqSandboxExtensionConfig['allowedMethods'],
+                static::$sandboxExtensionConfig['allowedMethods'] ?? [],
+            ),
             $module->enableTwiqSandboxExtensionConfig['allowedProperties'],
             $module->enableTwiqSandboxExtensionConfig['allowedFunctions'],
         );
+    }
+
+    public static function registerSandboxExtensionAllowedFunctions($variableClassName, array $allowedFunctions)
+    {
+        static::$sandboxExtensionConfig['allowedMethods'][$variableClassName] = $allowedFunctions;
     }
 
 }

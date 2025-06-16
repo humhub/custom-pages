@@ -155,4 +155,12 @@ class SpacesElement extends BaseRecordsElement
     {
         return false;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTemplateVariable(): BaseElementVariable
+    {
+        return new SpacesElementVariable($this);
+    }
 }

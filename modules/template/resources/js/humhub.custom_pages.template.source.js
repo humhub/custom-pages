@@ -181,36 +181,6 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
         return 0;
     };
 
-    var TemplateSourcePreview = function (node, options) {
-        Widget.call(this, node, options);
-    };
-
-    object.inherits(TemplateSourcePreview, Widget);
-
-    TemplateSourcePreview.prototype.update = function (evt) {
-        var options = {
-            data: {
-                reload: 1,
-                editView: $('#editModePreview').is(':visible') ? '1' : '0'
-            }
-        };
-
-        var that = this;
-        client.html(evt, options).then(function (response) {
-            var $result = $(response.html);
-            $result.find('#stage').hide();
-            that.$.replaceWith($result);
-            $result.find('#stage').fadeIn('fast');
-        }).catch(function (e) {
-            module.log.error(e, true);
-        });
-    };
-
-    TemplateSourcePreview.prototype.switchMode = function (evt) {
-        evt.$trigger.toggleClass('active');
-        $('#nonEditModePreview, #editModePreview').toggle();
-    };
-
     module.initOnPjaxLoad = true;
     var init = function () {
         if ($('#templatePageRoot').length && require('ui.view').getState().action === 'edit-source') {
@@ -237,9 +207,8 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
     };
 
     module.export({
-        init: init,
-        unload: unload,
-        TemplateSourceEditor: TemplateSourceEditor,
-        TemplateSourcePreview: TemplateSourcePreview
+        init,
+        unload,
+        TemplateSourceEditor,
     });
 });

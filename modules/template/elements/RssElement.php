@@ -81,10 +81,7 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function render($options = [])
+    public function __toString()
     {
         return Html::encode($this->getRssData()->channel->title ?: $this->url);
     }
@@ -222,4 +219,11 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
         return $array;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getTemplateVariable(): BaseElementVariable
+    {
+        return new RssElementVariable($this);
+    }
 }

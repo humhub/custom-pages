@@ -16,7 +16,7 @@
 | **Container**                       |                         | The                                                               |
 | `container`                         | String                  | Returns the URL of the value of the Image Element                 |
 |                                     |                         |                                                                   |
-| ** Content Container Meta Element** |                         | Base for `User` or `Space` Elements                               |
+| **Content Container Meta Element**  |                         | Base for `User` or `Space` Elements                               |
 | `contentcontainer.guid`             | String                  |                                                                   |
 | `contentcontainer.displayName`      | String                  | The Display name of the container (e.g. First name and last name) |
 | `contentcontainer.displayNameSub`   | String                  |                                                                   |
@@ -76,6 +76,6 @@
 | `calendar.description`              | String                  | Markdown Description                                              |
 | `calendar.url`                      | String                  | Relative URL to the Calendar Entry                                |
 | `calendar.color`                    | String                  | Hex Color Code                                                    |
-| `calendar.start_datetime`           | String                  |                                                                   |
-| `calendar.end_datetime`             | String                  |                                                                   |
+| `calendar.startDateTime `           | String                  |                                                                   |
+| `calendar.endDateTime`              | String                  |                                                                   |
 | `calendar.location`                 | String                  |                                                                   |

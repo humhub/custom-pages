@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use humhub\modules\custom_pages\modules\template\widgets\TemplatePage;
 ?>
 <div>
-    <?php TemplatePage::begin(['page' => $snippet, 'canEdit' => true, 'mode' => 'edit', 'contentContainer' => $contentContainer]) ?>
+    <?php TemplatePage::begin(['page' => $snippet]) ?>
     <div class="panel panel default">
         <div class="panel-heading">
             <?= Yii::t('CustomPagesModule.base', '<strong>Edit</strong> snippet'); ?>

@@ -8,6 +8,7 @@ use humhub\modules\custom_pages\modules\template\elements\FileDownloadElement;
 use humhub\modules\custom_pages\modules\template\elements\FileElement;
 use humhub\modules\custom_pages\modules\template\elements\HumHubRichtextElement;
 use humhub\modules\custom_pages\modules\template\elements\ImageElement;
+use humhub\modules\custom_pages\modules\template\elements\PostElement;
 use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
 use humhub\modules\custom_pages\modules\template\elements\RssElement;
 use humhub\modules\custom_pages\modules\template\elements\SpaceElement;
@@ -58,6 +59,7 @@ final class ElementTypeService extends Component
         SpaceElement::class,
         UsersElement::class,
         SpacesElement::class,
+        PostElement::class,
     ];
 
     private array $types = [];

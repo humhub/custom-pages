@@ -94,6 +94,7 @@ $contentType = $page->getContentType();
         <?php endif; ?>
 
         <?= $form->field($page, 'visibility')->radioList($page->getVisibilitySelection()) ?>
+        <?= $form->field($page, 'target')->dropDownList($page->getAvailableTargetOptions()) ?>
 
         <?= Button::save(!$page->isNewRecord ? null : ($page->id
             ? Yii::t('CustomPagesModule.view', 'Copy')

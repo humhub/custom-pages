@@ -48,7 +48,7 @@ abstract class BaseContentContainerElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function render($options = [])
+    public function __toString()
     {
         return Html::encode($this->getRecord()?->getDisplayName());
     }
@@ -74,14 +74,6 @@ abstract class BaseContentContainerElement extends BaseElementContent
     }
 
     /**
-     * @inheritdoc
-     */
-    public function beforeValidate()
-    {
-        return parent::beforeValidate();
-    }
-
-    /**
      * Get a related record(User or Space) to the container
      *
      * @return ContentContainerActiveRecord|null
@@ -94,5 +86,14 @@ abstract class BaseContentContainerElement extends BaseElementContent
         }
 
         return $this->record;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTemplateVariable(): BaseElementVariable
+    {
+        return BaseRecordElementVariable::instance($this)
+            ->setRecord($this->getRecord());
     }
 }

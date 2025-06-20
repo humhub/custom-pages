@@ -154,4 +154,12 @@ class UsersElement extends BaseRecordsElement
     {
         return false;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTemplateVariable(): BaseElementVariable
+    {
+        return new UsersElementVariable($this);
+    }
 }

@@ -255,34 +255,6 @@ class AdminController extends \humhub\modules\admin\components\Controller
     }
 
     /**
-     * This action will render a preview of a given template.
-     *
-     * @param int $id
-     * @param bool|null $editView
-     * @param bool|null $reload
-     * @return string
-     */
-    public function actionPreview($id, $editView = null, $reload = null)
-    {
-        $this->subLayout = null;
-        $template = Template::findOne(['id' => $id]);
-
-        $editView = ($editView != null) ? $editView : false;
-
-        if ($reload != null) {
-            return $this->renderPartial('@custom_pages/modules/template/views/admin/preview', [
-                'template' => $template,
-                'editView' => $editView,
-            ]);
-        } else {
-            return $this->render('@custom_pages/modules/template/views/admin/preview', [
-                'template' => $template,
-                'editView' => $editView,
-            ]);
-        }
-    }
-
-    /**
      * Creates a json result array used by multiple actions.
      *
      * @param bool $success defines if the process was successfull e.g. saving an element

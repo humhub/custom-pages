@@ -56,9 +56,6 @@ class Module extends ContentContainerModule
         'allowedMethods' => [
             BaseElementVariable::class => [
                 '__toString',
-                'items',
-                'profile',
-                'getempty',
             ],
             UnicodeString::class => [
                 '__toString',
@@ -72,10 +69,7 @@ class Module extends ContentContainerModule
             ],
         ],
         'allowedProperties' => [
-            BaseElementVariable::class => [
-                'content',
-                'empty',
-            ],
+            BaseElementVariable::class => '*',
             AssetVariable::class => [
                 'bgImage1.jpg',
                 'bgImage2.jpg',

@@ -26,7 +26,7 @@ class CreatePhpPageCest
         $I->fillField('SettingsForm[phpGlobalSnippetPath]', '@custom_pages/tests/codeception/_data/views/global_snippets');
         $I->fillField('SettingsForm[phpContainerSnippetPath]', '@custom_pages/tests/codeception/_data/views/container_snippets');
         $I->fillField('SettingsForm[phpContainerPagePath]', '@custom_pages/tests/codeception/_data/views/container_pages');
-        $I->click('Create');
+        $I->click('Save');
 
         $I->seeSuccess('Saved');
 

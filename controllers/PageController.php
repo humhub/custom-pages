@@ -235,10 +235,9 @@ class PageController extends AbstractCustomContainerController
             throw new ForbiddenHttpException('You cannot manage the page!');
         }
 
-        $copyPage = clone $sourcePage;
-        $copyPage->setIsNewRecord(true);
+        $copyPage = CustomPagesService::instance()->duplicatePage($sourcePage, Yii::$app->request->post());
 
-        if ($this->copyPage($sourcePage, $copyPage)) {
+        if ($copyPage && !$copyPage->isNewRecord) {
             return (TemplateType::isType($copyPage->type))
                 ? $this->redirect(Url::toInlineEdit($copyPage, $this->contentContainer))
                 : $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));
@@ -249,36 +248,6 @@ class PageController extends AbstractCustomContainerController
             'pageType' => $this->getPageType(),
             'subNav' => $this->getSubNav(),
         ]);
-    }
-
-    /**
-     * @param $page CustomPage
-     * @return bool
-     * @throws \Throwable
-     * @throws \yii\db\Exception
-     */
-    protected function copyPage($sourcePage, $copyPage)
-    {
-        if (!$copyPage->load(Yii::$app->request->post())) {
-            return false;
-        }
-
-        $transaction = CustomPage::getDb()->beginTransaction();
-
-        try {
-            if ($saved = $copyPage->save()) {
-                // TODO: Copy Content and Template Element Contents from $sourcePage
-            }
-            $transaction->commit();
-        } catch (\Exception $e) {
-            $transaction->rollBack();
-            throw $e;
-        } catch (\Throwable $e) {
-            $transaction->rollBack();
-            throw $e;
-        }
-
-        return $saved;
     }
 
     /**

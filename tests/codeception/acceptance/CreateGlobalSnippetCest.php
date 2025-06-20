@@ -32,7 +32,7 @@ class CreateGlobalSnippetCest
         $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
         $I->fillField('CustomPage[cssClass]', 'myDashboardWidget');
 
-        $I->click('Save');
+        $I->click('Create');
 
         $I->wait(1);
         $I->amOnDashboard();

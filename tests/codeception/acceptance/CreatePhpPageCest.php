@@ -26,7 +26,7 @@ class CreatePhpPageCest
         $I->fillField('SettingsForm[phpGlobalSnippetPath]', '@custom_pages/tests/codeception/_data/views/global_snippets');
         $I->fillField('SettingsForm[phpContainerSnippetPath]', '@custom_pages/tests/codeception/_data/views/container_snippets');
         $I->fillField('SettingsForm[phpContainerPagePath]', '@custom_pages/tests/codeception/_data/views/container_pages');
-        $I->click('Save');
+        $I->click('Create');
 
         $I->seeSuccess('Saved');
 
@@ -52,7 +52,7 @@ class CreatePhpPageCest
         $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->fillField('CustomPage[sort_order]', '400');
         $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
-        $I->click('Save');
+        $I->click('Create');
         $I->waitForElementVisible('#topbar-second .fa-adn');
         $I->expectTo('see my new page in the top navigation');
 

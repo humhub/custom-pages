@@ -27,7 +27,7 @@ class CreatePhpSnippetCest
         $I->fillField('SettingsForm[phpGlobalSnippetPath]', '@custom_pages/tests/codeception/_data/views/global_snippets');
         $I->fillField('SettingsForm[phpContainerSnippetPath]', '@custom_pages/tests/codeception/_data/views/container_snippets');
         $I->fillField('SettingsForm[phpContainerPagePath]', '@custom_pages/tests/codeception/_data/views/container_pages');
-        $I->click('Save');
+        $I->click('Create');
 
         $I->seeSuccess('Saved');
 
@@ -50,7 +50,7 @@ class CreatePhpSnippetCest
         $I->selectOption('CustomPage[page_content]', ['value' => 'test_snippet']);
         $I->jsShow('.form-collapsible-fields.closed fieldset');
         $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
-        $I->click('Save');
+        $I->click('Create');
         $I->wait(1);
 
         $I->amOnRoute(['/dashboard/dashboard']);

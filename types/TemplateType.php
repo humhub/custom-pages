@@ -10,6 +10,8 @@
 namespace humhub\modules\custom_pages\types;
 
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use Yii;
@@ -67,5 +69,67 @@ class TemplateType extends ContentType
     public function afterDelete(CustomPage $page): void
     {
         TemplateInstance::deleteByOwner($page);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeDuplicate(CustomPage $newPage): bool
+    {
+        $newPage->templateId = $this->customPage->getTemplateId();
+
+        return parent::beforeDuplicate($newPage);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function duplicate(?array $loadData = null): CustomPage
+    {
+        $newPage = parent::duplicate($loadData);
+
+        if (!$newPage->isNewRecord) {
+            $templateInstance = TemplateInstance::findByOwner($newPage);
+            if ($templateInstance !== null) {
+                $this->duplicateElementContents($templateInstance->id);
+            }
+        }
+
+        return $newPage;
+    }
+
+    /**
+     * Duplicate Template Element Contents linked to the Custom Page
+     *
+     * @param int $newTemplateInstanceId
+     * @param int|null $containerItemId
+     * @return void
+     * @throws \yii\db\Exception
+     */
+    protected function duplicateElementContents(int $newTemplateInstanceId, int $containerItemId = null): void
+    {
+        $elementContents = BaseElementContent::find()
+            ->leftJoin('custom_pages_template_instance', 'template_instance_id = custom_pages_template_instance.id')
+            ->where(['page_id' => $this->customPage->id])
+            ->andWhere(['container_item_id' => $containerItemId]);
+
+        foreach ($elementContents->each() as $elementContent) {
+            /* @var BaseElementContent $elementContent */
+            $copyElementContent = clone $elementContent;
+            $copyElementContent->id = null;
+            $copyElementContent->setIsNewRecord(true);
+            $copyElementContent->template_instance_id = $newTemplateInstanceId;
+            if ($copyElementContent->save() && $elementContent instanceof ContainerElement) {
+                foreach ($elementContent->items as $item) {
+                    $copyItem = clone $item;
+                    $copyItem->id = null;
+                    $copyItem->setIsNewRecord(true);
+                    $copyItem->element_content_id = $copyElementContent->id;
+                    if ($copyItem->save()) {
+                        $this->duplicateElementContents($copyItem->templateInstance->id, $item->id);
+                    }
+                }
+            }
+        }
     }
 }

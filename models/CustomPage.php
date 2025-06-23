@@ -383,7 +383,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
      */
     public function getContentType(): ?ContentType
     {
-        return ContentType::getById($this->type);
+        return ContentType::getByPage($this);
     }
 
     public function getTitle(): string

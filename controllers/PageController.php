@@ -235,9 +235,9 @@ class PageController extends AbstractCustomContainerController
             throw new ForbiddenHttpException('You cannot manage the page!');
         }
 
-        $copyPage = CustomPagesService::instance()->duplicatePage($sourcePage, Yii::$app->request->post());
+        $copyPage = $sourcePage->getContentType()->duplicate(Yii::$app->request->post());
 
-        if ($copyPage && !$copyPage->isNewRecord) {
+        if (!$copyPage->isNewRecord) {
             return (TemplateType::isType($copyPage->type))
                 ? $this->redirect(Url::toInlineEdit($copyPage, $this->contentContainer))
                 : $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));

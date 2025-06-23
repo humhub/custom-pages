@@ -7,10 +7,6 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\Target;
-use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
-use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
-use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
-use humhub\modules\custom_pages\types\TemplateType;
 use yii\base\Component;
 use yii\base\StaticInstanceTrait;
 
@@ -168,84 +164,5 @@ class CustomPagesService extends Component
 
         return $this->find($container)
             ->andWhere([CustomPage::tableName() . '.target' => array_column($targets, 'id')]);
-    }
-
-    /**
-     * @param CustomPage $sourcePage
-     * @return CustomPage|null
-     */
-    public function duplicatePage(CustomPage $sourcePage, ?array $loadData = null): ?CustomPage
-    {
-        $newPage = new CustomPage([
-            'type' => $sourcePage->type,
-            'target' => $sourcePage->target,
-        ]);
-
-        $newPage->visibility = $sourcePage->visibility;
-        if (TemplateType::isType($sourcePage->type)) {
-            $newPage->templateId = $sourcePage->getTemplateId();
-        }
-
-        foreach ($sourcePage->attributes as $attrKey => $attrValue) {
-            if ($attrKey !== 'id') {
-                $newPage->$attrKey = $attrValue;
-            }
-        }
-
-        foreach ($sourcePage->content->attributes as $attrKey => $attrValue) {
-            if (!in_array($attrKey, ['id', 'guid', 'object_model', 'object_id', 'created_at', 'created_by', 'updated_at', 'updated_by'])) {
-                $newPage->content->$attrKey = $attrValue;
-            }
-        }
-
-        if (is_array($loadData) && !$newPage->load($loadData)) {
-            return $newPage;
-        }
-
-
-        if (!$newPage->save()) {
-            return $newPage;
-        }
-
-        if (!empty($newPage->url) && $newPage->url === $sourcePage->url) {
-            // Make URL unique
-            $newPage->updateAttributes(['url' => $newPage->url . '-' . $newPage->id]);
-        }
-
-        if (TemplateType::isType($sourcePage->type)) {
-            $templateInstance = TemplateInstance::findByOwner($newPage);
-            if ($templateInstance) {
-                $this->duplicateElementContents($sourcePage, $templateInstance->id);
-            }
-        }
-
-        return $newPage;
-    }
-
-    public function duplicateElementContents(CustomPage $sourcePage, int $newTemplateInstanceId, int $containerItemId = null): void
-    {
-        $elementContents = BaseElementContent::find()
-            ->leftJoin('custom_pages_template_instance', 'template_instance_id = custom_pages_template_instance.id')
-            ->where(['page_id' => $sourcePage->id])
-            ->andWhere(['container_item_id' => $containerItemId]);
-
-        foreach ($elementContents->each() as $elementContent) {
-            /* @var BaseElementContent $elementContent */
-            $copyElementContent = clone $elementContent;
-            $copyElementContent->id = null;
-            $copyElementContent->setIsNewRecord(true);
-            $copyElementContent->template_instance_id = $newTemplateInstanceId;
-            if ($copyElementContent->save() && $elementContent instanceof ContainerElement) {
-                foreach ($elementContent->items as $item) {
-                    $copyItem = clone $item;
-                    $copyItem->id = null;
-                    $copyItem->setIsNewRecord(true);
-                    $copyItem->element_content_id = $copyElementContent->id;
-                    if ($copyItem->save()) {
-                        $this->duplicateElementContents($sourcePage, $copyItem->templateInstance->id, $item->id);
-                    }
-                }
-            }
-        }
     }
 }

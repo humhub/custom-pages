@@ -8,6 +8,8 @@
 
 namespace humhub\modules\custom_pages\services;
 
+use humhub\components\ActiveRecord;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\file\models\File;
 use humhub\modules\file\models\FileContent;
@@ -74,26 +76,31 @@ class DuplicatorService
      */
     protected function duplicateAttachments(): void
     {
-        $sourceFiles = File::findByRecord($this->sourcePage);
-
-        foreach ($sourceFiles as $sourceFile) {
-            /* @var File $sourceFile */
-            $newFile = new FileContent();
-            foreach ($sourceFile->attributes() as $attr) {
-                if (!in_array($attr, ['id', 'guid', 'object_id', 'content_id', 'metadata', 'size', 'created_at', 'created_by', 'updated_at', 'updated_by', 'hash_sha1'])) {
-                    $newFile->$attr = $sourceFile->$attr;
-                }
-            }
-            $newFile->object_id = $this->targetPage->id;
-            $newFile->content_id = $this->targetPage->content->id;
-            $newFile->newFileContent = file_get_contents($sourceFile->getStore()->get());
-
-            if ($newFile->save()) {
+        foreach (File::findByRecord($this->sourcePage) as $sourceFile) {
+            if ($newFile = self::duplicateFile($sourceFile, $this->targetPage)) {
                 $this->targetPage->updateAttributes([
                     'page_content' => str_replace($sourceFile->guid, $newFile->guid, $this->targetPage->page_content),
                     'abstract' => str_replace($sourceFile->guid, $newFile->guid, $this->targetPage->abstract),
                 ]);
             }
         }
+    }
+
+    public static function duplicateFile(File $sourceFile, ActiveRecord $targetRecord): ?File
+    {
+        $newFile = new FileContent();
+        foreach ($sourceFile->attributes() as $attr) {
+            if (!in_array($attr, ['id', 'guid', 'object_id', 'content_id', 'metadata', 'size', 'created_at', 'created_by', 'updated_at', 'updated_by', 'hash_sha1'])) {
+                $newFile->$attr = $sourceFile->$attr;
+            }
+        }
+
+        $newFile->object_id = $targetRecord->id;
+        if ($targetRecord instanceof ContentActiveRecord) {
+            $newFile->content_id = $targetRecord->content->id;
+        }
+        $newFile->newFileContent = file_get_contents($sourceFile->getStore()->get());
+
+        return $newFile->validate() && $newFile->save() ? $newFile : null;
     }
 }

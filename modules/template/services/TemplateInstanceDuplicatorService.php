@@ -11,6 +11,8 @@ namespace humhub\modules\custom_pages\modules\template\services;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\modules\custom_pages\services\DuplicatorService;
+use humhub\modules\file\models\File;
 
 /**
  * Service to duplicate Element Contents from one Template Instance to another
@@ -46,7 +48,13 @@ class TemplateInstanceDuplicatorService
             $copyElementContent->setIsNewRecord(true);
             $copyElementContent->template_instance_id = $targetTemplateInstance->id;
 
-            if ($copyElementContent->save() && $elementContent instanceof ContainerElement) {
+            if (!$copyElementContent->save()) {
+                continue;
+            }
+
+            $this->duplicateAttachments($elementContent, $copyElementContent);
+
+            if ($elementContent instanceof ContainerElement) {
                 foreach ($elementContent->items as $item) {
                     $copyItem = clone $item;
                     $copyItem->id = null;
@@ -56,6 +64,26 @@ class TemplateInstanceDuplicatorService
                         $this->duplicate($copyItem->templateInstance, $item->id);
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * Duplicate all attached files from source to target Element Content
+     *
+     * @param BaseElementContent $source
+     * @param BaseElementContent $target
+     * @return void
+     */
+    protected function duplicateAttachments(BaseElementContent $source, BaseElementContent $target): void
+    {
+        foreach (File::findByRecord($source) as $sourceFile) {
+            $newFile = DuplicatorService::duplicateFile($sourceFile, $target);
+            if ($newFile && is_array($target->dyn_attributes) && $target->dyn_attributes !== []) {
+                foreach ($target->dyn_attributes as $attrKey => $attrValue) {
+                    $target->$attrKey = str_replace($sourceFile->guid, $newFile->guid, $attrValue);
+                }
+                $target->save();
             }
         }
     }

@@ -9,8 +9,7 @@
 namespace humhub\modules\custom_pages\types;
 
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\file\models\File;
-use humhub\modules\file\models\FileContent;
+use humhub\modules\custom_pages\services\DuplicatorService;
 use yii\base\StaticInstanceTrait;
 use yii\widgets\ActiveForm;
 
@@ -168,37 +167,34 @@ abstract class ContentType
     }
 
     /**
-     * Set properties to new duplicating custom page
+     * Set properties to new duplicating custom page before run the duplicating
      *
      * @param CustomPage $newPage
      * @return bool
      */
     public function beforeDuplicate(CustomPage $newPage): bool
     {
-        $newPage->visibility = $this->customPage->visibility;
+        return DuplicatorService::instance($this->customPage, $newPage)->beforeDuplicate();
+    }
 
-        foreach ($this->customPage->attributes as $attrKey => $attrValue) {
-            if ($attrKey !== 'id') {
-                $newPage->$attrKey = $attrValue;
-            }
-        }
-
-        foreach ($this->customPage->content->attributes as $attrKey => $attrValue) {
-            if (!in_array($attrKey, ['id', 'guid', 'object_model', 'object_id', 'created_at', 'created_by', 'updated_at', 'updated_by'])) {
-                $newPage->content->$attrKey = $attrValue;
-            }
-        }
-
-        return true;
+    /**
+     * Run after the duplicating process
+     *
+     * @param CustomPage $newPage
+     * @return void
+     */
+    public function afterDuplicate(CustomPage $newPage): void
+    {
+        DuplicatorService::instance($this->customPage, $newPage)->afterDuplicate();
     }
 
     /**
      * Duplicate Custom Page
      *
-     * @param array|null $loadData
+     * @param array $loadData
      * @return CustomPage
      */
-    public function duplicate(?array $loadData = null): CustomPage
+    public function duplicate(array $loadData): CustomPage
     {
         $newPage = new CustomPage([
             'type' => $this->getId(),
@@ -209,52 +205,10 @@ abstract class ContentType
             return $newPage;
         }
 
-        if (is_array($loadData) && !$newPage->load($loadData)) {
-            return $newPage;
+        if ($newPage->load($loadData) && $newPage->validate() && $newPage->save()) {
+            $this->afterDuplicate($newPage);
         }
-
-        if (!$newPage->validate() || !$newPage->save()) {
-            return $newPage;
-        }
-
-        if (!empty($newPage->url) && $newPage->url === $this->customPage->url) {
-            // Make URL unique
-            $newPage->updateAttributes(['url' => $newPage->url . '-' . $newPage->id]);
-        }
-
-        $this->duplicateAttachments($newPage);
 
         return $newPage;
-    }
-
-    /**
-     * Duplicate all attached files to new copied Custom Page
-     *
-     * @param CustomPage $newPage
-     * @return void
-     */
-    protected function duplicateAttachments(CustomPage $newPage): void
-    {
-        $sourceFiles = File::findByRecord($this->customPage);
-
-        foreach ($sourceFiles as $sourceFile) {
-            /* @var File $sourceFile */
-            $newFile = new FileContent();
-            foreach ($sourceFile->attributes() as $attr) {
-                if (!in_array($attr, ['id', 'guid', 'object_id', 'content_id', 'metadata', 'size', 'created_at', 'created_by', 'updated_at', 'updated_by', 'hash_sha1'])) {
-                    $newFile->$attr = $sourceFile->$attr;
-                }
-            }
-            $newFile->object_id = $newPage->id;
-            $newFile->content_id = $newPage->content->id;
-            $newFile->newFileContent = file_get_contents($sourceFile->getStore()->get());
-
-            if ($newFile->save()) {
-                $newPage->updateAttributes([
-                    'page_content' => str_replace($sourceFile->guid, $newFile->guid, $newPage->page_content),
-                    'abstract' => str_replace($sourceFile->guid, $newFile->guid, $newPage->abstract),
-                ]);
-            }
-        }
     }
 }

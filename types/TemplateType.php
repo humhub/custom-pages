@@ -42,7 +42,7 @@ class TemplateType extends ContentType
 
     public function renderFormField(ActiveForm $form, CustomPage $page): string
     {
-        return $form->field($page, 'templateId')->dropDownList($page->getAllowedTemplateSelection(), ['value' => $page->getTemplateId(), 'disabled' => !$page->isNewRecord || Yii::$app->controller->action->id === 'copy']);
+        return $form->field($page, 'templateId')->dropDownList($page->getAllowedTemplateSelection(), ['value' => $page->getTemplateId(), 'disabled' => !$page->isNewRecord]);
     }
 
     /**

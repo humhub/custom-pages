@@ -3,7 +3,6 @@
 return [
     'Configuration' => 'Hallinta',
     'Delete' => 'Poista',
-    'Edit Template' => 'Muokkaa Ulkoasua',
     'Empty' => 'Tyhjä',
     'Open page...' => 'Avaa sivu...',
     'Save' => 'Tallenna',
@@ -16,7 +15,6 @@ return [
     'Edit elements' => '',
     'Edit template' => '',
     'Here you can configure the general settings of your {pageLabel}.' => '',
-    'Inline' => '',
     'Inline Editor' => '',
     'Multiple' => '',
     'Page configuration' => '',

@@ -554,10 +554,15 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
         return $this->target === $targetId;
     }
 
+    public function getTemplateInstance(): ?TemplateInstance
+    {
+        return TemplateInstance::findByOwner($this);
+    }
+
     public function getTemplateId(): ?int
     {
         if ($this->templateId === null) {
-            $templateInstance = TemplateInstance::findByOwner($this);
+            $templateInstance = $this->getTemplateInstance();
             $this->templateId = $templateInstance ? $templateInstance->template_id : 0;
         }
 

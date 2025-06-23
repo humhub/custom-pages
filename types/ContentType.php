@@ -9,6 +9,8 @@
 namespace humhub\modules\custom_pages\types;
 
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\file\models\File;
+use humhub\modules\file\models\FileContent;
 use yii\base\StaticInstanceTrait;
 use yii\widgets\ActiveForm;
 
@@ -92,7 +94,7 @@ abstract class ContentType
     {
         // Note: Don't use here ContentType::instance() because it is cached only per class name,
         //       to avoid errors on duplicating of a Custom Page.
-        $type = match($page->type) {
+        $type = match(intval($page->type)) {
             MarkdownType::ID => new MarkdownType(),
             LinkType::ID => new LinkType(),
             IframeType::ID => new IframeType(),
@@ -220,6 +222,39 @@ abstract class ContentType
             $newPage->updateAttributes(['url' => $newPage->url . '-' . $newPage->id]);
         }
 
+        $this->duplicateAttachments($newPage);
+
         return $newPage;
+    }
+
+    /**
+     * Duplicate all attached files to new copied Custom Page
+     *
+     * @param CustomPage $newPage
+     * @return void
+     */
+    protected function duplicateAttachments(CustomPage $newPage): void
+    {
+        $sourceFiles = File::findByRecord($this->customPage);
+
+        foreach ($sourceFiles as $sourceFile) {
+            /* @var File $sourceFile */
+            $newFile = new FileContent();
+            foreach ($sourceFile->attributes() as $attr) {
+                if (!in_array($attr, ['id', 'guid', 'object_id', 'content_id', 'metadata', 'size', 'created_at', 'created_by', 'updated_at', 'updated_by', 'hash_sha1'])) {
+                    $newFile->$attr = $sourceFile->$attr;
+                }
+            }
+            $newFile->object_id = $newPage->id;
+            $newFile->content_id = $newPage->content->id;
+            $newFile->newFileContent = file_get_contents($sourceFile->getStore()->get());
+
+            if ($newFile->save()) {
+                $newPage->updateAttributes([
+                    'page_content' => str_replace($sourceFile->guid, $newFile->guid, $newPage->page_content),
+                    'abstract' => str_replace($sourceFile->guid, $newFile->guid, $newPage->abstract),
+                ]);
+            }
+        }
     }
 }

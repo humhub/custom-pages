@@ -5,6 +5,7 @@ use humhub\modules\custom_pages\models\CustomPage;
 use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use humhub\widgets\Link;
+use humhub\widgets\ModalButton;
 use yii\grid\ActionColumn;
 use yii\grid\DataColumn;
 use yii\helpers\Html;
@@ -54,7 +55,7 @@ use yii\helpers\Html;
                                 : '';
                         },
                         'copy' => function ($url, CustomPage $model) {
-                            return Link::defaultType()->icon('copy')->link(Url::toCopyPage($model))->xs();
+                            return ModalButton::defaultType()->load(Url::toCopyPage($model))->icon('copy')->xs();
                         },
                     ],
                 ],

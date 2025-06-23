@@ -243,10 +243,8 @@ class PageController extends AbstractCustomContainerController
                 : $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));
         }
 
-        return $this->render('@custom_pages/views/common/edit', [
+        return $this->renderAjax('@custom_pages/views/common/copy', [
             'page' => $copyPage,
-            'pageType' => $this->getPageType(),
-            'subNav' => $this->getSubNav(),
         ]);
     }
 

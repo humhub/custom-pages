@@ -96,10 +96,9 @@ $contentType = $page->getContentType();
         <?= $form->field($page, 'visibility')->radioList($page->getVisibilitySelection()) ?>
         <?= $form->field($page, 'target')->dropDownList($page->getAvailableTargetOptions()) ?>
 
-        <?= Button::save(!$page->isNewRecord ? null :
-            (Yii::$app->controller->action->id === 'copy'
-            ? Yii::t('CustomPagesModule.view', 'Copy')
-            : Yii::t('CustomPagesModule.view', 'Create'))
+        <?= Button::save($page->isNewRecord
+            ? Yii::t('CustomPagesModule.view', 'Create')
+            : Yii::t('CustomPagesModule.view', 'Copy')
         )->submit() ?>
 
         <?php if (!$page->isNewRecord) : ?>

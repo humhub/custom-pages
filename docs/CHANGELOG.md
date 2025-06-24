@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.11.1 (Unreleased)
----------------------------
+1.11.0-beta.4 (June 24, 2025)
+-----------------------------
 - Enh #415: Display "Edit template" menu on structure view
 - Enh #417: Allow templates with option "Allow in spaces" also for global pages
 - Enh #419: Allow to change category of custom page

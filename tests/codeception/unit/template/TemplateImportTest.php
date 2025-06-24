@@ -25,7 +25,7 @@ class TemplateImportTest extends HumHubDbTestCase
 
         $expectedElements = TemplateElement::find()
             ->where(['template_id' => $testTemplate->id])
-            ->andWhere(['name' => ['test_text', 'test_richtext']]);
+            ->andWhere(['name' => ['test_text', 'test_html']]);
         $this->assertEquals(2, $expectedElements->count());
     }
 

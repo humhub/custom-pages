@@ -4,7 +4,7 @@ namespace tests\codeception\unit\modules\custom_page\template;
 
 use Codeception\Specify;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
-use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
+use humhub\modules\custom_pages\modules\template\elements\HtmlElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\models\CustomPage;
@@ -46,15 +46,15 @@ class TemplateInstanceTest extends HumHubDbTestCase
 
         $template = Template::findOne(['id' => 1]);
         $element = $template->getElement('test_content');
-        $richtext = new RichtextElement(['content' => 'testContent']);
-        $elementContent = $element->saveInstance($templateInstance, $richtext);
+        $html = new HtmlElement(['content' => 'testContent']);
+        $elementContent = $element->saveInstance($templateInstance, $html);
 
         $this->assertNotNull($elementContent);
-        $this->assertEquals($elementContent->id, $richtext->id);
+        $this->assertEquals($elementContent->id, $html->id);
 
         $templateInstance->delete();
 
-        $this->assertNull(RichtextElement::findOne(['id' => $elementContent->id]));
+        $this->assertNull(HtmlElement::findOne(['id' => $elementContent->id]));
     }
 
     public function testDeleteByOwner()
@@ -71,13 +71,13 @@ class TemplateInstanceTest extends HumHubDbTestCase
 
         $owner = TemplateInstance::findByOwner($page);
 
-        $richtext = new RichtextElement(['content' => 'testContent']);
-        $elementContent = $element->saveInstance($owner, $richtext);
+        $html = new HtmlElement(['content' => 'testContent']);
+        $elementContent = $element->saveInstance($owner, $html);
 
         TemplateInstance::deleteByOwner($page);
 
         $this->assertNull(TemplateInstance::findOne(['id' => $owner->id]));
-        $this->assertNull(RichtextElement::findOne(['id' => $elementContent->id]));
+        $this->assertNull(HtmlElement::findOne(['id' => $elementContent->id]));
     }
 
     public function testDeletePage()
@@ -94,16 +94,16 @@ class TemplateInstanceTest extends HumHubDbTestCase
 
         $owner = TemplateInstance::findByOwner($page);
 
-        $richtext = new RichtextElement(['content' => 'testContent']);
-        $elementContent = $element->saveInstance($owner, $richtext);
+        $html = new HtmlElement(['content' => 'testContent']);
+        $elementContent = $element->saveInstance($owner, $html);
 
-        $this->assertFalse($richtext->isNewRecord);
+        $this->assertFalse($html->isNewRecord);
         $this->assertFalse($elementContent->isNewRecord);
 
         $page->hardDelete();
 
         $this->assertNull(TemplateInstance::findOne(['id' => $owner->id]));
-        $this->assertNull(RichtextElement::findOne(['id' => $elementContent->id]));
+        $this->assertNull(HtmlElement::findOne(['id' => $elementContent->id]));
     }
 
     public function testFindByOwner()
@@ -121,11 +121,11 @@ class TemplateInstanceTest extends HumHubDbTestCase
 
         $templateInstance = TemplateInstance::findByOwner($page);
 
-        $content = new RichtextElement();
+        $content = new HtmlElement();
         $content->content = '<p>Test</p>';
         $element->saveInstance($templateInstance, $content);
 
-        $content2 = new RichtextElement();
+        $content2 = new HtmlElement();
         $content2->content = '<p>Test</p>';
         $element2->saveInstance($templateInstance, $content2);
 

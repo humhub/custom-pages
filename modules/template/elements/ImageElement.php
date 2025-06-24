@@ -84,4 +84,13 @@ class ImageElement extends FileElement
             'style' => $this->purify($this->definition->style),
         ]);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTemplateVariable(): BaseElementVariable
+    {
+        return ImageElementVariable::instance($this)
+            ->setRecord($this->getFile());
+    }
 }

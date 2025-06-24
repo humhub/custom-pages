@@ -18,7 +18,7 @@
  * GNU Affero General Public License for more details.
  */
 return [
-    ['id' => 1, 'name' => 'testTemplate', 'source' => '<div>{{ test_content }}</div>{{ test_text }}', 'description' => 'Template with two richtext elements', 'type' => 'layout', 'engine' => 'twig'],
+    ['id' => 1, 'name' => 'testTemplate', 'source' => '<div>{{ test_content }}</div>{{ test_text }}', 'description' => 'Template with two html elements', 'type' => 'layout', 'engine' => 'twig'],
     ['id' => 2, 'name' => 'layout1', 'source' => '<div>{{ container }}</div>', 'description' => 'Layout with one container element', 'type' => 'layout', 'engine' => 'twig'],
     ['id' => 3, 'name' => 'containerText', 'source' => '{{ container }} {{ text }}', 'description' => 'Container template with other container inside', 'type' => 'container', 'engine' => 'twig'],
     ['id' => 4, 'name' => 'simpleText', 'source' => '<div>{{ text }}</div>', 'description' => 'Simple text', 'type' => 'container', 'engine' => 'twig'],

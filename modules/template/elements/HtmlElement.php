@@ -11,19 +11,19 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 use Yii;
 
 /**
- * Class to manage content records of the RichText elements
+ * Class to manage content records of the Html elements
  *
  * Dynamic attributes:
  * @property string $content
  */
-class RichtextElement extends BaseElementContent
+class HtmlElement extends BaseElementContent
 {
     /**
      * @inheritdoc
      */
     public function getLabel(): string
     {
-        return Yii::t('CustomPagesModule.template', 'Richtext');
+        return Yii::t('CustomPagesModule.template', 'Html');
     }
 
     /**

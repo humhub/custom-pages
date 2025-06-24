@@ -37,10 +37,10 @@ class CreateTemplatePageCest
         $I->expectTo('see the new element added to the source');
         $I->seeInField('#template-form-source', '{{ text }}');
 
-        $I->amGoingTo('add a richtext element');
-        $this->clickAddElement($I, 'Richtext');
-        $I->fillField('TemplateElement[name]', 'richtext');
-        $I->jsFillField('RichtextElement[content]', '<p>Richtext Test</p>');
+        $I->amGoingTo('add a html element');
+        $this->clickAddElement($I, 'Html');
+        $I->fillField('TemplateElement[name]', 'html');
+        $I->jsFillField('HtmlElement[content]', '<p>Html Test</p>');
         $I->click('.btn-primary', '#globalModal');
         $I->waitForElementNotVisible('#globalModal');
 
@@ -79,7 +79,7 @@ class CreateTemplatePageCest
 
         $I->expectTo('see the new element added to the element row');
         $I->see('#text');
-        $I->see('#richtext');
+        $I->see('#html');
         $I->see('#tmplimage');
         $I->see('#file');
     }

@@ -63,7 +63,7 @@
               "template": "system_article_container",
               "elements": {
                 "content": {
-                  "__element_type": "humhub\\modules\\custom_pages\\modules\\template\\elements\\RichtextElement",
+                  "__element_type": "humhub\\modules\\custom_pages\\modules\\template\\elements\\HtmlElement",
                   "content": "\u003Cp\u003ETest content\u003C/p\u003E"
                 }
               }

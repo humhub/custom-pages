@@ -6,10 +6,10 @@ use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\FileDownloadElement;
 use humhub\modules\custom_pages\modules\template\elements\FileElement;
-use humhub\modules\custom_pages\modules\template\elements\HumHubRichtextElement;
+use humhub\modules\custom_pages\modules\template\elements\HtmlElement;
 use humhub\modules\custom_pages\modules\template\elements\ImageElement;
+use humhub\modules\custom_pages\modules\template\elements\MarkdownElement;
 use humhub\modules\custom_pages\modules\template\elements\PostElement;
-use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
 use humhub\modules\custom_pages\modules\template\elements\RssElement;
 use humhub\modules\custom_pages\modules\template\elements\SpaceElement;
 use humhub\modules\custom_pages\modules\template\elements\SpacesElement;
@@ -48,8 +48,8 @@ final class ElementTypeService extends Component
 {
     private const DEFAULT_TYPES = [
         TextElement::class,
-        RichtextElement::class,
-        HumHubRichtextElement::class,
+        HtmlElement::class,
+        MarkdownElement::class,
         ImageElement::class,
         FileElement::class,
         FileDownloadElement::class,

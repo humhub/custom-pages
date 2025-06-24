@@ -119,4 +119,13 @@ class FileElement extends BaseElementContent
     {
         return !$this->hasFile();
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTemplateVariable(): BaseElementVariable
+    {
+        return FileElementVariable::instance($this)
+            ->setRecord($this->getFile());
+    }
 }

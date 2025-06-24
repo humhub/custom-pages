@@ -93,7 +93,7 @@ abstract class ContentType
     {
         // Note: Don't use here ContentType::instance() because it is cached only per class name,
         //       to avoid errors on duplicating of a Custom Page.
-        $type = match(intval($page->type)) {
+        $type = match (intval($page->type)) {
             MarkdownType::ID => new MarkdownType(),
             LinkType::ID => new LinkType(),
             IframeType::ID => new IframeType(),

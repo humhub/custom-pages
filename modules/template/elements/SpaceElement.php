@@ -9,6 +9,8 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\space\models\Space;
+use humhub\modules\space\widgets\SpacePickerField;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 
 /**
@@ -44,5 +46,16 @@ class SpaceElement extends BaseContentContainerElement
         $variable = new SpaceElementVariable($this);
         $variable->setContentContainer($this->getRecord());
         return $variable;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        return $form->field($this, 'guid')->widget(SpacePickerField::class, [
+            'minInput' => 2,
+            'maxSelection' => 1,
+        ]);
     }
 }

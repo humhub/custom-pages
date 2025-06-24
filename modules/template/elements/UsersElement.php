@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
 use Yii;
@@ -153,5 +154,13 @@ class UsersElement extends BaseRecordsElement
     public function isCacheable(): bool
     {
         return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        return '';
     }
 }

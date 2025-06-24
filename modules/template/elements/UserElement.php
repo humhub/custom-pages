@@ -9,7 +9,9 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\UserPickerField;
 use Yii;
 
 /**
@@ -78,5 +80,16 @@ class UserElement extends BaseContentContainerElement
         // Don't cache data of the current user
         // Cache only when specific user is selected
         return !empty($this->guid);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        return $form->field($this, 'guid')->widget(UserPickerField::class, [
+            'minInput' => 2,
+            'maxSelection' => 1,
+        ]);
     }
 }

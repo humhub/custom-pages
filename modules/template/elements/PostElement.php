@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\post\models\Post;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 
 /**
@@ -44,4 +45,11 @@ class PostElement extends BaseContentRecordElement
         return $this->getRecord()?->message ?? '';
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        return $form->field($this, 'contentRecordId')->textInput(['maxlength' => 255])->label(true);
+    }
 }

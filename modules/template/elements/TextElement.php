@@ -96,28 +96,27 @@ class TextElement extends BaseElementContent
         return $scenarios;
     }
 
-    public function renderEditForm(ActiveForm $form): string {
-
-        return $form->field($this, 'content')->textInput(['maxlength' => 255])->label(false);
-    }
-
-    public function renderDefinitionEditForm(ActiveForm $form): string
+    public function __toString()
     {
-        $result = $form->field($this, 'content')->textInput(['maxlength' => 255])->label(false);
-        $result .= $form->field($this, 'inline_text')->checkbox();
-        $result .= Html::tag('div',
-            Yii::t('CustomPagesModule.base', 'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.'),
-            ['class' => 'alert alert-info']
-        );
-
-        return $result;
+        return $this->inline_text ? $this->purify($this->content) : Html::encode($this->content);
     }
 
     /**
      * @inheritdoc
      */
-    public function __toString()
+    public function renderEditForm(ActiveForm $form): string
     {
-        return $this->inline_text ? $this->purify($this->content) : Html::encode($this->content);
+        $result = $form->field($this, 'content')->textInput(['maxlength' => 255])->label(false);
+
+        if (in_array($this->scenario, [self::SCENARIO_EDIT_ADMIN, self::SCENARIO_CREATE])) {
+            $result .= $form->field($this, 'inline_text')->checkbox() .
+                Html::tag(
+                    'div',
+                    Yii::t('CustomPagesModule.base', 'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.'),
+                    ['class' => 'alert alert-info'],
+                );
+        }
+
+        return $result;
     }
 }

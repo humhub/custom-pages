@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\custom_pages\modules\template\models\Template;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -156,5 +157,21 @@ class ContainerElement extends BaseElementContent
     public function getTemplateVariable(): BaseElementVariable
     {
         return new ContainerElementVariable($this);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        return '';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderDefinitionEditForm(ActiveForm $form): string
+    {
+        return '';
     }
 }

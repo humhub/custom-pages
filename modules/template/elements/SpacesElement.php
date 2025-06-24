@@ -10,6 +10,7 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -162,5 +163,13 @@ class SpacesElement extends BaseRecordsElement
     public function getTemplateVariable(): BaseElementVariable
     {
         return new SpacesElementVariable($this);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        return '';
     }
 }

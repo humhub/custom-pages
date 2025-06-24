@@ -10,7 +10,7 @@ namespace humhub\modules\custom_pages\modules\template\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
-use yii\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 
 /**
  * Widget renders a form with fields of the Template Element Content
@@ -24,11 +24,6 @@ class TemplateContentFormFields extends Widget
 
     public function run()
     {
-        return $this->render($this->model->getFormView(), [
-            'form' => $this->form,
-            'model' => $this->model,
-            'isAdminEdit' =>  $this->model->scenario === 'edit-admin' || $this->model->scenario === 'create',
-        ]);
+        return $this->model->renderEditForm($this->form);
     }
-
 }

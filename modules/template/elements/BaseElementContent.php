@@ -396,7 +396,10 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
      * @param ActiveForm $form
      * @return string
      */
-    abstract public function renderDefinitionEditForm(ActiveForm $form): string;
+    public function renderDefinitionEditForm(ActiveForm $form): string
+    {
+        return '';
+    }
 
     public function isDefault(): bool
     {

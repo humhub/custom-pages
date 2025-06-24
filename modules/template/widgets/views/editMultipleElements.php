@@ -3,8 +3,8 @@
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElementsForm;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\ModalDialog;
-use yii\widgets\ActiveForm;
 use humhub\libs\Html;
 
 /* @var $model EditMultipleElementsForm */

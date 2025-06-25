@@ -108,7 +108,7 @@ class TextElement extends BaseElementContent
     {
         $result = $form->field($this, 'content')->textInput(['maxlength' => 255])->label(false);
 
-        if (in_array($this->scenario, [self::SCENARIO_EDIT_ADMIN, self::SCENARIO_CREATE])) {
+        if ($this->isAdminEditMode()) {
             $result .= $form->field($this, 'inline_text')->checkbox() .
                 Html::tag(
                     'div',

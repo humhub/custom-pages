@@ -11,6 +11,7 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 use humhub\components\ActiveRecord;
 use humhub\libs\Html;
 use humhub\modules\custom_pages\modules\template\interfaces\TemplateElementContentIterable;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -29,11 +30,6 @@ abstract class BaseRecordsElement extends BaseElementContent implements Template
      * @var ActiveRecord[]|null
      */
     protected ?array $records = null;
-
-    /**
-     * @var string A view file to render a widget with form fields for the Records
-     */
-    public string $subFormView = '';
 
     /**
      * Get query of the records depending on config
@@ -77,14 +73,6 @@ abstract class BaseRecordsElement extends BaseElementContent implements Template
     public function __toString()
     {
         return Html::encode(static::RECORD_CLASS);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getFormView(): string
-    {
-        return 'elements/records';
     }
 
     /**
@@ -143,5 +131,42 @@ abstract class BaseRecordsElement extends BaseElementContent implements Template
     protected function isConfigured(): bool
     {
         return !empty($this->{$this->type});
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        return $form->field($this, 'type')->dropDownList($this->getTypes(), ['class' => 'records-content-form-type']) .
+            Html::script(<<<JS
+    $(document).on('change', '.records-content-form-type', function () {
+        const type = $(this).val();
+        $(this).closest('form').find('.records-content-form-fields').each(function () {
+            $(this).toggle($(this).data('type').match(new RegExp('(^|,)' + type + '(,|$)')) !== null);
+        });
+    });
+    $('.records-content-form-type').trigger('change');
+JS);
+    }
+
+    /**
+     * Renders additional fields for the edit form per type
+     *
+     * @param array $fields
+     * @return string
+     */
+    protected function renderEditRecordsTypeFields(array $fields): string
+    {
+        $result = '';
+
+        foreach ($fields as $type => $field) {
+            $result .= Html::tag('div', $field, [
+                'class' => 'records-content-form-fields',
+                'data-type' => $type,
+            ]);
+        }
+
+        return $result;
     }
 }

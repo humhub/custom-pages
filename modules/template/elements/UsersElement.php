@@ -11,6 +11,7 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\UserPickerField;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -25,7 +26,6 @@ use yii\db\ActiveQuery;
 class UsersElement extends BaseRecordsElement
 {
     public const RECORD_CLASS = User::class;
-    public string $subFormView = 'users';
 
     /**
      * @inheritdoc
@@ -169,6 +169,12 @@ class UsersElement extends BaseRecordsElement
      */
     public function renderEditForm(ActiveForm $form): string
     {
-        return '';
+        return parent::renderEditForm($form) .
+            $this->renderEditRecordsTypeFields([
+                'static' => $form->field($this, 'static')->widget(UserPickerField::class, ['minInput' => 2]),
+                'group' => $form->field($this, 'group')->dropDownList($this->getGroupOptions()),
+                'friend' => $form->field($this, 'friend')->widget(UserPickerField::class, ['minInput' => 2, 'maxSelection' => 1]),
+                'group,friend' => $form->field($this, 'limit'),
+            ]);
     }
 }

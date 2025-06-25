@@ -140,17 +140,14 @@ class ImageElement extends FileElement
 
             Html::tag('br') .
 
-            $this->renderDefinitionEditForm($form) .
+            $this->renderCollapsableEditForm($form) .
 
         Html::endTag('div');
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function renderDefinitionEditForm(ActiveForm $form): string
+    private function renderCollapsableEditForm(ActiveForm $form): string
     {
-        $disableDefinition = !in_array($this->scenario, [self::SCENARIO_EDIT_ADMIN, self::SCENARIO_CREATE]);
+        $disableDefinition = !$this->isAdminEditMode();
 
         ob_start();
         CollapsableFormGroup::begin(['defaultState' => false]);

@@ -9,7 +9,11 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\content\components\ActiveQueryContent;
+use humhub\modules\space\widgets\SpacePickerField;
 use humhub\modules\stream\models\filters\DefaultStreamFilter;
+use humhub\modules\topic\widgets\TopicPicker;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\user\widgets\UserPickerField;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
@@ -26,11 +30,6 @@ use yii\db\Expression;
  */
 abstract class BaseContentRecordsElement extends BaseRecordsElement
 {
-    /**
-     * @inheritdoc
-     */
-    public string $subFormView = 'baseContentRecords';
-
     /**
      * @var string A view file to render a widget with form fields for the Content Records
      */
@@ -184,5 +183,20 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
     public function hasFilter(string $name): bool
     {
         return is_array($this->filter) && in_array($name, $this->filter);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        return parent::renderEditForm($form) .
+            $this->renderEditRecordsTypeFields([
+                'options' => $form->field($this, 'space')->widget(SpacePickerField::class) .
+                    $form->field($this, 'author')->widget(UserPickerField::class) .
+                    $form->field($this, 'topic')->widget(TopicPicker::class) .
+                    $form->field($this, 'filter')->checkboxList($this->getContentFilterOptions()) .
+                    $form->field($this, 'limit'),
+            ]);
     }
 }

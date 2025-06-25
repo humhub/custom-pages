@@ -390,17 +390,6 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
      */
     abstract public function renderEditForm(ActiveForm $form): string;
 
-    /**
-     * Renders the form when the element definition is being edited.
-     *
-     * @param ActiveForm $form
-     * @return string
-     */
-    public function renderDefinitionEditForm(ActiveForm $form): string
-    {
-        return '';
-    }
-
     public function isDefault(): bool
     {
         return $this->template_instance_id === null;
@@ -426,5 +415,10 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
     public function getTemplateVariable(): BaseElementVariable
     {
         return new BaseElementVariable($this);
+    }
+
+    public function isAdminEditMode(): bool
+    {
+        return in_array($this->scenario, [self::SCENARIO_EDIT_ADMIN, self::SCENARIO_CREATE]);
     }
 }

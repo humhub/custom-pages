@@ -9,12 +9,15 @@
 namespace humhub\modules\custom_pages\types;
 
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\services\DuplicatorService;
 use yii\base\StaticInstanceTrait;
 use yii\widgets\ActiveForm;
 
 abstract class ContentType
 {
     use StaticInstanceTrait;
+
+    protected ?CustomPage $customPage = null;
 
     /**
      * @var bool $hasContent Set false if the Type has no a content
@@ -58,6 +61,7 @@ abstract class ContentType
      *
      * @param int|string|null $type
      * @return ContentType|null
+     * @deprecated since 1.11.1
      */
     public static function getById($type): ?ContentType
     {
@@ -77,6 +81,29 @@ abstract class ContentType
             default:
                 return null;
         }
+    }
+
+    /**
+     * Get Content Type by Custom Page
+     *
+     * @param CustomPage $page
+     * @return ContentType|null
+     */
+    public static function getByPage(CustomPage $page): ?ContentType
+    {
+        // Note: Don't use here ContentType::instance() because it is cached only per class name,
+        //       to avoid errors on duplicating of a Custom Page.
+        $type = match (intval($page->type)) {
+            MarkdownType::ID => new MarkdownType(),
+            LinkType::ID => new LinkType(),
+            IframeType::ID => new IframeType(),
+            TemplateType::ID => new TemplateType(),
+            HtmlType::ID => new HtmlType(),
+            PhpType::ID => new PhpType(),
+            default => null,
+        };
+
+        return $type?->setCustomPage($page);
     }
 
     /**
@@ -125,5 +152,63 @@ abstract class ContentType
      */
     public function afterDelete(CustomPage $page): void
     {
+    }
+
+    /**
+     * Set Custom Page
+     *
+     * @param CustomPage $page
+     * @return self
+     */
+    public function setCustomPage(CustomPage $page): self
+    {
+        $this->customPage = $page;
+        return $this;
+    }
+
+    /**
+     * Set properties to new duplicating custom page before run the duplicating
+     *
+     * @param CustomPage $newPage
+     * @return bool
+     */
+    public function beforeDuplicate(CustomPage $newPage): bool
+    {
+        return DuplicatorService::instance($this->customPage, $newPage)->beforeDuplicate();
+    }
+
+    /**
+     * Run after the duplicating process
+     *
+     * @param CustomPage $newPage
+     * @return void
+     */
+    public function afterDuplicate(CustomPage $newPage): void
+    {
+        DuplicatorService::instance($this->customPage, $newPage)->afterDuplicate();
+    }
+
+    /**
+     * Duplicate Custom Page
+     *
+     * @param array $loadData
+     * @return CustomPage
+     */
+    public function duplicate(array $loadData): CustomPage
+    {
+        $newPage = new CustomPage([
+            'type' => $this->getId(),
+            'target' => $this->customPage->target,
+        ]);
+
+        if (!$this->beforeDuplicate($newPage)) {
+            return $newPage;
+        }
+
+        if ($newPage->load($loadData) && $newPage->validate() && $newPage->save()) {
+            $this->afterDuplicate($newPage);
+        }
+
+        return $newPage;
     }
 }

@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.11.1 (Unreleased)
+---------------------------
+- Enh #415: Display "Edit template" menu on structure view
+- Enh #417: Allow templates with option "Allow in spaces" also for global pages
+- Enh #419: Allow to change category of custom page
+- Enh #420: Copy custom page
+- Enh #421: Rename RichText elements
+
 1.11.0-beta.3 (June 3, 2025)
 ----------------------------
 - Enh #354: Template - Add RSS Element Type

@@ -40,14 +40,14 @@ Usually a layout will consist of static elements as for example a headline, subh
 
 You can add the following static elements to your layout:
 
-|  Type | Description  |
-|---|---|
-| Text  | A simple plain text element |
-| Richtext  | A Html richtext editor based on [TinyMCE](https://www.tiny.cloud/) |
-| HumHub Richtext  | The HumHub Richtext, can be used for mentionings, oembed etc. |
-| Image  | Image element |
-| File  | Renders a file url (no link etc) |
-| File Download  | Renders a file download link |
+| Type          | Description                                               |
+|---------------|-----------------------------------------------------------|
+| Text          | A simple plain text element                               |
+| Html          | Html editor based on [TinyMCE](https://www.tiny.cloud/)   |
+| Markdown      | Markdown editor, can be used for mentionings, oembed etc. |
+| Image         | Image element                                             |
+| File          | Renders a file url (no link etc)                          |
+| File Download | Renders a file download link                              |
 
 A very simple layout could look like the following:
 
@@ -75,7 +75,7 @@ A very simple layout could look like the following:
 </div>
 ```
 
-With a simple text element as **headline**, a HumHub Richtext as **abstract** and a **container** element which allows
+With a simple text element as **headline**, a Markdown as **abstract** and a **container** element which allows
 multiple container items.
 
 ### Container
@@ -104,5 +104,3 @@ Another container example with a figure and floating text based upon a **image**
 
 <p> {{ text }}</p>
 ```
-
-

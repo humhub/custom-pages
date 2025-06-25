@@ -5,7 +5,7 @@ namespace tests\codeception\unit\modules\custom_page\template;
 use humhub\modules\custom_pages\modules\template\elements\ContainerDefinition;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
-use humhub\modules\custom_pages\modules\template\elements\RichtextElement;
+use humhub\modules\custom_pages\modules\template\elements\HtmlElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use tests\codeception\_support\HumHubDbTestCase;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
@@ -20,9 +20,9 @@ class ContainerElementContentTest extends HumHubDbTestCase
         ContainerItem::findOne(['id' => 3])->delete();
         ContainerItem::findOne(['id' => 4])->delete();
 
-        $this->assertNull(RichtextElement::findOne(['id' => 3]));
-        $this->assertNull(RichtextElement::findOne(['id' => 4]));
-        $this->assertNull(RichtextElement::findOne(['id' => 5]));
+        $this->assertNull(HtmlElement::findOne(['id' => 3]));
+        $this->assertNull(HtmlElement::findOne(['id' => 4]));
+        $this->assertNull(HtmlElement::findOne(['id' => 5]));
     }
 
     public function testDeleteContainerElementContent()
@@ -39,9 +39,9 @@ class ContainerElementContentTest extends HumHubDbTestCase
         $this->assertNull(ContainerItem::findOne(['id' => 3]));
         $this->assertNull(ContainerItem::findOne(['id' => 4]));
 
-        $this->assertNull(RichtextElement::findOne(['id' => 3]));
-        $this->assertNull(RichtextElement::findOne(['id' => 4]));
-        $this->assertNull(RichtextElement::findOne(['id' => 5]));
+        $this->assertNull(HtmlElement::findOne(['id' => 3]));
+        $this->assertNull(HtmlElement::findOne(['id' => 4]));
+        $this->assertNull(HtmlElement::findOne(['id' => 5]));
     }
 
     public function testDeleteParentContainer()
@@ -54,9 +54,9 @@ class ContainerElementContentTest extends HumHubDbTestCase
         $this->assertNull(ContainerItem::findOne(['id' => 3]));
         $this->assertNull(ContainerItem::findOne(['id' => 4]));
 
-        $this->assertNull(RichtextElement::findOne(['id' => 3]));
-        $this->assertNull(RichtextElement::findOne(['id' => 4]));
-        $this->assertNull(RichtextElement::findOne(['id' => 5]));
+        $this->assertNull(HtmlElement::findOne(['id' => 3]));
+        $this->assertNull(HtmlElement::findOne(['id' => 4]));
+        $this->assertNull(HtmlElement::findOne(['id' => 5]));
     }
 
     public function testDeletePage()
@@ -76,9 +76,9 @@ class ContainerElementContentTest extends HumHubDbTestCase
         $this->assertNull(ContainerItem::findOne(['id' => 3]));
         $this->assertNull(ContainerItem::findOne(['id' => 4]));
 
-        $this->assertNull(RichtextElement::findOne(['id' => 3]));
-        $this->assertNull(RichtextElement::findOne(['id' => 4]));
-        $this->assertNull(RichtextElement::findOne(['id' => 5]));
+        $this->assertNull(HtmlElement::findOne(['id' => 3]));
+        $this->assertNull(HtmlElement::findOne(['id' => 4]));
+        $this->assertNull(HtmlElement::findOne(['id' => 5]));
     }
 
     public function testDeleteAll()
@@ -88,7 +88,7 @@ class ContainerElementContentTest extends HumHubDbTestCase
         CustomPage::findOne(['id' => 1])->hardDelete();
 
         $this->assertEquals(0, TemplateInstance::find()->count());
-        $this->assertEquals(3, RichtextElement::findByType()->count());
+        $this->assertEquals(3, HtmlElement::findByType()->count());
         $this->assertEquals(0, ContainerItem::find()->count());
         $this->assertEquals(0, ContainerElement::findByType()->count());
 
@@ -98,7 +98,7 @@ class ContainerElementContentTest extends HumHubDbTestCase
         $this->assertEquals(1, Template::findOne(['id' => 3])->delete());
         $this->assertEquals(1, Template::findOne(['id' => 4])->delete());
 
-        $this->assertEquals(2, RichtextElement::findByType()->count());
+        $this->assertEquals(2, HtmlElement::findByType()->count());
         $this->assertEquals(12, TemplateElement::find()->count());
 
         // Cannot delete default templates

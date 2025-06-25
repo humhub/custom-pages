@@ -94,6 +94,15 @@ class ImageElement extends FileElement
     /**
      * @inheritdoc
      */
+    public function getTemplateVariable(): BaseElementVariable
+    {
+        return ImageElementVariable::instance($this)
+            ->setRecord($this->getFile());
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function renderEditForm(ActiveForm $form): string
     {
         $id = 'imageElement-' . $this->id;

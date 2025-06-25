@@ -76,8 +76,7 @@ abstract class BaseContentRecordElement extends BaseElementContent
      */
     public function getTemplateVariable(): BaseElementVariable
     {
-        $variable = new BaseContentRecordElementVariable($this);
-        $variable->setContent($this->getRecord());
-        return $variable;
+        return BaseContentRecordElementVariable::instance($this)
+            ->setRecord($this->getRecord());
     }
 }

@@ -11,6 +11,7 @@ namespace humhub\modules\custom_pages\types;
 
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceDuplicatorService;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use Yii;
 use yii\widgets\ActiveForm;
@@ -67,5 +68,30 @@ class TemplateType extends ContentType
     public function afterDelete(CustomPage $page): void
     {
         TemplateInstance::deleteByOwner($page);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeDuplicate(CustomPage $newPage): bool
+    {
+        $newPage->templateId = $this->customPage->getTemplateId();
+
+        return parent::beforeDuplicate($newPage);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function duplicate(?array $loadData = null): CustomPage
+    {
+        $newPage = parent::duplicate($loadData);
+
+        if (!$newPage->isNewRecord) {
+            $service = new TemplateInstanceDuplicatorService($this->customPage->getTemplateInstance());
+            $service->duplicate($newPage->getTemplateInstance());
+        }
+
+        return $newPage;
     }
 }

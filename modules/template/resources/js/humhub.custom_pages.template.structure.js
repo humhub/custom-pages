@@ -17,6 +17,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         this.initHighlight();
         this.initMenuAlignment();
         this.initResize();
+        this.initOverflow();
     }
 
     TemplateStructure.prototype.editor = function () {
@@ -106,7 +107,13 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
                 that.$.css(newPos);
                 that.updatePositionData();
             }
+            that.initOverflow();
         });
+    }
+
+    TemplateStructure.prototype.initOverflow = function () {
+        // Activate scrollbar only for long to avoid overflow of menu on small structure
+        this.$.css('overflow-y', this.$[0].scrollHeight > this.$.outerHeight() ? 'auto' : '');
     }
 
     TemplateStructure.prototype.getPositionData = function () {

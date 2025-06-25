@@ -9,23 +9,30 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use yii\db\ActiveRecord;
 
-class BaseContentContainerElementVariable extends BaseElementVariable
+class BaseContentContainerElementVariable extends BaseRecordElementVariable
 {
-    protected ?ContentContainerActiveRecord $contentContainer = null;
+    public string $displayName;
+    public string $displayNameSub;
+    public string $url;
+    public string $guid;
+    public string $imageUrl;
+    public string $bannerImageUrl;
+    public array $tags;
 
-    public function setContentContainer(?ContentContainerActiveRecord $contentContainer): void
+    public function setRecord(?ActiveRecord $record): BaseRecordElementVariable
     {
-        $this->contentContainer = $contentContainer;
-    }
+        if ($record instanceof ContentContainerActiveRecord) {
+            $this->displayName = $record->displayName;
+            $this->displayNameSub = $record->displayNameSub;
+            $this->url = $record->getUrl();
+            $this->guid = $record->guid;
+            $this->imageUrl = $record->profileImage->getUrl();
+            $this->bannerImageUrl = $record->profileBannerImage->getUrl();
+            $this->tags = $record->tags;
+        }
 
-    public function __isset($name): bool
-    {
-        return property_exists($this, $name) || isset($this->contentContainer->$name);
-    }
-
-    public function __get($name)
-    {
-        return $this->$name ?? $this->contentContainer->$name ?? null;
+        return parent::setRecord($record);
     }
 }

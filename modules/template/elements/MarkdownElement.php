@@ -20,14 +20,14 @@ use Yii;
  * Dynamic attributes:
  * @property string $content
  */
-class HumHubRichtextElement extends BaseElementContent
+class MarkdownElement extends BaseElementContent
 {
     /**
      * @inheritdoc
      */
     public function getLabel(): string
     {
-        return Yii::t('CustomPagesModule.template', 'HumHub Richtext');
+        return Yii::t('CustomPagesModule.template', 'Markdown');
     }
 
     /**

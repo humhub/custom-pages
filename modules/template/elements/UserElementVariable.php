@@ -22,7 +22,7 @@ class UserElementVariable extends BaseContentContainerElementVariable
 
     private function getUser(): ?User
     {
-        return $this->contentContainer instanceof User ? $this->contentContainer : null;
+        return $this->record instanceof User ? $this->record : null;
     }
 
     public function getFriendCount(): int

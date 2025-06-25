@@ -22,7 +22,7 @@ class SpaceElementVariable extends BaseContentContainerElementVariable
 
     private function getSpace(): ?Space
     {
-        return $this->contentContainer instanceof Space ? $this->contentContainer : null;
+        return $this->record instanceof Space ? $this->record : null;
     }
 
     public function getMemberCount(): int

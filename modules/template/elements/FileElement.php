@@ -129,6 +129,15 @@ class FileElement extends BaseElementContent
     /**
      * @inheritdoc
      */
+    public function getTemplateVariable(): BaseElementVariable
+    {
+        return FileElementVariable::instance($this)
+            ->setRecord($this->getFile());
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function renderEditForm(ActiveForm $form): string
     {
         $id = 'fileElement-' . $this->id;

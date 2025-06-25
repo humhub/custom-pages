@@ -159,6 +159,14 @@ class UsersElement extends BaseRecordsElement
     /**
      * @inheritdoc
      */
+    public function getTemplateVariable(): BaseElementVariable
+    {
+        return new UsersElementVariable($this);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function renderEditForm(ActiveForm $form): string
     {
         return '';

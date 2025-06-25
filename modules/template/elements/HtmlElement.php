@@ -17,19 +17,19 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 
 /**
- * Class to manage content records of the RichText elements
+ * Class to manage content records of the Html elements
  *
  * Dynamic attributes:
  * @property string $content
  */
-class RichtextElement extends BaseElementContent
+class HtmlElement extends BaseElementContent
 {
     /**
      * @inheritdoc
      */
     public function getLabel(): string
     {
-        return Yii::t('CustomPagesModule.template', 'Richtext');
+        return Yii::t('CustomPagesModule.template', 'Html');
     }
 
     /**
@@ -79,7 +79,7 @@ class RichtextElement extends BaseElementContent
 
         return $form->field($this, 'content')->widget(TinyMce::class, [
             'options' => [
-                'id' => 'richtext_' . $id,
+                'id' => 'html_' . $id,
                 'class' => 'tinymceInput',
                 'rows' => 6,
             ],
@@ -87,29 +87,29 @@ class RichtextElement extends BaseElementContent
                 'humhubTrigger' => [
                     'icon' => 'upload',
                     'text' => Yii::t('CustomPagesModule.model', 'Attach Files'),
-                    'selector' => '#richtext-template-file-uploader-' . $id,
+                    'selector' => '#html-template-file-uploader-' . $id,
                     'event' => 'click',
                 ],
             ]])->label(false) .
 
             Html::beginTag('div', ['class' => 'form-group']) .
                 UploadButton::widget([
-                    'id' => 'richtext-template-file-uploader-' . $id,
+                    'id' => 'html-template-file-uploader-' . $id,
                     'label' => Yii::t('CustomPagesModule.model', 'Attach Files'),
                     'tooltip' => false,
-                    'progress' => '#richtext-template-file-uploader-progress-' . $id,
-                    'preview' => '#richtext-template-file-uploader-preview-' . $id,
+                    'progress' => '#html-template-file-uploader-progress-' . $id,
+                    'preview' => '#html-template-file-uploader-preview-' . $id,
                     'cssButtonClass' => 'btn-default btn-sm',
                     'model' => $this,
-                    'submitName' => $this->formName().'[fileList][]',
+                    'submitName' => $this->formName() . '[fileList][]',
                 ]) .
                 FilePreview::widget([
-                    'id' => 'richtext-template-file-uploader-preview-' . $id,
+                    'id' => 'html-template-file-uploader-preview-' . $id,
                     'options' => ['style' => 'margin-top:10px'],
                     'model' => $this,
                     'edit' => true,
                 ]) .
-                UploadProgress::widget(['id' => 'richtext-template-file-uploader-progress-' . $id]) .
+                UploadProgress::widget(['id' => 'html-template-file-uploader-progress-' . $id]) .
             Html::endTag('div');
     }
 }

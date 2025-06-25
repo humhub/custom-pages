@@ -23,6 +23,11 @@ class BaseElementVariable
         $this->empty = $elementContent->isEmpty();
     }
 
+    public static function instance(BaseElementContent $elementContent): static
+    {
+        return new static($elementContent);
+    }
+
     public function __toString()
     {
         return strval($this->elementContent);

@@ -3,7 +3,7 @@
   "name": "Test Template",
   "engine": "twig",
   "description": "",
-  "source": "{{ test_text }}\r\n{{ test_richtext }}",
+  "source": "{{ test_text }}\r\n{{ test_html }}",
   "allow_for_spaces": 0,
   "type": "layout",
   "is_default": 0,
@@ -21,9 +21,9 @@
       }
     },
     {
-      "name": "test_richtext",
-      "content_type": "humhub\\modules\\custom_pages\\modules\\template\\elements\\RichtextElement",
-      "title": "Test RichText",
+      "name": "test_html",
+      "content_type": "humhub\\modules\\custom_pages\\modules\\template\\elements\\HtmlElement",
+      "title": "Test Html",
       "dyn_attributes": null,
       "elementContent": {
         "dyn_attributes": {

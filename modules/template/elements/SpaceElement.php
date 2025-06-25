@@ -43,9 +43,7 @@ class SpaceElement extends BaseContentContainerElement
      */
     public function getTemplateVariable(): BaseElementVariable
     {
-        $variable = new SpaceElementVariable($this);
-        $variable->setContentContainer($this->getRecord());
-        return $variable;
+        return SpaceElementVariable::instance($this)->setRecord($this->getRecord());
     }
 
     /**

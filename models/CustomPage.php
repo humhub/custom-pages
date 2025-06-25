@@ -124,6 +124,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
             'page_content' => Yii::t('CustomPagesModule.base', 'Page Content'),
             'iframe_attrs' => Yii::t('CustomPagesModule.base', 'Additional IFrame Attributes'),
             'sort_order' => Yii::t('CustomPagesModule.base', 'Sort Order'),
+            'target' => Yii::t('CustomPagesModule.base', 'Category'),
             'admin_only' => Yii::t('CustomPagesModule.model', 'Only visible for admins'),
             'in_new_window' => Yii::t('CustomPagesModule.model', 'Open in new window'),
             'cssClass' => Yii::t('CustomPagesModule.base', 'Style Class'),
@@ -382,7 +383,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
      */
     public function getContentType(): ?ContentType
     {
-        return ContentType::getById($this->type);
+        return ContentType::getByPage($this);
     }
 
     public function getTitle(): string
@@ -482,10 +483,13 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
      */
     public function getAllowedTemplateSelection(): array
     {
-        return Template::getSelection([
-            'type' => $this->isSnippet() ? Template::TYPE_SNIPPET_LAYOUT : Template::TYPE_LAYOUT,
-            'allow_for_spaces' => $this->isGlobal() ? 0 : 1,
-        ]);
+        $condition = ['type' => $this->isSnippet() ? Template::TYPE_SNIPPET_LAYOUT : Template::TYPE_LAYOUT];
+
+        if (!$this->isGlobal()) {
+            $condition['allow_for_spaces'] = 1;
+        }
+
+        return Template::getSelection($condition);
     }
 
     /**
@@ -539,15 +543,26 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
         return $this->target;
     }
 
+    public function getAvailableTargetOptions(): array
+    {
+        $targets = CustomPagesService::instance()->getTargets($this->getPageType(), $this->content->container);
+        return array_column($targets, 'name', 'id');
+    }
+
     public function hasTarget($targetId): bool
     {
         return $this->target === $targetId;
     }
 
+    public function getTemplateInstance(): ?TemplateInstance
+    {
+        return TemplateInstance::findByOwner($this);
+    }
+
     public function getTemplateId(): ?int
     {
         if ($this->templateId === null) {
-            $templateInstance = TemplateInstance::findByOwner($this);
+            $templateInstance = $this->getTemplateInstance();
             $this->templateId = $templateInstance ? $templateInstance->template_id : 0;
         }
 

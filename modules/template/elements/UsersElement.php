@@ -23,7 +23,7 @@ use yii\db\ActiveQuery;
  * @property array $friend
  * @property int $limit
  */
-class UsersElement extends BaseRecordsElement
+class UsersElement extends BaseContentContainersElement
 {
     public const RECORD_CLASS = User::class;
 
@@ -146,14 +146,6 @@ class UsersElement extends BaseRecordsElement
     protected function isConfigured(): bool
     {
         return parent::isConfigured() || $this->type === 'friend';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function isCacheable(): bool
-    {
-        return false;
     }
 
     /**

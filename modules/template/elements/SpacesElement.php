@@ -27,7 +27,7 @@ use yii\helpers\Url;
  * @property array $tag
  * @property int $limit
  */
-class SpacesElement extends BaseRecordsElement
+class SpacesElement extends BaseContentContainersElement
 {
     public const RECORD_CLASS = Space::class;
 
@@ -150,14 +150,6 @@ class SpacesElement extends BaseRecordsElement
     protected function isConfigured(): bool
     {
         return parent::isConfigured() || $this->type === 'member';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function isCacheable(): bool
-    {
-        return false;
     }
 
     /**

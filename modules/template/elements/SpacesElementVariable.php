@@ -8,14 +8,10 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
-class SpacesElementVariable extends BaseElementVariableIterator
+class SpacesElementVariable extends BaseContentContainersElementVariable
 {
-    public function __construct(SpacesElement $elementContent)
-    {
-        parent::__construct($elementContent);
-
-        foreach ($elementContent->getItems() as $space) {
-            $this->items[] = SpaceElementVariable::instance($elementContent)->setRecord($space);
-        }
-    }
+    /**
+     * @inheritdoc
+     */
+    public const ITEM_VARIABLE_CLASS = SpaceElementVariable::class;
 }

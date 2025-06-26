@@ -8,14 +8,10 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
-class UsersElementVariable extends BaseElementVariableIterator
+class UsersElementVariable extends BaseContentContainersElementVariable
 {
-    public function __construct(UsersElement $elementContent)
-    {
-        parent::__construct($elementContent);
-
-        foreach ($elementContent->getItems() as $user) {
-            $this->items[] = UserElementVariable::instance($elementContent)->setRecord($user);
-        }
-    }
+    /**
+     * @inheritdoc
+     */
+    public const ITEM_VARIABLE_CLASS = UserElementVariable::class;
 }

@@ -11,16 +11,10 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 use humhub\components\ActiveRecord;
 use humhub\libs\Html;
 use humhub\modules\custom_pages\modules\template\interfaces\TemplateElementContentIterable;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use Yii;
 use yii\db\ActiveQuery;
 
 /**
- * Abstract class to manage content records of the elements with different object list (Spaces, Users)
- *
- * Dynamic attributes:
- * @property string $type
- * @property array $static
+ * Abstract class to manage Active Records of the elements
  */
 abstract class BaseRecordsElement extends BaseElementContent implements TemplateElementContentIterable
 {
@@ -32,59 +26,15 @@ abstract class BaseRecordsElement extends BaseElementContent implements Template
     protected ?array $records = null;
 
     /**
-     * Get query of the records depending on config
+     * Get query of the records depending on filters
      *
      * @return ActiveQuery
      */
     abstract protected function getQuery(): ActiveQuery;
 
-    /**
-     * @inheritdoc
-     */
-    protected function getDynamicAttributes(): array
-    {
-        return [
-            'type' => null,
-            'static' => null,
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'type' => Yii::t('CustomPagesModule.template', 'Type'),
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['type'], 'in', 'range' => array_keys($this->getTypes())],
-            [['static'], 'safe'],
-        ];
-    }
-
     public function __toString()
     {
         return Html::encode(static::RECORD_CLASS);
-    }
-
-    /**
-     * Get types for the records list
-     *
-     * @return array
-     */
-    public function getTypes(): array
-    {
-        return [
-            'static' => Yii::t('CustomPagesModule.template', 'Static list'),
-        ];
     }
 
     /**
@@ -93,80 +43,18 @@ abstract class BaseRecordsElement extends BaseElementContent implements Template
     public function getItems(): iterable
     {
         if ($this->records === null) {
-            if (!$this->isConfigured()) {
-                // No need to touch DB because option is not configured for the current type
-                $this->records = [];
-            } else {
-                // Get records from DB
-                $query = $this->getQuery();
-
-                if ($this->type !== 'static' && !empty($this->limit)) {
-                    // Limit only dynamic list
-                    $query->limit($this->limit);
-                }
-
-                $this->records = $query->all();
-            }
+            $this->records = $this->getQuery()->all();
         }
 
         yield from $this->records;
     }
 
     /**
-     * Filter the list with static selected record
-     *
-     * @param ActiveQuery $query
-     * @return ActiveQuery
-     */
-    protected function filterStatic(ActiveQuery $query): ActiveQuery
-    {
-        return $query->andWhere(['guid' => $this->static]);
-    }
-
-    /**
-     * Check if the Element is properly configured
-     *
-     * @return bool
-     */
-    protected function isConfigured(): bool
-    {
-        return !empty($this->{$this->type});
-    }
-
-    /**
      * @inheritdoc
      */
-    public function renderEditForm(ActiveForm $form): string
+    public function isCacheable(): bool
     {
-        return $form->field($this, 'type')->dropDownList($this->getTypes(), ['class' => 'records-content-form-type']) .
-            Html::script(<<<JS
-    $(document).on('change', '.records-content-form-type', function () {
-        const type = $(this).val();
-        $(this).closest('form').find('.records-content-form-fields').each(function () {
-            $(this).toggle($(this).data('type').match(new RegExp('(^|,)' + type + '(,|$)')) !== null);
-        });
-    });
-    $('.records-content-form-type').trigger('change');
-JS);
-    }
-
-    /**
-     * Renders additional fields for the edit form per type
-     *
-     * @param array $fields
-     * @return string
-     */
-    protected function renderEditRecordsTypeFields(array $fields): string
-    {
-        $result = '';
-
-        foreach ($fields as $type => $field) {
-            $result .= Html::tag('div', $field, [
-                'class' => 'records-content-form-fields',
-                'data-type' => $type,
-            ]);
-        }
-
-        return $result;
+        // Allow cache only when you are sure the Active Records are not filtered for current User
+        return false;
     }
 }

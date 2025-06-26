@@ -11,7 +11,6 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 use humhub\components\ActiveRecord;
 use humhub\libs\Html;
 use humhub\modules\custom_pages\modules\template\interfaces\TemplateElementContentIterable;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -38,53 +37,11 @@ abstract class BaseRecordsElement extends BaseElementContent implements Template
      */
     abstract protected function getQuery(): ActiveQuery;
 
-    /**
-     * @inheritdoc
-     */
-    protected function getDynamicAttributes(): array
-    {
-        return [
-            'type' => null,
-            'static' => null,
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'type' => Yii::t('CustomPagesModule.template', 'Type'),
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['type'], 'in', 'range' => array_keys($this->getTypes())],
-            [['static'], 'safe'],
-        ];
-    }
+    abstract protected function isConfigured(): bool;
 
     public function __toString()
     {
         return Html::encode(static::RECORD_CLASS);
-    }
-
-    /**
-     * Get types for the records list
-     *
-     * @return array
-     */
-    public function getTypes(): array
-    {
-        return [
-            'static' => Yii::t('CustomPagesModule.template', 'Static list'),
-        ];
     }
 
     /**
@@ -100,11 +57,6 @@ abstract class BaseRecordsElement extends BaseElementContent implements Template
                 // Get records from DB
                 $query = $this->getQuery();
 
-                if ($this->type !== 'static' && !empty($this->limit)) {
-                    // Limit only dynamic list
-                    $query->limit($this->limit);
-                }
-
                 $this->records = $query->all();
             }
         }
@@ -112,61 +64,4 @@ abstract class BaseRecordsElement extends BaseElementContent implements Template
         yield from $this->records;
     }
 
-    /**
-     * Filter the list with static selected record
-     *
-     * @param ActiveQuery $query
-     * @return ActiveQuery
-     */
-    protected function filterStatic(ActiveQuery $query): ActiveQuery
-    {
-        return $query->andWhere(['guid' => $this->static]);
-    }
-
-    /**
-     * Check if the Element is properly configured
-     *
-     * @return bool
-     */
-    protected function isConfigured(): bool
-    {
-        return !empty($this->{$this->type});
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderEditForm(ActiveForm $form): string
-    {
-        return $form->field($this, 'type')->dropDownList($this->getTypes(), ['class' => 'records-content-form-type']) .
-            Html::script(<<<JS
-    $(document).on('change', '.records-content-form-type', function () {
-        const type = $(this).val();
-        $(this).closest('form').find('.records-content-form-fields').each(function () {
-            $(this).toggle($(this).data('type').match(new RegExp('(^|,)' + type + '(,|$)')) !== null);
-        });
-    });
-    $('.records-content-form-type').trigger('change');
-JS);
-    }
-
-    /**
-     * Renders additional fields for the edit form per type
-     *
-     * @param array $fields
-     * @return string
-     */
-    protected function renderEditRecordsTypeFields(array $fields): string
-    {
-        $result = '';
-
-        foreach ($fields as $type => $field) {
-            $result .= Html::tag('div', $field, [
-                'class' => 'records-content-form-fields',
-                'data-type' => $type,
-            ]);
-        }
-
-        return $result;
-    }
 }

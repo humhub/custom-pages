@@ -8,7 +8,13 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
+use humhub\libs\Html;
+use humhub\modules\custom_pages\modules\template\widgets\DeleteContentButton;
 use humhub\modules\file\models\File;
+use humhub\modules\file\widgets\FilePreview;
+use humhub\modules\file\widgets\UploadButton;
+use humhub\modules\file\widgets\UploadProgress;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 
 /**
@@ -127,5 +133,48 @@ class FileElement extends BaseElementContent
     {
         return FileElementVariable::instance($this)
             ->setRecord($this->getFile());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        $id = 'fileElement-' . $this->id;
+
+        return $form->field($this, 'file_guid')->hiddenInput(['class' => 'file-guid'])->label(false) .
+
+        Html::beginTag('div', ['id' => $id, 'class' => 'file-upload-container clearfix']) .
+            Html::beginTag('div', ['class' => 'row']) .
+
+                Html::beginTag('div', ['class' => 'col-md-4 uploadContainer']) .
+                    UploadButton::widget([
+                        'cssButtonClass' => 'btn-primary',
+                        'model' => $this,
+                        'single' => true,
+                        'label' => true,
+                        'attribute' => 'file_guid',
+                        'dropZone' => '#' . $id,
+                        'tooltip' => false,
+                        'preview' => '#' . $id . '-preview',
+                        'progress' => '#' . $id . '-progress',
+                    ]) . ' ' .
+                    DeleteContentButton::widget([
+                        'model' => $this,
+                        'previewId' => $id . '-preview',
+                    ]) .
+                Html::endTag('div') .
+
+                Html::beginTag('div', ['class' => 'col-md-8 previewContainer']) .
+                    FilePreview::widget([
+                        'id' => $id . '-preview',
+                        'popoverPosition' => 'top',
+                        'items' => [$this->getFile()],
+                    ]) .
+                    UploadProgress::widget(['id' => $id . '-progress']) .
+                Html::endTag('div') .
+
+            Html::endTag('div') .
+        Html::endTag('div');
     }
 }

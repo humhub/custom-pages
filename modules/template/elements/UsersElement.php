@@ -8,8 +8,10 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\UserPickerField;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -21,10 +23,9 @@ use yii\db\ActiveQuery;
  * @property array $friend
  * @property int $limit
  */
-class UsersElement extends BaseRecordsElement
+class UsersElement extends BaseContentContainersElement
 {
     public const RECORD_CLASS = User::class;
-    public string $subFormView = 'users';
 
     /**
      * @inheritdoc
@@ -150,16 +151,22 @@ class UsersElement extends BaseRecordsElement
     /**
      * @inheritdoc
      */
-    public function isCacheable(): bool
+    public function getTemplateVariable(): BaseElementVariable
     {
-        return false;
+        return new UsersElementVariable($this);
     }
 
     /**
      * @inheritdoc
      */
-    public function getTemplateVariable(): BaseElementVariable
+    public function renderEditForm(ActiveForm $form): string
     {
-        return new UsersElementVariable($this);
+        return parent::renderEditForm($form) .
+            $this->renderEditRecordsTypeFields([
+                'static' => $form->field($this, 'static')->widget(UserPickerField::class, ['minInput' => 2]),
+                'group' => $form->field($this, 'group')->dropDownList($this->getGroupOptions()),
+                'friend' => $form->field($this, 'friend')->widget(UserPickerField::class, ['minInput' => 2, 'maxSelection' => 1]),
+                'group,friend' => $form->field($this, 'limit'),
+            ]);
     }
 }

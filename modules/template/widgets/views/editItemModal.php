@@ -3,8 +3,8 @@
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\models\forms\EditItemForm;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\bootstrap\Html;
-use yii\widgets\ActiveForm;
 
 /* @var $model EditItemForm */
 /* @var $action string */

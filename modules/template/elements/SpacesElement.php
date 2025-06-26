@@ -8,10 +8,15 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
+use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\widgets\SpacePickerField;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\user\widgets\UserPickerField;
 use Yii;
 use yii\db\ActiveQuery;
+use yii\helpers\Url;
 
 /**
  * Class to manage content records of the elements with Spaces list
@@ -22,10 +27,9 @@ use yii\db\ActiveQuery;
  * @property array $tag
  * @property int $limit
  */
-class SpacesElement extends BaseRecordsElement
+class SpacesElement extends BaseContentContainersElement
 {
     public const RECORD_CLASS = Space::class;
-    public string $subFormView = 'spaces';
 
     /**
      * @inheritdoc
@@ -151,16 +155,27 @@ class SpacesElement extends BaseRecordsElement
     /**
      * @inheritdoc
      */
-    public function isCacheable(): bool
+    public function getTemplateVariable(): BaseElementVariable
     {
-        return false;
+        return new SpacesElementVariable($this);
     }
 
     /**
      * @inheritdoc
      */
-    public function getTemplateVariable(): BaseElementVariable
+    public function renderEditForm(ActiveForm $form): string
     {
-        return new SpacesElementVariable($this);
+        return parent::renderEditForm($form) .
+            $this->renderEditRecordsTypeFields([
+                'static' => $form->field($this, 'static')->widget(SpacePickerField::class, ['minInput' => 2]),
+                'member' => $form->field($this, 'member')->widget(UserPickerField::class, ['minInput' => 2, 'maxSelection' => 1]) .
+                            $form->field($this, 'memberType')->dropDownList($this->getMemberTypes()),
+                'tag' => $form->field($this, 'tag')->widget(ContainerTagPicker::class, [
+                    'url' => Url::to(['/space/browse/search-tags-json']),
+                    'minInput' => 2,
+                    'maxSelection' => 1,
+                ]),
+                'member,tag' => $form->field($this, 'limit'),
+            ]);
     }
 }

@@ -8,7 +8,10 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
+use humhub\libs\Html;
 use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\content\widgets\richtext\RichTextField;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 
 /**
@@ -71,5 +74,19 @@ class MarkdownElement extends BaseElementContent
     public function saveFiles()
     {
         Richtext::postProcess($this->content, $this);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        $result = $form->field($this, 'content')->widget(RichTextField::class);
+
+        foreach ($this->fileList as $file) {
+            $result .= Html::hiddenInput($this->formName() . '[fileList][]', $file);
+        }
+
+        return $result;
     }
 }

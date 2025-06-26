@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\libs\Html;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 
 /**
@@ -95,11 +96,27 @@ class TextElement extends BaseElementContent
         return $scenarios;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function __toString()
     {
         return $this->inline_text ? $this->purify($this->content) : Html::encode($this->content);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        $result = $form->field($this, 'content')->textInput(['maxlength' => 255])->label(false);
+
+        if ($this->isAdminEditMode()) {
+            $result .= $form->field($this, 'inline_text')->checkbox() .
+                Html::tag(
+                    'div',
+                    Yii::t('CustomPagesModule.base', 'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.'),
+                    ['class' => 'alert alert-info'],
+                );
+        }
+
+        return $result;
     }
 }

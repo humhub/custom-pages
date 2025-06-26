@@ -9,6 +9,8 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\custom_pages\modules\template\models\Template;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\MultiSelect;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -156,5 +158,19 @@ class ContainerElement extends BaseElementContent
     public function getTemplateVariable(): BaseElementVariable
     {
         return new ContainerElementVariable($this);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        $disableDefinition = !$this->isAdminEditMode() && !$this->definition->isNewRecord;
+
+        return $form->field($this->definition, 'templates')->widget(MultiSelect::class, [
+                'items' => $this->definition->getAllowedTemplateOptions(),
+                'disabled' => $disableDefinition,
+            ]) .
+            $form->field($this->definition, 'allow_multiple')->checkbox(['disabled' => $disableDefinition]);
     }
 }

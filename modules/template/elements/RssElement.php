@@ -10,6 +10,7 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\libs\Html;
 use humhub\modules\custom_pages\modules\template\interfaces\TemplateElementContentIterable;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use SimpleXMLElement;
 use Yii;
 
@@ -122,9 +123,11 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
         if ($this->rssData === null && !$this->isEmpty()) {
             try {
                 $this->rssData = simplexml_load_string($this->getRssFileContent(), SimpleXMLElement::class, LIBXML_NOCDATA, '');
-                // Register all found namespaces in the RSS feed
-                foreach ($this->rssData->getNamespaces(true) as $prefix => $namespace) {
-                    $this->rssData->registerXPathNamespace($prefix, $namespace);
+                if ($this->rssData) {
+                    // Register all found namespaces in the RSS feed
+                    foreach ($this->rssData->getNamespaces(true) as $prefix => $namespace) {
+                        $this->rssData->registerXPathNamespace($prefix, $namespace);
+                    }
                 }
             } catch (\Exception $e) {
                 $this->rssData = false;
@@ -140,7 +143,7 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
     public function getItems(): iterable
     {
         $items = [];
-        if ($this->getRssData()->channel->item instanceof SimpleXMLElement) {
+        if ($this->getRssData() && $this->getRssData()->channel->item instanceof SimpleXMLElement) {
             $i = 0;
             foreach ($this->getRssData()->channel->item as $item) {
                 $fields = (array) $item;
@@ -225,5 +228,15 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
     public function getTemplateVariable(): BaseElementVariable
     {
         return new RssElementVariable($this);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        return $form->field($this, 'url')->textInput(['maxlength' => 1000]) .
+            $form->field($this, 'cache_time') .
+            $form->field($this, 'limit');
     }
 }

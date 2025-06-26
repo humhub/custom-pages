@@ -9,7 +9,11 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\content\components\ActiveQueryContent;
+use humhub\modules\space\widgets\SpacePickerField;
 use humhub\modules\stream\models\filters\DefaultStreamFilter;
+use humhub\modules\topic\widgets\TopicPicker;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\user\widgets\UserPickerField;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
@@ -29,25 +33,15 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
     /**
      * @inheritdoc
      */
-    public string $subFormView = 'baseContentRecords';
-
-    /**
-     * @var string A view file to render a widget with form fields for the Content Records
-     */
-    public string $contentFormView = '';
-
-    /**
-     * @inheritdoc
-     */
     protected function getDynamicAttributes(): array
     {
-        return array_merge(parent::getDynamicAttributes(), [
+        return [
             'space' => null,
             'author' => null,
             'topic' => null,
             'filter' => null,
             'limit' => null,
-        ]);
+        ];
     }
 
     /**
@@ -76,61 +70,12 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
 
     /**
      * @inheritdoc
-     */
-    public function getTypes(): array
-    {
-        return array_merge(parent::getTypes(), [
-            'options' => Yii::t('CustomPagesModule.base', 'Specific criteria'),
-        ]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function isConfigured(): bool
-    {
-        return parent::isConfigured() || $this->type === 'options';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function isCacheable(): bool
-    {
-        // Don't cache because the filter `ContentActiveRecord::find()->readable()` is used here
-        return false;
-    }
-
-    /**
-     * @inheritdoc
      * @return ActiveQueryContent
      */
     protected function getQuery(): ActiveQuery
     {
         $query = static::RECORD_CLASS::find()->readable();
 
-        return match ($this->type) {
-            'options' => $this->filterOptions($query),
-            default => $this->filterStatic($query),
-        };
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function filterStatic(ActiveQuery $query): ActiveQuery
-    {
-        return $query->andWhere(['content.object_id' => $this->static]);
-    }
-
-    /**
-     * Filter by options
-     *
-     * @param ActiveQueryContent $query
-     * @return ActiveQuery
-     */
-    protected function filterOptions(ActiveQueryContent $query): ActiveQuery
-    {
         $query->userRelated([
             ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE,
             ActiveQueryContent::USER_RELATED_SCOPE_SPACES,
@@ -165,7 +110,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             }
         }
 
-        return $query;
+        return $query->limit($this->limit);
     }
 
     /**
@@ -184,5 +129,17 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
     public function hasFilter(string $name): bool
     {
         return is_array($this->filter) && in_array($name, $this->filter);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        return $form->field($this, 'space')->widget(SpacePickerField::class) .
+            $form->field($this, 'author')->widget(UserPickerField::class) .
+            $form->field($this, 'topic')->widget(TopicPicker::class) .
+            $form->field($this, 'filter')->checkboxList($this->getContentFilterOptions()) .
+            $form->field($this, 'limit');
     }
 }

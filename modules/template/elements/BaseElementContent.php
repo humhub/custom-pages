@@ -19,7 +19,6 @@ use Yii;
 use yii\db\ActiveQuery;
 use humhub\modules\ui\form\widgets\ActiveForm;
 
-
 /**
  * This is the base class for all Template Element Content types.
  *

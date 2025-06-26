@@ -168,9 +168,9 @@ class ContainerElement extends BaseElementContent
         $disableDefinition = !$this->isAdminEditMode() && !$this->definition->isNewRecord;
 
         return $form->field($this->definition, 'templates')->widget(MultiSelect::class, [
-                'items' => $this->definition->getAllowedTemplateOptions(),
-                'disabled' => $disableDefinition,
-            ]) .
+            'items' => $this->definition->getAllowedTemplateOptions(),
+            'disabled' => $disableDefinition,
+        ]) .
             $form->field($this->definition, 'allow_multiple')->checkbox(['disabled' => $disableDefinition]);
     }
 }

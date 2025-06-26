@@ -26,6 +26,7 @@ use yii\db\Expression;
  * @property array $author
  * @property array $topic
  * @property array $filter
+ * @property string $filterContentIds
  * @property int $limit
  */
 abstract class BaseContentRecordsElement extends BaseRecordsElement
@@ -41,6 +42,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             'topic' => null,
             'filter' => null,
             'limit' => null,
+            'filterContentIds' => null,
         ]);
     }
 
@@ -54,6 +56,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             'author' => Yii::t('CustomPagesModule.base', 'Authors'),
             'topic' => Yii::t('CustomPagesModule.base', 'Topics'),
             'filter' => Yii::t('CustomPagesModule.base', 'Content filters'),
+            'filterContentIds' => Yii::t('CustomPagesModule.base', 'Specific content IDs'),
             'limit' => Yii::t('CustomPagesModule.base', 'Limit'),
         ]);
     }
@@ -65,16 +68,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
     {
         return array_merge(parent::attributeHints(), [
             'space' => Yii::t('CustomPagesModule.base', 'Leave empty to list all records related to the current user.'),
-        ]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getTypes(): array
-    {
-        return array_merge(parent::getTypes(), [
-            'options' => Yii::t('CustomPagesModule.base', 'Specific criteria'),
+            'filterContentIds' => Yii::t('CustomPagesModule.base', 'Comma separated list of content IDs to show.'),
         ]);
     }
 
@@ -103,28 +97,6 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
     {
         $query = static::RECORD_CLASS::find()->readable();
 
-        return match ($this->type) {
-            'options' => $this->filterOptions($query),
-            default => $this->filterStatic($query),
-        };
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function filterStatic(ActiveQuery $query): ActiveQuery
-    {
-        return $query->andWhere(['content.object_id' => $this->static]);
-    }
-
-    /**
-     * Filter by options
-     *
-     * @param ActiveQueryContent $query
-     * @return ActiveQuery
-     */
-    protected function filterOptions(ActiveQueryContent $query): ActiveQuery
-    {
         $query->userRelated([
             ActiveQueryContent::USER_RELATED_SCOPE_OWN_PROFILE,
             ActiveQueryContent::USER_RELATED_SCOPE_SPACES,
@@ -148,9 +120,13 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
 
         if (!Yii::$app->user->isGuest) {
             if ($this->hasFilter(DefaultStreamFilter::FILTER_INVOLVED)) {
-                $query->leftJoin('user_follow AS user_involved', 'content.object_model = user_involved.object_model AND content.object_id = user_involved.object_id AND user_involved.user_id = :userId', [
-                    'userId' => Yii::$app->user->id,
-                ]);
+                $query->leftJoin(
+                    'user_follow AS user_involved',
+                    'content.object_model = user_involved.object_model AND content.object_id = user_involved.object_id AND user_involved.user_id = :userId',
+                    [
+                        'userId' => Yii::$app->user->id,
+                    ]
+                );
                 $query->andWhere(['IS NOT', 'user_involved.id', new Expression('NULL')]);
             }
 
@@ -159,15 +135,14 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             }
         }
 
+        $query->limit((!empty($this->limit) ? $this->limit : 50));
+
+        // ToDo: Add Filter for specific Content Ids (former Static List)
+
         return $query;
     }
 
-    /**
-     * Get options to filter the content record
-     *
-     * @return array
-     */
-    public function getContentFilterOptions(): array
+    private function getContentFilterOptions(): array
     {
         return [
             DefaultStreamFilter::FILTER_INVOLVED => Yii::t('ContentModule.base', 'I\'m involved'),
@@ -175,7 +150,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
         ];
     }
 
-    public function hasFilter(string $name): bool
+    private function hasFilter(string $name): bool
     {
         return is_array($this->filter) && in_array($name, $this->filter);
     }
@@ -186,12 +161,11 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
     public function renderEditForm(ActiveForm $form): string
     {
         return parent::renderEditForm($form) .
-            $this->renderEditRecordsTypeFields([
-                'options' => $form->field($this, 'space')->widget(SpacePickerField::class) .
-                    $form->field($this, 'author')->widget(UserPickerField::class) .
-                    $form->field($this, 'topic')->widget(TopicPicker::class) .
-                    $form->field($this, 'filter')->checkboxList($this->getContentFilterOptions()) .
-                    $form->field($this, 'limit'),
-            ]);
+            $form->field($this, 'space')->widget(SpacePickerField::class) .
+            $form->field($this, 'author')->widget(UserPickerField::class) .
+            $form->field($this, 'topic')->widget(TopicPicker::class) .
+            $form->field($this, 'filterContentIds')->textInput() .
+            $form->field($this, 'filter')->checkboxList($this->getContentFilterOptions()) .
+            $form->field($this, 'limit');
     }
 }

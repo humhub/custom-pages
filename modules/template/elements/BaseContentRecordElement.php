@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 
 /**
@@ -78,5 +79,13 @@ abstract class BaseContentRecordElement extends BaseElementContent
     {
         return BaseContentRecordElementVariable::instance($this)
             ->setRecord($this->getRecord());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        return $form->field($this, 'contentRecordId');
     }
 }

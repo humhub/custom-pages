@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.11.0-beta.6 (Unreleased)
+-----------------------------
+- Fix #426: Content record ID fields for template elements
+
 1.11.0-beta.5 (June 27, 2025)
 -----------------------------
 - Fix #425: Fix image element variable properties type

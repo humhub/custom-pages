@@ -26,6 +26,7 @@ use yii\db\Expression;
  * @property array $author
  * @property array $topic
  * @property array $filter
+ * @property string $contentRecordIds
  * @property int $limit
  */
 abstract class BaseContentRecordsElement extends BaseRecordsElement
@@ -40,6 +41,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             'author' => null,
             'topic' => null,
             'filter' => null,
+            'contentRecordIds' => null,
             'limit' => null,
         ];
     }
@@ -54,6 +56,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             'author' => Yii::t('CustomPagesModule.base', 'Authors'),
             'topic' => Yii::t('CustomPagesModule.base', 'Topics'),
             'filter' => Yii::t('CustomPagesModule.base', 'Content filters'),
+            'contentRecordIds' => Yii::t('CustomPagesModule.base', 'Restrict to following comma separated IDs'),
             'limit' => Yii::t('CustomPagesModule.base', 'Limit'),
         ]);
     }
@@ -110,6 +113,12 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             }
         }
 
+        if (!empty($this->contentRecordIds) &&
+            preg_match_all('/\b\d+\b/', $this->contentRecordIds, $contentRecordIds) &&
+            count($contentRecordIds[0]) > 0) {
+            $query->andWhere(['content.object_id' => $contentRecordIds[0]]);
+        }
+
         return $query->limit($this->limit);
     }
 
@@ -140,6 +149,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             $form->field($this, 'author')->widget(UserPickerField::class) .
             $form->field($this, 'topic')->widget(TopicPicker::class) .
             $form->field($this, 'filter')->checkboxList($this->getContentFilterOptions()) .
+            $form->field($this, 'contentRecordIds') .
             $form->field($this, 'limit');
     }
 }

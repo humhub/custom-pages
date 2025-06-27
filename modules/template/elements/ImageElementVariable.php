@@ -15,8 +15,8 @@ class ImageElementVariable extends FileElementVariable
 {
     public ?string $src;
     public ?string $alt;
-    public ?int $height;
-    public ?int $width;
+    public ?string $height;
+    public ?string $width;
     public ?string $style;
 
     public function __construct(BaseElementContent $elementContent)

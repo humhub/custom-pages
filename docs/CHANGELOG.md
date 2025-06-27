@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.11.0-beta.5 (Unreleased)
+-----------------------------
+- Fix #425: Fix image element variable properties type
+
 1.11.0-beta.4 (June 24, 2025)
 -----------------------------
 - Enh #415: Display "Edit template" menu on structure view

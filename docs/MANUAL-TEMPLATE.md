@@ -79,3 +79,17 @@
 | `calendar.startDateTime `           | String                  |                                                                   |
 | `calendar.endDateTime`              | String                  |                                                                   |
 | `calendar.location`                 | String                  |                                                                   |
+|                                    |                         |                                                                   |
+| **Wiki Pages Element**             |                         |                                                                   |
+| `wikis`                            | WikiPage[]              | Iterable of selected Calendar Entries                             |
+|                                    |                         |                                                                   |
+| **Wiki Page Element**              |                         |                                                                   |
+| `wiki`                             | WikiPage > Content      |                                                                   |
+| `wiki.title`                       | String                  |                                                                   |
+| `wiki.content`                     | String                  | Latest Wiki revision (Markdown)                                   |
+| `wiki.isHome`                      | Boolean                 |                                                                   |
+| `wiki.isAdminOnly`                 | Boolean                 |                                                                   |
+| `wiki.sortOrder `                  | Integer                 |                                                                   |
+| `wiki.isContainerMenu`             | Boolean                 |                                                                   |
+| `wiki.containerMenuOrder`          | Integer                 |                                                                   |
+

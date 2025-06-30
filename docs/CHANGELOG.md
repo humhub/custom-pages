@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.11.0-beta.6 (Unreleased)
+1.11.0-beta.6 (June 30, 2025)
 -----------------------------
 - Fix #426: Content record ID fields for template elements
 

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
+use humhub\modules\admin\components\Controller;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\ImportForm;
@@ -29,26 +30,10 @@ use yii\web\NotFoundHttpException;
 /**
  * Admin controller for managing templates.
  *
- * This controller is designed to support different template types by setting the $type
- * and $indexHelp attributes.
- *
  * @author buddha
  */
-class AdminController extends \humhub\modules\admin\components\Controller
+class AdminController extends Controller
 {
-    /**
-     * Defines the template type this controller should manage.
-     *
-     * @var type
-     */
-    public $type;
-
-    /**
-     * Defines the index help text for the given template type.
-     * @var type
-     */
-    public $indexHelp;
-
     /**
      * Returns a searchable gridview with all avialable templates of the given type.
      *
@@ -56,12 +41,10 @@ class AdminController extends \humhub\modules\admin\components\Controller
      */
     public function actionIndex()
     {
-        $searchModel = new TemplateSearch(['type' => $this->type]);
+        $searchModel = new TemplateSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('@custom_pages/modules/template/views/admin/index', [
-            'helpText' => $this->indexHelp,
-            'type' => $this->type,
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
         ]);
@@ -76,8 +59,8 @@ class AdminController extends \humhub\modules\admin\components\Controller
     {
         $model = Template::findOne(['id' => $id]);
 
-        if ($model == null) {
-            $model = new Template(['type' => $this->type]);
+        if ($model === null) {
+            $model = new Template();
         }
 
         $model->scenario = 'edit';
@@ -387,7 +370,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
                 return $this->redirect(['edit-source', 'id' => $form->getService()->template->id]);
             } else {
                 $this->view->error(implode(' ', $form->getErrorSummary(true)));
-                return $this->redirect(['/custom_pages/template/' . $type . '-admin']);
+                return $this->redirect(['/custom_pages/template/admin']);
             }
         }
 

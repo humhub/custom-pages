@@ -84,7 +84,7 @@ InlineEditorAsset::register($this);
                 <?php if (PagePermissionHelper::canTemplate()) : ?>
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Edit template'))
                             ->icon('pencil-square-o')
-                            ->link(['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id])
+                            ->link(['/custom_pages/template/admin/edit-source', 'id' => $templateInstance->template_id])
                             ->blank() ?></li>
                 <?php endif; ?>
                 </ul>

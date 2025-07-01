@@ -42,7 +42,7 @@ class AdminMenu extends Menu
         if (Yii::$app->user->can(ManageModules::class)) {
             $this->addEntry(new MenuLink([
                 'label' => Yii::t('CustomPagesModule.base', 'Templates'),
-                'url' => Url::toTemplateLayoutAdmin(),
+                'url' => Url::toTemplateAdmin(),
                 'sortOrder' => 300,
                 'isActive' => ControllerHelper::isActivePath('template'),
             ]));

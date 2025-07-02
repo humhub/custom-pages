@@ -29,9 +29,10 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
 
     TemplateStructure.prototype.initDraggable = function () {
         const that = this;
+        const editButton = $('#editPageButton').length ? $('#editPageButton') : $('#snippet-config-button');
 
         that.$.css(that.getPositionData()[that.getRootTemplateInstanceId()] ?? {
-            top: $('#editPageButton').position().top,
+            top: editButton.length ? editButton.offset().top : '100px',
             left: '20px',
         }).show();
 
@@ -183,7 +184,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
     }
 
     TemplateStructure.prototype.getRootTemplateInstanceId = function () {
-        return this.$.find('[data-template-type=layout]').data('template-instance-id');
+        return this.$.find('[data-template-type=layout], [data-template-type=snippet-layout]').data('template-instance-id');
     }
 
     TemplateStructure.prototype.moveUpContainerItem = function (evt) {

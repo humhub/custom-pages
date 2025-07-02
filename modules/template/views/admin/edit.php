@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 use humhub\libs\Html;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\custom_pages\widgets\AdminMenu;
@@ -10,20 +16,27 @@ use humhub\modules\custom_pages\modules\template\models\Template;
 /* @var Template $model */
 ?>
 <div class="panel panel-default">
-    <div class="panel-heading"><?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
-    <?= AdminMenu::widget(); ?>
+    <div class="panel-heading"><?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages') ?></div>
+    <?= AdminMenu::widget() ?>
 
     <div class="panel-body">
-        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), ['class' => 'btn btn-default pull-right']) ?>
-        <h4>
+        <?= Button::defaultType(Yii::t('CustomPagesModule.base', 'Go Back'))
+            ->icon('arrow-left')
+            ->link(['index'])
+            ->right() ?>
+
         <?php if ($model->isNewRecord): ?>
             <?= $model->id
-                ? Yii::t('CustomPagesModule.template', 'Copy {type}', ['type' => Template::getTypeTitle($model->type)])
-                : Yii::t('CustomPagesModule.template', 'Create new Template') ?>
+                ? Yii::t('CustomPagesModule.template', '<strong>Copying</strong> {type}', ['type' => Template::getTypeTitle($model->type)])
+                : Yii::t('CustomPagesModule.template', '<strong>Creating</strong> new Template') ?>
         <?php else: ?>
-            <?= Yii::t('CustomPagesModule.template', 'Edit template \'{templateName}\'', ['templateName' => Html::encode($model->name)]) ?>
+            <?php if ($model->canEdit()) : ?>
+                <?= Yii::t('CustomPagesModule.template', '<strong>Editing:</strong> {templateName}', ['templateName' => Html::encode($model->name)]) ?>
+            <?php else : ?>
+                <?= Yii::t('CustomPagesModule.template', '<strong>Viewing:</strong> {templateName}', ['templateName' => Html::encode($model->name)]) ?>
+            <?php endif; ?>
         <?php endif; ?>
-        </h4>
+        <br><br>
 
     <?php if (!$model->isNewRecord): ?>
         </div>

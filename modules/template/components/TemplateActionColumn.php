@@ -35,13 +35,13 @@ class TemplateActionColumn extends ActionColumn
             $actions[] = [
                 'icon' => 'pencil',
                 'title' => Yii::t('CustomPagesModule.template', 'Edit'),
-                'url' => ['edit-source'],
+                'url' => ['edit'],
             ];
         } else {
             $actions[] = [
                 'icon' => 'eye',
                 'title' => Yii::t('CustomPagesModule.template', 'View'),
-                'url' => ['edit-source'],
+                'url' => ['edit'],
             ];
         }
 

@@ -8,7 +8,6 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
-use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\services\TemplateImportService;
 use Yii;
 use yii\base\Model;
@@ -16,7 +15,6 @@ use yii\web\UploadedFile;
 
 class ImportForm extends Model
 {
-    public $type;
     public $file;
 
     public ?TemplateImportService $service = null;
@@ -27,7 +25,6 @@ class ImportForm extends Model
     public function rules()
     {
         return [
-            [['type'], 'in', 'range' => [Template::TYPE_LAYOUT, Template::TYPE_SNIPPET_LAYOUT, Template::TYPE_CONTAINER]],
             [['file'], 'file', 'extensions' => 'json', 'checkExtensionByMimeType' => false, 'skipOnEmpty' => false],
         ];
     }
@@ -35,14 +32,14 @@ class ImportForm extends Model
     public function attributeLabels()
     {
         return [
-            'file' => Yii::t('CustomPagesModule.template', 'Upload file'),
+            'file' => Yii::t('CustomPagesModule.template', 'Upload Template'),
         ];
     }
 
     public function attributeHints()
     {
         return [
-            'file' => Yii::t('CustomPagesModule.template', 'File with template source data in JSON format.'),
+            'file' => Yii::t('CustomPagesModule.template', 'Upload a JSON file containing your template source data.'),
         ];
     }
 
@@ -73,7 +70,7 @@ class ImportForm extends Model
     public function getService(): TemplateImportService
     {
         if ($this->service === null) {
-            $this->service = new TemplateImportService($this->type);
+            $this->service = new TemplateImportService();
         }
 
         return $this->service;

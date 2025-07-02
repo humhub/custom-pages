@@ -412,15 +412,6 @@ class AdminController extends Controller
     }
 
     /**
-     * Returns an info text view.
-     * @return string
-     */
-    public function actionInfo()
-    {
-        return $this->renderPartial('info');
-    }
-
-    /**
      * Used to export the source of a template.
      *
      * @return Response
@@ -441,9 +432,9 @@ class AdminController extends Controller
      *
      * @return string
      */
-    public function actionImportSource(string $type)
+    public function actionImportSource()
     {
-        $form = new ImportForm(['type' => $type]);
+        $form = new ImportForm();
 
         if ($form->load(Yii::$app->request->post())) {
             if ($form->import()) {

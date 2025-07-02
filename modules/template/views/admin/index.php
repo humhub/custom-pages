@@ -67,15 +67,15 @@ TemplatePageStyleAsset::register($this);
             'columns' => [
                 [
                     'attribute' => 'id',
-                    'options' => ['style' => 'width:40px;'],
-                    'format' => 'raw',
-                    'value' => function ($data) {
-                        return $data->id;
-                    },
+                    'options' => ['style' => 'width:40px'],
                 ],
                 [
                     'attribute' => 'name',
                     'label' => Yii::t('CustomPagesModule.template', 'Name'),
+                    'format' => 'raw',
+                    'value' => function (Template $template) {
+                        return Html::a($template->name, ['edit-source', 'id' => $template->id]);
+                    },
                 ],
                 [
                     'label' => Yii::t('CustomPagesModule.template', 'Usage'),

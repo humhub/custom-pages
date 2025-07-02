@@ -28,10 +28,19 @@ $this->registerJsConfig('custom_pages.template.source', [
     <?= AdminMenu::widget(); ?>
 
     <div class="panel-body">
-        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), ['class' => 'btn btn-default pull-right', 'data-ui-loader' => '']); ?>
-        <h4><?= Yii::t('CustomPagesModule.template', 'Edit template \'{templateName}\'', ['templateName' => Html::encode($model->name)]); ?></h4>
+        <?= Button::defaultType(Yii::t('CustomPagesModule.base', 'Go Back'))
+            ->icon('arrow-left')
+            ->link(['index'])
+            ->right() ?>
+
+        <?php if ($model->canEdit()) : ?>
+            <?= Yii::t('CustomPagesModule.template', '<strong>Editing:</strong> {templateName}', ['templateName' => Html::encode($model->name)]) ?>
+        <?php else : ?>
+            <?= Yii::t('CustomPagesModule.template', '<strong>Viewing:</strong> {templateName}', ['templateName' => Html::encode($model->name)]) ?>
+        <?php endif; ?>
+
         <div class="help-block">
-            <?= Yii::t('CustomPagesModule.template', 'Here you can edit the source of your template by defining the template layout and adding content elements. Each element can be assigned with a default content and additional definitions.') ?>
+            <?= Yii::t('CustomPagesModule.template', 'Define template layouts and add content elements with default content and settings.') ?>
         </div>
     </div>
 
@@ -45,9 +54,6 @@ $this->registerJsConfig('custom_pages.template.source', [
         <li>
             <?= Html::a(Yii::t('CustomPagesModule.base', 'Usage'), Url::to(['edit-usage', 'id' => $model->id])); ?>
         </li>
-        <!-- <li>
-            <?// echo Html::a('<i aria-hidden="true" class="fa fa-question-circle"></i> '.Yii::t('CustomPagesModule.base', 'Help'), Url::to(['info', 'id' => $model->id])); ?>
-        </li> -->
     </ul>
 
     <div class="panel-body">

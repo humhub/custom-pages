@@ -9,6 +9,7 @@
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\widgets\AdminMenu;
+use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
@@ -23,8 +24,17 @@ use yii\helpers\Html;
     <?= AdminMenu::widget() ?>
 
     <div class="panel-body">
-        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), ['class' => 'btn btn-default pull-right', 'data-ui-loader' => '']); ?>
-        <h4><?= Yii::t('CustomPagesModule.template', 'Edit template \'{templateName}\'', ['templateName' => Html::encode($model->name)]); ?></h4>
+        <?= Button::defaultType(Yii::t('CustomPagesModule.base', 'Go Back'))
+            ->icon('arrow-left')
+            ->link(['index'])
+            ->right() ?>
+
+        <?php if ($model->canEdit()) : ?>
+            <?= Yii::t('CustomPagesModule.template', '<strong>Editing:</strong> {templateName}', ['templateName' => Html::encode($model->name)]) ?>
+        <?php else : ?>
+            <?= Yii::t('CustomPagesModule.template', '<strong>Viewing:</strong> {templateName}', ['templateName' => Html::encode($model->name)]) ?>
+        <?php endif; ?>
+
         <div class="help-block">
             <?= Yii::t('CustomPagesModule.base', 'Here you can review where the template is used in.') ?>
         </div>

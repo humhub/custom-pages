@@ -97,6 +97,7 @@ class Template extends ActiveRecord
             'source' => Yii::t('CustomPagesModule.template', 'Source'),
             'allow_for_spaces' => Yii::t('CustomPagesModule.template', 'Allow this layout in spaces'),
             'description' => Yii::t('CustomPagesModule.template', 'Description'),
+            'type' => Yii::t('CustomPagesModule.template', 'Type'),
         ];
     }
 
@@ -122,7 +123,7 @@ class Template extends ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['edit'] = ['name', 'description', 'allow_for_spaces'];
+        $scenarios['edit'] = ['name', 'description', 'type', 'allow_for_spaces'];
         $scenarios['source'] = ['source'];
         return $scenarios;
     }

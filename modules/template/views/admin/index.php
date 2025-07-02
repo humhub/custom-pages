@@ -16,6 +16,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Url;
 
 /* @var ActiveDataProvider $dataProvider */
 /* @var TemplateSearch $searchModel */
@@ -75,6 +76,18 @@ TemplatePageStyleAsset::register($this);
                 [
                     'attribute' => 'name',
                     'label' => Yii::t('CustomPagesModule.template', 'Name'),
+                ],
+                [
+                    'label' => Yii::t('CustomPagesModule.template', 'Usage'),
+                    'format' => 'raw',
+                    'value' => function (Template $template) {
+                        $count = $template->getLinkedRecordsQuery()->count();
+                        return $count === 0 ? '0'
+                            : Html::a($count, ['edit-usage', 'id' => $template->id], [
+                                'data-action-click' => 'ui.modal.load',
+                                'data-action-click-url' => Url::to(['edit-usage-modal', 'id' => $template->id]),
+                            ]);
+                    },
                 ],
                 [
                     'attribute' => 'type',

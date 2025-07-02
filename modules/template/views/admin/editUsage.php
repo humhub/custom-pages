@@ -1,25 +1,21 @@
 <?php
 
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\models\Content;
-use humhub\modules\content\widgets\StateBadge;
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\widgets\AdminMenu;
 use humhub\widgets\GridView;
-use humhub\widgets\Link;
 use yii\data\ActiveDataProvider;
-use yii\grid\ActionColumn;
-use yii\grid\DataColumn;
 use yii\helpers\Html;
 
 /* @var Template $model */
 /* @var ActiveDataProvider $dataProvider */
-
-$columnLabel = $model->type === Template::TYPE_CONTAINER ? Yii::t('CustomPagesModule.base', 'Template')
-    : ($model->type === Template::TYPE_SNIPPET_LAYOUT ? Yii::t('CustomPagesModule.base', 'Snippet')
-    : Yii::t('CustomPagesModule.base', 'Page'));
+/* @var array $columns */
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages') ?></div>
@@ -47,65 +43,10 @@ $columnLabel = $model->type === Template::TYPE_CONTAINER ? Yii::t('CustomPagesMo
     </ul>
 
     <div class="panel-body">
-        <?php
-        $columns = [
-            [
-                'class' => DataColumn::class,
-                'label' => $columnLabel,
-                'format' => 'raw',
-                'value' => function ($model) {
-                    if ($model instanceof Content) {
-                        /* @var $record CustomPage */
-                        $record = $model->getPolymorphicRelation();
-                        return Link::to(Html::encode($record->getTitle()), $record->getUrl())->icon(Html::encode($record->icon)) . ' ' .
-                            StateBadge::widget(['model' => $record]);
-                    } else if ($model instanceof Template) {
-                        return $model->name;
-                    }
-                }
-            ]
-        ];
-        if ($model->type !== Template::TYPE_CONTAINER) {
-            $columns[] = [
-                'class' => DataColumn::class,
-                'label' => Yii::t('CustomPagesModule.base', 'Space'),
-                'format' => 'raw',
-                'value' => function ($model) {
-                    return $model instanceof Content && $model->container instanceof ContentContainerActiveRecord
-                        ? \humhub\libs\Html::containerLink($model->container)
-                        : '';
-                }
-            ];
-        }
-        $columns[] = [
-            'class' => ActionColumn::class,
-            'options' => ['width' => '80px'],
-            'buttons' => [
-                'update' => function ($url, $model) {
-                    if ($model instanceof Content) {
-                        /* @var $record CustomPage */
-                        $record = $model->getPolymorphicRelation();
-                        return $record->canEdit()
-                            ? Link::primary()->icon('fa-pencil')->link($record->getEditUrl())->xs()->right()
-                            : '';
-                    } else if ($model instanceof Template) {
-                        return Link::primary()->icon('fa-pencil')->link(Url::toRoute(['edit-source', 'id' => $model->id]))->xs();
-                    }
-                },
-                'view' => function () {
-                    return '';
-                },
-                'delete' => function ($url, $model) {
-                    if ($model instanceof Template) {
-                        return Link::danger()->icon('fa-times')->link(Url::toRoute(['delete-template', 'id' => $model->id]))->xs()->confirm();
-                    }
-                },
-            ],
-        ];
-        echo GridView::widget([
+        <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'layout' => '{items}{pager}',
-            'columns' => $columns
+            'columns' => $columns,
         ]) ?>
     </div>
 </div>

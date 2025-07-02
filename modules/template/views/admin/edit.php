@@ -1,9 +1,9 @@
 <?php
 
+use humhub\libs\Html;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\custom_pages\widgets\AdminMenu;
 use humhub\widgets\Button;
-use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\modules\custom_pages\modules\template\models\Template;
 
@@ -19,7 +19,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
         <?php if ($model->isNewRecord): ?>
             <?= $model->id
                 ? Yii::t('CustomPagesModule.template', 'Copy {type}', ['type' => Template::getTypeTitle($model->type)])
-                : Yii::t('CustomPagesModule.template', 'Create new {type}', ['type' => Template::getTypeTitle($model->type)]) ?>
+                : Yii::t('CustomPagesModule.template', 'Create new Template') ?>
         <?php else: ?>
             <?= Yii::t('CustomPagesModule.template', 'Edit template \'{templateName}\'', ['templateName' => Html::encode($model->name)]) ?>
         <?php endif; ?>
@@ -41,14 +41,15 @@ use humhub\modules\custom_pages\modules\template\models\Template;
         <div class="panel-body">
     <?php endif; ?>
 
-        <?php $form = ActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin() ?>
 
-        <?= $form->field($model, 'name'); ?>
-        <?= $form->field($model, 'description')->textarea(['id' => 'template-form-description', 'rows' => 3]); ?>
+        <?= $form->field($model, 'name') ?>
+        <?= $form->field($model, 'description')->textarea(['id' => 'template-form-description', 'rows' => 3]) ?>
+        <?= $form->field($model, 'type')->dropDownList($model::getTypeOptions()) ?>
 
-        <?php if ($model->isLayout()) : ?>
-            <?= $form->field($model, 'allow_for_spaces')->checkbox(); ?>
-        <?php endif; ?>
+        <div id="template-allow-for-spaces"<?= $model->isLayout() ? '' : ' style="display:none"'?>>
+            <?= $form->field($model, 'allow_for_spaces')->checkbox() ?>
+        </div>
 
         <?= $model->canEdit() ? Button::save()->submit() : '' ?>
         <?= $model->isNewRecord ? '' : Button::defaultType(Yii::t('CustomPagesModule.template', 'Copy'))
@@ -56,6 +57,13 @@ use humhub\modules\custom_pages\modules\template\models\Template;
             ->link(Url::toRoute(['copy', 'id' => $model->id])) ?>
 
         <?php $form::end(); ?>
-        <?= Html::script(' $(\'#template-form-description\').autosize();') ?>
     </div>
 </div>
+<script <?= Html::nonce() ?>>
+$('#template-type').change(function () {
+    $('#template-allow-for-spaces').toggle(
+        $(this).val() === '<?= Template::TYPE_LAYOUT?>' ||
+        $(this).val() === '<?= Template::TYPE_SNIPPET_LAYOUT?>'
+    );
+});
+</script>

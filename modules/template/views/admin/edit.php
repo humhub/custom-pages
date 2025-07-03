@@ -8,52 +8,20 @@
 
 use humhub\libs\Html;
 use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\custom_pages\widgets\AdminMenu;
+use humhub\modules\ui\view\components\View;
 use humhub\widgets\Button;
-use yii\helpers\Url;
 use humhub\modules\custom_pages\modules\template\models\Template;
 
 /* @var Template $model */
+/* @var View $this */
 ?>
 <div class="panel panel-default">
-    <div class="panel-heading"><?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages') ?></div>
-    <?= AdminMenu::widget() ?>
+    <?= $this->render('editHeader', [
+        'model' => $model,
+        'description' => Yii::t('CustomPagesModule.template', 'Define general settings for the template.'),
+    ]) ?>
 
     <div class="panel-body">
-        <?= Button::defaultType(Yii::t('CustomPagesModule.base', 'Go Back'))
-            ->icon('arrow-left')
-            ->link(['index'])
-            ->right() ?>
-
-        <?php if ($model->isNewRecord): ?>
-            <?= $model->id
-                ? Yii::t('CustomPagesModule.template', '<strong>Copying</strong> {type}', ['type' => Template::getTypeTitle($model->type)])
-                : Yii::t('CustomPagesModule.template', '<strong>Creating</strong> new Template') ?>
-        <?php else: ?>
-            <?php if ($model->canEdit()) : ?>
-                <?= Yii::t('CustomPagesModule.template', '<strong>Editing:</strong> {templateName}', ['templateName' => Html::encode($model->name)]) ?>
-            <?php else : ?>
-                <?= Yii::t('CustomPagesModule.template', '<strong>Viewing:</strong> {templateName}', ['templateName' => Html::encode($model->name)]) ?>
-            <?php endif; ?>
-        <?php endif; ?>
-        <br><br>
-
-    <?php if (!$model->isNewRecord): ?>
-        </div>
-        <ul class="nav nav-tabs tab-sub-menu" id="tabs">
-            <li class="active">
-                <?= Html::a(Yii::t('CustomPagesModule.base', 'General'), Url::to(['edit', 'id' => $model->id])); ?>
-            </li>
-            <li>
-                <?= Html::a(Yii::t('CustomPagesModule.base', 'Source'), Url::to(['edit-source', 'id' => $model->id])); ?>
-            </li>
-            <li>
-                <?= Html::a(Yii::t('CustomPagesModule.base', 'Usage'), Url::to(['edit-usage', 'id' => $model->id])); ?>
-            </li>
-        </ul>
-        <div class="panel-body">
-    <?php endif; ?>
-
         <?php $form = ActiveForm::begin() ?>
 
         <?= $form->field($model, 'name') ?>
@@ -65,9 +33,6 @@ use humhub\modules\custom_pages\modules\template\models\Template;
         </div>
 
         <?= $model->canEdit() ? Button::save()->submit() : '' ?>
-        <?= $model->isNewRecord ? '' : Button::defaultType(Yii::t('CustomPagesModule.template', 'Copy'))
-            ->icon('copy')
-            ->link(Url::toRoute(['copy', 'id' => $model->id])) ?>
 
         <?php $form::end(); ?>
     </div>

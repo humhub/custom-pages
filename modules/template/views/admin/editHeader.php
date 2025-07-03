@@ -44,6 +44,12 @@ use humhub\modules\custom_pages\modules\template\models\Template;
         <?= $description ?>
     </div>
     <?php endif; ?>
+
+    <?php if ($model->is_default && !$model->isNewRecord): ?>
+    <div class="alert alert-warning">
+        <?= Yii::t('CustomPagesModule.template', 'This is a default system template and cannot be modified. To make changes, please create a copy.') ?>
+    </div>
+    <?php endif; ?>
 </div>
 
 <?= TemplateTabs::widget(['model' => $model]) ?>

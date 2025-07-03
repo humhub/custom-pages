@@ -26,7 +26,7 @@ use yii\db\Expression;
  * @property array $author
  * @property array $topic
  * @property array $filter
- * @property string $contentRecordIds
+ * @property string $contentIds
  * @property int $limit
  */
 abstract class BaseContentRecordsElement extends BaseRecordsElement
@@ -41,7 +41,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             'author' => null,
             'topic' => null,
             'filter' => null,
-            'contentRecordIds' => null,
+            'contentIds' => null,
             'limit' => null,
         ];
     }
@@ -56,7 +56,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             'author' => Yii::t('CustomPagesModule.base', 'Authors'),
             'topic' => Yii::t('CustomPagesModule.base', 'Topics'),
             'filter' => Yii::t('CustomPagesModule.base', 'Content filters'),
-            'contentRecordIds' => Yii::t('CustomPagesModule.base', 'Restrict to following comma separated IDs'),
+            'contentIds' => Yii::t('CustomPagesModule.base', 'Restrict to following comma separated content IDs'),
             'limit' => Yii::t('CustomPagesModule.base', 'Limit'),
         ]);
     }
@@ -68,6 +68,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
     {
         return array_merge(parent::attributeHints(), [
             'space' => Yii::t('CustomPagesModule.base', 'Leave empty to list all records related to the current user.'),
+            'contentIds' => Yii::t('CustomPagesModule.template', 'Content ID can be found in a permalink.'),
         ]);
     }
 
@@ -113,10 +114,10 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             }
         }
 
-        if (!empty($this->contentRecordIds) &&
-            preg_match_all('/\b\d+\b/', $this->contentRecordIds, $contentRecordIds) &&
-            count($contentRecordIds[0]) > 0) {
-            $query->andWhere(['content.object_id' => $contentRecordIds[0]]);
+        if (!empty($this->contentIds) &&
+            preg_match_all('/\b\d+\b/', $this->contentIds, $contentIds) &&
+            count($contentIds[0]) > 0) {
+            $query->andWhere(['content.id' => $contentIds[0]]);
         }
 
         return $query->limit($this->limit);
@@ -149,7 +150,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             $form->field($this, 'author')->widget(UserPickerField::class) .
             $form->field($this, 'topic')->widget(TopicPicker::class) .
             $form->field($this, 'filter')->checkboxList($this->getContentFilterOptions()) .
-            $form->field($this, 'contentRecordIds') .
+            $form->field($this, 'contentIds') .
             $form->field($this, 'limit');
     }
 }

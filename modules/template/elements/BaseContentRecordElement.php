@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 
@@ -18,7 +19,7 @@ use Yii;
  * @property-read ContentActiveRecord|null $record
  *
  * Dynamic attributes:
- * @property string $contentRecordId
+ * @property string $contentId
  */
 abstract class BaseContentRecordElement extends BaseElementContent
 {
@@ -30,7 +31,7 @@ abstract class BaseContentRecordElement extends BaseElementContent
     protected function getDynamicAttributes(): array
     {
         return [
-            'contentRecordId' => null,
+            'contentId' => null,
         ];
     }
 
@@ -40,7 +41,17 @@ abstract class BaseContentRecordElement extends BaseElementContent
     public function rules()
     {
         return [
-            [['contentRecordId'], 'integer'],
+            [['contentId'], 'integer'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'contentId' => Yii::t('CustomPagesModule.template', 'Content ID can be found in a permalink.'),
         ];
     }
 
@@ -49,26 +60,17 @@ abstract class BaseContentRecordElement extends BaseElementContent
         return parent::isEmpty() || !$this->record;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function setAttributes($values, $safeOnly = true)
-    {
-        if (isset($values['contentRecordId'])) {
-            $values['contentRecordId'] = is_array($values['contentRecordId']) ? array_shift($values['contentRecordId']) : $values['contentRecordId'];
-        }
-
-        parent::setAttributes($values, $safeOnly);
-    }
-
     protected function getRecord(): ?ContentActiveRecord
     {
-        if (empty($this->contentRecordId)) {
+        if (empty($this->contentId)) {
             return null;
         }
 
-        return Yii::$app->runtimeCache->getOrSet(static::class . static::RECORD_CLASS . $this->contentRecordId, function () {
-            return static::RECORD_CLASS::findOne($this->contentRecordId);
+        return Yii::$app->runtimeCache->getOrSet(self::class . $this->contentId, function () {
+            return static::RECORD_CLASS::find()
+                ->joinWith(Content::tableName())
+                ->where([Content::tableName() . '.id' => $this->contentId])
+                ->one();
         });
     }
 
@@ -86,6 +88,6 @@ abstract class BaseContentRecordElement extends BaseElementContent
      */
     public function renderEditForm(ActiveForm $form): string
     {
-        return $form->field($this, 'contentRecordId');
+        return $form->field($this, 'contentId');
     }
 }

@@ -8,12 +8,15 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
+use humhub\libs\Html;
 use humhub\modules\post\models\Post;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use Yii;
 
 /**
  * Class to manage content records of the Post elements
+ *
+ * @property-read Post|null $record
  */
 class PostElement extends BaseContentRecordElement
 {
@@ -33,16 +36,13 @@ class PostElement extends BaseContentRecordElement
     public function attributeLabels()
     {
         return [
-            'contentRecordId' => Yii::t('CustomPagesModule.base', 'Enter Post ID'),
+            'contentId' => Yii::t('CustomPagesModule.base', 'Enter post content ID'),
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function __toString()
     {
-        return $this->getRecord()?->message ?? '';
+        return Html::encode($this->record?->message);
     }
 
     /**
@@ -50,6 +50,6 @@ class PostElement extends BaseContentRecordElement
      */
     public function renderEditForm(ActiveForm $form): string
     {
-        return $form->field($this, 'contentRecordId')->textInput(['maxlength' => 255])->label(true);
+        return $form->field($this, 'contentId')->textInput(['maxlength' => 255])->label(true);
     }
 }

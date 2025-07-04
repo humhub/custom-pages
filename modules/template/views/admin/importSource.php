@@ -17,17 +17,16 @@ use humhub\widgets\ModalDialog;
 ?>
 
 <?php ModalDialog::begin([
-    'header' => Yii::t('CustomPagesModule.template', '<strong>Import</strong> {type}', ['type' => $model->type]),
+    'header' => Yii::t('CustomPagesModule.template', '<strong>Import</strong> Template'),
 ]) ?>
 
 <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
 <div class="modal-body">
     <div class="alert alert-warning">
-        <?= Yii::t('CustomPagesModule.template', 'Please note a template source with the same name will be replaced with data from your import file!') ?>
+        <?= Yii::t('CustomPagesModule.template', 'If a template with the same name already exists, it will be replaced with the data from your import file.') ?>
     </div>
 
-    <?= $form->field($model, 'type')->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'file')->fileInput() ?>
 </div>
 

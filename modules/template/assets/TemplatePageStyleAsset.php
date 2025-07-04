@@ -23,4 +23,12 @@ class TemplatePageStyleAsset extends AssetBundle
     public $css = [
         'css/template-pages.css',
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public $publishOptions = [
+        'forceCopy' => true,
+    ];
+
 }

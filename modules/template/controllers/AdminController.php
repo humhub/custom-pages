@@ -8,6 +8,13 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
+use humhub\libs\Html;
+use humhub\modules\admin\components\Controller;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\models\Content;
+use humhub\modules\content\widgets\StateBadge;
+use humhub\modules\custom_pages\helpers\Url;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\ImportForm;
@@ -21,34 +28,21 @@ use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElemen
 use humhub\modules\custom_pages\modules\template\widgets\EditMultipleElementsModal;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentTable;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
+use humhub\widgets\Link;
 use Yii;
 use yii\base\Response;
 use yii\data\ActiveDataProvider;
+use yii\grid\ActionColumn;
+use yii\grid\DataColumn;
 use yii\web\NotFoundHttpException;
 
 /**
  * Admin controller for managing templates.
  *
- * This controller is designed to support different template types by setting the $type
- * and $indexHelp attributes.
- *
  * @author buddha
  */
-class AdminController extends \humhub\modules\admin\components\Controller
+class AdminController extends Controller
 {
-    /**
-     * Defines the template type this controller should manage.
-     *
-     * @var type
-     */
-    public $type;
-
-    /**
-     * Defines the index help text for the given template type.
-     * @var type
-     */
-    public $indexHelp;
-
     /**
      * Returns a searchable gridview with all avialable templates of the given type.
      *
@@ -56,12 +50,10 @@ class AdminController extends \humhub\modules\admin\components\Controller
      */
     public function actionIndex()
     {
-        $searchModel = new TemplateSearch(['type' => $this->type]);
+        $searchModel = new TemplateSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('@custom_pages/modules/template/views/admin/index', [
-            'helpText' => $this->indexHelp,
-            'type' => $this->type,
+        return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
         ]);
@@ -76,8 +68,8 @@ class AdminController extends \humhub\modules\admin\components\Controller
     {
         $model = Template::findOne(['id' => $id]);
 
-        if ($model == null) {
-            $model = new Template(['type' => $this->type]);
+        if ($model === null) {
+            $model = new Template(['type' => Template::TYPE_LAYOUT]);
         }
 
         $model->scenario = 'edit';
@@ -89,7 +81,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             return $this->redirect(['edit-source', 'id' => $model->id]);
         }
 
-        return $this->render('@custom_pages/modules/template/views/admin/edit', ['model' => $model]);
+        return $this->render('edit', ['model' => $model]);
     }
 
     /**
@@ -116,7 +108,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             return $this->redirect(['edit-source', 'id' => $model->id]);
         }
 
-        return $this->render('@custom_pages/modules/template/views/admin/edit', ['model' => $model]);
+        return $this->render('edit', ['model' => $model]);
     }
 
     /**
@@ -142,7 +134,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
             return $this->redirect(['edit-source', 'id' => $model->id]);
         }
 
-        return $this->render('@custom_pages/modules/template/views/admin/editSource', [
+        return $this->render('editSource', [
             'model' => $model,
         ]);
     }
@@ -151,6 +143,19 @@ class AdminController extends \humhub\modules\admin\components\Controller
      * Show pages/snippets/containers where the template is used in.
      */
     public function actionEditUsage()
+    {
+        return $this->render('editUsage', $this->getUsageViewOptions());
+    }
+
+    /**
+     * Show modal window with pages/snippets/containers where the template is used in.
+     */
+    public function actionEditUsageModal()
+    {
+        return $this->renderAjax('editUsageModal', $this->getUsageViewOptions());
+    }
+
+    private function getUsageViewOptions(): array
     {
         $model = Template::findOne(['id' => Yii::$app->request->get('id')]);
 
@@ -165,10 +170,69 @@ class AdminController extends \humhub\modules\admin\components\Controller
             ],
         ]);
 
-        return $this->render('@custom_pages/modules/template/views/admin/editUsage', [
+        $columns = [];
+        $columns[] = [
+            'class' => DataColumn::class,
+            'label' => $model->type === Template::TYPE_CONTAINER ? Yii::t('CustomPagesModule.base', 'Template')
+                : ($model->type === Template::TYPE_SNIPPET_LAYOUT ? Yii::t('CustomPagesModule.base', 'Snippet')
+                    : Yii::t('CustomPagesModule.base', 'Page')),
+            'format' => 'raw',
+            'value' => function ($model) {
+                if ($model instanceof Content) {
+                    /* @var $record CustomPage */
+                    $record = $model->getPolymorphicRelation();
+                    return Link::to(Html::encode($record->getTitle()), $record->getUrl())->icon(Html::encode($record->icon)) . ' ' .
+                        StateBadge::widget(['model' => $record]);
+                } elseif ($model instanceof Template) {
+                    return $model->name;
+                }
+                return '';
+            },
+        ];
+
+        if ($model->type !== Template::TYPE_CONTAINER) {
+            $columns[] = [
+                'class' => DataColumn::class,
+                'label' => Yii::t('CustomPagesModule.base', 'Space'),
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return $model instanceof Content && $model->container instanceof ContentContainerActiveRecord
+                        ? Html::containerLink($model->container)
+                        : '';
+                },
+            ];
+        }
+
+        $columns[] = [
+            'class' => ActionColumn::class,
+            'options' => ['width' => '80px'],
+            'template' => '{update} {delete}',
+            'buttons' => [
+                'update' => function ($url, $model) {
+                    if ($model instanceof Content) {
+                        /* @var $record CustomPage */
+                        $record = $model->getPolymorphicRelation();
+                        return $record->canEdit()
+                            ? Link::primary()->icon('pencil')->link($record->getEditUrl())->xs()->right()
+                            : '';
+                    } elseif ($model instanceof Template) {
+                        return Link::primary()->icon('pencil')->link(Url::toRoute(['edit-source', 'id' => $model->id]))->xs();
+                    }
+                    return '';
+                },
+                'delete' => function ($url, $model) {
+                    return $model instanceof Template
+                        ? Link::danger()->icon('times')->link(Url::toRoute(['delete-template', 'id' => $model->id]))->xs()->confirm()
+                        : '';
+                },
+            ],
+        ];
+
+        return [
             'model' => $model,
             'dataProvider' => $dataProvider,
-        ]);
+            'columns' => $columns,
+        ];
     }
 
     /**
@@ -348,15 +412,6 @@ class AdminController extends \humhub\modules\admin\components\Controller
     }
 
     /**
-     * Returns an info text view.
-     * @return string
-     */
-    public function actionInfo()
-    {
-        return $this->renderPartial('@custom_pages/modules/template/views/admin/info');
-    }
-
-    /**
      * Used to export the source of a template.
      *
      * @return Response
@@ -377,9 +432,9 @@ class AdminController extends \humhub\modules\admin\components\Controller
      *
      * @return string
      */
-    public function actionImportSource(string $type)
+    public function actionImportSource()
     {
-        $form = new ImportForm(['type' => $type]);
+        $form = new ImportForm();
 
         if ($form->load(Yii::$app->request->post())) {
             if ($form->import()) {
@@ -387,11 +442,11 @@ class AdminController extends \humhub\modules\admin\components\Controller
                 return $this->redirect(['edit-source', 'id' => $form->getService()->template->id]);
             } else {
                 $this->view->error(implode(' ', $form->getErrorSummary(true)));
-                return $this->redirect(['/custom_pages/template/' . $type . '-admin']);
+                return $this->redirect(['/custom_pages/template/admin']);
             }
         }
 
-        return $this->renderAjax('@custom_pages/modules/template/views/admin/importSource', ['model' => $form]);
+        return $this->renderAjax('importSource', ['model' => $form]);
     }
 
 }

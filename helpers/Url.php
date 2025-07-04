@@ -26,7 +26,7 @@ class Url extends BaseUrl
 
     public const ROUTE_SNIPPET_OVERVIEW = '/custom_pages/snippet';
 
-    public const ROUTE_TEMPLATE_LAYOUT_ADMIN = '/custom_pages/template/layout-admin';
+    public const ROUTE_TEMPLATE_ADMIN = '/custom_pages/template/admin';
 
     public const ROUTE_PAGE_INLINE_EDIT = '/custom_pages/view';
 
@@ -41,9 +41,9 @@ class Url extends BaseUrl
         }
     }
 
-    public static function toTemplateLayoutAdmin()
+    public static function toTemplateAdmin()
     {
-        return static::toRoute(static::ROUTE_TEMPLATE_LAYOUT_ADMIN);
+        return static::toRoute(static::ROUTE_TEMPLATE_ADMIN);
     }
 
     private static function create($route, $params = [], ContentContainerActiveRecord $container = null)

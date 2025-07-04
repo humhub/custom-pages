@@ -29,7 +29,7 @@ use humhub\widgets\Link;
                 <li>
                     <?= Link::to(
                         Yii::t('CustomPagesModule.view', 'Edit template'),
-                        ['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid],
+                        ['/custom_pages/template/admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid],
                     )->blank() ?>
                 </li>
             <?php endif; ?>

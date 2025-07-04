@@ -11,11 +11,11 @@ class CreateTemplatePageCest
         $I->amAdmin();
         $I->wantToTest('the creation of a template page');
         $I->amGoingTo('add a new layout template');
-        $I->amOnRoute(['/custom_pages/template/layout-admin']);
+        $I->amOnRoute(['/custom_pages/template/admin']);
         $I->expectTo('see the overview site');
         $I->see('Overview');
 
-        $I->click('Create new Layout'); // Add Markdown button
+        $I->click('Create'); // Add Markdown button
 
         $I->waitForElementVisible('#template-name');
 

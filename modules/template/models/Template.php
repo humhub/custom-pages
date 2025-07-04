@@ -97,6 +97,7 @@ class Template extends ActiveRecord
             'source' => Yii::t('CustomPagesModule.template', 'Source'),
             'allow_for_spaces' => Yii::t('CustomPagesModule.template', 'Allow this layout in spaces'),
             'description' => Yii::t('CustomPagesModule.template', 'Description'),
+            'type' => Yii::t('CustomPagesModule.template', 'Type'),
         ];
     }
 
@@ -122,7 +123,7 @@ class Template extends ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['edit'] = ['name', 'description', 'allow_for_spaces'];
+        $scenarios['edit'] = ['name', 'description', 'type', 'allow_for_spaces'];
         $scenarios['source'] = ['source'];
         return $scenarios;
     }
@@ -378,11 +379,20 @@ class Template extends ActiveRecord
         return ArrayHelper::map(self::find()->where($condition)->all(), $keyFieldName, 'name');
     }
 
+    public static function getTypeOptions(): array
+    {
+        return [
+            self::TYPE_LAYOUT => Yii::t('CustomPagesModule.base', 'Layout'),
+            self::TYPE_SNIPPET_LAYOUT => Yii::t('CustomPagesModule.base', 'Snippet'),
+            self::TYPE_CONTAINER => Yii::t('CustomPagesModule.base', 'Container'),
+        ];
+    }
+
     public static function getTypeTitle(string $type): string
     {
         return match ($type) {
             self::TYPE_CONTAINER => Yii::t('CustomPagesModule.base', 'Container'),
-            self::TYPE_SNIPPET_LAYOUT => Yii::t('CustomPagesModule.base', 'Snippet Layout'),
+            self::TYPE_SNIPPET_LAYOUT => Yii::t('CustomPagesModule.base', 'Snippet'),
             self::TYPE_NAVIGATION => Yii::t('CustomPagesModule.base', 'Navigation'),
             default => Yii::t('CustomPagesModule.base', 'Layout'),
         };

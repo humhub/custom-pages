@@ -22,22 +22,19 @@ class TemplateImportService extends BaseImportService
 {
     public const EVENT_DEFAULT_TEMPLATES = 'defaultTemplates';
 
-    private ?string $type = null;
     public ?Template $template = null;
     public bool $allowUpdateDefaultTemplates = false;
 
-    public function __construct(?string $type = null)
+    public function __construct()
     {
-        $this->type = $type;
-
         if ($module = $this->getModule()) {
             $this->allowUpdateDefaultTemplates = $module->allowUpdateDefaultTemplates ?? false;
         }
     }
 
-    public static function instance(?string $type = null): self
+    public static function instance(): self
     {
-        return new self($type);
+        return new self();
     }
 
     public function importFromFolder(string $path): bool
@@ -114,13 +111,6 @@ class TemplateImportService extends BaseImportService
     {
         if (empty($data['name'])) {
             $this->addError(Yii::t('CustomPagesModule.template', 'Wrong import data!'));
-            return false;
-        }
-
-        if (isset($data['type'], $this->type) && $data['type'] !== $this->type) {
-            $this->addError(Yii::t('CustomPagesModule.template', 'The template can be imported only as {type}!', [
-                'type' => Template::getTypeTitle($data['type']),
-            ]));
             return false;
         }
 

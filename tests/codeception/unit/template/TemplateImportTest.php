@@ -15,7 +15,7 @@ class TemplateImportTest extends HumHubDbTestCase
         $testTemplate = Template::findOne(['name' => 'Test Template']);
         $this->assertNull($testTemplate);
 
-        $service = TemplateImportService::instance(Template::TYPE_LAYOUT);
+        $service = TemplateImportService::instance();
         $this->assertTrue($service->importFromFile(codecept_data_dir('import/template.json')));
         $this->assertFalse($service->hasErrors());
 
@@ -38,14 +38,6 @@ class TemplateImportTest extends HumHubDbTestCase
         $service = TemplateImportService::instance();
         $service->run(['version' => TemplateExportService::VERSION]);
         $this->assertEquals(['Wrong import data!'], $service->getErrors());
-
-        $service = TemplateImportService::instance(Template::TYPE_CONTAINER);
-        $service->run([
-            'version' => TemplateExportService::VERSION,
-            'name' => 'test',
-            'type' => Template::TYPE_LAYOUT,
-        ]);
-        $this->assertEquals(['The template can be imported only as ' . Template::getTypeTitle(Template::TYPE_LAYOUT) . '!'], $service->getErrors());
 
         // Create default template
         $defaultTemplateData = [

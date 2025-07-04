@@ -43,6 +43,7 @@ class TwigEngine implements TemplateEngine
             $twig->addExtension(new SandboxExtension($securityPolicy, true));
             $twig->addExtension(new StringExtension());
             $twig->addExtension(new MarkdownExtension());
+            $twig->addExtension(new YiiFormaterExtension());
         }
         return $twig->render($template, $content);
     }

@@ -50,7 +50,8 @@ class Module extends ContentContainerModule
      */
     public array $enableTwiqSandboxExtensionConfig = [
         'allowedTags' => ['autoescape', 'apply', 'block', 'if', 'with', 'for', 'set'],
-        'allowedFilters' => ['capitalize', 'date', 'first', 'slice', 'upper', 'escape', 'raw', 'nl2br', 'url_encode', 'round', 'u', 'striptags',
+        'allowedFilters' => ['capitalize', 'date', 'first', 'slice', 'upper', 'escape', 'raw', 'nl2br',
+            'url_encode', 'round', 'u', 'striptags', 'asDate', 'asTime', 'asDateTime',
             'markdown_strip', 'markdown_html', 'markdown_plain', 'markdown_short'],
         'allowedFunctions' => ['range', 'max', 'min', 'random'],
         'allowedMethods' => [

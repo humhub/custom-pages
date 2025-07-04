@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.11.0-beta.8 (Unreleased)
+-----------------------------
+- Enh #432: Add Yii formatter for Twig filters
+
 1.11.0-beta.7 (July 4, 2025)
 -----------------------------
 - Fix #429: Enable structure view on snippet template inline editing

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.11.0-beta.7 (Unreleased)
+1.11.0-beta.7 (July 4, 2025)
 -----------------------------
 - Fix #429: Enable structure view on snippet template inline editing
 - Enh #431: Use content ID for Content Record Elements

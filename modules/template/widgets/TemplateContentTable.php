@@ -8,19 +8,21 @@
 
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
+use humhub\components\Widget;
+
 /**
  * User Administration Menu
  *
  * @author Basti
  */
-class TemplateContentTable extends \humhub\components\Widget
+class TemplateContentTable extends Widget
 {
     public $template;
 
     public function run()
     {
         return $this->render('templateElementAdminTable', [
-            'template' => $this->template,
+            'elements' => $this->template->elements,
         ]);
     }
 

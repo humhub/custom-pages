@@ -20,9 +20,9 @@ class YiiFormaterExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('asDate', [$this, 'asDate']),
-            new TwigFilter('asTime', [$this, 'asTime']),
-            new TwigFilter('asDateTime', [$this, 'asDatetime']),
+            new TwigFilter('formatter_as_date', [$this, 'asDate']),
+            new TwigFilter('formatter_as_time', [$this, 'asTime']),
+            new TwigFilter('formatter_as_date_time', [$this, 'asDatetime']),
         ];
     }
 

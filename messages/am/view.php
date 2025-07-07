@@ -20,7 +20,10 @@ return [
     'View not found' => 'የሚታይ ነገር አልተገኘም',
     'e.g. http://www.example.de' => 'ምሳሌ፡ http://www.example.de',
     'none' => 'ምንም',
+    '<strong>Copy</strong> Custom Page' => '',
     '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!' => '',
+    'Copy' => '',
+    'Create' => '',
     'Here you can configure the general settings of your {pageLabel}.' => '',
     'The abstract will be used as stream entry content to promote the actual page. 
                         If no abstract is given or the page is only visible for admins, no stream entry will be created.' => '',

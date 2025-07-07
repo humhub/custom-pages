@@ -25,6 +25,9 @@ return [
     'View not found' => 'A nézet nem található',
     'e.g. http://www.example.de' => 'pl.: http://www.valami.hu/',
     'none' => 'nincs',
+    '<strong>Copy</strong> Custom Page' => '',
+    'Copy' => '',
+    'Create' => '',
     'You need to be a system administrator to edit this URL' => '',
     'e.g. allowfullscreen allow="camera; microphone"' => '',
 ];

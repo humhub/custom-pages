@@ -25,6 +25,9 @@ return [
     'View not found' => 'Изгледът не е намерен',
     'e.g. http://www.example.de' => 'напр. http://www.example.de',
     'none' => 'нищо',
+    '<strong>Copy</strong> Custom Page' => '',
+    'Copy' => '',
+    'Create' => '',
     'You need to be a system administrator to edit this URL' => '',
     'e.g. allowfullscreen allow="camera; microphone"' => '',
 ];

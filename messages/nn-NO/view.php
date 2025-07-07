@@ -3,9 +3,12 @@
 return [
     'Configuration' => 'Konfigurasjon',
     'Settings' => 'Innstillinger',
+    '<strong>Copy</strong> Custom Page' => '',
     '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!' => '',
     'Add new {pageType}' => '',
     'By setting an url shortcut value, you can create a better readable url for your page. If <b>URL Rewriting</b> is enabled on your site, the value \'mypage\' will result in an url \'www.example.de/p/mypage\'.' => '',
+    'Copy' => '',
+    'Create' => '',
     'Create new template' => '',
     'Delete' => '',
     'Edit elements' => '',

@@ -27,4 +27,7 @@ return [
     'e.g. allowfullscreen allow="camera; microphone"' => '例: allowfullscreen allow="camera; microphone"',
     'e.g. http://www.example.de' => '例：http://www.example.de',
     'none' => 'None',
+    '<strong>Copy</strong> Custom Page' => '',
+    'Copy' => '',
+    'Create' => '',
 ];

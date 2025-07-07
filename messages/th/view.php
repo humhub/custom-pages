@@ -25,6 +25,9 @@ return [
     'View not found' => 'ไม่พบการดู',
     'e.g. http://www.example.de' => 'เช่น http://www.example.de',
     'none' => 'ไม่มี',
+    '<strong>Copy</strong> Custom Page' => '',
+    'Copy' => '',
+    'Create' => '',
     'You need to be a system administrator to edit this URL' => '',
     'e.g. allowfullscreen allow="camera; microphone"' => '',
 ];

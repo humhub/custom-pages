@@ -25,6 +25,9 @@ return [
     'View not found' => 'Vista non trovata',
     'e.g. http://www.example.de' => 'es. http://www.example.com',
     'none' => 'nulla',
+    '<strong>Copy</strong> Custom Page' => '',
+    'Copy' => '',
+    'Create' => '',
     'You need to be a system administrator to edit this URL' => '',
     'e.g. allowfullscreen allow="camera; microphone"' => '',
 ];

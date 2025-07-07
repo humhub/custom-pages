@@ -107,6 +107,9 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
     TemplateSourceEditor.prototype.removeElement = function (id) {
         $('[data-template-element-definition="' + id + '"]').fadeOut('fast', function () {
             $(this).remove();
+            if ($('#templateElements tr').length === 0) {
+                $('#templateElementTable thead').hide();
+            }
         });
     };
 
@@ -114,6 +117,7 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
         var $currentRow = $('[data-template-element-definition="' + response.id + '"]');
         if (!$currentRow.length) {
             var $content = $(response.output).hide();
+            $('#templateElementTable thead').show();
             $('#templateElements').append($content);
             $content.fadeIn('fast');
 

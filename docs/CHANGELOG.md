@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.11.0-beta.13 (Unreleased)
+-----------------------------
+- Enh #433: Change template overview
+
 1.11.0-beta.12 (September 16, 2025)
 -----------------------------------
 - Enh #402: HTML pages not allowed in Spaces

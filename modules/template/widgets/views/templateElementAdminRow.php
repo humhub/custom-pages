@@ -1,33 +1,35 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\widgets\Button;
+use humhub\widgets\Label;
 use yii\helpers\Html;
 
-/* @var $model humhub\modules\custom_pages\modules\template\models\TemplateElement */
+/* @var $model TemplateElement */
 ?>
-<tr data-template-element-definition="<?= $model->id ?>" >
+<tr data-template-element-definition="<?= $model->id ?>">
+    <td>
+        <?= Html::encode($model->title) ?>
+    </td>
     <td class="text-nowrap">
-        #<strong><?= Html::encode($model->name) ?> </strong>
+        {{ <?= Html::encode($model->name) ?> }}
     </td>
     <td>
-        <small>
-            <span class="label label-success"><?= $model->getLabel() ?></span>
-        </small>
+        <?= Label::success($model->getLabel()) ?>
         <?php if (!$model->hasDefaultContent()) : ?>
-            <small>
-                <span class="label label-warning"><?= Yii::t('CustomPagesModule.base', 'Empty') ?></span>
-            </small>
-        <?php else: ?>
-            <small>
-                <span class="label btn-success"><?= Yii::t('CustomPagesModule.base', 'Default') ?></span>
-            </small>
+            <?= Label::warning(Yii::t('CustomPagesModule.base', 'Empty')) ?>
+        <?php else : ?>
+            <?= Label::success(Yii::t('CustomPagesModule.base', 'Default')) ?>
         <?php endif; ?>
     </td>
-
     <td>
     <?php if ($model->template->canEdit()) : ?>
-        <?= Button::primary()->icon('pencil')->xs()
-            ->action('ui.modal.load', ['/custom_pages/template/admin/edit-element', 'id' => $model->id]) ?>
         <?= Button::danger()->icon('times')->xs()
             ->action('deleteElementSubmit', ['/custom_pages/template/admin/delete-element', 'id' => $model->id])
             ->confirm(
@@ -35,6 +37,8 @@ use yii\helpers\Html;
                 Yii::t('CustomPagesModule.template', 'Do you really want to delete this element? <br />The deletion will affect all pages using this template.'),
                 Yii::t('CustomPagesModule.base', 'Delete'),
             ) ?>
+        <?= Button::primary()->icon('pencil')->xs()
+            ->action('ui.modal.load', ['/custom_pages/template/admin/edit-element', 'id' => $model->id]) ?>
     <?php else : ?>
         <?= Button::info()->icon('eye')->xs()
             ->action('ui.modal.load', ['/custom_pages/template/admin/edit-element', 'id' => $model->id]) ?>

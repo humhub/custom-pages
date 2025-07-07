@@ -1,21 +1,30 @@
 <?php
-/* @var $template humhub\modules\custom_pages\modules\template\models\Template */
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
+use humhub\modules\custom_pages\modules\template\widgets\TemplateElementAdminRow;
+
+/* @var $elements BaseElementContent */
 ?>
-<div id="templateElementTable" class="grid-view" style="padding-top:0px;">
+<div id="templateElementTable" class="grid-view" style="padding:0">
     <table class="table table-hover">
-        <colgroup>
-            <col style="width:40px;">
-            <col>
-            <col style="width:80px; min-width:80px;">
-        </colgroup>
+        <thead<?= $elements === [] ? ' style="display:none"' : '' ?>>
+            <tr>
+                <th><?= Yii::t('CustomPagesModule.template', 'Label') ?></th>
+                <th><?= Yii::t('CustomPagesModule.template', 'Placeholder') ?></th>
+                <th><?= Yii::t('CustomPagesModule.template', 'Type') ?></th>
+                <th style="width:80px"><?= Yii::t('CustomPagesModule.template', 'Action') ?></th>
+            </tr>
+        </thead>
         <tbody id="templateElements">
-            <?php $elements = $template->elements ?>
-        
-            <?php if(count($elements) > 0): ?>
-                <?php foreach($elements as $element):?>
-                    <?=  humhub\modules\custom_pages\modules\template\widgets\TemplateElementAdminRow::widget(['model' => $element]); ?>
-                <?php endforeach;?>
-            <?php endif; ?>
+            <?php foreach ($elements as $element) : ?>
+                <?= TemplateElementAdminRow::widget(['model' => $element]) ?>
+            <?php endforeach; ?>
         </tbody>
     </table>
 </div>

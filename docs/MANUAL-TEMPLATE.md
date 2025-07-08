@@ -102,6 +102,7 @@
 | `file.description`                 | String                      | File description                                                                |
 | `file.downloadCount`               | Integer                     | Number of downloads                                                             |
 | `file.fileUrl`                     | String                      | File URL                                                                        |
+| `file.icon`                        | String                      | Icon style class, e.g. image: `fa-file-image-o`, pdf: `fa-file-pdf-o`           |
 | `file.file`                        | File Element                | Base/core File element                                                          |
 |                                    |                             |                                                                                 |
 | **Folders Element**                |                             |                                                                                 |
@@ -112,6 +113,7 @@
 | `folder.title`                     | String                      | Folder title                                                                    |
 | `folder.description`               | String                      | Folder description                                                              |
 | `folder.type`                      | String                      | Type: 'posted' - Files from the stream, 'root' - Root folder, null - sub folder |
+| `folder.icon`                      | String                      | Icon style class: `fa-folder`                                                   |
 | `folder.subFolders`                | Folder[]                    | Sub folder elements                                                             |
 | `folder.subFiles`                  | File[]                      | Sub file elements                                                               |
 |                                    |                             |                                                                                 |

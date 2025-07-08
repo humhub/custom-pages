@@ -54,6 +54,7 @@
 | **Content Meta Element**           |                             | Base for all content variables (e.g. Post)                                      |
 | `content.url`                      | String                      | Permalink to the content record                                                 |
 | `content.guid`                     | String                      | Content unique ID, e.g. 5b12f367-744b-4d2b-9611-c8b4ff92b6e5                    |
+| `content.container`                | Container                   |                                                                                 |
 | `content.isPublished`              | Boolean                     | True if the content is published                                                |
 | `content.isArchived`               | Boolean                     | True if the content is archived                                                 |
 | `content.isDraft`                  | Boolean                     | True if the content is a draft                                                  |

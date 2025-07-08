@@ -6,14 +6,14 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\custom_pages\modules\template\assets\TemplatePageStyleAsset;
 use humhub\modules\custom_pages\modules\template\components\TemplateActionColumn;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
 use humhub\modules\custom_pages\widgets\AdminMenu;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Url;
@@ -40,7 +40,7 @@ TemplatePageStyleAsset::register($this);
                     <?= $form->field($searchModel, 'name')
                         ->textInput(['placeholder' => Yii::t('CustomPagesModule.template', 'Search by template ID or name')])
                         ->label(false) ?>
-                    <?= Button::defaultType()->icon('search')->submit() ?>
+                    <?= Button::light()->icon('search')->submit() ?>
                 </div>
                 <?= $form->field($searchModel, 'type')
                     ->dropDownList(['' => Yii::t('CustomPagesModule.template', 'Type (All)')] + $searchModel->getTypeOptions())

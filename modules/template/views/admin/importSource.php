@@ -5,11 +5,11 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\components\View;
 use humhub\modules\custom_pages\modules\template\models\forms\ImportForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
-use humhub\widgets\ModalButton;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\modal\ModalButton;
 use humhub\widgets\ModalDialog;
 
 /* @var $this View */

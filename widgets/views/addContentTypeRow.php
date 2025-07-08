@@ -1,7 +1,7 @@
 <?php
 
-use humhub\widgets\Button;
 use humhub\modules\custom_pages\helpers\Url;
+use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
 use humhub\modules\content\helpers\ContentContainerHelper;
 

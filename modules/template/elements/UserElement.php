@@ -9,9 +9,9 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\UserPickerField;
+use humhub\widgets\form\ActiveForm;
 use Yii;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\models\CustomPage;
 

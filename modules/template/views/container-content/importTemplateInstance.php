@@ -7,10 +7,10 @@
  */
 
 use humhub\modules\custom_pages\modules\template\models\forms\ImportInstanceForm;
-use humhub\widgets\Button;
-use humhub\widgets\ModalButton;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\modal\ModalButton;
 use humhub\widgets\ModalDialog;
-use yii\widgets\ActiveForm;
 
 /* @var ImportInstanceForm $model */
 ?>

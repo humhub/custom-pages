@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
 
 /* @var $model humhub\modules\custom_pages\modules\template\models\TemplateElement */
@@ -26,9 +26,9 @@ use yii\helpers\Html;
 
     <td>
     <?php if ($model->template->canEdit()) : ?>
-        <?= Button::primary()->icon('pencil')->xs()
+        <?= Button::primary()->icon('pencil')->sm()
             ->action('ui.modal.load', ['/custom_pages/template/admin/edit-element', 'id' => $model->id]) ?>
-        <?= Button::danger()->icon('times')->xs()
+        <?= Button::danger()->icon('times')->sm()
             ->action('deleteElementSubmit', ['/custom_pages/template/admin/delete-element', 'id' => $model->id])
             ->confirm(
                 Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> element deletion'),
@@ -36,7 +36,7 @@ use yii\helpers\Html;
                 Yii::t('CustomPagesModule.base', 'Delete'),
             ) ?>
     <?php else : ?>
-        <?= Button::info()->icon('eye')->xs()
+        <?= Button::info()->icon('eye')->sm()
             ->action('ui.modal.load', ['/custom_pages/template/admin/edit-element', 'id' => $model->id]) ?>
     <?php endif; ?>
     </td>

@@ -6,10 +6,10 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\ModalButton;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\modal\ModalButton;
 use humhub\widgets\ModalDialog;
 
 /* @var $page CustomPage */
@@ -36,7 +36,7 @@ use humhub\widgets\ModalDialog;
 </div>
 <div class="modal-footer">
     <?= ModalButton::cancel() ?>
-    <?= ModalButton::submitModal(null, Yii::t('CustomPagesModule.view', 'Copy')) ?>
+    <?= ModalButton::save(Yii::t('CustomPagesModule.view', 'Copy')) ?>
 </div>
 <script <?= Html::nonce() ?>>
     $('input[type="radio"][name="CustomPage[visibility]"]').click(function () {

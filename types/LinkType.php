@@ -10,8 +10,8 @@
 namespace humhub\modules\custom_pages\types;
 
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\widgets\form\ActiveForm;
 use Yii;
-use yii\widgets\ActiveForm;
 
 class LinkType extends ContentType
 {

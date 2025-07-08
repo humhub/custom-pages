@@ -8,10 +8,10 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\widgets\richtext\RichTextField;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use Yii;
 
 /**

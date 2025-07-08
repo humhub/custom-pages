@@ -1,6 +1,6 @@
 <?php
 
-use yii\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Html;
 
 /* @var $allowedTemplateSelection array */

@@ -8,8 +8,8 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
-use humhub\libs\Html;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\helpers\Html;
+use humhub\widgets\form\ActiveForm;
 use Yii;
 
 /**

@@ -6,10 +6,10 @@
  *
  */
 
-use yii\bootstrap\ActiveForm;
-use humhub\libs\Html;
+use humhub\helpers\Html;
+use humhub\widgets\form\ActiveForm;
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this \humhub\components\View */
 /* @var $subNav string */
 /* @var $model \humhub\modules\custom_pages\models\forms\SettingsForm */
 

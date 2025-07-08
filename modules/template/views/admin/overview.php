@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\modules\custom_pages\widgets\AdminMenu;

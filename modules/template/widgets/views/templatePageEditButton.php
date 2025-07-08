@@ -4,8 +4,8 @@ use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
-use humhub\widgets\Button;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 
 /* @var int $pageId */
 /* @var TemplateInstance $templateInstance */
@@ -50,5 +50,5 @@ use humhub\widgets\Link;
         ->icon('pencil')
         ->link(['view', 'id' => $pageId, 'mode' => 'edit', 'sguid' => $sguid])
         ->id('editPageButton')
-        ->xs() ?>
+        ->sm() ?>
 <?php endif; ?>

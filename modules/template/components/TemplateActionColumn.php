@@ -8,11 +8,11 @@
 
 namespace humhub\modules\custom_pages\modules\template\components;
 
+use humhub\helpers\Html;
 use humhub\libs\ActionColumn;
-use humhub\libs\Html;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 
 class TemplateActionColumn extends ActionColumn
@@ -76,7 +76,7 @@ class TemplateActionColumn extends ActionColumn
     protected function renderDataCellContent($model, $key, $index)
     {
         $html = Html::beginTag('div', ['class' => 'btn-group dropdown-navigation']);
-        $html .= Button::defaultType('<span class="caret"></span>')
+        $html .= Button::light('<span class="caret"></span>')
             ->cssClass('dropdown-toggle')
             ->sm()
             ->options(['data-toggle' => 'dropdown'])

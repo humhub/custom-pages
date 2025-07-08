@@ -5,15 +5,15 @@
  * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\menu\MenuLink;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var MenuLink[] $entries */
 /* @var array $options */
 ?>
 <?= Html::beginTag('div', $options) ?>
-<?= Button::defaultType()
+<?= Button::light()
     ->icon('ellipsis-h')
     ->cssClass('dropdown-toggle')
     ->options(['data-toggle' => 'dropdown'])

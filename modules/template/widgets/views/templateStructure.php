@@ -6,7 +6,8 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\modules\template\assets\InlineEditorAsset;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
@@ -15,8 +16,7 @@ use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 
 /* @var TemplateInstance $templateInstance */
 /* @var ContainerElement[] $containers */

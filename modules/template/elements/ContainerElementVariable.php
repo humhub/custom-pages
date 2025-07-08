@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use Yii;
 

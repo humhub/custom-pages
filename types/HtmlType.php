@@ -14,8 +14,8 @@ use humhub\modules\custom_pages\widgets\TinyMce;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\UploadProgress;
+use humhub\widgets\form\ActiveForm;
 use Yii;
-use yii\widgets\ActiveForm;
 
 class HtmlType extends ContentType
 {

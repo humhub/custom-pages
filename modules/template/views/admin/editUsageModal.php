@@ -8,7 +8,7 @@
 
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\widgets\GridView;
-use humhub\widgets\ModalButton;
+use humhub\widgets\modal\ModalButton;
 use humhub\widgets\ModalDialog;
 use yii\data\ActiveDataProvider;
 

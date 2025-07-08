@@ -10,8 +10,8 @@ use humhub\modules\custom_pages\modules\template\assets\SourceEditorAsset;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\services\ElementTypeService;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentTable;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Url;
 
 SourceEditorAsset::register($this);

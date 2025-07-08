@@ -1,15 +1,15 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\types\TemplateType;
 use humhub\modules\custom_pages\widgets\PageIconSelect;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\Button;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
+use humhub\widgets\form\ActiveForm;
 
 Assets::register($this);
 

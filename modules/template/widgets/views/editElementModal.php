@@ -3,8 +3,8 @@
 use humhub\modules\custom_pages\modules\template\models\forms\TemplateElementForm;
 use humhub\modules\custom_pages\modules\template\widgets\EditContentSeperator;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\ModalDialog;
 use yii\helpers\Html;
 
@@ -47,7 +47,7 @@ use yii\helpers\Html;
                 ->options(['data-action-target' => '#templatePageRoot'])
                 ->submit() : '' ?>
 
-            <?= Button::defaultType(Yii::t('CustomPagesModule.base', 'Cancel'))
+            <?= Button::light(Yii::t('CustomPagesModule.base', 'Cancel'))
                 ->options(['data-dismiss' => 'modal']) ?>
 
             <?php if ($canEdit && !$model->content->isNewRecord && $resetUrl != null) : ?>

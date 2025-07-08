@@ -4,10 +4,9 @@
  * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
-
+use humhub\components\View;
 use humhub\modules\custom_pages\assets\InlineStyleAssets;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\ui\view\components\View;
 use yii\helpers\Html;
 
 /* @var $this View */

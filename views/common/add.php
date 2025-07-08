@@ -3,7 +3,7 @@
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\types\ContentType;
 use humhub\modules\custom_pages\widgets\AddContentTypeRow;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var $model \humhub\modules\custom_pages\models\forms\AddPageForm */
 /* @var $target \humhub\modules\custom_pages\models\Target */

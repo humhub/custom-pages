@@ -54,6 +54,7 @@
 | **Content Meta Element**           |                             | Base for all content variables (e.g. Post)                                      |
 | `content.url`                      | String                      | Permalink to the content record                                                 |
 | `content.guid`                     | String                      | Content unique ID, e.g. 5b12f367-744b-4d2b-9611-c8b4ff92b6e5                    |
+| `content.container`                | Container                   |                                                                                 |
 | `content.isPublished`              | Boolean                     | True if the content is published                                                |
 | `content.isArchived`               | Boolean                     | True if the content is archived                                                 |
 | `content.isDraft`                  | Boolean                     | True if the content is a draft                                                  |
@@ -101,6 +102,7 @@
 | `file.description`                 | String                      | File description                                                                |
 | `file.downloadCount`               | Integer                     | Number of downloads                                                             |
 | `file.fileUrl`                     | String                      | File URL                                                                        |
+| `file.icon`                        | String                      | Icon style class, e.g. image: `fa-file-image-o`, pdf: `fa-file-pdf-o`           |
 | `file.file`                        | File Element                | Base/core File element                                                          |
 |                                    |                             |                                                                                 |
 | **Folders Element**                |                             |                                                                                 |
@@ -111,6 +113,7 @@
 | `folder.title`                     | String                      | Folder title                                                                    |
 | `folder.description`               | String                      | Folder description                                                              |
 | `folder.type`                      | String                      | Type: 'posted' - Files from the stream, 'root' - Root folder, null - sub folder |
+| `folder.icon`                      | String                      | Icon style class: `fa-folder`                                                   |
 | `folder.subFolders`                | Folder[]                    | Sub folder elements                                                             |
 | `folder.subFiles`                  | File[]                      | Sub file elements                                                               |
 |                                    |                             |                                                                                 |

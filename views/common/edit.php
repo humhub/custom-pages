@@ -35,7 +35,7 @@ $contentType = $page->getContentType();
 
         <h4><?= Yii::t('CustomPagesModule.view', 'Configuration'); ?></h4>
 
-        <div class="help-block">
+        <div class="form-text">
             <?= Yii::t('CustomPagesModule.view', 'Here you can configure the general settings of your {pageLabel}.', ['pageLabel' => $page->getLabel()]) ?>
         </div>
 
@@ -50,7 +50,7 @@ $contentType = $page->getContentType();
 
         <?php if ($page->isAllowedField('url')) : ?>
             <?= $form->field($page, 'url') ?>
-            <div class="help-block">
+            <div class="form-text">
                 <?= Yii::t('CustomPagesModule.view', 'By setting an url shortcut value, you can create a better readable url for your page. If <b>URL Rewriting</b> is enabled on your site, the value \'mypage\' will result in an url \'www.example.de/p/mypage\'.') ?>
             </div>
         <?php endif; ?>
@@ -76,8 +76,7 @@ $contentType = $page->getContentType();
         <?= $form->endCollapsibleFields(); ?>
 
         <?php if (!$page->isSnippet()) : ?>
-            <div class="alert alert-info infoAdminOnly"
-                 <?php if ($page->visibility != CustomPage::VISIBILITY_ADMIN_ONLY): ?>style="display:none"<?php endif; ?>>
+            <div class="alert alert-info infoAdminOnly<?= $page->visibility != CustomPage::VISIBILITY_ADMIN_ONLY ? ' d-none' : '' ?>">
                 <?= Yii::t('CustomPagesModule.view', '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!'); ?>
             </div>
         <?php endif; ?>
@@ -85,7 +84,7 @@ $contentType = $page->getContentType();
         <?php if ($page->isAllowedField('abstract')) : ?>
             <?= $form->beginCollapsibleFields(Yii::t('CustomPagesModule.base', 'Stream options')); ?>
             <?= $form->field($page, 'abstract')->widget(RichTextField::class); ?>
-            <div class="help-block">
+            <div class="form-text">
                 <?= Yii::t('CustomPagesModule.view',
                     'The abstract will be used as stream entry content to promote the actual page. 
                         If no abstract is given or the page is only visible for admins, no stream entry will be created.') ?>
@@ -108,11 +107,10 @@ $contentType = $page->getContentType();
 
         <script <?= Html::nonce() ?>>
             $(document).one('humhub:ready', function () {
-                    $('input[type="radio"][name="CustomPage[visibility]"]').click(function () {
-                        $('.infoAdminOnly').toggle($(this).val() == <?= CustomPage::VISIBILITY_ADMIN_ONLY ?>);
-                    });
-                }
-            );
+                $('input[type="radio"][name="CustomPage[visibility]"]').click(function () {
+                    $('.infoAdminOnly').toggle($(this).val() == <?= CustomPage::VISIBILITY_ADMIN_ONLY ?>);
+                });
+            });
         </script>
         <?php ActiveForm::end(); ?>
     </div>

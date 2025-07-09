@@ -46,7 +46,7 @@ use yii\helpers\Html;
                 [
                     'class' => ActionColumn::class,
                     'options' => ['width' => '80px'],
-                    'contentOptions' => ['class' => 'text-right'],
+                    'contentOptions' => ['class' => 'text-end'],
                     'template' => '{update} {copy}',
                     'buttons' => [
                         'update' => function ($url, CustomPage $model) {

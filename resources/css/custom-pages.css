@@ -6,16 +6,6 @@
     Created on : 26.07.2016, 14:59:56
     Author     : buddha
 */
-.selectpicker {
-    font-family: FontAwesome;
-    font-feature-settings: normal;
-}
-
-.selectpicker option {
-    font-family: FontAwesome;
-    font-feature-settings: normal;
-}
-
 .preview {
     border:1px solid rgba(210, 210, 210, 0.5);
     min-height:100px;
@@ -67,7 +57,7 @@ div#overlay {
     opacity:0.3;
 }
 
-.btn-xs.template-menu-button {
+.btn-sm.template-menu-button {
     margin-left:1px;
 }
 

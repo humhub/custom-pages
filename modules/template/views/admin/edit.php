@@ -28,7 +28,7 @@ use humhub\widgets\form\ActiveForm;
         <?= $form->field($model, 'description')->textarea(['id' => 'template-form-description', 'rows' => 3]) ?>
         <?= $form->field($model, 'type')->dropDownList($model::getTypeOptions()) ?>
 
-        <div id="template-allow-for-spaces"<?= $model->isLayout() ? '' : ' style="display:none"'?>>
+        <div id="template-allow-for-spaces"<?= $model->isLayout() ? '' : ' class="d-none"' ?>">
             <?= $form->field($model, 'allow_for_spaces')->checkbox() ?>
         </div>
 

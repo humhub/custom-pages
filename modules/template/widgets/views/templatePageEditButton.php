@@ -15,32 +15,33 @@ use humhub\widgets\bootstrap\Link;
 <?php if (TemplateInstanceRendererService::inEditMode()) : ?>
 
     <div id="editPageButton" class="btn-group">
-        <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-pencil"></i>&nbsp;&nbsp;<span class="caret"></span>
+        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-pencil"></i>
         </button>
         <ul class="dropdown-menu">
             <li>
                 <?= Link::to(
                     Yii::t('CustomPagesModule.view', 'Page configuration'),
                     Url::toEditPage($pageId, ContentContainerHelper::getCurrent()),
-                )->blank() ?>
+                )->blank()->cssClass('dropdown-item') ?>
             </li>
             <?php if (PagePermissionHelper::canTemplate()) : ?>
                 <li>
                     <?= Link::to(
                         Yii::t('CustomPagesModule.view', 'Edit template'),
                         ['/custom_pages/template/admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid],
-                    )->blank() ?>
+                    )->blank()->cssClass('dropdown-item') ?>
                 </li>
             <?php endif; ?>
             <li>
                 <?= Link::to(Yii::t('CustomPagesModule.view', 'Edit elements'))->action(
                     'ui.modal.load',
                     ['/custom_pages/template/element-content/edit-multiple', 'id' => $templateInstance->id, 'sguid' => $sguid],
-                ) ?>
+                )->cssClass('dropdown-item') ?>
             </li>
             <li>
-                <?= Link::to(Yii::t('CustomPagesModule.view', 'Turn edit off'), ['view', 'id' => $pageId, 'sguid' => $sguid]) ?>
+                <?= Link::to(Yii::t('CustomPagesModule.view', 'Turn edit off'), ['view', 'id' => $pageId, 'sguid' => $sguid])
+                    ->cssClass('dropdown-item') ?>
             </li>
         </ul>
     </div>

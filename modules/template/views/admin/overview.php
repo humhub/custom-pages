@@ -11,7 +11,7 @@ use humhub\modules\custom_pages\widgets\AdminMenu;
     <?= AdminMenu::widget([]); ?>
 
     <div class="panel-body">
-        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default pull-right')); ?>
+        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-light float-end')); ?>
         <?php if ($model->isNewRecord): ?>
             <h4><?= Yii::t('CustomPagesModule.view', 'Create new template'); ?></h4>
         <?php else: ?>

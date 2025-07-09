@@ -40,7 +40,7 @@ use humhub\widgets\bootstrap\Button;
     <?php endif; ?>
 
     <?php if (isset($description)) : ?>
-    <div class="help-block">
+    <div class="form-text">
         <?= $description ?>
     </div>
     <?php endif; ?>

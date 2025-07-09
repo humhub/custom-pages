@@ -40,16 +40,15 @@ $elementTypeService = new ElementTypeService();
             <?= $model->canEdit() ? Button::save()->submit() : '' ?>
             <?= $model->isNewRecord ? '' : '' ?>
             <?php if ($model->canEdit()) : ?>
-            <div class="dropdown pull-right">
-                <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">
+            <div class="dropdown float-end">
+                <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
                     <i aria-hidden="true" class="fa fa-plus"></i>
                     <?= Yii::t('CustomPagesModule.template', 'Add Element'); ?>
-                    <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" id="addElementSelect">
                     <?php foreach ($elementTypeService->getTypeInstances() as $elementType) : ?>
                         <li>
-                            <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/add-element', 'templateId' => $model->id, 'type' => get_class($elementType)]) ?>" href="#">
+                            <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/add-element', 'templateId' => $model->id, 'type' => get_class($elementType)]) ?>" href="#" class="dropdown-item">
                                 <?= $elementType->getLabel() ?>
                             </a>
                         </li>

@@ -18,9 +18,7 @@ $contentContainer = ContentContainerHelper::getCurrent();
         <?= Html::encode($contentType->getLabel()) ?>
     </td>
     <td>
-        <p class="help-block">
-            <?= Html::encode($contentType->getDescription()) ?>
-        </p>
+        <?= Html::encode($contentType->getDescription()) ?>
     </td>
     <td>
         <?= Button::success(Yii::t('CustomPagesModule.base', 'Add'))

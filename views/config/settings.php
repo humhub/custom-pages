@@ -23,7 +23,7 @@ use humhub\widgets\form\ActiveForm;
     <div class="panel-body">
         <div class="clearfix">
             <h4><?= Yii::t('CustomPagesModule.view', 'Settings') ?></h4>
-            <div class="help-block">
+            <div class="text-body-secondary">
                 <?= Yii::t('CustomPagesModule.base', 'On this page you can configure general settings of your custom pages.') ?>
             </div>
         </div>

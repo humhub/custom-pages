@@ -15,13 +15,12 @@ use humhub\widgets\bootstrap\Button;
 <?= Html::beginTag('div', $options) ?>
 <?= Button::light()
     ->icon('ellipsis-h')
-    ->cssClass('dropdown-toggle')
-    ->options(['data-toggle' => 'dropdown'])
+    ->options(['data-bs-toggle' => 'dropdown'])
     ->loader(false) ?>
-<ul class="dropdown-menu pull-right">
+<ul class="dropdown-menu">
     <?php foreach ($entries as $entry) : ?>
         <li>
-            <?= $entry->render() ?>
+            <?= $entry->render(['class' => 'dropdown-item']) ?>
         </li>
     <?php endforeach; ?>
 </ul>

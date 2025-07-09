@@ -27,7 +27,7 @@ TemplatePageStyleAsset::register($this);
     <div class="panel-heading"><?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages') ?></div>
     <?= AdminMenu::widget() ?>
     <div class="panel-body">
-        <div class="help-block">
+        <div class="text-body-secondary">
             <?= Yii::t('CustomPagesModule.base', 'Manage layouts, snippet layouts, and containers. Layouts define page structures, snippet layouts are used in sidebars or sections, and containers are reusable content blocks.') ?>
         </div>
     </div>

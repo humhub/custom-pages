@@ -45,22 +45,26 @@ InlineEditorAsset::register($this);
             <?= Icon::get('circle') ?>
             <div class="cp-structure-text"><?= $templateInstance->template->name ?></div>
             <div class="cp-structure-actions dropdown">
-                <?= Icon::get('ellipsis-h', ['htmlOptions' => ['data-toggle' => 'dropdown']])
-                    ->class('dropdown-toggle cp-structure-action') ?>
-                <ul class="dropdown-menu dropdown-menu-right">
+                <?= Icon::get('ellipsis-h', ['htmlOptions' => ['data-bs-toggle' => 'dropdown']])
+                    ->class('cp-structure-action') ?>
+                <ul class="dropdown-menu dropdown-menu-end">
                 <?php if ($templateInstance->isContainer()) : ?>
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Edit'))
                         ->icon('pencil')
-                        ->action('editElements') ?></li>
+                        ->action('editElements')
+                        ->cssClass('dropdown-item') ?></li>
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Move Up'))
                         ->icon('chevron-up')
-                        ->action('moveUpContainerItem') ?></li>
+                        ->action('moveUpContainerItem')
+                            ->cssClass('dropdown-item') ?></li>
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Move Down'))
                         ->icon('chevron-down')
-                        ->action('moveDownContainerItem') ?></li>
+                        ->action('moveDownContainerItem')
+                            ->cssClass('dropdown-item') ?></li>
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Export'))
                             ->icon('upload')
-                            ->action('exportTemplateInstance') ?></li>
+                            ->action('exportTemplateInstance')
+                            ->cssClass('dropdown-item') ?></li>
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Delete'))
                         ->icon('trash')
                         ->action('deleteContainerItem')
@@ -68,24 +72,29 @@ InlineEditorAsset::register($this);
                             Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> container item deletion'),
                             Yii::t('CustomPagesModule.template', 'Are you sure you want to delete this container item?'),
                             Yii::t('CustomPagesModule.base', 'Delete'),
-                        ) ?></li>
+                        )
+                        ->cssClass('dropdown-item') ?></li>
                 <?php else : ?>
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Edit'))
                         ->icon('pencil')
-                        ->action('editElements') ?></li>
+                        ->action('editElements')
+                        ->cssClass('dropdown-item') ?></li>
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Import'))
                             ->icon('download')
-                            ->action('importTemplateInstance') ?></li>
+                            ->action('importTemplateInstance')
+                            ->cssClass('dropdown-item') ?></li>
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Export'))
                         ->icon('upload')
-                        ->action('exportTemplateInstance') ?></li>
+                        ->action('exportTemplateInstance')
+                        ->cssClass('dropdown-item') ?></li>
                 <?php endif; ?>
 
                 <?php if (PagePermissionHelper::canTemplate()) : ?>
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Edit template'))
                             ->icon('pencil-square-o')
                             ->link(['/custom_pages/template/admin/edit-source', 'id' => $templateInstance->template_id])
-                            ->blank() ?></li>
+                            ->blank()
+                            ->cssClass('dropdown-item') ?></li>
                 <?php endif; ?>
                 </ul>
             </div>
@@ -100,20 +109,21 @@ InlineEditorAsset::register($this);
                     <div class="cp-structure-text"><?= $container->element->title === null || $container->element->title === '' ? $container->element->name : $container->element->title ?></div>
 
                     <div class="cp-structure-actions dropdown">
-                        <?= Icon::get('ellipsis-h', ['htmlOptions' => ['data-toggle' => 'dropdown']])
-                            ->class('dropdown-toggle cp-structure-action') ?>
-                        <ul class="dropdown-menu dropdown-menu-right">
+                        <?= Icon::get('ellipsis-h', ['htmlOptions' => ['data-bs-toggle' => 'dropdown']])
+                            ->class('cp-structure-action') ?>
+                        <ul class="dropdown-menu dropdown-menu-end">
                             <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Import'))
                                     ->icon('download')
-                                    ->action('importTemplateInstance') ?></li>
+                                    ->action('importTemplateInstance')
+                                    ->cssClass('dropdown-item') ?></li>
                             <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Export'))
                                     ->icon('upload')
-                                    ->action('exportTemplateInstance') ?></li>
+                                    ->action('exportTemplateInstance')
+                                    ->cssClass('dropdown-item') ?></li>
                         </ul>
                     </div>
                     <?= Icon::get('plus', ['htmlOptions' => ['data-action-click' => 'addContainerItem']])
-                        ->class('cp-structure-action')
-                        ->style($container->canAddItem() ? '' : 'display:none') ?>
+                        ->class('cp-structure-action' . ($container->canAddItem() ? '' : ' d-none')) ?>
                 </div>
 
                 <?php if ($container->hasItems()) : ?>

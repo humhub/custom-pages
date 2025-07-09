@@ -230,19 +230,19 @@ span[data-editor-container-item-id] {
     flex-grow: 1;
     padding-right: 8px;
 }
-.cp-templates-filter button[type=submit] {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+.cp-templates-filter .input-group .mb-3 input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
-.cp-templates-filter .input-group .form-group {
+.cp-templates-filter .input-group .mb-3 {
     flex-grow: 1;
 }
 .cp-templates-filter .form-control,
 .cp-templates-filter .select2-selection.select2-selection--single {
     height: 37px;
 }
-.cp-templates-filter .form-group, .cp-templates-filter .help-block {
-    margin: 0;
+.cp-templates-filter .mb-3 {
+    margin: 0 !important;
 }
 
 .badge-cp-template-layout {

@@ -92,14 +92,14 @@ class HtmlElement extends BaseElementContent
                 ],
             ]])->label(false) .
 
-            Html::beginTag('div', ['class' => 'form-group']) .
+            Html::beginTag('div', ['class' => 'mb-3']) .
                 UploadButton::widget([
                     'id' => 'html-template-file-uploader-' . $id,
                     'label' => Yii::t('CustomPagesModule.model', 'Attach Files'),
                     'tooltip' => false,
                     'progress' => '#html-template-file-uploader-progress-' . $id,
                     'preview' => '#html-template-file-uploader-preview-' . $id,
-                    'cssButtonClass' => 'btn-default btn-sm',
+                    'cssButtonClass' => 'btn-light btn-sm',
                     'model' => $this,
                     'submitName' => $this->formName() . '[fileList][]',
                 ]) .

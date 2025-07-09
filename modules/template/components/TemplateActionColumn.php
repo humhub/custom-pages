@@ -76,19 +76,23 @@ class TemplateActionColumn extends ActionColumn
     protected function renderDataCellContent($model, $key, $index)
     {
         $html = Html::beginTag('div', ['class' => 'btn-group dropdown-navigation']);
-        $html .= Button::light('<span class="caret"></span>')
+        $html .= Button::light()
             ->cssClass('dropdown-toggle')
             ->sm()
-            ->options(['data-toggle' => 'dropdown'])
+            ->options(['data-bs-toggle' => 'dropdown'])
             ->icon('controls')
             ->loader(false);
 
-        $html .= Html::beginTag('ul', ['class' => 'dropdown-menu pull-right']);
+        $html .= Html::beginTag('ul', ['class' => 'dropdown-menu float-end']);
         foreach ($this->getTemplateActions($model) as $action) {
+            $actionOptions = ['class' => 'dropdown-item'];
+            if (!empty($action['confirm'])) {
+                $actionOptions['data-action-confirm'] = '';
+            }
             $html .= Html::tag('li', Html::a(
                 Icon::get($action['icon']) . ' ' . $action['title'],
                 $this->handleUrl($action['url'], $model),
-                !empty($action['confirm']) ? ['data-action-confirm' => ''] : [],
+                $actionOptions,
             ));
         }
         $html .= Html::endTag('ul');

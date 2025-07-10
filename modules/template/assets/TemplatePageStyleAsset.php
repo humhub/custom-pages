@@ -28,7 +28,7 @@ class TemplatePageStyleAsset extends AssetBundle
      * @inheritdoc
      */
     public $publishOptions = [
-        'forceCopy' => true,
+        'forceCopy' => false,
     ];
 
 }

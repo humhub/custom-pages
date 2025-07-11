@@ -7,7 +7,7 @@
  */
 
 use humhub\helpers\Html;
-use humhub\modules\custom_pages\modules\template\assets\TemplatePageStyleAsset;
+use humhub\modules\custom_pages\modules\template\assets\TemplateAsset;
 use humhub\modules\custom_pages\modules\template\components\TemplateActionColumn;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
@@ -21,7 +21,7 @@ use yii\helpers\Url;
 /* @var ActiveDataProvider $dataProvider */
 /* @var TemplateSearch $searchModel */
 
-TemplatePageStyleAsset::register($this);
+TemplateAsset::register($this);
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages') ?></div>

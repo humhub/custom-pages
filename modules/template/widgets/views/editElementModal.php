@@ -24,9 +24,9 @@ $buttons = ModalButton::cancel();
 
 if ($canEdit) {
     $buttons .= ModalButton::save()
+        ->submit()
         ->action('editElementSubmit')
-        ->options(['data-action-target' => '#templatePageRoot'])
-        ->submit();
+        ->options(['data-action-target' => '#templatePageRoot']);
 }
 
 if ($canEdit && !$model->content->isNewRecord && $resetUrl != null) {

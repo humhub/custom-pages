@@ -1,0 +1,10 @@
+@use 'admin';
+@use 'editor';
+@use 'structure';
+
+:root {
+  --cp-strucutre-bg: #252525;
+  --cp-strucutre-bg-active: #555555;
+  --cp-container-color: #B31317;
+  --cp-container-item-color: #FF9F0A;
+}

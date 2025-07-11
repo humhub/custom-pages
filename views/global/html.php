@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 use humhub\components\View;
-use humhub\modules\custom_pages\assets\InlineStyleAssets;
+use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\models\CustomPage;
 use yii\helpers\Html;
 
@@ -15,7 +15,7 @@ use yii\helpers\Html;
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 
-InlineStyleAssets::register($this);
+Assets::register($this);
 ?>
 <div class="container <?= Html::encode($cssClass) ?>">
     <div class="row">

@@ -9,9 +9,7 @@
 use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\content\helpers\ContentContainerHelper;
-use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\custom_pages\modules\template\assets\InlineEditorAsset;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
@@ -29,9 +27,6 @@ use humhub\widgets\bootstrap\Link;
 
 /* @var TemplateStructure $widget */
 $widget = $this->context;
-
-Assets::register($this);
-InlineEditorAsset::register($this);
 ?>
 <?php if ($templateInstance->isPage()) : ?>
 <?= Html::beginTag('div', $options) ?>

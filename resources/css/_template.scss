@@ -1,0 +1,25 @@
+.template-edit-multiple {
+  .panel-body {
+    padding-bottom: 0 !important;
+  }
+  .panel-heading {
+    background-color: #f5f5f5 !important;
+    border: 2px solid #f5f5f5 !important;
+    padding: 5px !important;
+    border-radius: 0 !important;
+    box-sizing: border-box !important;
+    &:hover {
+      background-color: #EDEDED !important;
+      border: 2px solid #EDEDED !important;
+    }
+  }
+  .panel-footer {
+    padding:0 !important;
+  }
+}
+
+.template-edit-multiple-tab:focus {
+  border:2px solid #a0c2f9 !important;
+  box-sizing: border-box !important;
+  outline:0;
+}

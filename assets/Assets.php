@@ -15,6 +15,6 @@ class Assets extends AssetBundle
     public $sourcePath = '@custom_pages/resources';
 
     public $css = [
-        'css/custom-pages.css',
+        'css/humhub.custom_pages.min.css',
     ];
 }

@@ -7,7 +7,7 @@
 
 use humhub\components\View;
 use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\custom_pages\assets\InlineStyleAssets;
+use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\widgets\PageConfigurationButton;
 use yii\helpers\Html;
@@ -18,7 +18,7 @@ use yii\helpers\Html;
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 
-InlineStyleAssets::register($this);
+Assets::register($this);
 ?>
 <?= PageConfigurationButton::widget() ?>
 <div class="panel panel-default <?= Html::encode($cssClass) ?>">

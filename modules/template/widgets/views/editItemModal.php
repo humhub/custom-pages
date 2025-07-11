@@ -22,9 +22,9 @@ use humhub\widgets\modal\ModalButton;
     'size' => Modal::SIZE_LARGE,
     'footer' => ModalButton::cancel() .
         ModalButton::save()
+            ->submit()
             ->action('editItemSubmit')
-            ->options(['data-action-target' => '#templatePageRoot'])
-            ->submit(),
+            ->options(['data-action-target' => '#templatePageRoot']),
     'form' => [
         'action' => $action,
         'enableClientValidation' => false,

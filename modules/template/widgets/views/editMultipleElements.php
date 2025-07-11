@@ -23,9 +23,9 @@ use humhub\widgets\modal\ModalButton;
         ? ModalButton::cancel(Yii::t('CustomPagesModule.base', 'Back'))
         : ModalButton::cancel() .
           ModalButton::save()
+            ->submit()
             ->action('editMultipleElementsSubmit')
-            ->options(['data-action-target' => '#templatePageRoot'])
-            ->submit(),
+            ->options(['data-action-target' => '#templatePageRoot']),
     'form' => ['enableClientValidation' => false],
 ]) ?>
 <?= Html::hiddenInput('editMultipleElements', true); ?>

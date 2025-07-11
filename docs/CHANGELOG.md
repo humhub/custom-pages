@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.12.0 (unreleased)
+-------------------------
+- Enh #: Migration to Bootstrap 5 for HumHub 1.18
+
 1.11.0-beta.8 (Unreleased)
 -----------------------------
 - Enh #432: Add Yii formatter for Twig filters

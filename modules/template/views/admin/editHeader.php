@@ -6,12 +6,12 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateMenu;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateTabs;
 use humhub\modules\custom_pages\widgets\AdminMenu;
-use humhub\widgets\Button;
 use humhub\modules\custom_pages\modules\template\models\Template;
+use humhub\widgets\bootstrap\Button;
 
 /* @var Template $model */
 /* @var string $description */
@@ -22,7 +22,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
 <div class="panel-body">
     <?= TemplateMenu::widget(['model' => $model]) ?>
 
-    <?= Button::defaultType(Yii::t('CustomPagesModule.base', 'Go Back'))
+    <?= Button::light(Yii::t('CustomPagesModule.base', 'Go Back'))
         ->icon('arrow-left')
         ->link(['index'])
         ->right() ?>
@@ -40,7 +40,7 @@ use humhub\modules\custom_pages\modules\template\models\Template;
     <?php endif; ?>
 
     <?php if (isset($description)) : ?>
-    <div class="help-block">
+    <div class="form-text">
         <?= $description ?>
     </div>
     <?php endif; ?>

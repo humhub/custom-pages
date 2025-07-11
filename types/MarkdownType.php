@@ -12,8 +12,8 @@ namespace humhub\modules\custom_pages\types;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\widgets\form\ActiveForm;
 use Yii;
-use yii\widgets\ActiveForm;
 
 class MarkdownType extends ContentType
 {

@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
@@ -28,7 +28,7 @@ use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElemen
 use humhub\modules\custom_pages\modules\template\widgets\EditMultipleElementsModal;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentTable;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\base\Response;
 use yii\data\ActiveDataProvider;
@@ -213,16 +213,16 @@ class AdminController extends Controller
                         /* @var $record CustomPage */
                         $record = $model->getPolymorphicRelation();
                         return $record->canEdit()
-                            ? Link::primary()->icon('pencil')->link($record->getEditUrl())->xs()->right()
+                            ? Link::primary()->icon('pencil')->link($record->getEditUrl())->sm()->right()
                             : '';
                     } elseif ($model instanceof Template) {
-                        return Link::primary()->icon('pencil')->link(Url::toRoute(['edit-source', 'id' => $model->id]))->xs();
+                        return Link::primary()->icon('pencil')->link(Url::toRoute(['edit-source', 'id' => $model->id]))->sm();
                     }
                     return '';
                 },
                 'delete' => function ($url, $model) {
                     return $model instanceof Template
-                        ? Link::danger()->icon('times')->link(Url::toRoute(['delete-template', 'id' => $model->id]))->xs()->confirm()
+                        ? Link::danger()->icon('times')->link(Url::toRoute(['delete-template', 'id' => $model->id]))->sm()->confirm()
                         : '';
                 },
             ],

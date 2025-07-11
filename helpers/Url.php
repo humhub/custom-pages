@@ -11,6 +11,7 @@ use yii\helpers\Url as BaseUrl;
 class Url extends BaseUrl
 {
     public const ROUTE_CONFIG = '/custom_pages/config';
+    public const ROUTE_VIEW_PAGE = '/custom_pages/view';
     public const ROUTE_EDIT_PAGE = '/custom_pages/page/edit';
     public const ROUTE_COPY_PAGE = '/custom_pages/page/copy';
 
@@ -28,16 +29,14 @@ class Url extends BaseUrl
 
     public const ROUTE_TEMPLATE_ADMIN = '/custom_pages/template/admin';
 
-    public const ROUTE_PAGE_INLINE_EDIT = '/custom_pages/view';
-
     public const ROUTE_SNIPPET_INLINE_EDIT = '/custom_pages/snippet/edit-snippet';
 
-    public static function toInlineEdit(CustomPage $content, ContentContainerActiveRecord $container = null)
+    public static function toInlineEdit(CustomPage $page, ContentContainerActiveRecord $container = null)
     {
-        if ($content->getPageType() === PageType::Snippet) {
-            return static::create(static::ROUTE_SNIPPET_INLINE_EDIT, ['id' => $content->id], $container);
+        if ($page->getPageType() === PageType::Snippet) {
+            return static::create(static::ROUTE_SNIPPET_INLINE_EDIT, ['id' => $page->id], $container);
         } else {
-            return static::create(static::ROUTE_PAGE_INLINE_EDIT, ['id' => $content->id, 'mode' => 'edit'], $container);
+            return static::create(static::ROUTE_VIEW_PAGE, ['id' => $page->id, 'mode' => 'edit'], $container);
         }
     }
 
@@ -102,6 +101,15 @@ class Url extends BaseUrl
         $route = ($pageType === PageType::Page) ? static::ROUTE_PAGE_ADD : static::ROUTE_SNIPPET_ADD;
 
         return static::create($route, ['targetId' => $targetId, 'type' => $contentType], $container);
+    }
+
+    public static function toViewPage($id, ContentContainerActiveRecord $container = null)
+    {
+        if ($id instanceof ActiveRecord) {
+            $id = $id->id;
+        }
+
+        return static::create(static::ROUTE_VIEW_PAGE, ['id' => $id], $container);
     }
 
     public static function toEditPage($id, ContentContainerActiveRecord $container = null)

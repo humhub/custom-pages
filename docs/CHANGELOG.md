@@ -8,6 +8,7 @@ Changelog
 1.11.0-beta.8 (Unreleased)
 -----------------------------
 - Enh #432: Add Yii formatter for Twig filters
+- Enh #437: Add context menu to Structure View
 
 1.11.0-beta.7 (July 4, 2025)
 -----------------------------
@@ -32,6 +33,8 @@ Changelog
 
 1.11.0-beta.3 (June 3, 2025)
 ----------------------------
+Please note that the IDs of the custom pages you have created will be changed. Links may need to be updated.
+
 - Enh #354: Template - Add RSS Element Type
 - Enh #357: Refactor all snippets and container pages to single page class
 - Enh #358: Refactor page content types

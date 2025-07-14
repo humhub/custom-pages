@@ -32,6 +32,8 @@ class CreateContainerPageCest
         $I->fillField('CustomPage[sort_order]', '400');
         $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
 
+        $I->scrollToBottom();
+        $I->wait(1);
         $I->click('Create');
         $I->waitForElementVisible('.left-navigation .fa-adn');
         $I->see('Space Markdown Page', '.left-navigation');

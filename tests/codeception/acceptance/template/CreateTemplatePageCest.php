@@ -49,9 +49,7 @@ class CreateTemplatePageCest
         $I->fillField('TemplateElement[name]', 'tmplimage');
         //Workaround
         $I->jsShow('.uploadElementImage', 'type');
-        $I->wait(1);
-        $I->attachFile('files[]', 'test.jpg');
-        $I->wait(1);
+        $I->attachFile('.fileinput-button input[type=file]', 'test.jpg');
         $I->waitForElementVisible('.file-preview-item');
         $I->click('.collapsableTrigger'); //Show more
         $I->waitForElementVisible('#imageelement-definitionpostdata-height');

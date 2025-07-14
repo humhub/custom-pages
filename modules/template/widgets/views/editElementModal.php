@@ -25,14 +25,12 @@ $buttons = ModalButton::cancel();
 if ($canEdit) {
     $buttons .= ModalButton::save()
         ->submit()
-        ->action('editElementSubmit')
-        ->options(['data-action-target' => '#templatePageRoot']);
+        ->action('editElementSubmit', null, '#templatePageRoot');
 }
 
 if ($canEdit && !$model->content->isNewRecord && $resetUrl != null) {
     $buttons .= ModalButton::danger(Yii::t('CustomPagesModule.base', 'Reset'))
-        ->action('reset', $resetUrl)
-        ->options(['data-action-target' => '#templatePageRoot']);
+        ->action('reset', $resetUrl, '#templatePageRoot');
 }
 ?>
 <?php $form = Modal::beginFormDialog([

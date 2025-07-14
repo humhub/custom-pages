@@ -23,8 +23,7 @@ use humhub\widgets\modal\ModalButton;
     'footer' => ModalButton::cancel() .
         ModalButton::save()
             ->submit()
-            ->action('editItemSubmit')
-            ->options(['data-action-target' => '#templatePageRoot']),
+            ->action('editItemSubmit', null, '#templatePageRoot'),
     'form' => [
         'action' => $action,
         'enableClientValidation' => false,

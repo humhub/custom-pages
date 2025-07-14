@@ -16,7 +16,7 @@ use humhub\widgets\modal\ModalButton;
 <?php $form = Modal::beginFormDialog([
     'title' => Yii::t('CustomPagesModule.view', '<strong>Copy</strong> Custom Page'),
     'footer' => ModalButton::cancel() .
-        ModalButton::save(Yii::t('CustomPagesModule.view', 'Copy'))->submit(),
+        ModalButton::primary(Yii::t('CustomPagesModule.view', 'Copy'))->submit(),
 ]) ?>
     <?php if ($page->isAllowedField('title')) : ?>
         <?= $form->field($page, 'title') ?>

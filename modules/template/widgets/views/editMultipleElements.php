@@ -24,8 +24,7 @@ use humhub\widgets\modal\ModalButton;
         : ModalButton::cancel() .
           ModalButton::save()
             ->submit()
-            ->action('editMultipleElementsSubmit')
-            ->options(['data-action-target' => '#templatePageRoot']),
+            ->action('editMultipleElementsSubmit', null, '#templatePageRoot'),
     'form' => ['enableClientValidation' => false],
 ]) ?>
 <?= Html::hiddenInput('editMultipleElements', true); ?>

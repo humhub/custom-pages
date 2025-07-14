@@ -15,7 +15,7 @@ use humhub\widgets\modal\ModalButton;
 <?php $form = Modal::beginFormDialog([
     'title' => Yii::t('CustomPagesModule.template', 'Import a template instance'),
     'footer' => ModalButton::cancel() .
-        ModalButton::save(Yii::t('CustomPagesModule.template', 'Import'))
+        ModalButton::primary(Yii::t('CustomPagesModule.template', 'Import'))
             ->submit()
             ->action('runImportTemplateInstance', null, '.cp-structure'),
     'form' => [

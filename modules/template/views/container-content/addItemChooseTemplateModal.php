@@ -16,7 +16,7 @@ use yii\helpers\Html;
 <?php Modal::beginFormDialog([
     'title' => Yii::t('CustomPagesModule.template', 'Choose a template'),
     'footer' => ModalButton::cancel() .
-        ModalButton::save(Yii::t('CustomPagesModule.base', 'Submit'))->submit(),
+        ModalButton::primary(Yii::t('CustomPagesModule.base', 'Submit'))->submit(),
     'form' => [
         'action' => $action,
         'enableClientValidation' => false,

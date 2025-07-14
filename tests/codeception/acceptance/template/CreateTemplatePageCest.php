@@ -47,8 +47,6 @@ class CreateTemplatePageCest
         $I->amGoingTo('add a image element');
         $this->clickAddElement($I, 'Image');
         $I->fillField('TemplateElement[name]', 'tmplimage');
-        //Workaround
-        $I->jsShow('.uploadElementImage', 'type');
         $I->attachFile('.fileinput-button input[type=file]', 'test.jpg');
         $I->waitForElementVisible('.file-preview-item');
         $I->click('.collapsableTrigger'); //Show more
@@ -63,9 +61,6 @@ class CreateTemplatePageCest
         $I->amGoingTo('add a file element');
         $this->clickAddElement($I, 'File');
         $I->fillField('TemplateElement[name]', 'file');
-
-        //Workaround
-        $I->jsShow('.uploadElementImage', 'type');
 
         $I->attachFile('files[]', 'test.jpg');
         $I->wait(2);

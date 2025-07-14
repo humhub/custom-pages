@@ -49,7 +49,7 @@ class CreateTemplatePageCest
         $I->fillField('TemplateElement[name]', 'tmplimage');
         //Workaround
         $I->jsShow('.uploadElementImage', 'type');
-        #$I->wait(20);
+        $I->wait(1);
         $I->attachFile('files[]', 'test.jpg');
         $I->wait(1);
         $I->waitForElementVisible('.file-preview-item');

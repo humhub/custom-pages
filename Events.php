@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages;
 
+use humhub\helpers\ControllerHelper;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\content\helpers\ContentContainerHelper;
@@ -96,7 +97,7 @@ class Events
                             'data-pjax-prevent' => 1,
                         ],
                         'url' => $page->getUrl(),
-                        'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
+                        'icon' => $page->icon ?? '',
                         'isActive' => (Yii::$app->controller->module
                             && Yii::$app->controller->module->id === 'custom_pages'
                             && Yii::$app->controller->id === 'view'
@@ -153,10 +154,10 @@ class Events
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
                     'url' => ['/custom_pages/view', 'id' => $page->id],
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
-                    'icon' => $page->icon,
+                    'icon' => $page->icon ?? '',
                     'isActive' => (
                         (
-                            MenuLink::isActiveState('custom_pages', 'view')
+                            ControllerHelper::isActivePath('custom_pages', 'view')
                             && !Yii::$app->controller->contentContainer
                             && (int)Yii::$app->request->get('id') === $page->id
                         )
@@ -210,7 +211,7 @@ class Events
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
                     'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
-                    'icon' => '<i class="fa ' . Html::encode($page->icon) . '"></i>',
+                    'icon' => $page->icon ?? '',
                     'isActive' => (Yii::$app->controller->module
                         && Yii::$app->controller->module->id === 'custom_pages'
                         && Yii::$app->controller->id === 'view' && Yii::$app->request->get('id') == $page->id),
@@ -307,7 +308,7 @@ class Events
                     'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                     'htmlOptions' => ['target' => ($page->in_new_window) ? '_blank' : ''],
                     'sortOrder' => $page->sort_order ?: 1000 + $page->id,
-                    'icon' => $page->icon,
+                    'icon' => $page->icon ?? '',
                 ]));
             }
         } catch (Throwable $e) {

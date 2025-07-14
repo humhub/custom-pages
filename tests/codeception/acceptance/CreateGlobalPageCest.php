@@ -94,6 +94,8 @@ class CreateGlobalPageCest
         $I->see('People Buttons');
         $I->seeElement('.target-page-list.PeopleButtonsWidget');
 
+        $I->scrollTo('.target-page-list.PeopleButtonsWidget');
+        $I->wait(1);
         $I->click('.btn-success', '.target-page-list.PeopleButtonsWidget');
 
         $I->waitForText('Add new page');
@@ -116,7 +118,7 @@ class CreateGlobalPageCest
         $I->waitForElementVisible('.container-people .panel-heading .fa-anchor');
         $I->expectTo('see my new page in the people heading buttons');
 
-        $I->click('.container-people .panel-heading .fa-anchor');
+        $I->jsClick('.container-people .panel-heading .fa-anchor');
         $I->expectTo('see no my new page content');
 
         $I->waitForText('Custom people page content');

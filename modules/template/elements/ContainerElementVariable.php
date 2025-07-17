@@ -14,25 +14,18 @@ use Yii;
 
 class ContainerElementVariable extends BaseElementVariable
 {
+    public const EDIT_WRAPPER_ATTR_CACHE_KEY = self::class . 'editWrapperAttributes';
+
+    /**
+     * @var ContainerItem[]|null Cached items
+     */
+    private ?array $_items = null;
+
     public function __toString()
     {
-        // Note that the editMode can be set to $this->options in this case
-        $options = [];
-
-        if (TemplateInstanceRendererService::inEditMode()) {
-            $options = array_merge([
-                'element_id' => $this->elementContent->element_id,
-                'element_content_id' => $this->elementContent->id,
-                'element_name' => $this->elementContent->element->name,
-                'element_title' => $this->elementContent->element->getTitle(),
-                'empty' => $this->elementContent->isEmpty(),
-                'default' => $this->elementContent->isDefault(),
-            ], $options);
-        }
-
         try {
             if (!$this->elementContent->isEmpty()) {
-                return $this->render2($options);
+                return $this->render();
             }
         } catch (\Exception $e) {
             return strval($e);
@@ -41,20 +34,19 @@ class ContainerElementVariable extends BaseElementVariable
         return '';
     }
 
-    private function render2($options = [])
+    private function getItems(): array
     {
-        $items = $this->elementContent->items;
-
-        if (empty($items)) {
-            if (TemplateInstanceRendererService::inEditMode()) {
-                $content = Html::tag('div', Yii::t('CustomPagesModule.model', 'Empty <br />Container'));
-                return $this->renderEditBlock($content, ['class' => 'cp-editor-container-empty']);
-            }
-            return '';
+        if ($this->_items === null) {
+            $this->_items = $this->elementContent->items;
         }
 
+        return $this->_items;
+    }
+
+    private function render(): string
+    {
         $result = '';
-        foreach ($items as $containerItem) {
+        foreach ($this->getItems() as $containerItem) {
             $result .= $containerItem->render();
         }
 
@@ -71,16 +63,55 @@ class ContainerElementVariable extends BaseElementVariable
      * @param string $content
      * @return string
      */
-    protected function renderEditBlock(string $content, array $options = []): string
+    protected function renderEditBlock(string $content): string
     {
-        if (preg_match('#<(tr).+?</\1>#is', $content)) {
-            $tagName = 'tbody';
-        } else {
-            $tagName = 'div';
+        if ($this->getItems() === []) {
+            $content = Html::tag('div', Yii::t('CustomPagesModule.model', 'Empty <br />Container'));
         }
 
-        return Html::tag($tagName, $content, array_merge([
+        if ($this->areEditWrapperAttributesRendered()) {
+            return $content;
+        }
+
+        $tagName = preg_match('#<(tr).+?</\1>#is', $content) ? 'tbody' : 'div';
+
+        return Html::tag($tagName, $content, $this->getEditWrapperAttributes());
+    }
+
+    protected function getEditWrapperAttributes(): array
+    {
+        $attributes = [
             'data-editor-container-id' => $this->elementContent->id,
-        ], $options));
+        ];
+
+        if ($this->getItems() === []) {
+            $attributes['class'] = 'cp-editor-container-empty';
+        }
+
+        return $attributes;
+    }
+
+    public function editWrapperAttributes(): string
+    {
+        if (TemplateInstanceRendererService::inEditMode()) {
+            $rendered = $this->getRenderedEditWrapperAttributes();
+            $rendered[] = $this->elementContent->id;
+            Yii::$app->runtimeCache->set(self::EDIT_WRAPPER_ATTR_CACHE_KEY, $rendered);
+
+            return Html::renderTagAttributes($this->getEditWrapperAttributes());
+        }
+
+        return '';
+    }
+
+    private function areEditWrapperAttributesRendered(): bool
+    {
+        return in_array($this->elementContent->id, $this->getRenderedEditWrapperAttributes());
+    }
+
+    private function getRenderedEditWrapperAttributes(): array
+    {
+        $rendered = Yii::$app->runtimeCache->get(self::EDIT_WRAPPER_ATTR_CACHE_KEY);
+        return is_array($rendered) ? $rendered : [];
     }
 }

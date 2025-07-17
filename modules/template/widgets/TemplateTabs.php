@@ -43,7 +43,7 @@ class TemplateTabs extends SubTabMenu
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('CustomPagesModule.base', 'CSS & JS'),
+            'label' => Yii::t('CustomPagesModule.base', 'Resources'),
             'url' => ['edit-resources', 'id' => $this->model->id],
             'sortOrder' => 300,
             'isActive' => ControllerHelper::isActivePath('template', 'admin', 'edit-resources'),

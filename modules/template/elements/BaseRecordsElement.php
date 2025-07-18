@@ -9,7 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\components\ActiveRecord;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\custom_pages\modules\template\interfaces\TemplateElementContentIterable;
 use yii\db\ActiveQuery;
 

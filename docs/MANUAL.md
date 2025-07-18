@@ -97,7 +97,7 @@ The following example shows a simple quotation container element with two text e
 Another container example with a figure and floating text based upon a **image** image element and **figcaption** text element:
 
 ```
-<figure class="pull-left">
+<figure class="float-start">
     {{ image }}
 </figure>
 <figcaption>{{ figcaption }}</figcaption>

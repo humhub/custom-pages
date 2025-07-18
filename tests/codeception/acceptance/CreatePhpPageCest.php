@@ -49,9 +49,12 @@ class CreatePhpPageCest
 
         $I->fillField('CustomPage[title]', 'PHP title');
         $I->selectOption('CustomPage[page_content]', ['value' => 'test_page']);
-        $I->jsShow('.form-collapsible-fields.closed fieldset');
+        $I->jsClick('.form-collapsible-fields.closed label');
         $I->fillField('CustomPage[sort_order]', '400');
         $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
+
+        $I->scrollToBottom();
+        $I->wait(1);
         $I->click('Create');
         $I->waitForElementVisible('#topbar-second .fa-adn');
         $I->expectTo('see my new page in the top navigation');

@@ -6,10 +6,10 @@
  *
  */
 
-use yii\bootstrap\ActiveForm;
-use humhub\libs\Html;
+use humhub\helpers\Html;
+use humhub\widgets\form\ActiveForm;
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this \humhub\components\View */
 /* @var $subNav string */
 /* @var $model \humhub\modules\custom_pages\models\forms\SettingsForm */
 
@@ -23,7 +23,7 @@ use humhub\libs\Html;
     <div class="panel-body">
         <div class="clearfix">
             <h4><?= Yii::t('CustomPagesModule.view', 'Settings') ?></h4>
-            <div class="help-block">
+            <div class="text-body-secondary">
                 <?= Yii::t('CustomPagesModule.base', 'On this page you can configure general settings of your custom pages.') ?>
             </div>
         </div>

@@ -82,7 +82,7 @@ class TemplateMenu extends Menu
     public function getAttributes()
     {
         return [
-            'class' => 'btn-group dropdown-navigation pull-right',
+            'class' => 'dropdown-navigation float-end',
             'style' => 'margin-left:16px',
         ];
     }

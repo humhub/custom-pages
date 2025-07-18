@@ -5,20 +5,20 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\custom_pages\assets\InlineStyleAssets;
+use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\modules\template\widgets\PageConfigurationButton;
-use humhub\modules\ui\view\components\View;
 
 /* @var $this View */
 /* @var $page CustomPage */
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 
-InlineStyleAssets::register($this);
+Assets::register($this);
 ?>
 <?php if ($page->hasTarget(PageType::TARGET_ACCOUNT_MENU)): ?>
     <div class="panel panel-default <?= Html::encode($cssClass) ?>">

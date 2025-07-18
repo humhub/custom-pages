@@ -1,7 +1,6 @@
 <?php
 
 use humhub\components\Migration;
-use humhub\modules\custom_pages\modules\template\services\TemplateImportService;
 
 class m250422_145411_default_template extends Migration
 {

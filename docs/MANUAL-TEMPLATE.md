@@ -1,7 +1,7 @@
 ## Elements
 
 | Variable Name                      | Data Type                   | Description                                                                     |
-| ---------------------------------- | --------------------------- | ------------------------------------------------------------------------------- |
+|------------------------------------|-----------------------------|---------------------------------------------------------------------------------|
 | **Generic element attributes**     |                             | Applies to all variables                                                        |
 | `*.elementContentId`               | Integer                     | Unique ID of element content instance                                           |
 | `*.empty`                          | Boolean                     | Whether the variable is empty or not                                            |
@@ -24,8 +24,11 @@
 | `image.height`                     | String                      | Image height                                                                    |
 | `image.style`                      | String                      | Image style                                                                     |
 |                                    |                             |                                                                                 |
-| **Container**                      |                             | The                                                                             |
-| `container`                        | String                      | Returns the URL of the value of the Image Element                               |
+| **Container Element**              |                             | The                                                                             |
+| `container`                        | String                      | Render added items of the container element                                     |
+| `container.editWrapperAttributes`  | String                      | Html attributes for wrapper of the container on edit mode. Examples:                     |
+|                                    |                             | - `<div {{ container.editWrapperAttributes }}>`                                 |
+|                                    |                             | - `<div {{ container.editWrapperAttributes({class: 'container-class'}) }}>`     |
 |                                    |                             |                                                                                 |
 | **Content Container Meta Element** |                             | Base for `User` or `Space` Elements                                             |
 | `contentcontainer.guid`            | String                      | Container unique ID, e.g. 5b12f367-744b-4d2b-9611-c8b4ff92b6e5                  |

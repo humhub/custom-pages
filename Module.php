@@ -70,9 +70,6 @@ class Module extends ContentContainerModule
             ProfileImage::class => [
                 'getUrl',
             ],
-            ContainerElementVariable::class => [
-                'editWrapperAttributes',
-            ],
         ],
         'allowedProperties' => [
             BaseElementVariable::class => '*',

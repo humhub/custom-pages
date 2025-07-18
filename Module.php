@@ -15,7 +15,6 @@ use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\modules\template\elements\ContainerElementVariable;
 use humhub\modules\custom_pages\modules\template\models\AssetVariable;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use humhub\modules\custom_pages\modules\template\services\TemplateImportService;

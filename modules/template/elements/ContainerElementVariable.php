@@ -23,6 +23,12 @@ class ContainerElementVariable extends BaseElementVariable
      */
     private ?array $_items = null;
 
+    /**
+     * @var bool Set true to don't render the container wrapper twice on edit mode when attributes are
+     *           already rendered in the wrapper tag like `<div {{ container.editWrapperAttributes }}>`
+     */
+    private bool $isEditWrapperRendered = false;
+
     public function __construct(BaseElementContent $elementContent)
     {
         parent::__construct($elementContent);
@@ -79,9 +85,7 @@ class ContainerElementVariable extends BaseElementVariable
             $content = Html::tag('div', Yii::t('CustomPagesModule.model', 'Empty <br />Container'));
         }
 
-        if ($this->isEditWrapperRendered()) {
-            // Don't render the wrapper twice if the attributes are rendered
-            // in a html tag like `<div {{ container.editWrapperAttributes }}>`
+        if ($this->isEditWrapperRendered) {
             return $content;
         }
 
@@ -109,20 +113,10 @@ class ContainerElementVariable extends BaseElementVariable
     public function getEditWrapperAttributes(): string
     {
         if (TemplateInstanceRendererService::inEditMode()) {
-            Yii::$app->runtimeCache->set($this->getEditWrapperAttributesCacheKey(), true);
+            $this->isEditWrapperRendered = true;
             return Html::renderTagAttributes($this->getEditWrapperAttributesArray());
         }
 
         return '';
-    }
-
-    private function isEditWrapperRendered(): bool
-    {
-        return Yii::$app->runtimeCache->get($this->getEditWrapperAttributesCacheKey()) === true;
-    }
-
-    private function getEditWrapperAttributesCacheKey(): string
-    {
-        return 'customPageTemplateContainerEditWrapperAttributes' . $this->elementContent->id;
     }
 }

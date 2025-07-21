@@ -6,6 +6,7 @@ Changelog
 - Enh #432: Add Yii formatter for Twig filters
 - Enh #437: Add context menu to Structure View
 - Enh #440: Add template section "CSS & JS"
+- Enh #442: Improve template structure view
 
 1.11.0-beta.7 (July 4, 2025)
 -----------------------------

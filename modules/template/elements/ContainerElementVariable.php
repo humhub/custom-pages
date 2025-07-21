@@ -90,25 +90,30 @@ class ContainerElementVariable extends BaseElementVariable
         return Html::tag($tagName, $content, $this->getEditWrapperAttributesArray());
     }
 
-    protected function getEditWrapperAttributesArray(array $attributes = []): array
+    protected function getEditWrapperAttributesArray(): array
     {
-        $attributes['data-editor-container-id'] = $this->elementContent->id;
+        $attributes = ['data-editor-container-id' => $this->elementContent->id];
 
         if ($this->getItems() === []) {
-            Html::addCssClass($attributes, 'cp-editor-container-empty');
+            $attributes['data-editor-container-empty'] = true;
         }
 
         return $attributes;
     }
 
-    public function getEditWrapperAttributes(array $attributes = []): string
+    /**
+     * It is used to render Twig property {{ container.editWrapperAttributes }}
+     *
+     * @return string
+     */
+    public function getEditWrapperAttributes(): string
     {
         if (TemplateInstanceRendererService::inEditMode()) {
             Yii::$app->runtimeCache->set($this->getEditWrapperAttributesCacheKey(), true);
-            $attributes = $this->getEditWrapperAttributesArray($attributes);
+            return Html::renderTagAttributes($this->getEditWrapperAttributesArray());
         }
 
-        return Html::renderTagAttributes($attributes);
+        return '';
     }
 
     private function isEditWrapperRendered(): bool

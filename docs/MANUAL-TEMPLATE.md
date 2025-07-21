@@ -26,9 +26,7 @@
 |                                    |                             |                                                                                 |
 | **Container Element**              |                             | The                                                                             |
 | `container`                        | String                      | Render added items of the container element                                     |
-| `container.editWrapperAttributes`  | String                      | Html attributes for wrapper of the container on edit mode. Examples:                     |
-|                                    |                             | - `<div {{ container.editWrapperAttributes }}>`                                 |
-|                                    |                             | - `<div {{ container.editWrapperAttributes({class: 'container-class'}) }}>`     |
+| `container.editWrapperAttributes`  | String                      | Html attributes for edit mode. `<div {{ container.editWrapperAttributes }}>`    |
 |                                    |                             |                                                                                 |
 | **Content Container Meta Element** |                             | Base for `User` or `Space` Elements                                             |
 | `contentcontainer.guid`            | String                      | Container unique ID, e.g. 5b12f367-744b-4d2b-9611-c8b4ff92b6e5                  |

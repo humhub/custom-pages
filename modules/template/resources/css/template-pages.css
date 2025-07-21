@@ -60,7 +60,7 @@ span[data-editor-container-item-id] {
 .cp-editor-container-active > [data-editor-container-item-id]:first-child > div:first-child {
     margin-top: 0 !important;
 }
-[data-editor-container-id].cp-editor-container-empty > div {
+[data-editor-container-id][data-editor-container-empty] > div {
     background-color: silver;
     border: 1px solid orange;
     min-height: 150px;

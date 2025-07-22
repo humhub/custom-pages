@@ -1,6 +1,7 @@
 <?php
 
 use humhub\libs\Html;
+use humhub\modules\admin\models\forms\UserEditForm;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\helpers\Url;
@@ -8,6 +9,7 @@ use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\types\TemplateType;
 use humhub\modules\custom_pages\widgets\PageIconSelect;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\MultiSelect;
 use humhub\widgets\Button;
 use humhub\widgets\Link;
 
@@ -77,7 +79,7 @@ $contentType = $page->getContentType();
 
         <?php if (!$page->isSnippet()) : ?>
             <div class="alert alert-info infoAdminOnly"
-                 <?php if ($page->visibility != CustomPage::VISIBILITY_ADMIN_ONLY): ?>style="display:none"<?php endif; ?>>
+                 <?php if (!$page->isVisibility($page::VISIBILITY_ADMIN)): ?>style="display:none"<?php endif; ?>>
                 <?= Yii::t('CustomPagesModule.view', '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!'); ?>
             </div>
         <?php endif; ?>
@@ -86,14 +88,30 @@ $contentType = $page->getContentType();
             <?= $form->beginCollapsibleFields(Yii::t('CustomPagesModule.base', 'Stream options')); ?>
             <?= $form->field($page, 'abstract')->widget(RichTextField::class); ?>
             <div class="help-block">
-                <?= Yii::t('CustomPagesModule.view',
+                <?= Yii::t(
+                    'CustomPagesModule.view',
                     'The abstract will be used as stream entry content to promote the actual page. 
-                        If no abstract is given or the page is only visible for admins, no stream entry will be created.') ?>
+                        If no abstract is given or the page is only visible for admins, no stream entry will be created.',
+                ) ?>
             </div>
             <?= $form->endCollapsibleFields(); ?>
         <?php endif; ?>
 
-        <?= $form->field($page, 'visibility')->radioList($page->getVisibilitySelection()) ?>
+        <?= $form->beginCollapsibleFields(Yii::t('CustomPagesModule.base', 'Visibility')) ?>
+            <?= $form->field($page, 'visibility')->radioList($page->getVisibilitySelection())->label(false) ?>
+
+            <div data-cp-visibility-options="<?= CustomPage::VISIBILITY_CUSTOM ?>"<?= $page->isVisibility($page::VISIBILITY_CUSTOM) ? '' : ' style="display:none"' ?>>
+                <?= $form->field($page, 'visibility_groups')->widget(MultiSelect::class, [
+                    'items' => UserEditForm::getGroupItems(),
+                    'options' => ['data-tags' => 'false'],
+                ]) ?>
+                <?= $form->field($page, 'visibility_languages')->widget(MultiSelect::class, [
+                    'items' => Yii::$app->i18n->getAllowedLanguages(),
+                    'options' => ['data-tags' => 'false'],
+                ]) ?>
+            </div>
+        <?= $form->endCollapsibleFields() ?>
+
         <?= $form->field($page, 'target')->dropDownList($page->getAvailableTargetOptions()) ?>
 
         <?= Button::save($page->isNewRecord ? Yii::t('CustomPagesModule.view', 'Create') : null)->submit() ?>
@@ -109,7 +127,9 @@ $contentType = $page->getContentType();
         <script <?= Html::nonce() ?>>
             $(document).one('humhub:ready', function () {
                     $('input[type="radio"][name="CustomPage[visibility]"]').click(function () {
-                        $('.infoAdminOnly').toggle($(this).val() == <?= CustomPage::VISIBILITY_ADMIN_ONLY ?>);
+                        $('.infoAdminOnly').toggle($(this).val() == <?= CustomPage::VISIBILITY_ADMIN ?>);
+                        $('[data-cp-visibility-options]').hide();
+                        $('[data-cp-visibility-options=' + $(this).val() + ']').show();
                     });
                 }
             );

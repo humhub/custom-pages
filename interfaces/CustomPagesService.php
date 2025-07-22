@@ -122,7 +122,7 @@ class CustomPagesService extends Component
         }
 
         if (!CustomPage::canSeeAdminOnlyContent($container)) {
-            $query->andWhere([CustomPage::tableName() . '.admin_only' => 0]);
+            $query->andWhere(['!=', CustomPage::tableName() . '.visibility', CustomPage::VISIBILITY_ADMIN]);
         }
 
         return $query->orderBy([

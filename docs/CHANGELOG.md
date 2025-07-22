@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.11.0-beta.8 (Unreleased)
+1.11.0-beta.8 (July 22, 2025)
 -----------------------------
 - Enh #432: Add Yii formatter for Twig filters
 - Enh #437: Add context menu to Structure View

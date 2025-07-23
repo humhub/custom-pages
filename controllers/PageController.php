@@ -198,7 +198,7 @@ class PageController extends AbstractCustomContainerController
      */
     protected function savePage($page)
     {
-        if (!$page->load(Yii::$app->request->post())) {
+        if (!$page->load(Yii::$app->request->post()) || !$page->validate()) {
             return false;
         }
 
@@ -259,7 +259,7 @@ class PageController extends AbstractCustomContainerController
         if ($this->contentContainer) {
             $page->content->setContainer($this->contentContainer);
             if (!$this->contentContainer) {
-                $page->content->visibility = Content::VISIBILITY_PUBLIC;
+                $page->visibility = Content::VISIBILITY_PUBLIC;
             }
         }
         return $page;

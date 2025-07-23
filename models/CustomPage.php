@@ -110,7 +110,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
         parent::init();
 
         if ($this->visibility === null) {
-            $this->visibility = self::VISIBILITY_PRIVATE;
+            $this->visibility = min(array_keys($this->getVisibilitySelection()));
         }
 
         if (!$this->isSnippet()) {
@@ -168,7 +168,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     public function rules()
     {
         $rules = [
-            [['type', 'title', 'target'], 'required'],
+            [['type', 'title', 'target', 'visibility'], 'required'],
             [['type'], 'integer'],
             [['target'], 'validateTarget'],
             [['type'], 'validateContentType'],
@@ -379,9 +379,6 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
         if ($this->getTargetId() == PageType::TARGET_ACCOUNT_MENU) {
             if ($this->visibility == self::VISIBILITY_PUBLIC) {
                 $this->visibility = self::VISIBILITY_PRIVATE;
-            }
-            if ($this->content->visibility == Content::VISIBILITY_PUBLIC) {
-                $this->content->visibility = Content::VISIBILITY_PRIVATE;
             }
         }
     }

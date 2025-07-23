@@ -1,7 +1,5 @@
 <?php
 
-use humhub\libs\Html;
-use humhub\modules\admin\models\forms\UserEditForm;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\helpers\Url;
@@ -9,12 +7,13 @@ use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\types\TemplateType;
 use humhub\modules\custom_pages\widgets\PageIconSelect;
 use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\ui\form\widgets\MultiSelect;
+use humhub\modules\ui\view\components\View;
 use humhub\widgets\Button;
 use humhub\widgets\Link;
 
 Assets::register($this);
 
+/* @var $this View */
 /* @var $page CustomPage */
 /* @var $subNav string */
 /* @var $pageType string */
@@ -98,18 +97,7 @@ $contentType = $page->getContentType();
         <?php endif; ?>
 
         <?= $form->beginCollapsibleFields(Yii::t('CustomPagesModule.base', 'Visibility')) ?>
-            <?= $form->field($page, 'visibility')->radioList($page->getVisibilitySelection())->label(false) ?>
-
-            <div data-cp-visibility-options="<?= CustomPage::VISIBILITY_CUSTOM ?>"<?= $page->isVisibility($page::VISIBILITY_CUSTOM) ? '' : ' style="display:none"' ?>>
-                <?= $form->field($page, 'visibility_groups')->widget(MultiSelect::class, [
-                    'items' => UserEditForm::getGroupItems(),
-                    'options' => ['data-tags' => 'false'],
-                ]) ?>
-                <?= $form->field($page, 'visibility_languages')->widget(MultiSelect::class, [
-                    'items' => Yii::$app->i18n->getAllowedLanguages(),
-                    'options' => ['data-tags' => 'false'],
-                ]) ?>
-            </div>
+            <?= $this->render('edit_visibility', ['page' => $page, 'form' => $form]) ?>
         <?= $form->endCollapsibleFields() ?>
 
         <?= $form->field($page, 'target')->dropDownList($page->getAvailableTargetOptions()) ?>
@@ -124,16 +112,6 @@ $contentType = $page->getContentType();
             <?= Button::success(Yii::t('CustomPagesModule.view', 'Inline Editor'))->link(Url::toInlineEdit($page, $target->container))->right()->icon('fa-pencil') ?>
         <?php endif; ?>
 
-        <script <?= Html::nonce() ?>>
-            $(document).one('humhub:ready', function () {
-                    $('input[type="radio"][name="CustomPage[visibility]"]').click(function () {
-                        $('.infoAdminOnly').toggle($(this).val() == <?= CustomPage::VISIBILITY_ADMIN ?>);
-                        $('[data-cp-visibility-options]').hide();
-                        $('[data-cp-visibility-options=' + $(this).val() + ']').show();
-                    });
-                }
-            );
-        </script>
         <?php ActiveForm::end(); ?>
     </div>
 </div>

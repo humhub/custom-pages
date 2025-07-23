@@ -1,6 +1,5 @@
 <?php
 
-
 use humhub\components\Migration;
 use humhub\modules\custom_pages\models\CustomPage;
 
@@ -39,6 +38,8 @@ class m250722_084026_visibility extends Migration
             'name' => $this->string(32)->notNull(),
             'value' => $this->string(),
         ]);
+        $this->safeAddForeignKey('fk-cp_page_setting-page_id', 'custom_pages_page_setting', 'page_id', 'custom_pages_page', 'id', 'CASCADE');
+        $this->safeCreateIndex('idx-cp_page_setting-page_id-name', 'custom_pages_page_setting', ['page_id', 'name']);
     }
 
     /**

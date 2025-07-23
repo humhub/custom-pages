@@ -38,6 +38,7 @@ use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use LogicException;
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "custom_pages_page".
@@ -270,6 +271,33 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     /**
      * @inheritdoc
      */
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        if ($this->isVisibility(self::VISIBILITY_CUSTOM)) {
+            $this->visibility_groups = $this->getSettings('group');
+            $this->visibility_languages = $this->getSettings('language');
+        }
+    }
+
+    private function getSettings(string $name): array
+    {
+        if ($this->isNewRecord) {
+            return [];
+        }
+
+        return (new Query())
+            ->select('value')
+            ->from('custom_pages_page_setting')
+            ->where(['page_id' => $this->id])
+            ->andWhere(['name' => $name])
+            ->column();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
         $this->fixVisibility();
@@ -302,12 +330,28 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
         }
 
         $this->updateSettings('group', $this->visibility_groups);
-        $this->updateSettings('language', $this->visibility_groups);
+        $this->updateSettings('language', $this->visibility_languages);
     }
 
-    private function updateSettings(string $name, $values)
+    private function updateSettings(string $name, $values): void
     {
-        // TODO: delete old + inserts new
+        if ($this->isNewRecord) {
+            return;
+        }
+
+        Yii::$app->db->createCommand()->delete('custom_pages_page_setting', [
+            'page_id' => $this->id,
+            'name' => $name,
+        ])->execute();
+
+        $newRecords = [];
+        foreach ($values as $value) {
+            $newRecords[] = [$this->id, $name, $value];
+        }
+
+        Yii::$app->db->createCommand()
+            ->batchInsert('custom_pages_page_setting', ['page_id', 'name', 'value'], $newRecords)
+            ->execute();
     }
 
     /**

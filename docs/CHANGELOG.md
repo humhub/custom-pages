@@ -8,6 +8,7 @@ Changelog
 - Enh #440: Add template section "CSS & JS"
 - Enh #441: Allow to render container edit wrapper attributes separately
 - Enh #442: Improve template structure view
+- Enh #443: Visibility restrictions
 
 1.11.0-beta.7 (July 4, 2025)
 -----------------------------

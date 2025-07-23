@@ -162,19 +162,18 @@ class PageController extends AbstractCustomContainerController
             throw new HttpException(400, 'Invalid request data!');
         }
 
-        // If no pageId was given, we create a new page with the given type.
         if (!$page) {
-            $page = $this->createNewPage($type, $targetId);
+            $page = new CustomPage($this->contentContainer);
+            $page->type = $type;
+            $page->target = $targetId;
         }
 
         if (!$page->canEdit()) {
             throw new ForbiddenHttpException('You cannot manage the page!');
         }
 
-        $isNew = $page->isNewRecord;
-
         if ($this->savePage($page)) {
-            return (TemplateType::isType($type) && $isNew)
+            return (TemplateType::isType($type) && $page->isNewRecord)
                 ? $this->redirect(Url::toInlineEdit($page, $this->contentContainer))
                 : $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));
         }
@@ -246,23 +245,6 @@ class PageController extends AbstractCustomContainerController
         return $this->renderAjax('@custom_pages/views/common/copy', [
             'page' => $copyPage,
         ]);
-    }
-
-    /**
-     * @param $type
-     * @param $targetId
-     * @return CustomPage
-     */
-    private function createNewPage($type, $targetId): CustomPage
-    {
-        $page = new CustomPage(['type' => $type, 'target' => $targetId]);
-        if ($this->contentContainer) {
-            $page->content->setContainer($this->contentContainer);
-            if (!$this->contentContainer) {
-                $page->visibility = Content::VISIBILITY_PUBLIC;
-            }
-        }
-        return $page;
     }
 
     /**

@@ -376,10 +376,9 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     {
         // Force visibility access "Members & Guests" to "Members only" for
         // page type "User Account Menu (Settings)"
-        if ($this->getTargetId() == PageType::TARGET_ACCOUNT_MENU) {
-            if ($this->visibility == self::VISIBILITY_PUBLIC) {
-                $this->visibility = self::VISIBILITY_PRIVATE;
-            }
+        if ($this->getTargetId() == PageType::TARGET_ACCOUNT_MENU &&
+            $this->isVisibility(self::VISIBILITY_PUBLIC)) {
+            $this->visibility = self::VISIBILITY_PRIVATE;
         }
     }
 
@@ -626,8 +625,8 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
         ];
 
         if ($this->isGlobal()) {
+            $result[static::VISIBILITY_PRIVATE] = Yii::t('CustomPagesModule.base', 'Members only');
             if (AuthHelper::isGuestAccessEnabled()) {
-                $result[static::VISIBILITY_PRIVATE] = Yii::t('CustomPagesModule.base', 'Members only');
                 if ($this->getTargetId() != PageType::TARGET_ACCOUNT_MENU) {
                     $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.base', 'Members & Guests');
                 }

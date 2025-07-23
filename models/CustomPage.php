@@ -109,6 +109,10 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     {
         parent::init();
 
+        if ($this->visibility === null) {
+            $this->visibility = self::VISIBILITY_PRIVATE;
+        }
+
         if (!$this->isSnippet()) {
             $this->wallEntryClass = WallEntry::class;
 

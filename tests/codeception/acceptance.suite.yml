@@ -18,7 +18,7 @@ modules:
     WebDriver:
       url: 'http://localhost:8080/'
       browser: chrome
-      window_size: maximize
+      window_size: 1920x3000
       restart: true
       port: 4444
       capabilities:

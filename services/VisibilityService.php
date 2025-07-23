@@ -8,11 +8,15 @@
 
 namespace humhub\modules\custom_pages\services;
 
+use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\User;
 use Yii;
 
 class VisibilityService
@@ -137,5 +141,70 @@ class VisibilityService
             $this->page->settingService->update('group', $this->page->visibility_groups);
             $this->page->settingService->update('language', $this->page->visibility_languages);
         }
+    }
+
+    /**
+     * Check if the user can view the page
+     *
+     * @param User|int|string|null $user User instance or user id, null - current user
+     * @return bool
+     */
+    public function canView($user = null): bool
+    {
+        if ($this->isAdmin()) {
+            return self::canViewAdminOnlyContent($this->page->content->container);
+        }
+
+        if ($this->isGuest()) {
+            return Yii::$app->user->isGuest;
+        }
+
+        if ($this->isCustom()) {
+            if (!$user && !Yii::$app->user->isGuest) {
+                $user = Yii::$app->user->getIdentity();
+            } elseif (!$user instanceof User) {
+                $user = User::findOne(['id' => $user]);
+            }
+
+            if (!$user instanceof User) {
+                return false;
+            }
+
+            if (!$this->page->settingService->has('language', $user->language)) {
+                return false;
+            }
+
+            $userGroupIds = $user->getGroupUsers()->select('group_id')->column();
+            return $this->page->settingService->has('group', $userGroupIds);
+        }
+
+        return $this->page->content->canView($user);
+    }
+
+    /**
+     * Check if the current user can view "Admin only" content from the requested container
+     *
+     * @param ContentContainerActiveRecord|null $container
+     * @return bool
+     */
+    public static function canViewAdminOnlyContent(ContentContainerActiveRecord $container = null): bool
+    {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+
+        if (!$container) {
+            return Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageModules::class, ManagePages::class]);
+        }
+
+        if ($container instanceof Space) {
+            return $container->isAdmin();
+        }
+
+        if ($container instanceof User) {
+            $container->is(Yii::$app->user->getIdentity());
+        }
+
+        return false;
     }
 }

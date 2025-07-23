@@ -9,9 +9,7 @@
 namespace humhub\modules\custom_pages\models;
 
 use humhub\interfaces\ViewableInterface;
-use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\custom_pages\components\PhpPageContainer;
 use humhub\modules\custom_pages\components\TemplatePageContainer;
@@ -35,7 +33,6 @@ use humhub\modules\custom_pages\types\PhpType;
 use humhub\modules\custom_pages\types\TemplateType;
 use humhub\modules\custom_pages\widgets\WallEntry;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
 use LogicException;
 use Yii;
 
@@ -576,42 +573,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
      */
     public function canView($user = null): bool
     {
-        if ($this->visibilityService->isAdmin() && !self::canSeeAdminOnlyContent($this->content->container)) {
-            return false;
-        }
-
-        // Todo: Workaround for bug present prior to HumHub v1.3.18
-        if (Yii::$app->user->isGuest && !$this->content->container && $this->content->isPublic()) {
-            return true;
-        }
-
-        // Todo: Workaround for global content visibility bug present prior to HumHub v1.5
-        if (empty($this->content->contentcontainer_id) && !Yii::$app->user->isGuest) {
-            return true;
-        }
-
-        return $this->content->canView($user);
-    }
-
-    public static function canSeeAdminOnlyContent(ContentContainerActiveRecord $container = null)
-    {
-        if (Yii::$app->user->isGuest) {
-            return false;
-        }
-
-        if (!$container) {
-            return Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageModules::class, ManagePages::class]);
-        }
-
-        if ($container instanceof Space) {
-            return $container->isAdmin();
-        }
-
-        if ($container instanceof User) {
-            $container->is(Yii::$app->user->getIdentity());
-        }
-
-        return false;
+        return $this->visibilityService->canView($user);
     }
 
     /**

@@ -7,6 +7,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\Target;
+use humhub\modules\custom_pages\services\VisibilityService;
 use yii\base\Component;
 use yii\base\StaticInstanceTrait;
 
@@ -121,7 +122,7 @@ class CustomPagesService extends Component
             $query->andWhere($query->stateFilterCondition);
         }
 
-        if (!CustomPage::canSeeAdminOnlyContent($container)) {
+        if (!VisibilityService::canViewAdminOnlyContent($container)) {
             $query->andWhere(['!=', CustomPage::tableName() . '.visibility', CustomPage::VISIBILITY_ADMIN]);
         }
 

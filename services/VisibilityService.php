@@ -39,26 +39,55 @@ class VisibilityService
         return in_array($this->page->visibility, func_get_args());
     }
 
+    /**
+     * Check the page is visible only for admins
+     *
+     * @return bool
+     */
     public function isAdmin(): bool
     {
         return $this->is(CustomPage::VISIBILITY_ADMIN);
     }
 
+
+    /**
+     * Check the page is visible only for members
+     *
+     * @return bool
+     */
     public function isPrivate(): bool
     {
         return $this->is(CustomPage::VISIBILITY_PRIVATE);
     }
 
+
+    /**
+     * Check the page is visible for members & guests
+     *
+     * @return bool
+     */
     public function isPublic(): bool
     {
-        return $this->is(CustomPage::VISIBILITY_PRIVATE);
+        return $this->is(CustomPage::VISIBILITY_PUBLIC);
     }
 
+
+    /**
+     * Check the page is visible only for guests
+     *
+     * @return bool
+     */
     public function isGuest(): bool
     {
         return $this->is(CustomPage::VISIBILITY_GUEST);
     }
 
+
+    /**
+     * Check the page is visible only for users with specific groups and languages
+     *
+     * @return bool
+     */
     public function isCustom(): bool
     {
         return $this->is(CustomPage::VISIBILITY_CUSTOM);
@@ -111,14 +140,15 @@ class VisibilityService
      */
     public function fix(): void
     {
-        // Force visibility access from "Members & Guests" to "Members only" for
-        // page type "User Account Menu (Settings)"
-        if ($this->isPublic() && $this->page->getTargetId() == PageType::TARGET_ACCOUNT_MENU) {
-            $this->page->visibility = CustomPage::VISIBILITY_PRIVATE;
-        }
-
         if ($this->isPublic() || $this->isGuest()) {
-            $this->page->content->visibility = Content::VISIBILITY_PUBLIC;
+            if ($this->page->getTargetId() == PageType::TARGET_ACCOUNT_MENU) {
+                // Force visibility access from "Members & Guests" & "Guests only" to "Members only" for
+                // page type "User Account Menu (Settings)"
+                $this->page->visibility = CustomPage::VISIBILITY_PRIVATE;
+                $this->page->content->visibility = Content::VISIBILITY_PRIVATE;
+            } else {
+                $this->page->content->visibility = Content::VISIBILITY_PUBLIC;
+            }
         } else {
             $this->page->content->visibility = Content::VISIBILITY_PRIVATE;
         }

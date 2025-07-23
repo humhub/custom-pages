@@ -27,7 +27,7 @@ use humhub\widgets\ModalDialog;
     <?php endif; ?>
 
     <?php if (!$page->isSnippet()) : ?>
-        <div class="alert alert-info infoAdminOnly"<?= !$page->isVisibility($page::VISIBILITY_ADMIN) ? ' style="display:none"' : '' ?>>
+        <div class="alert alert-info infoAdminOnly"<?= $page->visibilityService->isAdmin() ? '' : ' style="display:none"' ?>>
             <?= Yii::t('CustomPagesModule.view', '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!'); ?>
         </div>
     <?php endif; ?>

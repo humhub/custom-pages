@@ -3,7 +3,6 @@
 namespace humhub\modules\custom_pages\controllers;
 
 use humhub\modules\admin\permissions\ManageModules;
-use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\types\TemplateType;
@@ -180,7 +179,7 @@ class PageController extends AbstractCustomContainerController
 
         // Select a proper option on the edit form for old stored page
         // if its visibility is not allowed for its page type:
-        $page->fixVisibility();
+        $page->visibilityService->fix();
 
         return $this->render('@custom_pages/views/common/edit', [
             'page' => $page,

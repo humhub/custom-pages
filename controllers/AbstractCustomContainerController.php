@@ -72,7 +72,7 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
     public function viewTemplatePage(CustomPage $page, $view): string
     {
         $canEdit = PagePermissionHelper::canEdit();
-        if (!$canEdit && $page->isVisibility($page::VISIBILITY_ADMIN)) {
+        if (!$canEdit && $page->visibilityService->isAdmin()) {
             throw new ForbiddenHttpException('Access denied!');
         }
 

@@ -77,8 +77,7 @@ $contentType = $page->getContentType();
         <?= $form->endCollapsibleFields(); ?>
 
         <?php if (!$page->isSnippet()) : ?>
-            <div class="alert alert-info infoAdminOnly"
-                 <?php if (!$page->isVisibility($page::VISIBILITY_ADMIN)): ?>style="display:none"<?php endif; ?>>
+            <div class="alert alert-info infoAdminOnly"<?= $page->visibilityService->isAdmin() ? '' : ' style="display:none"' ?>>
                 <?= Yii::t('CustomPagesModule.view', '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!'); ?>
             </div>
         <?php endif; ?>

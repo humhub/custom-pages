@@ -15,9 +15,9 @@ use humhub\modules\ui\form\widgets\MultiSelect;
 /* @var $page CustomPage */
 /* @var $form ActiveForm */
 ?>
-<?= $form->field($page, 'visibility')->radioList($page->getVisibilitySelection())->label(false) ?>
+<?= $form->field($page, 'visibility')->radioList($page->visibilityService->getOptions())->label(false) ?>
 
-<div data-cp-visibility-options="<?= CustomPage::VISIBILITY_CUSTOM ?>"<?= $page->isVisibility($page::VISIBILITY_CUSTOM) ? '' : ' style="display:none"' ?>>
+<div data-cp-visibility-options="<?= CustomPage::VISIBILITY_CUSTOM ?>"<?= $page->visibilityService->isCustom() ? '' : ' style="display:none"' ?>>
     <?= $form->field($page, 'visibility_groups')->widget(MultiSelect::class, [
         'items' => UserEditForm::getGroupItems(),
         'options' => ['data-tags' => 'false'],

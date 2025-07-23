@@ -344,14 +344,16 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
             'name' => $name,
         ])->execute();
 
-        $newRecords = [];
-        foreach ($values as $value) {
-            $newRecords[] = [$this->id, $name, $value];
-        }
+        if (is_array($values) && $values !== []) {
+            $newRecords = [];
+            foreach ($values as $value) {
+                $newRecords[] = [$this->id, $name, $value];
+            }
 
-        Yii::$app->db->createCommand()
-            ->batchInsert('custom_pages_page_setting', ['page_id', 'name', 'value'], $newRecords)
-            ->execute();
+            Yii::$app->db->createCommand()
+                ->batchInsert('custom_pages_page_setting', ['page_id', 'name', 'value'], $newRecords)
+                ->execute();
+        }
     }
 
     /**

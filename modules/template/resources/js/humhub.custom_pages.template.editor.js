@@ -17,7 +17,34 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     };
 
     TemplateInlineEditor.prototype.initHighlight = function () {
-        $(document).on('mouseenter', '[data-editor-container-id]', function () {
+        $(document).on('mouseenter', '[data-editor-page-id]', function () {
+            if ($(this).find('[data-editor-page-id].cp-editor-page-hover').length) {
+                return;
+            }
+            const pageId = $(this).data('editor-page-id');
+            const actionsSelector = '[data-actions-page-id=' + pageId + ']';
+            const pageRow = $('.cp-structure > ul > li > .cp-structure-row');
+            $(this).addClass('cp-editor-page-hover');
+            $('[data-actions-page-id]').hide();
+
+            if (!$(actionsSelector).length) {
+                const editButton = pageRow.find('[data-action-click="editElements"] > .fa');
+                if (editButton.length) {
+                    $('body').append($('<div>')
+                        .attr('data-actions-page-id', pageId)
+                        .append(editButton.clone()
+                            .removeAttr('data-action-click')
+                            .on('click', () => pageRow.click())));
+                }
+            }
+
+            alignActions(this, actionsSelector);
+        }).on('mouseleave', '[data-editor-page-id]', function (e) {
+            if (isOutside(e, ['[data-editor-page-id]', '[data-actions-page-id]'])) {
+                $('[data-editor-page-id]').removeClass('cp-editor-page-hover');
+                $('[data-actions-page-id]').hide();
+            }
+        }).on('mouseenter', '[data-editor-container-id]', function () {
             const containerId = $(this).data('editor-container-id');
             const actionsSelector = '[data-actions-container-id=' + containerId + ']';
             $(this).addClass('cp-editor-container-hover');
@@ -98,7 +125,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
                 left: posBlock.left + scrollLeft + posBlock.width - actions.outerWidth(),
             });
 
-            const allActions = $('[data-actions-container-item-id]:visible, [data-actions-container-id]:visible');
+            const allActions = $('[data-actions-container-item-id]:visible, [data-actions-container-id]:visible, [data-actions-page-id]:visible');
             if (allActions.length < 2) {
                 return;
             }

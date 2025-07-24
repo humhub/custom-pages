@@ -1,98 +1,107 @@
 #templatePageRoot {
-  .download-list {
-    margin-top: 10px;
-    padding: 0 20px;
-  }
+    .download-list {
+        margin-top: 10px;
+        padding: 0 20px;
+    }
 
-  .download-item {
-    margin-top: 5px;
-  }
+    .download-item {
+        margin-top: 5px;
+    }
 
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  -ms-word-break: break-all;
-  word-break: break-word;
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
 
-  img {
-    max-width: 100%;
-  }
+    img {
+        max-width: 100%;
+    }
 }
 
 [data-editor-container-id] {
-  position: relative;
+    position: relative;
 }
 
 span[data-editor-container-item-id] {
-  display: inline-block;
+    display: inline-block;
 }
 
 [data-editor-container-id] {
-  &.cp-editor-container-hover, &.cp-editor-container-active {
-    outline: 1px dashed var(--cp-container-color) !important;
-    outline-offset: -1px;
-  }
+    &.cp-editor-container-hover, &.cp-editor-container-active {
+        outline: 1px dashed var(--cp-container-color) !important;
+        outline-offset: -1px;
+    }
 }
 
 [data-editor-container-item-id] {
-  &.cp-editor-container-hover, &.cp-editor-container-active {
+    &.cp-editor-container-hover, &.cp-editor-container-active {
+        outline: 1px dashed var(--cp-container-item-color) !important;
+        outline-offset: -1px;
+    }
+
+    &.cp-editor-container-hover {
+        z-index: 1;
+        position: relative;
+    }
+}
+
+[data-editor-page-id].cp-editor-page-hover {
     outline: 1px dashed var(--cp-container-item-color) !important;
     outline-offset: -1px;
-  }
-
-  &.cp-editor-container-hover {
-    z-index: 1;
-    position: relative;
-  }
 }
 
 .cp-editor-container-active {
-  display: none;
-  z-index: 1032;
-  position: absolute;
-  background: #FFF;
+    display: none;
+    z-index: 1032;
+    position: absolute;
+    background: #FFF;
 
-  > {
-    div:first-child, [data-editor-container-item-id]:first-child > div:first-child {
-      margin-top: 0 !important;
+    > {
+        div:first-child, [data-editor-container-item-id]:first-child > div:first-child {
+            margin-top: 0 !important;
+        }
     }
-  }
 }
 
 [data-editor-container-id].cp-editor-container-empty > div {
-  background-color: silver;
-  border: 1px solid orange;
-  min-height: 150px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-weight: bold;
+    background-color: silver;
+    border: 1px solid orange;
+    min-height: 150px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
 }
 
-[data-actions-container-id], [data-actions-container-item-id] {
-  position: absolute;
-  display: inline-block;
-  max-width: max-content;
-  z-index: 1;
+[data-actions-page-id], [data-actions-container-id], [data-actions-container-item-id] {
+    position: absolute;
+    display: inline-block;
+    max-width: max-content;
+    z-index: 1;
 }
 
-[data-actions-container-id] > i.fa, [data-actions-container-item-id] > i.fa {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 3px 3px 0 0;
-  cursor: pointer;
-  color: var(--text-color-contrast);
+[data-actions-page-id], [data-actions-container-id], [data-actions-container-item-id] {
+    > i.fa {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 3px 3px 0 0;
+        cursor: pointer;
+        color: var(--text-color-contrast);
+    }
 }
 
 [data-actions-container-id] > i.fa {
-  background: var(--cp-container-color);
+    background: var(--cp-container-color);
 }
 
-[data-actions-container-item-id] > i.fa {
-  background: var(--cp-container-item-color);
+[data-actions-page-id], [data-actions-container-item-id] {
+    > i.fa {
+        background: var(--cp-container-item-color);
+    }
 }

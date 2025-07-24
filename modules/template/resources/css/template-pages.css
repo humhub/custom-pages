@@ -1,0 +1,267 @@
+:root {
+    --cp-strucutre-bg: #252525;
+    --cp-strucutre-bg-active: #555555;
+    --cp-container-color: #B31317;
+    --cp-container-item-color: #FF9F0A;
+}
+
+#templatePageRoot .download-list {
+    margin-top:10px;
+    padding:0 20px;
+}
+
+#templatePageRoot .download-item {
+    margin-top:5px;
+}
+
+#templatePageRoot {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+#templatePageRoot img {
+    max-width: 100%;
+}
+
+/* Editor */
+[data-editor-container-id] {
+    position: relative;
+}
+span[data-editor-container-item-id] {
+    display: inline-block;
+}
+[data-editor-container-id].cp-editor-container-hover,
+[data-editor-container-id].cp-editor-container-active {
+    outline: 1px dashed var(--cp-container-color) !important;
+    outline-offset: -1px;
+}
+[data-editor-page-id].cp-editor-page-hover,
+[data-editor-container-item-id].cp-editor-container-hover,
+[data-editor-container-item-id].cp-editor-container-active {
+    outline: 1px dashed var(--cp-container-item-color) !important;
+    outline-offset: -1px;
+}
+[data-editor-container-item-id].cp-editor-container-hover {
+    z-index: 1;
+    position: relative;
+}
+.cp-editor-container-active {
+    display: none;
+    z-index: 1032;
+    position: absolute;
+    background: #FFF;
+}
+.cp-editor-container-active > div:first-child,
+.cp-editor-container-active > [data-editor-container-item-id]:first-child > div:first-child {
+    margin-top: 0 !important;
+}
+[data-editor-container-id][data-editor-container-empty] > div {
+    background-color: silver;
+    border: 1px solid orange;
+    min-height: 150px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+}
+[data-actions-page-id],
+[data-actions-container-id],
+[data-actions-container-item-id] {
+    position: absolute;
+    display: inline-block;
+    max-width: max-content;
+    z-index: 1;
+}
+[data-actions-page-id] > i.fa,
+[data-actions-container-id] > i.fa,
+[data-actions-container-item-id] > i.fa {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 3px 3px 0 0;
+    cursor: pointer;
+    color: var(--text-color-contrast);
+}
+[data-actions-container-id] > i.fa {
+    background: var(--cp-container-color);
+}
+[data-actions-page-id] > i.fa,
+[data-actions-container-item-id] > i.fa {
+    background: var(--cp-container-item-color);
+}
+
+/* Structure */
+.cp-structure {
+    display: none;
+    position: fixed;
+    margin: 0;
+    padding: 8px;
+    list-style: none;
+    font-size: 11px;
+    z-index: 1033;
+    min-width: 280px;
+    max-height: 80%;
+    scrollbar-width: none;
+    outline: none;
+    background: var(--cp-strucutre-bg);
+    box-shadow: 0 0 3px var(--cp-strucutre-bg);
+    color: var(--text-color-contrast);
+}
+.cp-structure::-webkit-scrollbar {
+    display: none;
+}
+.cp-structure .dropdown-menu-top {
+    top: inherit;
+    bottom: 100%;
+}
+.cp-structure ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.cp-structure li {
+    padding: 0;
+}
+.cp-structure .cp-structure-container + [data-template-type] > li > .cp-structure-template [data-action-click^=moveUp],
+.cp-structure [data-container-id] [data-template-type]:last-child > li > .cp-structure-template [data-action-click^=moveDown] {
+    display: none;
+}
+.cp-structure-row {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    margin-bottom: 1px;
+}
+.cp-structure-row > div {
+    flex: 1;
+}
+.cp-structure-row > .fa,
+.cp-structure-actions > .fa {
+    width: 18px;
+    text-align: center;
+}
+.cp-structure-row .cp-structure-actions {
+    flex: 0;
+    white-space: nowrap;
+    visibility: hidden;
+}
+.cp-structure-row:hover .cp-structure-actions {
+    visibility: visible;
+}
+.cp-structure-row .cp-structure-actions .dropdown-menu {
+    padding: 0;
+}
+.cp-structure-header {
+    cursor: move;
+}
+.cp-structure-header .cp-structure-actions {
+    visibility: visible;
+    padding: 4px;
+    margin: -4px 5px -4px -5px;
+    cursor: pointer;
+}
+.cp-structure-header .cp-structure-text,
+.cp-structure-container .cp-structure-text {
+    font-weight: 600;
+}
+.cp-structure-template .cp-structure-text,
+.cp-structure-container .cp-structure-text {
+    padding: 0 8px;
+    cursor: default;
+}
+.cp-structure-row .cp-structure-action {
+    font-size: 14px;
+    visibility: hidden;
+    cursor: pointer;
+}
+.cp-structure-row:hover .cp-structure-action,
+.cp-structure-row .cp-structure-action.fa-plus {
+    visibility: visible;
+}
+.cp-structure-row .fa-circle, .cp-structure-row .fa-circle-o {
+    font-size: 70%;
+}
+.cp-structure-template .fa-circle {
+    color: var(--cp-container-item-color);
+}
+.cp-structure-container .fa-circle-o {
+    color: var(--cp-container-color);
+}
+.cp-structure-header .cp-structure-actions:hover,
+.cp-structure-template:hover,
+.cp-structure-container:hover,
+.cp-structure-active {
+    border-radius: 4px;
+    background: var(--cp-strucutre-bg-active);
+    transition: background 0.3s;
+}
+
+.cp-structure-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1031;
+}
+
+.cp-templates-panel > div {
+    white-space: nowrap;
+    text-align: right;
+}
+.cp-templates-filter {
+    flex-grow: 1;
+    margin-bottom: 8px;
+}
+.cp-templates-filter {
+    padding: 0;
+}
+@media (min-width: 576px) {
+    .cp-templates-panel {
+        display: flex;
+    }
+    .cp-templates-filter {
+        margin: 0;
+        padding-right: 8px;
+    }
+}
+.cp-templates-filter > form {
+    display: flex;
+}
+.cp-templates-filter .input-group {
+    display: flex;
+    flex-grow: 1;
+    padding-right: 8px;
+}
+.cp-templates-filter button[type=submit] {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.cp-templates-filter .input-group .form-group {
+    flex-grow: 1;
+}
+.cp-templates-filter .form-control,
+.cp-templates-filter .select2-selection.select2-selection--single {
+    height: 37px;
+}
+.cp-templates-filter .form-group, .cp-templates-filter .help-block {
+    margin: 0;
+}
+
+.badge-cp-template-layout {
+    background: #DB8F19;
+}
+.badge-cp-template-snippet-layout {
+    background: #C4592B;
+}
+.badge-cp-template-container {
+    background: #88BD67;
+}

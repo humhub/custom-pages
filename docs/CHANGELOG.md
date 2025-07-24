@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.11.0-beta.9 (Unreleased)
+-----------------------------
+- Enh #443: Visibility restrictions
+
 1.11.0-beta.8 (July 22, 2025)
 -----------------------------
 - Enh #432: Add Yii formatter for Twig filters

@@ -37,7 +37,8 @@ class DuplicatorService
      */
     public function beforeDuplicate(): bool
     {
-        $this->targetPage->visibility = $this->sourcePage->visibility;
+        $this->targetPage->visibility_groups = $this->sourcePage->visibility_groups;
+        $this->targetPage->visibility_languages = $this->sourcePage->visibility_languages;
 
         foreach ($this->sourcePage->attributes as $attrKey => $attrValue) {
             if ($attrKey !== 'id') {

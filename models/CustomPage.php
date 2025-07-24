@@ -62,11 +62,13 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     use PhpPageContainer;
     use TemplatePageContainer;
 
-    public const VISIBILITY_ADMIN = 3; // Admin only
+    // Content Visibility = Private:
     public const VISIBILITY_PRIVATE = 0; // Members only
+    public const VISIBILITY_ADMIN = 3; // Admin only
+    public const VISIBILITY_CUSTOM = 5; // Custom
+    // Content Visibility = Public:
     public const VISIBILITY_PUBLIC = 1; // Members & Guests
     public const VISIBILITY_GUEST = 4; // Guests only
-    public const VISIBILITY_CUSTOM = 5; // Custom
 
     /**
      * @inheritdoc

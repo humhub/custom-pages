@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
 
@@ -11,15 +12,15 @@ use yii\helpers\Html;
     </td>
     <td>
         <small>
-            <span class="label label-success"><?= $model->getLabel() ?></span>
+            <?= Badge::success($model->getLabel()) ?>
         </small>
         <?php if (!$model->hasDefaultContent()) : ?>
             <small>
-                <span class="label label-warning"><?= Yii::t('CustomPagesModule.base', 'Empty') ?></span>
+                <?= Badge::warning(Yii::t('CustomPagesModule.base', 'Empty')) ?>
             </small>
         <?php else: ?>
             <small>
-                <span class="label btn-success"><?= Yii::t('CustomPagesModule.base', 'Default') ?></span>
+                <?= Badge::success(Yii::t('CustomPagesModule.base', 'Default')) ?>
             </small>
         <?php endif; ?>
     </td>

@@ -10,6 +10,7 @@ use humhub\helpers\Html;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\models\forms\EditItemForm;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 
@@ -45,16 +46,16 @@ use humhub\widgets\modal\ModalButton;
                     <i class="switchIcon fa fa-caret-down" aria-hidden="true"></i>
                 </strong>
                 <small class="float-end">
-                    <span class="label label-success"><?= $contentItem->elementContent->getLabel() ?></span>
+                    <?= Badge::success($contentItem->elementContent->getLabel()) ?>
                 </small>
                 <?php if ($contentItem->content->isNewRecord): ?>
                     <small class="float-end" style="margin-right: 2px">
-                        <span class="label label-warning"><?= Yii::t('CustomPagesModule.view', 'Empty') ?></span>
+                        <?= Badge::warning(Yii::t('CustomPagesModule.view', 'Empty')) ?>
                     </small>
                 <?php endif; ?>
                 <?php if ($isContainer && $contentItem->content->definition->allow_multiple): ?>
                     <small class="float-end" style="margin-right: 2px">
-                        <span class="label label-success"><?= Yii::t('CustomPagesModule.view', 'Multiple') ?></span>
+                        <?= Badge::success(Yii::t('CustomPagesModule.view', 'Multiple')) ?>
                     </small>
                 <?php endif; ?>
             </div>

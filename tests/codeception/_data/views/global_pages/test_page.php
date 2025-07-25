@@ -6,7 +6,7 @@
  *
  */
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this \humhub\components\View */
 ?>
 
 <div id="test-page">

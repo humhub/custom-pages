@@ -10,8 +10,8 @@
 namespace humhub\modules\custom_pages\types;
 
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\widgets\form\ActiveForm;
 use Yii;
-use yii\widgets\ActiveForm;
 
 class LinkType extends ContentType
 {
@@ -45,7 +45,9 @@ class LinkType extends ContentType
 
     public function renderFormField(ActiveForm $form, CustomPage $page): string
     {
-        return $form->field($page, 'page_content')->textInput(['class' => 'form-control'])->label($page->getAttributeLabel('targetUrl'))
-            . '<div class="help-block">' . Yii::t('CustomPagesModule.view', 'e.g. http://www.example.de') . '</div>';
+        return $form->field($page, 'page_content')
+            ->textInput(['class' => 'form-control'])
+            ->label($page->getAttributeLabel('targetUrl'))
+            ->hint(Yii::t('CustomPagesModule.view', 'e.g. http://www.example.de'));
     }
 }

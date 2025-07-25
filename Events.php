@@ -317,13 +317,10 @@ class Events
         }
     }
 
-    public static function onStreamQueryAfterFilter($event)
+    public static function onStreamQueryBeforeFilter($event)
     {
         /* @var StreamQuery $streamQuery */
         $streamQuery = $event->sender;
-        $customPageStreamFilter = $streamQuery->addFilterHandler(CustomPageStreamFilter::class);
-        if ($customPageStreamFilter instanceof CustomPageStreamFilter) {
-            $customPageStreamFilter->apply();
-        }
+        $streamQuery->addFilterHandler(CustomPageStreamFilter::class);
     }
 }

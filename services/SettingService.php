@@ -14,7 +14,7 @@ use yii\db\Query;
 
 class SettingService
 {
-    private const string TABLE = 'custom_pages_page_setting';
+    public const string TABLE = 'custom_pages_page_setting';
     protected CustomPage $page;
 
     public function __construct(CustomPage $page)

@@ -43,6 +43,6 @@ return [
 
         ['class' => DashboardSidebar::class, 'event' => BaseMenu::EVENT_INIT, 'callback' => [Events::class, 'onDashboardSidebarInit']],
         ['class' => SpaceSidebar::class, 'event' => BaseMenu::EVENT_INIT, 'callback' => [Events::class, 'onSpaceSidebarInit']],
-        ['class' => StreamQuery::class, 'event' => StreamQuery::EVENT_AFTER_FILTER, 'callback' => [Events::class, 'onStreamQueryAfterFilter']],
+        ['class' => StreamQuery::class, 'event' => StreamQuery::EVENT_BEFORE_FILTER, 'callback' => [Events::class, 'onStreamQueryBeforeFilter']],
     ],
 ];

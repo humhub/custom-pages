@@ -42,18 +42,12 @@ use humhub\widgets\modal\ModalButton;
                     <?= Html::encode($model->getElement($contentItem->elementContent->element->name)->getTitle()) ?>&nbsp;
                     <i class="switchIcon fa fa-caret-down" aria-hidden="true"></i>
                 </strong>
-                <small class="float-end">
-                    <?= Badge::success($contentItem->elementContent->label) ?>
-                </small>
+                <?= Badge::success($contentItem->elementContent->label)->right() ?>
                 <?php if ($contentItem->content->isNewRecord): ?>
-                    <small class="float-end" style="margin-right: 2px">
-                        <?= Badge::warning(Yii::t('CustomPagesModule.view', 'Empty')) ?>
-                    </small>
+                    <?= Badge::warning(Yii::t('CustomPagesModule.view', 'Empty'))->right() ?>
                 <?php endif; ?>
                 <?php if ($isContainer && $contentItem->content->definition->allow_multiple): ?>
-                    <small class="float-end" style="margin-right: 2px">
-                        <?= Badge::success(Yii::t('CustomPagesModule.view', 'Multiple')) ?>
-                    </small>
+                    <?= Badge::success(Yii::t('CustomPagesModule.view', 'Multiple'))->right() ?>
                 <?php endif; ?>
             </div>
             <?php // This was only set for container elements before. ?>

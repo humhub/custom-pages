@@ -11,17 +11,11 @@ use yii\helpers\Html;
         #<strong><?= Html::encode($model->name) ?> </strong>
     </td>
     <td>
-        <small>
-            <?= Badge::success($model->getLabel()) ?>
-        </small>
+        <?= Badge::success($model->getLabel()) ?>
         <?php if (!$model->hasDefaultContent()) : ?>
-            <small>
-                <?= Badge::warning(Yii::t('CustomPagesModule.base', 'Empty')) ?>
-            </small>
+            <?= Badge::warning(Yii::t('CustomPagesModule.base', 'Empty')) ?>
         <?php else: ?>
-            <small>
-                <?= Badge::success(Yii::t('CustomPagesModule.base', 'Default')) ?>
-            </small>
+            <?= Badge::success(Yii::t('CustomPagesModule.base', 'Default')) ?>
         <?php endif; ?>
     </td>
 

@@ -39,7 +39,7 @@ if ($canEdit && !$model->content->isNewRecord && $resetUrl != null) {
     'size' => Modal::SIZE_LARGE,
     'footer' => $buttons,
 ]) ?>
-    <?= Badge::success($model->label)->cssClass('float-end') ?>
+    <?= Badge::success($model->label)->right() ?>
     <?php if (!$model->element->isNewRecord) : ?>
         #<strong><?= Html::encode($model->element->name) ?></strong>
      <?php endif; ?>

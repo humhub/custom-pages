@@ -30,6 +30,9 @@
   box-sizing: border-box !important;
   outline: 0;
 }
+.template-edit-multiple-tab .badge {
+  margin: 3px;
+}
 
 .target-page-list .grid-view {
   padding: 0;

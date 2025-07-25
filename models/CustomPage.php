@@ -645,7 +645,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
         return $this->content->canView($user);
     }
 
-    public static function canSeeAdminOnlyContent(ContentContainerActiveRecord $container = null)
+    public static function canSeeAdminOnlyContent(?ContentContainerActiveRecord $container = null)
     {
         if (Yii::$app->user->isGuest) {
             return false;

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.11.0-beta.9 (Unreleased)
+-----------------------------
+- Fix #444: Fix depreciation warnings on PHP 8.4
+
 1.11.0-beta.8 (July 22, 2025)
 -----------------------------
 - Enh #432: Add Yii formatter for Twig filters

@@ -278,7 +278,7 @@ class Template extends ActiveRecord
      * @param TemplateInstance|null $templateInstance
      * @return string
      */
-    public function render(TemplateInstance $templateInstance = null)
+    public function render(?TemplateInstance $templateInstance = null)
     {
         if ($this->css) {
             Yii::$app->view->registerCss($this->css);

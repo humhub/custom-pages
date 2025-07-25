@@ -65,7 +65,7 @@ class UserElement extends BaseContentContainerElement
      * @param string|null $field Field name or NULL to get a display name by default
      * @return string
      */
-    public function getProfileField(string $field = null): string
+    public function getProfileField(?string $field = null): string
     {
         return $this->getRecord() instanceof User
             ? $this->getRecord()->profile->$field ?? $this->getRecord()->displayName

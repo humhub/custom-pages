@@ -127,11 +127,3 @@ img.preview {
   color: #818078;
   background-color: #fcfcfa;
 }
-
-.custom-pages-page a:not(.btn), .panel .panel-body p a:not(.btn) {
-  color: var(--link);
-}
-.custom-pages-page a:not(.btn):hover, .panel .panel-body p a:not(.btn):hover {
-  color: var(--link);
-  text-decoration: underline;
-}

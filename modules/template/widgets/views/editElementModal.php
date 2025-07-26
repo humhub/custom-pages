@@ -9,6 +9,7 @@
 use humhub\modules\custom_pages\modules\template\models\forms\TemplateElementForm;
 use humhub\modules\custom_pages\modules\template\widgets\EditContentSeperator;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 use yii\helpers\Html;
@@ -38,7 +39,7 @@ if ($canEdit && !$model->content->isNewRecord && $resetUrl != null) {
     'size' => Modal::SIZE_LARGE,
     'footer' => $buttons,
 ]) ?>
-    <span class="label label-success float-end"><?= $model->label ?></span>
+    <?= Badge::success($model->label)->right() ?>
     <?php if (!$model->element->isNewRecord) : ?>
         #<strong><?= Html::encode($model->element->name) ?></strong>
      <?php endif; ?>

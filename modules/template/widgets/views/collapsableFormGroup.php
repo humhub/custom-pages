@@ -22,10 +22,10 @@ use humhub\helpers\Html;
 $('.collapsableTrigger').off('click').on('click', function() {
     var $this = $(this);
     var $content = $this.next();
-    $content.slideToggle('fast', function() {
+    $content.toggleClass('d-none').promise().done(function() {
         var text = ($content.is(":hidden")) ? '<?= $openText ?>' : '<?= $closeText ?>';
         $this.attr('data-content', text);
-     });
+    });
 }).off('keyup').on('keyup', function(e) {
     switch (e.which) {
         case 13:

@@ -22,8 +22,9 @@ class m250116_153924_container_templates extends Migration
                 continue;
             }
 
-            $dynAttributes['templates'] = Template::find()
+            $dynAttributes['templates'] = (new Query())
                 ->select('name')
+                ->from(Template::tableName())
                 ->where(['id' => $dynAttributes['templates']])
                 ->column();
 

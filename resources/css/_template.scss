@@ -18,8 +18,13 @@
   }
 }
 
-.template-edit-multiple-tab:focus {
-  border:2px solid #a0c2f9 !important;
-  box-sizing: border-box !important;
-  outline:0;
+.template-edit-multiple-tab {
+  &:focus {
+    border: 2px solid #a0c2f9 !important;
+    box-sizing: border-box !important;
+    outline: 0;
+  }
+  .badge {
+    margin: 3px;
+  }
 }

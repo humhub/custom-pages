@@ -10,6 +10,7 @@ use humhub\helpers\Html;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\models\forms\EditItemForm;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 
@@ -44,18 +45,12 @@ use humhub\widgets\modal\ModalButton;
                     <?= Html::encode($model->getElement($contentItem->elementContent->element->name)->getTitle()) ?>&nbsp;
                     <i class="switchIcon fa fa-caret-down" aria-hidden="true"></i>
                 </strong>
-                <small class="float-end">
-                    <span class="label label-success"><?= $contentItem->elementContent->getLabel() ?></span>
-                </small>
+                <?= Badge::success($contentItem->elementContent->getLabel())->right() ?>
                 <?php if ($contentItem->content->isNewRecord): ?>
-                    <small class="float-end" style="margin-right: 2px">
-                        <span class="label label-warning"><?= Yii::t('CustomPagesModule.view', 'Empty') ?></span>
-                    </small>
+                    <?= Badge::warning(Yii::t('CustomPagesModule.view', 'Empty'))->right() ?>
                 <?php endif; ?>
                 <?php if ($isContainer && $contentItem->content->definition->allow_multiple): ?>
-                    <small class="float-end" style="margin-right: 2px">
-                        <span class="label label-success"><?= Yii::t('CustomPagesModule.view', 'Multiple') ?></span>
-                    </small>
+                    <?= Badge::success(Yii::t('CustomPagesModule.view', 'Multiple'))->right() ?>
                 <?php endif; ?>
             </div>
             <?php // This was only set for container elements before. ?>
@@ -69,7 +64,7 @@ use humhub\widgets\modal\ModalButton;
 
     <?php if (empty($model->contentMap)) : ?>
         <div class="text-center">
-            <?= Yii::t('CustomPagesModule.view', 'This template does not contain any elements yet.') ?>
+            <?= Yii::t('CustomPagesModule.view', 'This section has no editable elements.') ?>
         </div>
     <?php endif; ?>
 

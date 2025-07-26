@@ -45,6 +45,8 @@ use yii\helpers\ArrayHelper;
  * @property int $id
  * @property string $name
  * @property string $source
+ * @property string $css
+ * @property string $js
  * @property string $engine
  * @property string $description
  * @property string $type
@@ -95,6 +97,8 @@ class Template extends ActiveRecord
             'id' => 'ID',
             'name' => Yii::t('CustomPagesModule.template', 'Name'),
             'source' => Yii::t('CustomPagesModule.template', 'Source'),
+            'css' => Yii::t('CustomPagesModule.template', 'Stylesheet'),
+            'js' => Yii::t('CustomPagesModule.template', 'JavaScript'),
             'allow_for_spaces' => Yii::t('CustomPagesModule.template', 'Allow this layout in spaces'),
             'description' => Yii::t('CustomPagesModule.template', 'Description'),
             'type' => Yii::t('CustomPagesModule.template', 'Type'),
@@ -114,6 +118,7 @@ class Template extends ActiveRecord
             [['name', 'type'], 'string', 'max' => 100],
             [['type'], 'in', 'range' => [self::TYPE_CONTAINER, self::TYPE_LAYOUT, self::TYPE_SNIPPET_LAYOUT, self::TYPE_NAVIGATION]],
             [['source'], 'required', 'on' => ['source']],
+            [['css', 'js'], 'safe', 'on' => ['resources']],
         ];
     }
 
@@ -125,6 +130,7 @@ class Template extends ActiveRecord
         $scenarios = parent::scenarios();
         $scenarios['edit'] = ['name', 'description', 'type', 'allow_for_spaces'];
         $scenarios['source'] = ['source'];
+        $scenarios['resources'] = ['css', 'js'];
         return $scenarios;
     }
 
@@ -274,6 +280,14 @@ class Template extends ActiveRecord
      */
     public function render(TemplateInstance $templateInstance = null)
     {
+        if ($this->css) {
+            Yii::$app->view->registerCss($this->css);
+        }
+
+        if ($this->js) {
+            Yii::$app->view->registerJs($this->js);
+        }
+
         $result = '';
 
         if (TemplateInstanceRendererService::inEditMode() && $templateInstance && $templateInstance->isPage()) {

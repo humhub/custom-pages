@@ -30,6 +30,9 @@
   box-sizing: border-box !important;
   outline: 0;
 }
+.template-edit-multiple-tab .badge {
+  margin: 3px;
+}
 
 .target-page-list .grid-view {
   padding: 0;
@@ -123,12 +126,4 @@ img.preview {
   line-height: 1.5em;
   color: #818078;
   background-color: #fcfcfa;
-}
-
-.custom-pages-page a:not(.btn), .panel .panel-body p a:not(.btn) {
-  color: var(--link);
-}
-.custom-pages-page a:not(.btn):hover, .panel .panel-body p a:not(.btn):hover {
-  color: var(--link);
-  text-decoration: underline;
 }

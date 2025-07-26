@@ -46,8 +46,8 @@ class BaseContentRecordElementVariable extends BaseRecordElementVariable
     {
         parent::__construct($elementContent);
         TwigEngine::registerSandboxExtensionAllowedFunctions(static::class, [
-            'getAuthor',
-            'getUpdater',
+            'getCreatedBy',
+            'getUpdatedBy',
             'getContainer',
         ]);
     }

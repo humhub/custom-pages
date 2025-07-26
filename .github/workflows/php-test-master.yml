@@ -1,7 +1,8 @@
 name: PHP Codeception Tests - master
 
 on:
-  push:
+  workflow_dispatch:
+  #push:
 
 jobs:
   tests:

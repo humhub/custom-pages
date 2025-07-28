@@ -217,7 +217,7 @@ class VisibilityService
      * @param ContentContainerActiveRecord|null $container
      * @return bool
      */
-    public static function canViewAdminOnlyContent(ContentContainerActiveRecord $container = null): bool
+    public static function canViewAdminOnlyContent(?ContentContainerActiveRecord $container = null): bool
     {
         if (Yii::$app->user->isGuest) {
             return false;

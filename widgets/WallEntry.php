@@ -21,6 +21,16 @@ class WallEntry extends WallStreamModuleEntryWidget
      */
     public $model;
 
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        if (!$this->model->canView()) {
+            $this->renderOptions->disableAddons();
+        }
+    }
+
     public function getEditUrl()
     {
         return $this->model->getEditUrl();

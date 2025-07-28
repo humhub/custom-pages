@@ -7,7 +7,6 @@ use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
-use humhub\modules\custom_pages\models\filters\CustomPageStreamFilter;
 use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\types\LinkType;
 use humhub\modules\custom_pages\models\CustomPage;
@@ -15,7 +14,6 @@ use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\custom_pages\widgets\SnippetWidget;
 use humhub\modules\space\models\Space;
-use humhub\modules\stream\models\StreamQuery;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\PeopleHeadingButtons;
 use humhub\widgets\TopMenu;
@@ -315,12 +313,5 @@ class Events
         } catch (Throwable $e) {
             Yii::error($e);
         }
-    }
-
-    public static function onStreamQueryBeforeFilter($event)
-    {
-        /* @var StreamQuery $streamQuery */
-        $streamQuery = $event->sender;
-        $streamQuery->addFilterHandler(CustomPageStreamFilter::class);
     }
 }

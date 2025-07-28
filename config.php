@@ -6,7 +6,6 @@ use humhub\modules\dashboard\widgets\Sidebar as DashboardSidebar;
 use humhub\modules\space\widgets\HeaderControlsMenu;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\space\widgets\Sidebar as SpaceSidebar;
-use humhub\modules\stream\models\StreamQuery;
 use humhub\modules\user\widgets\AccountMenu;
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\user\widgets\AccountTopMenu;
@@ -43,6 +42,5 @@ return [
 
         ['class' => DashboardSidebar::class, 'event' => BaseMenu::EVENT_INIT, 'callback' => [Events::class, 'onDashboardSidebarInit']],
         ['class' => SpaceSidebar::class, 'event' => BaseMenu::EVENT_INIT, 'callback' => [Events::class, 'onSpaceSidebarInit']],
-        ['class' => StreamQuery::class, 'event' => StreamQuery::EVENT_BEFORE_FILTER, 'callback' => [Events::class, 'onStreamQueryBeforeFilter']],
     ],
 ];

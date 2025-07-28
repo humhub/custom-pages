@@ -346,7 +346,9 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
      */
     public function getContentDescription()
     {
-        return $this->title;
+        return $this->canView()
+            ? $this->title
+            : Yii::t('CustomPagesModule.view', 'You don\'t have permission to access the page');
     }
 
     /**

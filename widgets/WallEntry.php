@@ -21,16 +21,6 @@ class WallEntry extends WallStreamModuleEntryWidget
      */
     public $model;
 
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        if (!$this->model->canView()) {
-            $this->renderOptions->disableAddons();
-        }
-    }
-
     public function getEditUrl()
     {
         return $this->model->getEditUrl();
@@ -52,5 +42,17 @@ class WallEntry extends WallStreamModuleEntryWidget
     protected function getTitle()
     {
         return $this->model->title;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function renderFooter()
+    {
+        if (!$this->model->canView()) {
+            return '';
+        }
+
+        return parent::renderFooter();
     }
 }

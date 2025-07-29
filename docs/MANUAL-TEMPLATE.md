@@ -1,7 +1,7 @@
 ## Elements
 
 | Variable Name                      | Data Type                   | Description                                                                     |
-| ---------------------------------- | --------------------------- | ------------------------------------------------------------------------------- |
+|------------------------------------|-----------------------------|---------------------------------------------------------------------------------|
 | **Generic element attributes**     |                             | Applies to all variables                                                        |
 | `*.elementContentId`               | Integer                     | Unique ID of element content instance                                           |
 | `*.empty`                          | Boolean                     | Whether the variable is empty or not                                            |
@@ -24,8 +24,9 @@
 | `image.height`                     | String                      | Image height                                                                    |
 | `image.style`                      | String                      | Image style                                                                     |
 |                                    |                             |                                                                                 |
-| **Container**                      |                             | The                                                                             |
-| `container`                        | String                      | Returns the URL of the value of the Image Element                               |
+| **Container Element**              |                             | The                                                                             |
+| `container`                        | String                      | Render added items of the container element                                     |
+| `container.editWrapperAttributes`  | String                      | Html attributes for edit mode. `<div {{ container.editWrapperAttributes }}>`    |
 |                                    |                             |                                                                                 |
 | **Content Container Meta Element** |                             | Base for `User` or `Space` Elements                                             |
 | `contentcontainer.guid`            | String                      | Container unique ID, e.g. 5b12f367-744b-4d2b-9611-c8b4ff92b6e5                  |
@@ -101,6 +102,7 @@
 | `file.description`                 | String                      | File description                                                                |
 | `file.downloadCount`               | Integer                     | Number of downloads                                                             |
 | `file.fileUrl`                     | String                      | File URL                                                                        |
+| `file.icon`                        | String                      | Icon style class, e.g. image: `fa-file-image-o`, pdf: `fa-file-pdf-o`           |
 | `file.file`                        | File Element                | Base/core File element                                                          |
 |                                    |                             |                                                                                 |
 | **Folders Element**                |                             |                                                                                 |
@@ -111,6 +113,7 @@
 | `folder.title`                     | String                      | Folder title                                                                    |
 | `folder.description`               | String                      | Folder description                                                              |
 | `folder.type`                      | String                      | Type: 'posted' - Files from the stream, 'root' - Root folder, null - sub folder |
+| `folder.icon`                      | String                      | Icon style class: `fa-folder`                                                   |
 | `folder.subFolders`                | Folder[]                    | Sub folder elements                                                             |
 | `folder.subFiles`                  | File[]                      | Sub file elements                                                               |
 |                                    |                             |                                                                                 |

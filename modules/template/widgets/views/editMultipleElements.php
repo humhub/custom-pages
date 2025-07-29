@@ -50,7 +50,7 @@ use humhub\libs\Html;
 
             <?php if (empty($model->contentMap)) : ?>
                 <div class="text-center">
-                    <?= Yii::t('CustomPagesModule.view', 'This template does not contain any elements yet.') ?>
+                    <?= Yii::t('CustomPagesModule.view', 'This section has no editable elements.') ?>
                 </div>
             <?php endif; ?>
         </div>

@@ -144,6 +144,8 @@ class TemplateImportService extends BaseImportService
         $template->engine = $data['engine'] ?? 'twig';
         $template->description = $data['description'] ?? '';
         $template->source = $data['source'] ?? '';
+        $template->css = $data['css'] ?? '';
+        $template->js = $data['js'] ?? '';
         $template->allow_for_spaces = $data['allow_for_spaces'] ?? false;
         $template->is_default = $data['is_default'] ?? false;
 

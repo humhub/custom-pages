@@ -140,6 +140,31 @@ class AdminController extends Controller
     }
 
     /**
+     * Used to edit resources(CSS & JS) of a template.
+     */
+    public function actionEditResources()
+    {
+        $model = Template::findOne(['id' => Yii::$app->request->get('id')]);
+
+        if ($model == null) {
+            throw new NotFoundHttpException(Yii::t('CustomPagesModule.template', 'Template not found!'));
+        }
+
+        $model->scenario = 'resources';
+
+        // If the form was submitted try to save/validate and flush the template cache
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            TemplateCache::flushByTemplateId($model->id);
+            $this->view->saved();
+            return $this->redirect(['edit-resources', 'id' => $model->id]);
+        }
+
+        return $this->render('editResources', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
      * Show pages/snippets/containers where the template is used in.
      */
     public function actionEditUsage()

@@ -7,7 +7,9 @@
  */
 
 use humhub\libs\Html;
+use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\assets\Assets;
+use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\modules\template\assets\InlineEditorAsset;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
@@ -34,6 +36,20 @@ InlineEditorAsset::register($this);
 <?php if ($templateInstance->isPage()) : ?>
 <?= Html::beginTag('div', $options) ?>
     <div class="cp-structure-header cp-structure-row">
+        <div class="cp-structure-actions dropdown">
+            <?= Icon::get('ellipsis-h', ['htmlOptions' => ['data-toggle' => 'dropdown']])
+                ->class('dropdown-toggle') ?>
+            <ul class="dropdown-menu">
+                <li><?= Link::to(
+                    Yii::t('CustomPagesModule.view', 'Page configuration'),
+                    Url::toEditPage($templateInstance->page_id, ContentContainerHelper::getCurrent()),
+                )->blank() ?></li>
+                <li><?= Link::to(
+                    Yii::t('CustomPagesModule.view', 'Exit Edit Mode'),
+                    Url::toViewPage($templateInstance->page_id, ContentContainerHelper::getCurrent()),
+                )->pjax(false) ?></li>
+            </ul>
+        </div>
         <div class="cp-structure-text"><?= Yii::t('CustomPagesModule.template', 'Structure View') ?></div>
         <?= Icon::get('arrows') ?>
     </div>

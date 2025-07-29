@@ -72,6 +72,20 @@ class TemplatePage extends JsWidget
     /**
      * @inheritdoc
      */
+    protected function getData()
+    {
+        $data = parent::getData();
+
+        if (TemplateInstanceRendererService::inEditMode()) {
+            $data['editor-page-id'] = $this->page->id;
+        }
+
+        return $data;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getAttributes()
     {
         $cssClass = '';

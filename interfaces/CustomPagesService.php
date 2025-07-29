@@ -82,7 +82,7 @@ class CustomPagesService extends Component
      * @throws \yii\base\Exception
      * @throws \yii\db\StaleObjectException
      */
-    public function deleteByTarget($targetId, ContentContainerActiveRecord $container = null): void
+    public function deleteByTarget($targetId, ?ContentContainerActiveRecord $container = null): void
     {
         foreach ($this->findByTarget($targetId, $container)->each() as $content) {
             $content->delete();

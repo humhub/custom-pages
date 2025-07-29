@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 
@@ -60,6 +61,11 @@ class EditMultipleElementsForm extends \yii\base\Model
         $elementContents = $this->template->getElementContents($templateInstance);
 
         foreach ($elementContents as $elementContent) {
+            if ($elementContent instanceof ContainerElement) {
+                // Skip Container from the edit form because it has no editable fields
+                continue;
+            }
+
             $contentItem = new ContentFormItem([
                 'elementContent' => $elementContent,
                 'element' => $elementContent->element,

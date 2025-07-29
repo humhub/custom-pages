@@ -1,11 +1,31 @@
 {
     "id": "custom_pages",
     "name": "Custom Pages",
-    "description": "Create custom pages and widgets and share them with your users. Take advantage of a wide range of editing options, including HTML and Markdown.",
-    "keywords": ["pages", "custom", "iframe", "markdown", "link", "navigation", "spaces"],
+    "description": "Create and manage static or dynamic pages and snippets with an intuitive page building system.",
+    "keywords": [
+        "pages",
+        "custom",
+        "iframe",
+        "markdown",
+        "link",
+        "navigation",
+        "spaces",
+        "templates",
+        "snippets"
+    ],
     "version": "1.11.0-beta.8",
     "homepage": "https://github.com/humhub/custom-pages",
     "humhub": {
         "minVersion": "1.17"
-    }
+    },
+    "screenshots": [
+        "resources/screenshot1.png",
+        "resources/screenshot2.png",
+        "resources/screenshot3.png",
+        "resources/screenshot4.png",
+        "resources/screenshot5.png",
+        "resources/screenshot6.png",
+        "resources/screenshot7.png",
+        "resources/screenshot8.png"
+    ]
 }

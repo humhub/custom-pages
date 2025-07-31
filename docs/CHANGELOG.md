@@ -4,6 +4,7 @@ Changelog
 1.11.0-beta.9 (Unreleased)
 -----------------------------
 - Fix #444: Fix depreciation warnings on PHP 8.4
+- Fix #446: TinyMCE license key
 
 1.11.0-beta.8 (July 22, 2025)
 -----------------------------

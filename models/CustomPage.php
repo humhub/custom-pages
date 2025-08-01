@@ -63,10 +63,10 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     use TemplatePageContainer;
 
     // Content Visibility = Public:
-    public const VISIBILITY_PUBLIC = 1; // Always
+    public const VISIBILITY_PUBLIC = 1; // Always | Public
     public const VISIBILITY_GUEST = 4; // Non-Logged-In Users
     // Content Visibility = Private:
-    public const VISIBILITY_PRIVATE = 0; // Logged-In Users
+    public const VISIBILITY_PRIVATE = 0; // Logged-In Users | Space Members only
     public const VISIBILITY_ADMIN = 3; // Administrative Users
     public const VISIBILITY_CUSTOM = 5; // Custom
 

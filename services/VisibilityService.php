@@ -107,9 +107,16 @@ class VisibilityService
      */
     public function getOptions(): array
     {
+        $container = $this->page->content->container;
+        $isGlobal = $container === null;
+
         $options = [
-            CustomPage::VISIBILITY_PUBLIC => Yii::t('CustomPagesModule.base', 'Always'),
-            CustomPage::VISIBILITY_PRIVATE => Yii::t('CustomPagesModule.base', 'Logged-In Users'),
+            CustomPage::VISIBILITY_PUBLIC => $isGlobal
+                ? Yii::t('CustomPagesModule.base', 'Always')
+                : Yii::t('CustomPagesModule.base', 'Public'),
+            CustomPage::VISIBILITY_PRIVATE => $isGlobal
+                ? Yii::t('CustomPagesModule.base', 'Logged-In Users')
+                : Yii::t('CustomPagesModule.base', 'Space Members only'),
             CustomPage::VISIBILITY_GUEST => Yii::t('CustomPagesModule.base', 'Non-Logged-In Users'),
             CustomPage::VISIBILITY_ADMIN => Yii::t('CustomPagesModule.base', 'Administrative Users'),
             CustomPage::VISIBILITY_CUSTOM => Yii::t('CustomPagesModule.base', 'Custom'),
@@ -118,9 +125,8 @@ class VisibilityService
         // Disable Public visibility "Always" for:
         //  - Global page from category "User Account Menu (Settings)"
         //  - Space page when the space is Private (Invisible)
-        $container = $this->page->content->container;
-        if (($container === null && $this->page->hasTarget(PageType::TARGET_ACCOUNT_MENU)) ||
-            ($container instanceof Space && $container->isVisibleFor(Space::VISIBILITY_NONE))) {
+        if (($isGlobal && $this->page->hasTarget(PageType::TARGET_ACCOUNT_MENU)) ||
+            (!$isGlobal && $container->isVisibleFor(Space::VISIBILITY_NONE))) {
             unset($options[CustomPage::VISIBILITY_PUBLIC]);
         }
 

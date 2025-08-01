@@ -3,7 +3,6 @@
 namespace humhub\modules\custom_pages\controllers;
 
 use humhub\modules\admin\permissions\ManageModules;
-use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\types\TemplateType;
@@ -162,26 +161,25 @@ class PageController extends AbstractCustomContainerController
             throw new HttpException(400, 'Invalid request data!');
         }
 
-        // If no pageId was given, we create a new page with the given type.
         if (!$page) {
-            $page = $this->createNewPage($type, $targetId);
+            $page = new CustomPage($this->contentContainer);
+            $page->type = $type;
+            $page->target = $targetId;
         }
 
         if (!$page->canEdit()) {
             throw new ForbiddenHttpException('You cannot manage the page!');
         }
 
-        $isNew = $page->isNewRecord;
-
         if ($this->savePage($page)) {
-            return (TemplateType::isType($type) && $isNew)
+            return (TemplateType::isType($type) && $page->isNewRecord)
                 ? $this->redirect(Url::toInlineEdit($page, $this->contentContainer))
                 : $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));
         }
 
         // Select a proper option on the edit form for old stored page
         // if its visibility is not allowed for its page type:
-        $page->fixVisibility();
+        $page->visibilityService->fix();
 
         return $this->render('@custom_pages/views/common/edit', [
             'page' => $page,
@@ -198,7 +196,7 @@ class PageController extends AbstractCustomContainerController
      */
     protected function savePage($page)
     {
-        if (!$page->load(Yii::$app->request->post())) {
+        if (!$page->load(Yii::$app->request->post()) || !$page->validate()) {
             return false;
         }
 
@@ -246,23 +244,6 @@ class PageController extends AbstractCustomContainerController
         return $this->renderAjax('@custom_pages/views/common/copy', [
             'page' => $copyPage,
         ]);
-    }
-
-    /**
-     * @param $type
-     * @param $targetId
-     * @return CustomPage
-     */
-    private function createNewPage($type, $targetId): CustomPage
-    {
-        $page = new CustomPage(['type' => $type, 'target' => $targetId]);
-        if ($this->contentContainer) {
-            $page->content->setContainer($this->contentContainer);
-            if (!$this->contentContainer) {
-                $page->content->visibility = Content::VISIBILITY_PUBLIC;
-            }
-        }
-        return $page;
     }
 
     /**

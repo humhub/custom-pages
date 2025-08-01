@@ -43,4 +43,16 @@ class WallEntry extends WallStreamModuleEntryWidget
     {
         return $this->model->title;
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function renderFooter()
+    {
+        if (!$this->model->canView()) {
+            return '';
+        }
+
+        return parent::renderFooter();
+    }
 }

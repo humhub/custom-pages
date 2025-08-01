@@ -3,6 +3,7 @@ Changelog
 
 1.11.0-beta.9 (Unreleased)
 -----------------------------
+- Enh #443: Visibility restrictions
 - Fix #444: Fix depreciation warnings on PHP 8.4
 - Fix #446: TinyMCE license key
 

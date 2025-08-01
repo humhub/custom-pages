@@ -91,7 +91,7 @@ class Module extends ContentContainerModule
         if (!$this->settings->get(static::SETTING_MIGRATION_KEY, 0)) {
             foreach (CustomPage::find()->all() as $page) {
                 /* @var CustomPage $page */
-                $page->content->visibility = $page->admin_only ? Content::VISIBILITY_PRIVATE : Content::VISIBILITY_PUBLIC;
+                $page->content->visibility = $page->visibility < 2 ? $page->visibility : $page::VISIBILITY_PUBLIC;
                 $page->content->save();
             }
 

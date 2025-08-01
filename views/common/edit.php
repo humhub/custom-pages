@@ -1,6 +1,5 @@
 <?php
 
-use humhub\libs\Html;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\helpers\Url;
@@ -8,11 +7,13 @@ use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\types\TemplateType;
 use humhub\modules\custom_pages\widgets\PageIconSelect;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\ui\view\components\View;
 use humhub\widgets\Button;
 use humhub\widgets\Link;
 
 Assets::register($this);
 
+/* @var $this View */
 /* @var $page CustomPage */
 /* @var $subNav string */
 /* @var $pageType string */
@@ -76,8 +77,7 @@ $contentType = $page->getContentType();
         <?= $form->endCollapsibleFields(); ?>
 
         <?php if (!$page->isSnippet()) : ?>
-            <div class="alert alert-info infoAdminOnly"
-                 <?php if ($page->visibility != CustomPage::VISIBILITY_ADMIN_ONLY): ?>style="display:none"<?php endif; ?>>
+            <div class="alert alert-info infoAdminOnly"<?= $page->visibilityService->isAdmin() ? '' : ' style="display:none"' ?>>
                 <?= Yii::t('CustomPagesModule.view', '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!'); ?>
             </div>
         <?php endif; ?>
@@ -86,14 +86,19 @@ $contentType = $page->getContentType();
             <?= $form->beginCollapsibleFields(Yii::t('CustomPagesModule.base', 'Stream options')); ?>
             <?= $form->field($page, 'abstract')->widget(RichTextField::class); ?>
             <div class="help-block">
-                <?= Yii::t('CustomPagesModule.view',
+                <?= Yii::t(
+                    'CustomPagesModule.view',
                     'The abstract will be used as stream entry content to promote the actual page. 
-                        If no abstract is given or the page is only visible for admins, no stream entry will be created.') ?>
+                        If no abstract is given or the page is only visible for admins, no stream entry will be created.',
+                ) ?>
             </div>
             <?= $form->endCollapsibleFields(); ?>
         <?php endif; ?>
 
-        <?= $form->field($page, 'visibility')->radioList($page->getVisibilitySelection()) ?>
+        <?= $form->beginCollapsibleFields(Yii::t('CustomPagesModule.base', 'Visibility')) ?>
+            <?= $this->render('edit_visibility', ['page' => $page, 'form' => $form]) ?>
+        <?= $form->endCollapsibleFields() ?>
+
         <?= $form->field($page, 'target')->dropDownList($page->getAvailableTargetOptions()) ?>
 
         <?= Button::save($page->isNewRecord ? Yii::t('CustomPagesModule.view', 'Create') : null)->submit() ?>
@@ -106,14 +111,6 @@ $contentType = $page->getContentType();
             <?= Button::success(Yii::t('CustomPagesModule.view', 'Inline Editor'))->link(Url::toInlineEdit($page, $target->container))->right()->icon('fa-pencil') ?>
         <?php endif; ?>
 
-        <script <?= Html::nonce() ?>>
-            $(document).one('humhub:ready', function () {
-                    $('input[type="radio"][name="CustomPage[visibility]"]').click(function () {
-                        $('.infoAdminOnly').toggle($(this).val() == <?= CustomPage::VISIBILITY_ADMIN_ONLY ?>);
-                    });
-                }
-            );
-        </script>
         <?php ActiveForm::end(); ?>
     </div>
 </div>

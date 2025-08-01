@@ -62,13 +62,13 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     use PhpPageContainer;
     use TemplatePageContainer;
 
-    // Content Visibility = Private:
-    public const VISIBILITY_PRIVATE = 0; // Members only
-    public const VISIBILITY_ADMIN = 3; // Admin only
-    public const VISIBILITY_CUSTOM = 5; // Custom
     // Content Visibility = Public:
-    public const VISIBILITY_PUBLIC = 1; // Members & Guests
-    public const VISIBILITY_GUEST = 4; // Guests only
+    public const VISIBILITY_PUBLIC = 1; // Always
+    public const VISIBILITY_GUEST = 4; // Non-Logged-In Users
+    // Content Visibility = Private:
+    public const VISIBILITY_PRIVATE = 0; // Logged-In Users
+    public const VISIBILITY_ADMIN = 3; // Administrative Users
+    public const VISIBILITY_CUSTOM = 5; // Custom
 
     /**
      * @inheritdoc
@@ -147,8 +147,8 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
             'targetUrl' => Yii::t('CustomPagesModule.base', 'Target Url'),
             'templateId' => Yii::t('CustomPagesModule.base', 'Template Layout'),
             'visibility' => Yii::t('CustomPagesModule.model', 'Visibility'),
-            'visibility_groups' => Yii::t('CustomPagesModule.model', 'By user groups'),
-            'visibility_languages' => Yii::t('CustomPagesModule.model', 'By user languages'),
+            'visibility_groups' => Yii::t('CustomPagesModule.model', 'Visible to Group Members'),
+            'visibility_languages' => Yii::t('CustomPagesModule.model', 'Language-Based Visibility'),
         ];
 
         if ($this->isSnippet()) {

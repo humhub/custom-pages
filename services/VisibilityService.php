@@ -15,7 +15,6 @@ use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
 
@@ -109,28 +108,21 @@ class VisibilityService
     public function getOptions(): array
     {
         $options = [
-            CustomPage::VISIBILITY_ADMIN => Yii::t('CustomPagesModule.base', 'Admin only'),
+            CustomPage::VISIBILITY_PUBLIC => Yii::t('CustomPagesModule.base', 'Always'),
+            CustomPage::VISIBILITY_PRIVATE => Yii::t('CustomPagesModule.base', 'Logged-In Users'),
+            CustomPage::VISIBILITY_GUEST => Yii::t('CustomPagesModule.base', 'Non-Logged-In Users'),
+            CustomPage::VISIBILITY_ADMIN => Yii::t('CustomPagesModule.base', 'Administrative Users'),
+            CustomPage::VISIBILITY_CUSTOM => Yii::t('CustomPagesModule.base', 'Custom'),
         ];
 
-        if ($this->page->isGlobal()) {
-            $options[CustomPage::VISIBILITY_PRIVATE] = Yii::t('CustomPagesModule.base', 'Members only');
-            if (AuthHelper::isGuestAccessEnabled()) {
-                if ($this->page->getTargetId() != PageType::TARGET_ACCOUNT_MENU) {
-                    $options[CustomPage::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.base', 'Members & Guests');
-                }
-            } else {
-                $options[CustomPage::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.base', 'All Members');
-            }
-        } else {
-            $options[CustomPage::VISIBILITY_PRIVATE] = Yii::t('CustomPagesModule.base', 'Space Members only');
-
-            if ($this->page->content->container->visibility != Space::VISIBILITY_NONE) {
-                $options[CustomPage::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.base', 'Public');
-            }
+        // Disable Public visibility "Always" for:
+        //  - Global page from category "User Account Menu (Settings)"
+        //  - Space page when the space is Private (Invisible)
+        $container = $this->page->content->container;
+        if (($container === null && $this->page->hasTarget(PageType::TARGET_ACCOUNT_MENU)) ||
+            ($container instanceof Space && $container->isVisibleFor(Space::VISIBILITY_NONE))) {
+            unset($options[CustomPage::VISIBILITY_PUBLIC]);
         }
-
-        $options[CustomPage::VISIBILITY_GUEST] = Yii::t('CustomPagesModule.base', 'Guests only');
-        $options[CustomPage::VISIBILITY_CUSTOM] = Yii::t('CustomPagesModule.base', 'Custom');
 
         return $options;
     }

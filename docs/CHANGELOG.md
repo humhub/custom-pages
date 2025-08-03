@@ -1,9 +1,13 @@
 Changelog
 =========
 
+1.12.1 (Unreleased)
+----------------------
+- Fix: Migration to Bootstrap 5 for templates
+
 1.12.0 (July 26, 2025)
 ----------------------
-- Enh #: Migration to Bootstrap 5 for HumHub 1.18
+- Enh #435: Migration to Bootstrap 5 for HumHub 1.18
 
 1.11.0-beta.8 (July 22, 2025)
 -----------------------------

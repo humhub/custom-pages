@@ -7,5 +7,15 @@
     "homepage": "https://github.com/humhub/custom-pages",
     "humhub": {
         "minVersion": "1.18"
-    }
+    },
+    "screenshots": [
+        "resources/screenshot1.png",
+        "resources/screenshot2.png",
+        "resources/screenshot3.png",
+        "resources/screenshot4.png",
+        "resources/screenshot5.png",
+        "resources/screenshot6.png",
+        "resources/screenshot7.png",
+        "resources/screenshot8.png"
+    ]
 }

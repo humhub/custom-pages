@@ -34,7 +34,7 @@ class TemplateInstanceDuplicatorService
      * @return void
      * @throws \yii\db\Exception
      */
-    public function duplicate(TemplateInstance $targetTemplateInstance, int $sourceContainerItemId = null): void
+    public function duplicate(TemplateInstance $targetTemplateInstance, ?int $sourceContainerItemId = null): void
     {
         $elementContents = BaseElementContent::find()
             ->leftJoin('custom_pages_template_instance', 'template_instance_id = custom_pages_template_instance.id')

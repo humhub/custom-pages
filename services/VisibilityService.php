@@ -45,7 +45,7 @@ class VisibilityService
      */
     public function isAdmin(): bool
     {
-        return $this->is(CustomPage::VISIBILITY_ADMIN);
+        return $this->is(CustomPage::VISIBILITY_ADMIN) && $this->page->isGlobal();
     }
 
 
@@ -78,7 +78,7 @@ class VisibilityService
      */
     public function isGuest(): bool
     {
-        return $this->is(CustomPage::VISIBILITY_GUEST);
+        return $this->is(CustomPage::VISIBILITY_GUEST) && $this->page->isGlobal();
     }
 
 
@@ -107,28 +107,29 @@ class VisibilityService
      */
     public function getOptions(): array
     {
-        $container = $this->page->content->container;
-        $isGlobal = $container === null;
+        $options = [];
 
-        $options = [
-            CustomPage::VISIBILITY_PUBLIC => $isGlobal
-                ? Yii::t('CustomPagesModule.base', 'Always')
-                : Yii::t('CustomPagesModule.base', 'Public'),
-            CustomPage::VISIBILITY_PRIVATE => $isGlobal
-                ? Yii::t('CustomPagesModule.base', 'Logged-In Users')
-                : Yii::t('CustomPagesModule.base', 'Space Members only'),
-            CustomPage::VISIBILITY_GUEST => Yii::t('CustomPagesModule.base', 'Non-Logged-In Users'),
-            CustomPage::VISIBILITY_ADMIN => Yii::t('CustomPagesModule.base', 'Administrative Users'),
-            CustomPage::VISIBILITY_CUSTOM => Yii::t('CustomPagesModule.base', 'Custom'),
-        ];
-
-        // Disable Public visibility "Always" for:
-        //  - Global page from category "User Account Menu (Settings)"
-        //  - Space page when the space is Private (Invisible)
-        if (($isGlobal && $this->page->hasTarget(PageType::TARGET_ACCOUNT_MENU)) ||
-            (!$isGlobal && $container->isVisibleFor(Space::VISIBILITY_NONE))) {
-            unset($options[CustomPage::VISIBILITY_PUBLIC]);
+        if ($this->page->isGlobal()) {
+            // Global Page
+            if (!$this->page->hasTarget(PageType::TARGET_ACCOUNT_MENU)) {
+                // For categories except of "User Account Menu (Settings)"
+                $options[CustomPage::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.base', 'Always');
+            }
+            $options += [
+                CustomPage::VISIBILITY_PRIVATE => Yii::t('CustomPagesModule.base', 'Logged-In Users'),
+                CustomPage::VISIBILITY_GUEST => Yii::t('CustomPagesModule.base', 'Non-Logged-In Users'),
+                CustomPage::VISIBILITY_ADMIN => Yii::t('CustomPagesModule.base', 'Administrative Users'),
+            ];
+        } else {
+            // Space Page
+            if (!$this->page->content->container->isVisibleFor(Space::VISIBILITY_NONE)) {
+                // For not private Spaces
+                $options[CustomPage::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.base', 'Public');
+            }
+            $options[CustomPage::VISIBILITY_PRIVATE] = Yii::t('CustomPagesModule.base', 'Space Members only');
         }
+
+        $options[CustomPage::VISIBILITY_CUSTOM] = Yii::t('CustomPagesModule.base', 'Custom');
 
         return $options;
     }
@@ -202,6 +203,12 @@ class VisibilityService
                 return false;
             }
 
+            if (!$this->page->isGlobal()) {
+                // This Space Page is allowed for the user's language
+                return true;
+            }
+
+            // Check only Global Page for restriction by the user's group
             $userGroupIds = $user->getGroupUsers()->select('group_id')->column();
             return $this->page->settingService->has('group', $userGroupIds);
         }

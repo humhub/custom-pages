@@ -18,10 +18,13 @@ use humhub\modules\ui\form\widgets\MultiSelect;
 <?= $form->field($page, 'visibility')->radioList($page->visibilityService->getOptions())->label(false) ?>
 
 <div data-cp-visibility-options="<?= CustomPage::VISIBILITY_CUSTOM ?>"<?= $page->visibilityService->isCustom() ? '' : ' style="display:none"' ?>>
-    <?= $form->field($page, 'visibility_groups')->widget(MultiSelect::class, [
-        'items' => UserEditForm::getGroupItems(),
-        'options' => ['data-tags' => 'false'],
-    ]) ?>
+    <?php if ($page->isGlobal()) : ?>
+        <?= $form->field($page, 'visibility_groups')->widget(MultiSelect::class, [
+            'items' => UserEditForm::getGroupItems(),
+            'options' => ['data-tags' => 'false'],
+        ]) ?>
+    <?php endif; ?>
+
     <?= $form->field($page, 'visibility_languages')->widget(MultiSelect::class, [
         'items' => Yii::$app->i18n->getAllowedLanguages(),
         'options' => ['data-tags' => 'false'],

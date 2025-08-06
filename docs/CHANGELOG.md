@@ -9,8 +9,8 @@ Changelog
 ----------------------
 - Enh #435: Migration to Bootstrap 5 for HumHub 1.18
 
-1.11.0-beta.9 (Unreleased)
------------------------------
+1.11.0-beta.9 (August 6, 2025)
+------------------------------
 - Fix #444: Fix depreciation warnings on PHP 8.4
 - Fix #446: TinyMCE license key
 

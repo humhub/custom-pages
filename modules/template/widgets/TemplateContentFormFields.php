@@ -10,7 +10,7 @@ namespace humhub\modules\custom_pages\modules\template\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 
 /**
  * Widget renders a form with fields of the Template Element Content

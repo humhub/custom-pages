@@ -7,9 +7,9 @@
  */
 
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 
 /* @var $model Template */
 ?>

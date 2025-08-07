@@ -18,14 +18,14 @@ $editUrl = Url::toEditSnippet($snippet, $snippet->content->container);
     <?php TemplatePage::begin(['page' => $snippet]) ?>
         <div class="panel panel default">
             <div class="panel-body">
-                <a href="<?= $backUrl ?>" class="btn btn-default pull-right" data-ui-loader><i class="fa fa-arrow-left"></i> <?= $backText ?></a>
+                <a href="<?= $backUrl ?>" class="btn btn-light float-end" data-ui-loader><i class="fa fa-arrow-left"></i> <?= $backText ?></a>
                 <div class="row">
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
                         <div class="panel panel-default custom-snippet">
                             <div class="panel-heading">
                                 <i class="fa <?= Html::encode($snippet->icon) ?>"></i> <?= Html::encode($snippet->title) ?>
-                                <a id="snippet-config-button" href="<?= $editUrl ?>" title="<?= Yii::t('CustomPagesModule.base', 'Configuration'); ?>" target="_blank" class="pull-right"><i class="fa fa-pencil"></i></a>
+                                <a id="snippet-config-button" href="<?= $editUrl ?>" title="<?= Yii::t('CustomPagesModule.base', 'Configuration'); ?>" target="_blank" class="float-end"><i class="fa fa-pencil"></i></a>
                             </div>
                             <div class="panel-body">
                                 <?= $html; ?>

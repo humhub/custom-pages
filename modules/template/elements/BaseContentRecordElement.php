@@ -10,7 +10,7 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use Yii;
 
 /**

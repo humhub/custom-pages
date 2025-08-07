@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.12.1 (Unreleased)
+----------------------
+- Fix: Migration to Bootstrap 5 for templates
+
+1.12.0 (July 26, 2025)
+----------------------
+- Enh #435: Migration to Bootstrap 5 for HumHub 1.18
+
 1.11.0-beta.9 (August 6, 2025)
 ------------------------------
 - Fix #444: Fix depreciation warnings on PHP 8.4

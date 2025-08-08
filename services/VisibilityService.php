@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\services;
 
+use humhub\helpers\ControllerHelper;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
@@ -180,6 +181,12 @@ class VisibilityService
      */
     public function canView($user = null): bool
     {
+        if (ControllerHelper::isActivePath('file', 'file') &&
+            Yii::$app->user->can([ManagePages::class])) {
+            // Allow to view attached files if user has a permission to manage custom pages
+            return true;
+        }
+
         if ($this->isAdmin()) {
             return self::canViewAdminOnlyContent($this->page->content->container);
         }

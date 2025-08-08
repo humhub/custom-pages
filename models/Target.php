@@ -6,6 +6,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\Module;
+use humhub\modules\custom_pages\types\ContentType;
 use yii\base\Model;
 
 /**

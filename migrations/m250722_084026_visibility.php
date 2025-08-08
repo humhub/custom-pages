@@ -21,9 +21,9 @@ class m250722_084026_visibility extends Migration
                   AND content.object_id = custom_pages_page.id
             SET custom_pages_page.visibility = content.visibility
             WHERE content.visibility = :publicVisibility', [
-                'customPageClass' => CustomPage::class,
-                'publicVisibility' => CustomPage::VISIBILITY_PUBLIC,
-            ])->execute();
+            'customPageClass' => CustomPage::class,
+            'publicVisibility' => CustomPage::VISIBILITY_PUBLIC,
+        ])->execute();
 
         $this->updateSilent(
             'custom_pages_page',

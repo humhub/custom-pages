@@ -67,7 +67,6 @@ class PageUrlRule extends Component implements UrlRuleInterface
             $parts = explode('/', $pathInfo, 3);
             if (isset($parts[1])) {
                 $page = CustomPage::find()
-                    ->readable()
                     ->andWhere([
                         'OR',
                         [CustomPage::tableName() . '.id' => $parts[1]],

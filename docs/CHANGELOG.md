@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.11.0-beta.10 (Unreleased)
+-----------------------------
+- Enh #443: Visibility restrictions
+
 1.11.0-beta.9 (August 6, 2025)
 ------------------------------
 - Fix #444: Fix depreciation warnings on PHP 8.4

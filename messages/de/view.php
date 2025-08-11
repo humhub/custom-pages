@@ -7,7 +7,6 @@ return [
     'Configuration' => 'Konfiguration',
     'Create new template' => 'Neue Vorlage erstellen',
     'Delete' => 'Löschen',
-    'Edit elements' => 'Elemente bearbeiten',
     'Edit template' => 'Vorlage bearbeiten',
     'Empty' => 'Leer',
     'Here you can configure the general settings of your {pageLabel}.' => 'Hier kannst du die allgemeinen Einstellungen von {pageLabel} definieren.',
@@ -20,8 +19,6 @@ return [
     'The abstract will be used as stream entry content to promote the actual page. 
                         If no abstract is given or the page is only visible for admins, no stream entry will be created.' => 'Die Beschreibung wird im zur Seite gehörenden Eintrag des Streams angezeigt. Wenn keine Beschreibung angegeben wird oder die Seite nur für Administratoren sichtbar ist, wird kein Eintrag im Stream vorgenommen.',
     'This page lists all available custom content entries.' => 'Diese Seite führt alle verfügbaren Drittinhalte auf.',
-    'This template does not contain any elements yet.' => 'Diese Vorlage enthält noch keine Elemente.',
-    'Turn edit off' => 'Bearbeiten ausschalten',
     'View not found' => 'View nicht gefunden',
     'You need to be a system administrator to edit this URL' => 'Nur Systemadministratoren können diese URL bearbeiten',
     'e.g. allowfullscreen allow="camera; microphone"' => 'z.B. allowfullscreen allow="camera; microphone"',
@@ -30,4 +27,7 @@ return [
     '<strong>Copy</strong> Custom Page' => '',
     'Copy' => '',
     'Create' => '',
+    'Exit Edit Mode' => '',
+    'This section has no editable elements.' => '',
+    'You don\'t have permission to access the page' => '',
 ];

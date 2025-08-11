@@ -8,8 +8,6 @@ return [
     'Empty <br />Container' => 'Üres <br />Tároló',
     'If disabled, existing php pages will still be online, but can\'t be created.' => 'Ha nincs engedélyezve, a meglévő php oldalak továbbra is online maradnak, de nem hozhatók létre.',
     'Label' => 'Cimke',
-    'Only visible for admins' => 'Csak adminisztrátorok láthatják',
-    'Only visible for space admins' => 'Csak a közösség adminisztrátorai láthatják',
     'Open in new window' => 'Megnyitás új ablakban',
     'PHP view path for custom space pages' => 'PHP megtekintési útvonal egyedi közösség-oldalakhoz',
     'PHP view path for custom space snippets' => 'PHP megtekintési útvonal egyedi kódrészletekhez (snippet)',
@@ -24,4 +22,6 @@ return [
     'Visibility' => 'Láthatóság',
     'page' => 'oldal',
     'snippet' => 'kódrészlet (snippet)',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
 ];

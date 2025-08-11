@@ -7,7 +7,6 @@ return [
     'Configuration' => 'Konfiguration',
     'Create new template' => 'Skapa ny mall',
     'Delete' => 'Radera',
-    'Edit elements' => 'Redigera element',
     'Edit template' => 'Redigera mall',
     'Empty' => 'Tom',
     'Here you can configure the general settings of your {pageLabel}.' => 'Här kan du konfigurera de allmänna inställningarna för din {pageLabel}.',
@@ -20,8 +19,6 @@ return [
     'The abstract will be used as stream entry content to promote the actual page. 
                         If no abstract is given or the page is only visible for admins, no stream entry will be created.' => 'Sammanfattningen kommer att visas som innehåll i flödet för att marknadsföra den faktiska sidan. Om ingen sammanfattning anges eller om sidan endast är synlig för administratörer skapas inget flödesinnehåll.',
     'This page lists all available custom content entries.' => 'Denna sida visar alla tillgängliga anpassade innehållsposter.',
-    'This template does not contain any elements yet.' => 'Den här mallen innehåller inga element än.',
-    'Turn edit off' => 'Slå av möjligheten att redigera',
     'View not found' => 'Vyn kunde inte hittas',
     'You need to be a system administrator to edit this URL' => 'Du måste vara systemadministratör för att redigera denna URL',
     'e.g. allowfullscreen allow="camera; microphone"' => 'e.g. allowfullscreen allow="camera; microphone"',
@@ -30,4 +27,7 @@ return [
     '<strong>Copy</strong> Custom Page' => '',
     'Copy' => '',
     'Create' => '',
+    'Exit Edit Mode' => '',
+    'This section has no editable elements.' => '',
+    'You don\'t have permission to access the page' => '',
 ];

@@ -7,7 +7,6 @@ return [
     'Configuration' => '構成',
     'Create new template' => '新しいテンプレートを作成',
     'Delete' => '削除',
-    'Edit elements' => '要素を編集する',
     'Edit template' => 'テンプレートを編集',
     'Empty' => '空',
     'Here you can configure the general settings of your {pageLabel}.' => 'ここで、{pageLabel} の一般設定を構成できます。',
@@ -20,8 +19,6 @@ return [
     'The abstract will be used as stream entry content to promote the actual page. 
                         If no abstract is given or the page is only visible for admins, no stream entry will be created.' => '要約は実際のページを宣伝するためのストリーム エントリ コンテンツとして使用されます。要約が指定されていない場合、またはページが管理者のみに表示されている場合、ストリーム エントリは作成されません。',
     'This page lists all available custom content entries.' => 'このページは有効なすべてのカスタム・コンテンツを表示します。',
-    'This template does not contain any elements yet.' => 'このテンプレートにはまだ要素が含まれていません。',
-    'Turn edit off' => '編集をオフにする',
     'View not found' => 'ビューが見つかりません',
     'You need to be a system administrator to edit this URL' => 'この URL を編集するにはシステム管理者である必要があります',
     'e.g. allowfullscreen allow="camera; microphone"' => '例: allowfullscreen allow="camera; microphone"',
@@ -30,4 +27,7 @@ return [
     '<strong>Copy</strong> Custom Page' => '',
     'Copy' => '',
     'Create' => '',
+    'Exit Edit Mode' => '',
+    'This section has no editable elements.' => '',
+    'You don\'t have permission to access the page' => '',
 ];

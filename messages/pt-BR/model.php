@@ -8,8 +8,6 @@ return [
     'Empty <br />Container' => 'Recipiente  <br /> Vazio ',
     'If disabled, existing php pages will still be online, but can\'t be created.' => 'Se desativado, as páginas php existentes ainda estarão on-line, mas não podem ser criadas.',
     'Label' => 'Rótulo',
-    'Only visible for admins' => 'Visível apenas para administradores',
-    'Only visible for space admins' => 'Visível apenas para administradores de espaço',
     'Open in new window' => 'Abrir em uma nova janela',
     'PHP view path for custom space pages' => 'Caminho de visualização do PHP para páginas de espaço personalizadas',
     'PHP view path for custom space snippets' => 'Caminho de visualização do PHP para fragmentos de espaço personalizados',
@@ -24,4 +22,6 @@ return [
     'Visibility' => 'Visibilidade',
     'page' => 'página',
     'snippet' => 'trecho',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
 ];

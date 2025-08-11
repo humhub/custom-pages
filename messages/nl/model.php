@@ -8,8 +8,6 @@ return [
     'Empty <br />Container' => 'Lege<br />Container',
     'If disabled, existing php pages will still be online, but can\'t be created.' => 'Indien uitgeschakeld, blijven bestaande php-pagina\'s nog steeds online, maar kunnen ze niet worden aangemaakt.',
     'Label' => 'Label',
-    'Only visible for admins' => 'Alleen zichtbaar voor beheerders',
-    'Only visible for space admins' => 'Alleen zichtbaar voor ruimtebeheerders',
     'Open in new window' => 'Openen in een nieuw venster',
     'PHP view path for custom space pages' => 'PHP-viewpad voor aangepaste ruimte-pagina\'s',
     'PHP view path for custom space snippets' => 'PHP-viewpad voor aangepaste ruimte-snippers',
@@ -24,4 +22,6 @@ return [
     'Visibility' => 'Zichtbaarheid',
     'page' => 'Pagina',
     'snippet' => 'Snipper',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
 ];

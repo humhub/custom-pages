@@ -6,8 +6,6 @@ return [
     'Empty <br />Container' => 'Empty <br />Container',
     'If disabled, existing php pages will still be online, but can\'t be created.' => 'If disabled, existing php pages will still be online, but can\'t be created.',
     'Label' => 'Nhãn',
-    'Only visible for admins' => 'Chỉ truy cập được bởi admins',
-    'Only visible for space admins' => 'Chỉ hiển thị với quản trị diễn đàn',
     'Open in new window' => 'Mở trên cửa sổ mới',
     'PHP view path for custom space pages' => 'PHP view path for custom space pages',
     'PHP view path for custom space snippets' => 'PHP view path for custom space snippets',
@@ -24,4 +22,6 @@ return [
     'snippet' => 'snippet',
     'Abstract' => '',
     'Attach Files' => '',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
 ];

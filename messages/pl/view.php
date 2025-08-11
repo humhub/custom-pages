@@ -7,7 +7,6 @@ return [
     'Configuration' => 'Konfiguracja',
     'Create new template' => 'Utwórz nowy szablon',
     'Delete' => 'Usuń',
-    'Edit elements' => 'Edytuj elementy',
     'Edit template' => 'Edytuj szablon',
     'Empty' => 'Puste',
     'Here you can configure the general settings of your {pageLabel}.' => 'Tutaj możesz skonfigurować ustawienia {pageLabel}.',
@@ -20,8 +19,6 @@ return [
     'The abstract will be used as stream entry content to promote the actual page. 
                         If no abstract is given or the page is only visible for admins, no stream entry will be created.' => 'Widok zostanie użyty jako wejściowy wpis strumienia w celu promowania właściwej strony. Jeśli żaden widok nie zostanie podany lub strona jest widoczna tylko dla administratorów, żaden wpis strumienia nie zostanie utworzony.',
     'This page lists all available custom content entries.' => 'Ta strona wyświetla listę wszystkich wpisów dostępnych niestandardowych treści.',
-    'This template does not contain any elements yet.' => 'Ta strona nie zawiera jeszcze żadnych elementów.',
-    'Turn edit off' => 'Wyłącz edycję',
     'View not found' => 'Nie znaleziono widoku',
     'You need to be a system administrator to edit this URL' => 'Musisz być administratorem aby zmienić ten URL',
     'e.g. allowfullscreen allow="camera; microphone"' => 'np. allowfullscreen allow="camera; microphone"',
@@ -30,4 +27,7 @@ return [
     '<strong>Copy</strong> Custom Page' => '',
     'Copy' => '',
     'Create' => '',
+    'Exit Edit Mode' => '',
+    'This section has no editable elements.' => '',
+    'You don\'t have permission to access the page' => '',
 ];

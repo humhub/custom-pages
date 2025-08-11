@@ -22,6 +22,7 @@ use humhub\modules\custom_pages\permissions\ManagePages;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
+use yii\web\View;
 
 /**
  * This is the model class for all templates.
@@ -269,6 +270,22 @@ class Template extends ActiveRecord
     }
 
     /**
+     * Register JS & CSS of the Template
+     *
+     * @return void
+     */
+    public function registerResources(): void
+    {
+        if ($this->css) {
+            Yii::$app->view->registerCss($this->css);
+        }
+
+        if ($this->js) {
+            Yii::$app->view->registerJs($this->js, View::POS_END);
+        }
+    }
+
+    /**
      * Renders the template for the given $owner or with all default content if
      * no $owner was given.
      *
@@ -280,14 +297,6 @@ class Template extends ActiveRecord
      */
     public function render(?TemplateInstance $templateInstance = null)
     {
-        if ($this->css) {
-            Yii::$app->view->registerCss($this->css);
-        }
-
-        if ($this->js) {
-            Yii::$app->view->registerJs($this->js);
-        }
-
         $result = '';
 
         if (TemplateInstanceRendererService::inEditMode() && $templateInstance && $templateInstance->isPage()) {

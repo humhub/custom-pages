@@ -63,6 +63,8 @@ class TemplateInstanceRendererService
      */
     public function render(): string
     {
+        $this->templateInstance->template->registerResources();
+
         if (self::inEditMode() && PagePermissionHelper::canEdit()) {
             $this->ignoreCache();
         }

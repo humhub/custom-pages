@@ -5,6 +5,7 @@ Changelog
 -----------------------------
 - Enh #443: Visibility restrictions
 - Fix #451: Register template resources
+- Fix #453: New category "Start Page"
 
 1.11.0-beta.9 (August 6, 2025)
 ------------------------------

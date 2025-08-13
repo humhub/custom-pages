@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.11.0-beta.10 (Unreleased)
------------------------------
+1.11.0-beta.10 (August 13, 2025)
+--------------------------------
 - Enh #443: Visibility restrictions
 - Fix #451: Register template resources
 - Fix #453: New category "Start Page"

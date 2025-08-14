@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.11.0-beta.11 (Unreleased)
+1.11.0-beta.11 (August 14, 2025)
 --------------------------------
 - Fix #454: Fix edit template page by space admin
 

@@ -18,16 +18,19 @@ class PagePermissionHelper
 {
     public static function canEdit(): bool
     {
-        if (Yii::$app->user->isGuest) {
-            return false;
+        static $canEdit;
+
+        if ($canEdit === null) {
+            if (Yii::$app->user->isGuest) {
+                $canEdit = false;
+            } elseif ($space = ContentContainerHelper::getCurrent(Space::class)) {
+                $canEdit = $space->isAdmin();
+            } else {
+                $canEdit = Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageModules::class, ManagePages::class]);
+            }
         }
 
-        $container = ContentContainerHelper::getCurrent();
-        if ($container instanceof Space) {
-            return $container->isAdmin();
-        }
-
-        return Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageModules::class, ManagePages::class]);
+        return $canEdit;
     }
 
     public static function canTemplate(): bool

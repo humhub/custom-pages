@@ -11,6 +11,7 @@ namespace humhub\modules\custom_pages\modules\template\widgets;
 use humhub\components\Widget;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 
 /**
  * User Administration Menu
@@ -25,16 +26,11 @@ class TemplatePageEditButton extends Widget
     public $page;
 
     /**
-     * @var bool
-     */
-    public $canEdit;
-
-    /**
      * @inheritdoc
      */
     public function beforeRun()
     {
-        return parent::beforeRun() && $this->canEdit;
+        return parent::beforeRun() && PagePermissionHelper::canEdit();
     }
 
     /**

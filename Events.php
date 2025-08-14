@@ -9,14 +9,15 @@ use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
-use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\types\LinkType;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\custom_pages\widgets\SnippetWidget;
+use humhub\modules\dashboard\widgets\Sidebar as DashboardSidebar;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Menu;
+use humhub\modules\space\widgets\Sidebar as SpaceSidebar;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\AccountMenu;
 use humhub\modules\user\widgets\HeaderControlsMenu;
@@ -251,11 +252,13 @@ class Events
     {
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
-            $canEdit = PagePermissionHelper::canEdit();
+
+            /* @var DashboardSidebar $dashboardSidebar */
+            $dashboardSidebar = $event->sender;
             foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_DASHBOARD_SIDEBAR)->all() as $page) {
                 /* @var CustomPage $page */
                 if ($page->canView()) {
-                    $event->sender->addWidget(SnippetWidget::class, ['model' => $page, 'canEdit' => $canEdit], [
+                    $dashboardSidebar->addWidget(SnippetWidget::class, ['model' => $page], [
                         'sortOrder' => $page->sort_order ?: 1000 + $page->id,
                     ]);
                 }
@@ -270,13 +273,13 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            $space = $event->sender->space;
-            $canEdit = PagePermissionHelper::canEdit();
-            if ($space->moduleManager->isEnabled('custom_pages')) {
-                foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_SPACE_STREAM_SIDEBAR, $space)->all() as $page) {
+            /* @var SpaceSidebar $spaceSidebar */
+            $spaceSidebar = $event->sender;
+            if ($spaceSidebar->space->moduleManager->isEnabled('custom_pages')) {
+                foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_SPACE_STREAM_SIDEBAR, $spaceSidebar->space)->all() as $page) {
                     /* @var CustomPage $page */
                     if ($page->canView()) {
-                        $event->sender->addWidget(SnippetWidget::class, ['model' => $page, 'canEdit' => $canEdit], [
+                        $spaceSidebar->addWidget(SnippetWidget::class, ['model' => $page], [
                             'sortOrder' => $page->sort_order ?: 1000 + $page->id,
                         ]);
                     }

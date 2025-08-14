@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.11.0-beta.11 (Unreleased)
+--------------------------------
+- Fix #454: Fix edit template page by space admin
+
 1.11.0-beta.10 (August 13, 2025)
 --------------------------------
 - Enh #443: Visibility restrictions

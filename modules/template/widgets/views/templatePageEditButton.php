@@ -16,6 +16,7 @@ use humhub\widgets\Link;
 /* @var CustomPage $page */
 /* @var ContentContainerActiveRecord $container */
 ?>
+<div style="margin-bottom:5px">
 <?php if (TemplateInstanceRendererService::inEditMode()) : ?>
     <div id="editPageButton" class="btn-group">
         <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -43,3 +44,4 @@ use humhub\widgets\Link;
         ->id('editPageButton')
         ->xs() ?>
 <?php endif; ?>
+</div>

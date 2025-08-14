@@ -8,7 +8,8 @@
 
 namespace humhub\modules\custom_pages\modules\template\controllers;
 
-use humhub\components\Controller;
+use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\custom_pages\modules\template\components\TemplateAccessFilter;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
@@ -25,15 +26,20 @@ use yii\web\NotFoundHttpException;
  *
  * @author buddha
  */
-class ElementContentController extends Controller
+class ElementContentController extends ContentContainerController
 {
+    /**
+     * @inerhitdoc
+     */
+    public $requireContainer = false;
+
     /**
      * @inheritdoc
      */
     public function behaviors()
     {
         return [
-            ['class' => 'humhub\modules\custom_pages\modules\template\components\TemplateAccessFilter'],
+            ['class' => TemplateAccessFilter::class],
         ];
     }
 

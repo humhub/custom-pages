@@ -8,9 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\components;
 
-use humhub\modules\content\helpers\ContentContainerHelper;
-use humhub\modules\space\models\Space;
-use Yii;
+use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use yii\base\ActionFilter;
 use yii\web\ForbiddenHttpException;
 
@@ -21,15 +19,13 @@ use yii\web\ForbiddenHttpException;
  */
 class TemplateAccessFilter extends ActionFilter
 {
+    /**
+     * @inheritdoc
+     */
     public function beforeAction($action)
     {
-        $space = ContentContainerHelper::getCurrent(Space::class);
-        if ($space !== null) {
-            if (!$space->isAdmin()) {
-                throw new ForbiddenHttpException(Yii::t('CustomPagesModule.base', 'Access denied!'));
-            }
-        } elseif (Yii::$app->user->isGuest || !Yii::$app->user->getIdentity()->isSystemAdmin()) {
-            throw new ForbiddenHttpException(403, Yii::t('CustomPagesModule.base', 'Access denied!'));
+        if (!PagePermissionHelper::canEdit()) {
+            throw new ForbiddenHttpException('Access denied!');
         }
 
         return parent::beforeAction($action);

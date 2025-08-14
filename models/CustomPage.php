@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\models;
 
+use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\richtext\RichText;
@@ -57,7 +58,7 @@ use Yii;
  * @property-read VisibilityService $visibilityService
  * @property-read SettingService $settingService
  */
-class CustomPage extends ContentActiveRecord implements ViewableInterface
+class CustomPage extends ContentActiveRecord implements ViewableInterface, EditableInterface
 {
     use PhpPageContainer;
     use TemplatePageContainer;

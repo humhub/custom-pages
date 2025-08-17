@@ -38,7 +38,7 @@ class TemplateInstanceRendererService
     public static function instance(CustomPage $customPage, bool $enableEditMode = false): self
     {
         if ($enableEditMode) {
-            self::$inEditMode = PagePermissionHelper::canEdit();
+            self::$inEditMode = PagePermissionHelper::canEdit($customPage);
         }
 
         return new self($customPage);

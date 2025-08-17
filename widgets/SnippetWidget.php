@@ -30,7 +30,7 @@ class SnippetWidget extends Widget
         return $this->render('snippet_' . $this->model->getContentType()->getViewName(), [
             'model' => $this->model,
             'contentContainer' => ContentContainerHelper::getCurrent(),
-            'canEdit' => PagePermissionHelper::canEdit(),
+            'canEdit' => PagePermissionHelper::canEdit($this->model),
         ]);
     }
 

@@ -30,7 +30,7 @@ class TemplatePageEditButton extends Widget
      */
     public function beforeRun()
     {
-        return parent::beforeRun() && PagePermissionHelper::canEdit();
+        return parent::beforeRun() && PagePermissionHelper::canEdit($this->page);
     }
 
     /**

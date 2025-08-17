@@ -423,16 +423,12 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
             IframeType::ID,
             TemplateType::ID,
             PhpType::ID,
+            HtmlType::ID,
         ];
 
         if (!$this->isSnippet()) {
             // Only for Page
             $types[] = LinkType::ID;
-        }
-
-        if ($this->isSnippet() || $this->isGlobal()) {
-            // For any(global & space) Snippet or global Page
-            $types[] = HtmlType::ID;
         }
 
         return $types;

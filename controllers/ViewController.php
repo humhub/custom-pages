@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use humhub\modules\custom_pages\permissions\ManagePages;
@@ -9,7 +10,6 @@ use humhub\modules\custom_pages\types\HtmlType;
 use humhub\modules\custom_pages\types\IframeType;
 use humhub\modules\custom_pages\types\LinkType;
 use humhub\modules\custom_pages\types\MarkdownType;
-use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\types\PhpType;
 use humhub\modules\custom_pages\types\TemplateType;
 use Yii;
@@ -83,6 +83,8 @@ class ViewController extends AbstractCustomContainerController
     public function renderContainerView($page)
     {
         switch ($page->type) {
+            case HtmlType::ID:
+                return $this->render('@custom_pages/views/container/html', ['page' => $page, 'html' => $page->getPageContent(), 'title' => $page->title]);
             case IframeType::ID:
                 return $this->render('@custom_pages/views/container/iframe', ['page' => $page, 'url' => $page->page_content]);
             case TemplateType::ID:

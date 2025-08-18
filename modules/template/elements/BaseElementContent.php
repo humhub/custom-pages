@@ -370,7 +370,7 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
      */
     public function canEdit($user = null): bool
     {
-        return PagePermissionHelper::canEdit();
+        return PagePermissionHelper::canEdit($this->getPage());
     }
 
     /**

@@ -51,7 +51,7 @@ class DeleteContentButton extends Widget
             return false;
         }
 
-        return PagePermissionHelper::canEdit();
+        return PagePermissionHelper::canEdit($this->model->getPage());
     }
 
     private function getOptions(): array

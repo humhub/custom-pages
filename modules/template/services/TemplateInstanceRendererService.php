@@ -65,7 +65,7 @@ class TemplateInstanceRendererService
     {
         $this->templateInstance->template->registerResources();
 
-        if (self::inEditMode() && PagePermissionHelper::canEdit()) {
+        if (self::inEditMode() && PagePermissionHelper::canEdit($this->templateInstance->page)) {
             $this->ignoreCache();
         }
 

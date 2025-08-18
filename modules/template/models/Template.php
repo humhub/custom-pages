@@ -262,8 +262,8 @@ class Template extends ActiveRecord
     {
         return Content::find()->leftJoin(
             TemplateInstance::tableName(),
-            Content::tableName() . '.object_model = :object_model AND ' .
-                Content::tableName() . '.object_id = ' . TemplateInstance::tableName() . '.page_id',
+            Content::tableName() . '.object_model = :object_model AND '
+                . Content::tableName() . '.object_id = ' . TemplateInstance::tableName() . '.page_id',
             ['object_model' => CustomPage::class],
         )
             ->where([TemplateInstance::tableName() . '.template_id' => $this->id]);
@@ -429,8 +429,8 @@ class Template extends ActiveRecord
      */
     public function canEdit(): bool
     {
-        if (!$this->isNewRecord && $this->is_default &&
-            !Yii::$app->getModule('custom_pages')->allowUpdateDefaultTemplates) {
+        if (!$this->isNewRecord && $this->is_default
+            && !Yii::$app->getModule('custom_pages')->allowUpdateDefaultTemplates) {
             return false;
         }
 

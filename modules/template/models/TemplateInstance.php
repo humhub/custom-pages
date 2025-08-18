@@ -80,8 +80,8 @@ class TemplateInstance extends ActiveRecord
         if ($contentState !== null) {
             $query->leftJoin(
                 Content::tableName(),
-                Content::tableName() . '.object_model = :object_model AND ' .
-                Content::tableName() . '.object_id = ' . self::tableName() . '.page_id',
+                Content::tableName() . '.object_model = :object_model AND '
+                . Content::tableName() . '.object_id = ' . self::tableName() . '.page_id',
                 ['object_model' => CustomPage::class],
             )
             ->andWhere([Content::tableName() . '.state' => $contentState]);

@@ -103,9 +103,9 @@ class m250122_114504_template_instance extends Migration
             ->where(['ci.id' => $childContainerItemId])
             ->one();
 
-        if ($parentContainerItem &&
-            $parentContainerItem['page_id'] === 0 &&
-            $parentContainerItem['container_item_id'] > 0) {
+        if ($parentContainerItem
+            && $parentContainerItem['page_id'] === 0
+            && $parentContainerItem['container_item_id'] > 0) {
             $parentContainerItem = $this->findParentContainerItem($parentContainerItem['container_item_id']);
         }
 

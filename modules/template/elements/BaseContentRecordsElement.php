@@ -114,9 +114,9 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             }
         }
 
-        if (!empty($this->contentIds) &&
-            preg_match_all('/\b\d+\b/', $this->contentIds, $contentIds) &&
-            count($contentIds[0]) > 0) {
+        if (!empty($this->contentIds)
+            && preg_match_all('/\b\d+\b/', $this->contentIds, $contentIds)
+            && count($contentIds[0]) > 0) {
             $query->andWhere(['content.id' => $contentIds[0]]);
         }
 
@@ -146,11 +146,11 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
      */
     public function renderEditForm(ActiveForm $form): string
     {
-        return $form->field($this, 'space')->widget(SpacePickerField::class) .
-            $form->field($this, 'author')->widget(UserPickerField::class) .
-            $form->field($this, 'topic')->widget(TopicPicker::class) .
-            $form->field($this, 'filter')->checkboxList($this->getContentFilterOptions()) .
-            $form->field($this, 'contentIds') .
-            $form->field($this, 'limit');
+        return $form->field($this, 'space')->widget(SpacePickerField::class)
+            . $form->field($this, 'author')->widget(UserPickerField::class)
+            . $form->field($this, 'topic')->widget(TopicPicker::class)
+            . $form->field($this, 'filter')->checkboxList($this->getContentFilterOptions())
+            . $form->field($this, 'contentIds')
+            . $form->field($this, 'limit');
     }
 }

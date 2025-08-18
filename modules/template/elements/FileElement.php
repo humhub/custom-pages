@@ -142,13 +142,13 @@ class FileElement extends BaseElementContent
     {
         $id = 'fileElement-' . $this->id;
 
-        return $form->field($this, 'file_guid')->hiddenInput(['class' => 'file-guid'])->label(false) .
+        return $form->field($this, 'file_guid')->hiddenInput(['class' => 'file-guid'])->label(false)
 
-        Html::beginTag('div', ['id' => $id, 'class' => 'file-upload-container clearfix']) .
-            Html::beginTag('div', ['class' => 'row']) .
+        . Html::beginTag('div', ['id' => $id, 'class' => 'file-upload-container clearfix'])
+            . Html::beginTag('div', ['class' => 'row'])
 
-                Html::beginTag('div', ['class' => 'col-md-4 uploadContainer']) .
-                    UploadButton::widget([
+                . Html::beginTag('div', ['class' => 'col-md-4 uploadContainer'])
+                    . UploadButton::widget([
                         'cssButtonClass' => 'btn-primary',
                         'model' => $this,
                         'single' => true,
@@ -158,23 +158,23 @@ class FileElement extends BaseElementContent
                         'tooltip' => false,
                         'preview' => '#' . $id . '-preview',
                         'progress' => '#' . $id . '-progress',
-                    ]) . ' ' .
-                    DeleteContentButton::widget([
+                    ]) . ' '
+                    . DeleteContentButton::widget([
                         'model' => $this,
                         'previewId' => $id . '-preview',
-                    ]) .
-                Html::endTag('div') .
+                    ])
+                . Html::endTag('div')
 
-                Html::beginTag('div', ['class' => 'col-md-8 previewContainer']) .
-                    FilePreview::widget([
+                . Html::beginTag('div', ['class' => 'col-md-8 previewContainer'])
+                    . FilePreview::widget([
                         'id' => $id . '-preview',
                         'popoverPosition' => 'top',
                         'items' => [$this->getFile()],
-                    ]) .
-                    UploadProgress::widget(['id' => $id . '-progress']) .
-                Html::endTag('div') .
+                    ])
+                    . UploadProgress::widget(['id' => $id . '-progress'])
+                . Html::endTag('div')
 
-            Html::endTag('div') .
-        Html::endTag('div');
+            . Html::endTag('div')
+        . Html::endTag('div');
     }
 }

@@ -165,11 +165,11 @@ class SpacesElement extends BaseContentContainersElement
      */
     public function renderEditForm(ActiveForm $form): string
     {
-        return parent::renderEditForm($form) .
-            $this->renderEditRecordsTypeFields([
+        return parent::renderEditForm($form)
+            . $this->renderEditRecordsTypeFields([
                 'static' => $form->field($this, 'static')->widget(SpacePickerField::class, ['minInput' => 2]),
-                'member' => $form->field($this, 'member')->widget(UserPickerField::class, ['minInput' => 2, 'maxSelection' => 1]) .
-                            $form->field($this, 'memberType')->dropDownList($this->getMemberTypes()),
+                'member' => $form->field($this, 'member')->widget(UserPickerField::class, ['minInput' => 2, 'maxSelection' => 1])
+                            . $form->field($this, 'memberType')->dropDownList($this->getMemberTypes()),
                 'tag' => $form->field($this, 'tag')->widget(ContainerTagPicker::class, [
                     'url' => Url::to(['/space/browse/search-tags-json']),
                     'minInput' => 2,

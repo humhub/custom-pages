@@ -181,8 +181,8 @@ class VisibilityService
      */
     public function canView($user = null): bool
     {
-        if (ControllerHelper::isActivePath('file', 'file') &&
-            Yii::$app->user->can([ManagePages::class])) {
+        if (ControllerHelper::isActivePath('file', 'file')
+            && Yii::$app->user->can([ManagePages::class])) {
             // Allow to view attached files if user has a permission to manage custom pages
             return true;
         }

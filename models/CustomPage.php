@@ -119,8 +119,8 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
         if (!$this->isSnippet()) {
             $this->wallEntryClass = WallEntry::class;
 
-            if ($this->isNewRecord && $this->type == HtmlType::ID &&
-                ($this->page_content === null || $this->page_content === '')) {
+            if ($this->isNewRecord && $this->type == HtmlType::ID
+                && ($this->page_content === null || $this->page_content === '')) {
                 $this->page_content = '<div class="panel panel-default"><div class="panel-body"></div></div>';
             }
         }
@@ -198,11 +198,11 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
             $rules[] = [['iframe_attrs'], 'string', 'max' => 255];
         }
 
-        if (PhpType::isType($type) ||
-            LinkType::isType($type) ||
-            HtmlType::isType($type) ||
-            MarkdownType::isType($type) ||
-            (IframeType::isType($type) && Yii::$app->user->isAdmin())) {
+        if (PhpType::isType($type)
+            || LinkType::isType($type)
+            || HtmlType::isType($type)
+            || MarkdownType::isType($type)
+            || (IframeType::isType($type) && Yii::$app->user->isAdmin())) {
             $rules[] = [['page_content'], 'required'];
         }
 
@@ -553,8 +553,8 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
 
     public function canEdit($type = null): bool
     {
-        if (!($this->content->container instanceof Space && $this->content->container->isAdmin()) &&
-            !Yii::$app->user->can(ManagePages::class)) {
+        if (!($this->content->container instanceof Space && $this->content->container->isAdmin())
+            && !Yii::$app->user->can(ManagePages::class)) {
             return false;
         }
 

@@ -10,27 +10,30 @@ namespace humhub\modules\custom_pages\modules\template\helpers;
 
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\space\models\Space;
 use Yii;
 
 class PagePermissionHelper
 {
-    public static function canEdit(): bool
+    public static function canEdit(?CustomPage $page = null): bool
     {
-        static $canEdit;
+        static $canEdit = [];
 
-        if ($canEdit === null) {
+        $pageId = $page?->id ?? 0;
+
+        if (!array_key_exists($pageId, $canEdit)) {
             if (Yii::$app->user->isGuest) {
-                $canEdit = false;
+                $canEdit[$pageId] = false;
             } elseif ($space = ContentContainerHelper::getCurrent(Space::class)) {
-                $canEdit = $space->isAdmin();
+                $canEdit[$pageId] = $page?->canEdit() ?? $space->isAdmin();
             } else {
-                $canEdit = Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageModules::class, ManagePages::class]);
+                $canEdit[$pageId] = Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageModules::class, ManagePages::class]);
             }
         }
 
-        return $canEdit;
+        return $canEdit[$pageId];
     }
 
     public static function canTemplate(): bool

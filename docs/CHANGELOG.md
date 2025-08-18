@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.11.0-beta.12 (Unreleased)
+--------------------------------
+- Enh #402: HTML pages not allowed in Spaces
+
 1.11.0-beta.11 (August 14, 2025)
 --------------------------------
 - Fix #454: Fix edit template page by space admin

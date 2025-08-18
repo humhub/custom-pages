@@ -38,7 +38,7 @@ class TemplateInstanceRendererService
     public static function instance(CustomPage $customPage, bool $enableEditMode = false): self
     {
         if ($enableEditMode) {
-            self::$inEditMode = PagePermissionHelper::canEdit();
+            self::$inEditMode = PagePermissionHelper::canEdit($customPage);
         }
 
         return new self($customPage);
@@ -65,7 +65,7 @@ class TemplateInstanceRendererService
     {
         $this->templateInstance->template->registerResources();
 
-        if (self::inEditMode() && PagePermissionHelper::canEdit()) {
+        if (self::inEditMode() && PagePermissionHelper::canEdit($this->templateInstance->page)) {
             $this->ignoreCache();
         }
 

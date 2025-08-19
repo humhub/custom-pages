@@ -107,6 +107,12 @@ class TemplateStructure extends JsWidget
 
     public function getContainerOptions(ContainerElement $element): array
     {
+        if ($element->isNewRecord) {
+            // Element content of the Container must be created in DB before start of adding items,
+            // because the attribute 'data-container-id' is required.
+            $element->save();
+        }
+
         return [
             'data-element-id' => $element->element_id,
             'data-container-id' => $element->id,

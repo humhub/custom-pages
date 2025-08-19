@@ -4,6 +4,7 @@ Changelog
 1.11.0-beta.12 (Unreleased)
 --------------------------------
 - Enh #402: HTML pages not allowed in Spaces
+- Enh #457: Fix adding items to empty container
 
 1.11.0-beta.11 (August 14, 2025)
 --------------------------------

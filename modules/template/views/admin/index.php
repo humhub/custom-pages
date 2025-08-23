@@ -51,7 +51,7 @@ TemplateAsset::register($this);
                 <?php ActiveForm::end() ?>
             </div>
             <div>
-                <?= Button::info(Yii::t('CustomPagesModule.base', 'Import'))
+                <?= Button::accent(Yii::t('CustomPagesModule.base', 'Import'))
                     ->action('ui.modal.load', ['import-source'])
                     ->icon('download')
                     ->style('margin-right:5px') ?>

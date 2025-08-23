@@ -31,7 +31,7 @@ use yii\helpers\Html;
                 Yii::t('CustomPagesModule.base', 'Delete'),
             ) ?>
     <?php else : ?>
-        <?= Button::info()->icon('eye')->sm()
+        <?= Button::accent()->icon('eye')->sm()
             ->action('ui.modal.load', ['/custom_pages/template/admin/edit-element', 'id' => $model->id]) ?>
     <?php endif; ?>
     </td>

@@ -91,10 +91,10 @@ class TemplatePage extends JsWidget
         $cssClass = '';
 
         //TODO: fullscreen flag
-        if ($this->page instanceof CustomPage &&
-            !$this->page->isSnippet() &&
-            ContentContainerHelper::getCurrent() === null &&
-            $this->page->getTargetId() !== PageType::TARGET_ACCOUNT_MENU) {
+        if ($this->page instanceof CustomPage
+            && !$this->page->isSnippet()
+            && ContentContainerHelper::getCurrent() === null
+            && $this->page->getTargetId() !== PageType::TARGET_ACCOUNT_MENU) {
             $cssClass .= 'container ';
         }
 

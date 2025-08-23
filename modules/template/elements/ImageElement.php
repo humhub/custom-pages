@@ -107,12 +107,12 @@ class ImageElement extends FileElement
     {
         $id = 'imageElement-' . $this->id;
 
-        return $form->field($this, 'file_guid')->hiddenInput(['class' => 'file-guid'])->label(false) .
+        return $form->field($this, 'file_guid')->hiddenInput(['class' => 'file-guid'])->label(false)
 
-        Html::beginTag('div', ['id' => $id]) .
-            Html::beginTag('div', ['class' => 'row']) .
-                Html::beginTag('div', ['class' => 'col-md-4 uploadContainer']) .
-                    UploadButton::widget([
+        . Html::beginTag('div', ['id' => $id])
+            . Html::beginTag('div', ['class' => 'row'])
+                . Html::beginTag('div', ['class' => 'col-md-4 uploadContainer'])
+                    . UploadButton::widget([
                         'cssButtonClass' => 'btn-primary',
                         'model' => $this,
                         'single' => true,
@@ -122,27 +122,27 @@ class ImageElement extends FileElement
                         'tooltip' => Yii::t('CustomPagesModule.base', 'Upload image'),
                         'preview' => '#' . $id . '-preview',
                         'progress' => '#' . $id . '-progress',
-                    ]) . ' ' .
-                    DeleteContentButton::widget([
+                    ]) . ' '
+                    . DeleteContentButton::widget([
                         'model' => $this,
                         'previewId' => $id . '-preview',
-                    ]) .
-                Html::endTag('div') .
+                    ])
+                . Html::endTag('div')
 
-                UploadProgress::widget(['id' => $id . '-progress', 'options' => ['style' => 'width:500px']]) .
-                FilePreview::widget([
+                . UploadProgress::widget(['id' => $id . '-progress', 'options' => ['style' => 'width:500px']])
+                . FilePreview::widget([
                     'id' => $id . '-preview',
                     'items' => [$this->getFile()],
                     'jsWidget' => 'custom_pages.template.ImagePreview',
                     'options' => ['class' => 'col-md-8 previewContainer'],
-                ]) .
-            Html::endTag('div') .
+                ])
+            . Html::endTag('div')
 
-            Html::tag('br') .
+            . Html::tag('br')
 
-            $this->renderCollapsableEditForm($form) .
+            . $this->renderCollapsableEditForm($form)
 
-        Html::endTag('div');
+        . Html::endTag('div');
     }
 
     private function renderCollapsableEditForm(ActiveForm $form): string
@@ -152,18 +152,18 @@ class ImageElement extends FileElement
         ob_start();
         CollapsableFormGroup::begin(['defaultState' => false]);
 
-        echo Html::beginTag('div', ['class' => 'row']) .
-            Html::beginTag('div', ['class' => 'col-md-6']) .
-                $form->field($this->definition, 'height')->textInput(['disabled' => $disableDefinition]) .
-            Html::endTag('div') .
-            Html::beginTag('div', ['class' => 'col-md-6']) .
-                $form->field($this->definition, 'width')->textInput(['disabled' => $disableDefinition]) .
-            Html::endTag('div') .
-        Html::endTag('div') .
+        echo Html::beginTag('div', ['class' => 'row'])
+            . Html::beginTag('div', ['class' => 'col-md-6'])
+                . $form->field($this->definition, 'height')->textInput(['disabled' => $disableDefinition])
+            . Html::endTag('div')
+            . Html::beginTag('div', ['class' => 'col-md-6'])
+                . $form->field($this->definition, 'width')->textInput(['disabled' => $disableDefinition])
+            . Html::endTag('div')
+        . Html::endTag('div')
 
-        $form->field($this->definition, 'style')->textInput(['disabled' => $disableDefinition]) .
+        . $form->field($this->definition, 'style')->textInput(['disabled' => $disableDefinition])
 
-        $form->field($this, 'alt');
+        . $form->field($this, 'alt');
 
         CollapsableFormGroup::end();
 

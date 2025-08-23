@@ -174,15 +174,15 @@ class Events
     private static function isCurrentTargetUrl(CustomPage $page): bool
     {
         if ($page->type === LinkType::ID && $page->page_content) {
-            $targetUrl = strpos($page->page_content, 'http') === 0 ?
-                $page->page_content :
-                'https://domain.tld/' . trim($page->page_content, '/');
+            $targetUrl = strpos($page->page_content, 'http') === 0
+                ? $page->page_content
+                : 'https://domain.tld/' . trim($page->page_content, '/');
             $targetUrlPath = parse_url($targetUrl, PHP_URL_PATH) ?: '';
             $targetUrlQuery = parse_url($targetUrl, PHP_URL_QUERY) ?: '';
             $container = ContentContainerHelper::getCurrent();
-            $currentContainerPath = $container ?
-                rtrim($container->getUrl(), '/') :
-                null;
+            $currentContainerPath = $container
+                ? rtrim($container->getUrl(), '/')
+                : null;
             if (
                 $targetUrlPath
                 && (
@@ -225,9 +225,9 @@ class Events
 
     public static function onAccountTopMenuInit($event)
     {
-        if (!Yii::$app->user->isAdmin() &&
-            version_compare(Yii::$app->version, '1.8', '<') &&
-            !AdminMenu::canAccess()
+        if (!Yii::$app->user->isAdmin()
+            && version_compare(Yii::$app->version, '1.8', '<')
+            && !AdminMenu::canAccess()
         ) {
             static::onAdminMenuInit($event);
         }

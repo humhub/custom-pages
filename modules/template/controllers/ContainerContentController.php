@@ -365,8 +365,8 @@ class ContainerContentController extends ContentContainerController
     {
         $instanceContainer = $instance->page?->content?->container;
 
-        return !($instanceContainer instanceof Space) || // Global template instance
-            $instanceContainer->is($this->contentContainer); // Space template instance
+        return !($instanceContainer instanceof Space) // Global template instance
+            || $instanceContainer->is($this->contentContainer); // Space template instance
     }
 
 }

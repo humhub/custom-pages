@@ -32,7 +32,7 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
         return Yii::t('CustomPagesModule.template', 'Rss');
     }
 
-    private SimpleXMLElement|null|false $rssData = null;
+    private SimpleXMLElement|false|null $rssData = null;
 
     /**
      * @inheritdoc
@@ -194,8 +194,8 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
         $imageFields = ['content', 'description'];
 
         foreach ($imageFields as $imageField) {
-            if (isset($fields[$imageField]) &&
-                preg_match('/<img.+?src="(.+?)".+?>/i', $fields[$imageField], $image)) {
+            if (isset($fields[$imageField])
+                && preg_match('/<img.+?src="(.+?)".+?>/i', $fields[$imageField], $image)) {
                 $fields['imageUrl'] = $image[1];
                 break;
             }
@@ -235,8 +235,8 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
      */
     public function renderEditForm(ActiveForm $form): string
     {
-        return $form->field($this, 'url')->textInput(['maxlength' => 1000]) .
-            $form->field($this, 'cache_time') .
-            $form->field($this, 'limit');
+        return $form->field($this, 'url')->textInput(['maxlength' => 1000])
+            . $form->field($this, 'cache_time')
+            . $form->field($this, 'limit');
     }
 }

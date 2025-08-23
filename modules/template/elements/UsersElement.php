@@ -161,8 +161,8 @@ class UsersElement extends BaseContentContainersElement
      */
     public function renderEditForm(ActiveForm $form): string
     {
-        return parent::renderEditForm($form) .
-            $this->renderEditRecordsTypeFields([
+        return parent::renderEditForm($form)
+            . $this->renderEditRecordsTypeFields([
                 'static' => $form->field($this, 'static')->widget(UserPickerField::class, ['minInput' => 2]),
                 'group' => $form->field($this, 'group')->dropDownList($this->getGroupOptions()),
                 'friend' => $form->field($this, 'friend')->widget(UserPickerField::class, ['minInput' => 2, 'maxSelection' => 1]),

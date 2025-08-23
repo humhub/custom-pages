@@ -199,9 +199,9 @@ class TemplateImportService extends BaseImportService
         $elementContent = $element->getDefaultContent(true);
 
         foreach ($data as $name => $value) {
-            if ($name === 'id' ||
-                ($name !== 'dyn_attributes' && is_array($value)) ||
-                !$elementContent->hasAttribute($name)) {
+            if ($name === 'id'
+                || ($name !== 'dyn_attributes' && is_array($value))
+                || !$elementContent->hasAttribute($name)) {
                 continue;
             }
             $elementContent->$name = $value;

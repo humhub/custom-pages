@@ -109,7 +109,7 @@ class Events
                             'data-pjax-prevent' => 1,
                         ],
                         'url' => $page->getUrl(),
-                        'icon' => $page->icon,
+                        'icon' => $page->icon ?? '',
                         'isActive' => ControllerHelper::isActivePath('custom_pages', 'view', 'index', ['id' => $page->id]),
                         'sortOrder' => $page->sort_order ?: 1000 + $page->id,
                     ]));
@@ -156,7 +156,7 @@ class Events
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
                     'url' => ['/custom_pages/view', 'id' => $page->id],
                     'htmlOptions' => ['target' => $page->in_new_window ? '_blank' : ''],
-                    'icon' => $page->icon,
+                    'icon' => $page->icon ?? '',
                     'isActive' => ControllerHelper::isActivePath('custom_pages', 'view', [], ['id' => $page->id])
                         || static::isCurrentTargetUrl($page),
                     'sortOrder' => 0,
@@ -174,7 +174,7 @@ class Events
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
                     'url' => ['/custom_pages/view', 'id' => $page->id],
                     'htmlOptions' => ['target' => $page->in_new_window ? '_blank' : ''],
-                    'icon' => $page->icon,
+                    'icon' => $page->icon ?? '',
                     'isActive' => ControllerHelper::isActivePath('custom_pages', 'view', [], ['id' => $page->id])
                         || static::isCurrentTargetUrl($page),
                     'sortOrder' => $page->sort_order ?: 1000 + $page->id,
@@ -228,7 +228,7 @@ class Events
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
                     'url' => ['/custom_pages/view', 'id' => $page->id],
                     'htmlOptions' => ['target' => $page->in_new_window ? '_blank' : ''],
-                    'icon' => $page->icon,
+                    'icon' => $page->icon ?? '',
                     'isActive' => ControllerHelper::isActivePath('custom_pages', 'view', [], ['id' => $page->id]),
                     'sortOrder' => $page->sort_order ?: 1000 + $page->id,
                 ]));
@@ -330,7 +330,7 @@ class Events
                     'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                     'htmlOptions' => ['target' => $page->in_new_window ? '_blank' : ''],
                     'sortOrder' => $page->sort_order ?: 1000 + $page->id,
-                    'icon' => $page->icon,
+                    'icon' => $page->icon ?? '',
                 ]));
             }
         } catch (Throwable $e) {

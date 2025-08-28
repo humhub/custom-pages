@@ -6,38 +6,30 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\components\View;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 /* @var $this View */
 /* @var $page CustomPage */
 ?>
-<?php ModalDialog::begin([
-    'header' => Yii::t('CustomPagesModule.view', '<strong>Copy</strong> Custom Page'),
-    'closable' => true,
-    'showClose' => true,
+<?php $form = Modal::beginFormDialog([
+    'title' => Yii::t('CustomPagesModule.view', '<strong>Copy</strong> Custom Page'),
+    'footer' => ModalButton::cancel() .
+        ModalButton::primary(Yii::t('CustomPagesModule.view', 'Copy'))->submit(),
 ]) ?>
-<?php $form = ActiveForm::begin() ?>
-<div class="modal-body">
     <?php if ($page->isAllowedField('title')) : ?>
         <?= $form->field($page, 'title') ?>
     <?php endif; ?>
 
     <?php if (!$page->isSnippet()) : ?>
-        <div class="alert alert-info infoAdminOnly"<?= $page->visibilityService->isAdmin() ? '' : ' style="display:none"' ?>>
+        <div class="alert alert-info infoAdminOnly<?= $page->visibilityService->isAdmin() ? '' : ' d-none' ?>">
             <?= Yii::t('CustomPagesModule.view', '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!'); ?>
         </div>
     <?php endif; ?>
 
     <?= $this->render('edit_visibility', ['page' => $page, 'form' => $form]) ?>
     <?= $form->field($page, 'target')->dropDownList($page->getAvailableTargetOptions()) ?>
-</div>
-<div class="modal-footer">
-    <?= ModalButton::cancel() ?>
-    <?= ModalButton::submitModal(null, Yii::t('CustomPagesModule.view', 'Copy')) ?>
-</div>
-<?php ActiveForm::end() ?>
-<?php ModalDialog::end() ?>
+
+<?php Modal::endFormDialog() ?>

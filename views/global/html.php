@@ -4,10 +4,9 @@
  * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
-
-use humhub\modules\custom_pages\assets\InlineStyleAssets;
+use humhub\components\View;
+use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\ui\view\components\View;
 use yii\helpers\Html;
 
 /* @var $this View */
@@ -16,7 +15,7 @@ use yii\helpers\Html;
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 
-InlineStyleAssets::register($this);
+Assets::register($this);
 ?>
 <div class="container <?= Html::encode($cssClass) ?>">
     <div class="row">

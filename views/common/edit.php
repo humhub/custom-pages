@@ -1,15 +1,15 @@
 <?php
 
+use humhub\components\View;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\types\TemplateType;
 use humhub\modules\custom_pages\widgets\PageIconSelect;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
+use humhub\widgets\form\ActiveForm;
 
 Assets::register($this);
 
@@ -36,7 +36,7 @@ $contentType = $page->getContentType();
 
         <h4><?= Yii::t('CustomPagesModule.view', 'Configuration'); ?></h4>
 
-        <div class="help-block">
+        <div class="form-text">
             <?= Yii::t('CustomPagesModule.view', 'Here you can configure the general settings of your {pageLabel}.', ['pageLabel' => $page->getLabel()]) ?>
         </div>
 
@@ -51,7 +51,7 @@ $contentType = $page->getContentType();
 
         <?php if ($page->isAllowedField('url')) : ?>
             <?= $form->field($page, 'url') ?>
-            <div class="help-block">
+            <div class="form-text">
                 <?= Yii::t('CustomPagesModule.view', 'By setting an url shortcut value, you can create a better readable url for your page. If <b>URL Rewriting</b> is enabled on your site, the value \'mypage\' will result in an url \'www.example.de/p/mypage\'.') ?>
             </div>
         <?php endif; ?>
@@ -77,7 +77,7 @@ $contentType = $page->getContentType();
         <?= $form->endCollapsibleFields(); ?>
 
         <?php if (!$page->isSnippet()) : ?>
-            <div class="alert alert-info infoAdminOnly"<?= $page->visibilityService->isAdmin() ? '' : ' style="display:none"' ?>>
+            <div class="alert alert-info infoAdminOnly<?= $page->visibilityService->isAdmin() ? '' : ' d-none' ?>">
                 <?= Yii::t('CustomPagesModule.view', '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!'); ?>
             </div>
         <?php endif; ?>
@@ -85,7 +85,7 @@ $contentType = $page->getContentType();
         <?php if ($page->isAllowedField('abstract')) : ?>
             <?= $form->beginCollapsibleFields(Yii::t('CustomPagesModule.base', 'Stream options')); ?>
             <?= $form->field($page, 'abstract')->widget(RichTextField::class); ?>
-            <div class="help-block">
+            <div class="form-text">
                 <?= Yii::t(
                     'CustomPagesModule.view',
                     'The abstract will be used as stream entry content to promote the actual page. 

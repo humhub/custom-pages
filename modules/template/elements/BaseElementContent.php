@@ -15,9 +15,9 @@ use humhub\modules\custom_pages\modules\template\components\ActiveRecordDynamicA
 use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\widgets\form\ActiveForm;
 use Yii;
 use yii\db\ActiveQuery;
-use humhub\modules\ui\form\widgets\ActiveForm;
 
 /**
  * This is the base class for all Template Element Content types.

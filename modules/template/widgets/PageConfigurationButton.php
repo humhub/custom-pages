@@ -29,7 +29,7 @@ class PageConfigurationButton extends \humhub\components\Widget
     /**
      * @var string
      */
-    public $btnClass = 'btn btn-primary btn-xs';
+    public $btnClass = 'btn btn-primary btn-sm';
 
     /**
      * @var string

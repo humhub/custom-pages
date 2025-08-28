@@ -9,8 +9,8 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\MultiSelect;
+use humhub\widgets\form\ActiveForm;
 use Yii;
 use yii\db\ActiveQuery;
 

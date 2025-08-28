@@ -12,7 +12,7 @@ use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\assets\InlineEditorAsset;
-use humhub\modules\custom_pages\modules\template\assets\TemplatePageStyleAsset;
+use humhub\modules\custom_pages\modules\template\assets\TemplateAsset;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use humhub\widgets\JsWidget;
 use yii\helpers\Html;
@@ -60,7 +60,7 @@ class TemplatePage extends JsWidget
      */
     public function run()
     {
-        TemplatePageStyleAsset::register($this->getView());
+        TemplateAsset::register($this->getView());
 
         if (TemplateInstanceRendererService::inEditMode()) {
             InlineEditorAsset::register($this->getView());

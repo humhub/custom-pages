@@ -12,7 +12,7 @@ use humhub\modules\custom_pages\assets\Assets;
 use yii\web\AssetBundle;
 use yii\web\View;
 
-class TemplateCoreAsset extends AssetBundle
+class TemplateAsset extends AssetBundle
 {
     /**
      * @inheritdoc
@@ -36,6 +36,13 @@ class TemplateCoreAsset extends AssetBundle
      */
     public $js = [
         'js/humhub.custom_pages.template.js',
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    public $css = [
+        'css/humhub.custom_pages.template.min.css',
     ];
 
     /**

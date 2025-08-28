@@ -2,7 +2,7 @@
 
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
-use yii\db\Migration;
+use humhub\components\Migration;
 
 /**
  * Class m201208_045103_fix_account_menu_visibility

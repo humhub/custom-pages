@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 /**
  * Class m190213_135902_align_page_types
@@ -12,8 +12,8 @@ class m190213_135904_page_abstract extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('custom_pages_page', 'abstract', 'TEXT');
-        $this->addColumn('custom_pages_container_page', 'abstract', 'TEXT');
+        $this->safeAddColumn('custom_pages_page', 'abstract', 'TEXT');
+        $this->safeAddColumn('custom_pages_container_page', 'abstract', 'TEXT');
     }
 
     /**

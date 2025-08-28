@@ -5,6 +5,7 @@ Changelog
 --------------------------------
 - Enh #402: HTML pages not allowed in Spaces
 - Enh #457: Fix adding items to empty container
+- Fix: Add safe migrations
 
 1.11.0-beta.11 (August 14, 2025)
 --------------------------------

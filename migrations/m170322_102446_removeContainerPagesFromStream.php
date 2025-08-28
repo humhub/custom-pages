@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m170322_102446_removeContainerPagesFromStream extends Migration
 {

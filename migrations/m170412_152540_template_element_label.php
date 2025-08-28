@@ -1,12 +1,12 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m170412_152540_template_element_label extends Migration
 {
     public function up()
     {
-        $this->addColumn('custom_pages_template_element', 'title', 'varchar(255) DEFAULT NULL');
+        $this->safeAddColumn('custom_pages_template_element', 'title', 'varchar(255) DEFAULT NULL');
     }
 
     public function down()

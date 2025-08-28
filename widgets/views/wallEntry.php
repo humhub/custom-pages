@@ -6,6 +6,7 @@ use humhub\widgets\bootstrap\Button;
 
 /* @var $page CustomPage */
 ?>
+<?php if ($page->canView()) : ?>
 <div class="media">
     <div class="media-body">
         <div data-ui-show-more>
@@ -15,3 +16,6 @@ use humhub\widgets\bootstrap\Button;
         <?= Button::primary(Yii::t('CustomPagesModule.view', 'Open page...'))->link($page->getUrl())->sm() ?>
     </div>
 </div>
+<?php else : ?>
+    <?= Yii::t('CustomPagesModule.view', 'You don\'t have permission to access the page') ?>
+<?php endif; ?>

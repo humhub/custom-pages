@@ -116,8 +116,8 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
     {
         return parent::find()->innerJoin(
             TemplateElement::tableName(),
-            self::tableName() . '.element_id = ' . TemplateElement::tableName() . '.id AND ' .
-            TemplateElement::tableName() . '.content_type = :contentType',
+            self::tableName() . '.element_id = ' . TemplateElement::tableName() . '.id AND '
+            . TemplateElement::tableName() . '.content_type = :contentType',
             ['contentType' => static::class],
         );
     }
@@ -370,7 +370,7 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
      */
     public function canEdit($user = null): bool
     {
-        return PagePermissionHelper::canEdit();
+        return PagePermissionHelper::canEdit($this->getPage());
     }
 
     /**

@@ -16,6 +16,7 @@ use humhub\widgets\bootstrap\Link;
 /* @var CustomPage $page */
 /* @var ContentContainerActiveRecord $container */
 ?>
+<div style="margin-bottom:5px">
 <?php if (TemplateInstanceRendererService::inEditMode()) : ?>
     <div id="editPageButton" class="btn-group">
         <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -43,3 +44,4 @@ use humhub\widgets\bootstrap\Link;
         ->id('editPageButton')
         ->sm() ?>
 <?php endif; ?>
+</div>

@@ -8,11 +8,9 @@
 
 namespace humhub\modules\custom_pages\models;
 
+use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
-use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\custom_pages\components\PhpPageContainer;
 use humhub\modules\custom_pages\components\TemplatePageContainer;
@@ -25,6 +23,8 @@ use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use humhub\modules\custom_pages\permissions\ManagePages;
+use humhub\modules\custom_pages\services\SettingService;
+use humhub\modules\custom_pages\services\VisibilityService;
 use humhub\modules\custom_pages\types\ContentType;
 use humhub\modules\custom_pages\types\HtmlType;
 use humhub\modules\custom_pages\types\IframeType;
@@ -34,8 +34,6 @@ use humhub\modules\custom_pages\types\PhpType;
 use humhub\modules\custom_pages\types\TemplateType;
 use humhub\modules\custom_pages\widgets\WallEntry;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\helpers\AuthHelper;
-use humhub\modules\user\models\User;
 use LogicException;
 use Yii;
 
@@ -51,20 +49,27 @@ use Yii;
  * @property string $iframe_attrs
  * @property int $sort_order
  * @property string $target
- * @property bool $admin_only
+ * @property int $visibility
  * @property bool $in_new_window
  * @property string $cssClass
  * @property string $url
  * @property string $abstract
+ *
+ * @property-read VisibilityService $visibilityService
+ * @property-read SettingService $settingService
  */
-class CustomPage extends ContentActiveRecord implements ViewableInterface
+class CustomPage extends ContentActiveRecord implements ViewableInterface, EditableInterface
 {
     use PhpPageContainer;
     use TemplatePageContainer;
 
-    public const VISIBILITY_ADMIN_ONLY = 3;
-    public const VISIBILITY_PRIVATE = 0;
-    public const VISIBILITY_PUBLIC = 1;
+    // Content Visibility = Public:
+    public const VISIBILITY_PUBLIC = 1; // Always | Public
+    public const VISIBILITY_GUEST = 4; // Non-Logged-In Users
+    // Content Visibility = Private:
+    public const VISIBILITY_PRIVATE = 0; // Logged-In Users | Space Members only
+    public const VISIBILITY_ADMIN = 3; // Administrative Users
+    public const VISIBILITY_CUSTOM = 5; // Custom
 
     /**
      * @inheritdoc
@@ -82,9 +87,17 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     public ?int $templateId = null;
 
     /**
-     * @var bool field only used in edit form
+     * @var array Groups for custom visibility restriction
      */
-    public $visibility;
+    public $visibility_groups;
+
+    /**
+     * @var array Languages for custom visibility restriction
+     */
+    public $visibility_languages;
+
+    private ?VisibilityService $_visibilityService = null;
+    private ?SettingService $_settingService = null;
 
     /**
      * @inheritdoc
@@ -101,11 +114,13 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     {
         parent::init();
 
+        $this->visibilityService->initDefault();
+
         if (!$this->isSnippet()) {
             $this->wallEntryClass = WallEntry::class;
 
-            if ($this->isNewRecord && $this->type == HtmlType::ID &&
-                ($this->page_content === null || $this->page_content === '')) {
+            if ($this->isNewRecord && $this->type == HtmlType::ID
+                && ($this->page_content === null || $this->page_content === '')) {
                 $this->page_content = '<div class="panel panel-default"><div class="panel-body"></div></div>';
             }
         }
@@ -125,7 +140,6 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
             'iframe_attrs' => Yii::t('CustomPagesModule.base', 'Additional IFrame Attributes'),
             'sort_order' => Yii::t('CustomPagesModule.base', 'Sort Order'),
             'target' => Yii::t('CustomPagesModule.base', 'Category'),
-            'admin_only' => Yii::t('CustomPagesModule.model', 'Only visible for admins'),
             'in_new_window' => Yii::t('CustomPagesModule.model', 'Open in new window'),
             'cssClass' => Yii::t('CustomPagesModule.base', 'Style Class'),
             'url' => Yii::t('CustomPagesModule.model', 'Url shortcut'),
@@ -134,6 +148,8 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
             'targetUrl' => Yii::t('CustomPagesModule.base', 'Target Url'),
             'templateId' => Yii::t('CustomPagesModule.base', 'Template Layout'),
             'visibility' => Yii::t('CustomPagesModule.model', 'Visibility'),
+            'visibility_groups' => Yii::t('CustomPagesModule.model', 'Visible to Group Members'),
+            'visibility_languages' => Yii::t('CustomPagesModule.model', 'Language-Based Visibility'),
         ];
 
         if ($this->isSnippet()) {
@@ -144,7 +160,6 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
             $result['page_content'] = PhpType::isType($this->getContentType())
                 ? Yii::t('CustomPagesModule.model', 'View')
                 : Yii::t('CustomPagesModule.base', 'Content');
-            $result['admin_only'] = Yii::t('CustomPagesModule.model', 'Only visible for space admins');
         }
 
         return $result;
@@ -156,11 +171,13 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     public function rules()
     {
         $rules = [
-            [['type', 'title', 'target'], 'required'],
+            [['type', 'title', 'target', 'visibility'], 'required'],
             [['type'], 'integer'],
             [['target'], 'validateTarget'],
             [['type'], 'validateContentType'],
-            [['visibility'], 'integer', 'min' => self::VISIBILITY_PRIVATE, 'max' => self::VISIBILITY_ADMIN_ONLY],
+            [['visibility'], 'integer', 'min' => self::VISIBILITY_PRIVATE, 'max' => self::VISIBILITY_CUSTOM],
+            [['visibility_groups'], 'safe'],
+            [['visibility_languages'], 'safe'],
             [['title', 'target'], 'string', 'max' => 255],
         ];
 
@@ -181,11 +198,11 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
             $rules[] = [['iframe_attrs'], 'string', 'max' => 255];
         }
 
-        if (PhpType::isType($type) ||
-            LinkType::isType($type) ||
-            HtmlType::isType($type) ||
-            MarkdownType::isType($type) ||
-            (IframeType::isType($type) && Yii::$app->user->isAdmin())) {
+        if (PhpType::isType($type)
+            || LinkType::isType($type)
+            || HtmlType::isType($type)
+            || MarkdownType::isType($type)
+            || (IframeType::isType($type) && Yii::$app->user->isAdmin())) {
             $rules[] = [['page_content'], 'required'];
         }
 
@@ -212,10 +229,6 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
 
         if (!$target) {
             return $rules;
-        }
-
-        if ($target->isAllowedField('admin_only')) {
-            $rules[] = [['admin_only'], 'integer'];
         }
 
         if ($target->isAllowedField('sort_order')) {
@@ -269,13 +282,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     {
         parent::afterFind();
 
-        if ($this->admin_only) {
-            $this->visibility = static::VISIBILITY_ADMIN_ONLY;
-        } elseif ($this->content->isPublic()) {
-            $this->visibility = static::VISIBILITY_PUBLIC;
-        } else {
-            $this->visibility = static::VISIBILITY_PRIVATE;
-        }
+        $this->visibilityService->loadAdditionalOptions();
     }
 
     /**
@@ -283,25 +290,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
      */
     public function beforeSave($insert)
     {
-        $this->fixVisibility();
-
-        switch ($this->visibility) {
-            case static::VISIBILITY_ADMIN_ONLY:
-                $this->admin_only = 1;
-                $this->content->visibility = Content::VISIBILITY_PRIVATE;
-                break;
-            case static::VISIBILITY_PUBLIC:
-                $this->admin_only = 0;
-                $this->content->visibility = Content::VISIBILITY_PUBLIC;
-                break;
-            default:
-                $this->admin_only = 0;
-                $this->content->visibility = Content::VISIBILITY_PRIVATE;
-                break;
-        }
-
-        // Keep page hidden on stream when "Abstract" field is not filled, or it is visible only for admin
-        $this->content->hidden = $this->admin_only || !$this->checkAbstract();
+        $this->visibilityService->fix();
 
         return parent::beforeSave($insert);
     }
@@ -317,9 +306,11 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
             throw new LogicException('Could not save content type ' . $this->getContentType()->getLabel());
         }
 
-        if ($this->checkAbstract()) {
+        if ($this->hasAbstract()) {
             RichText::postProcess($this->abstract, $this);
         }
+
+        $this->visibilityService->updateAdditionalOptions();
     }
 
     /**
@@ -331,24 +322,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
         return parent::beforeDelete();
     }
 
-    /**
-     * Fix visibility to proper value if current cannot be used depending on other attributes
-     */
-    public function fixVisibility(): void
-    {
-        // Force visibility access "Members & Guests" to "Members only" for
-        // page type "User Account Menu (Settings)"
-        if ($this->getTargetId() == PageType::TARGET_ACCOUNT_MENU) {
-            if ($this->visibility == self::VISIBILITY_PUBLIC) {
-                $this->visibility = self::VISIBILITY_PRIVATE;
-            }
-            if ($this->content->visibility == Content::VISIBILITY_PUBLIC) {
-                $this->content->visibility = Content::VISIBILITY_PRIVATE;
-            }
-        }
-    }
-
-    protected function checkAbstract(): bool
+    public function hasAbstract(): bool
     {
         return !empty($this->abstract) && $this->isAllowedField('abstract');
     }
@@ -373,7 +347,9 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
      */
     public function getContentDescription()
     {
-        return $this->title;
+        return $this->canView()
+            ? $this->title
+            : Yii::t('CustomPagesModule.view', 'You don\'t have permission to access the page');
     }
 
     /**
@@ -447,16 +423,12 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
             IframeType::ID,
             TemplateType::ID,
             PhpType::ID,
+            HtmlType::ID,
         ];
 
         if (!$this->isSnippet()) {
             // Only for Page
             $types[] = LinkType::ID;
-        }
-
-        if ($this->isSnippet() || $this->isGlobal()) {
-            // For any(global & space) Snippet or global Page
-            $types[] = HtmlType::ID;
         }
 
         return $types;
@@ -579,36 +551,10 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
         return !isset($this->content->container);
     }
 
-    public function getVisibilitySelection(): array
-    {
-        $result = [
-            static::VISIBILITY_ADMIN_ONLY => Yii::t('CustomPagesModule.base', 'Admin only'),
-        ];
-
-        if ($this->isGlobal()) {
-            if (AuthHelper::isGuestAccessEnabled()) {
-                $result[static::VISIBILITY_PRIVATE] = Yii::t('CustomPagesModule.base', 'Members only');
-                if ($this->getTargetId() != PageType::TARGET_ACCOUNT_MENU) {
-                    $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.base', 'Members & Guests');
-                }
-            } else {
-                $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.base', 'All Members');
-            }
-        } else {
-            $result[static::VISIBILITY_PRIVATE] = Yii::t('CustomPagesModule.base', 'Space Members only');
-
-            if ($this->content->container->visibility != Space::VISIBILITY_NONE) {
-                $result[static::VISIBILITY_PUBLIC] = Yii::t('CustomPagesModule.base', 'Public');
-            }
-        }
-
-        return $result;
-    }
-
     public function canEdit($type = null): bool
     {
-        if (!($this->content->container instanceof Space && $this->content->container->isAdmin()) &&
-            !Yii::$app->user->can(ManagePages::class)) {
+        if (!($this->content->container instanceof Space && $this->content->container->isAdmin())
+            && !Yii::$app->user->can(ManagePages::class)) {
             return false;
         }
 
@@ -628,42 +574,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
      */
     public function canView($user = null): bool
     {
-        if ($this->admin_only && !self::canSeeAdminOnlyContent($this->content->container)) {
-            return false;
-        }
-
-        // Todo: Workaround for bug present prior to HumHub v1.3.18
-        if (Yii::$app->user->isGuest && !$this->content->container && $this->content->isPublic()) {
-            return true;
-        }
-
-        // Todo: Workaround for global content visibility bug present prior to HumHub v1.5
-        if (empty($this->content->contentcontainer_id) && !Yii::$app->user->isGuest) {
-            return true;
-        }
-
-        return $this->content->canView($user);
-    }
-
-    public static function canSeeAdminOnlyContent(?ContentContainerActiveRecord $container = null)
-    {
-        if (Yii::$app->user->isGuest) {
-            return false;
-        }
-
-        if (!$container) {
-            return Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageModules::class, ManagePages::class]);
-        }
-
-        if ($container instanceof Space) {
-            return $container->isAdmin();
-        }
-
-        if ($container instanceof User) {
-            $container->is(Yii::$app->user->getIdentity());
-        }
-
-        return false;
+        return $this->visibilityService->canView($user);
     }
 
     /**
@@ -704,5 +615,23 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface
     public function render()
     {
         return $this->getContentType()->render($this);
+    }
+
+    public function getVisibilityService(): VisibilityService
+    {
+        if ($this->_visibilityService === null) {
+            $this->_visibilityService = new VisibilityService($this);
+        }
+
+        return $this->_visibilityService;
+    }
+
+    public function getSettingService(): SettingService
+    {
+        if ($this->_settingService === null) {
+            $this->_settingService = new SettingService($this);
+        }
+
+        return $this->_settingService;
     }
 }

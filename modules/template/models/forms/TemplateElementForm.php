@@ -82,9 +82,9 @@ class TemplateElementForm extends \yii\base\Model
 
     public function validate($attributeNames = null, $clearErrors = true)
     {
-        return parent::validate($attributeNames, $clearErrors) &&
-            $this->element->validate($attributeNames, $clearErrors) &&
-            $this->content->validate($attributeNames, $clearErrors);
+        return parent::validate($attributeNames, $clearErrors)
+            && $this->element->validate($attributeNames, $clearErrors)
+            && $this->content->validate($attributeNames, $clearErrors);
     }
 
     public function getLabel()

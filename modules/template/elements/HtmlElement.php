@@ -90,10 +90,9 @@ class HtmlElement extends BaseElementContent
                     'selector' => '#html-template-file-uploader-' . $id,
                     'event' => 'click',
                 ],
-            ]])->label(false) .
-
-            Html::beginTag('div', ['class' => 'mb-3']) .
-                UploadButton::widget([
+            ]])->label(false)
+            . Html::beginTag('div', ['class' => 'mb-3'])
+                . UploadButton::widget([
                     'id' => 'html-template-file-uploader-' . $id,
                     'label' => Yii::t('CustomPagesModule.model', 'Attach Files'),
                     'tooltip' => false,
@@ -102,14 +101,14 @@ class HtmlElement extends BaseElementContent
                     'cssButtonClass' => 'btn-light btn-sm',
                     'model' => $this,
                     'submitName' => $this->formName() . '[fileList][]',
-                ]) .
-                FilePreview::widget([
+                ])
+                . FilePreview::widget([
                     'id' => 'html-template-file-uploader-preview-' . $id,
                     'options' => ['style' => 'margin-top:10px'],
                     'model' => $this,
                     'edit' => true,
-                ]) .
-                UploadProgress::widget(['id' => 'html-template-file-uploader-progress-' . $id]) .
-            Html::endTag('div');
+                ])
+                . UploadProgress::widget(['id' => 'html-template-file-uploader-progress-' . $id])
+            . Html::endTag('div');
     }
 }

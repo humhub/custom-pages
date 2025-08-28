@@ -117,8 +117,8 @@ abstract class BaseContentContainersElement extends BaseRecordsElement
      */
     public function renderEditForm(ActiveForm $form): string
     {
-        return $form->field($this, 'type')->dropDownList($this->getTypes(), ['class' => 'records-content-form-type']) .
-            Html::script(<<<JS
+        return $form->field($this, 'type')->dropDownList($this->getTypes(), ['class' => 'records-content-form-type'])
+            . Html::script(<<<JS
     $(document).on('change', '.records-content-form-type', function () {
         const type = $(this).val();
         $(this).closest('form').find('.records-content-form-fields').each(function () {

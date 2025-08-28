@@ -109,8 +109,8 @@ class TextElement extends BaseElementContent
         $result = $form->field($this, 'content')->textInput(['maxlength' => 255])->label(false);
 
         if ($this->isAdminEditMode()) {
-            $result .= $form->field($this, 'inline_text')->checkbox() .
-                Html::tag(
+            $result .= $form->field($this, 'inline_text')->checkbox()
+                . Html::tag(
                     'div',
                     Yii::t('CustomPagesModule.base', 'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.'),
                     ['class' => 'alert alert-info'],

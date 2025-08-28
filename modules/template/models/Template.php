@@ -22,6 +22,7 @@ use humhub\modules\custom_pages\permissions\ManagePages;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
+use yii\web\View;
 
 /**
  * This is the model class for all templates.
@@ -261,11 +262,27 @@ class Template extends ActiveRecord
     {
         return Content::find()->leftJoin(
             TemplateInstance::tableName(),
-            Content::tableName() . '.object_model = :object_model AND ' .
-                Content::tableName() . '.object_id = ' . TemplateInstance::tableName() . '.page_id',
+            Content::tableName() . '.object_model = :object_model AND '
+                . Content::tableName() . '.object_id = ' . TemplateInstance::tableName() . '.page_id',
             ['object_model' => CustomPage::class],
         )
             ->where([TemplateInstance::tableName() . '.template_id' => $this->id]);
+    }
+
+    /**
+     * Register JS & CSS of the Template
+     *
+     * @return void
+     */
+    public function registerResources(): void
+    {
+        if ($this->css) {
+            Yii::$app->view->registerCss($this->css);
+        }
+
+        if ($this->js) {
+            Yii::$app->view->registerJs($this->js, View::POS_END);
+        }
     }
 
     /**
@@ -280,14 +297,6 @@ class Template extends ActiveRecord
      */
     public function render(?TemplateInstance $templateInstance = null)
     {
-        if ($this->css) {
-            Yii::$app->view->registerCss($this->css);
-        }
-
-        if ($this->js) {
-            Yii::$app->view->registerJs($this->js);
-        }
-
         $result = '';
 
         if (TemplateInstanceRendererService::inEditMode() && $templateInstance && $templateInstance->isPage()) {
@@ -420,8 +429,8 @@ class Template extends ActiveRecord
      */
     public function canEdit(): bool
     {
-        if (!$this->isNewRecord && $this->is_default &&
-            !Yii::$app->getModule('custom_pages')->allowUpdateDefaultTemplates) {
+        if (!$this->isNewRecord && $this->is_default
+            && !Yii::$app->getModule('custom_pages')->allowUpdateDefaultTemplates) {
             return false;
         }
 

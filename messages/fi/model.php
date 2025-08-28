@@ -3,8 +3,6 @@
 return [
     'Content' => 'Sisältö',
     'Label' => 'Otsikko',
-    'Only visible for admins' => 'Näkyvissä vain ylläpitäjille',
-    'Only visible for space admins' => 'Näkyvissä vain sivun ylläpitäjille',
     'Open in new window' => 'Avaa uusi uuteen ikkunaan',
     'View' => 'Näkymä',
     'Visibility' => 'Näkyvyys',
@@ -14,6 +12,7 @@ return [
     'Attach Files' => '',
     'Empty <br />Container' => '',
     'If disabled, existing php pages will still be online, but can\'t be created.' => '',
+    'Language-Based Visibility' => '',
     'PHP view path for custom space pages' => '',
     'PHP view path for custom space snippets' => '',
     'PHP view path for global custom pages' => '',
@@ -23,5 +22,6 @@ return [
     'The given element name is already in use for this template.' => '',
     'The given view file path does not exist.' => '',
     'Url shortcut' => '',
+    'Visible to Group Members' => '',
     'snippet' => '',
 ];

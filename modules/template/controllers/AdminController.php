@@ -206,8 +206,8 @@ class AdminController extends Controller
                 if ($model instanceof Content) {
                     /* @var $record CustomPage */
                     $record = $model->getPolymorphicRelation();
-                    return Link::to(Html::encode($record->getTitle()), $record->getUrl())->icon(Html::encode($record->icon)) . ' ' .
-                        StateBadge::widget(['model' => $record]);
+                    return Link::to(Html::encode($record->getTitle()), $record->getUrl())->icon(Html::encode($record->icon)) . ' '
+                        . StateBadge::widget(['model' => $record]);
                 } elseif ($model instanceof Template) {
                     return $model->name;
                 }

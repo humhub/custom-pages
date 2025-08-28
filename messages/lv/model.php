@@ -8,8 +8,7 @@ return [
     'Empty <br />Container' => '',
     'If disabled, existing php pages will still be online, but can\'t be created.' => '',
     'Label' => '',
-    'Only visible for admins' => '',
-    'Only visible for space admins' => '',
+    'Language-Based Visibility' => '',
     'Open in new window' => '',
     'PHP view path for custom space pages' => '',
     'PHP view path for custom space snippets' => '',
@@ -22,6 +21,7 @@ return [
     'Url shortcut' => '',
     'View' => '',
     'Visibility' => '',
+    'Visible to Group Members' => '',
     'page' => '',
     'snippet' => '',
 ];

@@ -2,7 +2,6 @@
 
 return [
     'Content' => 'תוכן',
-    'Only visible for space admins' => 'זמין רק לאדמין',
     'Open in new window' => 'פתח בחלון חדש',
     'Abstract' => '',
     'Activate PHP based Pages and Snippets' => '',
@@ -10,7 +9,7 @@ return [
     'Empty <br />Container' => '',
     'If disabled, existing php pages will still be online, but can\'t be created.' => '',
     'Label' => '',
-    'Only visible for admins' => '',
+    'Language-Based Visibility' => '',
     'PHP view path for custom space pages' => '',
     'PHP view path for custom space snippets' => '',
     'PHP view path for global custom pages' => '',
@@ -22,6 +21,7 @@ return [
     'Url shortcut' => '',
     'View' => '',
     'Visibility' => '',
+    'Visible to Group Members' => '',
     'page' => '',
     'snippet' => '',
 ];

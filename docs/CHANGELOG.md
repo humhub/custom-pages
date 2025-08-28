@@ -9,6 +9,21 @@ Changelog
 ----------------------
 - Enh #435: Migration to Bootstrap 5 for HumHub 1.18
 
+1.11.0-beta.12 (Unreleased)
+--------------------------------
+- Enh #402: HTML pages not allowed in Spaces
+- Enh #457: Fix adding items to empty container
+
+1.11.0-beta.11 (August 14, 2025)
+--------------------------------
+- Fix #454: Fix edit template page by space admin
+
+1.11.0-beta.10 (August 13, 2025)
+--------------------------------
+- Enh #443: Visibility restrictions
+- Fix #451: Register template resources
+- Fix #453: New category "Start Page"
+
 1.11.0-beta.9 (August 6, 2025)
 ------------------------------
 - Fix #444: Fix depreciation warnings on PHP 8.4

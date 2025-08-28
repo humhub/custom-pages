@@ -160,8 +160,8 @@ class ContainerItem extends ActiveRecord
             $result = $this->template->render($this->templateInstance);
             return TemplateInstanceRendererService::inEditMode() ? $this->renderEditBlock($result) : $result;
         } catch (\Throwable $ex) {
-            Yii::error('Broken Container Item #' . $this->id . ' has lost Template Instance. ' .
-                'Error: ' . $ex->getMessage() . ' ' . $ex->getFile() . '(' . $ex->getLine() . ') ' . $ex->getTraceAsString(), 'custom-pages');
+            Yii::error('Broken Container Item #' . $this->id . ' has lost Template Instance. '
+                . 'Error: ' . $ex->getMessage() . ' ' . $ex->getFile() . '(' . $ex->getLine() . ') ' . $ex->getTraceAsString(), 'custom-pages');
             return 'Broken Container Item #' . $this->id . ', please delete and create it again.';
         }
     }

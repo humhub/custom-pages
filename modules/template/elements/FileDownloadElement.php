@@ -163,11 +163,11 @@ class FileDownloadElement extends BaseElementContent
     {
         $id = 'fileDownloadElement-' . $this->id;
 
-        $result = $form->field($this, 'title') .
-            $form->field($this, 'showFileinfo')->checkbox() .
-            $form->field($this, 'showIcon')->checkbox() .
-            Html::beginTag('div', ['id' => $id, 'class' => 'file-upload-container clearfix']) .
-                UploadButton::widget([
+        $result = $form->field($this, 'title')
+            . $form->field($this, 'showFileinfo')->checkbox()
+            . $form->field($this, 'showIcon')->checkbox()
+            . Html::beginTag('div', ['id' => $id, 'class' => 'file-upload-container clearfix'])
+                . UploadButton::widget([
                     'cssButtonClass' => 'btn-primary',
                     'model' => $this,
                     'single' => true,
@@ -178,26 +178,26 @@ class FileDownloadElement extends BaseElementContent
                     'preview' => '#' . $id . '-preview',
                     'progress' => '#' . $id . '-progress',
                     'buttonOptions' => ['style' => 'float:left;'],
-                ]) .
-                FilePreview::widget([
+                ])
+                . FilePreview::widget([
                     'id' => $id . '-preview',
                     'popoverPosition' => 'top',
                     'items' => [$this->getFile()],
-                    'options' => ['style' => 'display:block;margin-left:150px']]) .
-                UploadProgress::widget([
+                    'options' => ['style' => 'display:block;margin-left:150px']])
+                . UploadProgress::widget([
                     'id' => $id . '-progress',
                     'options' => ['style' => 'display:block;margin-left:150px;width:500px'],
-                ]) .
-            Html::endTag('div');
+                ])
+            . Html::endTag('div');
 
         ob_start();
         CollapsableFormGroup::begin([
             'defaultState' => false,
             'label' => Yii::t('CustomPagesModule.base', 'Advanced'),
         ]);
-        echo $form->field($this, 'style') .
-            $form->field($this, 'cssClass') .
-            $form->field($this, 'file_guid')->hiddenInput(['class' => 'file-guid'])->label(false);
+        echo $form->field($this, 'style')
+            . $form->field($this, 'cssClass')
+            . $form->field($this, 'file_guid')->hiddenInput(['class' => 'file-guid'])->label(false);
         CollapsableFormGroup::end();
 
         return $result . ob_get_flush();

@@ -6,11 +6,12 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\helpers\Html;
+use humhub\components\View;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 
+/* @var $this View */
 /* @var $page CustomPage */
 ?>
 <?php $form = Modal::beginFormDialog([
@@ -23,17 +24,12 @@ use humhub\widgets\modal\ModalButton;
     <?php endif; ?>
 
     <?php if (!$page->isSnippet()) : ?>
-        <div class="alert alert-info infoAdminOnly<?= $page->visibility != CustomPage::VISIBILITY_ADMIN_ONLY ? ' d-none' : '' ?>">
+        <div class="alert alert-info infoAdminOnly<?= $page->visibilityService->isAdmin() ? '' : ' d-none' ?>">
             <?= Yii::t('CustomPagesModule.view', '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!'); ?>
         </div>
     <?php endif; ?>
 
-    <?= $form->field($page, 'visibility')->radioList($page->getVisibilitySelection()) ?>
+    <?= $this->render('edit_visibility', ['page' => $page, 'form' => $form]) ?>
     <?= $form->field($page, 'target')->dropDownList($page->getAvailableTargetOptions()) ?>
 
-<script <?= Html::nonce() ?>>
-    $('input[type="radio"][name="CustomPage[visibility]"]').click(function () {
-        $('.infoAdminOnly').toggle($(this).val() == <?= CustomPage::VISIBILITY_ADMIN_ONLY ?>);
-    });
-</script>
 <?php Modal::endFormDialog() ?>

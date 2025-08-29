@@ -1,13 +1,12 @@
 <?php
 
-use yii\db\Schema;
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m150916_131805_container extends Migration
 {
     public function up()
     {
-        $this->createTable('custom_pages_container_page', [
+        $this->safeCreateTable('custom_pages_container_page', [
             'id' => 'pk',
             'title' => 'varchar(255) NOT NULL',
             'icon' => 'varchar(100)',

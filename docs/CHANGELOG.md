@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.12.1 (Unreleased)
-----------------------
+1.12.1 (September 6, 2025)
+--------------------------
 - Fix: Migration to Bootstrap 5 for templates
 
 1.12.0 (July 26, 2025)

@@ -6,7 +6,7 @@ class m140930_045035_initial extends Migration
 {
     public function up()
     {
-        $this->createTable('custom_pages_page', [
+        $this->safeCreateTable('custom_pages_page', [
             'id' => 'pk',
             'type' => 'smallint(6) NOT NULL',
             'title' => 'varchar(255) NOT NULL',

@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\custom_pages\helpers\PageType;
-use yii\db\Migration;
+use humhub\components\Migration;
 
 /**
  * Class m210802_132539_remove_directory_option

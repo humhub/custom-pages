@@ -1,12 +1,12 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m170412_163156_allow_inline_activation extends Migration
 {
     public function up()
     {
-        $this->addColumn('custom_pages_template', 'allow_inline_activation', 'boolean DEFAULT 0');
+        $this->safeAddColumn('custom_pages_template', 'allow_inline_activation', 'boolean DEFAULT 0');
     }
 
     public function down()

@@ -6,7 +6,7 @@ class m141026_135537_adminOnly extends Migration
 {
     public function up()
     {
-        $this->addColumn('custom_pages_page', 'admin_only', 'boolean DEFAULT 0');
+        $this->safeAddColumn('custom_pages_page', 'admin_only', 'boolean DEFAULT 0');
     }
 
     public function down()

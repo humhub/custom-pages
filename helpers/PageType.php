@@ -21,6 +21,7 @@ class PageType
     public const TARGET_ACCOUNT_MENU = 'AccountMenuWidget';
     public const TARGET_DIRECT_LINK = 'WithOutMenu';
     public const TARGET_FOOTER = 'FooterMenuWidget';
+    public const TARGET_START_PAGE = 'StartPage';
     public const TARGET_PEOPLE = 'PeopleButtonsWidget';
     public const TARGET_SPACE_MENU = 'SpaceMenu';
     public const TARGET_DASHBOARD_SIDEBAR = 'Dashboard';
@@ -69,6 +70,7 @@ class PageType
                 ],
                 self::TARGET_DIRECT_LINK => Yii::t('CustomPagesModule.base', 'Without adding to navigation (Direct link)'),
                 self::TARGET_FOOTER => Yii::t('CustomPagesModule.base', 'Footer menu'),
+                self::TARGET_START_PAGE => Yii::t('CustomPagesModule.base', 'Start Page'),
             ];
             if (class_exists('humhub\modules\user\widgets\PeopleHeadingButtons')) {
                 $targets[self::TARGET_PEOPLE] = Yii::t('CustomPagesModule.base', 'People Buttons');

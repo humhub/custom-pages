@@ -9,9 +9,9 @@
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
 use humhub\components\Widget;
-use Yii;
+use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 
 /**
  * User Administration Menu
@@ -26,16 +26,11 @@ class TemplatePageEditButton extends Widget
     public $page;
 
     /**
-     * @var bool
-     */
-    public $canEdit;
-
-    /**
      * @inheritdoc
      */
     public function beforeRun()
     {
-        return parent::beforeRun() && $this->canEdit;
+        return parent::beforeRun() && PagePermissionHelper::canEdit($this->page);
     }
 
     /**
@@ -43,14 +38,9 @@ class TemplatePageEditButton extends Widget
      */
     public function run()
     {
-        $space = Yii::$app->controller->contentContainer ?? null;
-
-        $templateInstance = TemplateInstance::findOne(['page_id' => $this->page->id]);
-
         return $this->render('templatePageEditButton', [
-            'sguid' => $space ? $space->guid : null,
-            'pageId' => $this->page->id,
-            'templateInstance' => $templateInstance,
+            'page' => $this->page,
+            'container' => ContentContainerHelper::getCurrent(),
         ]);
     }
 }

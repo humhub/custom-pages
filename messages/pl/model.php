@@ -8,8 +8,6 @@ return [
     'Empty <br />Container' => 'Pusty <br />Kontener',
     'If disabled, existing php pages will still be online, but can\'t be created.' => 'Jeśli wyłączone, istniejące strony php pozostaną online, ale nie mogą być tworzone nowe.',
     'Label' => 'Etykieta',
-    'Only visible for admins' => 'Widoczne tylko dla administratorów',
-    'Only visible for space admins' => 'Widoczne tylko dla administratorów strefy',
     'Open in new window' => 'Otwórz w nowym oknie',
     'PHP view path for custom space pages' => 'Widok ścieżki PHP dla niestandardowych stron stref',
     'PHP view path for custom space snippets' => 'Widok ścieżki PHP dla niestandardowych stron fragmentów',
@@ -24,4 +22,6 @@ return [
     'Visibility' => 'Widzialność',
     'page' => 'strona',
     'snippet' => 'fragmentu',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
 ];

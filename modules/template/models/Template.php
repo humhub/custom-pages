@@ -22,6 +22,7 @@ use humhub\modules\custom_pages\permissions\ManagePages;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
+use yii\web\View;
 
 /**
  * This is the model class for all templates.
@@ -45,6 +46,8 @@ use yii\helpers\ArrayHelper;
  * @property int $id
  * @property string $name
  * @property string $source
+ * @property string $css
+ * @property string $js
  * @property string $engine
  * @property string $description
  * @property string $type
@@ -95,6 +98,8 @@ class Template extends ActiveRecord
             'id' => 'ID',
             'name' => Yii::t('CustomPagesModule.template', 'Name'),
             'source' => Yii::t('CustomPagesModule.template', 'Source'),
+            'css' => Yii::t('CustomPagesModule.template', 'Stylesheet'),
+            'js' => Yii::t('CustomPagesModule.template', 'JavaScript'),
             'allow_for_spaces' => Yii::t('CustomPagesModule.template', 'Allow this layout in spaces'),
             'description' => Yii::t('CustomPagesModule.template', 'Description'),
             'type' => Yii::t('CustomPagesModule.template', 'Type'),
@@ -114,6 +119,7 @@ class Template extends ActiveRecord
             [['name', 'type'], 'string', 'max' => 100],
             [['type'], 'in', 'range' => [self::TYPE_CONTAINER, self::TYPE_LAYOUT, self::TYPE_SNIPPET_LAYOUT, self::TYPE_NAVIGATION]],
             [['source'], 'required', 'on' => ['source']],
+            [['css', 'js'], 'safe', 'on' => ['resources']],
         ];
     }
 
@@ -125,6 +131,7 @@ class Template extends ActiveRecord
         $scenarios = parent::scenarios();
         $scenarios['edit'] = ['name', 'description', 'type', 'allow_for_spaces'];
         $scenarios['source'] = ['source'];
+        $scenarios['resources'] = ['css', 'js'];
         return $scenarios;
     }
 
@@ -255,11 +262,27 @@ class Template extends ActiveRecord
     {
         return Content::find()->leftJoin(
             TemplateInstance::tableName(),
-            Content::tableName() . '.object_model = :object_model AND ' .
-                Content::tableName() . '.object_id = ' . TemplateInstance::tableName() . '.page_id',
+            Content::tableName() . '.object_model = :object_model AND '
+                . Content::tableName() . '.object_id = ' . TemplateInstance::tableName() . '.page_id',
             ['object_model' => CustomPage::class],
         )
             ->where([TemplateInstance::tableName() . '.template_id' => $this->id]);
+    }
+
+    /**
+     * Register JS & CSS of the Template
+     *
+     * @return void
+     */
+    public function registerResources(): void
+    {
+        if ($this->css) {
+            Yii::$app->view->registerCss($this->css);
+        }
+
+        if ($this->js) {
+            Yii::$app->view->registerJs($this->js, View::POS_END);
+        }
     }
 
     /**
@@ -272,7 +295,7 @@ class Template extends ActiveRecord
      * @param TemplateInstance|null $templateInstance
      * @return string
      */
-    public function render(TemplateInstance $templateInstance = null)
+    public function render(?TemplateInstance $templateInstance = null)
     {
         $result = '';
 
@@ -406,8 +429,8 @@ class Template extends ActiveRecord
      */
     public function canEdit(): bool
     {
-        if (!$this->isNewRecord && $this->is_default &&
-            !Yii::$app->getModule('custom_pages')->allowUpdateDefaultTemplates) {
+        if (!$this->isNewRecord && $this->is_default
+            && !Yii::$app->getModule('custom_pages')->allowUpdateDefaultTemplates) {
             return false;
         }
 

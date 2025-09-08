@@ -1,12 +1,12 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m170411_124612_fileDownloadContent extends Migration
 {
     public function up()
     {
-        $this->createTable('custom_pages_template_file_download_content', [
+        $this->safeCreateTable('custom_pages_template_file_download_content', [
             'id' => 'pk',
             'file_guid' => 'varchar(45) NOT NULL',
             'title' => 'varchar(255) NOT NULL',

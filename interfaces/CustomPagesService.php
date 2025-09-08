@@ -7,6 +7,8 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\Target;
+use humhub\modules\custom_pages\services\VisibilityService;
+use Yii;
 use yii\base\Component;
 use yii\base\StaticInstanceTrait;
 
@@ -82,7 +84,7 @@ class CustomPagesService extends Component
      * @throws \yii\base\Exception
      * @throws \yii\db\StaleObjectException
      */
-    public function deleteByTarget($targetId, ContentContainerActiveRecord $container = null): void
+    public function deleteByTarget($targetId, ?ContentContainerActiveRecord $container = null): void
     {
         foreach ($this->findByTarget($targetId, $container)->each() as $content) {
             $content->delete();
@@ -121,8 +123,8 @@ class CustomPagesService extends Component
             $query->andWhere($query->stateFilterCondition);
         }
 
-        if (!CustomPage::canSeeAdminOnlyContent($container)) {
-            $query->andWhere([CustomPage::tableName() . '.admin_only' => 0]);
+        if (!VisibilityService::canViewAdminOnlyContent($container)) {
+            $query->andWhere(['!=', CustomPage::tableName() . '.visibility', CustomPage::VISIBILITY_ADMIN]);
         }
 
         return $query->orderBy([
@@ -164,5 +166,30 @@ class CustomPagesService extends Component
 
         return $this->find($container)
             ->andWhere([CustomPage::tableName() . '.target' => array_column($targets, 'id')]);
+    }
+
+    /**
+     * Find a first start page related to the current user
+     *
+     * @return CustomPage|null
+     */
+    public function getStartPage(): ?CustomPage
+    {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__, function () {
+            $pages = $this->findByTarget(PageType::TARGET_START_PAGE)
+                ->orderBy([
+                    'sort_order' => SORT_ASC,
+                    'id' => SORT_ASC,
+                ]);
+
+            foreach ($pages->each() as $page) {
+                /* @var CustomPage $page */
+                if ($page->canView()) {
+                    return $page;
+                }
+            }
+
+            return null;
+        });
     }
 }

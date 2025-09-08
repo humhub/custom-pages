@@ -8,8 +8,6 @@ return [
     'Empty <br />Container' => 'Κενό <br /> Container',
     'If disabled, existing php pages will still be online, but can\'t be created.' => 'Αν απενεργοποιηθεί, οι υπάρχουσες σελίδες php θα εξακολουθούν να είναι Σε συνδεδεμένες, αλλά δεν μπορούν να δημιουργηθούν.',
     'Label' => 'Επιγραφή',
-    'Only visible for admins' => 'Ορατό μόνο για διαχειριστές',
-    'Only visible for space admins' => 'Εμφανίζεται μόνο για διαχειριστές χώρων',
     'Open in new window' => 'Άνοιγμα σε νέο παράθυρο',
     'PHP view path for custom space pages' => 'Διαδρομή προβολής PHP για σελίδες προσαρμοσμένου χώρου',
     'PHP view path for custom space snippets' => 'Διαδρομή προβολής PHP για αποσπάσματα προσαρμοσμένου χώρου',
@@ -24,4 +22,6 @@ return [
     'Visibility' => 'Ορατότητα',
     'page' => 'Σελίδα',
     'snippet' => 'απόσπασμα',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
 ];

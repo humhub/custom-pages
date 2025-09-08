@@ -8,8 +8,6 @@ return [
     'Empty <br />Container' => 'Tom <br>behållare',
     'If disabled, existing php pages will still be online, but can\'t be created.' => 'Om inaktiverat kommer befintliga php-sidor fortfarande att vara online, men kan inte skapas.',
     'Label' => 'Etikett',
-    'Only visible for admins' => 'Endast synligt för admin',
-    'Only visible for space admins' => 'Endast synligt för forumadministratörer',
     'Open in new window' => 'Öppna i nytt fönster',
     'PHP view path for custom space pages' => 'PHP-visningsväg för anpassade nätverkssidor',
     'PHP view path for custom space snippets' => 'PHP sökväg för anpassade forum snippets',
@@ -24,4 +22,6 @@ return [
     'Visibility' => 'Synlighet',
     'page' => 'sida',
     'snippet' => 'snippet',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
 ];

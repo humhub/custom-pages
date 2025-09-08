@@ -76,7 +76,6 @@ class InterfaceTest extends HumHubDbTestCase
                     'name' => 'Test2 Target',
                     'fieldSettings' => [
                         'icon' => false,
-                        'admin_only' => false,
                         'sort_order' => false,
                         'cssClass' => false,
                     ],
@@ -112,7 +111,7 @@ class InterfaceTest extends HumHubDbTestCase
 
         $this->assertNull($page->icon);
         $this->assertNull($page->cssClass);
-        $this->assertEquals(0, $page->admin_only);
+        $this->assertEquals(CustomPage::VISIBILITY_PUBLIC, $page->visibility);
         $this->assertEquals(0, $page->sort_order);
     }
 
@@ -131,7 +130,7 @@ class InterfaceTest extends HumHubDbTestCase
         $p1->load([
             'CustomPage' => [
                 'icon' => 'fa-pencil',
-                'visibility' => CustomPage::VISIBILITY_ADMIN_ONLY,
+                'visibility' => CustomPage::VISIBILITY_ADMIN,
                 'sort_order' => 300,
                 'cssClass' => 'testCss',
             ],
@@ -143,7 +142,7 @@ class InterfaceTest extends HumHubDbTestCase
 
         $this->assertEquals('fa-pencil', $page->icon);
         $this->assertEquals('testCss', $page->cssClass);
-        $this->assertEquals(1, $page->admin_only);
+        $this->assertEquals(CustomPage::VISIBILITY_ADMIN, $page->visibility);
         $this->assertEquals(300, $page->sort_order);
     }
 

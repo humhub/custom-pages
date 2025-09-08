@@ -1,4 +1,3 @@
-
 ## Elements
 
 | Variable Name                      | Data Type                   | Description                                                                     |
@@ -25,8 +24,9 @@
 | `image.height`                     | String                      | Image height                                                                    |
 | `image.style`                      | String                      | Image style                                                                     |
 |                                    |                             |                                                                                 |
-| **Container**                      |                             | The                                                                             |
-| `container`                        | String                      | Returns the URL of the value of the Image Element                               |
+| **Container Element**              |                             | The                                                                             |
+| `container`                        | String                      | Render added items of the container element                                     |
+| `container.editWrapperAttributes`  | String                      | Html attributes for edit mode. `<div {{ container.editWrapperAttributes }}>`    |
 |                                    |                             |                                                                                 |
 | **Content Container Meta Element** |                             | Base for `User` or `Space` Elements                                             |
 | `contentcontainer.guid`            | String                      | Container unique ID, e.g. 5b12f367-744b-4d2b-9611-c8b4ff92b6e5                  |
@@ -54,6 +54,7 @@
 | **Content Meta Element**           |                             | Base for all content variables (e.g. Post)                                      |
 | `content.url`                      | String                      | Permalink to the content record                                                 |
 | `content.guid`                     | String                      | Content unique ID, e.g. 5b12f367-744b-4d2b-9611-c8b4ff92b6e5                    |
+| `content.container`                | Container                   |                                                                                 |
 | `content.isPublished`              | Boolean                     | True if the content is published                                                |
 | `content.isArchived`               | Boolean                     | True if the content is archived                                                 |
 | `content.isDraft`                  | Boolean                     | True if the content is a draft                                                  |
@@ -101,6 +102,7 @@
 | `file.description`                 | String                      | File description                                                                |
 | `file.downloadCount`               | Integer                     | Number of downloads                                                             |
 | `file.fileUrl`                     | String                      | File URL                                                                        |
+| `file.icon`                        | String                      | Icon style class, e.g. image: `fa-file-image-o`, pdf: `fa-file-pdf-o`           |
 | `file.file`                        | File Element                | Base/core File element                                                          |
 |                                    |                             |                                                                                 |
 | **Folders Element**                |                             |                                                                                 |
@@ -111,6 +113,7 @@
 | `folder.title`                     | String                      | Folder title                                                                    |
 | `folder.description`               | String                      | Folder description                                                              |
 | `folder.type`                      | String                      | Type: 'posted' - Files from the stream, 'root' - Root folder, null - sub folder |
+| `folder.icon`                      | String                      | Icon style class: `fa-folder`                                                   |
 | `folder.subFolders`                | Folder[]                    | Sub folder elements                                                             |
 | `folder.subFiles`                  | File[]                      | Sub file elements                                                               |
 |                                    |                             |                                                                                 |
@@ -178,3 +181,72 @@
 | `wiki.sortOrder `                  | Integer                     | Sort order in list                                                              |
 | `wiki.isContainerMenu`             | Boolean                     | Show the wiki page in Space/Profile menu                                        |
 | `wiki.containerMenuOrder`          | Integer                     | Sort order in Space/Profile menu                                                |
+
+## Formatting & Output Manipulation
+
+This section lists all supported **Twig filters** and **object methods** available in Custom Pages. These tools let you format and manipulate output, for example, by changing text case, formatting dates and times, truncating strings, or rendering Markdown. Filters use the `|` syntax (e.g. `{{ value|capitalize }}`), and some object methods are also accessible this way.
+
+**NOTE:** Twig runs in Sandbox mode, so only a limited set of filters is allowed.
+
+### Filters
+
+These filters can be applied using the `|` syntax. All listed filters are built-in Twig filters.
+
+- `capitalize` - Capitalizes the first letter of the string ([Docs](https://twig.symfony.com/doc/3.x/filters/capitalize.html))
+- `date` - Formats a date/time ([Docs](https://twig.symfony.com/doc/3.x/filters/date.html))
+- `first` - Gets the first item of a list or string ([Docs](https://twig.symfony.com/doc/3.x/filters/first.html))
+- `slice` - Extracts part of a list or string ([Docs](https://twig.symfony.com/doc/3.x/filters/slice.html))
+- `upper` - Converts text to uppercase ([Docs](https://twig.symfony.com/doc/3.x/filters/upper.html))
+- `escape` - Escapes HTML ([Docs](https://twig.symfony.com/doc/3.x/filters/escape.html))
+- `raw` - Outputs content without escaping ([Docs](https://twig.symfony.com/doc/3.x/filters/raw.html))
+- `nl2br` - Converts newlines to `<br>` tags ([Docs](https://twig.symfony.com/doc/3.x/filters/nl2br.html))
+- `url_encode` - URL-encodes the string ([Docs](https://twig.symfony.com/doc/3.x/filters/url_encode.html))
+- `round` - Rounds numbers to the nearest integer ([Docs](https://twig.symfony.com/doc/3.x/filters/round.html))
+- `striptags` - Removes HTML tags ([Docs](https://twig.symfony.com/doc/3.x/filters/striptags.html))
+- `u` - Converts a string to a `UnicodeString` object ([Docs](https://twig.symfony.com/doc/3.x/filters/u.html))
+
+### Methods
+
+These methods are available in Twig and can be used either via dot syntax (like `|u.truncate()`) or directly as filters.
+
+#### Format Date and Time
+
+These methods format date and time values using the system locale.
+
+- `formatter_as_date` - Formats a date
+  Example: `{{ event.startDateTime|formatter_as_date }}` -> `15.07.25`
+
+- `formatter_as_time` - Formats a time
+  Example: `{{ event.startDateTime|formatter_as_time(format: 'short') }}` -> `14:30`
+
+- `formatter_as_date_time` - Formats full date and time
+  Examples:
+  `{{ event.startDateTime|formatter_as_date_time }}`
+  `{{ event.startDateTime|formatter_as_date_time(format: 'short') }}`
+  `{{ event.startDateTime|formatter_as_date_time(format: 'medium') }}`
+  `{{ event.startDateTime|formatter_as_date_time(format: 'long') }}`
+
+- Combined example:
+  `{{ event.startDateTime|formatter_as_date }} ({{ event.startDateTime|formatter_as_time(format: 'short') }} - {{ event.endDateTime|formatter_as_time(format: 'short') }})`
+
+**Format styles:**
+
+| Format | `formatter_as_date` | `formatter_as_time` | `formatter_as_date_time`        |
+| ------ | ------------------- | ------------------- | ------------------------------- |
+| short  | `15.07.25`          | `14:30`             | `15.07.25, 14:30`               |
+| medium | `15 Jul 2025`       | `14:30:00`          | `15 Jul 2025, 14:30:00`         |
+| long   | `15 July 2025`      | `14:30:00 CEST`     | `15 July 2025 at 14:30:00 CEST` |
+
+**NOTE:** Output depends on both system and user language/time settings.
+
+#### Markdown
+
+- `markdown_html` - Converts Markdown to HTML
+- `markdown_plain` - Converts Markdown to plain text
+- `markdown_strip` - Removes all Markdown formatting
+- `markdown_short` - Removes all Markdown formatting and returns a shortened version, useful for previews
+
+#### `UnicodeString` (via `|u`)
+
+- `truncate(length, suffix = '...')` - Shortens a string ([Docs](https://twig.symfony.com/doc/3.x/filters/u.html))
+  Example: `{{ post.title|u.truncate(50) }}`

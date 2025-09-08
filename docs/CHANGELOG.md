@@ -1,9 +1,35 @@
 Changelog
 =========
 
-1.11.0-beta.8 (Unreleased)
------------------------------
+1.11.0-beta.12 (Unreleased)
+--------------------------------
 - Enh #433: Change template overview
+- Enh #402: HTML pages not allowed in Spaces
+- Enh #457: Fix adding items to empty container
+- Fix #464: Add safe migrations
+
+1.11.0-beta.11 (August 14, 2025)
+--------------------------------
+- Fix #454: Fix edit template page by space admin
+
+1.11.0-beta.10 (August 13, 2025)
+--------------------------------
+- Enh #443: Visibility restrictions
+- Fix #451: Register template resources
+- Fix #453: New category "Start Page"
+
+1.11.0-beta.9 (August 6, 2025)
+------------------------------
+- Fix #444: Fix depreciation warnings on PHP 8.4
+- Fix #446: TinyMCE license key
+
+1.11.0-beta.8 (July 22, 2025)
+-----------------------------
+- Enh #432: Add Yii formatter for Twig filters
+- Enh #437: Add context menu to Structure View
+- Enh #440: Add template section "CSS & JS"
+- Enh #441: Allow to render container edit wrapper attributes separately
+- Enh #442: Improve template structure view
 
 1.11.0-beta.7 (July 4, 2025)
 -----------------------------
@@ -28,6 +54,8 @@ Changelog
 
 1.11.0-beta.3 (June 3, 2025)
 ----------------------------
+Please note that the IDs of the custom pages you have created will be changed. Links may need to be updated.
+
 - Enh #354: Template - Add RSS Element Type
 - Enh #357: Refactor all snippets and container pages to single page class
 - Enh #358: Refactor page content types

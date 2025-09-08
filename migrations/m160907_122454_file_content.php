@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m160907_122454_file_content extends Migration
 {
@@ -9,7 +9,7 @@ class m160907_122454_file_content extends Migration
         /**
          * Create Content Type File
          */
-        $this->createTable('custom_pages_template_file_content', [
+        $this->safeCreateTable('custom_pages_template_file_content', [
             'id' => 'pk',
             'file_guid' => 'varchar(45) NOT NULL',
         ], '');

@@ -11,9 +11,9 @@ namespace humhub\modules\custom_pages\controllers;
 use humhub\components\access\StrictAccess;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use humhub\modules\custom_pages\permissions\ManagePages;
@@ -71,8 +71,8 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
      */
     public function viewTemplatePage(CustomPage $page, $view): string
     {
-        $canEdit = PagePermissionHelper::canEdit();
-        if (!$canEdit && $page->admin_only) {
+        $canEdit = PagePermissionHelper::canEdit($page);
+        if (!$canEdit && $page->visibilityService->isAdmin()) {
             throw new ForbiddenHttpException('Access denied!');
         }
 
@@ -80,7 +80,6 @@ abstract class AbstractCustomContainerController extends ContentContainerControl
 
         return $this->owner->render('template', [
             'page' => $page,
-            'canEdit' => $canEdit,
             'html' => TemplateInstanceRendererService::instance($page, $mode === 'edit')->render(),
         ]);
     }

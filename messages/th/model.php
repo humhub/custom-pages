@@ -8,8 +8,6 @@ return [
     'Empty <br />Container' => 'ว่างเปล่า <br>คอนเทนเนอร์',
     'If disabled, existing php pages will still be online, but can\'t be created.' => 'หากปิดใช้งาน หน้า php ที่มีอยู่จะยังคงออนไลน์อยู่ แต่ไม่สามารถสร้างขึ้นได้',
     'Label' => 'ฉลาก',
-    'Only visible for admins' => 'เฉพาะผู้ดูแลระบบเท่านั้นที่มองเห็นได้',
-    'Only visible for space admins' => 'เฉพาะผู้ดูแลพื้นที่เท่านั้นที่มองเห็นได้',
     'Open in new window' => 'เปิดหน้าต่างใหม่',
     'PHP view path for custom space pages' => 'เส้นทางมุมมอง PHP สำหรับหน้าพื้นที่ที่กำหนดเอง',
     'PHP view path for custom space snippets' => 'เส้นทางมุมมอง PHP สำหรับตัวอย่างพื้นที่ที่กำหนดเอง',
@@ -24,4 +22,6 @@ return [
     'Visibility' => 'ทัศนวิสัย',
     'page' => 'หน้า',
     'snippet' => 'snippet',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
 ];

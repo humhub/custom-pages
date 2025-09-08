@@ -144,6 +144,8 @@ class TemplateImportService extends BaseImportService
         $template->engine = $data['engine'] ?? 'twig';
         $template->description = $data['description'] ?? '';
         $template->source = $data['source'] ?? '';
+        $template->css = $data['css'] ?? '';
+        $template->js = $data['js'] ?? '';
         $template->allow_for_spaces = $data['allow_for_spaces'] ?? false;
         $template->is_default = $data['is_default'] ?? false;
 
@@ -197,9 +199,9 @@ class TemplateImportService extends BaseImportService
         $elementContent = $element->getDefaultContent(true);
 
         foreach ($data as $name => $value) {
-            if ($name === 'id' ||
-                ($name !== 'dyn_attributes' && is_array($value)) ||
-                !$elementContent->hasAttribute($name)) {
+            if ($name === 'id'
+                || ($name !== 'dyn_attributes' && is_array($value))
+                || !$elementContent->hasAttribute($name)) {
                 continue;
             }
             $elementContent->$name = $value;

@@ -101,16 +101,16 @@ class TemplateInstanceImportService extends BaseImportService
             $incompatibleElements = [];
             foreach ($systemElements as $systemElement) {
                 $jsonElement = $data['elements'][$systemElement->name] ?? null;
-                if ($jsonElement === null ||
-                    !isset($jsonElement['__element_type']) ||
-                    $jsonElement['__element_type'] !== $systemElement->content_type) {
+                if ($jsonElement === null
+                    || !isset($jsonElement['__element_type'])
+                    || $jsonElement['__element_type'] !== $systemElement->content_type) {
                     $incompatibleElements[] = $systemElement->name;
                     continue;
                 }
 
-                if ($jsonElement['__element_type'] === ContainerElement::class &&
-                    isset($jsonElement['__element_items']) &&
-                    is_array($jsonElement['__element_items'])) {
+                if ($jsonElement['__element_type'] === ContainerElement::class
+                    && isset($jsonElement['__element_items'])
+                    && is_array($jsonElement['__element_items'])) {
                     foreach ($jsonElement['__element_items'] as $elementItem) {
                         $this->validateCompatibility($systemElement, $elementItem);
                     }
@@ -141,9 +141,9 @@ class TemplateInstanceImportService extends BaseImportService
             return false;
         }
 
-        if (!isset($data['templateInstances']) ||
-            !is_array($data['templateInstances']) ||
-            $data['templateInstances'] === []) {
+        if (!isset($data['templateInstances'])
+            || !is_array($data['templateInstances'])
+            || $data['templateInstances'] === []) {
             $this->addError(Yii::t('CustomPagesModule.template', 'Template instances are not found in the JSON file!'));
             return false;
         }
@@ -270,11 +270,11 @@ class TemplateInstanceImportService extends BaseImportService
     {
         if (!$this->replace) {
             // Check if the replacing must be forced
-            $this->replace =
+            $this->replace
                 // Elements of Custom Pages must be always replaced
-                ($this->element === null && $this->instance->isPage()) ||
+                = ($this->element === null && $this->instance->isPage())
                 // If Container can has only single Item then it must be always replaced
-                ($this->element instanceof TemplateElement && !$this->element->getDefaultContent(true)->definition->allow_multiple);
+                || ($this->element instanceof TemplateElement && !$this->element->getDefaultContent(true)->definition->allow_multiple);
         }
 
         return $this->replace;

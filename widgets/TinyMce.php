@@ -40,6 +40,7 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
         }
 
         $this->clientOptions = ArrayHelper::merge([
+            'license_key' => 'gpl',
             'plugins' => ['code', 'autolink', 'link', 'image', 'lists', 'fullscreen', 'table', 'wordcount', 'anchor', 'lists'],
             'menu' => ['insert' => [
                 'title' => Yii::t('CustomPagesModule.base', 'Insert'),

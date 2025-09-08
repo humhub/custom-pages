@@ -72,15 +72,29 @@ class TemplatePage extends JsWidget
     /**
      * @inheritdoc
      */
+    protected function getData()
+    {
+        $data = parent::getData();
+
+        if (TemplateInstanceRendererService::inEditMode()) {
+            $data['editor-page-id'] = $this->page->id;
+        }
+
+        return $data;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getAttributes()
     {
         $cssClass = '';
 
         //TODO: fullscreen flag
-        if ($this->page instanceof CustomPage &&
-            !$this->page->isSnippet() &&
-            ContentContainerHelper::getCurrent() === null &&
-            $this->page->getTargetId() !== PageType::TARGET_ACCOUNT_MENU) {
+        if ($this->page instanceof CustomPage
+            && !$this->page->isSnippet()
+            && ContentContainerHelper::getCurrent() === null
+            && $this->page->getTargetId() !== PageType::TARGET_ACCOUNT_MENU) {
             $cssClass .= 'container ';
         }
 

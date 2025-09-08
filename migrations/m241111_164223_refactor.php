@@ -1,6 +1,7 @@
 <?php
 
 use humhub\components\Migration;
+use yii\db\Expression;
 use yii\db\Query;
 
 /**
@@ -18,6 +19,9 @@ class m241111_164223_refactor extends Migration
             ['object_model' => 'humhub\\modules\\custom_pages\\models\\CustomPage'],
         );
 
+        $this->safeAddColumn('custom_pages_page', 'old_id', $this->integer());
+        $this->update('custom_pages_page', ['old_id' => new Expression('id')]);
+
         $this->moveOldRecords('custom_pages_snippet', 'Snippet');
         $this->moveOldRecords('custom_pages_container_snippet', 'ContainerSnippet');
         $this->moveOldRecords('custom_pages_container_page', 'ContainerPage');
@@ -27,7 +31,7 @@ class m241111_164223_refactor extends Migration
         // Modify the columns 'object_model' and 'object_id' to 'page_id',
         // because only the object CustomPage is used there.
         $this->safeDropColumn('custom_pages_template_container', 'object_model');
-        $this->renameColumn('custom_pages_template_container', 'object_id', 'page_id');
+        $this->safeRenameColumn('custom_pages_template_container', 'object_id', 'page_id');
     }
 
     /**
@@ -60,8 +64,9 @@ class m241111_164223_refactor extends Migration
         $records = (new Query())->select('*')->from($oldTableName);
 
         foreach ($records->each() as $record) {
-            $oldId = $record['id'];
+            $record['old_id'] = $record['id'];
             unset($record['id']);
+
             if ($record['target'] === 'Dasboard') {
                 $record['target'] = 'Dashboard';
             }
@@ -69,7 +74,7 @@ class m241111_164223_refactor extends Migration
             $this->insert('custom_pages_page', $record);
             $this->updateRelatedObjectRecords([
                 'object_model' => 'humhub\\modules\\custom_pages\\models\\' . $oldClassName,
-                'object_id' => $oldId,
+                'object_id' => $record['old_id'],
             ], [
                 'object_model' => 'humhub\\modules\\custom_pages\\models\\CustomPage',
                 'object_id' => $this->db->lastInsertID,

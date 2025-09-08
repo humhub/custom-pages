@@ -10,8 +10,7 @@ return [
     'Activate PHP based Pages and Snippets' => '',
     'Empty <br />Container' => '',
     'If disabled, existing php pages will still be online, but can\'t be created.' => '',
-    'Only visible for admins' => '',
-    'Only visible for space admins' => '',
+    'Language-Based Visibility' => '',
     'Open in new window' => '',
     'PHP view path for custom space pages' => '',
     'PHP view path for custom space snippets' => '',
@@ -22,6 +21,7 @@ return [
     'The given element name is already in use for this template.' => '',
     'The given view file path does not exist.' => '',
     'Url shortcut' => '',
+    'Visible to Group Members' => '',
     'page' => '',
     'snippet' => '',
 ];

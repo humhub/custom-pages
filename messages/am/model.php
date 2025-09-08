@@ -6,8 +6,6 @@ return [
     'Empty <br />Container' => 'ባዶ <br /> ማዕቀፍ',
     'If disabled, existing php pages will still be online, but can\'t be created.' => 'የማይሰራ ከሆነ፣ ቀድሞ የነበረው የpHP ገፅ አገልግሎት የሚሰጥ ይሆናል። ነገር ግን መፍጠር አይቻልም።',
     'Label' => 'ምልክት',
-    'Only visible for admins' => 'ለአስተዳዳሪዎች ብቻ የሚታይ',
-    'Only visible for space admins' => 'ለምህዳር አስተዳዳሪዎች ብቻ የሚታይ',
     'Open in new window' => 'በአዲስ መስኮት ውስጥ ክፈት',
     'PHP view path for custom space pages' => 'ለነባሪ የምህዳር ገፃች የሚሆን የPHP እይታ መንገድ',
     'PHP view path for custom space snippets' => 'ለነባሪ የምህዳር ቁንፅል መረጃ የሚሆን የphp እይታ መንገድ',
@@ -24,4 +22,6 @@ return [
     'snippet' => 'ቁንፅልመረጃ',
     'Abstract' => '',
     'Attach Files' => '',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
 ];

@@ -6,8 +6,6 @@ return [
     'Empty <br />Container' => 'Tom <br />container',
     'If disabled, existing php pages will still be online, but can\'t be created.' => 'Hvis deaktivert, vil eksisterende php-sider fortsatt være online, men kan ikke opprettes.',
     'Label' => 'Merkelapp',
-    'Only visible for admins' => 'Kun synlig for administratorer',
-    'Only visible for space admins' => 'Kun synlig for gruppens administratorer',
     'Open in new window' => 'Åpne i nytt vindu',
     'PHP view path for custom space pages' => 'PHP visningsbane for tilpassede plass sider',
     'PHP view path for custom space snippets' => 'PHP visningsbane for egendefinerte mellomrom',
@@ -24,4 +22,6 @@ return [
     'snippet' => 'infobokser',
     'Abstract' => '',
     'Attach Files' => '',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
 ];

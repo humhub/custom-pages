@@ -8,8 +8,6 @@ return [
     'Empty <br />Container' => 'Празен <br>контейнер',
     'If disabled, existing php pages will still be online, but can\'t be created.' => 'Ако е деактивирана, съществуващите PHP страници ще продължат да бъдат онлайн, но не могат да бъдат създадени.',
     'Label' => 'Етикет',
-    'Only visible for admins' => 'Вижда се само за администратори',
-    'Only visible for space admins' => 'Вижда се само от администратори на раздела',
     'Open in new window' => 'Отвори в нов прозорец',
     'PHP view path for custom space pages' => 'Път на изгледа на PHP за персонализирани страници от раздела',
     'PHP view path for custom space snippets' => 'Път за изглед на PHP за персонализирани фрагменти от раздела',
@@ -24,4 +22,6 @@ return [
     'Visibility' => 'Видимост',
     'page' => 'страница',
     'snippet' => 'фрагмент',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
 ];

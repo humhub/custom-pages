@@ -1,12 +1,16 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m160817_130334_page_content_medium_text extends Migration
 {
     public function up()
     {
-        $this->alterColumn('custom_pages_page', 'content', 'MEDIUMTEXT');
+        $table = 'custom_pages_page';
+        $column = 'content';
+        if ($this->columnExists($column, $table)) {
+            $this->alterColumn($table, $column, 'MEDIUMTEXT');
+        }
     }
 
     public function down()

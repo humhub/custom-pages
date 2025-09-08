@@ -2,18 +2,21 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
+use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\custom_pages\types\HtmlType;
 use humhub\modules\custom_pages\types\IframeType;
 use humhub\modules\custom_pages\types\LinkType;
 use humhub\modules\custom_pages\types\MarkdownType;
-use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\types\PhpType;
 use humhub\modules\custom_pages\types\TemplateType;
 use Yii;
 use yii\helpers\Html;
+use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * Controller for viewing Pages.
@@ -41,14 +44,14 @@ class ViewController extends AbstractCustomContainerController
      */
     public function actionIndex()
     {
-        $page = $this->findById(Yii::$app->request->get('id'));
+        $page = CustomPage::findOne(Yii::$app->request->get('id'));
 
-        if (!$page) {
-            throw new HttpException('404', 'Could not find requested page');
+        if (!$page || !$page->getTargetModel()->isAllowedContentType($page->type)) {
+            throw new NotFoundHttpException('Could not find the requested page');
         }
 
-        if (!$page->canView()) {
-            throw new HttpException(403);
+        if (!Yii::$app->user->can([ManagePages::class]) && !$page->canView()) {
+            throw new ForbiddenHttpException('Cannot view the requested page');
         }
 
         $this->subLayout = ($page->getTargetModel()->getSubLayout())
@@ -56,10 +59,6 @@ class ViewController extends AbstractCustomContainerController
             : $this->subLayout;
 
         $this->view->setPageTitle(Html::encode($page->title));
-
-        if (!$page->getTargetModel()->isAllowedContentType($page->type)) {
-            throw new HttpException(404);
-        }
 
         return $this->renderView($page);
 
@@ -84,6 +83,8 @@ class ViewController extends AbstractCustomContainerController
     public function renderContainerView($page)
     {
         switch ($page->type) {
+            case HtmlType::ID:
+                return $this->render('@custom_pages/views/container/html', ['page' => $page, 'html' => $page->getPageContent(), 'title' => $page->title]);
             case IframeType::ID:
                 return $this->render('@custom_pages/views/container/iframe', ['page' => $page, 'url' => $page->page_content]);
             case TemplateType::ID:
@@ -138,15 +139,13 @@ class ViewController extends AbstractCustomContainerController
     public function viewTemplatePage(CustomPage $page, $view): string
     {
         $mode = Yii::$app->request->get('mode', '');
-        $canEdit = $page->content->canEdit();
 
-        if ($mode === 'edit' && !$canEdit) {
-            throw new HttpException(403);
+        if ($mode === 'edit' && !$page->content->canEdit()) {
+            throw new ForbiddenHttpException('Access denied!');
         }
 
         return $this->owner->render($view, [
             'page' => $page,
-            'canEdit' => $canEdit,
             'html' => TemplateInstanceRendererService::instance($page, $mode === 'edit')->render(),
         ]);
     }

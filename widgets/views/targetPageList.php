@@ -37,6 +37,13 @@ use yii\helpers\Html;
                 ],
                 [
                     'class' => DataColumn::class,
+                    'label' => Yii::t('CustomPagesModule.base', 'Sort Order'),
+                    'headerOptions' => ['style' => 'width:10%'],
+                    'contentOptions' => ['class' => 'text-center'],
+                    'value' => 'sort_order',
+                ],
+                [
+                    'class' => DataColumn::class,
                     'label' => Yii::t('CustomPagesModule.base', 'Type'),
                     'headerOptions' => ['style' => 'width:10%'],
                     'value' => function (CustomPage $data) {

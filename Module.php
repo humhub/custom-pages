@@ -29,8 +29,6 @@ class Module extends ContentContainerModule
 
     public const SETTING_MIGRATION_KEY = 'global_pages_migrated_visibility';
 
-    public $resourcesPath = 'resources';
-
     /**
      * @see https://twig.symfony.com/doc/3.x/api.html#sandbox-extension
      * @var bool

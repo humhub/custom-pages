@@ -127,3 +127,7 @@ img.preview {
   color: #818078;
   background-color: #fcfcfa;
 }
+
+.custom-pages-page a, .custom-pages-page a:hover {
+  color: var(--bs-accent);
+}

@@ -10,8 +10,8 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
-use humhub\widgets\Button;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 
 /* @var CustomPage $page */
 /* @var ContentContainerActiveRecord $container */
@@ -19,21 +19,21 @@ use humhub\widgets\Link;
 <div style="margin-bottom:5px">
 <?php if (TemplateInstanceRendererService::inEditMode()) : ?>
     <div id="editPageButton" class="btn-group">
-        <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-pencil"></i>&nbsp;&nbsp;<span class="caret"></span>
+        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-pencil"></i>
         </button>
         <ul class="dropdown-menu">
             <li>
                 <?= Link::to(
                     Yii::t('CustomPagesModule.view', 'Page configuration'),
                     Url::toEditPage($page, $container),
-                )->blank() ?>
+                )->blank()->cssClass('dropdown-item') ?>
             </li>
             <li>
                 <?= Link::to(
                     Yii::t('CustomPagesModule.view', 'Exit Edit Mode'),
                     Url::toViewPage($page, $container),
-                ) ?>
+                )->cssClass('dropdown-item') ?>
             </li>
         </ul>
     </div>
@@ -42,6 +42,6 @@ use humhub\widgets\Link;
         ->icon('pencil')
         ->link(Url::toInlineEdit($page, $container))
         ->id('editPageButton')
-        ->xs() ?>
+        ->sm() ?>
 <?php endif; ?>
 </div>

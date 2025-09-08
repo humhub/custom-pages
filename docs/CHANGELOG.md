@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.12.1 (September 6, 2025)
+--------------------------
+- Fix: Migration to Bootstrap 5 for templates
+
+1.12.0 (July 26, 2025)
+----------------------
+- Enh #435: Migration to Bootstrap 5 for HumHub 1.18
+
 1.11.0-beta.12 (Unreleased)
 --------------------------------
 - Enh #402: HTML pages not allowed in Spaces

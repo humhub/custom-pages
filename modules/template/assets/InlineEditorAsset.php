@@ -42,6 +42,6 @@ class InlineEditorAsset extends AssetBundle
      * @inheritdoc
      */
     public $depends = [
-        TemplateCoreAsset::class,
+        TemplateAsset::class,
     ];
 }

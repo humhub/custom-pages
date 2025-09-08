@@ -37,7 +37,7 @@ class SourceEditorAsset extends AssetBundle
      */
     public $depends = [
         CodeMirrorAssetBundle::class,
-        TemplateCoreAsset::class,
+        TemplateAsset::class,
     ];
 
     /**

@@ -13,8 +13,8 @@ use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceDuplicatorService;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
+use humhub\widgets\form\ActiveForm;
 use Yii;
-use yii\widgets\ActiveForm;
 
 class TemplateType extends ContentType
 {

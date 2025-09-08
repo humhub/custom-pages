@@ -8,12 +8,12 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\custom_pages\widgets\TinyMce;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\UploadProgress;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use Yii;
 
 /**
@@ -91,15 +91,14 @@ class HtmlElement extends BaseElementContent
                     'event' => 'click',
                 ],
             ]])->label(false)
-
-            . Html::beginTag('div', ['class' => 'form-group'])
+            . Html::beginTag('div', ['class' => 'mb-3'])
                 . UploadButton::widget([
                     'id' => 'html-template-file-uploader-' . $id,
                     'label' => Yii::t('CustomPagesModule.model', 'Attach Files'),
                     'tooltip' => false,
                     'progress' => '#html-template-file-uploader-progress-' . $id,
                     'preview' => '#html-template-file-uploader-preview-' . $id,
-                    'cssButtonClass' => 'btn-default btn-sm',
+                    'cssButtonClass' => 'btn-light btn-sm',
                     'model' => $this,
                     'submitName' => $this->formName() . '[fileList][]',
                 ])

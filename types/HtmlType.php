@@ -14,8 +14,8 @@ use humhub\modules\custom_pages\widgets\TinyMce;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\UploadProgress;
+use humhub\widgets\form\ActiveForm;
 use Yii;
-use yii\widgets\ActiveForm;
 
 class HtmlType extends ContentType
 {
@@ -56,7 +56,7 @@ class HtmlType extends ContentType
             ],
         ]);
 
-        $field .= '<div class="form-group">'
+        $field .= '<div class="mb-3">'
             . UploadButton::widget([
                 'id' => 'custom-page-html-file-upload',
                 'label' => Yii::t('CustomPagesModule.model', 'Attach Files'),
@@ -64,7 +64,7 @@ class HtmlType extends ContentType
                 'hideInStream' => true,
                 'progress' => '#custom-page-html-upload-progress',
                 'preview' => '#custom-page-html-upload-preview',
-                'cssButtonClass' => 'btn-default btn-sm',
+                'cssButtonClass' => 'btn-light btn-sm',
                 'model' => $page,
             ])
             . FilePreview::widget([

@@ -8,9 +8,9 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\custom_pages\modules\template\interfaces\TemplateElementContentIterable;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use SimpleXMLElement;
 use Yii;
 

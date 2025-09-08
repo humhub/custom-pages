@@ -18,8 +18,8 @@ use humhub\modules\custom_pages\widgets\TargetPageList;
     <div class="panel-body">
         <div class="clearfix">
             <h4><?= Yii::t('CustomPagesModule.base', 'Overview') ?></h4>
-            <div class="help-block">
-                <?= Yii::t('CustomPagesModule.views_common_list', 'This page lists all available custom content entries.'); ?>
+            <div class="text-body-secondary">
+                <?= Yii::t('CustomPagesModule.view', 'This page lists all available custom content entries.'); ?>
             </div>
         </div>
     </div>

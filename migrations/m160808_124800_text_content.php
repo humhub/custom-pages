@@ -1,12 +1,12 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m160808_124800_text_content extends Migration
 {
     public function up()
     {
-        $this->createTable('custom_pages_template_text_content', [
+        $this->safeCreateTable('custom_pages_template_text_content', [
             'id' => 'pk',
             'content' => 'text NOT NULL',
         ], '');

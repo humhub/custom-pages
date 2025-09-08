@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -46,12 +47,15 @@ class CreatePhpPageCest
 
         $I->waitForText('Configuration');
 
-        $I->fillField('Page[title]', 'PHP title');
-        $I->selectOption('Page[page_content]', ['value' => 'test_page']);
-        $I->jsShow('.form-collapsible-fields.closed fieldset');
-        $I->fillField('Page[sort_order]', '400');
-        $I->selectOption('Page[icon]',  ['value' => 'fa-adn']);
-        $I->click('Save');
+        $I->fillField('CustomPage[title]', 'PHP title');
+        $I->selectOption('CustomPage[page_content]', ['value' => 'test_page']);
+        $I->jsClick('.form-collapsible-fields.closed label');
+        $I->fillField('CustomPage[sort_order]', '400');
+        $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
+
+        $I->scrollToBottom();
+        $I->wait(1);
+        $I->click('Create');
         $I->waitForElementVisible('#topbar-second .fa-adn');
         $I->expectTo('see my new page in the top navigation');
 

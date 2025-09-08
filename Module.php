@@ -1,15 +1,26 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\custom_pages;
 
+use humhub\components\ActiveRecord;
+use humhub\libs\ProfileImage;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\custom_pages\models\ContainerPage;
-use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\models\Snippet;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\models\AssetVariable;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
+use humhub\modules\custom_pages\modules\template\services\TemplateImportService;
 use humhub\modules\space\models\Space;
+use SimpleXMLElement;
+use Symfony\Component\String\UnicodeString;
 use Yii;
 
 class Module extends ContentContainerModule
@@ -22,38 +33,64 @@ class Module extends ContentContainerModule
      * @see https://twig.symfony.com/doc/3.x/api.html#sandbox-extension
      * @var bool
      */
-    public $enableTwiqSandboxExtension = true;
+    public bool $enableTwiqSandboxExtension = true;
+
+    /**
+     * Enable it only when required to edit default templates before
+     * exporting and updating them in the folder "resources/templates/"
+     * @var bool
+     */
+    public bool $allowUpdateDefaultTemplates = false;
 
     /**
      * @see https://twig.symfony.com/doc/3.x/api.html#sandbox-extension
      * @var array
      */
-    public $enableTwiqSandboxExtensionConfig = [
+    public array $enableTwiqSandboxExtensionConfig = [
         'allowedTags' => ['autoescape', 'apply', 'block', 'if', 'with', 'for', 'set'],
-        'allowedFilters' => ['capitalize', 'date', 'first', 'upper', 'escape', 'nl2br', 'url_encode', 'round'],
+        'allowedFilters' => ['capitalize', 'date', 'first', 'slice', 'upper', 'escape',
+            'raw', 'nl2br', 'url_encode', 'round', 'u', 'striptags',
+            'formatter_as_date', 'formatter_as_time', 'formatter_as_date_time',
+            'markdown_strip', 'markdown_html', 'markdown_plain', 'markdown_short'],
         'allowedFunctions' => ['range', 'max', 'min', 'random'],
         'allowedMethods' => [
-            'humhub\modules\custom_pages\modules\template\models\OwnerContentVariable' => '__toString',
+            BaseElementVariable::class => [
+                '__toString',
+            ],
+            UnicodeString::class => [
+                '__toString',
+                'truncate',
+            ],
+            ContentContainerActiveRecord::class => [
+                'getUrl',
+            ],
+            ProfileImage::class => [
+                'getUrl',
+            ],
         ],
-        'allowedProperties' => ['sidebar_container', 'content', 'sidebar_container'],
+        'allowedProperties' => [
+            BaseElementVariable::class => '*',
+            AssetVariable::class => [
+                'bgImage1.jpg',
+                'bgImage2.jpg',
+            ],
+            SimpleXMLElement::class => '*',
+            ActiveRecord::class => '*',
+            ProfileImage::class => '*',
+        ],
     ];
 
     public function checkOldGlobalContent()
     {
-
         if (!Yii::$app->user->isAdmin()) {
             return;
         }
 
         if (!$this->settings->get(static::SETTING_MIGRATION_KEY, 0)) {
-            foreach (Page::find()->all() as $page) {
-                $page->content->visibility = $page->admin_only ? Content::VISIBILITY_PRIVATE : Content::VISIBILITY_PUBLIC;
+            foreach (CustomPage::find()->all() as $page) {
+                /* @var CustomPage $page */
+                $page->content->visibility = $page->visibility < 2 ? $page->visibility : $page::VISIBILITY_PUBLIC;
                 $page->content->save();
-            }
-
-            foreach (Snippet::find()->all() as $snippet) {
-                $snippet->content->visibility = $snippet->admin_only ? Content::VISIBILITY_PRIVATE : Content::VISIBILITY_PUBLIC;
-                $snippet->content->save();
             }
 
             $this->settings->set(static::SETTING_MIGRATION_KEY, 1);
@@ -73,19 +110,7 @@ class Module extends ContentContainerModule
      */
     public function disable()
     {
-        foreach (Page::find()->all() as $page) {
-            $page->hardDelete();
-        }
-
-        foreach (ContainerPage::find()->all() as $page) {
-            $page->hardDelete();
-        }
-
-        foreach (models\Snippet::find()->all() as $page) {
-            $page->hardDelete();
-        }
-
-        foreach (models\ContainerSnippet::find()->all() as $page) {
+        foreach (CustomPage::find()->all() as $page) {
             $page->hardDelete();
         }
 
@@ -107,7 +132,7 @@ class Module extends ContentContainerModule
      */
     public function getContentClasses(): array
     {
-        return [Page::class, ContainerPage::class];
+        return [CustomPage::class];
     }
 
     /**
@@ -132,11 +157,7 @@ class Module extends ContentContainerModule
     {
         parent::disableContentContainer($container);
 
-        foreach (ContainerPage::find()->contentContainer($container)->all() as $page) {
-            $page->hardDelete();
-        }
-
-        foreach (models\ContainerSnippet::find()->contentContainer($container)->all() as $page) {
+        foreach (CustomPage::find()->contentContainer($container)->all() as $page) {
             $page->hardDelete();
         }
     }
@@ -153,5 +174,22 @@ class Module extends ContentContainerModule
         }
 
         return [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function enable()
+    {
+        return parent::enable() && TemplateImportService::instance()->importDefaultTemplates();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update()
+    {
+        parent::update();
+        TemplateImportService::instance()->importDefaultTemplates();
     }
 }

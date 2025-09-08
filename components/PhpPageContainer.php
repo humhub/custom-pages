@@ -1,22 +1,20 @@
 <?php
 
-
 namespace humhub\modules\custom_pages\components;
 
-use HttpException;
-use humhub\modules\custom_pages\models\CustomContentContainer;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
-use humhub\modules\custom_pages\models\PhpType;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\types\PhpType;
 use humhub\modules\file\libs\FileHelper;
 use Yii;
 use yii\helpers\Html;
+use yii\web\ForbiddenHttpException;
 
 /**
- * @used-by CustomContentContainer
+ * @used-by CustomPage
  */
 trait PhpPageContainer
 {
-
     /**
      * Additional validator for php based pages.
      *
@@ -26,14 +24,14 @@ trait PhpPageContainer
      */
     public function validatePhpType($attribute, $params)
     {
-        if(PhpType::isType($this->type)) {
+        if (PhpType::isType($this->type)) {
             $settings = new SettingsForm();
-            if($this->isNewRecord && !$settings->phpPagesActive) {
-                throw new HttpException(403);
+            if ($this->isNewRecord && !$settings->phpPagesActive) {
+                throw new ForbiddenHttpException();
             }
 
-            if(!$this->validatePhpViewFile()) {
-                $this->addError($this->getPageContentProperty(), Yii::t('CustomPagesModule.components_Container', 'Invalid view file selection!'));
+            if (!$this->validatePhpViewFile()) {
+                $this->addError('page_content', Yii::t('CustomPagesModule.base', 'Invalid view file selection!'));
             }
         }
     }
@@ -47,7 +45,7 @@ trait PhpPageContainer
     public function validatePhpViewFile()
     {
         $allowedFiles = $this->getAllowedPhpViewFileSelection();
-        return array_key_exists(Html::getAttributeValue($this, $this->getPageContentProperty()), $allowedFiles);
+        return array_key_exists(Html::getAttributeValue($this, 'page_content'), $allowedFiles);
     }
 
     /**
@@ -57,11 +55,11 @@ trait PhpPageContainer
      */
     public function getPhpViewFilePath()
     {
-        if(PhpType::isType($this->type)) {
+        if (PhpType::isType($this->type)) {
             $viewFiles = $this->getAllowedPhpViewFileSelection(true);
-            $viewName = Html::getAttributeValue($this, $this->getPageContentProperty());
+            $viewName = Html::getAttributeValue($this, 'page_content');
 
-            if(array_key_exists($viewName, $viewFiles)) {
+            if (array_key_exists($viewName, $viewFiles)) {
                 return $this->getPhpViewPathByView(basename($viewFiles[$viewName]), true);
             }
         }
@@ -88,7 +86,7 @@ trait PhpPageContainer
     public function getAllowedPhpViewFileSelection($path = false)
     {
         $settings = new SettingsForm();
-        if(!$settings->phpPagesActive) {
+        if (!$settings->phpPagesActive) {
             return [];
         }
 
@@ -99,7 +97,7 @@ trait PhpPageContainer
 
         $files = FileHelper::findFiles($dirPath, [
             'only' => ['*.php'],
-            'recursive' => false
+            'recursive' => false,
         ]);
 
         $result = [];
@@ -119,7 +117,7 @@ trait PhpPageContainer
      */
     private function getPhpViewPathByView($view = '', $alias = false)
     {
-        $path = rtrim($this->getPhpViewPath(), '/') . '/'.$view;
+        $path = rtrim($this->getPhpViewPath(), '/') . '/' . $view;
         return ($alias) ? $path : Yii::getAlias($path);
     }
 }

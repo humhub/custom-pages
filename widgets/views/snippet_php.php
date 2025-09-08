@@ -6,16 +6,17 @@
  *
  */
 
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\widgets\SnippetContent;
 use yii\base\ViewNotFoundException;
 
-/* @var $model \humhub\modules\custom_pages\models\CustomContentContainer */
+/* @var $model CustomPage */
 /* @var $canEdit bool */
 
 try {
     $content = $this->renderFile($model->getPhpViewFilePath(), ['contentContainer' => $contentContainer]);
 } catch (ViewNotFoundException $vnfe) {
-    $content = Yii::t('CustomPagesModule.view_php', 'View not found');
+    $content = Yii::t('CustomPagesModule.view', 'View not found');
 }
 
 $navigation = (!$canEdit) ? [] : [
@@ -31,6 +32,3 @@ SnippetContent::widget([
     'navigation' => $navigation
 ]);
 ?>
-
-
-

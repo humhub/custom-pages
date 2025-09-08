@@ -2,10 +2,8 @@
 
 namespace humhub\modules\custom_pages\controllers;
 
-use Yii;
-use humhub\modules\custom_pages\models\ContainerSnippet;
-use humhub\modules\custom_pages\models\PageType;
-use humhub\modules\custom_pages\models\Snippet;
+use humhub\modules\custom_pages\helpers\PageType;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use yii\web\HttpException;
 
 /**
@@ -17,35 +15,30 @@ class SnippetController extends PageController
 {
     /**
      * Action for viewing the snippet inline edit view.
-     * 
+     *
      * @return string
      * @throws HttpException if snippet could not be found.
      */
     public function actionEditSnippet($id)
-    {   
+    {
         $snippet = $this->findById(['id' => $id]);
-        
-        if(!$snippet) {
+
+        if (!$snippet) {
             throw new HttpException(404, 'Snippet not found!');
         }
 
         $view = $this->contentContainer
             ? '@custom_pages/views/container/edit_snippet'
             : '@custom_pages/views/global/edit_snippet';
-        
+
         return $this->render($view, [
             'snippet' => $snippet,
             'contentContainer' => $this->contentContainer,
-            'html' => $this->renderTemplate($snippet, true)
+            'html' => TemplateInstanceRendererService::instance($snippet, true)->render(),
         ]);
     }
 
-    protected function getPageClassName()
-    {
-        return $this->contentContainer ? ContainerSnippet::class : Snippet::class;
-    }
-
-    protected function getPageType()
+    protected function getPageType(): string
     {
         return PageType::Snippet;
     }

@@ -1,56 +1,47 @@
 <?php
 
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\custom_pages\widgets\AdminMenu;
-use yii\helpers\Html;
-use yii\helpers\Url;
-use humhub\modules\custom_pages\modules\template\models\Template;
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
+use humhub\components\View;
+use humhub\helpers\Html;
+use humhub\modules\custom_pages\modules\template\models\Template;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
+
+/* @var Template $model */
+/* @var View $this */
 ?>
 <div class="panel panel-default">
-    <div class="panel-heading"><?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
-    <?= AdminMenu::widget(); ?>
+    <?= $this->render('editHeader', [
+        'model' => $model,
+        'description' => Yii::t('CustomPagesModule.template', 'Define general settings for the template.'),
+    ]) ?>
 
     <div class="panel-body">
-        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default pull-right')); ?>
-        <?php if ($model->isNewRecord): ?>
-            <h4><?= Yii::t('CustomPagesModule.modules_template_views_admin_edit', 'Create new {type}', ['type' => $model->type]); ?></h4>
-        <?php else: ?>
-            <h4><?= Yii::t('CustomPagesModule.modules_template_views_admin_edit', 'Edit template \'{templateName}\'', ['templateName' => Html::encode($model->name)]); ?></h4>
-        <?php endif; ?>
+        <?php $form = ActiveForm::begin() ?>
 
-    <?php if (!$model->isNewRecord): ?>
+        <?= $form->field($model, 'name') ?>
+        <?= $form->field($model, 'description')->textarea(['id' => 'template-form-description', 'rows' => 3]) ?>
+        <?= $form->field($model, 'type')->dropDownList($model::getTypeOptions()) ?>
+
+        <div id="template-allow-for-spaces"<?= $model->isLayout() ? '' : ' class="d-none"' ?>">
+            <?= $form->field($model, 'allow_for_spaces')->checkbox() ?>
         </div>
-        <ul class="nav nav-tabs tab-sub-menu" id="tabs">
-            <li class="active">
-                <?= Html::a(Yii::t('CustomPagesModule.base', 'General'), Url::to(['edit', 'id' => $model->id])); ?>
-            </li>
-            <li>
-                <?= Html::a(Yii::t('CustomPagesModule.base', 'Source'), Url::to(['edit-source', 'id' => $model->id])); ?>
-            </li>
-            <li>
-                <?= Html::a(Yii::t('CustomPagesModule.base', 'Usage'), Url::to(['edit-usage', 'id' => $model->id])); ?>
-            </li>
-        </ul>
-        <div class="panel-body">
-    <?php endif; ?>
 
-        <?php $form = ActiveForm::begin(); ?>
-
-        <?= $form->field($model, 'name'); ?>
-        <?= $form->field($model, 'description')->textarea(['id' => 'template-form-description', 'rows' => 3]); ?>
-
-        <?php if ($model->isLayout()) : ?>
-            <?= $form->field($model, 'allow_for_spaces')->checkbox(); ?>
-        <?php endif; ?>
-
-        <?php if ($model->type === Template::TYPE_CONTAINER) : ?>
-            <?= $form->field($model, 'allow_inline_activation')->checkbox(); ?>
-        <?php endif; ?>
-
-        <?= Html::submitButton(Yii::t('CustomPagesModule.modules_template_views_admin_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
+        <?= $model->canEdit() ? Button::save()->submit() : '' ?>
 
         <?php $form::end(); ?>
-        <?= Html::script(' $(\'#template-form-description\').autosize();') ?>
     </div>
 </div>
+<script <?= Html::nonce() ?>>
+$('#template-type').change(function () {
+    $('#template-allow-for-spaces').toggle(
+        $(this).val() === '<?= Template::TYPE_LAYOUT?>' ||
+        $(this).val() === '<?= Template::TYPE_SNIPPET_LAYOUT?>'
+    );
+});
+</script>

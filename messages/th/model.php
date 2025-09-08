@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'Abstract' => 'บทคัดย่อ',
+    'Activate PHP based Pages and Snippets' => 'เปิดใช้งานหน้าและตัวอย่างที่ใช้ PHP',
+    'Attach Files' => 'แนบไฟล์',
+    'Content' => 'เนื้อหา',
+    'Empty <br />Container' => 'ว่างเปล่า <br>คอนเทนเนอร์',
+    'If disabled, existing php pages will still be online, but can\'t be created.' => 'หากปิดใช้งาน หน้า php ที่มีอยู่จะยังคงออนไลน์อยู่ แต่ไม่สามารถสร้างขึ้นได้',
+    'Label' => 'ฉลาก',
+    'Open in new window' => 'เปิดหน้าต่างใหม่',
+    'PHP view path for custom space pages' => 'เส้นทางมุมมอง PHP สำหรับหน้าพื้นที่ที่กำหนดเอง',
+    'PHP view path for custom space snippets' => 'เส้นทางมุมมอง PHP สำหรับตัวอย่างพื้นที่ที่กำหนดเอง',
+    'PHP view path for global custom pages' => 'เส้นทางมุมมอง PHP สำหรับเพจที่กำหนดเองทั่วโลก',
+    'PHP view path for global custom snippets' => 'เส้นทางมุมมอง PHP สำหรับตัวอย่างข้อมูลที่กำหนดเองทั่วโลก',
+    'Placeholder name' => 'ชื่อตัวแทน',
+    'The element name must contain at least two characters without spaces or special signs except \'_\'' => 'ชื่อองค์ประกอบต้องมีอักขระอย่างน้อย 2 ตัวโดยไม่มีช่องว่างหรือเครื่องหมายพิเศษ ยกเว้น \'_\'',
+    'The given element name is already in use for this template.' => 'มีการใช้ชื่อองค์ประกอบที่ระบุสำหรับเทมเพลตนี้แล้ว',
+    'The given view file path does not exist.' => 'ไม่มีเส้นทางไฟล์มุมมองที่กำหนด',
+    'Url shortcut' => 'ทางลัด URL',
+    'View' => 'ดู',
+    'Visibility' => 'ทัศนวิสัย',
+    'page' => 'หน้า',
+    'snippet' => 'snippet',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
+];

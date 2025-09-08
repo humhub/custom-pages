@@ -1,45 +1,47 @@
 <?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 
-/* @var int $pageId */
+/* @var CustomPage $page */
+/* @var ContentContainerActiveRecord $container */
 ?>
-
-<?php if ($editMode) : ?>
-
+<div style="margin-bottom:5px">
+<?php if (TemplateInstanceRendererService::inEditMode()) : ?>
     <div id="editPageButton" class="btn-group">
-        <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-pencil"></i>&nbsp;&nbsp;<span class="caret"></span>
+        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-pencil"></i>
         </button>
         <ul class="dropdown-menu">
             <li>
-                <a target="_blank"  href="<?= Url::toEditPage($pageId, ContentContainerHelper::getCurrent()) ?>">
-                    <?= Yii::t('CustomPagesModule.views_view_template', 'Page configuration') ?>
-                </a>
-            </li>
-            <?php if(humhub\modules\custom_pages\modules\template\models\PagePermission::canTemplate()): ?>
-                <li>
-                    <a target="_blank"  href="<?= Url::to(['/custom_pages/template/layout-admin/edit-source', 'id' => $templateInstance->template_id, 'sguid' => $sguid]) ?>">
-                        <?= Yii::t('CustomPagesModule.views_view_template', 'Edit template') ?>
-                    </a>
-                </li>
-            <?php endif; ?>
-            <li>
-                <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/owner-content/edit-multiple', 'id' => $templateInstance->id, 'sguid' => $sguid]) ?>" id="editAllElements" href="#">
-                    <?= Yii::t('CustomPagesModule.views_view_template', 'Edit elements') ?>
-                </a>
+                <?= Link::to(
+                    Yii::t('CustomPagesModule.view', 'Page configuration'),
+                    Url::toEditPage($page, $container),
+                )->blank()->cssClass('dropdown-item') ?>
             </li>
             <li>
-                <a href="<?= Url::to(['view', 'id' => $pageId, 'editMode' => false, 'sguid' => $sguid]); ?>">
-                    <?= Yii::t('CustomPagesModule.views_view_template', 'Turn edit off') ?>
-                </a>
+                <?= Link::to(
+                    Yii::t('CustomPagesModule.view', 'Exit Edit Mode'),
+                    Url::toViewPage($page, $container),
+                )->cssClass('dropdown-item') ?>
             </li>
         </ul>
     </div>
-
 <?php else: ?>
-    <a id="editPageButton" class="btn btn-primary btn-xs" data-ui-loader style="color:#000;" href="<?= Url::to(['view', 'id' => $pageId, 'editMode' => true, 'sguid' => $sguid]); ?>">
-        <i class="fa fa-pencil"></i>    
-        <?= Yii::t('CustomPagesModule.modules_template_widgets_views_templatePageEditButton', 'Edit Page') ?>
-    </a>
+    <?= Button::primary(Yii::t('CustomPagesModule.template', 'Edit Page'))
+        ->icon('pencil')
+        ->link(Url::toInlineEdit($page, $container))
+        ->id('editPageButton')
+        ->sm() ?>
 <?php endif; ?>
+</div>

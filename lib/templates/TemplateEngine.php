@@ -16,9 +16,9 @@ interface TemplateEngine
 {
     /**
      * Renders the content of a given template.
-     * 
+     *
      * @param string $template template identity
-     * @param type $content input content which is used to generate the resulting render output 
+     * @param type $content input content which is used to generate the resulting render output
      */
     public function render($template, $content);
 }

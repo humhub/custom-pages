@@ -17,13 +17,13 @@ class ConfigController extends Controller
     {
         $model = new SettingsForm();
 
-        if($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->view->saved();
         }
 
         return $this->render('settings', [
             'model' => $model,
-            'subNav' => AdminMenu::widget()
+            'subNav' => AdminMenu::widget(),
         ]);
     }
 }

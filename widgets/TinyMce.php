@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2022 HumHub GmbH & Co. KG
@@ -22,7 +23,7 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
     private function initDefaults()
     {
         $this->options = ArrayHelper::merge([
-            'rows' => 15
+            'rows' => 15,
         ], $this->options);
 
         $this->language = substr($this->language ?? Yii::$app->language, 0, 2);
@@ -39,21 +40,23 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
         }
 
         $this->clientOptions = ArrayHelper::merge([
+            'license_key' => 'gpl',
             'plugins' => ['code', 'autolink', 'link', 'image', 'lists', 'fullscreen', 'table', 'wordcount', 'anchor', 'lists'],
             'menu' => ['insert' => [
                 'title' => Yii::t('CustomPagesModule.base', 'Insert'),
-                'items' => 'image humhubtrigger link anchor inserttable | hr'
+                'items' => 'image humhubtrigger link anchor inserttable | hr',
             ]],
             'toolbar' => 'undo redo | wrapper blocks | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist' . $humhubTriggerToolbar . ' | removeformat | code',
             'content_style' => '.img-responsive {display:block;max-width:100%;height:auto}',
             'valid_elements' => '*[*]',
+            'sandbox_iframes' => false,
             'relative_urls' => false,
             'remove_script_host' => true,
             'external_plugins' => $external_plugins,
             'wrapper' => [
                 'text' => Yii::t('CustomPagesModule.base', 'Panel'),
                 'tooltip' => Yii::t('CustomPagesModule.base', 'Wrap this HTML page with white panel'),
-            ]
+            ],
         ], $this->clientOptions);
 
         // Fix issue with disabled inputs when it is loaded on modal window

@@ -6,17 +6,18 @@
  *
  */
 
+use humhub\components\View;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\custom_pages\models\CustomPage;
 use yii\base\ViewNotFoundException;
 use yii\helpers\Html;
 
-/** @var $page \humhub\modules\custom_pages\models\Page */
-/** @var $this \humhub\components\View */
-/** @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord*/
+/* @var $page CustomPage */
+/* @var $this View */
+/* @var $contentContainer ContentContainerActiveRecord */
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 ?>
-
-
 <div class="container <?= Html::encode($cssClass) ?>">
     <div class="row">
 
@@ -24,7 +25,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
             <?php try { ?>
                 <?= $this->renderFile($page->getPhpViewFilePath(), ['contentContainer' => $contentContainer]) ?>
             <?php } catch (ViewNotFoundException $vnfe) { ?>
-                <?= Yii::t('CustomPagesModule.view_php', 'View not found') ?>
+                <?= Yii::t('CustomPagesModule.view', 'View not found') ?>
             <?php } ?>
         </div>
     </div>

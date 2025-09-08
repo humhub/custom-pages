@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'Activate PHP based Pages and Snippets' => 'Activate PHP based Pages and Snippets',
+    'Content' => 'Nội dung',
+    'Empty <br />Container' => 'Empty <br />Container',
+    'If disabled, existing php pages will still be online, but can\'t be created.' => 'If disabled, existing php pages will still be online, but can\'t be created.',
+    'Label' => 'Nhãn',
+    'Open in new window' => 'Mở trên cửa sổ mới',
+    'PHP view path for custom space pages' => 'PHP view path for custom space pages',
+    'PHP view path for custom space snippets' => 'PHP view path for custom space snippets',
+    'PHP view path for global custom pages' => 'PHP view path for global custom pages',
+    'PHP view path for global custom snippets' => 'PHP view path for global custom snippets',
+    'Placeholder name' => 'Tên thành phần giữ chỗ',
+    'The element name must contain at least two characters without spaces or special signs except \'_\'' => 'The element name must contain at least two characters without spaces or special signs except \'_\'',
+    'The given element name is already in use for this template.' => 'The given element name is already in use for this template.',
+    'The given view file path does not exist.' => 'The given view file path does not exist.',
+    'Url shortcut' => 'Lối tắt URL',
+    'View' => 'Xem',
+    'Visibility' => 'Hiển thị',
+    'page' => 'trang',
+    'snippet' => 'snippet',
+    'Abstract' => '',
+    'Attach Files' => '',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
+];

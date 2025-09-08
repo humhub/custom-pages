@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
@@ -7,11 +8,12 @@
 
 namespace humhub\modules\custom_pages\lib\templates\twig;
 
+use humhub\helpers\ArrayHelper;
 use humhub\modules\custom_pages\lib\templates\TemplateEngine;
 use humhub\modules\custom_pages\Module;
 use Twig\Environment;
 use Twig\Extension\SandboxExtension;
-use Twig\Sandbox\SecurityPolicy;
+use Twig\Extra\String\StringExtension;
 use Yii;
 
 /**
@@ -22,6 +24,8 @@ use Yii;
  */
 class TwigEngine implements TemplateEngine
 {
+    private static $sandboxExtensionConfig = [];
+
     /**
      * @inheritdoc
      *
@@ -37,6 +41,9 @@ class TwigEngine implements TemplateEngine
         $securityPolicy = $this->getSecurityPolicy();
         if ($securityPolicy !== null) {
             $twig->addExtension(new SandboxExtension($securityPolicy, true));
+            $twig->addExtension(new StringExtension());
+            $twig->addExtension(new MarkdownExtension());
+            $twig->addExtension(new YiiFormaterExtension());
         }
         return $twig->render($template, $content);
     }
@@ -50,14 +57,23 @@ class TwigEngine implements TemplateEngine
             return null;
         }
 
-        $policy = new SecurityPolicy();
-        $policy->setAllowedTags($module->enableTwiqSandboxExtensionConfig['allowedTags']);
-        $policy->setAllowedMethods($module->enableTwiqSandboxExtensionConfig['allowedMethods']);
-        $policy->setAllowedFilters($module->enableTwiqSandboxExtensionConfig['allowedFilters']);
-        $policy->setAllowedFunctions($module->enableTwiqSandboxExtensionConfig['allowedFunctions']);
-        $policy->setAllowedProperties($module->enableTwiqSandboxExtensionConfig['allowedProperties']);
 
-        return $policy;
+
+        return new SecurityPolicy(
+            $module->enableTwiqSandboxExtensionConfig['allowedTags'],
+            $module->enableTwiqSandboxExtensionConfig['allowedFilters'],
+            ArrayHelper::merge(
+                $module->enableTwiqSandboxExtensionConfig['allowedMethods'],
+                static::$sandboxExtensionConfig['allowedMethods'] ?? [],
+            ),
+            $module->enableTwiqSandboxExtensionConfig['allowedProperties'],
+            $module->enableTwiqSandboxExtensionConfig['allowedFunctions'],
+        );
+    }
+
+    public static function registerSandboxExtensionAllowedFunctions($variableClassName, array $allowedFunctions)
+    {
+        static::$sandboxExtensionConfig['allowedMethods'][$variableClassName] = $allowedFunctions;
     }
 
 }

@@ -8,6 +8,9 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
+
 /**
  * Form model used for adding container items.
  *
@@ -15,21 +18,23 @@ namespace humhub\modules\custom_pages\modules\template\models\forms;
  */
 class AddItemEditForm extends EditItemForm
 {
+    public ?ContainerElement $elementContent = null;
 
-    public $ownerContent;
+    /**
+     * @var ContainerItem $owner
+     */
+    public $owner;
 
     public function setItemTemplate($itemTemplate)
     {
         $this->template = $itemTemplate;
-        $this->owner = $this->ownerContent->instance->createEmptyItem($this->template->id);
+        $this->owner = $this->elementContent->createEmptyItem($this->template->id);
         $this->prepareContentInstances();
     }
-    
-    public function save()
+
+    public function save(): bool
     {
-        $this->owner->title = $this->title;
         $this->owner->save();
-        return parent::save(false);
+        return parent::save();
     }
-   
 }

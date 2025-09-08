@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: kingb
@@ -8,45 +9,39 @@
 
 namespace humhub\modules\custom_pages\widgets;
 
-use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\helpers\ControllerHelper;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\helpers\Url;
-use \humhub\widgets\BaseMenu;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\Menu;
 use Yii;
 
-
-class OverviewSubMenu extends BaseMenu
+class OverviewSubMenu extends Menu
 {
-
     /**
      * @inheritdoc
      */
-    public $template = "@humhub/widgets/views/subTabMenu";
-
-    /**
-     * @var ContentContainerActiveRecord
-     */
-    public $container;
+    public $template = '@humhub/widgets/views/subTabMenu';
 
     public function init()
     {
-        $this->container = ContentContainerHelper::getCurrent();
+        $container = ContentContainerHelper::getCurrent();
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('CustomPagesModule.base', 'Pages'),
-            'url' => Url::toPageOverview($this->container),
+            'url' => Url::toPageOverview($container),
             'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages'
-                && Yii::$app->controller->id == 'page')
-        ]);
+            'isActive' => ControllerHelper::isActivePath('custom_pages', 'page'),
+        ]));
 
-        $this->addItem([
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('CustomPagesModule.base', 'Snippets'),
-            'url' => Url::toSnippetOverview($this->container),
-            'sortOrder' => 100,
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages'
-                && Yii::$app->controller->id == 'snippet')
-        ]);
+            'url' => Url::toSnippetOverview($container),
+            'sortOrder' => 200,
+            'isActive' => ControllerHelper::isActivePath('custom_pages', 'snippet'),
+        ]));
+
+        parent::init();
     }
 
 }

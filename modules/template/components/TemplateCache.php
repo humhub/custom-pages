@@ -8,109 +8,47 @@
 
 namespace humhub\modules\custom_pages\modules\template\components;
 
-use Yii;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
-use humhub\modules\custom_pages\modules\template\models\ContainerContentItem;
-use humhub\modules\custom_pages\modules\template\models\OwnerContent;
+use Yii;
 
 /**
  * Used to manage the template cache of template pages.
  */
 class TemplateCache
 {
-
     /**
      * Flushes all cache entries related to a given template (identified by $templateId)
-     * 
-     * @param integer $templateId
+     *
+     * @param int $templateId
      */
     public static function flushByTemplateId($templateId)
     {
         foreach (TemplateInstance::findByTemplateId($templateId)->all() as $templateInstance) {
             self::flushByTemplateInstance($templateInstance);
         }
-
-        foreach (ContainerContentItem::findByTemplateId($templateId)->all() as $containerItem) {
-            $ownerContent = OwnerContent::findByContent($containerItem->container);
-            self::flushByOwnerContent($ownerContent);
-        }
     }
 
     /**
-     * Flushes all cache entries related to a given $ownerContent instance.
-     * 
-     * @param OwnerContent $ownerContent
-     * @return null
+     * Flushes all cache entries related to a given $elementContent instance.
+     *
+     * @param BaseElementContent $elementContent
+     * @return void
      */
-    public static function flushByOwnerContent(OwnerContent $ownerContent)
+    public static function flushByElementContent(BaseElementContent $elementContent): void
     {
-        $owner = null;
-
-        while (!$owner instanceof TemplateInstance) {
-            $owner = $ownerContent->owner;
-
-            if ($owner instanceof ContainerContentItem) {
-                $ownerContent = OwnerContent::findByContent($owner->container);
-            } elseif (!$owner instanceof TemplateInstance) {
-                // Just to avoid infinity loops in case of invalid data.
-                return;
-            }
-        }
-
-        self::flushByTemplateInstance($owner);
+        $templateInstance = $elementContent->templateInstance;
+        $templateInstance && self::flushByTemplateInstance($templateInstance);
     }
 
     /**
      * Flushes all cache entries related to an template instance.
-     * 
-     * @param TemplateInstance $owner
+     *
+     * @param TemplateInstance|null $templateInstance
+     * @return void
      */
-    public static function flushByTemplateInstance(TemplateInstance $owner)
+    public static function flushByTemplateInstance(?TemplateInstance $templateInstance): void
     {
-        Yii::$app->cache->delete(self::getKey($owner));
+        $templateInstance && Yii::$app->cache->delete($templateInstance->getRoot()->getCacheKey());
     }
-
-    /**
-     * Returns the template key for a given template instance.
-     * 
-     * @param TemplateInstance $owner
-     * @return string
-     */
-    public static function getKey(TemplateInstance $owner)
-    {
-        return get_class($owner) . $owner->getPrimaryKey();
-    }
-
-    /**
-     * Checks for an existing cache entrie for a given $owner instance exists.
-     * @param TemplateInstance $owner
-     * @return bool
-     */
-    public static function exists($owner)
-    {
-        return Yii::$app->cache->exists(self::getKey($owner));
-    }
-
-    /**
-     * Retrieves the cached content for a given $owner instnance.
-     * @param TemplateInstance $owner
-     * @return string
-     */
-    public static function get($owner)
-    {
-        return Yii::$app->cache->get(self::getKey($owner));
-    }
-
-    /**
-     * Sets the cache entry for a given $owner instance.
-     * 
-     * @param TemplateInstance $owner
-     * @param string $content
-     * @return bool
-     */
-    public static function set($owner, $content)
-    {
-        return Yii::$app->cache->set(self::getKey($owner), $content);
-    }
-
 }

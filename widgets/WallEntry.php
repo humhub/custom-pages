@@ -3,7 +3,7 @@
 namespace humhub\modules\custom_pages\widgets;
 
 use humhub\modules\content\widgets\stream\WallStreamModuleEntryWidget;
-use humhub\modules\custom_pages\models\CustomContentContainer;
+use humhub\modules\custom_pages\models\CustomPage;
 
 /**
  * Since 0.7.4 there won't be any wallentries for pages and snippets.
@@ -17,7 +17,7 @@ class WallEntry extends WallStreamModuleEntryWidget
     public $editMode = self::EDIT_MODE_NEW_WINDOW;
 
     /**
-     * @var CustomContentContainer
+     * @var CustomPage
      */
     public $model;
 
@@ -42,5 +42,17 @@ class WallEntry extends WallStreamModuleEntryWidget
     protected function getTitle()
     {
         return $this->model->title;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function renderFooter()
+    {
+        if (!$this->model->canView()) {
+            return '';
+        }
+
+        return parent::renderFooter();
     }
 }

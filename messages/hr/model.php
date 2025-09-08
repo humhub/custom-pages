@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'Abstract' => 'Sažetak',
+    'Attach Files' => 'Priložite datoteke',
+    'Content' => 'Sadržaj',
+    'Empty <br />Container' => 'Prazan<br> spremnik',
+    'Label' => 'Obilješka',
+    'Open in new window' => 'Otvori u novom prozoru',
+    'Placeholder name' => 'Naziv rezerviranog mjesta',
+    'The element name must contain at least two characters without spaces or special signs except \'_\'' => 'Naziv elementa mora sadržavati najmanje dva znaka bez razmaka ili posebnih znakova, osim \'_\'',
+    'The given element name is already in use for this template.' => 'Dati naziv elementa već se koristi za ovaj predložak.',
+    'Url shortcut' => 'Prečac za URL',
+    'View' => 'Vidi',
+    'Visibility' => 'Vidljivost',
+    'page' => 'stranica',
+    'snippet' => 'isječak',
+    'Activate PHP based Pages and Snippets' => '',
+    'If disabled, existing php pages will still be online, but can\'t be created.' => '',
+    'Language-Based Visibility' => '',
+    'PHP view path for custom space pages' => '',
+    'PHP view path for custom space snippets' => '',
+    'PHP view path for global custom pages' => '',
+    'PHP view path for global custom snippets' => '',
+    'The given view file path does not exist.' => '',
+    'Visible to Group Members' => '',
+];

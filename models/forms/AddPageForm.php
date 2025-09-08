@@ -9,24 +9,18 @@
 
 namespace humhub\modules\custom_pages\models\forms;
 
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\custom_pages\models\ContainerPage;
-use humhub\modules\custom_pages\models\ContainerSnippet;
-use humhub\modules\custom_pages\models\ContentType;
-use humhub\modules\custom_pages\models\CustomContentContainer;
-use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\models\PhpType;
-use humhub\modules\custom_pages\models\Snippet;
+use humhub\modules\custom_pages\types\ContentType;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\types\PhpType;
 use humhub\modules\custom_pages\models\Target;
-use humhub\modules\custom_pages\models\TemplateType;
+use humhub\modules\custom_pages\types\TemplateType;
 use Yii;
 use yii\base\Model;
 
 /**
  * AddPageForm selects a page type
  *
- * @property-read CustomContentContainer $pageInstance
+ * @property-read CustomPage $pageInstance
  * @author luke
  */
 class AddPageForm extends Model
@@ -39,16 +33,10 @@ class AddPageForm extends Model
 
     /**
      * Defines the page content type to be created (Markdown,Template,...)
-     * @var integer
+     * @var int
      */
     public $type;
-    
-    /**
-     * Defines the page type to be created (Page,Snippet,ContainerPage,...).
-     * @var string
-     */
-    public $class;
-    
+
     /**
      * Singleton page instance used for retrieving some page data as the page label.
      * @var mixed
@@ -73,7 +61,7 @@ class AddPageForm extends Model
      */
     public function validateType($attribute, $params)
     {
-        if(!$this->isAllowedType($this->type)) {
+        if (!$this->isAllowedType($this->type)) {
             $this->addError('type', Yii::t('CustomPagesModule.base', 'Invalid type selection'));
         }
     }
@@ -92,19 +80,19 @@ class AddPageForm extends Model
     /**
      * Tests if the given type is allowed for the given page class.
      *
-     * @param integer|ContentType $type
-     * @return boolean
+     * @param int|ContentType $type
+     * @return bool
      * @throws \yii\base\InvalidConfigException
      */
     public function isAllowedType($type)
     {
-        if($type instanceof ContentType) {
+        if ($type instanceof ContentType) {
             $type = $type->getId();
         }
 
-        if(PhpType::isType($type)) {
+        if (PhpType::isType($type)) {
             $settings = new SettingsForm();
-            if(!$settings->phpPagesActive) {
+            if (!$settings->phpPagesActive) {
                 return false;
             }
         }
@@ -123,7 +111,7 @@ class AddPageForm extends Model
      */
     public function isDisabledType($type)
     {
-        if($type instanceof ContentType) {
+        if ($type instanceof ContentType) {
             $type = $type->getId();
         }
 
@@ -140,7 +128,7 @@ class AddPageForm extends Model
     /**
      * Checks if there are allowed templates available for the given page class.
      *
-     * @return boolean
+     * @return bool
      * @throws \yii\base\InvalidConfigException
      */
     public function showTemplateType()
@@ -151,18 +139,16 @@ class AddPageForm extends Model
     /**
      * Returns the singleton page instance.
      *
-     * @return CustomContentContainer
+     * @return CustomPage
      * @throws \yii\base\InvalidConfigException
      */
-    public function getPageInstance()
+    public function getPageInstance(): CustomPage
     {
-        if($this->_instance == null) {
-            $params = [];
-            if ($this->target->container instanceof ContentContainerActiveRecord) {
-                $params[] = $this->target->container;
-            }
-            $this->_instance = Yii::createObject($this->class, $params);
+        if ($this->_instance == null) {
+            $this->_instance = new CustomPage($this->target->container);
+            $this->_instance->target = $this->target->id;
         }
+
         return $this->_instance;
     }
 
@@ -171,19 +157,4 @@ class AddPageForm extends Model
         $settings = new SettingsForm();
         return  $settings->phpPagesActive && $this->getPageInstance()->hasAllowedPhpViews();
     }
-
-    public function getBackUrl()
-    {
-        switch ($this->class) {
-            case Page::class:
-            case ContainerPage::class:
-                return Url::toPageOverview($this->target->container);
-            case Snippet::class:
-            case ContainerSnippet::class:
-                return Url::toSnippetOverview($this->target->container);
-        }
-
-        return null;
-    }
-
 }

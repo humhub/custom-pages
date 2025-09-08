@@ -1,12 +1,12 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m160922_143514_page_url_index extends Migration
 {
     public function up()
     {
-        $this->createIndex('custom-page-url-unique', 'custom_pages_page', 'url', false);
+        $this->safeCreateIndex('custom-page-url-unique', 'custom_pages_page', 'url', false);
     }
 
     public function down()

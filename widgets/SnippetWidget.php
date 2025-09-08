@@ -8,9 +8,9 @@
 
 namespace humhub\modules\custom_pages\widgets;
 
-use Yii;
-use humhub\modules\custom_pages\models\CustomContentContainer;
-use humhub\modules\custom_pages\Module;
+use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use yii\base\Widget;
 
 /**
@@ -20,21 +20,17 @@ use yii\base\Widget;
  */
 class SnippetWidget extends Widget
 {
-
     /**
-     * @var CustomContentContainer
+     * @var CustomPage
      */
     public $model;
 
-    public $canEdit = false;
-
     public function run()
     {
-        $contentContainer = property_exists(Yii::$app->controller, 'contentContainer') ? Yii::$app->controller->contentContainer : null;
-        return $this->render('snippet_'.$this->model->getContentType()->getViewName(), [
+        return $this->render('snippet_' . $this->model->getContentType()->getViewName(), [
             'model' => $this->model,
-            'contentContainer' => $contentContainer,
-            'canEdit' => $this->canEdit
+            'contentContainer' => ContentContainerHelper::getCurrent(),
+            'canEdit' => PagePermissionHelper::canEdit($this->model),
         ]);
     }
 

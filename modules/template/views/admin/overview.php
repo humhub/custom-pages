@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\modules\custom_pages\widgets\AdminMenu;
@@ -11,11 +11,11 @@ use humhub\modules\custom_pages\widgets\AdminMenu;
     <?= AdminMenu::widget([]); ?>
 
     <div class="panel-body">
-        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-default pull-right')); ?>
+        <?= Html::a('<i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;&nbsp;' . Yii::t('CustomPagesModule.base', 'Back to overview'), Url::to(['index']), array('class' => 'btn btn-light float-end')); ?>
         <?php if ($model->isNewRecord): ?>
-            <h4><?= Yii::t('CustomPagesModule.views_admin_add', 'Create new template'); ?></h4>
+            <h4><?= Yii::t('CustomPagesModule.view', 'Create new template'); ?></h4>
         <?php else: ?>
-            <h4><?= Yii::t('CustomPagesModule.views_admin_add', 'Edit template'); ?></h4>
+            <h4><?= Yii::t('CustomPagesModule.view', 'Edit template'); ?></h4>
         </div>
         <ul class="nav nav-tabs tab-sub-menu" id="tabs">
             <li class=" active">
@@ -35,7 +35,7 @@ use humhub\modules\custom_pages\widgets\AdminMenu;
                 <?= $form->field($model, 'allow_for_spaces')->checkbox(); ?>
             <?php endif; ?>
 
-            <?= Html::submitButton(Yii::t('CustomPagesModule.views_admin_edit', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
+            <?= Html::submitButton(Yii::t('CustomPagesModule.view', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
         <?php $form::end(); ?>
 

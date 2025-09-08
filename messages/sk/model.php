@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'Abstract' => 'Abstraktné',
+    'Activate PHP based Pages and Snippets' => 'Aktivujte stránky a úryvky založené na PHP',
+    'Attach Files' => 'Pripojiť súbory',
+    'Content' => 'Obsah',
+    'Empty <br />Container' => 'Prázdny <br>Kontajner',
+    'If disabled, existing php pages will still be online, but can\'t be created.' => 'Ak je zakázané, existujúce php stránky budú stále online, ale nedajú sa dať vytvoriť',
+    'Label' => 'Označenie',
+    'Open in new window' => 'Otvoriť v novom okne',
+    'PHP view path for custom space pages' => 'Cesta zobrazenia PHP pre vlastné stránky priestoru',
+    'Url shortcut' => 'URL zástupca',
+    'View' => 'Zobraziť',
+    'Visibility' => 'Viditeľnosť',
+    'page' => 'stránka',
+    'snippet' => 'úryvok',
+    'Language-Based Visibility' => '',
+    'PHP view path for custom space snippets' => '',
+    'PHP view path for global custom pages' => '',
+    'PHP view path for global custom snippets' => '',
+    'Placeholder name' => '',
+    'The element name must contain at least two characters without spaces or special signs except \'_\'' => '',
+    'The given element name is already in use for this template.' => '',
+    'The given view file path does not exist.' => '',
+    'Visible to Group Members' => '',
+];

@@ -1,13 +1,145 @@
 Changelog
 =========
 
-1.11.0 (Unreleased)
+1.12.2 (Unreleased)
 ---------------------
 - Fix #329: Update module resources path
 
-1.10.4 (Unreleased)
----------------------
+1.12.1 (September 6, 2025)
+--------------------------
+- Fix: Migration to Bootstrap 5 for templates
+
+1.12.0 (July 26, 2025)
+----------------------
+- Enh #435: Migration to Bootstrap 5 for HumHub 1.18
+
+1.11.0-beta.12 (Unreleased)
+--------------------------------
+- Enh #402: HTML pages not allowed in Spaces
+- Enh #457: Fix adding items to empty container
+- Fix #464: Add safe migrations
+
+1.11.0-beta.11 (August 14, 2025)
+--------------------------------
+- Fix #454: Fix edit template page by space admin
+
+1.11.0-beta.10 (August 13, 2025)
+--------------------------------
+- Enh #443: Visibility restrictions
+- Fix #451: Register template resources
+- Fix #453: New category "Start Page"
+
+1.11.0-beta.9 (August 6, 2025)
+------------------------------
+- Fix #444: Fix depreciation warnings on PHP 8.4
+- Fix #446: TinyMCE license key
+
+1.11.0-beta.8 (July 22, 2025)
+-----------------------------
+- Enh #432: Add Yii formatter for Twig filters
+- Enh #437: Add context menu to Structure View
+- Enh #440: Add template section "CSS & JS"
+- Enh #441: Allow to render container edit wrapper attributes separately
+- Enh #442: Improve template structure view
+
+1.11.0-beta.7 (July 4, 2025)
+-----------------------------
+- Fix #429: Enable structure view on snippet template inline editing
+- Enh #431: Use content ID for Content Record Elements
+
+1.11.0-beta.6 (June 30, 2025)
+-----------------------------
+- Fix #426: Content record ID fields for template elements
+
+1.11.0-beta.5 (June 27, 2025)
+-----------------------------
+- Fix #425: Fix image element variable properties type
+
+1.11.0-beta.4 (June 24, 2025)
+-----------------------------
+- Enh #415: Display "Edit template" menu on structure view
+- Enh #417: Allow templates with option "Allow in spaces" also for global pages
+- Enh #419: Allow to change category of custom page
+- Enh #420: Copy custom page
+- Enh #421: Rename RichText elements
+
+1.11.0-beta.3 (June 3, 2025)
+----------------------------
+Please note that the IDs of the custom pages you have created will be changed. Links may need to be updated.
+
+- Enh #354: Template - Add RSS Element Type
+- Enh #357: Refactor all snippets and container pages to single page class
+- Enh #358: Refactor page content types
+- Enh #359: Template - Add Space Element Type
+- Enh #360: Template - Spaces and Users Element Type
+- Enh #362: Template - Rendering & Caching
+- Fix #365: Fix allowed properties for Twig v3.14.1+
+- Enh #367: Migrate all element contents to single table
+- Fix #376: Use template name for allowed templates in the container element dynamic attributes
+- Fix #377: Rename "snipped" to "snippet"
+- Enh #378: Refactor template instance and owner content
+- Enh #387: Remove inline editing of container item elements
+- Enh #396: Structure overview
+- Enh #399: Remove deprecated widget `DataSaved`
+- Enh #404: Copy templates
+- Enh #406: Twig extension to process markdown text
+- Enh #410: Allow to export/import whole container
+
+1.10.16 (Unreleased)
+---------------------------
+- Fix #400: Fix page loading by url shortcut
+
+1.10.15 (February 11, 2025)
+---------------------------
+- Fix #391: Fix image view permission from sub container
+
+1.10.14 (January 30, 2025)
+--------------------------
+- Fix #379: Fix visibility of attached images to default content of template
+
+1.10.13 (January 16, 2025)
+--------------------------
+- Fix #374: Fix allowed properties for Twig v3.14.1+
+
+1.10.12 (January 16, 2025)
+--------------------------
+- Enh #353: Reduce translation message categories
+- Fix #355: Fix visibility of attached images to Template Layout
+
+1.10.10 (October 12, 2024)
+--------------------------
+- Enh #352: Deferred showing content until Markdown is rendered properly
+
+1.10.9 (October 3, 2024)
+------------------------
+- Fix #349: Fix visibility of attached images to template page
+- Enh #351: Use PHP CS Fixer
+
+1.10.8 (September 24, 2024)
+---------------------------
+- Fix #347: Fix errors after save a new page
+- Enh #308: Deny access for files from template of hidden content
+
+1.10.7 (September 19, 2024)
+----------------------------
+- Enh #342: JS Dependency Updates
+- Enh #344: Replace theme variables with CSS variables
+- Fix #346: Disable automatic iframe attribute "sandbox" on TinyMCE editor
+
+1.10.6 (August 6, 2024)
+-----------------------
+- Fix: Add autofocus on item or element edit (for HumHub 1.17 - see https://github.com/humhub/humhub/issues/7136)
+- Fix #339: Fix stream channel for search indexing
+
+1.10.5 (July 15, 2024)
+----------------------
+- Enh #336: Renaming page and snippet to global and space types
+- Fix #337: Ignore cache on content search index building
+
+1.10.4 (June 19, 2024)
+----------------------
 - Fix #328: Missing Iframe attributes in snippet
+- Fix #333: Fix saving of iframe URL by space admin
 
 1.10.3 (May 15, 2024)
 ---------------------
@@ -54,7 +186,7 @@ Changelog
 --------------------
 - Fix #277: Delete not published linked content on delete template
 
-- 1.9.1 (May 1, 2023)
+1.9.1 (May 1, 2023)
 -------------------
 - Fix #274: Hard delete records on disable module
 - Fix #265: Fix tests for core v1.14
@@ -190,8 +322,7 @@ Changelog
 
 1.1.0 (November 3, 2020)
 ------------------------
-The default folders for PHP custom pages were changed.
-New defaults: php-pages/container_pages/, php-pages/container_snippets/, php-pages/global_pages/, php-pages/global_snippets/
+The default folders for PHP custom pages were changed. New defaults: php-pages/container_pages/, php-pages/container_snippets/, php-pages/global_pages/, php-pages/global_snippets/
 
 - Fix #121: Link color in markdown pages have same color as text
 - Fix #143: (Global) PHP pages were lost on module updates

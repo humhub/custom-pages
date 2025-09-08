@@ -24,11 +24,11 @@ class EditContainerItemModal extends \humhub\components\Widget
     public function run()
     {
         $this->action = (!$this->action) ? Url::to() : $this->action;
-        
+
         return $this->render('editItemModal', [
             'model' => $this->model,
             'title' => $this->title,
-            'action' => $this->action
+            'action' => $this->action,
         ]);
     }
 

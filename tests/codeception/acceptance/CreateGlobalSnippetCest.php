@@ -1,12 +1,12 @@
 <?php
+
 namespace custom_pages\acceptance;
 
 use custom_pages\AcceptanceTester;
-use humhub\modules\custom_pages\models\Snippet;
+use humhub\modules\custom_pages\helpers\PageType;
 
 class CreateGlobalSnippetCest
 {
-    
     public function testCreateMarkdownSnippetOnDashboard(AcceptanceTester $I)
     {
         $I->amAdmin();
@@ -16,23 +16,25 @@ class CreateGlobalSnippetCest
         $I->expectTo('see the add new page site');
         $I->see('Overview');
         $I->see('Dashboard', '.target-page-list');
-        $I->seeElement('.target-page-list.'.Snippet::SIDEBAR_DASHBOARD);
+        $I->seeElement('.target-page-list.' . PageType::TARGET_DASHBOARD_SIDEBAR);
 
-        $I->click('.btn-success', '.target-page-list.'.Snippet::SIDEBAR_DASHBOARD);
+        $I->click('.btn-success', '.target-page-list.' . PageType::TARGET_DASHBOARD_SIDEBAR);
 
         $I->waitForText('Add new snippet');
         $I->click('#add-content-type-4');
 
         $I->waitForText('Configuration');
 
-        $I->fillField('Snippet[title]', 'Test title');
-        $I->fillField('#snippet-page_content .humhub-ui-richtext', 'Test Snippet Content');
-        $I->jsShow('.form-collapsible-fields.closed fieldset');
-        $I->fillField('Snippet[sort_order]', '400');
-        $I->selectOption('Snippet[icon]',  ['value' => 'fa-adn']);
-        $I->fillField('Snippet[cssClass]',  'myDashboardWidget');
+        $I->fillField('CustomPage[title]', 'Test title');
+        $I->fillField('#custompage-page_content .humhub-ui-richtext', 'Test Snippet Content');
+        $I->jsClick('.form-collapsible-fields.closed label');
+        $I->fillField('CustomPage[sort_order]', '400');
+        $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
+        $I->fillField('CustomPage[cssClass]', 'myDashboardWidget');
 
-        $I->click('Save');
+        $I->scrollToBottom();
+        $I->wait(1);
+        $I->click('Create');
 
         $I->wait(1);
         $I->amOnDashboard();

@@ -1,15 +1,13 @@
 <?php
 
-use yii\db\Schema;
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m150917_104409_add_new_windows extends Migration
 {
-
     public function up()
     {
-        $this->addColumn('custom_pages_page', 'in_new_window', 'boolean DEFAULT 0');
-        $this->addColumn('custom_pages_container_page', 'in_new_window', 'boolean DEFAULT 0');
+        $this->safeAddColumn('custom_pages_page', 'in_new_window', 'boolean DEFAULT 0');
+        $this->safeAddColumn('custom_pages_container_page', 'in_new_window', 'boolean DEFAULT 0');
     }
 
     public function down()

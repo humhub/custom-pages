@@ -1,7 +1,6 @@
 <?php
 
-use humhub\modules\custom_pages\models\ContainerPage;
-use yii\db\Migration;
+use humhub\components\Migration;
 
 /**
  * Class m190213_135902_align_page_types
@@ -13,14 +12,14 @@ class m190213_135902_align_page_types extends Migration
      */
     public function safeUp()
     {
-        $this->renameColumn('custom_pages_page', 'content', 'page_content');
-        $this->renameColumn('custom_pages_snippet', 'content', 'page_content');
+        $this->safeRenameColumn('custom_pages_page', 'content', 'page_content');
+        $this->safeRenameColumn('custom_pages_snippet', 'content', 'page_content');
 
-        $this->renameColumn('custom_pages_page', 'navigation_class', 'target');
-        $this->renameColumn('custom_pages_snippet', 'sidebar', 'target');
+        $this->safeRenameColumn('custom_pages_page', 'navigation_class', 'target');
+        $this->safeRenameColumn('custom_pages_snippet', 'sidebar', 'target');
 
-        $this->addColumn('custom_pages_container_page', 'target', 'varchar(255) NOT NULL DEFAULT "SpaceMenu"');
-        $this->addColumn('custom_pages_container_snippet', 'target', 'varchar(255) NOT NULL DEFAULT "SpaceStreamSidebar"');
+        $this->safeAddColumn('custom_pages_container_page', 'target', 'varchar(255) NOT NULL DEFAULT "SpaceMenu"');
+        $this->safeAddColumn('custom_pages_container_snippet', 'target', 'varchar(255) NOT NULL DEFAULT "SpaceStreamSidebar"');
     }
 
     /**

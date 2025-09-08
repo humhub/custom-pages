@@ -1,14 +1,15 @@
 <?php
+
 namespace tests\codeception\unit\modules\custom_page;
 
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\custom_pages\interfaces\CustomPagesTargetEvent;
-use humhub\modules\custom_pages\models\HtmlType;
-use humhub\modules\custom_pages\models\MarkdownType;
-use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\types\HtmlType;
+use humhub\modules\custom_pages\types\MarkdownType;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\Target;
-use humhub\modules\custom_pages\models\TemplateType;
+use humhub\modules\custom_pages\types\TemplateType;
 use humhub\modules\space\models\Space;
 use tests\codeception\_support\HumHubDbTestCase;
 use yii\base\Event;
@@ -20,15 +21,17 @@ class InterfaceTest extends HumHubDbTestCase
      */
     public $service;
 
+    /**
+     * @inheritdoc
+     */
     public function _before()
     {
         parent::_before();
 
-        $this->service = new CustomPagesService();
+        $this->service = CustomPagesService::instance(true);
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function($event) {
-            /* @var $event CustomPagesTargetEvent */
-            if($event->container && $event->type === PageType::Page) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
+            if ($event->container && $event->type === PageType::Page) {
                 $event->addTarget(new Target([
                     'id' => 'container',
                     'name' => 'Test Container Target',
@@ -36,49 +39,46 @@ class InterfaceTest extends HumHubDbTestCase
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function($event) {
-            /* @var $event CustomPagesTargetEvent */
-            if($event->container && $event->type === PageType::Snippet) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
+            if ($event->container && $event->type === PageType::Snippet) {
                 $event->addTarget(new Target([
                     'id' => 'containerSnippet',
                     'name' => 'Test Container Target',
+                    'type' => $event->type,
                 ]));
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function($event) {
-            /* @var $event CustomPagesTargetEvent */
-            if(!$event->container && $event->type === PageType::Snippet) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
+            if (!$event->container && $event->type === PageType::Snippet) {
                 $event->addTarget(new Target([
                     'id' => 'snippet',
                     'name' => 'Test Container Target',
+                    'type' => $event->type,
                 ]));
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function($event) {
-            /* @var $event CustomPagesTargetEvent */
-            if(!$event->container && $event->type === PageType::Page) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
+            if (!$event->container && $event->type === PageType::Page) {
                 $event->addTarget(new Target([
                     'id' => 'global',
                     'name' => 'Test Target',
-                    'contentTypes' => [MarkdownType::ID, HtmlType::ID]
+                    'contentTypes' => [MarkdownType::ID, HtmlType::ID],
                 ]));
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function($event) {
-            /* @var $event CustomPagesTargetEvent */
-            if(!$event->container && $event->type === PageType::Page) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
+            if (!$event->container && $event->type === PageType::Page) {
                 $event->addTarget(new Target([
                     'id' => 'global2',
                     'name' => 'Test2 Target',
                     'fieldSettings' => [
                         'icon' => false,
-                        'admin_only' => false,
                         'sort_order' => false,
-                        'cssClass' => false
-                    ]
+                        'cssClass' => false,
+                    ],
                 ]));
             }
         });
@@ -88,30 +88,30 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $this->becomeUser('User1');
 
-        $p1 = new Page([
+        $p1 = new CustomPage([
             'title' => 'Test Title',
             'type' => MarkdownType::ID,
             'page_content' => 'Test',
-            'target' => 'global2'
+            'target' => 'global2',
         ]);
 
 
         $p1->load([
-            'Page' => [
+            'CustomPage' => [
                 'icon' => 'fa-pencil',
-                'visibility' => Page::VISIBILITY_PUBLIC,
+                'visibility' => CustomPage::VISIBILITY_PUBLIC,
                 'sort_order' => 300,
-                'cssClass' => 'testCss'
-            ]
+                'cssClass' => 'testCss',
+            ],
         ]);
 
         $this->assertTrue($p1->save());
 
-        $page = Page::findOne(['id' => $p1->id]);
+        $page = CustomPage::findOne(['id' => $p1->id]);
 
         $this->assertNull($page->icon);
         $this->assertNull($page->cssClass);
-        $this->assertEquals(0, $page->admin_only);
+        $this->assertEquals(CustomPage::VISIBILITY_PUBLIC, $page->visibility);
         $this->assertEquals(0, $page->sort_order);
     }
 
@@ -119,37 +119,37 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $this->becomeUser('User1');
 
-        $p1 = new Page([
+        $p1 = new CustomPage([
             'title' => 'Test Title',
             'type' => MarkdownType::ID,
             'page_content' => 'Test',
-            'target' => 'global'
+            'target' => 'global',
         ]);
 
 
         $p1->load([
-            'Page' => [
+            'CustomPage' => [
                 'icon' => 'fa-pencil',
-                'visibility' => Page::VISIBILITY_ADMIN_ONLY,
+                'visibility' => CustomPage::VISIBILITY_ADMIN,
                 'sort_order' => 300,
-                'cssClass' => 'testCss'
-            ]
+                'cssClass' => 'testCss',
+            ],
         ]);
 
         $this->assertTrue($p1->save());
 
-        $page = Page::findOne(['id' => $p1->id]);
+        $page = CustomPage::findOne(['id' => $p1->id]);
 
         $this->assertEquals('fa-pencil', $page->icon);
         $this->assertEquals('testCss', $page->cssClass);
-        $this->assertEquals(1, $page->admin_only);
+        $this->assertEquals(CustomPage::VISIBILITY_ADMIN, $page->visibility);
         $this->assertEquals(300, $page->sort_order);
     }
 
     public function testTargetAssignment()
     {
-        $p1 = new Page([
-            'target' => 'global'
+        $p1 = new CustomPage([
+            'target' => 'global',
         ]);
 
         $this->assertNotNull($p1->getTargetModel());
@@ -160,11 +160,11 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $this->becomeUser('User1');
 
-        $p1 = new Page([
+        $p1 = new CustomPage([
             'title' => 'Test Title',
             'type' => MarkdownType::ID,
             'target' => 'global',
-            'icon' => 'fa-pencil'
+            'icon' => 'fa-pencil',
         ]);
 
         $this->assertFalse($p1->save());
@@ -178,12 +178,12 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $this->becomeUser('User1');
 
-        $p1 = new Page(Space::findOne(['id' => 1]), [
+        $p1 = new CustomPage(Space::findOne(['id' => 1]), [
             'title' => 'Test Title',
             'type' => MarkdownType::ID,
             'page_content' => 'Test',
             'target' => 'global',
-            'icon' => 'fa-pencil'
+            'icon' => 'fa-pencil',
         ]);
 
         $this->assertFalse($p1->save());
@@ -197,12 +197,12 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $this->becomeUser('User1');
 
-        $p1 = new Page([
+        $p1 = new CustomPage([
             'title' => 'Test Title',
             'type' => TemplateType::ID,
             'page_content' => 'Test',
             'target' => 'global',
-            'icon' => 'fa-pencil'
+            'icon' => 'fa-pencil',
         ]);
 
         $this->assertFalse($p1->save());
@@ -244,7 +244,7 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $targets = $this->service->getTargets(PageType::Page);
 
-        $targetIds = array_map(function($target) {
+        $targetIds = array_map(function ($target) {
             return $target['id'];
         }, $targets);
 
@@ -258,7 +258,7 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $targets = $this->service->getTargets(PageType::Page, Space::findOne(['id' => 1]));
 
-        $targetIds = array_map(function($target) {
+        $targetIds = array_map(function ($target) {
             return $target['id'];
         }, $targets);
 

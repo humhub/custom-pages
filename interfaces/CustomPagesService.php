@@ -4,16 +4,13 @@ namespace humhub\modules\custom_pages\interfaces;
 
 use humhub\modules\content\components\ActiveQueryContent;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\custom_pages\models\ContainerPage;
-use humhub\modules\custom_pages\models\ContainerSnippet;
-use humhub\modules\custom_pages\models\CustomContentContainer;
-use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\models\PageType;
-use humhub\modules\custom_pages\models\Snippet;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\Target;
-use humhub\modules\space\models\Space;
+use humhub\modules\custom_pages\services\VisibilityService;
+use Yii;
 use yii\base\Component;
-use yii\base\InvalidArgumentException;
+use yii\base\StaticInstanceTrait;
 
 /**
  * Class CustomPagesService
@@ -21,53 +18,33 @@ use yii\base\InvalidArgumentException;
  */
 class CustomPagesService extends Component
 {
+    use StaticInstanceTrait;
 
-    const EVENT_FETCH_TARGETS = 'fetchTargets';
+    public const EVENT_FETCH_TARGETS = 'fetchTargets';
 
-    private static $pageTargetCache = [];
-    private static $snippetTargetCache = [];
+    private array $cache = [];
 
     /**
      * Fetches all available navigations for a given container.
      *
      * @param string $type
-     * @param ContentContainerActiveRecord $container
-     * @return array
+     * @param ContentContainerActiveRecord|null $container
+     * @return Target[]
      */
-    public function getTargets($type, ContentContainerActiveRecord $container = null)
+    public function getTargets(string $type, ?ContentContainerActiveRecord $container = null): array
     {
         $containerKey = $container ? $container->contentcontainer_id : 'global';
-        $cache = ($type === PageType::Page) ? static::$pageTargetCache : static::$snippetTargetCache;
 
-        if (isset($cache[$containerKey])) {
-            return $cache[$containerKey];
+        if (!isset($this->cache[$type][$containerKey])) {
+            $event = new CustomPagesTargetEvent(['type' => $type, 'container' => $container]);
+            $event->addDefaultTargets();
+
+            $this->trigger(self::EVENT_FETCH_TARGETS, $event);
+
+            $this->cache[$type][$containerKey] = $event->getTargets();
         }
 
-        $event = new CustomPagesTargetEvent(['type' => $type, 'container' => $container]);
-        $this->addDefaultTargets($event);
-
-        $this->trigger(self::EVENT_FETCH_TARGETS, $event);
-
-        return $cache[$containerKey] = $event->getTargets();
-    }
-
-    public function addDefaultTargets(CustomPagesTargetEvent $event)
-    {
-        switch ($event->type) {
-            case PageType::Page:
-                if (!$event->container) {
-                    $event->addTargets(Page::getDefaultTargets());
-                } else if($event->container instanceof Space) {
-                    $event->addTargets(ContainerPage::getDefaultTargets());
-                }
-                break;
-            case PageType::Snippet:
-                if(!$event->container) {
-                    $event->addTargets(Snippet::getDefaultTargets());
-                } else {
-                    $event->addTargets(ContainerSnippet::getDefaultTargets());
-                }
-        }
+        return $this->cache[$type][$containerKey];
     }
 
     /**
@@ -76,10 +53,23 @@ class CustomPagesService extends Component
      * @param ContentContainerActiveRecord|null $container
      * @return Target
      */
-    public function getTargetById($targetId, $type, ContentContainerActiveRecord $container = null)
+    public function getTargetById($targetId, $type, ?ContentContainerActiveRecord $container = null): ?Target
     {
         $availableTargets = $this->getTargets($type, $container);
         return array_key_exists($targetId, $availableTargets) ? $availableTargets[$targetId] : null;
+    }
+
+    public function getTargetByPage(CustomPage $page): ?Target
+    {
+        $types = [PageType::Page, PageType::Snippet];
+
+        foreach ($types as $type) {
+            if ($target = $this->getTargetById($page->target, $type, $page->content->container)) {
+                return $target;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -89,15 +79,14 @@ class CustomPagesService extends Component
      * to remove all pages and snippets of a given target.
      *
      * @param $targetId
-     * @param $type
      * @param ContentContainerActiveRecord|null $container
      * @throws \Throwable
      * @throws \yii\base\Exception
      * @throws \yii\db\StaleObjectException
      */
-    public function deleteByTarget($targetId, $type, ContentContainerActiveRecord $container = null)
+    public function deleteByTarget($targetId, ?ContentContainerActiveRecord $container = null): void
     {
-        foreach ($this->findContentByTarget($targetId, $type, $container)->all() as $content) {
+        foreach ($this->findByTarget($targetId, $container)->each() as $content) {
             $content->delete();
         }
     }
@@ -107,96 +96,100 @@ class CustomPagesService extends Component
      *
      * @param $targetId
      */
-    public function deleteAllByTarget($targetId)
+    public function deleteAllByTarget($targetId): void
     {
-        foreach (Page::find()->where(['target' => $targetId])->all() as $content) {
-            $content->delete();
-        }
-
-        foreach (ContainerPage::find()->where(['target' => $targetId])->all() as $content) {
-            $content->delete();
-        }
-
-        foreach (Snippet::find()->where(['target' => $targetId])->all() as $content) {
-            $content->delete();
-        }
-
-        foreach (ContainerSnippet::find()->where(['target' => $targetId])->all() as $content) {
-            $content->delete();
+        foreach (CustomPage::find()->where(['target' => $targetId])->each() as $page) {
+            /* @var CustomPage $page */
+            $page->delete();
         }
     }
 
     /**
-     * Returns all pages related to a given target.
+     * Returns a query to find all pages from the given container/space or global pages.
+     *
+     * @param ContentContainerActiveRecord|null $container
+     * @return ActiveQueryContent
+     * @throws \Throwable
+     */
+    public function find(?ContentContainerActiveRecord $container = null): ActiveQueryContent
+    {
+        $query = CustomPage::find()
+            ->contentContainer($container);
+
+        if ($container) {
+            // See https://github.com/humhub/humhub/issues/3784 this does not work for global content
+            $query->readable();
+        } else {
+            $query->andWhere($query->stateFilterCondition);
+        }
+
+        if (!VisibilityService::canViewAdminOnlyContent($container)) {
+            $query->andWhere(['!=', CustomPage::tableName() . '.visibility', CustomPage::VISIBILITY_ADMIN]);
+        }
+
+        return $query->orderBy([
+            CustomPage::tableName() . '.sort_order' => SORT_ASC,
+            CustomPage::tableName() . '.id' => SORT_DESC,
+        ]);
+    }
+
+    /**
+     * Returns a query to find all pages related to a given target.
      *
      * @param string|Target $targetId
      * @param ContentContainerActiveRecord|null $container
      * @return ActiveQueryContent
-     * @throws \yii\base\Exception
      * @throws \Throwable
      */
-    public function findContentByTarget($targetId, $type, ContentContainerActiveRecord $container = null)
+    public function findByTarget($targetId, ?ContentContainerActiveRecord $container = null): ActiveQueryContent
     {
         if ($targetId instanceof Target) {
             $container = $targetId->container;
             $targetId = $targetId->id;
         }
 
-        $contentClass = $this->getContentClass($type, $container);
-
-        /* @var $query ActiveQueryContent */
-        $query = call_user_func($contentClass.'::find');
-
-        $query->where(['target' => $targetId]);
-
-        if ($container) {
-            $query->contentContainer($container);
-
-            // See https://github.com/humhub/humhub/issues/3784 this does not work for global content
-            $query->readable();
-        } else {
-            $query->joinWith('content');
-            $query->andWhere($query->stateFilterCondition);
-        }
-
-        if(!CustomContentContainer::canSeeAdminOnlyContent($container)) {
-            $query->andWhere(['admin_only' => 0]);
-        }
-
-        return $query->orderBy('sort_order, id DESC');
+        return $this->find($container)
+            ->andWhere([CustomPage::tableName() . '.target' => $targetId]);
     }
 
     /**
-     * @param $type
-     * @param ContentContainerActiveRecord|null $container
-     * @return string
-     */
-    private function getContentClass($type, ContentContainerActiveRecord $container = null)
-    {
-        if(PageType::Page === $type) {
-            return ($container) ?  ContainerPage::class : Page::class;
-        } else if(PageType::Snippet === $type) {
-           return ($container) ?  ContainerSnippet::class : Snippet::class;
-        } else {
-            throw new InvalidArgumentException('Invalid page type selection in findContentByTarget()');
-        }
-    }
-
-    /**
-     * Should be called to search for a single custom content with a given id.
+     * Returns a query to find all pages by page type(page or snippet).
      *
-     * @param $id
-     * @param $targetId
-     * @param $type
+     * @param string $pageType
      * @param ContentContainerActiveRecord|null $container
-     * @return CustomContentContainer
-     * @throws \yii\base\Exception
+     * @return ActiveQueryContent
+     * @throws \Throwable
      */
-    public function getSingleContent($id, $targetId, $type, ContentContainerActiveRecord $container = null)
+    public function findByPageType(string $pageType, ?ContentContainerActiveRecord $container = null): ActiveQueryContent
     {
-        $contentClass = $this->getContentClass($type, $container);
-        $tableName = call_user_func($contentClass.'::tableName');
-        return $this->findContentByTarget($targetId, $type, $container)->where([$tableName.'.id' => $id])->one();
+        $targets = $this->getTargets($pageType, $container);
+
+        return $this->find($container)
+            ->andWhere([CustomPage::tableName() . '.target' => array_column($targets, 'id')]);
     }
 
+    /**
+     * Find a first start page related to the current user
+     *
+     * @return CustomPage|null
+     */
+    public function getStartPage(): ?CustomPage
+    {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__, function () {
+            $pages = $this->findByTarget(PageType::TARGET_START_PAGE)
+                ->orderBy([
+                    'sort_order' => SORT_ASC,
+                    'id' => SORT_ASC,
+                ]);
+
+            foreach ($pages->each() as $page) {
+                /* @var CustomPage $page */
+                if ($page->canView()) {
+                    return $page;
+                }
+            }
+
+            return null;
+        });
+    }
 }

@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'Content' => 'Sisältö',
+    'Label' => 'Otsikko',
+    'Open in new window' => 'Avaa uusi uuteen ikkunaan',
+    'View' => 'Näkymä',
+    'Visibility' => 'Näkyvyys',
+    'page' => 'sivu',
+    'Abstract' => '',
+    'Activate PHP based Pages and Snippets' => '',
+    'Attach Files' => '',
+    'Empty <br />Container' => '',
+    'If disabled, existing php pages will still be online, but can\'t be created.' => '',
+    'Language-Based Visibility' => '',
+    'PHP view path for custom space pages' => '',
+    'PHP view path for custom space snippets' => '',
+    'PHP view path for global custom pages' => '',
+    'PHP view path for global custom snippets' => '',
+    'Placeholder name' => '',
+    'The element name must contain at least two characters without spaces or special signs except \'_\'' => '',
+    'The given element name is already in use for this template.' => '',
+    'The given view file path does not exist.' => '',
+    'Url shortcut' => '',
+    'Visible to Group Members' => '',
+    'snippet' => '',
+];

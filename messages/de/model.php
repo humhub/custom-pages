@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'Abstract' => 'Beschreibung',
+    'Activate PHP based Pages and Snippets' => 'PHP-basierte Seiten und Snippet aktivieren',
+    'Attach Files' => 'Dateien anhängen',
+    'Content' => 'Inhalt',
+    'Empty <br />Container' => 'Leerer <br />Container',
+    'If disabled, existing php pages will still be online, but can\'t be created.' => 'Wenn deaktiviert, sind bestehende PHP-Seiten immer noch online, können aber nicht erstellt werden.',
+    'Label' => 'Label',
+    'Open in new window' => 'In neuem Fenster öffnen',
+    'PHP view path for custom space pages' => 'PHP-View-Pfad für benutzerdefinierte Space-Seiten',
+    'PHP view path for custom space snippets' => 'PHP-View-Pfad für benutzerdefinierte Space-Snippet',
+    'PHP view path for global custom pages' => 'PHP View-Pfad für globale benutzerdefinierte Seiten',
+    'PHP view path for global custom snippets' => 'PHP-View-Pfad für globale benutzerdefinierte Snippet',
+    'Placeholder name' => 'Platzhalterbezeichnung',
+    'The element name must contain at least two characters without spaces or special signs except \'_\'' => 'Der Elementname muss mindestens zwei Zeichen ohne Leerzeichen oder Sonderzeichen enthalten, außer \'_\'.',
+    'The given element name is already in use for this template.' => 'Der angegebene Elementname wird bereits für diese Vorlage verwendet.',
+    'The given view file path does not exist.' => 'Der angegebene View-Dateipfad existiert nicht.',
+    'Url shortcut' => 'URL-Verknüpfung',
+    'View' => 'Ansicht',
+    'Visibility' => 'Sichtbarkeit',
+    'page' => 'Seite',
+    'snippet' => 'Snippet',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
+];

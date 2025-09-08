@@ -1,24 +1,31 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
-use humhub\libs\Html;
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\custom_pages\models\Page;
+use humhub\modules\custom_pages\assets\Assets;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\modules\template\widgets\PageConfigurationButton;
-use humhub\modules\custom_pages\widgets\CustomPageInlineStyle;
 
-/* @var $page Page */
+/* @var $this View */
+/* @var $page CustomPage */
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
+
+Assets::register($this);
 ?>
-
-<?= CustomPageInlineStyle::widget(['theme' => $this->theme]); ?>
-
-<?php if ($page->hasTarget(Page::NAV_CLASS_ACCOUNTNAV)): ?>
+<?php if ($page->hasTarget(PageType::TARGET_ACCOUNT_MENU)): ?>
     <div class="panel panel-default <?= Html::encode($cssClass) ?>">
         <div class="panel-body">
             <?= PageConfigurationButton::widget() ?>
             <div class="markdown-render">
-                <?= RichText::output($md) ?>
+                <?= RichText::output($md, ['fadeIn' => true]) ?>
             </div>
         </div>
     </div>
@@ -30,7 +37,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="markdown-render">
-                            <?= RichText::output($md) ?>
+                            <?= RichText::output($md, ['fadeIn' => true]) ?>
                         </div>
                     </div>
                 </div>

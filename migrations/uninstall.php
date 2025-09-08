@@ -1,34 +1,23 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class uninstall extends Migration
 {
-
     public function up()
     {
-        $this->dropTable('custom_pages_template_container_content_item');
-        $this->dropTable('custom_pages_template_container_content_template');
-        $this->dropTable('custom_pages_template_file_content');
-        $this->dropTable('custom_pages_template_container_content');
-        $this->dropTable('custom_pages_template_image_content');
-        $this->dropTable('custom_pages_template_hh_richtext_content');
-        $this->dropTable('custom_pages_template_richtext_content');
-        $this->dropTable('custom_pages_template_text_content');
-        $this->dropTable('custom_pages_template_file_download_content');
-        $this->dropTable('custom_pages_template_element');
-        $this->dropTable('custom_pages_template_owner_content');
-        $this->dropTable('custom_pages_template_container');
-        $this->dropTable('custom_pages_template_container_content_definition');
-        $this->dropTable('custom_pages_template_image_content_definition');
-        $this->dropTable('custom_pages_template');
+        $this->safeDropForeignKey('fk-tmpl-container-item-element-content', 'custom_pages_template_element_container_item');
+        $this->safeDropForeignKey('fk-container_item_id', 'custom_pages_template_instance');
+        $this->safeDropForeignKey('fk-element_id', 'custom_pages_template_element_content');
 
-        $this->dropTable('custom_pages_page');
-        $this->dropTable('custom_pages_container_page');
-        
-        $this->dropTable('custom_pages_container_snippet');
-        $this->dropTable('custom_pages_snippet');
-        
+        $this->safeDropTable('custom_pages_template_element_container_item');
+        $this->safeDropTable('custom_pages_template_element');
+        $this->safeDropTable('custom_pages_template_element_content');
+        $this->safeDropTable('custom_pages_template_element_content_definition');
+        $this->safeDropTable('custom_pages_template_instance');
+        $this->safeDropTable('custom_pages_template');
+        $this->safeDropTable('custom_pages_page_setting');
+        $this->safeDropTable('custom_pages_page');
     }
 
     public function down()

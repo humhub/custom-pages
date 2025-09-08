@@ -1,11 +1,10 @@
 <?php
 
-
 namespace humhub\modules\custom_pages\interfaces;
 
-
-use Yii;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\models\Target;
+use Yii;
 
 /**
  * Class CustomPagesNavigationEvent
@@ -18,19 +17,17 @@ class CustomPagesTargetEvent extends CustomPagesEvent
      */
     public $type;
 
-    /**
-     * @var array
-     */
-    private $result = [];
+    private array $result = [];
 
     /**
-     * @param $target Target|array
+     * @param Target|array $target
      */
-    public function addTarget($target) {
+    public function addTarget($target): void
+    {
         $target = $target instanceof  Target ? $target : new Target($target);
         $target->container = $this->container;
 
-        if(!$target->validate()) {
+        if (!$target->validate()) {
             Yii::warning('Invalid Custom Pages Navigation given in CustomPagesNavigationEvent::addTarget().');
             return;
         }
@@ -38,8 +35,15 @@ class CustomPagesTargetEvent extends CustomPagesEvent
         $this->result[$target->id] = $target;
     }
 
-    public function addTargets($targets) {
-        foreach ($targets as $target) {
+    public function addTargets($targets): void
+    {
+        foreach ($targets as $id => $target) {
+            if (is_string($target)) {
+                $target = ['name' => $target];
+            }
+            if (!isset($target['id'])) {
+                $target['id'] = $id;
+            }
             $this->addTarget($target);
         }
     }
@@ -47,9 +51,14 @@ class CustomPagesTargetEvent extends CustomPagesEvent
     /**
      * @return array
      */
-    public function getTargets()
+    public function getTargets(): array
     {
         return $this->result;
+    }
+
+    public function addDefaultTargets(): void
+    {
+        $this->addTargets(PageType::getDefaultTargets($this->type, $this->container));
     }
 
 }

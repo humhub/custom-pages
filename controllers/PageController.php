@@ -3,50 +3,39 @@
 namespace humhub\modules\custom_pages\controllers;
 
 use humhub\modules\admin\permissions\ManageModules;
-use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\custom_pages\models\TemplateType;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\types\TemplateType;
 use humhub\modules\custom_pages\permissions\ManagePages;
-use humhub\modules\custom_pages\models\CustomContentContainer;
-use humhub\modules\custom_pages\models\PageType;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\content\components\ContentContainerControllerAccess;
 use humhub\modules\space\models\Space;
 use humhub\modules\custom_pages\widgets\AdminMenu;
-use humhub\modules\custom_pages\models\Page;
 use humhub\modules\custom_pages\models\forms\AddPageForm;
 use Yii;
+use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
 /**
- * PageController used to manage global (non container) pages of type humhub\modules\custom_pages\models\Page.
+ * PageController used to manage global (non container) pages.
  *
  * This Controller is designed to be overwritten by other controller for supporting other page types.
- *
- * The following functions have to be redeclared in order to support another page type:
- *
- *  - getPageClassName()
- *  - findById()
  *
  * @author luke, buddha
  */
 class PageController extends AbstractCustomContainerController
 {
     /**
-     * @var CustomPagesService
-     */
-    public $customPagesService;
-
-    /**
      * @inheritdoc
      */
     public function init()
     {
         parent::init();
-        $this->customPagesService = new CustomPagesService();
+
         if (!$this->contentContainer) {
             $this->subLayout = "@humhub/modules/admin/views/layouts/main";
         }
@@ -64,7 +53,7 @@ class PageController extends AbstractCustomContainerController
         }
 
         return [
-            ['permissions' => [ManageModules::class, ManagePages::class]]
+            ['permissions' => [ManageModules::class, ManagePages::class]],
         ];
     }
 
@@ -98,16 +87,15 @@ class PageController extends AbstractCustomContainerController
     /**
      * Returns a view which lists all available pages of a given type.
      *
-     * @see getPageClassName() which returns the actual page type.
      * @return string view
      * @throws \Exception
      */
     public function actionOverview()
     {
         return $this->render('@custom_pages/views/common/list', [
-            'targets' => $this->customPagesService->getTargets($this->getPageType(), $this->contentContainer),
+            'targets' => CustomPagesService::instance()->getTargets($this->getPageType(), $this->contentContainer),
             'pageType' => $this->getPageType(),
-            'subNav' => $this->getSubNav()
+            'subNav' => $this->getSubNav(),
         ]);
     }
 
@@ -124,21 +112,20 @@ class PageController extends AbstractCustomContainerController
      * This action is used to add a new page of a given type.
      * After selecting a page content type the user is redirected to an edit page view.
      *
-     * @see getPageClassName() which returns the actual page type.
      * @param string $targetId
-     * @param integer $type
+     * @param int $type
      * @return string view
      * @throws \Exception
      */
     public function actionAdd($targetId, $type = null)
     {
-        $target = $this->customPagesService->getTargetById($targetId, $this->getPageType(), $this->contentContainer);
+        $target = CustomPagesService::instance()->getTargetById($targetId, $this->getPageType(), $this->contentContainer);
 
         if (!$target) {
             throw new HttpException(404, 'Invalid target setting!');
         }
 
-        $model = new AddPageForm(['class' => $this->getPageClassName(), 'target' => $target, 'type' => $type]);
+        $model = new AddPageForm(['target' => $target, 'type' => $type]);
 
         if ($model->validate()) {
             return $this->redirect(Url::toCreatePage($targetId, $this->getPageType(), $type, $this->contentContainer));
@@ -148,18 +135,17 @@ class PageController extends AbstractCustomContainerController
             'model' => $model,
             'target' => $target,
             'pageType' => $this->getPageType(),
-            'subNav' => $this->getSubNav()
+            'subNav' => $this->getSubNav(),
         ]);
     }
 
     /**
-     * Action for editing pages. This action expects either an page id or a content type for
+     * Action for editing pages. This action expects either a page id or a content type for
      * creating new pages of a given content type.
      *
-     * @see getPageClassName() which returns the actual page type.
      * @param null $targetId
-     * @param integer $type content type
-     * @param integer $id
+     * @param int $type content type
+     * @param int $id
      * @return string
      * @throws HttpException
      * @throws \yii\base\Exception
@@ -168,61 +154,61 @@ class PageController extends AbstractCustomContainerController
      */
     public function actionEdit($targetId = null, $type = null, $id = null)
     {
-        /* @var CustomContentContainer $page*/
-       $page = $this->findByid($id);
+        /* @var CustomPage $page*/
+        $page = $this->findByid($id);
 
         if (!$page && !$targetId) {
             throw new HttpException(400, 'Invalid request data!');
         }
 
-        // If no pageId was given, we create a new page with the given type.
         if (!$page) {
-            $page = $this->createNewPage($type, $targetId);
+            $page = new CustomPage($this->contentContainer);
+            $page->type = $type;
+            $page->target = $targetId;
         }
 
         if (!$page->canEdit()) {
             throw new ForbiddenHttpException('You cannot manage the page!');
         }
 
-        $isNew = $page->isNewRecord;
-
-        if($this->savePage($page)) {
-            return (TemplateType::isType($type) && $isNew)
+        if ($this->savePage($page)) {
+            return (TemplateType::isType($type) && $page->isNewRecord)
                 ? $this->redirect(Url::toInlineEdit($page, $this->contentContainer))
                 : $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));
         }
 
         // Select a proper option on the edit form for old stored page
         // if its visibility is not allowed for its page type:
-        $page->fixVisibility();
+        $page->visibilityService->fix();
 
         return $this->render('@custom_pages/views/common/edit', [
             'page' => $page,
             'pageType' => $this->getPageType(),
-            'subNav' => $this->getSubNav()
+            'subNav' => $this->getSubNav(),
         ]);
     }
 
     /**
-     * @param $page CustomContentContainer
+     * @param $page CustomPage
      * @return bool
      * @throws \Throwable
      * @throws \yii\db\Exception
      */
     protected function savePage($page)
     {
-        if(!$page->load(Yii::$app->request->post())) {
+        if (!$page->load(Yii::$app->request->post()) || !$page->validate()) {
             return false;
         }
-        $transaction = Page::getDb()->beginTransaction();
+
+        $transaction = CustomPage::getDb()->beginTransaction();
 
         try {
             $saved = $page->save();
             $transaction->commit();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $transaction->rollBack();
             throw $e;
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             $transaction->rollBack();
             throw $e;
         }
@@ -231,27 +217,39 @@ class PageController extends AbstractCustomContainerController
     }
 
     /**
-     * @param $type
-     * @param $targetId
-     * @return CustomContentContainer
+     * Action for copying pages.
+     *
+     * @param int $id
      */
-    private function createNewPage($type, $targetId)
+    public function actionCopy($id)
     {
-        $pageClass = $this->getPageClassName();
-        $page = new $pageClass(['type' => $type, 'target' => $targetId]);
-        if($this->contentContainer) {
-            $page->content->setContainer($this->contentContainer);
-            if(!$this->contentContainer) {
-                $page->content->visibility = Content::VISIBILITY_PUBLIC;
-            }
+        $sourcePage = $this->findByid($id);
+
+        if (!$sourcePage) {
+            throw new BadRequestHttpException('Invalid request data!');
         }
-        return $page;
+
+        if (!$sourcePage->canEdit()) {
+            throw new ForbiddenHttpException('You cannot manage the page!');
+        }
+
+        $copyPage = $sourcePage->getContentType()->duplicate(Yii::$app->request->post());
+
+        if (!$copyPage->isNewRecord) {
+            return (TemplateType::isType($copyPage->type))
+                ? $this->redirect(Url::toInlineEdit($copyPage, $this->contentContainer))
+                : $this->redirect(Url::toOverview($this->getPageType(), $this->contentContainer));
+        }
+
+        return $this->renderAjax('@custom_pages/views/common/copy', [
+            'page' => $copyPage,
+        ]);
     }
 
     /**
      * Deletes the page with a given $id.
      *
-     * @param integer $id page id
+     * @param int $id page id
      * @param bool $irrevocably
      * @return string
      * @throws HttpException
@@ -284,7 +282,7 @@ class PageController extends AbstractCustomContainerController
     /**
      * @inheritdoc
      */
-    protected function getPageType()
+    protected function getPageType(): string
     {
         return PageType::Page;
     }

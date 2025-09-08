@@ -15,13 +15,12 @@ namespace humhub\modules\custom_pages\modules\template\widgets;
  */
 class EditContentSeperator extends \humhub\components\Widget
 {
-
     public $isAdminEdit;
-    
+
     public function run()
     {
         return $this->render('editContentSeperator', [
-            'isAdminEdit' => $this->isAdminEdit
+            'isAdminEdit' => $this->isAdminEdit,
         ]);
     }
 

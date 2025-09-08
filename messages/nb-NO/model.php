@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'Activate PHP based Pages and Snippets' => 'Aktiver PHP-baserte sider og utdrag',
+    'Content' => 'Innhold',
+    'Empty <br />Container' => 'Tom <br />container',
+    'If disabled, existing php pages will still be online, but can\'t be created.' => 'Hvis deaktivert, vil eksisterende php-sider fortsatt være online, men kan ikke opprettes.',
+    'Label' => 'Merkelapp',
+    'Open in new window' => 'Åpne i nytt vindu',
+    'PHP view path for custom space pages' => 'PHP visningsbane for tilpassede plass sider',
+    'PHP view path for custom space snippets' => 'PHP visningsbane for egendefinerte mellomrom',
+    'PHP view path for global custom pages' => 'PHP visningsbane for globale tilpassede sider',
+    'PHP view path for global custom snippets' => 'PHP visningsbane for globale tilpassede utdrag',
+    'Placeholder name' => 'Navn plassholder',
+    'The element name must contain at least two characters without spaces or special signs except \'_\'' => 'Elementnavnet må inneholde minst to tegn uten mellomrom eller spesialtegn bortsett fra \'_\'',
+    'The given element name is already in use for this template.' => 'Det oppgitte elementnavnet er allerede i bruk for denne malen.',
+    'The given view file path does not exist.' => 'Den oppgitte visningsfilbanen eksisterer ikke.',
+    'Url shortcut' => 'Url snarvei',
+    'View' => 'Visning',
+    'Visibility' => 'Synlighet',
+    'page' => 'side',
+    'snippet' => 'infobokser',
+    'Abstract' => '',
+    'Attach Files' => '',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
+];

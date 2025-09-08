@@ -8,9 +8,12 @@
 
 namespace humhub\modules\custom_pages\widgets;
 
+use humhub\helpers\ControllerHelper;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\permissions\ManagePages;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\Menu;
 use Yii;
 
 /**
@@ -18,41 +21,40 @@ use Yii;
  *
  * @author Basti
  */
-class AdminMenu extends \humhub\widgets\BaseMenu
+class AdminMenu extends Menu
 {
-
-    public $template = "@humhub/widgets/views/tabMenu";
-    public $type = "adminCustomPagesSubNavigation";
+    /**
+     * @inheritdoc
+     */
+    public $template = '@humhub/widgets/views/tabMenu';
 
     public function init()
     {
         if (Yii::$app->user->can([ManageModules::class, ManagePages::class])) {
-            $this->addItem([
+            $this->addEntry(new MenuLink([
                 'label' => Yii::t('CustomPagesModule.base', 'Overview'),
                 'url' => Url::toPageOverview(),
                 'sortOrder' => 100,
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages'
-                        && Yii::$app->controller->id == 'page')
-            ]);
+                'isActive' => ControllerHelper::isActivePath('custom_pages', ['page', 'snippet']),
+            ]));
         }
 
         if (Yii::$app->user->can(ManageModules::class)) {
-            $this->addItem([
+            $this->addEntry(new MenuLink([
                 'label' => Yii::t('CustomPagesModule.base', 'Templates'),
-                'url' => Url::toTemplateLayoutAdmin(),
+                'url' => Url::toTemplateAdmin(),
                 'sortOrder' => 300,
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'template'),
-            ]);
+                'isActive' => ControllerHelper::isActivePath('template'),
+            ]));
 
-            $this->addItem([
+            $this->addEntry(new MenuLink([
                 'label' => Yii::t('CustomPagesModule.base', 'Settings'),
                 'url' => Url::toModuleConfig(),
                 'sortOrder' => 400,
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'custom_pages'
-                        && Yii::$app->controller->id == 'config'),
-            ]);
+                'isActive' => ControllerHelper::isActivePath('custom_pages', 'config'),
+            ]));
         }
-        
+
         parent::init();
     }
 

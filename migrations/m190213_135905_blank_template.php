@@ -1,7 +1,6 @@
 <?php
 
 use humhub\components\Migration;
-use humhub\modules\custom_pages\modules\template\models\ContainerContent;
 use humhub\modules\custom_pages\modules\template\models\Template;
 
 /**
@@ -14,6 +13,8 @@ class m190213_135905_blank_template extends Migration
      */
     public function safeUp()
     {
+        $containerContentClass = 'humhub\\modules\\custom_pages\\modules\\template\\models\\ContainerContent';
+
         $this->insertSilent('custom_pages_template', [
             'name' => 'system_plain_layout',
             'engine' => 'twig',
@@ -25,15 +26,15 @@ class m190213_135905_blank_template extends Migration
         $tempalteId = $this->db->getLastInsertID();
 
         // Insert elements
-        $this->insertTemplateElement($tempalteId, 'content', ContainerContent::class);
+        $this->insertTemplateElement($tempalteId, 'content', $containerContentClass);
         $this->insertSilent('custom_pages_template_container_content_definition', ['allow_multiple' => 1, 'is_inline' => 0, 'is_default' => 1]);
         $this->insertSilent('custom_pages_template_container_content', ['definition_id' => $this->db->getLastInsertID()]);
         $this->insertSilent('custom_pages_template_owner_content', [
             'element_name' => 'content',
             'owner_model' => Template::class,
             'owner_id' => $tempalteId,
-            'content_type' => ContainerContent::class,
-            'content_id' => $this->db->getLastInsertID()
+            'content_type' => $containerContentClass,
+            'content_id' => $this->db->getLastInsertID(),
         ]);
     }
 
@@ -52,7 +53,7 @@ class m190213_135905_blank_template extends Migration
         $this->insertSilent('custom_pages_template_element', [
             'template_id' => $tmplid,
             'name' => $name,
-            'content_type' => $contentType
+            'content_type' => $contentType,
         ]);
     }
 

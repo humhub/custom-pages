@@ -1,22 +1,30 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
+use humhub\components\View;
 use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\custom_pages\assets\Assets;
+use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\widgets\PageConfigurationButton;
-use humhub\modules\custom_pages\widgets\CustomPageInlineStyle;
 use yii\helpers\Html;
 
-/** @var $page \humhub\modules\custom_pages\models\Page */
+/* @var $this View */
+/* @var $page CustomPage */
+/* @var $md string */
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
+
+Assets::register($this);
 ?>
-
-<?= CustomPageInlineStyle::widget(['theme' => $this->theme]); ?>
-
 <?= PageConfigurationButton::widget() ?>
 <div class="panel panel-default <?= Html::encode($cssClass) ?>">
     <div class="panel-body">
         <div class="markdown-render">
-            <?= RichText::output($md) ?>
+            <?= RichText::output($md, ['fadeIn' => true]) ?>
         </div>
     </div>
 </div>

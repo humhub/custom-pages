@@ -8,8 +8,9 @@
 
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use Yii;
-use humhub\modules\custom_pages\modules\template\models\PagePermission;
 
 /**
  * User Administration Menu
@@ -18,10 +19,7 @@ use humhub\modules\custom_pages\modules\template\models\PagePermission;
  */
 class PageConfigurationButton extends \humhub\components\Widget
 {
-    /**
-     * @var integer
-     */
-    public $pageId;
+    public ?int $pageId = null;
 
     /**
      * @var string
@@ -31,7 +29,7 @@ class PageConfigurationButton extends \humhub\components\Widget
     /**
      * @var string
      */
-    public $btnClass = 'btn btn-primary btn-xs';
+    public $btnClass = 'btn btn-primary btn-sm';
 
     /**
      * @var string
@@ -40,13 +38,17 @@ class PageConfigurationButton extends \humhub\components\Widget
 
     public function run()
     {
-        if (!PagePermission::canEdit()) {
-            return;
+        $pageId = $this->pageId ?? (int)Yii::$app->request->get('id');
+        $page = CustomPage::findOne($pageId);
+        if (!$page) {
+            return '';
         }
 
-        $pageId = isset($this->pageId) ? $this->pageId : Yii::$app->request->get('id');
+        if (!PagePermissionHelper::canEdit($page)) {
+            return '';
+        }
 
-        $contentContainer = isset(Yii::$app->controller->contentContainer) ? Yii::$app->controller->contentContainer : null;
+        $contentContainer = Yii::$app->controller->contentContainer ?? null;
 
         return $this->render('pageConfigurationButton', [
             'pageId' => $pageId,

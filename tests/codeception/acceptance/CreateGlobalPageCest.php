@@ -1,11 +1,11 @@
 <?php
+
 namespace custom_pages\acceptance;
 
 use custom_pages\AcceptanceTester;
 
 class CreateGlobalPageCest
 {
-    
     public function testCreateMarkdownPageOnTopMenu(AcceptanceTester $I)
     {
         $I->amAdmin();
@@ -24,13 +24,15 @@ class CreateGlobalPageCest
 
         $I->waitForText('Configuration');
 
-        $I->fillField('Page[title]', 'Test title');
-        $I->fillField('#page-page_content .humhub-ui-richtext', 'Test Content');
-        $I->jsShow('.form-collapsible-fields.closed fieldset');
-        $I->fillField('Page[sort_order]', '400');
-        $I->selectOption('Page[icon]',  ['value' => 'fa-adn']);
+        $I->fillField('CustomPage[title]', 'Test title');
+        $I->fillField('#custompage-page_content .humhub-ui-richtext', 'Test Content');
+        $I->jsClick('.form-collapsible-fields.closed label');
+        $I->fillField('CustomPage[sort_order]', '400');
+        $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
 
-        $I->click('Save');
+        $I->scrollToBottom();
+        $I->wait(1);
+        $I->click('Create');
         $I->waitForElementVisible('#topbar-second .fa-adn');
         $I->expectTo('see my new page in the top navigation');
 
@@ -40,7 +42,7 @@ class CreateGlobalPageCest
         $I->waitForText('Test Content');
         $I->see('Test title');
     }
-    
+
     public function testCreateLinkPageOnAccountMenu(AcceptanceTester $I)
     {
         $I->amAdmin();
@@ -59,12 +61,15 @@ class CreateGlobalPageCest
 
         $I->waitForText('Configuration');
 
-        $I->fillField('Page[title]', 'Test link');
-        $I->fillField('Page[page_content]', '/dashboard/dashboard');
-        $I->jsShow('.form-collapsible-fields.closed fieldset');
-        $I->fillField('Page[sort_order]', '400');
-        $I->selectOption('Page[icon]', ['value' => 'fa-adn']);
-        $I->click('Save');
+        $I->fillField('CustomPage[title]', 'Test link');
+        $I->fillField('CustomPage[page_content]', '/dashboard/dashboard');
+        $I->jsClick('.form-collapsible-fields.closed label');
+        $I->fillField('CustomPage[sort_order]', '400');
+        $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
+
+        $I->scrollToBottom();
+        $I->wait(1);
+        $I->click('Create');
         $I->wait(1);
         $I->amOnRoute(['/user/account/edit']);
         $I->expectTo('see my new page in the user account setting menu');
@@ -89,6 +94,8 @@ class CreateGlobalPageCest
         $I->see('People Buttons');
         $I->seeElement('.target-page-list.PeopleButtonsWidget');
 
+        $I->scrollTo('.target-page-list.PeopleButtonsWidget');
+        $I->wait(1);
         $I->click('.btn-success', '.target-page-list.PeopleButtonsWidget');
 
         $I->waitForText('Add new page');
@@ -96,20 +103,22 @@ class CreateGlobalPageCest
 
         $I->waitForText('Configuration');
 
-        $I->fillField('Page[title]', 'Custom people page');
-        $I->fillField('#page-page_content .humhub-ui-richtext', 'Custom people page content');
-        $I->jsShow('.form-collapsible-fields.closed fieldset');
-        $I->fillField('Page[sort_order]', '200');
-        $I->selectOption('Page[icon]',  ['value' => 'fa-anchor']);
+        $I->fillField('CustomPage[title]', 'Custom people page');
+        $I->fillField('#custompage-page_content .humhub-ui-richtext', 'Custom people page content');
+        $I->jsClick('.form-collapsible-fields.closed label');
+        $I->fillField('CustomPage[sort_order]', '200');
+        $I->selectOption('CustomPage[icon]', ['value' => 'fa-anchor']);
 
-        $I->click('Save');
+        $I->scrollToBottom();
+        $I->wait(1);
+        $I->click('Create');
         $I->waitForText('People Buttons');
         $I->see('Custom people page');
         $I->amOnRoute('/people');
         $I->waitForElementVisible('.container-people .panel-heading .fa-anchor');
         $I->expectTo('see my new page in the people heading buttons');
 
-        $I->click('.container-people .panel-heading .fa-anchor');
+        $I->jsClick('.container-people .panel-heading .fa-anchor');
         $I->expectTo('see no my new page content');
 
         $I->waitForText('Custom people page content');

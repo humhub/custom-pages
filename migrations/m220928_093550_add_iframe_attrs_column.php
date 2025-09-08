@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 /**
  * Class m220928_093550_add_iframe_attrs_column
@@ -12,10 +12,10 @@ class m220928_093550_add_iframe_attrs_column extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('{{%custom_pages_page}}', 'iframe_attrs', $this->string(255)->after('page_content'));
-        $this->addColumn('{{%custom_pages_snippet}}', 'iframe_attrs', $this->string(255)->after('page_content'));
-        $this->addColumn('{{%custom_pages_container_page}}', 'iframe_attrs', $this->string(255)->after('page_content'));
-        $this->addColumn('{{%custom_pages_container_snippet}}', 'iframe_attrs', $this->string(255)->after('page_content'));
+        $this->safeAddColumn('{{%custom_pages_page}}', 'iframe_attrs', $this->string(255)->after('page_content'));
+        $this->safeAddColumn('{{%custom_pages_snippet}}', 'iframe_attrs', $this->string(255)->after('page_content'));
+        $this->safeAddColumn('{{%custom_pages_container_page}}', 'iframe_attrs', $this->string(255)->after('page_content'));
+        $this->safeAddColumn('{{%custom_pages_container_snippet}}', 'iframe_attrs', $this->string(255)->after('page_content'));
     }
 
     /**

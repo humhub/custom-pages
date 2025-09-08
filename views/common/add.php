@@ -1,9 +1,9 @@
 <?php
 
 use humhub\modules\custom_pages\helpers\Url;
-use humhub\modules\custom_pages\models\ContentType;
+use humhub\modules\custom_pages\types\ContentType;
 use humhub\modules\custom_pages\widgets\AddContentTypeRow;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var $model \humhub\modules\custom_pages\models\forms\AddPageForm */
 /* @var $target \humhub\modules\custom_pages\models\Target */
@@ -19,8 +19,8 @@ use humhub\widgets\Button;
     <div class="panel-body">
         <div class="clearfix">
             <?= Button::back(Url::toOverview($pageType, $model->target->container), Yii::t('CustomPagesModule.base', 'Back to overview'))->sm(); ?>
-            <h4><?= Yii::t('CustomPagesModule.views_admin_add', 'Add new {pageType}', ['pageType' => $model->getPageLabel()]) ?></h4>
-            <div class="help-block">
+            <h4><?= Yii::t('CustomPagesModule.view', 'Add new {pageType}', ['pageType' => $model->getPageLabel()]) ?></h4>
+            <div class="form-text">
                 <?= Yii::t('CustomPagesModule.base', 'Please choose one of the following content types. The content type defines how your content is embedded to your site.') ?>
             </div>
         </div>

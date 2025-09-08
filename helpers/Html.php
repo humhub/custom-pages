@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -7,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\helpers;
 
-use humhub\libs\Html as BaseHtml;
+use humhub\helpers\Html as BaseHtml;
 
 class Html extends BaseHtml
 {

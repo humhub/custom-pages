@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "name": "system_one_column_layout",
+  "description": "Simple one column layout.",
+  "source": "\u003Cdiv class=\"row\"\u003E\r\n\t\u003Cdiv class=\"col-md-12\"\u003E\r\n\t\t\u003Cdiv class=\"panel panel-default\"\u003E\r\n\t\t\t\u003Cdiv class=\"panel-body\"\u003E\r\n\t\t\t\t{{ content }}\r\n\t\t\t\u003C/div\u003E\r\n\t\t\u003C/div\u003E\r\n\t\u003C/div\u003E\r\n\u003C/div\u003E",
+  "type": "layout",
+  "is_default": 1,
+  "allow_for_spaces": 0,
+  "elements": [
+    {
+      "name": "content",
+      "content_type": "humhub\\modules\\custom_pages\\modules\\template\\elements\\ContainerElement",
+      "title": null,
+      "dyn_attributes": "{\"allow_multiple\":1,\"is_inline\":0,\"templates\":[]}"
+    }
+  ]
+}

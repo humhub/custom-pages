@@ -8,55 +8,39 @@
 
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
-use Yii;
-use humhub\modules\custom_pages\models\ContainerPage;
-use humhub\modules\custom_pages\models\Page;
-use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
+use humhub\components\Widget;
+use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 
 /**
  * User Administration Menu
  *
  * @author Basti
  */
-class TemplatePageEditButton extends \humhub\components\Widget
+class TemplatePageEditButton extends Widget
 {
-
     /**
-     * @var \humhub\modules\custom_pages\models\CustomContentContainer page instance
+     * @var CustomPage page instance
      */
     public $page;
 
     /**
-     * @var boolean
+     * @inheritdoc
      */
-    public $canEdit;
-
-    /**
-     * @var boolean
-     */
-    public $editMode;
+    public function beforeRun()
+    {
+        return parent::beforeRun() && PagePermissionHelper::canEdit($this->page);
+    }
 
     /**
      * @inheritdoc
      */
     public function run()
     {
-        if (!$this->canEdit) {
-            return;
-        }
-
-        $space = (isset(Yii::$app->controller->contentContainer)) ? Yii::$app->controller->contentContainer : null;
-        $sguid = ($space) ? $space->guid : null;
-        $ownerModel = ($space) ? ContainerPage::class : Page::class;
-
-        $templateInstance = TemplateInstance::findOne(['object_model' => $ownerModel, 'object_id' => $this->page->id]);
-
         return $this->render('templatePageEditButton', [
-                    'canEdit' => $this->canEdit,
-                    'sguid' => $sguid,
-                    'editMode' => $this->editMode,
-                    'pageId' => $this->page->id,
-                    'templateInstance' => $templateInstance
+            'page' => $this->page,
+            'container' => ContentContainerHelper::getCurrent(),
         ]);
     }
 }

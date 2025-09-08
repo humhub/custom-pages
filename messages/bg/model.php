@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'Abstract' => 'Резюме',
+    'Activate PHP based Pages and Snippets' => 'Активирайте PHP базирани страници и фрагменти',
+    'Attach Files' => 'Прикачи файлове',
+    'Content' => 'Съдържание',
+    'Empty <br />Container' => 'Празен <br>контейнер',
+    'If disabled, existing php pages will still be online, but can\'t be created.' => 'Ако е деактивирана, съществуващите PHP страници ще продължат да бъдат онлайн, но не могат да бъдат създадени.',
+    'Label' => 'Етикет',
+    'Open in new window' => 'Отвори в нов прозорец',
+    'PHP view path for custom space pages' => 'Път на изгледа на PHP за персонализирани страници от раздела',
+    'PHP view path for custom space snippets' => 'Път за изглед на PHP за персонализирани фрагменти от раздела',
+    'PHP view path for global custom pages' => 'Път на PHP изглед за глобални потребителски страници',
+    'PHP view path for global custom snippets' => 'Път на изгледа на PHP за глобални персонализирани фрагменти',
+    'Placeholder name' => 'Име на заместител',
+    'The element name must contain at least two characters without spaces or special signs except \'_\'' => 'Името на елемента трябва да съдържа поне два знака без интервали или специални знаци с изключение на "_"',
+    'The given element name is already in use for this template.' => 'Даденото име на елемент вече се използва за този шаблон.',
+    'The given view file path does not exist.' => 'Даденият път на изглед на файл не съществува.',
+    'Url shortcut' => 'Пряк път на URL',
+    'View' => 'Изглед',
+    'Visibility' => 'Видимост',
+    'page' => 'страница',
+    'snippet' => 'фрагмент',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
+];

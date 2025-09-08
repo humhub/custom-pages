@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'Abstract' => 'Abstrakcyjny',
+    'Activate PHP based Pages and Snippets' => 'Aktywuj Strony i Fragmenty oparte na PHP',
+    'Attach Files' => 'Załącz pliki',
+    'Content' => 'Zawartość',
+    'Empty <br />Container' => 'Pusty <br />Kontener',
+    'If disabled, existing php pages will still be online, but can\'t be created.' => 'Jeśli wyłączone, istniejące strony php pozostaną online, ale nie mogą być tworzone nowe.',
+    'Label' => 'Etykieta',
+    'Open in new window' => 'Otwórz w nowym oknie',
+    'PHP view path for custom space pages' => 'Widok ścieżki PHP dla niestandardowych stron stref',
+    'PHP view path for custom space snippets' => 'Widok ścieżki PHP dla niestandardowych stron fragmentów',
+    'PHP view path for global custom pages' => 'Widok ścieżki PHP dla globalnych niestandardowych stron',
+    'PHP view path for global custom snippets' => 'Widok ścieżki PHP dla globalnych niestandardowych fragmentów',
+    'Placeholder name' => 'Nazwa Placeholder\'a',
+    'The element name must contain at least two characters without spaces or special signs except \'_\'' => 'Element nazwy musi zawierać przynajmniej dwa znaki bez spacji lub znaków specjalnych oprócz \'_\'',
+    'The given element name is already in use for this template.' => 'Podana nazwa elementu jest już używana w tym szablonie.',
+    'The given view file path does not exist.' => 'Podana ścieżka nie istnieje.',
+    'Url shortcut' => 'Skrót adresu',
+    'View' => 'Podgląd',
+    'Visibility' => 'Widzialność',
+    'page' => 'strona',
+    'snippet' => 'fragmentu',
+    'Language-Based Visibility' => '',
+    'Visible to Group Members' => '',
+];

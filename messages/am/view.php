@@ -1,0 +1,33 @@
+<?php
+
+return [
+    'Add new {pageType}' => 'አዲስ {pageType} ያክሉ',
+    'By setting an url shortcut value, you can create a better readable url for your page. If <b>URL Rewriting</b> is enabled on your site, the value \'mypage\' will result in an url \'www.example.de/p/mypage\'.' => 'የurl አቋራጭ ክፍሉን በማስተካከል ለገፅዎ የተሻለ  ተነባቢ የሆነ url መፍጠር ይችላሉ። በድረገፅዎ ላይ <b>URLን ዳግመኛ መፃፊያውን</b> እንዲሰራ የሚያደረጉት ከሆነ \'የእኔገፅ\' የሚለው ቦታ የ\'www.example.de/p/mypage\' ውጤት ይሆናል።',
+    'Configuration' => 'ውቅር ',
+    'Create new template' => 'አዲስ አብነት ይፍጠሩ',
+    'Delete' => 'አስወግድ',
+    'Edit template' => 'አብነቱን ያርትዑ',
+    'Empty' => 'ባዶ',
+    'Inline Editor' => 'አግባባዊ አርታዒ',
+    'Multiple' => 'በብዛት',
+    'Open page...' => 'ገፁ እየተከፈተ ነው',
+    'Page configuration' => 'የገፅ ማዋቀሪያ',
+    'Save' => 'አስቀምጥ',
+    'Settings' => 'ማስተካከያዎች',
+    'View not found' => 'የሚታይ ነገር አልተገኘም',
+    'e.g. http://www.example.de' => 'ምሳሌ፡ http://www.example.de',
+    'none' => 'ምንም',
+    '<strong>Copy</strong> Custom Page' => '',
+    '<strong>Info: </strong> Pages marked as "Admin Only" are not shown in the stream!' => '',
+    'Copy' => '',
+    'Create' => '',
+    'Exit Edit Mode' => '',
+    'Here you can configure the general settings of your {pageLabel}.' => '',
+    'The abstract will be used as stream entry content to promote the actual page. 
+                        If no abstract is given or the page is only visible for admins, no stream entry will be created.' => '',
+    'This page lists all available custom content entries.' => '',
+    'This section has no editable elements.' => '',
+    'You don\'t have permission to access the page' => '',
+    'You need to be a system administrator to edit this URL' => '',
+    'e.g. allowfullscreen allow="camera; microphone"' => '',
+];

@@ -1,12 +1,28 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\custom_pages\modules\template\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\lib\templates\TemplateEngineFactory;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
+use humhub\modules\custom_pages\modules\template\elements\ContainerDefinition;
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
+use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
+use humhub\modules\custom_pages\permissions\ManagePages;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
+use yii\web\View;
 
 /**
  * This is the model class for all templates.
@@ -15,11 +31,11 @@ use yii\helpers\ArrayHelper;
  *
  * A template can be related to multiple TemplateElements, which define the content type and name of the template placeholders.
  *
- * The template can define a default content for each placeholder, by creating an OwnerContent with the
+ * The template can define a default content for each placeholder, by creating an ElementContent with the
  * given placeholder name.
  *
- * If no default content is given, and a TemplateContentOwner does not define an own OwnerContent for the placeholder, the placeholder is
- * either rendered empty if not in editmode or as default(empty) block if the edit mode is activated.
+ * If no default content is given, and a Template Instance does not define an own ElementContent for the placeholder,
+ * the placeholder is either rendered empty if not in edit mode or as default(empty) block if the edit mode is activated.
  *
  *
  * There are different types of templates:
@@ -27,24 +43,29 @@ use yii\helpers\ArrayHelper;
  *  - Layout: Root template which is not combinable with other templates.
  *  - Container: Template which is combinable with other templates.
  *
- * @property $id int
- * @property $name string
- * @property $source string
- * @property $engine string
- * @property $description string
- * @property $type string
- * @property $allow_for_spaces boolean
- * @property $allow_inline_activation boolean
+ * @property int $id
+ * @property string $name
+ * @property string $source
+ * @property string $css
+ * @property string $js
+ * @property string $engine
+ * @property string $description
+ * @property string $type
+ * @property bool $allow_for_spaces
+ * @property bool $is_default
+ * @property string $created_at
+ * @property int $created_by
+ * @property string $updated_at
+ * @property int $updated_by
  *
  * @property-read TemplateElement[] $elements
  */
-class Template extends ActiveRecord implements TemplateContentOwner
+class Template extends ActiveRecord
 {
-
-    const TYPE_LAYOUT = 'layout';
-    const TYPE_SNIPPED_LAYOUT = 'snipped-layout';
-    const TYPE_NAVIGATION = 'navigation';
-    const TYPE_CONTAINER = 'container';
+    public const TYPE_LAYOUT = 'layout';
+    public const TYPE_SNIPPET_LAYOUT = 'snippet-layout';
+    public const TYPE_NAVIGATION = 'navigation';
+    public const TYPE_CONTAINER = 'container';
 
     /**
      * @var TemplateElement[] all template elements used for the rendering process.
@@ -57,7 +78,7 @@ class Template extends ActiveRecord implements TemplateContentOwner
     public function init()
     {
         // Set default engine
-        $this->engine = "twig";
+        $this->engine = 'twig';
     }
 
     /**
@@ -75,11 +96,13 @@ class Template extends ActiveRecord implements TemplateContentOwner
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'source' => 'Source',
-            'allow_for_spaces' => 'Allow this layout in spaces',
-            'allow_inline_activation' => 'Allow inline edit activation in inline editor',
-            'description' => 'Description',
+            'name' => Yii::t('CustomPagesModule.template', 'Name'),
+            'source' => Yii::t('CustomPagesModule.template', 'Source'),
+            'css' => Yii::t('CustomPagesModule.template', 'Stylesheet'),
+            'js' => Yii::t('CustomPagesModule.template', 'JavaScript'),
+            'allow_for_spaces' => Yii::t('CustomPagesModule.template', 'Allow this layout in spaces'),
+            'description' => Yii::t('CustomPagesModule.template', 'Description'),
+            'type' => Yii::t('CustomPagesModule.template', 'Type'),
         ];
     }
 
@@ -91,11 +114,12 @@ class Template extends ActiveRecord implements TemplateContentOwner
         return [
             [['name', 'type'], 'required', 'on' => ['edit']],
             ['description', 'safe'],
-            [['allow_for_spaces', 'isLyout', 'allow_inline_activation'], 'integer'],
+            [['allow_for_spaces'], 'boolean'],
             [['name'], 'unique'],
             [['name', 'type'], 'string', 'max' => 100],
-            [['type'], 'validType'],
+            [['type'], 'in', 'range' => [self::TYPE_CONTAINER, self::TYPE_LAYOUT, self::TYPE_SNIPPET_LAYOUT, self::TYPE_NAVIGATION]],
             [['source'], 'required', 'on' => ['source']],
+            [['css', 'js'], 'safe', 'on' => ['resources']],
         ];
     }
 
@@ -105,20 +129,50 @@ class Template extends ActiveRecord implements TemplateContentOwner
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['edit'] = ['name', 'description', 'allow_for_spaces', 'allow_inline_activation'];
+        $scenarios['edit'] = ['name', 'description', 'type', 'allow_for_spaces'];
         $scenarios['source'] = ['source'];
+        $scenarios['resources'] = ['css', 'js'];
         return $scenarios;
     }
 
     /**
-     * Validates the template type against allowed types.
-     * @param type $attribute
-     * @param type $model
+     * @inheritdoc
      */
-    public function validType($attribute, $model) {
-        $validTypes = [self::TYPE_CONTAINER, self::TYPE_LAYOUT, self::TYPE_NAVIGATION];
-        if(!in_array($this->type, $validTypes)) {
-            $this->addError($attribute, 'Invalid template type!');
+    public function load($data, $formName = null)
+    {
+        return $this->canEdit() && parent::load($data, $formName);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if (isset($changedAttributes['name'])) {
+            // Update to new template name when it is used as Allowed Template in Container Element
+            $definitions = ContainerDefinition::find()
+                ->andWhere(['LIKE', 'dyn_attributes', '"templates":['])
+                ->andWhere(['LIKE', 'dyn_attributes', '"' . $changedAttributes['name'] . '"']);
+            foreach ($definitions->each() as $definition) {
+                /* @var ContainerDefinition $definition */
+                $oldTemplates = $definition->templates;
+                $oldTemplateIndex = array_search($changedAttributes['name'], $oldTemplates);
+                if ($oldTemplateIndex !== false) {
+                    $oldTemplates[$oldTemplateIndex] = $this->name;
+                    $definition->templates = $oldTemplates;
+                    $definition->save();
+                }
+            }
+        }
+
+        if ($this->is_default) {
+            // Keep each default template as not updated in order to don't create a copy on next auto updating
+            $this->updateAttributes([
+                'updated_at' => null,
+                'updated_by' => null,
+            ]);
         }
     }
 
@@ -128,6 +182,10 @@ class Template extends ActiveRecord implements TemplateContentOwner
     public function beforeDelete()
     {
         if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        if (!$this->canDelete()) {
             return false;
         }
 
@@ -145,12 +203,14 @@ class Template extends ActiveRecord implements TemplateContentOwner
         return false;
     }
 
-    public function isInUse()
+    public function isInUse(): bool
     {
         if ($this->isLayout()) {
-            return TemplateInstance::findByTemplateId($this->id, Content::STATE_PUBLISHED)->count() > 0;
+            return TemplateInstance::findByTemplateId($this->id, Content::STATE_PUBLISHED)->exists();
         } else {
-            return ContainerContentTemplate::find()->where(['template_id' => $this->id])->count() > 0;
+            return ContainerDefinition::find()
+                ->andWhere(['REGEXP', 'dyn_attributes', '"templates":\\[.*"' . addslashes(preg_quote($this->name, '/')) . '".*\\]'])
+                ->exists();
         }
     }
 
@@ -160,22 +220,19 @@ class Template extends ActiveRecord implements TemplateContentOwner
             return $this->getContents();
         } else {
             return Template::find()
-                ->leftJoin(OwnerContent::tableName(), Template::tableName() . '.id = ' . OwnerContent::tableName() . '.owner_id')
-                ->leftJoin(ContainerContent::tableName(), ContainerContent::tableName() . '.id = ' . OwnerContent::tableName() . '.content_id')
-                ->leftJoin(ContainerContentTemplate::tableName(), ContainerContentTemplate::tableName() . '.definition_id = ' . ContainerContent::tableName() . '.definition_id')
-                ->where([OwnerContent::tableName() . '.owner_model' => Template::class])
-                ->andWhere([OwnerContent::tableName() . '.content_type' => ContainerContent::class])
-                ->andWhere([ContainerContentTemplate::tableName() . '.template_id' => $this->id]);
+                ->innerJoin(TemplateElement::tableName(), Template::tableName() . '.id = ' . TemplateElement::tableName() . '.template_id')
+                ->where([TemplateElement::tableName() . '.content_type' => ContainerElement::class])
+                ->andWhere(['REGEXP', TemplateElement::tableName() . '.dyn_attributes', '"templates":\\[.*"' . preg_quote($this->name, '/') . '".*\\]']);
         }
     }
 
     /**
      * Checks if this template is a root layout template.
-     * @return boolean
+     * @return bool
      */
-    public function isLayout()
+    public function isLayout(): bool
     {
-        return $this->type === self::TYPE_LAYOUT || $this->type === self::TYPE_SNIPPED_LAYOUT;
+        return $this->type === self::TYPE_LAYOUT || $this->type === self::TYPE_SNIPPET_LAYOUT;
     }
 
     /**
@@ -203,99 +260,108 @@ class Template extends ActiveRecord implements TemplateContentOwner
      */
     public function getContents(): ActiveQuery
     {
-        return Content::find()->leftJoin(TemplateInstance::tableName(),
-                Content::tableName() . '.object_model = ' . TemplateInstance::tableName() . '.object_model AND ' .
-                Content::tableName() . '.object_id = ' . TemplateInstance::tableName() . '.object_id')
+        return Content::find()->leftJoin(
+            TemplateInstance::tableName(),
+            Content::tableName() . '.object_model = :object_model AND '
+                . Content::tableName() . '.object_id = ' . TemplateInstance::tableName() . '.page_id',
+            ['object_model' => CustomPage::class],
+        )
             ->where([TemplateInstance::tableName() . '.template_id' => $this->id]);
+    }
+
+    /**
+     * Register JS & CSS of the Template
+     *
+     * @return void
+     */
+    public function registerResources(): void
+    {
+        if ($this->css) {
+            Yii::$app->view->registerCss($this->css);
+        }
+
+        if ($this->js) {
+            Yii::$app->view->registerJs($this->js, View::POS_END);
+        }
     }
 
     /**
      * Renders the template for the given $owner or with all default content if
      * no $owner was given.
      *
-     * This is done by merging all default OwnerContent instances with the overwritten
-     * OwnerContent instances defined by the TemplateContentOwner $owner.
+     * This is done by merging all default ElementContent instances with the overwritten
+     * ElementContent instances defined by the Template Instance.
      *
-     * @param ActiveRecord $owner
+     * @param TemplateInstance|null $templateInstance
      * @return string
      */
-    public function render(ActiveRecord $owner = null, $editMode = false, $containerItem = null)
+    public function render(?TemplateInstance $templateInstance = null)
     {
-        $contentElements = $this->getContentElements($owner);
+        $result = '';
 
-        if($owner == null) {
-            $owner = $this;
+        if (TemplateInstanceRendererService::inEditMode() && $templateInstance && $templateInstance->isPage()) {
+            $result = TemplateStructure::widget(['templateInstance' => $templateInstance]);
         }
+
+        $elementContents = $this->getElementContents($templateInstance);
 
         $content = [];
-        foreach ($contentElements as $contentElement) {
-            $options = [
-                'editMode' => $editMode,
-                'element_title' => $this->getElementTitle($contentElement->element_name),
-                'owner_model' => get_class($owner),
-                'owner_id' => $owner->id,
-                'item' => $containerItem
-            ];
-
-            $content[$contentElement->element_name] = new OwnerContentVariable(['ownerContent' => $contentElement, 'options' => $options]);
+        foreach ($elementContents as $elementContent) {
+            $content[$elementContent->element->name] = $elementContent->getTemplateVariable();
         }
 
-        $content['assets'] = PHP_VERSION_ID >= 80000 ? new AssetVariable() : new AssetVariablePhp74();
-
-        if($containerItem) {
-            //$content['item'] = new ContainerItemVariable(['item' => $containerItem]);
-        }
+        $content['assets'] = new AssetVariable();
 
         $engine = TemplateEngineFactory::create($this->engine);
-        $result = $engine->render($this->name, $content);
-        return $result;
+
+        return $result . $engine->render($this->name, $content);
     }
 
     /**
-     * Merges the default OwnerContent instances with the OwnerContent instances of the given $owner.
-     * If there is no default OwnerContent and no OwnerContent for the given $owner this function will create an
-     * empty dummy content for the given placeholder.
-     *
-     * If no $owner is given, this function will just return default OwnerContent of this template and empty OwnerContent instances.
-     *
-     * @param ActiveRecord $owner the template owner
-     * @return array
+     * @param TemplateInstance|null $templateInstance
+     * @return BaseElementContent[]
      */
-    public function getContentElements(ActiveRecord $owner = null)
+    public function getElementContents(?TemplateInstance $templateInstance = null): array
     {
-        $result = [];
-        $this->_elements = $this->getElements()->all();
-
-        if (count($this->_elements) == 0) {
-            return $result;
+        if (!is_array($this->_elements)) {
+            $this->_elements = $this->getElements()->all();
         }
 
-        if ($owner != null) {
+        $elementContents = [];
+        if ($this->_elements === []) {
+            return $elementContents;
+        }
+
+        if ($templateInstance !== null) {
             // Non default content defined by owner
-            $result = OwnerContent::findByOwner($owner)->all();
+            $elementContents = BaseElementContent::find()
+                ->where(['template_instance_id' => $templateInstance->id])
+                ->all();
         }
 
-        $ownerElementNames = array_map(function($contentInstance) {
-            return $contentInstance->element_name;
-        }, $result);
+        $elementNames = array_map(function ($elementContent) {
+            return $elementContent->element->name;
+        }, $elementContents);
 
         foreach ($this->_elements as $element) {
-            if (!in_array($element->name, $ownerElementNames)) {
-                $result[] = $element->getDefaultContent(true);
+            if (!in_array($element->name, $elementNames)) {
+                $elementContents[] = $element->getDefaultContent(true);
             }
         }
 
-        return $result;
+        usort($elementContents, fn($a, $b) => $a->element_id <=> $b->element_id);
+
+        return $elementContents;
     }
 
     private function getElementTitle($element_name)
     {
-        if(!$this->_elements) {
+        if (!is_array($this->_elements)) {
             $this->_elements = $this->getElements()->all();
         }
 
         foreach ($this->_elements as $element) {
-            if($element->name === $element_name) {
+            if ($element->name === $element_name) {
                 return $element->getTitle();
             }
         }
@@ -328,16 +394,89 @@ class Template extends ActiveRecord implements TemplateContentOwner
      * Prepares a template selection array for the given query condition.
      *
      * @param array $condition query condition
+     * @param string $keyFieldName
      * @return array selection array with template id as keys and template name as values.
      */
-    public static function getSelection($condition = [])
+    public static function getSelection(array $condition = [], string $keyFieldName = 'id')
     {
-        return ArrayHelper::map(self::find()->where($condition)->all(), 'id', 'name');
+        return ArrayHelper::map(self::find()->where($condition)->all(), $keyFieldName, 'name');
     }
 
-    public function getTemplateId()
+    public static function getTypeOptions(): array
     {
-        return $this->id;
+        return [
+            self::TYPE_LAYOUT => Yii::t('CustomPagesModule.base', 'Layout'),
+            self::TYPE_SNIPPET_LAYOUT => Yii::t('CustomPagesModule.base', 'Snippet'),
+            self::TYPE_CONTAINER => Yii::t('CustomPagesModule.base', 'Container'),
+        ];
     }
 
+    public static function getTypeTitle(string $type): string
+    {
+        return match ($type) {
+            self::TYPE_CONTAINER => Yii::t('CustomPagesModule.base', 'Container'),
+            self::TYPE_SNIPPET_LAYOUT => Yii::t('CustomPagesModule.base', 'Snippet'),
+            self::TYPE_NAVIGATION => Yii::t('CustomPagesModule.base', 'Navigation'),
+            default => Yii::t('CustomPagesModule.base', 'Layout'),
+        };
+    }
+
+    /**
+     * Checks if this template and its elements can be edited
+     *
+     * @return bool
+     * @since 1.11
+     */
+    public function canEdit(): bool
+    {
+        if (!$this->isNewRecord && $this->is_default
+            && !Yii::$app->getModule('custom_pages')->allowUpdateDefaultTemplates) {
+            return false;
+        }
+
+        return Yii::$app->user->can([ManageModules::class, ManagePages::class]);
+    }
+
+    /**
+     * Checks if this template and its elements can be deleted
+     *
+     * @return bool
+     * @since 1.11
+     */
+    public function canDelete(): bool
+    {
+        if (!$this->isNewRecord && $this->is_default) {
+            return false;
+        }
+
+        return Yii::$app->user->can([ManageModules::class, ManagePages::class]);
+    }
+
+    public function saveCopy(): bool
+    {
+        $elements = $this->elements;
+        unset($this->id);
+        $this->is_default = 0;
+
+        if (!$this->save()) {
+            return false;
+        }
+
+        foreach ($elements as $element) {
+            $defaultContent = $element->getDefaultContent();
+            unset($element->id);
+            $element->setOldAttributes(null);
+            $element->template_id = $this->id;
+            $element->scenario = TemplateElement::SCENARIO_EDIT_ADMIN;
+            if ($element->save() && $defaultContent) {
+                unset($defaultContent->id);
+                $defaultContent->setOldAttributes(null);
+                $defaultContent->scenario = BaseElementContent::SCENARIO_EDIT_ADMIN;
+                $defaultContent->element_id = $element->id;
+                $defaultContent->save();
+            }
+        }
+
+        return true;
+    }
 }

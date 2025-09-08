@@ -1,8 +1,8 @@
 <?php
 
-use humhub\modules\custom_pages\models\CustomContentContainer;
-use humhub\modules\custom_pages\models\Page;
-use yii\db\Migration;
+use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\helpers\PageType;
+use humhub\components\Migration;
 
 /**
  * Class m201208_045103_fix_account_menu_visibility
@@ -23,10 +23,10 @@ class m201208_045103_fix_account_menu_visibility extends Migration
               AND custom_pages_page.target = :target
               AND content.visibility = :visibility_public')
             ->bindValues([
-                ':visibility_private' => CustomContentContainer::VISIBILITY_PRIVATE,
-                ':visibility_public' => CustomContentContainer::VISIBILITY_PUBLIC,
-                ':object_model' => Page::class,
-                ':target' => Page::NAV_CLASS_ACCOUNTNAV,
+                ':visibility_private' => CustomPage::VISIBILITY_PRIVATE,
+                ':visibility_public' => CustomPage::VISIBILITY_PUBLIC,
+                ':object_model' => CustomPage::class,
+                ':target' => PageType::TARGET_ACCOUNT_MENU,
             ])
             ->execute();
     }

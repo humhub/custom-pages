@@ -72,10 +72,10 @@ class CreateTemplatePageCest
         $I->wait(1);
 
         $I->expectTo('see the new element added to the element row');
-        $I->see('#text');
-        $I->see('#html');
-        $I->see('#tmplimage');
-        $I->see('#file');
+        $I->see('{{ text }}', '#templateElements');
+        $I->see('{{ html }}', '#templateElements');
+        $I->see('{{ tmplimage }}', '#templateElements');
+        $I->see('{{ file }}', '#templateElements');
     }
 
     private function clickAddElement(AcceptanceTester $I, $type)

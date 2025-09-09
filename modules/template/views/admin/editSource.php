@@ -37,9 +37,8 @@ $elementTypeService = new ElementTypeService();
         ])->label(false); ?>
 
         <div class="clearfix">
-            <?= $model->canEdit() ? Button::save()->submit() : '' ?>
-            <?= $model->isNewRecord ? '' : '' ?>
             <?php if ($model->canEdit()) : ?>
+            <?= Button::save()->submit() ?>
             <div class="dropdown float-end">
                 <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
                     <i aria-hidden="true" class="fa fa-plus"></i>
@@ -55,6 +54,12 @@ $elementTypeService = new ElementTypeService();
                     <?php endforeach; ?>
                 </ul>
             </div>
+            <?php endif; ?>
+
+            <?php if (!$model->isNewRecord && $model->is_default) : ?>
+                <?= Button::light(Yii::t('CustomPagesModule.template', 'Copy'))
+                    ->icon('copy')
+                    ->link(['copy', 'id' => $model->id]) ?>
             <?php endif; ?>
         </div>
         <br>

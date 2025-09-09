@@ -39,3 +39,17 @@ private function importCustomPagesDefaultTemplates(): bool
         $importServiceClassName::instance()->importDefaultTemplates();
 }
 ```
+
+## Build
+
+In order to build CSS, run:
+
+```
+npm install
+```
+
+and
+
+```
+grunt build
+```

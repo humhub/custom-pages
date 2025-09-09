@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\widgets\SnippetContent;
 

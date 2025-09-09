@@ -1,7 +1,7 @@
 <?php
 
-use humhub\widgets\Button;
 use humhub\modules\custom_pages\helpers\Url;
+use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
 use humhub\modules\content\helpers\ContentContainerHelper;
 
@@ -18,9 +18,7 @@ $contentContainer = ContentContainerHelper::getCurrent();
         <?= Html::encode($contentType->getLabel()) ?>
     </td>
     <td>
-        <p class="help-block">
-            <?= Html::encode($contentType->getDescription()) ?>
-        </p>
+        <?= Html::encode($contentType->getDescription()) ?>
     </td>
     <td>
         <?= Button::success(Yii::t('CustomPagesModule.base', 'Add'))

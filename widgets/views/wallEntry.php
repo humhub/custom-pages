@@ -2,7 +2,7 @@
 
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var $page CustomPage */
 ?>

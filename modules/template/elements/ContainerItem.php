@@ -9,7 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\components\ActiveRecord;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;

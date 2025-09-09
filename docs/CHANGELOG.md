@@ -1,6 +1,18 @@
 Changelog
 =========
 
+1.12.2 (Unreleased)
+---------------------
+- Fix #329: Update module resources path
+
+1.12.1 (September 6, 2025)
+--------------------------
+- Fix: Migration to Bootstrap 5 for templates
+
+1.12.0 (July 26, 2025)
+----------------------
+- Enh #435: Migration to Bootstrap 5 for HumHub 1.18
+
 1.11.0-beta.12 (Unreleased)
 --------------------------------
 - Enh #433: Change template overview
@@ -175,7 +187,7 @@ Please note that the IDs of the custom pages you have created will be changed. L
 --------------------
 - Fix #277: Delete not published linked content on delete template
 
-- 1.9.1 (May 1, 2023)
+1.9.1 (May 1, 2023)
 -------------------
 - Fix #274: Hard delete records on disable module
 - Fix #265: Fix tests for core v1.14

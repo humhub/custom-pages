@@ -1,0 +1,25 @@
+.target-page-list .grid-view {
+  padding:0;
+}
+
+.target-page-list-head {
+  margin-top:15px;
+  background-color:#F1F1F1;
+  padding:10px;
+  margin-bottom:0;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  font-weight: bold;
+}
+
+.target-page-list-grid {
+  border: 1px solid #F1F1F1;
+  .grid-view table thead tr {
+    td:first-of-type, th:first-of-type {
+      padding-left:10px;
+    }
+  }
+  .pagination {
+    margin-left:10px;
+  }
+}

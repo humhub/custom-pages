@@ -1,72 +1,72 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+use humhub\helpers\Html;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElementsForm;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\ModalDialog;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Badge;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 /* @var $model EditMultipleElementsForm */
+/* @var $title string */
 ?>
-<?php ModalDialog::begin(['size' => (empty($model->contentMap)) ? 'normal' : 'large', 'header' => $title])?>
-    <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
-        <?= Html::hiddenInput('editMultipleElements', true); ?>
+<?php $form = Modal::beginFormDialog([
+    'title' => $title,
+    'size' => empty($model->contentMap) ? Modal::SIZE_DEFAULT : Modal::SIZE_LARGE,
+    'footer' => empty($model->contentMap)
+        ? ModalButton::cancel(Yii::t('CustomPagesModule.base', 'Back'))
+        : ModalButton::cancel() .
+        ModalButton::save()
+            ->submit()
+            ->action('editMultipleElementsSubmit', null, '#templatePageRoot'),
+    'form' => ['enableClientValidation' => false],
+]) ?>
+<?= Html::hiddenInput('editMultipleElements', true); ?>
 
-        <div class="modal-body media-body template-edit-multiple"> 
-            <?php $counter = 0 ?>
-            <?php foreach ($model->contentMap as $key => $contentItem) : ?>
+<div class="template-edit-multiple">
+    <?php $counter = 0 ?>
+    <?php foreach ($model->contentMap as $key => $contentItem) : ?>
 
-                <?php $isContainer = $contentItem->content instanceof ContainerElement; ?>
+        <?php $isContainer = $contentItem->content instanceof ContainerElement; ?>
 
-                <div class="panel panel-default">
-                    <div class="template-edit-multiple-tab panel-heading" tabindex="0">
-                        <strong>
-                            <?= Html::encode($model->getElement($contentItem->elementContent->element->name)->getTitle()) ?>&nbsp;
-                            <i class="switchIcon fa fa-caret-down" aria-hidden="true"></i>
-                        </strong>
-                        <small class="pull-right">
-                            <span class="label label-success"><?= $contentItem->elementContent->label ?></span>
-                        </small>
-                        <?php if ($contentItem->content->isNewRecord): ?>
-                            <small class="pull-right" style="margin-right: 2px">
-                                <span class="label label-warning"><?= Yii::t('CustomPagesModule.view', 'Empty') ?></span>
-                            </small>
-                        <?php endif; ?>
-                        <?php if ($isContainer && $contentItem->content->definition->allow_multiple): ?>
-                            <small class="pull-right" style="margin-right: 2px">
-                                <span class="label label-success"><?= Yii::t('CustomPagesModule.view', 'Multiple') ?></span>
-                            </small>
-                        <?php endif; ?>
-                    </div>
-                    <?php // This was only set for container elements before. ?>
-                    <div class="panel-body" data-element-index="<?= $counter ?>" style="<?= ($counter != 0) ? 'display:none' : '' ?>">
-                        <?= TemplateContentFormFields::widget(['form' => $form, 'model' => $contentItem->content]) ?>
-                    </div>
-                    <div class="panel-footer">&nbsp;</div>
-                </div>
-                <?php $counter++ ?>
-            <?php endforeach; ?>
-
-            <?php if (empty($model->contentMap)) : ?>
-                <div class="text-center">
-                    <?= Yii::t('CustomPagesModule.view', 'This section has no editable elements.') ?>
-                </div>
-            <?php endif; ?>
+        <div class="panel panel-default">
+            <div class="template-edit-multiple-tab panel-heading" tabindex="0">
+                <strong>
+                    <?= Html::encode($model->getElement($contentItem->elementContent->element->name)->getTitle()) ?>&nbsp;
+                    <i class="switchIcon fa fa-caret-down" aria-hidden="true"></i>
+                </strong>
+                <?= Badge::success($contentItem->elementContent->label)->right() ?>
+                <?php if ($contentItem->content->isNewRecord): ?>
+                    <?= Badge::warning(Yii::t('CustomPagesModule.view', 'Empty'))->right() ?>
+                <?php endif; ?>
+                <?php if ($isContainer && $contentItem->content->definition->allow_multiple): ?>
+                    <?= Badge::success(Yii::t('CustomPagesModule.view', 'Multiple'))->right() ?>
+                <?php endif; ?>
+            </div>
+            <?php // This was only set for container elements before. ?>
+            <div class="panel-body<?= $counter != 0 ? ' d-none' : '' ?>" data-element-index="<?= $counter ?>">
+                <?= TemplateContentFormFields::widget(['form' => $form, 'model' => $contentItem->content]) ?>
+            </div>
+            <div class="panel-footer">&nbsp;</div>
         </div>
+        <?php $counter++ ?>
+    <?php endforeach; ?>
 
-        <div class="modal-footer">
-            <?php if (!empty($model->contentMap)) : ?>
-                <button data-action-click="editMultipleElementsSubmit" data-action-target="#templatePageRoot" type="submit"  class="btn btn-primary" data-ui-loader>
-                    <?= Yii::t('CustomPagesModule.base', 'Save'); ?>
-                </button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('CustomPagesModule.base', 'Cancel'); ?></button>
-            <?php else: ?>
-                <button type="button" class="btn btn-primary" data-dismiss="modal"><?= Yii::t('CustomPagesModule.base', 'Back'); ?></button>
-            <?php endif; ?>
+    <?php if (empty($model->contentMap)) : ?>
+        <div class="text-center">
+            <?= Yii::t('CustomPagesModule.view', 'This section has no editable elements.') ?>
         </div>
-    <?php ActiveForm::end(); ?>
-<?php ModalDialog::end(); ?>
+    <?php endif; ?>
+</div>
+
+<?php Modal::endFormDialog() ?>
 
 <?= Html::script(' $(\'.template-edit-multiple-tab:first\').focus();')?>
 

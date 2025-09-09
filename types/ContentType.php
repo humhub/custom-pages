@@ -10,8 +10,8 @@ namespace humhub\modules\custom_pages\types;
 
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\services\DuplicatorService;
+use humhub\widgets\form\ActiveForm;
 use yii\base\StaticInstanceTrait;
-use yii\widgets\ActiveForm;
 
 abstract class ContentType
 {

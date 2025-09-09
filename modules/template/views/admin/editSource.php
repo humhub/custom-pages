@@ -10,8 +10,8 @@ use humhub\modules\custom_pages\modules\template\assets\SourceEditorAsset;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\services\ElementTypeService;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentTable;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Url;
 
 SourceEditorAsset::register($this);
@@ -39,16 +39,15 @@ $elementTypeService = new ElementTypeService();
         <div class="clearfix">
             <?php if ($model->canEdit()) : ?>
             <?= Button::save()->submit() ?>
-            <div class="dropdown pull-right">
-                <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">
+            <div class="dropdown float-end">
+                <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
                     <i aria-hidden="true" class="fa fa-plus"></i>
                     <?= Yii::t('CustomPagesModule.template', 'Add Element'); ?>
-                    <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" id="addElementSelect">
                     <?php foreach ($elementTypeService->getTypeInstances() as $elementType) : ?>
                         <li>
-                            <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/add-element', 'templateId' => $model->id, 'type' => get_class($elementType)]) ?>" href="#">
+                            <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/add-element', 'templateId' => $model->id, 'type' => get_class($elementType)]) ?>" href="#" class="dropdown-item">
                                 <?= $elementType->getLabel() ?>
                             </a>
                         </li>
@@ -58,9 +57,9 @@ $elementTypeService = new ElementTypeService();
             <?php endif; ?>
 
             <?php if (!$model->isNewRecord && $model->is_default) : ?>
-                <?= Button::defaultType(Yii::t('CustomPagesModule.template', 'Copy'))
+                <?= Button::light(Yii::t('CustomPagesModule.template', 'Copy'))
                     ->icon('copy')
-                    ->link(Url::toRoute(['copy', 'id' => $model->id])) ?>
+                    ->link(['copy', 'id' => $model->id]) ?>
             <?php endif; ?>
         </div>
         <br>

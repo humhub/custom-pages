@@ -29,7 +29,9 @@ class PagePermissionHelper
             } elseif ($space = ContentContainerHelper::getCurrent(Space::class)) {
                 $canEdit[$pageId] = $page?->canEdit() ?? $space->isAdmin();
             } else {
-                $canEdit[$pageId] = Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageModules::class, ManagePages::class]);
+                $canEdit[$pageId] = Yii::$app->user->isAdmin()
+                    || Yii::$app->user->can([ManageModules::class, ManagePages::class])
+                    || $page?->canEdit();
             }
         }
 

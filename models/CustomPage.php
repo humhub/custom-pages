@@ -100,6 +100,11 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
     private ?SettingService $_settingService = null;
 
     /**
+     * @var array IDs of the users who can edit only content of the page
+     */
+    public $editors;
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -150,6 +155,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
             'visibility' => Yii::t('CustomPagesModule.model', 'Visibility'),
             'visibility_groups' => Yii::t('CustomPagesModule.model', 'Visible to Group Members'),
             'visibility_languages' => Yii::t('CustomPagesModule.model', 'Language-Based Visibility'),
+            'editors' => Yii::t('CustomPagesModule.model', 'Editors'),
         ];
 
         if ($this->isSnippet()) {
@@ -166,6 +172,16 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
     }
 
     /**
+     * @inerhitdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'editors' => Yii::t('CustomPagesModule.model', 'Users who can edit only content of this page.'),
+        ];
+    }
+
+    /**
      * @inheritdoc
      */
     public function rules()
@@ -176,8 +192,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
             [['target'], 'validateTarget'],
             [['type'], 'validateContentType'],
             [['visibility'], 'integer', 'min' => self::VISIBILITY_PRIVATE, 'max' => self::VISIBILITY_CUSTOM],
-            [['visibility_groups'], 'safe'],
-            [['visibility_languages'], 'safe'],
+            [['visibility_groups', 'visibility_languages', 'editors'], 'safe'],
             [['title', 'target'], 'string', 'max' => 255],
         ];
 
@@ -551,15 +566,29 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
         return !isset($this->content->container);
     }
 
+    /**
+     * Check if the current user is an editor of this page
+     *
+     * @return bool
+     */
+    public function isEditor(): bool
+    {
+        return $this->settingService->has('editor', Yii::$app->user->id);
+    }
+
     public function canEdit($type = null): bool
     {
+        if (!is_int($type) && !($type instanceof ContentType)) {
+            $type = $this->type;
+        }
+
+        if (TemplateType::isType($type) && $this->isEditor()) {
+            return true;
+        }
+
         if (!($this->content->container instanceof Space && $this->content->container->isAdmin())
             && !Yii::$app->user->can(ManagePages::class)) {
             return false;
-        }
-
-        if (!is_int($type) && !($type instanceof ContentType)) {
-            $type = $this->type;
         }
 
         if ((HtmlType::isType($type) || IframeType::isType($type)) && !Yii::$app->user->isAdmin()) {

@@ -576,7 +576,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
     public function isEditor(): bool
     {
         return TemplateType::isType($this->type)
-            && $this->settingService->has('editor', Yii::$app->user->id);
+            && $this->settingService->has('editor', Yii::$app->user->id, false);
     }
 
     /**

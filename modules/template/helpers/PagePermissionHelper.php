@@ -27,11 +27,12 @@ class PagePermissionHelper
             if (Yii::$app->user->isGuest) {
                 $canEdit[$pageId] = false;
             } elseif ($space = ContentContainerHelper::getCurrent(Space::class)) {
-                $canEdit[$pageId] = $page?->canEdit() ?? $space->isAdmin();
+                $canEdit[$pageId] = $space->isAdmin() || $page?->canEdit() || $page?->isEditor();
             } else {
                 $canEdit[$pageId] = Yii::$app->user->isAdmin()
                     || Yii::$app->user->can([ManageModules::class, ManagePages::class])
-                    || $page?->canEdit();
+                    || $page?->canEdit()
+                    || $page?->isEditor();
             }
         }
 

@@ -23,12 +23,14 @@ use humhub\widgets\bootstrap\Link;
             <i class="fa fa-pencil"></i>
         </button>
         <ul class="dropdown-menu">
+            <?php if ($page->canEdit()) : ?>
             <li>
                 <?= Link::to(
                     Yii::t('CustomPagesModule.view', 'Page configuration'),
                     Url::toEditPage($page, $container),
                 )->blank()->cssClass('dropdown-item') ?>
             </li>
+            <?php endif ?>
             <li>
                 <?= Link::to(
                     Yii::t('CustomPagesModule.view', 'Exit Edit Mode'),

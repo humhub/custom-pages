@@ -4,6 +4,7 @@ Changelog
 1.12.2 (Unreleased)
 ---------------------
 - Fix #329: Update module resources path
+- Enh #466: Specific editors for template page
 
 1.12.1 (September 6, 2025)
 --------------------------

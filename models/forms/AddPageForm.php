@@ -97,7 +97,8 @@ class AddPageForm extends Model
             }
         }
 
-        if (!$this->pageInstance->canEdit($type)) {
+        if (!$this->pageInstance->canEdit()
+            && !$this->pageInstance->canEditType($type)) {
             return false;
         }
 

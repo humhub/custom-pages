@@ -7,6 +7,7 @@ use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\types\TemplateType;
 use humhub\modules\custom_pages\widgets\PageIconSelect;
+use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\bootstrap\Link;
 use humhub\widgets\form\ActiveForm;
@@ -100,6 +101,10 @@ $contentType = $page->getContentType();
         <?= $form->endCollapsibleFields() ?>
 
         <?= $form->field($page, 'target')->dropDownList($page->getAvailableTargetOptions()) ?>
+
+        <?php if (TemplateType::isType($page->type)) : ?>
+            <?= $form->field($page, 'editors')->widget(UserPickerField::class, ['itemKey' => 'id']) ?>
+        <?php endif ?>
 
         <?= Button::save($page->isNewRecord ? Yii::t('CustomPagesModule.view', 'Create') : null)->submit() ?>
 

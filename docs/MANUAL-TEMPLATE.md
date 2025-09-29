@@ -11,6 +11,7 @@
 |                                    |                             |                                                                                 |
 | **File Element**                   |                             |                                                                                 |
 | `file`                             | String                      | File URL                                                                        |
+| `file.url`                         | String                      | File URL                                                                        |
 | `file.guid`                        | String                      | File unique ID, e.g. 5b12f367-744b-4d2b-9611-c8b4ff92b6e5                       |
 | `file.name`                        | String                      | File name                                                                       |
 | `file.mimeType`                    | String                      | File mime type                                                                  |

@@ -5,6 +5,7 @@ Changelog
 ---------------------
 - Fix #329: Update module resources path
 - Enh #466: Specific editors for template page
+- Enh #467: Add url property for file template element
 
 1.12.1 (September 6, 2025)
 --------------------------

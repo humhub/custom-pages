@@ -140,7 +140,7 @@ class ViewController extends AbstractCustomContainerController
     {
         $mode = Yii::$app->request->get('mode', '');
 
-        if ($mode === 'edit' && !$page->content->canEdit()) {
+        if ($mode === 'edit' && !$page->content->canEdit() && !$page->isEditor()) {
             throw new ForbiddenHttpException('Access denied!');
         }
 

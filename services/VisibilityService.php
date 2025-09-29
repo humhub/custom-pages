@@ -163,6 +163,8 @@ class VisibilityService
             $this->page->visibility_groups = $this->page->settingService->getAll('group');
             $this->page->visibility_languages = $this->page->settingService->getAll('language');
         }
+
+        $this->page->editors = $this->page->settingService->getAll('editor');
     }
 
     public function updateAdditionalOptions(): void
@@ -171,6 +173,8 @@ class VisibilityService
             $this->page->settingService->update('group', $this->page->visibility_groups);
             $this->page->settingService->update('language', $this->page->visibility_languages);
         }
+
+        $this->page->settingService->update('editor', $this->page->editors);
     }
 
     /**

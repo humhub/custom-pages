@@ -34,10 +34,12 @@ $widget = $this->context;
         <div class="cp-structure-actions dropdown">
             <?= Icon::get('ellipsis-h', ['htmlOptions' => ['data-bs-toggle' => 'dropdown']]) ?>
             <ul class="dropdown-menu">
+                <?php if ($templateInstance->page->canEdit()) : ?>
                 <li><?= Link::to(
                     Yii::t('CustomPagesModule.view', 'Page configuration'),
                     Url::toEditPage($templateInstance->page_id, ContentContainerHelper::getCurrent()),
                 )->blank()->cssClass('dropdown-item') ?></li>
+                <?php endif ?>
                 <li><?= Link::to(
                     Yii::t('CustomPagesModule.view', 'Exit Edit Mode'),
                     Url::toViewPage($templateInstance->page_id, ContentContainerHelper::getCurrent()),

@@ -88,27 +88,27 @@ class SettingService
     }
 
     /**
-     * Check the page setting has at least one value
-     * When page setting is not defined then it means it is allowed for all users
+     * Check the page setting has at least one requested value
      *
-     * @param string $name
-     * @param array|string|int $values
+     * @param string $name Setting name
+     * @param array|string|int $values Values for checking
+     * @param bool $returnOnEmpty When the setting is empty then return this as result by default
      * @return bool
      */
-    public function has(string $name, $userValues): bool
+    public function has(string $name, $checkValues, bool $returnOnEmpty = true): bool
     {
-        $settingValues = $this->getAll($name);
-        if ($settingValues === []) {
-            return true;
+        $storedValues = $this->getAll($name);
+        if ($storedValues === []) {
+            return $returnOnEmpty;
         }
 
-        if ((is_string($userValues) || is_int($userValues)) && $userValues !== '') {
-            $userValues = [$userValues];
+        if (is_scalar($checkValues) && $checkValues !== '') {
+            $checkValues = [$checkValues];
         }
 
-        if (is_array($userValues) && $userValues !== []) {
-            foreach ($settingValues as $settingValue) {
-                if (in_array($settingValue, $userValues)) {
+        if (is_array($checkValues) && $checkValues !== []) {
+            foreach ($storedValues as $storedValue) {
+                if (in_array($storedValue, $checkValues)) {
                     return true;
                 }
             }

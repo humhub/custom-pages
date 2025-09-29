@@ -34,6 +34,8 @@ use humhub\modules\custom_pages\types\PhpType;
 use humhub\modules\custom_pages\types\TemplateType;
 use humhub\modules\custom_pages\widgets\WallEntry;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\models\User;
 use LogicException;
 use Yii;
 
@@ -100,6 +102,11 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
     private ?SettingService $_settingService = null;
 
     /**
+     * @var array IDs of the users who can edit only content of the page
+     */
+    public $editors;
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -150,6 +157,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
             'visibility' => Yii::t('CustomPagesModule.model', 'Visibility'),
             'visibility_groups' => Yii::t('CustomPagesModule.model', 'Visible to Group Members'),
             'visibility_languages' => Yii::t('CustomPagesModule.model', 'Language-Based Visibility'),
+            'editors' => Yii::t('CustomPagesModule.model', 'Editors'),
         ];
 
         if ($this->isSnippet()) {
@@ -166,6 +174,16 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
     }
 
     /**
+     * @inerhitdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'editors' => Yii::t('CustomPagesModule.model', 'Page-specific editors without full custom pages permission.'),
+        ];
+    }
+
+    /**
      * @inheritdoc
      */
     public function rules()
@@ -176,8 +194,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
             [['target'], 'validateTarget'],
             [['type'], 'validateContentType'],
             [['visibility'], 'integer', 'min' => self::VISIBILITY_PRIVATE, 'max' => self::VISIBILITY_CUSTOM],
-            [['visibility_groups'], 'safe'],
-            [['visibility_languages'], 'safe'],
+            [['visibility_groups', 'visibility_languages', 'editors'], 'safe'],
             [['title', 'target'], 'string', 'max' => 255],
         ];
 
@@ -551,22 +568,52 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
         return !isset($this->content->container);
     }
 
-    public function canEdit($type = null): bool
+    /**
+     * Check if the current user is an editor of this page
+     *
+     * @return bool
+     */
+    public function isEditor(): bool
     {
-        if (!($this->content->container instanceof Space && $this->content->container->isAdmin())
-            && !Yii::$app->user->can(ManagePages::class)) {
+        return TemplateType::isType($this->type)
+            && $this->settingService->has('editor', Yii::$app->user->id, false);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function canEdit($user = null): bool
+    {
+        if (is_scalar($user)) {
+            $user = User::findOne($user);
+        }
+        if (!$user && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+        }
+        if (!$user instanceof User) {
             return false;
         }
 
+        return (new PermissionManager(['subject' => $user]))->can(ManagePages::class)
+            || ($this->content->container instanceof Space && $this->content->container->isAdmin($user));
+    }
+
+    /**
+     * Check if the Custom Page Type can be edited by current user
+     *
+     * @param int|ContentType $type
+     * @return bool
+     */
+    public function canEditType($type): bool
+    {
         if (!is_int($type) && !($type instanceof ContentType)) {
-            $type = $this->type;
-        }
-
-        if ((HtmlType::isType($type) || IframeType::isType($type)) && !Yii::$app->user->isAdmin()) {
             return false;
         }
 
-        return true;
+        // Html and Iframe can be edited only by admin
+        return HtmlType::isType($type) || IframeType::isType($type)
+            ? Yii::$app->user->isAdmin()
+            : !Yii::$app->user->isGuest;
     }
 
     /**

@@ -179,7 +179,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
     public function attributeHints()
     {
         return [
-            'editors' => Yii::t('CustomPagesModule.model', 'Users who can edit only content of this page.'),
+            'editors' => Yii::t('CustomPagesModule.model', 'Page-specific editors without full custom pages permission.'),
         ];
     }
 

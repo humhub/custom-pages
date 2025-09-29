@@ -24,10 +24,12 @@ class ImageElementVariable extends FileElementVariable
         parent::__construct($elementContent);
 
         /* @var ImageElement $elementContent */
-        $this->alt = $elementContent->purify($elementContent->alt);
-        $this->height = $elementContent->purify($elementContent->definition->height);
-        $this->width = $elementContent->purify($elementContent->definition->width);
-        $this->style = $elementContent->purify($elementContent->definition->style);
+        if ($elementContent instanceof ImageElement) {
+            $this->alt = $elementContent->purify($elementContent->alt);
+            $this->height = $elementContent->purify($elementContent->definition->height);
+            $this->width = $elementContent->purify($elementContent->definition->width);
+            $this->style = $elementContent->purify($elementContent->definition->style);
+        }
     }
 
     public function setRecord(?ActiveRecord $record): BaseRecordElementVariable

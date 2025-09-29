@@ -18,6 +18,7 @@ class FileElementVariable extends BaseRecordElementVariable
     public ?string $title;
     public ?string $mimeType;
     public int $size;
+    public ?string $url;
 
     public function setRecord(?ActiveRecord $record): BaseRecordElementVariable
     {
@@ -27,8 +28,16 @@ class FileElementVariable extends BaseRecordElementVariable
             $this->title = $record->title;
             $this->mimeType = $record->mime_type;
             $this->size = (int) $record->size;
+            $this->url = $record->getUrl();
         }
 
         return parent::setRecord($record);
+    }
+
+    public function __toString()
+    {
+        return $this->record instanceof File
+            ? $this->record->getUrl()
+            : parent::__toString();
     }
 }

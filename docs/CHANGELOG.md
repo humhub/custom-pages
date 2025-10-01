@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.11.0-beta.14 (Unreleased)
+-----------------------------------
+- Fix #469: Register container resources(CSS & JS)
+
 1.11.0-beta.13 (September 17, 2025)
 -----------------------------------
 - Enh #433: Change template overview

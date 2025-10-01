@@ -297,6 +297,8 @@ class Template extends ActiveRecord
      */
     public function render(?TemplateInstance $templateInstance = null)
     {
+        $this->registerResources();
+
         $result = '';
 
         if (TemplateInstanceRendererService::inEditMode() && $templateInstance && $templateInstance->isPage()) {

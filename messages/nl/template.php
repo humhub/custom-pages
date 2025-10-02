@@ -57,7 +57,7 @@ return [
   'Imported.' => 'Geïmporteerd.',
   'Is inline text' => 'Is inline tekst',
   'JavaScript' => 'JavaScript',
-  'Label' => '',
+  'Label' => 'Label',
   'Leave blank to don\'t cache.' => 'Laat dit leeg om de cache niet te activeren.',
   'Leave blank to don\'t limit.' => 'Laat dit veld leeg als u geen limiet wilt instellen.',
   'Limit' => 'Beperken',

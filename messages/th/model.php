@@ -22,6 +22,8 @@ return [
     'Visibility' => 'ทัศนวิสัย',
     'page' => 'หน้า',
     'snippet' => 'snippet',
+    'Editors' => '',
     'Language-Based Visibility' => '',
+    'Page-specific editors without full custom pages permission.' => '',
     'Visible to Group Members' => '',
 ];

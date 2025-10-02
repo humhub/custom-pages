@@ -22,6 +22,8 @@ return [
     'Visibility' => 'Visibilidade',
     'page' => 'página',
     'snippet' => 'excerto',
+    'Editors' => '',
     'Language-Based Visibility' => '',
+    'Page-specific editors without full custom pages permission.' => '',
     'Visible to Group Members' => '',
 ];

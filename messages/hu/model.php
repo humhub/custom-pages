@@ -22,6 +22,8 @@ return [
     'Visibility' => 'Láthatóság',
     'page' => 'oldal',
     'snippet' => 'kódrészlet (snippet)',
+    'Editors' => '',
     'Language-Based Visibility' => '',
+    'Page-specific editors without full custom pages permission.' => '',
     'Visible to Group Members' => '',
 ];

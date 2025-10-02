@@ -22,6 +22,8 @@ return [
     'Visibility' => 'Widzialność',
     'page' => 'strona',
     'snippet' => 'fragmentu',
+    'Editors' => '',
     'Language-Based Visibility' => '',
+    'Page-specific editors without full custom pages permission.' => '',
     'Visible to Group Members' => '',
 ];

@@ -22,6 +22,8 @@ return [
     'Visibility' => '可視性',
     'page' => 'ページ',
     'snippet' => 'スニペット',
+    'Editors' => '',
     'Language-Based Visibility' => '',
+    'Page-specific editors without full custom pages permission.' => '',
     'Visible to Group Members' => '',
 ];

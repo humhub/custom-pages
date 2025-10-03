@@ -27,6 +27,7 @@ use yii\db\Expression;
  * @property array $topic
  * @property array $filter
  * @property string $contentIds
+ * @property array $excludeSpace
  * @property int $limit
  */
 abstract class BaseContentRecordsElement extends BaseRecordsElement
@@ -42,6 +43,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             'topic' => null,
             'filter' => null,
             'contentIds' => null,
+            'excludeSpace' => null,
             'limit' => null,
         ];
     }
@@ -58,6 +60,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             'filter' => Yii::t('CustomPagesModule.base', 'Content filters'),
             'contentIds' => Yii::t('CustomPagesModule.base', 'Restrict to following comma separated content IDs'),
             'limit' => Yii::t('CustomPagesModule.base', 'Limit'),
+            'excludeSpace' => Yii::t('CustomPagesModule.base', 'Exclude Spaces'),
         ]);
     }
 
@@ -69,6 +72,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
         return array_merge(parent::attributeHints(), [
             'space' => Yii::t('CustomPagesModule.base', 'Leave empty to list all records related to the current user.'),
             'contentIds' => Yii::t('CustomPagesModule.template', 'Content ID can be found in a permalink.'),
+            'excludeSpace' => Yii::t('CustomPagesModule.base', 'Selected Spaces will be excluded from displaying this element.'),
         ]);
     }
 
@@ -120,6 +124,10 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             $query->andWhere(['content.id' => $contentIds[0]]);
         }
 
+        if (!empty($this->excludeSpace)) {
+            $query->andWhere(['NOT IN', 'space.guid', $this->excludeSpace]);
+        }
+
         return $query->limit($this->limit);
     }
 
@@ -151,6 +159,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             . $form->field($this, 'topic')->widget(TopicPicker::class)
             . $form->field($this, 'filter')->checkboxList($this->getContentFilterOptions())
             . $form->field($this, 'contentIds')
+            . $form->field($this, 'excludeSpace')->widget(SpacePickerField::class)
             . $form->field($this, 'limit');
     }
 }

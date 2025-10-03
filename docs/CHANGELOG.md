@@ -7,6 +7,7 @@ Changelog
 - Enh #466: Specific editors for template page
 - Enh #467: Add url property for file template element
 - Enh #468: Improved Module Test GitHub Actions
+- Enh #470: New filter "Exclude Space" for template content records list element
 
 1.12.1 (September 6, 2025)
 --------------------------

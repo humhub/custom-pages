@@ -151,9 +151,9 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
     public function renderEditForm(ActiveForm $form): string
     {
         return $form->field($this, 'spaceSelection')->dropDownList([
-                'include' => Yii::t('CustomPagesModule.base', 'Include selected Spaces only'),
-                'exclude' => Yii::t('CustomPagesModule.base', 'Include all Spaces except selected'),
-            ])
+            'include' => Yii::t('CustomPagesModule.base', 'Include selected Spaces only'),
+            'exclude' => Yii::t('CustomPagesModule.base', 'Include all Spaces except selected'),
+        ])
             . $form->field($this, 'space')->widget(SpacePickerField::class)
             . $form->field($this, 'author')->widget(UserPickerField::class)
             . $form->field($this, 'topic')->widget(TopicPicker::class)

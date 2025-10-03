@@ -22,6 +22,7 @@ use yii\db\Expression;
  * Abstract class to manage Element Content list of the ContentActiveRecords
  *
  * Dynamic attributes:
+ * @property array $spaceSelection
  * @property array $space
  * @property array $author
  * @property array $topic
@@ -37,6 +38,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
     protected function getDynamicAttributes(): array
     {
         return [
+            'spaceSelection' => 'include',
             'space' => null,
             'author' => null,
             'topic' => null,
@@ -52,6 +54,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
+            'spaceSelection' => Yii::t('CustomPagesModule.base', 'Space selection'),
             'space' => Yii::t('CustomPagesModule.base', 'Spaces'),
             'author' => Yii::t('CustomPagesModule.base', 'Authors'),
             'topic' => Yii::t('CustomPagesModule.base', 'Topics'),
@@ -67,6 +70,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
     public function attributeHints()
     {
         return array_merge(parent::attributeHints(), [
+            'spaceSelection' => Yii::t('CustomPagesModule.base', 'Determine which Spaces should be taken into account.'),
             'space' => Yii::t('CustomPagesModule.base', 'Leave empty to list all records related to the current user.'),
             'contentIds' => Yii::t('CustomPagesModule.template', 'Content ID can be found in a permalink.'),
         ]);
@@ -89,7 +93,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
         ]);
 
         if (!empty($this->space)) {
-            $query->andWhere(['space.guid' => $this->space]);
+            $query->andWhere([$this->spaceSelection === 'exclude' ? 'NOT IN' : 'IN', 'space.guid', $this->space]);
         }
 
         if (!empty($this->author)) {
@@ -146,7 +150,11 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
      */
     public function renderEditForm(ActiveForm $form): string
     {
-        return $form->field($this, 'space')->widget(SpacePickerField::class)
+        return $form->field($this, 'spaceSelection')->dropDownList([
+                'include' => Yii::t('CustomPagesModule.base', 'Include selected Spaces only'),
+                'exclude' => Yii::t('CustomPagesModule.base', 'Include all Spaces except selected'),
+            ])
+            . $form->field($this, 'space')->widget(SpacePickerField::class)
             . $form->field($this, 'author')->widget(UserPickerField::class)
             . $form->field($this, 'topic')->widget(TopicPicker::class)
             . $form->field($this, 'filter')->checkboxList($this->getContentFilterOptions())

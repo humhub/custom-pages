@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.12.2 (Unreleased)
----------------------
+1.12.2 (October 3, 2025)
+------------------------
 - Fix #329: Update module resources path
 - Enh #466: Specific editors for template page
 - Enh #467: Add url property for file template element

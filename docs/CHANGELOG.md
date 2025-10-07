@@ -8,6 +8,7 @@ Changelog
 - Enh #467: Add url property for file template element
 - Enh #468: Improved Module Test GitHub Actions
 - Enh #470: New filter to exclude spaces for template content records list element
+- Fix #473: Add primary key for settings table to avoid error on Percona-XtraDB-Cluster
 
 1.12.1 (September 6, 2025)
 --------------------------

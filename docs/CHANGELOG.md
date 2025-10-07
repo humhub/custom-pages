@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.12.3 (Unreleased)
+1.12.3 (October 7, 2025)
 ------------------------
 - Fix #473: Add primary key for settings table to avoid error on Percona-XtraDB-Cluster
 

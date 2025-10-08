@@ -28,10 +28,14 @@ use yii\db\Expression;
  * @property array $topic
  * @property array $filter
  * @property string $contentIds
+ * @property string $sortOrder
  * @property int $limit
  */
 abstract class BaseContentRecordsElement extends BaseRecordsElement
 {
+    public const SORT_DATE_OLD = 'date_old';
+    public const SORT_DATE_NEW = 'date_new';
+
     /**
      * @inheritdoc
      */
@@ -44,6 +48,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             'topic' => null,
             'filter' => null,
             'contentIds' => null,
+            'sortOrder' => self::SORT_DATE_NEW,
             'limit' => null,
         ];
     }
@@ -60,6 +65,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             'topic' => Yii::t('CustomPagesModule.base', 'Topics'),
             'filter' => Yii::t('CustomPagesModule.base', 'Content filters'),
             'contentIds' => Yii::t('CustomPagesModule.base', 'Restrict to following comma separated content IDs'),
+            'sortOrder' => Yii::t('CustomPagesModule.base', 'Sorting'),
             'limit' => Yii::t('CustomPagesModule.base', 'Limit'),
         ]);
     }
@@ -124,6 +130,15 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             $query->andWhere(['content.id' => $contentIds[0]]);
         }
 
+        switch ($this->sortOrder) {
+            case self::SORT_DATE_NEW:
+                $query->orderBy(['content.created_at' => SORT_DESC]);
+                break;
+            case self::SORT_DATE_OLD:
+                $query->orderBy(['content.created_at' => SORT_ASC]);
+                break;
+        }
+
         return $query->limit($this->limit);
     }
 
@@ -159,6 +174,21 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             . $form->field($this, 'topic')->widget(TopicPicker::class)
             . $form->field($this, 'filter')->checkboxList($this->getContentFilterOptions())
             . $form->field($this, 'contentIds')
+            . $form->field($this, 'sortOrder')->dropDownList($this->getSortOptions())
             . $form->field($this, 'limit');
+    }
+
+    /**
+     * Get options for sorting
+     *
+     * @return array
+     * @since 1.12.4
+     */
+    protected function getSortOptions(): array
+    {
+        return [
+            self::SORT_DATE_NEW => Yii::t('CustomPagesModule.base', 'From Newest to Oldest'),
+            self::SORT_DATE_OLD => Yii::t('CustomPagesModule.base', 'From Oldest to Newest'),
+        ];
     }
 }

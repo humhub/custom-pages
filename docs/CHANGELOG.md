@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.12.4 (Unreleased)
+------------------------
+- Enh #474: New option for sorting content records template elements
+
 1.12.3 (October 7, 2025)
 ------------------------
 - Fix #473: Add primary key for settings table to avoid error on Percona-XtraDB-Cluster

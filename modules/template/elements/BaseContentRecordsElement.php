@@ -28,10 +28,14 @@ use yii\db\Expression;
  * @property array $topic
  * @property array $filter
  * @property string $contentIds
+ * @property string $sortOrder
  * @property int $limit
  */
 abstract class BaseContentRecordsElement extends BaseRecordsElement
 {
+    public const SORT_CREATE = 'create';
+    public const SORT_UPDATE = 'update';
+
     /**
      * @inheritdoc
      */
@@ -44,6 +48,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             'topic' => null,
             'filter' => null,
             'contentIds' => null,
+            'sortOrder' => self::SORT_CREATE,
             'limit' => null,
         ];
     }
@@ -60,6 +65,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             'topic' => Yii::t('CustomPagesModule.base', 'Topics'),
             'filter' => Yii::t('CustomPagesModule.base', 'Content filters'),
             'contentIds' => Yii::t('CustomPagesModule.base', 'Restrict to following comma separated content IDs'),
+            'sortOrder' => Yii::t('CustomPagesModule.base', 'Sorting'),
             'limit' => Yii::t('CustomPagesModule.base', 'Limit'),
         ]);
     }
@@ -124,6 +130,11 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             $query->andWhere(['content.id' => $contentIds[0]]);
         }
 
+        $query->orderBy(match ($this->sortOrder) {
+            self::SORT_UPDATE => ['content.stream_sort_date' => SORT_DESC],
+            default => ['content.created_at' => SORT_DESC],
+        });
+
         return $query->limit($this->limit);
     }
 
@@ -159,6 +170,21 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             . $form->field($this, 'topic')->widget(TopicPicker::class)
             . $form->field($this, 'filter')->checkboxList($this->getContentFilterOptions())
             . $form->field($this, 'contentIds')
+            . $form->field($this, 'sortOrder')->radioList($this->getSortOptions())
             . $form->field($this, 'limit');
+    }
+
+    /**
+     * Get options for sorting
+     *
+     * @return array
+     * @since 1.12.4
+     */
+    protected function getSortOptions(): array
+    {
+        return [
+            self::SORT_CREATE => Yii::t('CustomPagesModule.base', 'By creation date'),
+            self::SORT_UPDATE => Yii::t('CustomPagesModule.base', 'By last update'),
+        ];
     }
 }

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.12.4 (Unreleased)
+1.12.4 (October 9, 2025)
 ------------------------
 - Enh #474: New option for sorting content records template elements
 

@@ -33,8 +33,8 @@ use yii\db\Expression;
  */
 abstract class BaseContentRecordsElement extends BaseRecordsElement
 {
-    public const SORT_DATE_OLD = 'date_old';
-    public const SORT_DATE_NEW = 'date_new';
+    public const SORT_CREATE = 'create';
+    public const SORT_UPDATE = 'update';
 
     /**
      * @inheritdoc
@@ -48,7 +48,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             'topic' => null,
             'filter' => null,
             'contentIds' => null,
-            'sortOrder' => self::SORT_DATE_NEW,
+            'sortOrder' => self::SORT_CREATE,
             'limit' => null,
         ];
     }
@@ -130,14 +130,10 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             $query->andWhere(['content.id' => $contentIds[0]]);
         }
 
-        switch ($this->sortOrder) {
-            case self::SORT_DATE_NEW:
-                $query->orderBy(['content.created_at' => SORT_DESC]);
-                break;
-            case self::SORT_DATE_OLD:
-                $query->orderBy(['content.created_at' => SORT_ASC]);
-                break;
-        }
+        $query->orderBy(match ($this->sortOrder) {
+            self::SORT_UPDATE => ['content.stream_sort_date' => SORT_DESC],
+            default => ['content.created_at' => SORT_DESC],
+        });
 
         return $query->limit($this->limit);
     }
@@ -174,7 +170,7 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
             . $form->field($this, 'topic')->widget(TopicPicker::class)
             . $form->field($this, 'filter')->checkboxList($this->getContentFilterOptions())
             . $form->field($this, 'contentIds')
-            . $form->field($this, 'sortOrder')->dropDownList($this->getSortOptions())
+            . $form->field($this, 'sortOrder')->radioList($this->getSortOptions())
             . $form->field($this, 'limit');
     }
 
@@ -187,8 +183,8 @@ abstract class BaseContentRecordsElement extends BaseRecordsElement
     protected function getSortOptions(): array
     {
         return [
-            self::SORT_DATE_NEW => Yii::t('CustomPagesModule.base', 'From Newest to Oldest'),
-            self::SORT_DATE_OLD => Yii::t('CustomPagesModule.base', 'From Oldest to Newest'),
+            self::SORT_CREATE => Yii::t('CustomPagesModule.base', 'By creation date'),
+            self::SORT_UPDATE => Yii::t('CustomPagesModule.base', 'By last update'),
         ];
     }
 }

@@ -51,6 +51,7 @@
 | **User Element**                   |                             |                                                                                 |
 | `user`                             | User > Container            |                                                                                 |
 | `user.friendCount`                 | Integer                     | Returns the number of Friends of the user                                       |
+| `user.profile('fieldName')`        | String                      | Returns profile value by field name                                             |
 |                                    |                             |                                                                                 |
 | **Content Meta Element**           |                             | Base for all content variables (e.g. Post)                                      |
 | `content.url`                      | String                      | Permalink to the content record                                                 |

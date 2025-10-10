@@ -60,19 +60,6 @@ class UserElement extends BaseContentContainerElement
     }
 
     /**
-     * Get a profile field
-     *
-     * @param string|null $field Field name or NULL to get a display name by default
-     * @return string
-     */
-    public function getProfileField(?string $field = null): string
-    {
-        return $this->getRecord() instanceof User
-            ? $this->getRecord()->profile->$field ?? $this->getRecord()->displayName
-            : '';
-    }
-
-    /**
      * @inheritdoc
      */
     public function isCacheable(): bool
@@ -80,6 +67,14 @@ class UserElement extends BaseContentContainerElement
         // Don't cache data of the current user
         // Cache only when specific user is selected
         return !empty($this->guid);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTemplateVariable(): BaseElementVariable
+    {
+        return UserElementVariable::instance($this)->setRecord($this->getRecord());
     }
 
     /**

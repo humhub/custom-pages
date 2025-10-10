@@ -17,7 +17,7 @@ class UserElementVariable extends BaseContentContainerElementVariable
     public function __construct(BaseElementContent $elementContent)
     {
         parent::__construct($elementContent);
-        TwigEngine::registerSandboxExtensionAllowedFunctions(static::class, ['getFriendCount']);
+        TwigEngine::registerSandboxExtensionAllowedFunctions(static::class, ['getFriendCount', 'getProfile']);
     }
 
     private function getUser(): ?User
@@ -34,6 +34,17 @@ class UserElementVariable extends BaseContentContainerElementVariable
         }
 
         return Friendship::getFriendsQuery($user)->count();
+    }
+
+    /**
+     * Get a profile field value
+     *
+     * @param string $field Field name
+     * @return string
+     */
+    public function getProfile(string $field): string
+    {
+        return $this->getUser()?->profile?->$field ?? '';
     }
 
 }

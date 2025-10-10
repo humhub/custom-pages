@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.12.5 (Unreleased)
+------------------------
+- Enh #475: Allow to render user profile field
+
 1.12.4 (October 9, 2025)
 ------------------------
 - Enh #474: New option for sorting content records template elements

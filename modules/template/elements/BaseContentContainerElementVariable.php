@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\db\ActiveRecord;
 
@@ -34,5 +35,10 @@ class BaseContentContainerElementVariable extends BaseRecordElementVariable
         }
 
         return parent::setRecord($record);
+    }
+
+    public function __toString()
+    {
+        return Html::encode($this->record?->getDisplayName());
     }
 }

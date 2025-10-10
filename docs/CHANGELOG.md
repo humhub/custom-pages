@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.12.5 (Unreleased)
-------------------------
+1.12.5 (October 10, 2025)
+-------------------------
 - Enh #475: Allow to render user profile field
 
 1.12.4 (October 9, 2025)

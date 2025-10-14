@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.12.6 (October 114, 2025)
+-------------------------
+- Enh #476: Allow Twig filter `merge` 
+
 1.12.5 (October 10, 2025)
 -------------------------
 - Enh #475: Allow to render user profile field

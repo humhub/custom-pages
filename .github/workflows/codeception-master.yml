@@ -11,4 +11,3 @@ jobs:
     uses: humhub/module-coding-standards/.github/workflows/codeception-master.yml@main
     with:
       module-id: custom_pages
-      install-composer: true

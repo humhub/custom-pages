@@ -1,7 +1,11 @@
 Changelog
 =========
 
-1.12.6 (October 114, 2025)
+1.12.7 (Unreleased)
+-------------------------
+- Enh #478: Implemented `module-coding-standards`
+
+1.12.6 (October 14, 2025)
 -------------------------
 - Enh #476: Allow Twig filter `merge` 
 

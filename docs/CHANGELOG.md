@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.12.7 (Unreleased)
+1.12.7 (October 23, 2025)
 -------------------------
 - Enh #478: Implemented `module-coding-standards`
 - Fix #477: Fix rendering of Image and File Elements when called from other external elements

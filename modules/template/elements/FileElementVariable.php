@@ -29,15 +29,13 @@ class FileElementVariable extends BaseRecordElementVariable
             $this->mimeType = $record->mime_type;
             $this->size = (int) $record->size;
             $this->url = $record->getUrl();
+
+            if (!$this->elementContent instanceof FileElement) {
+                // Force to File Element when this class constructor has been called from different element(e.g. external NewsElement)
+                $this->elementContent = new FileElement(['file_guid' => $record->guid]);
+            }
         }
 
         return parent::setRecord($record);
-    }
-
-    public function __toString()
-    {
-        return $this->record instanceof File
-            ? $this->record->getUrl()
-            : parent::__toString();
     }
 }

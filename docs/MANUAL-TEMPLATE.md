@@ -18,7 +18,7 @@
 | `file.size`                        | Integer                     | File size in bytes                                                              |
 |                                    |                             |                                                                                 |
 | **Image Element**                  | Extended from File Element  | It has the same options as the File Element and additional below                |
-| `image`                            | String                      | Returns the URL of the value of the Image Element                               |
+| `image`                            | String                      | Returns HTML tag <img src="..." width="..." height="..." alt="..." style="..."> |
 | `image.src`                        | String                      | Image URL                                                                       |
 | `image.alt`                        | String                      | Image alt text                                                                  |
 | `image.width`                      | String                      | Image width                                                                     |

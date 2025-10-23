@@ -36,6 +36,11 @@ class ImageElementVariable extends FileElementVariable
     {
         if ($record instanceof File) {
             $this->src = $record->getUrl();
+
+            if (!$this->elementContent instanceof ImageElement) {
+                // Force to Image Element when this class constructor has been called from different element(e.g. external NewsElement)
+                $this->elementContent = new ImageElement(['file_guid' => $record->guid]);
+            }
         }
 
         return parent::setRecord($record);

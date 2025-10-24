@@ -29,18 +29,15 @@ class PageType
 
     public static function getContentName(string $type, ?string $containerClass = null): ?string
     {
-        switch ($type) {
-            case self::Page:
-                return $containerClass === Space::class
-                    ? Yii::t('CustomPagesModule.base', 'Space Page')
-                    : Yii::t('CustomPagesModule.base', 'Global Page');
-            case self::Snippet:
-                return $containerClass === Space::class
-                    ? Yii::t('CustomPagesModule.base', 'Space Widget')
-                    : Yii::t('CustomPagesModule.base', 'Global Widget');
-        }
-
-        return null;
+        return match ($type) {
+            self::Page => $containerClass === Space::class
+                ? Yii::t('CustomPagesModule.base', 'Space Page')
+                : Yii::t('CustomPagesModule.base', 'Global Page'),
+            self::Snippet => $containerClass === Space::class
+                ? Yii::t('CustomPagesModule.base', 'Space Widget')
+                : Yii::t('CustomPagesModule.base', 'Global Widget'),
+            default => null,
+        };
     }
 
     /**

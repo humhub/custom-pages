@@ -17,7 +17,7 @@ class m250116_153924_container_templates extends Migration
             ->where(['LIKE', 'dyn_attributes', '"templates":[']);
 
         foreach ($definitions->each() as $definition) {
-            $dynAttributes = json_decode($definition['dyn_attributes'], true);
+            $dynAttributes = json_decode((string) $definition['dyn_attributes'], true);
             if (empty($dynAttributes['templates']) || !is_array($dynAttributes['templates'])) {
                 continue;
             }

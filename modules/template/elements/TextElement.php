@@ -19,7 +19,7 @@ use Yii;
  * @property bool $inline_text
  * @property string $content
  */
-class TextElement extends BaseElementContent
+class TextElement extends BaseElementContent implements \Stringable
 {
     /**
      * @inheritdoc
@@ -96,9 +96,9 @@ class TextElement extends BaseElementContent
         return $scenarios;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->inline_text ? $this->purify($this->content) : Html::encode($this->content);
+        return (string) $this->inline_text ? $this->purify($this->content) : Html::encode($this->content);
     }
 
     /**

@@ -22,7 +22,7 @@ use yii\web\NotFoundHttpException;
  */
 class TemplateInstanceImportService extends BaseImportService
 {
-    private TemplateInstance $instance;
+    private readonly TemplateInstance $instance;
     private ?TemplateElement $element = null;
     public bool $replace = false;
 

@@ -22,9 +22,9 @@ class BaseElementVariableIterator extends BaseElementVariable implements \Iterat
         $this->position = 0;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return count($this->items);
+        return (string) count($this->items);
     }
 
     public function current(): mixed

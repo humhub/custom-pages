@@ -54,9 +54,7 @@ class ViewController extends AbstractCustomContainerController
             throw new ForbiddenHttpException('Cannot view the requested page');
         }
 
-        $this->subLayout = ($page->getTargetModel()->getSubLayout())
-            ? $page->getTargetModel()->getSubLayout()
-            : $this->subLayout;
+        $this->subLayout = $page->getTargetModel()->getSubLayout() ?: $this->subLayout;
 
         $this->view->setPageTitle(Html::encode($page->title));
 
@@ -82,22 +80,15 @@ class ViewController extends AbstractCustomContainerController
 
     public function renderContainerView($page)
     {
-        switch ($page->type) {
-            case HtmlType::ID:
-                return $this->render('@custom_pages/views/container/html', ['page' => $page, 'html' => $page->getPageContent(), 'title' => $page->title]);
-            case IframeType::ID:
-                return $this->render('@custom_pages/views/container/iframe', ['page' => $page, 'url' => $page->page_content]);
-            case TemplateType::ID:
-                return $this->viewTemplatePage($page, '@custom_pages/views/container/template');
-            case LinkType::ID:
-                return $this->redirect($page->page_content);
-            case MarkdownType::ID:
-                return $this->render('@custom_pages/views/container/markdown', ['page' => $page, 'md' => $page->page_content]);
-            case PhpType::ID:
-                return $this->render('@custom_pages/views/container/php', ['page' => $page, 'contentContainer' => $this->contentContainer]);
-            default:
-                throw new HttpException('500', 'Invalid page type!');
-        }
+        return match ($page->type) {
+            HtmlType::ID => $this->render('@custom_pages/views/container/html', ['page' => $page, 'html' => $page->getPageContent(), 'title' => $page->title]),
+            IframeType::ID => $this->render('@custom_pages/views/container/iframe', ['page' => $page, 'url' => $page->page_content]),
+            TemplateType::ID => $this->viewTemplatePage($page, '@custom_pages/views/container/template'),
+            LinkType::ID => $this->redirect($page->page_content),
+            MarkdownType::ID => $this->render('@custom_pages/views/container/markdown', ['page' => $page, 'md' => $page->page_content]),
+            PhpType::ID => $this->render('@custom_pages/views/container/php', ['page' => $page, 'contentContainer' => $this->contentContainer]),
+            default => throw new HttpException('500', 'Invalid page type!'),
+        };
     }
 
     /**
@@ -107,27 +98,20 @@ class ViewController extends AbstractCustomContainerController
      */
     public function renderGlobalView($page)
     {
-        switch ($page->type) {
-            case HtmlType::ID:
-                return $this->render('@custom_pages/views/global/html', ['page' => $page, 'html' => $page->getPageContent(), 'title' => $page->title]);
-            case IframeType::ID:
-                return $this->render('@custom_pages/views/global/iframe', ['page' => $page, 'url' => $page->page_content, 'navigationClass' => $page->getTargetId()]);
-            case TemplateType::ID:
-                return $this->viewTemplatePage($page, '@custom_pages/views/global/template');
-            case LinkType::ID:
-                return $this->redirect($page->page_content);
-            case MarkdownType::ID:
-                return $this->render('@custom_pages/views/global/markdown', [
-                    'page' => $page,
-                    'md' => $page->page_content,
-                    'navigationClass' => $page->getTargetId(),
-                    'title' => $page->title,
-                ]);
-            case PhpType::ID:
-                return $this->render('@custom_pages/views/global/php', ['page' => $page]);
-            default:
-                throw new HttpException('500', 'Invalid page type!');
-        }
+        return match ($page->type) {
+            HtmlType::ID => $this->render('@custom_pages/views/global/html', ['page' => $page, 'html' => $page->getPageContent(), 'title' => $page->title]),
+            IframeType::ID => $this->render('@custom_pages/views/global/iframe', ['page' => $page, 'url' => $page->page_content, 'navigationClass' => $page->getTargetId()]),
+            TemplateType::ID => $this->viewTemplatePage($page, '@custom_pages/views/global/template'),
+            LinkType::ID => $this->redirect($page->page_content),
+            MarkdownType::ID => $this->render('@custom_pages/views/global/markdown', [
+                'page' => $page,
+                'md' => $page->page_content,
+                'navigationClass' => $page->getTargetId(),
+                'title' => $page->title,
+            ]),
+            PhpType::ID => $this->render('@custom_pages/views/global/php', ['page' => $page]),
+            default => throw new HttpException('500', 'Invalid page type!'),
+        };
     }
 
     /**

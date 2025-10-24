@@ -115,15 +115,11 @@ class AddPageForm extends Model
         if ($type instanceof ContentType) {
             $type = $type->getId();
         }
-
-        switch ($type) {
-            case TemplateType::ID:
-                return !$this->showTemplateType();
-            case PhpType::ID:
-                return !$this->hasPHPFiles();
-        }
-
-        return false;
+        return match ($type) {
+            TemplateType::ID => !$this->showTemplateType(),
+            PhpType::ID => !$this->hasPHPFiles(),
+            default => false,
+        };
     }
 
     /**

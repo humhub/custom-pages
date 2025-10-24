@@ -21,11 +21,8 @@ use Yii;
 
 class VisibilityService
 {
-    protected CustomPage $page;
-
-    public function __construct(CustomPage $page)
+    public function __construct(protected CustomPage $page)
     {
-        $this->page = $page;
     }
 
     /**

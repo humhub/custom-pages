@@ -19,7 +19,7 @@ use yii\db\IntegrityException;
  * Dynamic attributes:
  * @property string $guid
  */
-abstract class BaseContentContainerElement extends BaseElementContent
+abstract class BaseContentContainerElement extends BaseElementContent implements \Stringable
 {
     public const CONTAINER_CLASS = null;
 
@@ -48,9 +48,9 @@ abstract class BaseContentContainerElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return Html::encode($this->getRecord()?->getDisplayName());
+        return (string) Html::encode($this->getRecord()?->getDisplayName());
     }
 
     /**
@@ -58,7 +58,7 @@ abstract class BaseContentContainerElement extends BaseElementContent
      */
     public function getFormView(): string
     {
-        return 'elements/' . strtolower(substr(strrchr(static::CONTAINER_CLASS, '\\'), 1));
+        return 'elements/' . strtolower(substr(strrchr((string) static::CONTAINER_CLASS, '\\'), 1));
     }
 
     /**

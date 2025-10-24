@@ -63,8 +63,8 @@ class PageUrlRule extends Component implements UrlRuleInterface
     public function parseRequest($manager, $request)
     {
         $pathInfo = $request->getPathInfo();
-        if (substr($pathInfo, 0, 2) === 'p/') {
-            $parts = explode('/', $pathInfo, 3);
+        if (str_starts_with((string) $pathInfo, 'p/')) {
+            $parts = explode('/', (string) $pathInfo, 3);
             if (isset($parts[1])) {
                 $page = CustomPage::find()
                     ->andWhere([

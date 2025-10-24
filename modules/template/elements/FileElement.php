@@ -23,7 +23,7 @@ use Yii;
  * Dynamic attributes:
  * @property string $file_guid
  */
-class FileElement extends BaseElementContent
+class FileElement extends BaseElementContent implements \Stringable
 {
     /**
      * @inheritdoc
@@ -110,10 +110,10 @@ class FileElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function __toString()
+    public function __toString(): string
     {
         if ($this->hasFile()) {
-            return $this->getFile()->getUrl();
+            return (string) $this->getFile()->getUrl();
         }
         return '';
     }

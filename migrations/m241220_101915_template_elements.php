@@ -111,7 +111,7 @@ class m241220_101915_template_elements extends Migration
             foreach ($dynAttributes as $attrKey => $attrName) {
                 if ($attrName === 'jsonMerge') {
                     if (!empty($element[$attrKey])) {
-                        $jsonValues = @json_decode($element[$attrKey], true);
+                        $jsonValues = @json_decode((string) $element[$attrKey], true);
                         if (is_array($jsonValues)) {
                             $dynValues = array_merge($dynValues, $jsonValues);
                         }

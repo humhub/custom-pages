@@ -131,7 +131,7 @@ class TemplateInstance extends ActiveRecord
 
     public function getCacheKey(): string
     {
-        return get_class($this) . $this->getPrimaryKey();
+        return static::class . $this->getPrimaryKey();
     }
 
     /**

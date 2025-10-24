@@ -71,9 +71,7 @@ class TemplateInstanceRendererService
 
         $cache = $this->isCacheable() ? Yii::$app->cache : new DummyCache();
 
-        $html = $cache->getOrSet($this->templateInstance->getCacheKey(), function () {
-            return $this->templateInstance->render();
-        });
+        $html = $cache->getOrSet($this->templateInstance->getCacheKey(), $this->templateInstance->render(...));
 
         if ($this->applyScriptNonce) {
             $html = Html::applyScriptNonce($html);

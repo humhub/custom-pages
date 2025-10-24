@@ -31,9 +31,7 @@ use yii\helpers\Html;
                     'class' => DataColumn::class,
                     'label' => Yii::t('CustomPagesModule.base', 'Title'),
                     'format' => 'raw',
-                    'value' => function (CustomPage $data) {
-                        return Link::to(Html::encode($data->getTitle()), $data->getUrl())->icon(Html::encode($data->icon));
-                    },
+                    'value' => fn(CustomPage $data) => Link::to(Html::encode($data->getTitle()), $data->getUrl())->icon(Html::encode($data->icon)),
                 ],
                 [
                     'class' => DataColumn::class,
@@ -46,9 +44,7 @@ use yii\helpers\Html;
                     'class' => DataColumn::class,
                     'label' => Yii::t('CustomPagesModule.base', 'Type'),
                     'headerOptions' => ['style' => 'width:10%'],
-                    'value' => function (CustomPage $data) {
-                        return $data->getContentType()->getLabel();
-                    },
+                    'value' => fn(CustomPage $data) => $data->getContentType()->getLabel(),
                 ],
                 [
                     'class' => ActionColumn::class,
@@ -56,14 +52,10 @@ use yii\helpers\Html;
                     'contentOptions' => ['class' => 'text-end'],
                     'template' => '{update} {copy}',
                     'buttons' => [
-                        'update' => function ($url, CustomPage $model) {
-                            return $model->canEdit()
-                                ? Link::primary()->icon('pencil')->link($model->getEditUrl())->sm()
-                                : '';
-                        },
-                        'copy' => function ($url, CustomPage $model) {
-                            return ModalButton::light()->load(Url::toCopyPage($model))->icon('copy')->sm();
-                        },
+                        'update' => fn($url, CustomPage $model) => $model->canEdit()
+                            ? Link::primary()->icon('pencil')->link($model->getEditUrl())->sm()
+                            : '',
+                        'copy' => fn($url, CustomPage $model) => ModalButton::light()->load(Url::toCopyPage($model))->icon('copy')->sm(),
                     ],
                 ],
             ],

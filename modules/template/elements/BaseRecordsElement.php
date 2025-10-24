@@ -16,7 +16,7 @@ use yii\db\ActiveQuery;
 /**
  * Abstract class to manage Active Records of the elements
  */
-abstract class BaseRecordsElement extends BaseElementContent implements TemplateElementContentIterable
+abstract class BaseRecordsElement extends BaseElementContent implements TemplateElementContentIterable, \Stringable
 {
     public const RECORD_CLASS = null;
 
@@ -32,9 +32,9 @@ abstract class BaseRecordsElement extends BaseElementContent implements Template
      */
     abstract protected function getQuery(): ActiveQuery;
 
-    public function __toString()
+    public function __toString(): string
     {
-        return Html::encode(static::RECORD_CLASS);
+        return (string) Html::encode(static::RECORD_CLASS);
     }
 
     /**

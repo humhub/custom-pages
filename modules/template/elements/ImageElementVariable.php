@@ -13,7 +13,7 @@ use yii\db\ActiveRecord;
 
 class ImageElementVariable extends FileElementVariable
 {
-    public ?string $src;
+    public ?string $src = null;
     public ?string $alt;
     public ?string $height;
     public ?string $width;

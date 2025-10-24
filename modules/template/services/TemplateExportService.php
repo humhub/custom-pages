@@ -21,13 +21,10 @@ class TemplateExportService
      * NOTE: Update it when JSON structure is changed, to avoid errors on import
      */
     public const VERSION = '1.0';
-
-    private Template $template;
     private ?array $data = null;
 
-    public function __construct(Template $template)
+    public function __construct(private readonly Template $template)
     {
-        $this->template = $template;
     }
 
     public static function instance(Template $template): self

@@ -12,7 +12,7 @@ use Yii;
  *
  * @warning Compatible only with PHP8.0+, Don't use for PHP versions <= 7.4!
  */
-class AssetVariable implements \ArrayAccess
+class AssetVariable implements \ArrayAccess, \Stringable
 {
     private $module;
 
@@ -35,7 +35,7 @@ class AssetVariable implements \ArrayAccess
         return $this->module;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return '';
     }

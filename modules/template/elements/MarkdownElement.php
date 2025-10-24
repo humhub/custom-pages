@@ -20,7 +20,7 @@ use Yii;
  * Dynamic attributes:
  * @property string $content
  */
-class MarkdownElement extends BaseElementContent
+class MarkdownElement extends BaseElementContent implements \Stringable
 {
     /**
      * @inheritdoc
@@ -63,9 +63,9 @@ class MarkdownElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return Richtext::output($this->content);
+        return (string) Richtext::output($this->content);
     }
 
     /**

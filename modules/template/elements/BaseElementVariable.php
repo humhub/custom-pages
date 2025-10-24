@@ -8,19 +8,16 @@
 
 namespace humhub\modules\custom_pages\modules\template\elements;
 
-class BaseElementVariable
+class BaseElementVariable implements \Stringable
 {
-    protected BaseElementContent $elementContent;
-
     public int $elementContentId;
 
     public bool $empty;
 
-    public function __construct(BaseElementContent $elementContent)
+    public function __construct(protected BaseElementContent $elementContent)
     {
-        $this->elementContent = $elementContent;
-        $this->elementContentId = $elementContent->id ?? 0;
-        $this->empty = $elementContent->isEmpty();
+        $this->elementContentId = $this->elementContent->id ?? 0;
+        $this->empty = $this->elementContent->isEmpty();
     }
 
     public static function instance(BaseElementContent $elementContent): static
@@ -28,9 +25,9 @@ class BaseElementVariable
         return new static($elementContent);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return strval($this->elementContent);
+        return (string) strval($this->elementContent);
     }
 
 }

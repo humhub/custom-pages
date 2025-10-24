@@ -60,7 +60,7 @@ trait PhpPageContainer
             $viewName = Html::getAttributeValue($this, 'page_content');
 
             if (array_key_exists($viewName, $viewFiles)) {
-                return $this->getPhpViewPathByView(basename($viewFiles[$viewName]), true);
+                return $this->getPhpViewPathByView(basename((string) $viewFiles[$viewName]), true);
             }
         }
 

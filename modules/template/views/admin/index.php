@@ -73,9 +73,7 @@ TemplateAsset::register($this);
                     'attribute' => 'name',
                     'label' => Yii::t('CustomPagesModule.template', 'Name'),
                     'format' => 'raw',
-                    'value' => function (Template $template) {
-                        return Html::a($template->name, ['edit-source', 'id' => $template->id]);
-                    },
+                    'value' => fn(Template $template) => Html::a($template->name, ['edit-source', 'id' => $template->id]),
                 ],
                 [
                     'label' => Yii::t('CustomPagesModule.template', 'Usage'),
@@ -93,11 +91,9 @@ TemplateAsset::register($this);
                     'attribute' => 'type',
                     'label' => Yii::t('CustomPagesModule.template', 'Type'),
                     'format' => 'raw',
-                    'value' => function (Template $template) {
-                        return Html::tag('span', Template::getTypeTitle($template->type), [
-                            'class' => 'badge badge-cp-template-' . $template->type,
-                        ]);
-                    },
+                    'value' => fn(Template $template) => Html::tag('span', Template::getTypeTitle($template->type), [
+                        'class' => 'badge badge-cp-template-' . $template->type,
+                    ]),
                 ],
                 ['class' => TemplateActionColumn::class],
             ],

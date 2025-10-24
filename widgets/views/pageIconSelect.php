@@ -17,7 +17,7 @@ use humhub\modules\custom_pages\models\CustomPage;
     <select id="custom_page_icon" class="form-control" name="<?= $page->formName() ?>[icon]">
         <?php foreach ($faIcons as $icon) : ?>
             <option value="<?= $icon ?>"<?= $page->icon === $icon ? ' selected="selected"' : '' ?>>
-                <?= str_starts_with($icon, 'fa-') ? substr($icon, 3) : $icon ?>
+                <?= str_starts_with((string) $icon, 'fa-') ? substr((string) $icon, 3) : $icon ?>
             </option>
         <?php endforeach; ?>
     </select>

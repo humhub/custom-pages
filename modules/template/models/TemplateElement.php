@@ -89,7 +89,7 @@ class TemplateElement extends ActiveRecord
 
     public function getTitle()
     {
-        return ($this->title) ? $this->title : $this->name;
+        return $this->title ?: $this->name;
     }
 
     /**
@@ -165,7 +165,7 @@ class TemplateElement extends ActiveRecord
      */
     public function saveAsDefaultContent($content): ?BaseElementContent
     {
-        if (get_class($content) != $this->content_type) {
+        if ($content::class != $this->content_type) {
             return null;
         }
 

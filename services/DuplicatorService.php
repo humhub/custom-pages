@@ -16,13 +16,8 @@ use humhub\modules\file\models\FileContent;
 
 class DuplicatorService
 {
-    protected CustomPage $sourcePage;
-    protected CustomPage $targetPage;
-
-    public function __construct(CustomPage $sourcePage, CustomPage $targetPage)
+    public function __construct(protected CustomPage $sourcePage, protected CustomPage $targetPage)
     {
-        $this->sourcePage = $sourcePage;
-        $this->targetPage = $targetPage;
     }
 
     public static function instance(CustomPage $sourcePage, CustomPage $targetPage): self

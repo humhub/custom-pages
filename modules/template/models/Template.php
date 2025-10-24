@@ -339,9 +339,7 @@ class Template extends ActiveRecord
                 ->all();
         }
 
-        $elementNames = array_map(function ($elementContent) {
-            return $elementContent->element->name;
-        }, $elementContents);
+        $elementNames = array_map(fn($elementContent) => $elementContent->element->name, $elementContents);
 
         foreach ($this->_elements as $element) {
             if (!in_array($element->name, $elementNames)) {

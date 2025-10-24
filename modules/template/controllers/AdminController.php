@@ -101,7 +101,7 @@ class AdminController extends Controller
         $model->scenario = 'edit';
 
         if (!$model->load(Yii::$app->request->post())) {
-            $model->name = $model->name . ' (Copied)';
+            $model->name .= ' (Copied)';
         } elseif ($model->saveCopy()) {
             TemplateCache::flushByTemplateId($model->id);
             $this->view->success(Yii::t('CustomPagesModule.template', 'Copied'));
@@ -220,11 +220,9 @@ class AdminController extends Controller
                 'class' => DataColumn::class,
                 'label' => Yii::t('CustomPagesModule.base', 'Space'),
                 'format' => 'raw',
-                'value' => function ($model) {
-                    return $model instanceof Content && $model->container instanceof ContentContainerActiveRecord
-                        ? Html::containerLink($model->container)
-                        : '';
-                },
+                'value' => fn($model) => $model instanceof Content && $model->container instanceof ContentContainerActiveRecord
+                    ? Html::containerLink($model->container)
+                    : '',
             ];
         }
 
@@ -245,11 +243,9 @@ class AdminController extends Controller
                     }
                     return '';
                 },
-                'delete' => function ($url, $model) {
-                    return $model instanceof Template
-                        ? Link::danger()->icon('times')->link(Url::toRoute(['delete-template', 'id' => $model->id]))->sm()->confirm()
-                        : '';
-                },
+                'delete' => fn($url, $model) => $model instanceof Template
+                    ? Link::danger()->icon('times')->link(Url::toRoute(['delete-template', 'id' => $model->id]))->sm()->confirm()
+                    : '',
             ],
         ];
 

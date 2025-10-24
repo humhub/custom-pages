@@ -65,22 +65,15 @@ abstract class ContentType
      */
     public static function getById($type): ?ContentType
     {
-        switch ((int) $type) {
-            case MarkdownType::ID:
-                return MarkdownType::instance();
-            case LinkType::ID:
-                return LinkType::instance();
-            case IframeType::ID:
-                return IframeType::instance();
-            case TemplateType::ID:
-                return TemplateType::instance();
-            case HtmlType::ID:
-                return HtmlType::instance();
-            case PhpType::ID:
-                return PhpType::instance();
-            default:
-                return null;
-        }
+        return match ((int) $type) {
+            MarkdownType::ID => MarkdownType::instance(),
+            LinkType::ID => LinkType::instance(),
+            IframeType::ID => IframeType::instance(),
+            TemplateType::ID => TemplateType::instance(),
+            HtmlType::ID => HtmlType::instance(),
+            PhpType::ID => PhpType::instance(),
+            default => null,
+        };
     }
 
     /**

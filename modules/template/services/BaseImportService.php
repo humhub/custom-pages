@@ -58,7 +58,7 @@ abstract class BaseImportService
             $file = new FileContent();
             foreach ($fileData as $attribute => $value) {
                 if ($attribute === 'base64Content') {
-                    $file->newFileContent = base64_decode($value);
+                    $file->newFileContent = base64_decode((string) $value);
                 }
                 if (!in_array($attribute, ['guid', 'object_model', 'object_id']) && $file->hasAttribute($attribute)) {
                     $file->$attribute = $value;

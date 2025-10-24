@@ -35,7 +35,7 @@ use humhub\widgets\modal\ModalButton;
 <div class="template-edit-multiple">
 
     <?php $counter = 0 ?>
-    <?php foreach ($model->contentMap as $key => $contentItem) : ?>
+    <?php foreach ($model->contentMap as $contentItem) : ?>
 
         <?php $isContainer = $contentItem->content instanceof ContainerElement; ?>
 

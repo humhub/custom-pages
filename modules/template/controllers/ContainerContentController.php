@@ -203,7 +203,7 @@ class ContainerContentController extends ContentContainerController
 
         // Initialize the itemTemplate
         if (!$itemTemplate) {
-            $templateId = ($templateId === null) ? Yii::$app->request->post('templateId') : $templateId;
+            $templateId ??= Yii::$app->request->post('templateId');
             $itemTemplate = Template::find()->where(['custom_pages_template.id' => $templateId])->joinWith('elements')->one();
         }
 

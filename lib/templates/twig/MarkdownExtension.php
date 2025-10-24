@@ -30,7 +30,7 @@ class MarkdownExtension extends AbstractExtension
     public function strip($text): string
     {
         // Remove images ![alt](url)
-        $text = preg_replace('/!\[.*?\]\(.*?\)/', '', $text);
+        $text = preg_replace('/!\[.*?\]\(.*?\)/', '', (string) $text);
 
         // Remove links [text](url)
         $text = preg_replace('/\[(.*?)\]\(.*?\)/', '$1', $text);

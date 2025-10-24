@@ -22,7 +22,7 @@ use Yii;
  * Dynamic attributes:
  * @property string $content
  */
-class HtmlElement extends BaseElementContent
+class HtmlElement extends BaseElementContent implements \Stringable
 {
     /**
      * @inheritdoc
@@ -65,9 +65,9 @@ class HtmlElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->purify($this->content);
+        return (string) $this->purify($this->content);
     }
 
     /**

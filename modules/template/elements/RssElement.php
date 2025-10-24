@@ -22,7 +22,7 @@ use Yii;
  * @property int $cache_time
  * @property int $limit
  */
-class RssElement extends BaseElementContent implements TemplateElementContentIterable
+class RssElement extends BaseElementContent implements TemplateElementContentIterable, \Stringable
 {
     /**
      * @inheritdoc
@@ -82,9 +82,9 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
         ];
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return Html::encode($this->getRssData()->channel->title ?: $this->url);
+        return (string) Html::encode($this->getRssData()->channel->title ?: $this->url);
     }
 
     /**
@@ -103,9 +103,7 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
 
         try {
             if ($this->cache_time > 0) {
-                return Yii::$app->cache->getOrSet(sha1(static::class . $this->url), function () {
-                    return file_get_contents($this->url);
-                }, $this->cache_time);
+                return Yii::$app->cache->getOrSet(sha1(static::class . $this->url), fn() => file_get_contents($this->url), $this->cache_time);
             }
 
             return file_get_contents($this->url);
@@ -129,7 +127,7 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
                         $this->rssData->registerXPathNamespace($prefix, $namespace);
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 $this->rssData = false;
             }
         }

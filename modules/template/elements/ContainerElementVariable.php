@@ -37,7 +37,7 @@ class ContainerElementVariable extends BaseElementVariable
         ]);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         try {
             if (!$this->elementContent->isEmpty()) {

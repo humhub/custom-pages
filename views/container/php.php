@@ -24,7 +24,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
         <div class="col-md-12">
             <?php try { ?>
                 <?= $this->renderFile($page->getPhpViewFilePath(), ['contentContainer' => $contentContainer]) ?>
-            <?php } catch (ViewNotFoundException $vnfe) { ?>
+            <?php } catch (ViewNotFoundException) { ?>
                 <?= Yii::t('CustomPagesModule.view', 'View not found') ?>
             <?php } ?>
         </div>

@@ -19,11 +19,8 @@ use humhub\modules\file\models\File;
  */
 class TemplateInstanceDuplicatorService
 {
-    private TemplateInstance $sourceTemplateInstance;
-
-    public function __construct(TemplateInstance $sourceTemplateInstance)
+    public function __construct(private readonly TemplateInstance $sourceTemplateInstance)
     {
-        $this->sourceTemplateInstance = $sourceTemplateInstance;
     }
 
     /**

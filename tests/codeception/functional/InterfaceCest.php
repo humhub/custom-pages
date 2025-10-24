@@ -25,7 +25,7 @@ class InterfaceCest
     {
         $I->wantTo('make sure users without create permission can\'t create pages');
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event): void {
             if (!$event->container && $event->type === PageType::Page) {
                 $event->addTarget(new Target([
                     'id' => 'test',

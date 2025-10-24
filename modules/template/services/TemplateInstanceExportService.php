@@ -23,15 +23,10 @@ class TemplateInstanceExportService
      * NOTE: Update it when JSON structure is changed, to avoid errors on import
      */
     public const VERSION = '1.0';
-
-    private TemplateInstance $instance;
-    private ?TemplateElement $element = null;
     private ?array $data = null;
 
-    public function __construct(TemplateInstance $instance, ?TemplateElement $element = null)
+    public function __construct(private readonly TemplateInstance $instance, private readonly ?TemplateElement $element = null)
     {
-        $this->instance = $instance;
-        $this->element = $element;
     }
 
     public static function instance(TemplateInstance $instance, ?TemplateElement $element = null): self
@@ -109,7 +104,7 @@ class TemplateInstanceExportService
         $data = [];
         foreach ($elementContents->each() as $elementContent) {
             /* @var BaseElementContent $elementContent */
-            $contentData = ['__element_type' => get_class($elementContent)];
+            $contentData = ['__element_type' => $elementContent::class];
             $contentData += $elementContent->dyn_attributes;
 
             if ($elementContent instanceof ContainerElement) {

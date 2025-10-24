@@ -14,11 +14,11 @@ use yii\db\ActiveRecord;
 class FileElementVariable extends BaseRecordElementVariable
 {
     public string $guid;
-    public ?string $name;
-    public ?string $title;
-    public ?string $mimeType;
+    public ?string $name = null;
+    public ?string $title = null;
+    public ?string $mimeType = null;
     public int $size;
-    public ?string $url;
+    public ?string $url = null;
 
     public function setRecord(?ActiveRecord $record): BaseRecordElementVariable
     {

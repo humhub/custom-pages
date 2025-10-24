@@ -47,7 +47,7 @@ $elementTypeService = new ElementTypeService();
                 <ul class="dropdown-menu" id="addElementSelect">
                     <?php foreach ($elementTypeService->getTypeInstances() as $elementType) : ?>
                         <li>
-                            <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/add-element', 'templateId' => $model->id, 'type' => get_class($elementType)]) ?>" href="#" class="dropdown-item">
+                            <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/add-element', 'templateId' => $model->id, 'type' => $elementType::class]) ?>" href="#" class="dropdown-item">
                                 <?= $elementType->getLabel() ?>
                             </a>
                         </li>

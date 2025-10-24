@@ -18,7 +18,7 @@ use Yii;
  *
  * @property-read Post|null $record
  */
-class PostElement extends BaseContentRecordElement
+class PostElement extends BaseContentRecordElement implements \Stringable
 {
     protected const RECORD_CLASS = Post::class;
 
@@ -40,9 +40,9 @@ class PostElement extends BaseContentRecordElement
         ];
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return Html::encode($this->record?->message);
+        return (string) Html::encode($this->record?->message);
     }
 
     /**

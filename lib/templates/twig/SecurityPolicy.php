@@ -15,7 +15,7 @@ use Twig\Sandbox\SecurityPolicyInterface;
 class SecurityPolicy implements SecurityPolicyInterface
 {
     protected BaseSecurityPolicy $policy;
-    private array $allowedProperties;
+    private readonly array $allowedProperties;
 
     public function __construct(array $allowedTags = [], array $allowedFilters = [], array $allowedMethods = [], array $allowedProperties = [], array $allowedFunctions = [])
     {
@@ -44,7 +44,7 @@ class SecurityPolicy implements SecurityPolicyInterface
         }
 
         if (!$allowed) {
-            $class = get_class($obj);
+            $class = $obj::class;
             throw new SecurityNotAllowedPropertyError(sprintf('Calling "%s" property on a "%s" object is not allowed.', $property, $class), $class, $property);
         }
     }

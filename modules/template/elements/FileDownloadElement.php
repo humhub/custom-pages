@@ -30,7 +30,7 @@ use yii\helpers\Url;
  * @property bool $showFileinfo
  * @property bool $showIcon
  */
-class FileDownloadElement extends BaseElementContent
+class FileDownloadElement extends BaseElementContent implements \Stringable
 {
     /**
      * @inheritdoc
@@ -123,7 +123,7 @@ class FileDownloadElement extends BaseElementContent
     /**
      * @inheritdoc
      */
-    public function __toString()
+    public function __toString(): string
     {
         $options = [];
 
@@ -140,7 +140,7 @@ class FileDownloadElement extends BaseElementContent
             'data-pjax-prevent' => '1',
         ];
 
-        $content = ($this->title) ? $this->title : $file->file_name;
+        $content = $this->title ?: $file->file_name;
         $content = Html::encode($content);
 
         $fileInfo = FileHelper::getFileInfos($file);
@@ -153,7 +153,7 @@ class FileDownloadElement extends BaseElementContent
             $content .= Html::tag('small', ' - ' . $fileInfo['size_format'], ['class' => 'file-fileInfo']);
         }
 
-        return Html::tag('a', $content, $options['htmlOptions']);
+        return (string) Html::tag('a', $content, $options['htmlOptions']);
     }
 
     /**

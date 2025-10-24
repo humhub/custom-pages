@@ -188,14 +188,14 @@ class Events
     private static function isCurrentTargetUrl(CustomPage $page): bool
     {
         if ($page->type === LinkType::ID && $page->page_content) {
-            $targetUrl = strpos($page->page_content, 'http') === 0
+            $targetUrl = str_starts_with($page->page_content, 'http')
                 ? $page->page_content
                 : 'https://domain.tld/' . trim($page->page_content, '/');
             $targetUrlPath = parse_url($targetUrl, PHP_URL_PATH) ?: '';
             $targetUrlQuery = parse_url($targetUrl, PHP_URL_QUERY) ?: '';
             $container = ContentContainerHelper::getCurrent();
             $currentContainerPath = $container
-                ? rtrim($container->getUrl(), '/')
+                ? rtrim((string) $container->getUrl(), '/')
                 : null;
             if (
                 $targetUrlPath

@@ -66,12 +66,10 @@ abstract class BaseContentRecordElement extends BaseElementContent
             return null;
         }
 
-        return Yii::$app->runtimeCache->getOrSet(self::class . $this->contentId, function () {
-            return static::RECORD_CLASS::find()
-                ->joinWith(Content::tableName())
-                ->where([Content::tableName() . '.id' => $this->contentId])
-                ->one();
-        });
+        return Yii::$app->runtimeCache->getOrSet(self::class . $this->contentId, fn() => static::RECORD_CLASS::find()
+            ->joinWith(Content::tableName())
+            ->where([Content::tableName() . '.id' => $this->contentId])
+            ->one());
     }
 
     /**

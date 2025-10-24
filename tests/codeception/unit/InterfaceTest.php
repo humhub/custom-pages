@@ -30,7 +30,7 @@ class InterfaceTest extends HumHubDbTestCase
 
         $this->service = CustomPagesService::instance(true);
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event): void {
             if ($event->container && $event->type === PageType::Page) {
                 $event->addTarget(new Target([
                     'id' => 'container',
@@ -39,7 +39,7 @@ class InterfaceTest extends HumHubDbTestCase
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event): void {
             if ($event->container && $event->type === PageType::Snippet) {
                 $event->addTarget(new Target([
                     'id' => 'containerSnippet',
@@ -49,7 +49,7 @@ class InterfaceTest extends HumHubDbTestCase
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event): void {
             if (!$event->container && $event->type === PageType::Snippet) {
                 $event->addTarget(new Target([
                     'id' => 'snippet',
@@ -59,7 +59,7 @@ class InterfaceTest extends HumHubDbTestCase
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event): void {
             if (!$event->container && $event->type === PageType::Page) {
                 $event->addTarget(new Target([
                     'id' => 'global',
@@ -69,7 +69,7 @@ class InterfaceTest extends HumHubDbTestCase
             }
         });
 
-        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event) {
+        Event::on(CustomPagesService::class, CustomPagesService::EVENT_FETCH_TARGETS, function (CustomPagesTargetEvent $event): void {
             if (!$event->container && $event->type === PageType::Page) {
                 $event->addTarget(new Target([
                     'id' => 'global2',
@@ -244,9 +244,7 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $targets = $this->service->getTargets(PageType::Page);
 
-        $targetIds = array_map(function ($target) {
-            return $target['id'];
-        }, $targets);
+        $targetIds = array_map(fn($target) => $target['id'], $targets);
 
         $this->assertContains('global', $targetIds);
         $this->assertNotContains('container', $targetIds);
@@ -258,9 +256,7 @@ class InterfaceTest extends HumHubDbTestCase
     {
         $targets = $this->service->getTargets(PageType::Page, Space::findOne(['id' => 1]));
 
-        $targetIds = array_map(function ($target) {
-            return $target['id'];
-        }, $targets);
+        $targetIds = array_map(fn($target) => $target['id'], $targets);
 
         $this->assertContains('container', $targetIds);
         $this->assertNotContains('global', $targetIds);

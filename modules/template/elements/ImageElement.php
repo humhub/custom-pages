@@ -76,13 +76,13 @@ class ImageElement extends FileElement
     /**
      * @inheritdoc
      */
-    public function __toString()
+    public function __toString(): string
     {
         if (!$this->hasFile()) {
             return '';
         }
 
-        return Html::tag('img', '', [
+        return (string) Html::tag('img', '', [
             'src' => $this->getFile()->getUrl(),
             'alt' => $this->purify($this->alt),
             'height' => $this->purify($this->definition->height),

@@ -13,7 +13,7 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 <div class="<?= Html::encode($cssClass) ?>">
     <?php try { ?>
         <?= $this->renderFile($page->getPhpViewFilePath()) ?>
-    <?php } catch(ViewNotFoundException $vnfe) { ?>
+    <?php } catch(ViewNotFoundException) { ?>
         <?= Yii::t('CustomPagesModule.view', 'View not found') ?>
     <?php } ?>
 </div>

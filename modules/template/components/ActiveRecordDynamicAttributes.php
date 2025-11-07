@@ -45,7 +45,7 @@ abstract class ActiveRecordDynamicAttributes extends ActiveRecord
         $value = parent::__get($name);
 
         if ($name === 'dyn_attributes' && !is_array($value)) {
-            $value = empty($value) ? [] : json_decode($value, true);
+            $value = empty($value) ? [] : json_decode((string) $value, true);
             $this->setAttribute($name, $value);
         }
 

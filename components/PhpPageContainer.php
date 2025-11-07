@@ -102,7 +102,7 @@ trait PhpPageContainer
 
         $result = [];
         foreach ($files as $file) {
-            $baseName = basename($file, '.php');
+            $baseName = basename((string) $file, '.php');
             $result[$baseName] = ($path) ? $file : $baseName;
         }
 

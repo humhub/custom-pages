@@ -33,21 +33,21 @@ class MarkdownExtension extends AbstractExtension
         $text = preg_replace('/!\[.*?\]\(.*?\)/', '', (string) $text);
 
         // Remove links [text](url)
-        $text = preg_replace('/\[(.*?)\]\(.*?\)/', '$1', $text);
+        $text = preg_replace('/\[(.*?)\]\(.*?\)/', '$1', (string) $text);
 
         // Remove headers #, ## и т.д.
-        $text = preg_replace('/^#{1,6}\s*/m', '', $text);
+        $text = preg_replace('/^#{1,6}\s*/m', '', (string) $text);
 
         // Remove text formats **bold**, *italic* and etc.
-        $text = preg_replace('/(\*\*|__|~~)(.*?)\1/', '$2', $text);
-        $text = preg_replace('/(\*|_|~)(.*?)\1/', '$2', $text);
-        $text = preg_replace('/`{1,3}(.*?)`{1,3}/', '$1', $text);
+        $text = preg_replace('/(\*\*|__|~~)(.*?)\1/', '$2', (string) $text);
+        $text = preg_replace('/(\*|_|~)(.*?)\1/', '$2', (string) $text);
+        $text = preg_replace('/`{1,3}(.*?)`{1,3}/', '$1', (string) $text);
 
         // Remove code blocks
-        $text = preg_replace('/```[\s\S]*?```/', '', $text);
+        $text = preg_replace('/```[\s\S]*?```/', '', (string) $text);
 
         // Remove html tags to be sure
-        $text = strip_tags($text);
+        $text = strip_tags((string) $text);
 
         return trim($text);
     }

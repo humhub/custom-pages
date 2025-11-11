@@ -75,6 +75,10 @@ $contentType = $page->getContentType();
             <?php endif; ?>
         <?php endif; ?>
 
+        <?php if ($page->isAllowedField('hide_menu')) : ?>
+            <?= $form->field($page, 'hide_menu')->checkbox() ?>
+        <?php endif; ?>
+
         <?= $form->endCollapsibleFields(); ?>
 
         <?php if (!$page->isSnippet()) : ?>
@@ -89,7 +93,7 @@ $contentType = $page->getContentType();
             <div class="form-text">
                 <?= Yii::t(
                     'CustomPagesModule.view',
-                    'The abstract will be used as stream entry content to promote the actual page. 
+                    'The abstract will be used as stream entry content to promote the actual page.
                         If no abstract is given or the page is only visible for admins, no stream entry will be created.',
                 ) ?>
             </div>

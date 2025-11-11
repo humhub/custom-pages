@@ -56,6 +56,7 @@ use Yii;
  * @property string $cssClass
  * @property string $url
  * @property string $abstract
+ * @property bool $hide_menu
  *
  * @property-read VisibilityService $visibilityService
  * @property-read SettingService $settingService
@@ -158,6 +159,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
             'visibility_groups' => Yii::t('CustomPagesModule.model', 'Visible to Group Members'),
             'visibility_languages' => Yii::t('CustomPagesModule.model', 'Language-Based Visibility'),
             'editors' => Yii::t('CustomPagesModule.model', 'Editors'),
+            'hide_menu' => Yii::t('CustomPagesModule.model', 'Hide in Navigation'),
         ];
 
         if ($this->isSnippet()) {
@@ -271,6 +273,11 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
 
             if ($target->isAllowedField('url')) {
                 $rules[] = [['url'], 'string'];
+            }
+
+            if ($target->isAllowedField('hide_menu')
+                && $this->hasTarget(PageType::TARGET_START_PAGE)) {
+                $rules[] = [['hide_menu'], 'boolean'];
             }
         }
 

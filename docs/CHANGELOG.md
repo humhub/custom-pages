@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.12.8 (Unreleased)
--------------------------
+1.12.8 (November 11, 2025)
+--------------------------
 - Enh #482: New option "Hide in Navigation" for Start Page
 
 1.12.7 (October 23, 2025)

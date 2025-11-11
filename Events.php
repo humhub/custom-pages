@@ -150,7 +150,8 @@ class Events
         try {
             Yii::$app->moduleManager->getModule('custom_pages')->checkOldGlobalContent();
 
-            if ($page = CustomPagesService::instance()->getStartPage()) {
+            if (($page = CustomPagesService::instance()->getStartPage())
+                && !$page->hide_menu) {
                 $menu->addEntry(new MenuLink([
                     'id' => 'custom-page-' . $page->id,
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),

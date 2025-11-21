@@ -98,7 +98,7 @@ class TextElement extends BaseElementContent implements \Stringable
 
     public function __toString(): string
     {
-        return (string) (string) $this->inline_text ? $this->purify($this->content) : Html::encode($this->content);
+        return (string) ($this->inline_text ? $this->purify($this->content) : Html::encode($this->content));
     }
 
     /**

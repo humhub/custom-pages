@@ -2,6 +2,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\services;
 
+use humhub\modules\custom_pages\modules\template\elements\ActivitiesElement;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\FileDownloadElement;
@@ -60,6 +61,7 @@ final class ElementTypeService extends Component
         UsersElement::class,
         SpacesElement::class,
         PostElement::class,
+        ActivitiesElement::class,
     ];
 
     private array $types = [];

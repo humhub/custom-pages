@@ -71,7 +71,16 @@
 | `content.updatedAt`                | String                      | Format: 2025-01-02 16:45:00                                                     |
 |                                    |                             |                                                                                 |
 | **Post Element**                   |                             |                                                                                 |
-| `post `                            | String > Content            | Text of the Post                                                                |
+| `post`                             | String > Content            | Text of the Post                                                                |
+|                                    |                             |                                                                                 |
+| **Activities Element**             |                             |                                                                                 |
+| `activities`                       | Activity[]                  | Iterable of selected Activities                                                 |
+|                                    |                             |                                                                                 |
+| **Activity Element**               |                             |                                                                                 |
+| `activity`                         | Activity > Content          |                                                                                 |
+| `activity.title`                   | String                      | Activity title                                                                  |
+| `activity.message`                 | String                      | Message of the activity                                                         |
+| `activity.html`                    | String                      | Full html of the activity                                                       |
 |                                    |                             |                                                                                 |
 | **RSS Element**                    |                             |                                                                                 |
 | `rss`                              | Iterable                    |                                                                                 |

@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.12.9 (Unreleased)
---------------------------
+1.12.9 (December 1, 2025)
+-------------------------
 - Enh #488: New template element "Activities"
 
 1.12.8 (November 11, 2025)

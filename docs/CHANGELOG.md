@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.12.9 (Unreleased)
+--------------------------
+- Enh #488: New template element "Activities"
+
 1.12.8 (November 11, 2025)
 --------------------------
 - Enh #482: New option "Hide in Navigation" for Start Page

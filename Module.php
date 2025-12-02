@@ -12,9 +12,9 @@ use humhub\components\ActiveRecord;
 use humhub\libs\ProfileImage;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
-use humhub\modules\content\models\Content;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\elements\ContainerParentVariable;
 use humhub\modules\custom_pages\modules\template\models\AssetVariable;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementVariable;
 use humhub\modules\custom_pages\modules\template\services\TemplateImportService;
@@ -67,6 +67,9 @@ class Module extends ContentContainerModule
             ProfileImage::class => [
                 'getUrl',
             ],
+            ContainerParentVariable::class => [
+                '__toString',
+            ],
         ],
         'allowedProperties' => [
             BaseElementVariable::class => '*',
@@ -77,6 +80,7 @@ class Module extends ContentContainerModule
             SimpleXMLElement::class => '*',
             ActiveRecord::class => '*',
             ProfileImage::class => '*',
+            ContainerParentVariable::class => '*',
         ],
     ];
 

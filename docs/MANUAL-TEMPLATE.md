@@ -25,9 +25,14 @@
 | `image.height`                     | String                      | Image height                                                                    |
 | `image.style`                      | String                      | Image style                                                                     |
 |                                    |                             |                                                                                 |
-| **Container Element**              |                             | The                                                                             |
+| **Container Element**              |                             |                                                                                 |
 | `container`                        | String                      | Render added items of the container element                                     |
 | `container.editWrapperAttributes`  | String                      | Html attributes for edit mode. `<div {{ container.editWrapperAttributes }}>`    |
+|                                    |                             |                                                                                 |
+| **Parent Container Element**       |                             | Virtual parent element                                                          |
+| `parent`                           | String                      | Container title                                                                 |
+| `parent.elementName`               | String                      | Access to any element of the parent container by element name                   |
+| `parent.elementName.property`      | String                      | Property or method of the parent element name                                   |
 |                                    |                             |                                                                                 |
 | **Content Container Meta Element** |                             | Base for `User` or `Space` Elements                                             |
 | `contentcontainer.guid`            | String                      | Container unique ID, e.g. 5b12f367-744b-4d2b-9611-c8b4ff92b6e5                  |

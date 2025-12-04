@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.12.10 (Unreleased)
+-------------------------
+- Enh #489: New reserved element "parent"
+
 1.12.9 (December 1, 2025)
 -------------------------
 - Enh #488: New template element "Activities"

@@ -63,8 +63,17 @@ class TemplateElement extends ActiveRecord
                 ),
             ],
             ['name', 'uniqueTemplateElementName', 'on' => ['create']],
+            ['name', 'validateReservedName'],
             [['template_id'], 'integer'],
         ];
+    }
+
+    public function validateReservedName()
+    {
+        $reservedNames = ['assets', 'parent'];
+        if (in_array($this->name, $reservedNames)) {
+            $this->addError('name', Yii::t('CustomPagesModule.model', 'The element name is reserved, please choose another one.'));
+        }
     }
 
     public function scenarios()

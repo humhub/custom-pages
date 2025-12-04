@@ -16,6 +16,7 @@ use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerDefinition;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
+use humhub\modules\custom_pages\modules\template\elements\ContainerParentVariable;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
 use humhub\modules\custom_pages\permissions\ManagePages;
@@ -311,6 +312,10 @@ class Template extends ActiveRecord
         }
 
         $content['assets'] = new AssetVariable();
+
+        if ($templateInstance && $templateInstance->isContainer()) {
+            $content['parent'] = new ContainerParentVariable($templateInstance);
+        }
 
         $engine = TemplateEngineFactory::create($this->engine);
 

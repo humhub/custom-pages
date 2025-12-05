@@ -41,7 +41,7 @@ class ActivityElement extends BaseContentRecordElement implements \Stringable
 
     public function __toString(): string
     {
-        return Html::encode($this->record?->getActivityBaseClass()?->getTitle() ?: $this->contentId);
+        return (string) Html::encode($this->record?->getActivityBaseClass()?->getTitle() ?: $this->contentId);
     }
 
     /**

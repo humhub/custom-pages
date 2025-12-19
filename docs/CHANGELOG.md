@@ -4,6 +4,7 @@ Changelog
 1.12.10 (Unreleased)
 -------------------------
 - Enh #489: New reserved element "parent"
+- Enh #492: New filter visibility filter for Mobile App users
 
 1.12.9 (December 1, 2025)
 -------------------------

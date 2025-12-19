@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\services;
 
 use humhub\helpers\ControllerHelper;
+use humhub\helpers\DeviceDetectorHelper;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
@@ -90,6 +91,16 @@ class VisibilityService
         return $this->is(CustomPage::VISIBILITY_CUSTOM);
     }
 
+    /**
+     * Check the page is visible only for mobile app users
+     *
+     * @return bool
+     */
+    public function isMobile(): bool
+    {
+        return $this->is(CustomPage::VISIBILITY_MOBILE);
+    }
+
     public function initDefault(): void
     {
         if ($this->page->visibility === null) {
@@ -128,6 +139,7 @@ class VisibilityService
         }
 
         $options[CustomPage::VISIBILITY_CUSTOM] = Yii::t('CustomPagesModule.base', 'Custom');
+        $options[CustomPage::VISIBILITY_MOBILE] = Yii::t('CustomPagesModule.base', 'Mobile App Users');
 
         return $options;
     }
@@ -219,6 +231,10 @@ class VisibilityService
             // Check only Global Page for restriction by the user's group
             $userGroupIds = $user->getGroupUsers()->select('group_id')->column();
             return $this->page->settingService->has('group', $userGroupIds);
+        }
+
+        if ($this->isMobile()) {
+            return DeviceDetectorHelper::isAppRequest();
         }
 
         return $this->page->content->canView($user);

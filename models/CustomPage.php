@@ -73,6 +73,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
     public const VISIBILITY_PRIVATE = 0; // Logged-In Users | Space Members only
     public const VISIBILITY_ADMIN = 3; // Administrative Users
     public const VISIBILITY_CUSTOM = 5; // Custom
+    public const VISIBILITY_MOBILE = 6; // Mobile App
 
     /**
      * @inheritdoc
@@ -195,7 +196,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
             [['type'], 'integer'],
             [['target'], 'validateTarget'],
             [['type'], 'validateContentType'],
-            [['visibility'], 'integer', 'min' => self::VISIBILITY_PRIVATE, 'max' => self::VISIBILITY_CUSTOM],
+            [['visibility'], 'integer', 'min' => self::VISIBILITY_PRIVATE, 'max' => self::VISIBILITY_MOBILE],
             [['visibility_groups', 'visibility_languages', 'editors'], 'safe'],
             [['title', 'target'], 'string', 'max' => 255],
         ];

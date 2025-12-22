@@ -2,6 +2,11 @@
 
 use humhub\helpers\Html;
 use humhub\modules\custom_pages\helpers\PageType;
+use humhub\modules\custom_pages\models\CustomPage;
+
+/* @var CustomPage $page */
+/* @var string $navigationClass */
+/* @var string $url */
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 $margin = $navigationClass == PageType::TARGET_TOP_MENU ? -15 : 0;
@@ -15,6 +20,7 @@ $margin = $navigationClass == PageType::TARGET_TOP_MENU ? -15 : 0;
 </style>
 
 <iframe class="<?= Html::encode($cssClass) ?>" id="iframepage" <?= $page->iframe_attrs ?? '' ?>
+        aria-label="<?= Html::encode($page->title) ?>"
         style="width:100%;height: 100%" src="<?= Html::encode($url) ?>"></iframe>
 
 <?= Html::script(<<<JS

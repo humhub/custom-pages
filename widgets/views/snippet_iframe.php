@@ -3,24 +3,30 @@
 use humhub\helpers\Html;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\widgets\SnippetContent;
+use humhub\widgets\bootstrap\Link;
 
 /* @var $model CustomPage */
 /* @var $canEdit bool */
 
 $iframeId = 'iframesnippet-' . $model->id;
 
-$navigation = (!$canEdit) ? [] : [
-    '<a href="' . $model->getEditUrl() . '"><i class="fa fa-pencil"></i>' . Yii::t('CustomPagesModule.base', 'Edit') . '</a>'
+$navigation = !$canEdit ? [] : [
+    Link::to(Yii::t('CustomPagesModule.base', 'Edit'), $model->getEditUrl())
+        ->icon('pencil')
+        ->cssClass(['btn', 'dropdown-item']),
 ];
 ?>
 
-<?=
-SnippetContent::widget([
+<?= SnippetContent::widget([
     'model' => $model,
-    'content' => '<iframe id="' . $iframeId . '" style="border:0px;width:100%;" src="' . \yii\helpers\Html::encode($model->getPageContent()) . '"' . ($model->iframe_attrs ? ' ' . $model->iframe_attrs : '') . '></iframe>',
-    'navigation' => $navigation
-]);
-?>
+    'content' => '<iframe id="' . $iframeId . '"'
+            . ' style="border:0px;width:100%;"'
+            . ' src="' . Html::encode($model->getPageContent()) . '"'
+            . ' aria-label="' . Html::encode($model->title) . '"'
+            . ($model->iframe_attrs ? ' ' . $model->iframe_attrs : '')
+        . '></iframe>',
+    'navigation' => $navigation,
+]) ?>
 
 <style>
     #<?= $iframeId ?> {

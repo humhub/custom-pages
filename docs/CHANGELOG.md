@@ -5,6 +5,7 @@ Changelog
 -------------------------
 - Enh #489: New reserved element "parent"
 - Enh #493: Add attribute "aria-label" to iframes
+- Fix #494: Fix double section "Advanced" of the template element "File Download"
 - Enh #495: Modal window for select new element type
 
 1.12.9 (December 1, 2025)

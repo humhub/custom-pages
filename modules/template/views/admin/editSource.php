@@ -12,7 +12,7 @@ use humhub\modules\custom_pages\modules\template\services\ElementTypeService;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentTable;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
-use yii\helpers\Url;
+use humhub\widgets\modal\ModalButton;
 
 SourceEditorAsset::register($this);
 
@@ -38,22 +38,12 @@ $elementTypeService = new ElementTypeService();
 
         <div class="clearfix">
             <?php if ($model->canEdit()) : ?>
-            <?= Button::save()->submit() ?>
-            <div class="dropdown float-end">
-                <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <i aria-hidden="true" class="fa fa-plus"></i>
-                    <?= Yii::t('CustomPagesModule.template', 'Add Element'); ?>
-                </button>
-                <ul class="dropdown-menu" id="addElementSelect">
-                    <?php foreach ($elementTypeService->getTypeInstances() as $elementType) : ?>
-                        <li>
-                            <a data-action-click="ui.modal.load" data-action-data-type="json" data-action-url="<?= Url::to(['/custom_pages/template/admin/add-element', 'templateId' => $model->id, 'type' => $elementType::class]) ?>" href="#" class="dropdown-item">
-                                <?= $elementType->getLabel() ?>
-                            </a>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
+                <?= Button::save()->submit() ?>
+                <?= ModalButton::success(Yii::t('CustomPagesModule.template', 'Add Element'))
+                    ->icon('plus')
+                    ->load(['/custom_pages/template/admin/select-element-type', 'templateId' => $model->id])
+                    ->right()
+                    ->loader(false) ?>
             <?php endif; ?>
 
             <?php if (!$model->isNewRecord && $model->is_default) : ?>

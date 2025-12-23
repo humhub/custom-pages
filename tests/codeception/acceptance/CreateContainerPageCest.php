@@ -28,7 +28,9 @@ class CreateContainerPageCest
 
         $I->fillField('CustomPage[title]', 'Space Markdown Page');
         $I->fillField('#custompage-page_content .humhub-ui-richtext', 'Space Test Content');
-        $I->jsClick('.form-collapsible-fields.closed label');
+        $I->jsClick('.form-collapsible-fields-label.collapsed label');
+        $I->scrollToBottom();
+        $I->waitForElementVisible('#custompage-sort_order');
         $I->fillField('CustomPage[sort_order]', '400');
         $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
 

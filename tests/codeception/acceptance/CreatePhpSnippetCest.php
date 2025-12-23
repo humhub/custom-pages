@@ -48,7 +48,9 @@ class CreatePhpSnippetCest
 
         $I->fillField('CustomPage[title]', 'PHP snippet');
         $I->selectOption('CustomPage[page_content]', ['value' => 'test_snippet']);
-        $I->jsClick('.form-collapsible-fields.closed label');
+        $I->jsClick('.form-collapsible-fields-label.collapsed label');
+        $I->scrollToBottom();
+        $I->waitForElementVisible('#custompage-sort_order');
         $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
 
         $I->scrollToBottom();

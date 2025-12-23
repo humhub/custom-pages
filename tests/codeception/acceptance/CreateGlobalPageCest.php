@@ -26,7 +26,9 @@ class CreateGlobalPageCest
 
         $I->fillField('CustomPage[title]', 'Test title');
         $I->fillField('#custompage-page_content .humhub-ui-richtext', 'Test Content');
-        $I->jsClick('.form-collapsible-fields.closed label');
+        $I->jsClick('.form-collapsible-fields-label.collapsed label');
+        $I->scrollToBottom();
+        $I->waitForElementVisible('#custompage-sort_order');
         $I->fillField('CustomPage[sort_order]', '400');
         $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
 
@@ -63,7 +65,9 @@ class CreateGlobalPageCest
 
         $I->fillField('CustomPage[title]', 'Test link');
         $I->fillField('CustomPage[page_content]', '/dashboard/dashboard');
-        $I->jsClick('.form-collapsible-fields.closed label');
+        $I->jsClick('.form-collapsible-fields-label.collapsed label');
+        $I->scrollToBottom();
+        $I->waitForElementVisible('#custompage-sort_order');
         $I->fillField('CustomPage[sort_order]', '400');
         $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
 
@@ -105,16 +109,20 @@ class CreateGlobalPageCest
 
         $I->fillField('CustomPage[title]', 'Custom people page');
         $I->fillField('#custompage-page_content .humhub-ui-richtext', 'Custom people page content');
-        $I->jsClick('.form-collapsible-fields.closed label');
+        $I->jsClick('.form-collapsible-fields-label.collapsed label');
+        $I->scrollToBottom();
+        $I->waitForElementVisible('#custompage-sort_order');
         $I->fillField('CustomPage[sort_order]', '200');
         $I->selectOption('CustomPage[icon]', ['value' => 'fa-anchor']);
 
         $I->scrollToBottom();
         $I->wait(1);
         $I->click('Create');
+        $I->scrollToBottom();
+        $I->wait(1);
         $I->waitForText('People Buttons');
         $I->see('Custom people page');
-        $I->amOnRoute('/people');
+        $I->amOnRoute(['/people']);
         $I->waitForElementVisible('.container-people .panel-heading .fa-anchor');
         $I->expectTo('see my new page in the people heading buttons');
 

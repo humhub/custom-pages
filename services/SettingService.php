@@ -20,24 +20,36 @@ class SettingService
     {
     }
 
+    private function getValuesQuery(string $name): Query
+    {
+        return (new Query())
+            ->select('value')
+            ->from(self::TABLE)
+            ->where(['page_id' => $this->page->id])
+            ->andWhere(['name' => $name]);
+    }
+
+    /**
+     * Get value of the page setting by name
+     *
+     * @param string $name
+     * @param mixed $default
+     * @return string|null
+     */
+    public function get(string $name, $default = null): ?string
+    {
+        return $this->page->isNewRecord ? $default : $this->getValuesQuery($name)->scalar();
+    }
+
     /**
      * Get all values of the page setting by name
      *
      * @param string $name
      * @return array
      */
-    public function getAll(string $name): array
+    public function getValues(string $name): array
     {
-        if ($this->page->isNewRecord) {
-            return [];
-        }
-
-        return (new Query())
-            ->select('value')
-            ->from(self::TABLE)
-            ->where(['page_id' => $this->page->id])
-            ->andWhere(['name' => $name])
-            ->column();
+        return $this->page->isNewRecord ? [] : $this->getValuesQuery($name)->column();
     }
 
     /**
@@ -95,7 +107,7 @@ class SettingService
      */
     public function has(string $name, $checkValues, bool $returnOnEmpty = true): bool
     {
-        $storedValues = $this->getAll($name);
+        $storedValues = $this->getValues($name);
         if ($storedValues === []) {
             return $returnOnEmpty;
         }
@@ -113,5 +125,23 @@ class SettingService
         }
 
         return false;
+    }
+
+    public function initAll(): void
+    {
+        $this->page->editors = $this->getValues('editor');
+        $this->page->visibilityService->initSettings();
+    }
+
+    public function updateAll(): void
+    {
+        $this->update('editor', $this->page->editors);
+        $this->page->visibilityService->updateSettings();
+    }
+
+    public function copyAll(CustomPage $sourcePage): void
+    {
+        $this->page->editors = $sourcePage->editors;
+        $this->page->visibilityService->copySettings($sourcePage);
     }
 }

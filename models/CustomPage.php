@@ -73,7 +73,6 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
     public const VISIBILITY_PRIVATE = 0; // Logged-In Users | Space Members only
     public const VISIBILITY_ADMIN = 3; // Administrative Users
     public const VISIBILITY_CUSTOM = 5; // Custom
-    public const VISIBILITY_MOBILE = 6; // Mobile App
 
     /**
      * @inheritdoc
@@ -93,12 +92,17 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
     /**
      * @var array Groups for custom visibility restriction
      */
-    public $visibility_groups;
+    public $visibilityGroups;
 
     /**
      * @var array Languages for custom visibility restriction
      */
-    public $visibility_languages;
+    public $visibilityLanguages;
+
+    /**
+     * @var bool True when the page is visible only for mobile app users
+     */
+    public $visibilityMobileApp;
 
     private ?VisibilityService $_visibilityService = null;
     private ?SettingService $_settingService = null;
@@ -157,8 +161,9 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
             'targetUrl' => Yii::t('CustomPagesModule.base', 'Target Url'),
             'templateId' => Yii::t('CustomPagesModule.base', 'Template Layout'),
             'visibility' => Yii::t('CustomPagesModule.model', 'Visibility'),
-            'visibility_groups' => Yii::t('CustomPagesModule.model', 'Visible to Group Members'),
-            'visibility_languages' => Yii::t('CustomPagesModule.model', 'Language-Based Visibility'),
+            'visibilityGroups' => Yii::t('CustomPagesModule.model', 'Visible to Group Members'),
+            'visibilityLanguages' => Yii::t('CustomPagesModule.model', 'Language-Based Visibility'),
+            'visibilityMobileApp' => Yii::t('CustomPagesModule.model', 'Mobile App Users'),
             'editors' => Yii::t('CustomPagesModule.model', 'Editors'),
             'hide_menu' => Yii::t('CustomPagesModule.model', 'Hide in Navigation'),
         ];
@@ -196,8 +201,9 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
             [['type'], 'integer'],
             [['target'], 'validateTarget'],
             [['type'], 'validateContentType'],
-            [['visibility'], 'integer', 'min' => self::VISIBILITY_PRIVATE, 'max' => self::VISIBILITY_MOBILE],
-            [['visibility_groups', 'visibility_languages', 'editors'], 'safe'],
+            [['visibility'], 'integer', 'min' => self::VISIBILITY_PRIVATE, 'max' => self::VISIBILITY_CUSTOM],
+            [['visibilityGroups', 'visibilityLanguages', 'editors'], 'safe'],
+            [['visibilityMobileApp'], 'boolean'],
             [['title', 'target'], 'string', 'max' => 255],
         ];
 
@@ -307,7 +313,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
     {
         parent::afterFind();
 
-        $this->visibilityService->loadAdditionalOptions();
+        $this->settingService->initAll();
     }
 
     /**
@@ -335,7 +341,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
             RichText::postProcess($this->abstract, $this);
         }
 
-        $this->visibilityService->updateAdditionalOptions();
+        $this->settingService->updateAll();
     }
 
     /**

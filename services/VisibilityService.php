@@ -96,9 +96,9 @@ class VisibilityService
      *
      * @return bool
      */
-    public function isMobile(): bool
+    public function isMobileApp(): bool
     {
-        return $this->is(CustomPage::VISIBILITY_MOBILE);
+        return $this->page->visibilityMobileApp;
     }
 
     public function initDefault(): void
@@ -139,7 +139,6 @@ class VisibilityService
         }
 
         $options[CustomPage::VISIBILITY_CUSTOM] = Yii::t('CustomPagesModule.base', 'Custom');
-        $options[CustomPage::VISIBILITY_MOBILE] = Yii::t('CustomPagesModule.base', 'Mobile App Users');
 
         return $options;
     }
@@ -166,24 +165,31 @@ class VisibilityService
         $this->page->content->hidden = $this->isAdmin() || !$this->page->hasAbstract();
     }
 
-    public function loadAdditionalOptions(): void
+    public function initSettings(): void
     {
         if ($this->isCustom()) {
-            $this->page->visibility_groups = $this->page->settingService->getAll('group');
-            $this->page->visibility_languages = $this->page->settingService->getAll('language');
+            $this->page->visibilityGroups = $this->page->settingService->getValues('group');
+            $this->page->visibilityLanguages = $this->page->settingService->getValues('language');
         }
 
-        $this->page->editors = $this->page->settingService->getAll('editor');
+        $this->page->visibilityMobileApp = (bool) $this->page->settingService->get('mobileApp', false);
     }
 
-    public function updateAdditionalOptions(): void
+    public function updateSettings(): void
     {
         if ($this->isCustom()) {
-            $this->page->settingService->update('group', $this->page->visibility_groups);
-            $this->page->settingService->update('language', $this->page->visibility_languages);
+            $this->page->settingService->update('group', $this->page->visibilityGroups);
+            $this->page->settingService->update('language', $this->page->visibilityLanguages);
         }
 
-        $this->page->settingService->update('editor', $this->page->editors);
+        $this->page->settingService->update('mobileApp', $this->page->visibilityMobileApp);
+    }
+
+    public function copySettings(CustomPage $sourcePage): void
+    {
+        $this->page->visibilityGroups = $sourcePage->visibilityGroups;
+        $this->page->visibilityLanguages = $sourcePage->visibilityLanguages;
+        $this->page->visibilityMobileApp = $sourcePage->visibilityMobileApp;
     }
 
     /**
@@ -202,6 +208,11 @@ class VisibilityService
 
         if ($this->isAdmin()) {
             return self::canViewAdminOnlyContent($this->page->content->container);
+        }
+
+        if (($this->isMobileApp() && !DeviceDetectorHelper::isAppRequest())
+            || !$this->isMobileApp() && DeviceDetectorHelper::isAppRequest()) {
+            return false;
         }
 
         if ($this->isGuest()) {
@@ -231,10 +242,6 @@ class VisibilityService
             // Check only Global Page for restriction by the user's group
             $userGroupIds = $user->getGroupUsers()->select('group_id')->column();
             return $this->page->settingService->has('group', $userGroupIds);
-        }
-
-        if ($this->isMobile()) {
-            return DeviceDetectorHelper::isAppRequest();
         }
 
         return $this->page->content->canView($user);

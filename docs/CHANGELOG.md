@@ -6,6 +6,7 @@ Changelog
 - Enh #489: New reserved element "parent"
 - Enh #493: Add attribute "aria-label" to iframes
 - Fix #494: Fix double section "Advanced" of the template element "File Download"
+- Fix #497: Fix assets variable after clearing assets folder
 
 1.12.9 (December 1, 2025)
 -------------------------

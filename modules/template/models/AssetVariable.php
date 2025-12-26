@@ -18,13 +18,7 @@ class AssetVariable implements \ArrayAccess, \Stringable
 
     public function get($name)
     {
-        $path = '/' . $name;
-
-        $module = $this->getModule();
-        if ($module->isPublished($path)) {
-            return $this->getModule()->getPublishedUrl($path);
-        }
-        return '';
+        return $this->getModule()->getPublishedUrl('/' . $name);
     }
 
     private function getModule()

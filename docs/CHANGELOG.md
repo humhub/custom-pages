@@ -4,6 +4,7 @@ Changelog
 1.12.10 (Unreleased)
 -------------------------
 - Enh #489: New reserved element "parent"
+- Enh #492: New filter visibility filter for Mobile App users
 - Enh #493: Add attribute "aria-label" to iframes
 - Fix #494: Fix double section "Advanced" of the template element "File Download"
 - Fix #497: Fix assets variable after clearing assets folder

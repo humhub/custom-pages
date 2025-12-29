@@ -3,6 +3,10 @@
 namespace custom_pages\acceptance\template;
 
 use custom_pages\AcceptanceTester;
+use humhub\modules\custom_pages\modules\template\elements\FileElement;
+use humhub\modules\custom_pages\modules\template\elements\HtmlElement;
+use humhub\modules\custom_pages\modules\template\elements\ImageElement;
+use humhub\modules\custom_pages\modules\template\elements\TextElement;
 
 class CreateTemplatePageCest
 {
@@ -28,7 +32,7 @@ class CreateTemplatePageCest
         $I->waitForElementVisible('.CodeMirror');
 
         $I->amGoingTo('add a text element');
-        $this->clickAddElement($I, 'Text');
+        $this->clickAddElement($I, TextElement::class);
         $I->expectTo('see the add text element view');
         $I->fillField('TemplateElement[name]', 'text');
         $I->fillField('TextElement[content]', 'This is my test text!');
@@ -38,14 +42,14 @@ class CreateTemplatePageCest
         $I->seeInField('#template-form-source', '{{ text }}');
 
         $I->amGoingTo('add a html element');
-        $this->clickAddElement($I, 'Html');
+        $this->clickAddElement($I, HtmlElement::class);
         $I->fillField('TemplateElement[name]', 'html');
         $I->jsFillField('HtmlElement[content]', '<p>Html Test</p>');
         $I->click('.btn-primary', '#globalModal');
         $I->waitForElementNotVisible('#globalModal');
 
         $I->amGoingTo('add a image element');
-        $this->clickAddElement($I, 'Image');
+        $this->clickAddElement($I, ImageElement::class);
         $I->fillField('TemplateElement[name]', 'tmplimage');
         $I->attachFile('.fileinput-button input[type=file]', 'test.jpg');
         $I->waitForElementVisible('.file-preview-item');
@@ -59,7 +63,7 @@ class CreateTemplatePageCest
         $I->waitForElementNotVisible('#globalModal');
 
         $I->amGoingTo('add a file element');
-        $this->clickAddElement($I, 'File');
+        $this->clickAddElement($I, FileElement::class);
         $I->fillField('TemplateElement[name]', 'file');
 
         $I->attachFile('files[]', 'test.jpg');
@@ -81,8 +85,9 @@ class CreateTemplatePageCest
     private function clickAddElement(AcceptanceTester $I, $type)
     {
         $I->click('Add Element');
-        $I->wait(1);
-        $I->click($type);
+        $I->waitForText('Select new element type');
+        $I->checkOption('input[type="radio"][value="' . addslashes($type) . '"]');
+        $I->click('Next');
         $I->waitForElementVisible('#templateelement-name');
     }
 }

@@ -6,6 +6,7 @@ Changelog
 - Enh #489: New reserved element "parent"
 - Enh #493: Add attribute "aria-label" to iframes
 - Fix #494: Fix double section "Advanced" of the template element "File Download"
+- Enh #495: Modal window for select new element type
 - Fix #496: Fix editor buttons visibility after exiting from edit mode
 - Fix #497: Fix assets variable after clearing assets folder
 

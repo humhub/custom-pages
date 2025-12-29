@@ -256,6 +256,20 @@ class AdminController extends Controller
         ];
     }
 
+
+    /**
+     * Used to select a type of new element to a template.
+     *
+     * @param int $templateId
+     * @return string
+     */
+    public function actionSelectElementType(int $templateId)
+    {
+        return $this->renderAjax('selectElementType', [
+            'templateId' => $templateId,
+        ]);
+    }
+
     /**
      * Used to add elements to a template.
      *

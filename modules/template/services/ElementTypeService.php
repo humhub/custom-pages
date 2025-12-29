@@ -80,15 +80,21 @@ final class ElementTypeService extends Component
     }
 
     /**
+     * @param string|null $group 'default', 'module', null - 'all'
      * @return BaseElementContent[]
      */
-    public function getTypeInstances(): array
+    public function getTypeInstances(?string $group = null): array
     {
         $instances = [];
+
         foreach ($this->types as $type) {
-            $instances[] = new $type();
+            if ($group === null
+                || ($group === 'default' && in_array($type, self::DEFAULT_TYPES))
+                || ($group === 'module' && !in_array($type, self::DEFAULT_TYPES))) {
+                $instances[] = new $type();
+            }
         }
+
         return $instances;
     }
-
 }

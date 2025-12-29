@@ -35,7 +35,7 @@ use humhub\widgets\bootstrap\Link;
                 <?= Link::to(
                     Yii::t('CustomPagesModule.view', 'Exit Edit Mode'),
                     Url::toViewPage($page, $container),
-                )->cssClass('dropdown-item') ?>
+                )->cssClass('dropdown-item')->pjax(false) ?>
             </li>
         </ul>
     </div>

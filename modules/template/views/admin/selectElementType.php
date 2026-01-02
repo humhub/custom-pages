@@ -34,7 +34,7 @@ $typeGroups = [
         <?php foreach ($types as $type) : ?>
         <div class="col-md-4 ps-2 pe-0 pb-2">
             <label class="d-flex align-items-center border border-light rounded p-2 h-100">
-                <?= Html::radio('type', false, ['value' => get_class($type)]) ?>
+                <?= Html::radio('type', false, ['value' => $type::class]) ?>
                 <?= $type->getLabel() ?>
             </label>
         </div>

@@ -86,7 +86,7 @@ class CreateTemplatePageCest
     {
         $I->click('Add Element');
         $I->waitForText('Select new element type');
-        $I->checkOption('input[type="radio"][value="' . addslashes($type) . '"]');
+        $I->checkOption('input[type="radio"][value="' . addslashes((string) $type) . '"]');
         $I->click('Next');
         $I->waitForElementVisible('#templateelement-name');
     }

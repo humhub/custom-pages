@@ -32,9 +32,7 @@ class DuplicatorService
      */
     public function beforeDuplicate(): bool
     {
-        $this->targetPage->visibility_groups = $this->sourcePage->visibility_groups;
-        $this->targetPage->visibility_languages = $this->sourcePage->visibility_languages;
-        $this->targetPage->editors = $this->sourcePage->editors;
+        $this->targetPage->settingService->copyAll($this->sourcePage);
 
         foreach ($this->sourcePage->attributes as $attrKey => $attrValue) {
             if ($attrKey !== 'id') {

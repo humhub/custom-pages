@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.12.10 (January 11, 2026)
+1.12.11 (January 11, 2026)
 --------------------------
 - Enh #489: New reserved element "parent"
 - Enh #493: Add attribute "aria-label" to iframes

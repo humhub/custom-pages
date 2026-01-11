@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.12.10 (Unreleased)
--------------------------
+1.12.10 (January 11, 2026)
+--------------------------
 - Enh #489: New reserved element "parent"
 - Enh #493: Add attribute "aria-label" to iframes
 - Fix #494: Fix double section "Advanced" of the template element "File Download"

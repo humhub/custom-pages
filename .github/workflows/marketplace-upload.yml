@@ -8,4 +8,6 @@ name: Upload to HumHub Marketplace
 jobs:
   build:
     uses: humhub/module-coding-standards/.github/workflows/marketplace-upload.yml@main
+    with:
+      module-id: custom_pages    
     secrets: inherit

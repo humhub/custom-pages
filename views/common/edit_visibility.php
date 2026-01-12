@@ -29,9 +29,9 @@ use humhub\widgets\form\ActiveForm;
         'items' => Yii::$app->i18n->getAllowedLanguages(),
         'options' => ['data-tags' => 'false'],
     ]) ?>
-</div>
 
-<?= $form->field($page, 'visibilityMobileApp')->checkbox() ?>
+    <?= $form->field($page, 'visibilityMobileApp')->checkbox() ?>
+</div>
 
 <script <?= Html::nonce() ?>>
 $('input[type="radio"][name="CustomPage[visibility]"]').click(function () {

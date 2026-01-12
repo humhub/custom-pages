@@ -167,11 +167,8 @@ class VisibilityService
 
     public function initSettings(): void
     {
-        if ($this->isCustom()) {
-            $this->page->visibilityGroups = $this->page->settingService->getValues('group');
-            $this->page->visibilityLanguages = $this->page->settingService->getValues('language');
-        }
-
+        $this->page->visibilityGroups = $this->page->settingService->getValues('group');
+        $this->page->visibilityLanguages = $this->page->settingService->getValues('language');
         $this->page->visibilityMobileApp = (bool) $this->page->settingService->get('mobileApp', false);
     }
 
@@ -180,9 +177,8 @@ class VisibilityService
         if ($this->isCustom()) {
             $this->page->settingService->update('group', $this->page->visibilityGroups);
             $this->page->settingService->update('language', $this->page->visibilityLanguages);
+            $this->page->settingService->update('mobileApp', $this->page->visibilityMobileApp);
         }
-
-        $this->page->settingService->update('mobileApp', $this->page->visibilityMobileApp);
     }
 
     public function copySettings(CustomPage $sourcePage): void
@@ -210,16 +206,16 @@ class VisibilityService
             return self::canViewAdminOnlyContent($this->page->content->container);
         }
 
-        if (($this->isMobileApp() && !DeviceDetectorHelper::isAppRequest())
-            || !$this->isMobileApp() && DeviceDetectorHelper::isAppRequest()) {
-            return false;
-        }
-
         if ($this->isGuest()) {
             return Yii::$app->user->isGuest;
         }
 
         if ($this->isCustom()) {
+            if (($this->isMobileApp() && !DeviceDetectorHelper::isAppRequest())
+                || !$this->isMobileApp() && DeviceDetectorHelper::isAppRequest()) {
+                return false;
+            }
+
             if (!$user && !Yii::$app->user->isGuest) {
                 $user = Yii::$app->user->getIdentity();
             } elseif (!$user instanceof User) {

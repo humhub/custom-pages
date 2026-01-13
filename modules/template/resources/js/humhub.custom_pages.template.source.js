@@ -164,6 +164,19 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
         }
     };
 
+    const selectElementType = function (evt) {
+        const form = evt.$target.closest('form');
+        const type = form.find('input[type=radio][name=type]:checked').val();
+
+        if (!type) {
+            form.find('label:first').removeClass('border-light').addClass('border-danger');
+            evt.finish();
+            return;
+        }
+
+        modal.load(evt, {data: {type}});
+    };
+
     var _getCaret = function (el) {
         if (el.selectionStart) {
             return el.selectionStart;
@@ -214,5 +227,6 @@ humhub.module('custom_pages.template.source', function (module, require, $) {
         init,
         unload,
         TemplateSourceEditor,
+        selectElementType,
     });
 });

@@ -12,6 +12,7 @@ use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\modules\template\widgets\PageConfigurationButton;
+use humhub\widgets\FooterMenu;
 
 /* @var $this View */
 /* @var $page CustomPage */
@@ -45,3 +46,5 @@ Assets::register($this);
         </div>
     </div>
 <?php endif; ?>
+
+<?= FooterMenu::widget() ?>

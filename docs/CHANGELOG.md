@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.12.13 (Unreleased)
+--------------------------
+- Enh #500: Show Footer Menu on Markdown Custom Pages
+
 1.12.12 (January 14, 2026)
 --------------------------
 - Enh #492: New filter visibility filter for Mobile App users 

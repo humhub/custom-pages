@@ -4,6 +4,7 @@ Changelog
 1.12.11 (January 11, 2026)
 --------------------------
 - Enh #489: New reserved element "parent"
+- Enh #492: New filter visibility filter for Mobile App users
 - Enh #493: Add attribute "aria-label" to iframes
 - Fix #494: Fix double section "Advanced" of the template element "File Download"
 - Enh #495: Modal window for select new element type

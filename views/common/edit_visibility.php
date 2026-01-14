@@ -19,16 +19,18 @@ use humhub\widgets\form\ActiveForm;
 
 <div data-cp-visibility-options="<?= CustomPage::VISIBILITY_CUSTOM ?>"<?= $page->visibilityService->isCustom() ? '' : ' class="d-none"' ?>>
     <?php if ($page->isGlobal()) : ?>
-        <?= $form->field($page, 'visibility_groups')->widget(MultiSelect::class, [
+        <?= $form->field($page, 'visibilityGroups')->widget(MultiSelect::class, [
             'items' => UserEditForm::getGroupItems(),
             'options' => ['data-tags' => 'false'],
         ]) ?>
     <?php endif; ?>
 
-    <?= $form->field($page, 'visibility_languages')->widget(MultiSelect::class, [
+    <?= $form->field($page, 'visibilityLanguages')->widget(MultiSelect::class, [
         'items' => Yii::$app->i18n->getAllowedLanguages(),
         'options' => ['data-tags' => 'false'],
     ]) ?>
+
+    <?= $form->field($page, 'visibilityMobileApp')->checkbox() ?>
 </div>
 
 <script <?= Html::nonce() ?>>

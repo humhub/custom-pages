@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.12.12 (January 14, 2026)
+--------------------------
+- Enh #492: New filter visibility filter for Mobile App users 
+
 1.12.11 (January 11, 2026)
 --------------------------
 - Enh #489: New reserved element "parent"

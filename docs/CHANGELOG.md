@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.12.13 (Unreleased)
+1.12.13 (January 14, 2026)
 --------------------------
 - Enh #500: Show Footer Menu on Markdown Custom Pages
 

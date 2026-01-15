@@ -55,7 +55,11 @@ class m241111_164223_refactor extends Migration
         ];
 
         foreach ($tables as $table) {
-            $this->update($table, $newObjectData, $oldObjectData);
+            $tableSchema = Yii::$app->db->schema->getTableSchema($table);
+            if ($tableSchema && array_diff(array_keys($oldObjectData), array_keys($tableSchema->columns)) === []) {
+                // Update only if the table and all columns still exist (they may be deleted in future versions)
+                $this->update($table, $newObjectData, $oldObjectData);
+            }
         }
     }
 

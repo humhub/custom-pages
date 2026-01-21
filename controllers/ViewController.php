@@ -3,6 +3,7 @@
 namespace humhub\modules\custom_pages\controllers;
 
 use humhub\modules\custom_pages\helpers\PageType;
+use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use humhub\modules\custom_pages\permissions\ManagePages;
@@ -51,6 +52,11 @@ class ViewController extends AbstractCustomContainerController
         }
 
         if (!Yii::$app->user->can([ManagePages::class]) && !$page->canView()) {
+            // Try to redirect to another available start page, e.g. when it was requested after log-in/out actions
+            if ($page->hasTarget(PageType::TARGET_START_PAGE)
+                && ($page = CustomPagesService::instance()->getStartPage())) {
+                return $this->redirect($page->getUrl());
+            }
             throw new ForbiddenHttpException('Cannot view the requested page');
         }
 

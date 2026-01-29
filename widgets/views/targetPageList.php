@@ -18,9 +18,9 @@ use yii\helpers\Html;
 ?>
 
 <div class="target-page-list <?= Html::encode($target->id) ?>">
-    <div class="target-page-list-head">
+    <div class="target-page-list-head d-flex justify-content-between align-items-center">
         <strong><?= $target->icon ? '<i class="fa ' . Html::encode($target->icon) . '"></i> ' : '' ?><?= Html::encode($target->name) ?></strong>
-        <?= Button::success()->icon('plus')->right()->link(Url::toChooseContentType($target, $pageType))->sm() ?>
+        <?= Button::success()->icon('plus')->link(Url::toChooseContentType($target, $pageType))->sm() ?>
     </div>
     <div class="target-page-list-grid">
         <?= GridView::widget([

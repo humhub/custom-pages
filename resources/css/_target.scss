@@ -14,10 +14,11 @@
 
 .target-page-list-grid {
   border: 1px solid #F1F1F1;
-  .grid-view table thead tr {
-    td:first-of-type, th:first-of-type {
-      padding-left:10px;
-    }
+  .grid-view table {
+      thead tr th:first-of-type,
+      tbody tr td:first-of-type {
+          padding-left: 10px;
+      }
   }
   .pagination {
     margin-left:10px;

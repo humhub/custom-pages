@@ -51,7 +51,8 @@
 .target-page-list-grid {
   border: 1px solid #F1F1F1;
 }
-.target-page-list-grid .grid-view table thead tr td:first-of-type, .target-page-list-grid .grid-view table thead tr th:first-of-type {
+.target-page-list-grid .grid-view table thead tr th:first-of-type,
+.target-page-list-grid .grid-view table tbody tr td:first-of-type {
   padding-left: 10px;
 }
 .target-page-list-grid .pagination {
@@ -128,6 +129,6 @@ img.preview {
   background-color: #fcfcfa;
 }
 
-.custom-pages-page a, .custom-pages-page a:hover {
+.custom-pages-page a:not(.btn) {
   color: var(--bs-accent);
 }

@@ -129,6 +129,6 @@ img.preview {
   background-color: #fcfcfa;
 }
 
-.custom-pages-page a {
+.custom-pages-page a:not(.btn) {
   color: var(--bs-accent);
 }

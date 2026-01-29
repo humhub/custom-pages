@@ -7,6 +7,7 @@ Changelog
 - Fix #502: Fix redirect to start page after login action
 - Fix #503: Margins and alignments in the admin table
 - Fix #503: When switching to the "Snippets" tab, the Left nav menu item loses its active state
+- Fix #503: Edit Page Buttons Colors
 
 1.12.13 (January 14, 2026)
 --------------------------

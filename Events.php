@@ -7,12 +7,12 @@ use humhub\helpers\ControllerHelper;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
-use humhub\modules\custom_pages\types\LinkType;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\permissions\ManagePages;
+use humhub\modules\custom_pages\types\LinkType;
 use humhub\modules\custom_pages\widgets\SnippetWidget;
 use humhub\modules\dashboard\widgets\Sidebar as DashboardSidebar;
 use humhub\modules\space\models\Space;
@@ -77,7 +77,7 @@ class Events
                 'label' => Yii::t('CustomPagesModule.base', 'Custom Pages'),
                 'url' => Url::toPageOverview(),
                 'icon' => 'file-text-o',
-                'isActive' => ControllerHelper::isActivePath('custom_pages', ['page', 'config'])
+                'isActive' => ControllerHelper::isActivePath('custom_pages', ['page', 'snippet', 'config'])
                     || ControllerHelper::isActivePath('template'),
                 'sortOrder' => 300,
                 'isVisible' => true,

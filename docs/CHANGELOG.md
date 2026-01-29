@@ -5,8 +5,8 @@ Changelog
 --------------------------
 - Enh #501: Fix migration for future table with deleted columns
 - Fix #502: Fix redirect to start page after login action
-- Fix: Margins and alignments in the admin table
-- Fix: When switching to the "Snippets" tab, the Left nav menu item loses its active state
+- Fix #503: Margins and alignments in the admin table
+- Fix #503: When switching to the "Snippets" tab, the Left nav menu item loses its active state
 
 1.12.13 (January 14, 2026)
 --------------------------

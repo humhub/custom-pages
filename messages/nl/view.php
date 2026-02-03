@@ -19,8 +19,8 @@ return [
   'Page configuration' => 'Pagina-configuratie',
   'Save' => 'Bewaar',
   'Settings' => 'Instellingen',
-  'The abstract will be used as stream entry content to promote the actual page. 
-                        If no abstract is given or the page is only visible for admins, no stream entry will be created.' => 'De samenvatting wordt gebruikt als inhoud voor nieuwsoverzicht om de eigenlijke pagina te promoten. Ontbreekt de samenvatting of is de pagina alleen zichtbaar is voor beheerders, dan wordt geen nieuwsitem gemaakt.',
+  'The abstract will be used as stream entry content to promote the actual page.
+                        If no abstract is given or the page is only visible for admins, no stream entry will be created.' => 'De samenvatting zal als starttekst voor de berichten worden gebruikt om de eigenlijke pagina te promoten. Als er geen samenvatting is opgegeven of als de pagina alleen zichtbaar is voor beheerders, wordt er geen nieuwsbericht aangemaakt.',
   'This page lists all available custom content entries.' => 'Deze pagina laat alle beschikbare, aangepaste items zien',
   'This section has no editable elements.' => 'Deze sectie heeft geen bewerkbare elementen.',
   'View not found' => 'View niet gevonden',

@@ -23,7 +23,7 @@ return [
     'Create' => '',
     'Exit Edit Mode' => '',
     'Here you can configure the general settings of your {pageLabel}.' => '',
-    'The abstract will be used as stream entry content to promote the actual page. 
+    'The abstract will be used as stream entry content to promote the actual page.
                         If no abstract is given or the page is only visible for admins, no stream entry will be created.' => '',
     'This page lists all available custom content entries.' => '',
     'This section has no editable elements.' => '',

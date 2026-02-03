@@ -23,7 +23,10 @@ return [
     'Abstract' => '',
     'Attach Files' => '',
     'Editors' => '',
+    'Hide in Navigation' => '',
     'Language-Based Visibility' => '',
+    'Mobile App Users' => '',
     'Page-specific editors without full custom pages permission.' => '',
+    'The element name is reserved, please choose another one.' => '',
     'Visible to Group Members' => '',
 ];

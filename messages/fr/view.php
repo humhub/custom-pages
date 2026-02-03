@@ -19,8 +19,6 @@ return [
     'Page configuration' => 'Configuration de la page',
     'Save' => 'Enregistrer',
     'Settings' => 'Paramètres',
-    'The abstract will be used as stream entry content to promote the actual page. 
-                        If no abstract is given or the page is only visible for admins, no stream entry will be created.' => 'Le résumé sera utilisé comme texte dans une entrée du fil d’actualités pour mettre en valeur la page en question. Si aucun résumé n’est défini ou si la page est visible uniquement par les administrateurs et administratrices, aucune entrée ne sera créée dans le fil d’activités.',
     'This page lists all available custom content entries.' => 'Cette page présente toutes les entrées disponibles de documents personnalisés.',
     'View not found' => 'Vue non trouvée',
     'You need to be a system administrator to edit this URL' => 'Vous devez avoir un rôle d’administration pour modifier cette URL.',
@@ -28,6 +26,8 @@ return [
     'e.g. http://www.example.de' => 'p.ex. https://www.exemple.net',
     'none' => 'aucune',
     'Exit Edit Mode' => '',
+    'The abstract will be used as stream entry content to promote the actual page.
+                        If no abstract is given or the page is only visible for admins, no stream entry will be created.' => '',
     'This section has no editable elements.' => '',
     'You don\'t have permission to access the page' => '',
 ];

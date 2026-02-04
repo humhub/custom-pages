@@ -8,6 +8,7 @@ Changelog
 - Fix #503: Margins and alignments in the admin table
 - Fix #503: When switching to the "Snippets" tab, the Left nav menu item loses its active state
 - Fix #503: Edit Page Buttons Colors
+- Fix #504: Fix default template "system_headline_container"
 
 1.12.13 (January 14, 2026)
 --------------------------

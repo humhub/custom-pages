@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.12.14 (Unreleased)
+1.12.14 (February 4, 2026)
 --------------------------
 - Enh #501: Fix migration for future table with deleted columns
 - Fix #502: Fix redirect to start page after login action

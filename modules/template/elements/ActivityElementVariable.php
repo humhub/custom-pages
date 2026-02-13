@@ -9,9 +9,10 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use Exception;
-use humhub\modules\activity\components\ActivityWebRenderer;
-use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\activity\services\ActivityManager;
+use humhub\modules\activity\services\RenderService;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -25,14 +26,16 @@ class ActivityElementVariable extends BaseContentRecordElementVariable
     {
         if ($record instanceof Activity) {
             try {
-                $baseActivity = $record->getActivityBaseClass();
-                if ($baseActivity instanceof BaseActivity) {
-                    $this->title = $baseActivity->getTitle();
+                $baseActivity = ActivityManager::load($record);
 
-                    $renderer = new ActivityWebRenderer();
-                    $this->message = $renderer->renderView($baseActivity, $baseActivity->getViewParams());
-                    $this->html = $renderer->render($baseActivity, ['content' => $this->message]);
+                if ($baseActivity instanceof ConfigurableActivityInterface) {
+                    $this->title = $baseActivity->getTitle();
                 }
+
+                $renderService = new RenderService($record);
+
+                $this->message = $baseActivity->asHtml();
+                $this->html = $renderService->getWeb();
             } catch (Exception $e) {
                 Yii::error('Activity not found: ' . $e, 'custom-pages');
             }

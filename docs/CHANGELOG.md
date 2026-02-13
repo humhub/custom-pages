@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.13.0 (Unreleased)
+--------------------------
+- Enh #505: Update for HumHub 1.19
+
 1.12.14 (February 4, 2026)
 --------------------------
 - Enh #501: Fix migration for future table with deleted columns

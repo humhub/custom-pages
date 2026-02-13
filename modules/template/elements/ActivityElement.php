@@ -9,7 +9,9 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\helpers\Html;
+use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\activity\services\ActivityManager;
 use Yii;
 
 /**
@@ -41,7 +43,11 @@ class ActivityElement extends BaseContentRecordElement implements \Stringable
 
     public function __toString(): string
     {
-        return (string) Html::encode($this->record?->getActivityBaseClass()?->getTitle() ?: $this->contentId);
+        $baseActivity = ActivityManager::load($this->record);
+
+        return (string) Html::encode($baseActivity instanceof ConfigurableActivityInterface
+            ? $baseActivity->getTitle()
+            : $this->contentId);
     }
 
     /**

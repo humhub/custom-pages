@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.12.15 (Unreleased)
+--------------------------
+- Enh #507: Limit slow RSS element URL with timeout
+
 1.12.14 (February 4, 2026)
 --------------------------
 - Enh #501: Fix migration for future table with deleted columns

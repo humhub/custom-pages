@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\helpers\Html;
+use humhub\libs\CURLHelper;
 use humhub\modules\custom_pages\modules\template\interfaces\TemplateElementContentIterable;
 use humhub\widgets\form\ActiveForm;
 use SimpleXMLElement;
@@ -24,6 +25,8 @@ use Yii;
  */
 class RssElement extends BaseElementContent implements TemplateElementContentIterable, \Stringable
 {
+    private const REQUEST_TIMEOUT = 10;
+
     /**
      * @inheritdoc
      */
@@ -103,14 +106,36 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
 
         try {
             if ($this->cache_time > 0) {
-                return Yii::$app->cache->getOrSet(sha1(static::class . $this->url), fn() => file_get_contents($this->url), $this->cache_time);
+                return Yii::$app->cache->getOrSet(sha1(static::class . $this->url), [$this, 'fetchRssFile'], $this->cache_time);
             }
 
-            return file_get_contents($this->url);
+            return $this->fetchRssFile();
         } catch (\Exception $e) {
             Yii::error('Cannot load RSS feed "' . $this->url . '". Error: ' . $e->getMessage(), 'custom-pages');
             return '';
         }
+    }
+
+    public function fetchRssFile(): string
+    {
+        $ch = curl_init($this->url);
+
+        foreach (CURLHelper::getOptions() as $option => $value) {
+            curl_setopt($ch, $option, $value);
+        }
+        curl_setopt($ch, CURLOPT_TIMEOUT, self::REQUEST_TIMEOUT);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::REQUEST_TIMEOUT);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            Yii::error('RSS Element "' . $this->element->name . '"(' . $this->url . ') error: ' . curl_error($ch), 'custom-pages');
+        }
+
+        curl_close($ch);
+
+        return is_string($response) ? $response : '';
     }
 
     /**

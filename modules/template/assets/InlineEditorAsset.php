@@ -8,7 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\AssetBundle;
 use yii\web\View;
 
 class InlineEditorAsset extends AssetBundle
@@ -21,9 +21,7 @@ class InlineEditorAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $publishOptions = [
-        'forceCopy' => false,
-    ];
+    public $forceCopy = false;
 
     /**
      * @inheritdoc

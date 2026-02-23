@@ -8,8 +8,8 @@
 
 namespace humhub\modules\custom_pages\modules\template\assets;
 
+use humhub\components\assets\AssetBundle;
 use humhub\modules\custom_pages\assets\Assets;
-use yii\web\AssetBundle;
 use yii\web\View;
 
 class TemplateAsset extends AssetBundle
@@ -17,9 +17,7 @@ class TemplateAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $publishOptions = [
-        'forceCopy' => false,
-    ];
+    public $forceCopy = false;
 
     /**
      * @inheritdoc

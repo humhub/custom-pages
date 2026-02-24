@@ -4,6 +4,7 @@ Changelog
 1.12.15 (Unreleased)
 --------------------------
 - Enh #507: Limit slow RSS element URL with timeout
+- Enh #509: Allow `<style>` tag in HTML(TinyMCE) editor
 
 1.12.14 (February 4, 2026)
 --------------------------

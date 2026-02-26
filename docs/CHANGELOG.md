@@ -5,6 +5,7 @@ Changelog
 --------------------------
 - Enh #507: Limit slow RSS element URL with timeout
 - Enh #509: Allow `<style>` tag in HTML(TinyMCE) editor
+- Fix: Labels encoding (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181))
 
 1.12.14 (February 4, 2026)
 --------------------------

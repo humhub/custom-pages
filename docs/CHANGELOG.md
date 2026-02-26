@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.12.15 (Unreleased)
---------------------------
+1.12.15 (February 26, 2026)
+---------------------------
 - Enh #507: Limit slow RSS element URL with timeout
 - Enh #509: Allow `<style>` tag in HTML(TinyMCE) editor
 - Fix #513: Labels encoding (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181))

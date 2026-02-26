@@ -31,7 +31,7 @@ use yii\helpers\Html;
                     'class' => DataColumn::class,
                     'label' => Yii::t('CustomPagesModule.base', 'Title'),
                     'format' => 'raw',
-                    'value' => fn(CustomPage $data) => Link::to(Html::encode($data->getTitle()), $data->getUrl())->icon(Html::encode($data->icon)),
+                    'value' => fn(CustomPage $data) => Link::to($data->getTitle(), $data->getUrl())->icon(Html::encode($data->icon)),
                 ],
                 [
                     'class' => DataColumn::class,

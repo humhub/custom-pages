@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.12.16 (Unreleased)
+---------------------------
+- Fix #515: Fix page visibility option "Mobile App only"
+
 1.12.15 (February 26, 2026)
 ---------------------------
 - Enh #507: Limit slow RSS element URL with timeout

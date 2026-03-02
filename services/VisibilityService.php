@@ -211,8 +211,7 @@ class VisibilityService
         }
 
         if ($this->isCustom()) {
-            if (($this->isMobileApp() && !DeviceDetectorHelper::isAppRequest())
-                || (!$this->isMobileApp() && DeviceDetectorHelper::isAppRequest())) {
+            if ($this->isMobileApp() && !DeviceDetectorHelper::isAppRequest()) {
                 return false;
             }
 

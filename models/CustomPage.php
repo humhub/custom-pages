@@ -163,7 +163,7 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
             'visibility' => Yii::t('CustomPagesModule.model', 'Visibility'),
             'visibilityGroups' => Yii::t('CustomPagesModule.model', 'Visible to Group Members'),
             'visibilityLanguages' => Yii::t('CustomPagesModule.model', 'Language-Based Visibility'),
-            'visibilityMobileApp' => Yii::t('CustomPagesModule.model', 'Mobile App Users'),
+            'visibilityMobileApp' => Yii::t('CustomPagesModule.model', 'Mobile App only'),
             'editors' => Yii::t('CustomPagesModule.model', 'Editors'),
             'hide_menu' => Yii::t('CustomPagesModule.model', 'Hide in Navigation'),
         ];

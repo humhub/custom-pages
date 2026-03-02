@@ -4,6 +4,7 @@ Changelog
 1.12.16 (Unreleased)
 ---------------------------
 - Fix #515: Fix page visibility option "Mobile App only"
+- Fix #517: RSS feeds set curl to follow location
 
 1.12.15 (February 26, 2026)
 ---------------------------

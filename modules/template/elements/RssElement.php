@@ -126,6 +126,7 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
         curl_setopt($ch, CURLOPT_TIMEOUT, self::REQUEST_TIMEOUT);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::REQUEST_TIMEOUT);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 
         $response = curl_exec($ch);
 

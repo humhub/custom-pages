@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.12.17 (Unreleased)
+-----------------------
+- Fix #518: Fix page title encoding in menu
+
 1.12.16 (March 2, 2026)
 -----------------------
 - Fix #515: Fix page visibility option "Mobile App only"

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.12.17 (Unreleased)
+1.12.17 (March 9, 2026)
 -----------------------
 - Fix #518: Fix page title encoding in menu
 

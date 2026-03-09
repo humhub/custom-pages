@@ -103,7 +103,7 @@ class Events
                     }
 
                     $menu->addEntry(new MenuLink([
-                        'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
+                        'label' => Yii::t('CustomPagesModule.base', $page->title),
                         'htmlOptions' => [
                             'target' => $page->in_new_window ? '_blank' : '',
                             'data-pjax-prevent' => 1,
@@ -226,7 +226,7 @@ class Events
                 }
 
                 $menu->addEntry(new MenuLink([
-                    'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
+                    'label' => Yii::t('CustomPagesModule.base', $page->title),
                     'url' => ['/custom_pages/view', 'id' => $page->id],
                     'htmlOptions' => ['target' => $page->in_new_window ? '_blank' : ''],
                     'icon' => $page->icon ?? '',

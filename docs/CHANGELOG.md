@@ -5,6 +5,25 @@ Changelog
 --------------------------
 - Enh #505: Update for HumHub 1.19
 
+1.12.18 (Unreleased)
+-----------------------
+- Fix #520: Display "Edit Page" button for global HTML pages
+
+1.12.17 (March 9, 2026)
+-----------------------
+- Fix #518: Fix page title encoding in menu
+
+1.12.16 (March 2, 2026)
+-----------------------
+- Fix #515: Fix page visibility option "Mobile App only"
+- Fix #517: RSS feeds set curl to follow location
+
+1.12.15 (February 26, 2026)
+---------------------------
+- Enh #507: Limit slow RSS element URL with timeout
+- Enh #509: Allow `<style>` tag in HTML(TinyMCE) editor
+- Fix #513: Labels encoding (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181))
+
 1.12.14 (February 4, 2026)
 --------------------------
 - Enh #501: Fix migration for future table with deleted columns

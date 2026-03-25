@@ -7,6 +7,7 @@
 use humhub\components\View;
 use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\models\CustomPage;
+use humhub\modules\custom_pages\modules\template\widgets\PageConfigurationButton;
 use yii\helpers\Html;
 
 /* @var $this View */
@@ -20,6 +21,7 @@ Assets::register($this);
 <div class="container <?= Html::encode($cssClass) ?>">
     <div class="row">
         <div class="col-md-12">
+            <?= PageConfigurationButton::widget() ?>
             <?= $html ?>
         </div>
     </div>

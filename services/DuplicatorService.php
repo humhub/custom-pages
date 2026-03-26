@@ -94,7 +94,7 @@ class DuplicatorService
         if ($targetRecord instanceof ContentActiveRecord) {
             $newFile->content_id = $targetRecord->content->id;
         }
-        $newFile->newFileContent = file_get_contents($sourceFile->getStore()->get());
+        $newFile->newFileContent = $sourceFile->store->getContent();
 
         return $newFile->validate() && $newFile->save() ? $newFile : null;
     }

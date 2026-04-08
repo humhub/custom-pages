@@ -114,7 +114,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
 
     TemplateStructure.prototype.initOverflow = function () {
         // Activate scrollbar only for long to avoid overflow of menu on small structure
-        this.$.css('overflow-y', this.$[0].scrollHeight > this.$.outerHeight() ? 'auto' : '');
+        this.$.css('overflow-y', this.$[0].scrollHeight > this.$.outerHeight() + 1 ? 'auto' : '');
     }
 
     TemplateStructure.prototype.getPositionData = function () {

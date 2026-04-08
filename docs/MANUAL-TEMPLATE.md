@@ -82,10 +82,13 @@
 | `activities`                       | Activity[]                  | Iterable of selected Activities                                                 |
 |                                    |                             |                                                                                 |
 | **Activity Element**               |                             |                                                                                 |
-| `activity`                         | Activity > Content          |                                                                                 |
+| `activity`                         | Activity                    |                                                                                 |
 | `activity.title`                   | String                      | Activity title                                                                  |
 | `activity.message`                 | String                      | Message of the activity                                                         |
 | `activity.html`                    | String                      | Full html of the activity                                                       |
+| `activity.createdAt`               | String                      | Format: 2025-01-02 16:45:00                                                     |
+| `activity.createdBy`               | User                        | User element                                                                    |
+| `activity.container`               | Container                   | Space or User element                                                           |
 |                                    |                             |                                                                                 |
 | **RSS Element**                    |                             |                                                                                 |
 | `rss`                              | Iterable                    |                                                                                 |

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.13.0 (Unreleased)
+--------------------------
+- Enh #505: Update for HumHub 1.19
+
 1.12.18 (Unreleased)
 -----------------------
 - Fix #520: Display "Edit Page" button for global HTML pages

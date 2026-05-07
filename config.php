@@ -9,7 +9,6 @@ use humhub\modules\space\widgets\Sidebar as SpaceSidebar;
 use humhub\modules\user\widgets\AccountMenu;
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\user\widgets\AccountTopMenu;
-use humhub\widgets\BaseMenu;
 use humhub\widgets\FooterMenu;
 use humhub\widgets\TopMenu;
 
@@ -38,9 +37,9 @@ return [
         ['class' => FooterMenu::class, 'event' => FooterMenu::EVENT_INIT, 'callback' => [Events::class, 'onFooterMenuInit']],
         ['class' => 'humhub\modules\user\widgets\PeopleHeadingButtons', 'event' => 'init', 'callback' => [Events::class, 'onPeopleHeadingButtonsInit']],
 
-        ['class' => HeaderControlsMenu::class, 'event' => BaseMenu::EVENT_INIT, 'callback' => [Events::class, 'onSpaceAdminMenuInit']],
+        ['class' => HeaderControlsMenu::class, 'event' => HeaderControlsMenu::EVENT_INIT, 'callback' => [Events::class, 'onSpaceAdminMenuInit']],
 
-        ['class' => DashboardSidebar::class, 'event' => BaseMenu::EVENT_INIT, 'callback' => [Events::class, 'onDashboardSidebarInit']],
-        ['class' => SpaceSidebar::class, 'event' => BaseMenu::EVENT_INIT, 'callback' => [Events::class, 'onSpaceSidebarInit']],
+        ['class' => DashboardSidebar::class, 'event' => DashboardSidebar::EVENT_INIT, 'callback' => [Events::class, 'onDashboardSidebarInit']],
+        ['class' => SpaceSidebar::class, 'event' => SpaceSidebar::EVENT_INIT, 'callback' => [Events::class, 'onSpaceSidebarInit']],
     ],
 ];

@@ -59,7 +59,7 @@ class ActivityElementVariable extends BaseRecordElementVariable
 
                 $renderService = new RenderService($record);
 
-                $this->message = $baseActivity->asHtml();
+                $this->message = $baseActivity->asWeb();
                 $this->html = $renderService->getWeb();
             } catch (Exception $e) {
                 Yii::error('Activity not found: ' . $e, 'custom-pages');

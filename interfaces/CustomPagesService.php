@@ -56,7 +56,7 @@ class CustomPagesService extends Component
     public function getTargetById($targetId, $type, ?ContentContainerActiveRecord $container = null): ?Target
     {
         $availableTargets = $this->getTargets($type, $container);
-        return array_key_exists($targetId, $availableTargets) ? $availableTargets[$targetId] : null;
+        return array_key_exists($targetId ?? '', $availableTargets) ? $availableTargets[$targetId] : null;
     }
 
     public function getTargetByPage(CustomPage $page): ?Target

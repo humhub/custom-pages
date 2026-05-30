@@ -109,7 +109,7 @@ return [
     'You are not allowed to delete default content!' => 'Du får inte ta bort standardinnehåll!',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Administrative Users' => '',
     'Always' => '',
     'Authors' => '',

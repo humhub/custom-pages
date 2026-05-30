@@ -82,7 +82,7 @@ return [
     'Without adding to navigation (Direct link)' => 'Bez dodavanja u navigaciju (direktna veza)',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Additional IFrame Attributes' => '',
     'Administrative Users' => '',
     'Allows the user to manage custom pages.' => '',

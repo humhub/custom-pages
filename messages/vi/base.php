@@ -86,7 +86,7 @@ return [
     'You are not allowed to delete default content!' => 'Bạn không được phép xóa nội dung mặc định!',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Additional IFrame Attributes' => '',
     'Administrative Users' => '',
     'Allows the user to manage custom pages.' => '',

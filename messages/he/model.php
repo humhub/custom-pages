@@ -12,7 +12,7 @@ return [
     'If disabled, existing php pages will still be online, but can\'t be created.' => '',
     'Label' => '',
     'Language-Based Visibility' => '',
-    'Mobile App Users' => '',
+    'Mobile App only' => '',
     'PHP view path for custom space pages' => '',
     'PHP view path for custom space snippets' => '',
     'PHP view path for global custom pages' => '',

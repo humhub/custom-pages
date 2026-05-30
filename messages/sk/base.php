@@ -108,7 +108,7 @@ return [
     'You are not allowed to delete default content!' => 'Nie je dovolené odstrániť predvolený obsah!',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Administrative Users' => '',
     'Always' => '',
     'Authors' => '',

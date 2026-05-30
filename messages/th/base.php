@@ -94,7 +94,7 @@ return [
     'You are not allowed to delete default content!' => 'คุณไม่ได้รับอนุญาตให้ลบเนื้อหาเริ่มต้น!',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Additional IFrame Attributes' => '',
     'Administrative Users' => '',
     'Always' => '',

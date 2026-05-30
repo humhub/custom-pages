@@ -126,7 +126,7 @@ return [
     'You are not allowed to delete default content!' => 'Você não tem permissão para excluir conteúdo padrão!',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'By creation date' => '',
     'By last update' => '',
     'Determine which Spaces should be taken into account.' => '',

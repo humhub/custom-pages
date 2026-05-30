@@ -110,7 +110,7 @@ return [
     'You are not allowed to delete default content!' => '¡No puedes eliminar contenido predeterminado!',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Administrative Users' => '',
     'Authors' => '',
     'By creation date' => '',

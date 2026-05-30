@@ -62,7 +62,7 @@ return [
     '<strong>Edit</strong> snippet' => '',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Additional IFrame Attributes' => '',
     'Adds plain HTML content to your site.' => '',
     'Administrative Users' => '',

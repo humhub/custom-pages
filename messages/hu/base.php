@@ -96,7 +96,7 @@ return [
     'You are not allowed to delete default content!' => 'Nem vagy jogosult az alapértelmezett tartalom törlésére!',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Additional IFrame Attributes' => '',
     'Administrative Users' => '',
     'Authors' => '',

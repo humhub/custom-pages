@@ -95,7 +95,7 @@ return [
     'You are not allowed to delete default content!' => 'Não estás autorizado a apagar conteúdo padrão!',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Additional IFrame Attributes' => '',
     'Administrative Users' => '',
     'Always' => '',

@@ -59,7 +59,7 @@ return [
     '<strong>Add</strong> {templateName} item' => '',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Additional IFrame Attributes' => '',
     'Administrative Users' => '',
     'Always' => '',

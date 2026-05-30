@@ -27,6 +27,6 @@ return [
     'page' => 'página',
     'snippet' => 'trecho',
     'Hide in Navigation' => '',
-    'Mobile App Users' => '',
+    'Mobile App only' => '',
     'The element name is reserved, please choose another one.' => '',
 ];

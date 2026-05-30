@@ -86,7 +86,7 @@ return [
     'You are not allowed to delete default content!' => 'Du kan ikke slette standard innhold',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Additional IFrame Attributes' => '',
     'Administrative Users' => '',
     'Allows the user to manage custom pages.' => '',

@@ -79,7 +79,7 @@ return [
     'You are not allowed to delete default content!' => 'ነባሪ ይዘቶችን ለማስወገድ አልተፈቀደልዎትም።',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Additional IFrame Attributes' => '',
     'Administrative Users' => '',
     'Allows the user to manage custom pages.' => '',

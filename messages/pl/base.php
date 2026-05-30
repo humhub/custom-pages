@@ -124,7 +124,7 @@ return [
     'You are not allowed to delete default content!' => 'Nie masz uprawnień do usuwania domyślnej zawartości!',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'By creation date' => '',
     'By last update' => '',
     'Determine which Spaces should be taken into account.' => '',

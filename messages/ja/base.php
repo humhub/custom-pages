@@ -113,7 +113,7 @@ return [
     'You are not allowed to delete default content!' => 'デフォルトのコンテンツを削除することはできません！',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Administrative Users' => '',
     'Authors' => '',
     'By creation date' => '',

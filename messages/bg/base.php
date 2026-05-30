@@ -92,7 +92,7 @@ return [
     'You are not allowed to delete default content!' => 'Нямате право да изтривате съдържанието по подразбиране!',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Additional IFrame Attributes' => '',
     'Administrative Users' => '',
     'Always' => '',

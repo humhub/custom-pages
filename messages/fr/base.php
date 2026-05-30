@@ -121,7 +121,7 @@ return [
     'You are not allowed to delete default content!' => 'Vous n\'êtes pas autorisé à supprimer le contenu par défaut.',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Administrative Users' => '',
     'By creation date' => '',
     'By last update' => '',

@@ -81,7 +81,7 @@ return [
     'You are not allowed to delete default content!' => 'Δεν επιτρέπεται η διαγραφή του προεπιλεγμένου περιεχομένου!',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Additional IFrame Attributes' => '',
     'Administrative Users' => '',
     'Allows the user to manage custom pages.' => '',

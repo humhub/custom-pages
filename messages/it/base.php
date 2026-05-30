@@ -96,7 +96,7 @@ return [
     'You are not allowed to delete default content!' => 'Non sei abilitato a cancellare il contenuto predefinito!',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Additional IFrame Attributes' => '',
     'Administrative Users' => '',
     'Authors' => '',

@@ -8,6 +8,8 @@ Changelog
 1.12.18 (Unreleased)
 -----------------------
 - Fix #520: Display "Edit Page" button for global HTML pages
+- Fix #523: Fix dropdown menu overflow inside the structure view
+- Fix #527: Fix deprecated classes in config
 
 1.12.17 (March 9, 2026)
 -----------------------

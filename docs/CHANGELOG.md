@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.13.1 (Unreleased)
+----------------------
+- Fix #530: Update content container images
+
 1.13.0 (June 7, 2026)
 ----------------------
 - Enh #505: Update for HumHub 1.19

@@ -40,7 +40,7 @@ TemplateAsset::register($this);
                     <?= $form->field($searchModel, 'name')
                         ->textInput(['placeholder' => Yii::t('CustomPagesModule.template', 'Search by template ID or name')])
                         ->label(false) ?>
-                    <?= Button::light()->icon('search')->submit() ?>
+                    <?= Button::light()->icon('search')->options(['aria-label' => Yii::t('base', 'Search')])->submit() ?>
                 </div>
                 <?= $form->field($searchModel, 'type')
                     ->dropDownList(['' => Yii::t('CustomPagesModule.template', 'Type (All)')] + $searchModel->getTypeOptions())

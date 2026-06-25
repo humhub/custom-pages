@@ -15,7 +15,10 @@ use humhub\widgets\bootstrap\Button;
 <?= Html::beginTag('div', $options) ?>
 <?= Button::light()
     ->icon('ellipsis-h')
-    ->options(['data-bs-toggle' => 'dropdown'])
+    ->options([
+        'aria-label' => Yii::t('base', 'Actions'),
+        'data-bs-toggle' => 'dropdown',
+    ])
     ->loader(false) ?>
 <ul class="dropdown-menu">
     <?php foreach ($entries as $entry) : ?>

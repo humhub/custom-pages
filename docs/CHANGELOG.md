@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.13.1 (Unreleased)
-----------------------
+1.13.1 (July 7, 2026)
+---------------------
 - Fix #530: Update content container images
 - Enh #531: Add aria-label attribute for icon-only buttons
 

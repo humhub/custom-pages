@@ -64,10 +64,16 @@ class HtmlElement extends BaseElementContent implements \Stringable
 
     /**
      * @inheritdoc
+     *
+     * Note: Unlike other template elements, the Html element intentionally renders its
+     * content unpurified - same as page content of a Custom Page with type Html
+     * (@see \humhub\modules\custom_pages\models\CustomPage::getPageContent()). Script
+     * nonces are applied afterwards by TemplateInstanceRendererService::render(), which
+     * wraps the whole rendered template output, same as for Html type pages.
      */
     public function __toString(): string
     {
-        return (string) $this->purify($this->content);
+        return (string) $this->content;
     }
 
     /**

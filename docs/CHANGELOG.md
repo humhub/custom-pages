@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.12.19 (Unreleased)
+----------------------
+- Fix #532: Allow `id` and `data-*` attributes for Html template elements
+
 1.12.18 (July 8, 2026)
 ----------------------
 - Fix #520: Display "Edit Page" button for global HTML pages

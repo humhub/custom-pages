@@ -3,7 +3,7 @@ Changelog
 
 1.12.19 (Unreleased)
 ----------------------
-- Fix #532: Don't strip attributes from Html template elements (render unpurified, like Html type pages)
+- Fix #532: Allow `id` and `data-*` attributes for Html template elements
 
 1.12.18 (July 8, 2026)
 ----------------------

@@ -4,6 +4,7 @@ Changelog
 1.12.19 (Unreleased)
 ----------------------
 - Fix #532: Allow `id` and `data-*` attributes for Html template elements
+- Enh #533: Confirm leaving of unsaved custom page form
 
 1.12.18 (July 8, 2026)
 ----------------------

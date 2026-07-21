@@ -41,7 +41,7 @@ $contentType = $page->getContentType();
             <?= Yii::t('CustomPagesModule.view', 'Here you can configure the general settings of your {pageLabel}.', ['pageLabel' => $page->getLabel()]) ?>
         </div>
 
-        <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
+        <?php $form = ActiveForm::begin(['enableClientValidation' => false, 'acknowledge' => true]); ?>
         <?php if ($page->isAllowedField('title')) : ?>
             <?= $form->field($page, 'title') ?>
         <?php endif; ?>

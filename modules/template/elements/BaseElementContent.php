@@ -12,12 +12,14 @@ use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\components\ActiveRecordDynamicAttributes;
+use humhub\modules\custom_pages\modules\template\helpers\DataAttributeTransform;
 use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\widgets\form\ActiveForm;
 use Yii;
 use yii\db\ActiveQuery;
+use yii\helpers\HtmlPurifier;
 
 /**
  * This is the base class for all Template Element Content types.
@@ -307,11 +309,20 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
 
     public function purify($content)
     {
-        $config = \HTMLPurifier_Config::createDefault();
-        $config->set('HTML.Attr.Name.UseCDATA', true);
-        $config->set('Attr.AllowedFrameTargets', ['_blank']);
+        return HtmlPurifier::process($content, function ($config): void {
+            /* @var \HTMLPurifier_Config $config */
+            $config->set('HTML.Attr.Name.UseCDATA', true);
+            $config->set('Attr.AllowedFrameTargets', ['_blank']);
 
-        return \yii\helpers\HtmlPurifier::process($content, $config);
+            // Allow `id` attributes (needed e.g. for anchor/TOC navigation)
+            $config->set('Attr.EnableID', true);
+
+            // Allow `data-*` attributes (not whitelisted by HTMLPurifier by default)
+            $definition = $config->getHTMLDefinition(true);
+            $dataAttributeTransform = new DataAttributeTransform();
+            $definition->info_attr_transform_pre[] = $dataAttributeTransform;
+            $definition->info_attr_transform_post[] = $dataAttributeTransform;
+        });
     }
 
 

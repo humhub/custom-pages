@@ -10,8 +10,13 @@ Changelog
 ----------------------
 - Enh #505: Update for HumHub 1.19
 
-1.12.18 (Unreleased)
+1.12.19 (July 16, 2026)
 -----------------------
+- Fix #532: Allow `id` and `data-*` attributes for Html template elements
+- Enh #533: Confirm leaving of unsaved custom page form
+
+1.12.18 (July 8, 2026)
+----------------------
 - Fix #520: Display "Edit Page" button for global HTML pages
 - Fix #523: Fix dropdown menu overflow inside the structure view
 - Fix #527: Fix deprecated classes in config

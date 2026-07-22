@@ -25,7 +25,7 @@ return [
     'Editors' => '',
     'Hide in Navigation' => '',
     'Language-Based Visibility' => '',
-    'Mobile App Users' => '',
+    'Mobile App only' => '',
     'Page-specific editors without full custom pages permission.' => '',
     'The element name is reserved, please choose another one.' => '',
     'Visible to Group Members' => '',

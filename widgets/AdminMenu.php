@@ -13,7 +13,7 @@ use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\Menu;
+use humhub\modules\ui\menu\widgets\TabMenu;
 use Yii;
 
 /**
@@ -21,13 +21,8 @@ use Yii;
  *
  * @author Basti
  */
-class AdminMenu extends Menu
+class AdminMenu extends TabMenu
 {
-    /**
-     * @inheritdoc
-     */
-    public $template = '@humhub/widgets/views/tabMenu';
-
     public function init()
     {
         if (Yii::$app->user->can([ManageModules::class, ManagePages::class])) {

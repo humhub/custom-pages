@@ -10,7 +10,7 @@ return [
   'If disabled, existing php pages will still be online, but can\'t be created.' => 'Wenn deaktiviert, sind bestehende PHP-Seiten immer noch online, können aber nicht erstellt werden.',
   'Label' => 'Label',
   'Language-Based Visibility' => 'Sprachbasierte Sichtbarkeit',
-  'Mobile App Users' => 'Mobile-App-Nutzer',
+  'Mobile App only' => 'Mobile App only',
   'Open in new window' => 'In neuem Fenster öffnen',
   'PHP view path for custom space pages' => 'PHP-View-Pfad für benutzerdefinierte Space-Seiten',
   'PHP view path for custom space snippets' => 'PHP-View-Pfad für benutzerdefinierte Space-Snippet',

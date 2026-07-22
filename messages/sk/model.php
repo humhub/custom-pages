@@ -18,7 +18,7 @@ return [
     'Editors' => '',
     'Hide in Navigation' => '',
     'Language-Based Visibility' => '',
-    'Mobile App Users' => '',
+    'Mobile App only' => '',
     'PHP view path for custom space snippets' => '',
     'PHP view path for global custom pages' => '',
     'PHP view path for global custom snippets' => '',

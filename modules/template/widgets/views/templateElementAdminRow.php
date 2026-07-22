@@ -31,6 +31,7 @@ use yii\helpers\Html;
     <td>
     <?php if ($model->template->canEdit()) : ?>
         <?= Button::danger()->icon('times')->sm()
+            ->options(['aria-label' => Yii::t('CustomPagesModule.base', 'Delete')])
             ->action('deleteElementSubmit', ['/custom_pages/template/admin/delete-element', 'id' => $model->id])
             ->confirm(
                 Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> element deletion'),
@@ -38,9 +39,11 @@ use yii\helpers\Html;
                 Yii::t('CustomPagesModule.base', 'Delete'),
             ) ?>
         <?= Button::primary()->icon('pencil')->sm()
+            ->options(['aria-label' => Yii::t('base', 'Edit')])
             ->action('ui.modal.load', ['/custom_pages/template/admin/edit-element', 'id' => $model->id]) ?>
     <?php else : ?>
         <?= Button::accent()->icon('eye')->sm()
+            ->options(['aria-label' => Yii::t('base', 'View')])
             ->action('ui.modal.load', ['/custom_pages/template/admin/edit-element', 'id' => $model->id]) ?>
     <?php endif; ?>
     </td>

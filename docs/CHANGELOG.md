@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.12.20 (Unreleased)
------------------------
+1.12.20 (August 4, 2026)
+------------------------
 - Fix #534: Don't import "created" and "updated" data of files
 
 1.12.19 (July 16, 2026)

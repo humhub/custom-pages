@@ -53,6 +53,7 @@ abstract class BaseImportService
     {
         $updateRecord = false;
 
+        $skipAttributes = ['guid', 'object_model', 'object_id', 'created_by', 'created_at', 'updated_by', 'updated_at'];
         $newFiles = [];
         foreach ($files as $fileData) {
             $file = new FileContent();
@@ -60,7 +61,7 @@ abstract class BaseImportService
                 if ($attribute === 'base64Content') {
                     $file->newFileContent = base64_decode((string) $value);
                 }
-                if (!in_array($attribute, ['guid', 'object_model', 'object_id']) && $file->hasAttribute($attribute)) {
+                if (!in_array($attribute, $skipAttributes) && $file->hasAttribute($attribute)) {
                     $file->$attribute = $value;
                 }
             }

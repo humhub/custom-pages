@@ -10,6 +10,10 @@ Changelog
 ----------------------
 - Enh #505: Update for HumHub 1.19
 
+1.12.20 (August 4, 2026)
+------------------------
+- Fix #534: Don't import "created" and "updated" data of files
+
 1.12.19 (July 16, 2026)
 -----------------------
 - Fix #532: Allow `id` and `data-*` attributes for Html template elements

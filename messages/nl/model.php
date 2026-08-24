@@ -10,7 +10,7 @@ return [
   'If disabled, existing php pages will still be online, but can\'t be created.' => 'Indien uitgeschakeld, blijven bestaande php-pagina\'s nog steeds online, maar kunnen ze niet worden aangemaakt.',
   'Label' => 'Label',
   'Language-Based Visibility' => 'Taalgebaseerde zichtbaarheid',
-  'Mobile App Users' => 'Gebruikers van mobiele apps',
+  'Mobile App only' => 'Alleen voor mobiele apps',
   'Open in new window' => 'Openen in een nieuw venster',
   'PHP view path for custom space pages' => 'PHP-viewpad voor aangepaste ruimte-pagina\'s',
   'PHP view path for custom space snippets' => 'PHP-viewpad voor aangepaste ruimte-snippers',

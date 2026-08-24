@@ -1,6 +1,15 @@
 Changelog
 =========
 
+1.13.1 (July 7, 2026)
+---------------------
+- Fix #530: Update content container images
+- Enh #531: Add aria-label attribute for icon-only buttons
+
+1.13.0 (June 7, 2026)
+----------------------
+- Enh #505: Update for HumHub 1.19
+
 1.12.20 (August 4, 2026)
 ------------------------
 - Fix #534: Don't import "created" and "updated" data of files

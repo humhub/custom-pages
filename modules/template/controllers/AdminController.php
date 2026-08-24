@@ -236,15 +236,29 @@ class AdminController extends Controller
                         /* @var $record CustomPage */
                         $record = $model->getPolymorphicRelation();
                         return $record->canEdit()
-                            ? Link::primary()->icon('pencil')->link($record->getEditUrl())->sm()->right()
+                            ? Link::primary()
+                                ->icon('pencil')
+                                ->options(['aria-label' => Yii::t('base', 'Edit')])
+                                ->link($record->getEditUrl())
+                                ->sm()
+                                ->right()
                             : '';
                     } elseif ($model instanceof Template) {
-                        return Link::primary()->icon('pencil')->link(Url::toRoute(['edit-source', 'id' => $model->id]))->sm();
+                        return Link::primary()
+                            ->icon('pencil')
+                            ->options(['aria-label' => Yii::t('base', 'Edit')])
+                            ->link(Url::toRoute(['edit-source', 'id' => $model->id]))
+                            ->sm();
                     }
                     return '';
                 },
                 'delete' => fn($url, $model) => $model instanceof Template
-                    ? Link::danger()->icon('times')->link(Url::toRoute(['delete-template', 'id' => $model->id]))->sm()->confirm()
+                    ? Link::danger()
+                        ->icon('times')
+                        ->options(['aria-label' => Yii::t('base', 'Delete')])
+                        ->link(Url::toRoute(['delete-template', 'id' => $model->id]))
+                        ->sm()
+                        ->confirm()
                     : '',
             ],
         ];

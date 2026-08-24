@@ -10,7 +10,7 @@ return [
   'Create new template' => 'Maak een nieuwe sjabloon',
   'Delete' => 'Verwijder',
   'Edit template' => 'Bewerk de sjabloon',
-  'Empty' => 'leeg',
+  'Empty' => 'Leeg',
   'Exit Edit Mode' => 'Bewerkingsmodus verlaten',
   'Here you can configure the general settings of your {pageLabel}.' => 'Hier kunt u de algemene instellingen van uw {pageLabel} configureren.',
   'Inline Editor' => 'Inline Editor',

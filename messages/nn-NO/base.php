@@ -10,7 +10,7 @@ return [
     '<strong>Edit</strong> snippet' => '',
     'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Add' => '',
     'Add a file icon before the title' => '',
     'Additional IFrame Attributes' => '',

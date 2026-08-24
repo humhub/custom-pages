@@ -78,7 +78,7 @@ class TemplateExportService
                         $files[$f][$attribute] = $file->$attribute;
                     }
                 }
-                $files[$f]['base64Content'] = base64_encode(file_get_contents($file->store->get()));
+                $files[$f]['base64Content'] = base64_encode($file->store->getContent());
             }
         }
 

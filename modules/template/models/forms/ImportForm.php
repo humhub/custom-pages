@@ -69,9 +69,7 @@ class ImportForm extends Model
 
     public function getService(): TemplateImportService
     {
-        if ($this->service === null) {
-            $this->service = new TemplateImportService();
-        }
+        $this->service ??= new TemplateImportService();
 
         return $this->service;
     }

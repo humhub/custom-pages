@@ -81,9 +81,7 @@ abstract class BaseContentContainerElement extends BaseElementContent implements
      */
     public function getRecord(?string $guid = null): ?ContentContainerActiveRecord
     {
-        if ($this->record === null) {
-            $this->record = ContentContainer::findRecord($guid ?: $this->guid);
-        }
+        $this->record ??= ContentContainer::findRecord($guid ?: $this->guid);
 
         return $this->record;
     }

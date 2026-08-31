@@ -97,9 +97,7 @@ class ImportInstanceForm extends Model
 
     public function getService(?bool $replace = null): TemplateInstanceImportService
     {
-        if ($this->service === null) {
-            $this->service = new TemplateInstanceImportService($this->instance, $this->element);
-        }
+        $this->service ??= new TemplateInstanceImportService($this->instance, $this->element);
 
         if ($replace !== null) {
             $this->service->replace = $replace;

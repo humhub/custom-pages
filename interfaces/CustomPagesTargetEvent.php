@@ -41,9 +41,7 @@ class CustomPagesTargetEvent extends CustomPagesEvent
             if (is_string($target)) {
                 $target = ['name' => $target];
             }
-            if (!isset($target['id'])) {
-                $target['id'] = $id;
-            }
+            $target['id'] ??= $id;
             $this->addTarget($target);
         }
     }

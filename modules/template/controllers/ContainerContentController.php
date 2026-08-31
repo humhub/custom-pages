@@ -114,9 +114,7 @@ class ContainerContentController extends ContentContainerController
      */
     public function actionAddItem($elementContentId, $elementContent = null, $cguid = null)
     {
-        if ($elementContent === null) {
-            $elementContent = ContainerElement::findOne(['id' => $elementContentId]);
-        }
+        $elementContent ??= ContainerElement::findOne(['id' => $elementContentId]);
 
         if (!$elementContent || !$elementContent->canAddItem()) {
             throw new ForbiddenHttpException(Yii::t('CustomPagesModule.base', 'This container does not allow any further items!'));
@@ -185,9 +183,7 @@ class ContainerContentController extends ContentContainerController
             throw new BadRequestHttpException('This action requires an elementContentId or elementContent instance!');
         }
 
-        if ($elementContent === null) {
-            $elementContent = ContainerElement::findOne(['id' => $elementContentId]);
-        }
+        $elementContent ??= ContainerElement::findOne(['id' => $elementContentId]);
 
         if (!$elementContent->canAddItem()) {
             throw new ForbiddenHttpException(Yii::t('CustomPagesModule.base', 'This container does not allow any further items!'));

@@ -680,18 +680,14 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
 
     public function getVisibilityService(): VisibilityService
     {
-        if ($this->_visibilityService === null) {
-            $this->_visibilityService = new VisibilityService($this);
-        }
+        $this->_visibilityService ??= new VisibilityService($this);
 
         return $this->_visibilityService;
     }
 
     public function getSettingService(): SettingService
     {
-        if ($this->_settingService === null) {
-            $this->_settingService = new SettingService($this);
-        }
+        $this->_settingService ??= new SettingService($this);
 
         return $this->_settingService;
     }

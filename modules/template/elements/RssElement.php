@@ -194,9 +194,7 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
         foreach ($namespaces as $prefix => $namespace) {
             $namespacedElements = $item->xpath($prefix . ':*');
             foreach ($namespacedElements as $element) {
-                if (!isset($fields[$prefix])) {
-                    $fields[$prefix] = (string) $element;
-                }
+                $fields[$prefix] ??= (string) $element;
                 $fields[$prefix . '_' . $element->getName()] = (string) $element;
             }
         }

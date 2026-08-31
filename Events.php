@@ -249,6 +249,20 @@ class Events
         }
     }
 
+    public static function onRestApiAddRules()
+    {
+        /* @var \humhub\modules\rest\Module $restModule */
+        $restModule = Yii::$app->getModule('rest');
+        $restModule->addRules([
+
+            ['pattern' => 'custom-pages', 'route' => 'custom_pages/rest/custom-page/find', 'verb' => ['GET', 'HEAD']],
+            ['pattern' => 'custom-pages/global', 'route' => 'custom_pages/rest/custom-page/find-global', 'verb' => ['GET', 'HEAD']],
+            ['pattern' => 'custom-pages/container/<containerId:\\d+>', 'route' => 'custom_pages/rest/custom-page/find-by-container', 'verb' => ['GET', 'HEAD']],
+            ['pattern' => 'custom-pages/page/<id:\\d+>', 'route' => 'custom_pages/rest/custom-page/view', 'verb' => ['GET', 'HEAD']],
+
+        ], 'custom-pages');
+    }
+
     public static function onDashboardSidebarInit($event)
     {
         try {

@@ -2,6 +2,12 @@
 
 Readonly REST API for custom pages
 
+## Visibility
+
+All endpoints respect the page's own visibility settings (Public / Logged-In Users / Non-Logged-In Users / Administrative Users / Custom group- or language-restricted), the same rules that apply when viewing the page in the web UI. A page returns `403` on `/page/{id}` when the requesting user is not allowed to view it, and is silently omitted from the list endpoints. Users with the `Manage Pages` permission can always view all pages.
+
+This visibility check is applied after the database-level pagination, so a listing page can come back with fewer results than `limit` (or, rarely, empty) when restricted pages are mixed into it; `total`/`pages` count all matching pages before this filter and may likewise be slightly higher than what a user with restricted access will actually see across all pages combined.
+
 ## Endpoints
 
 ### Get all Custom Pages

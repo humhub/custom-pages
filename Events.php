@@ -260,7 +260,7 @@ class Events
             ['pattern' => 'custom-pages/container/<containerId:\\d+>', 'route' => 'custom_pages/rest/custom-page/find-by-container', 'verb' => ['GET', 'HEAD']],
             ['pattern' => 'custom-pages/page/<id:\\d+>', 'route' => 'custom_pages/rest/custom-page/view', 'verb' => ['GET', 'HEAD']],
 
-        ], 'custom-pages');
+        ], 'custom_pages');
     }
 
     public static function onDashboardSidebarInit($event)

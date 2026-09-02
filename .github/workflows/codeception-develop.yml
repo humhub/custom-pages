@@ -12,3 +12,4 @@ jobs:
     uses: humhub/module-coding-standards/.github/workflows/codeception-develop.yml@main
     with:
       module-id: custom_pages
+      use-rest-module: true

@@ -11,12 +11,12 @@ namespace humhub\modules\custom_pages\controllers\rest;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\custom_pages\components\ActiveQueryCustomPage;
 use humhub\modules\custom_pages\helpers\RestDefinitions;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\permissions\ManagePages;
 use humhub\modules\rest\components\BaseContentController;
 use Yii;
-use yii\db\ActiveQuery;
 
 class CustomPageController extends BaseContentController
 {
@@ -82,8 +82,8 @@ class CustomPageController extends BaseContentController
     /**
      * {@inheritdoc}
      *
-     * Overridden to additionally filter out pages the current user is not allowed to view according to
-     * CustomPage's own visibility rules (see {@see self::canViewPage()}).
+     * Overridden to additionally restrict the result to pages the current user is allowed to view
+     * according to CustomPage's own visibility rules (see {@see self::returnFilteredPagination()}).
      */
     public function actionFindByContainer($containerId)
     {
@@ -113,30 +113,28 @@ class CustomPageController extends BaseContentController
 
     /**
      * Runs the given, already `readable()`-scoped query through the standard
-     * {@see BaseContentController::handlePagination()} and additionally drops every record the
-     * current user is not allowed to view according to CustomPage's own visibility rules
-     * (admin-only / guest-only / custom group- or language-restricted pages), which are
-     * independent of the generic {@see Content::canView()} that `readable()` is built on -
-     * see {@see self::canViewPage()}.
+     * {@see BaseContentController::handlePagination()}, after additionally restricting it via
+     * {@see ActiveQueryCustomPage::filterByVisibility()} to records the current user is allowed to
+     * view according to CustomPage's own visibility rules (admin-only / guest-only / custom
+     * group-, language- or mobile-app-restricted pages), which are independent of the generic
+     * {@see Content::canView()} that `readable()` is built on. Because the restriction is applied
+     * to the query itself (not filtered from already-fetched rows), `handlePagination()`'s
+     * `total`/`pages` and the returned page size are accurate. Centralized here (rather than at
+     * each call site) so a future new list action can't forget to apply it.
      *
-     * Note: `total`/`pages` are computed by `handlePagination()` before this filter runs, and
-     * filtered-out records are simply skipped rather than backfilled from the next page. So a
-     * page can come back with fewer than `limit` results (or, rarely, empty) when restricted
-     * pages are mixed into it - deliberately accepted here for simplicity over exact pagination.
-     *
-     * @param ActiveQuery $query
+     * @param ActiveQueryCustomPage $query
      * @return array
      */
-    private function returnFilteredPagination(ActiveQuery $query): array
+    private function returnFilteredPagination(ActiveQueryCustomPage $query): array
     {
+        $query->filterByVisibility();
+
         $pagination = $this->handlePagination($query);
 
         $results = [];
         foreach ($query->all() as $contentRecord) {
             /** @var CustomPage $contentRecord */
-            if ($this->canViewPage($contentRecord)) {
-                $results[] = $this->returnContentDefinition($contentRecord);
-            }
+            $results[] = $this->returnContentDefinition($contentRecord);
         }
 
         return $this->returnPagination($query, $pagination, $results);

@@ -109,10 +109,10 @@ class ListCest extends CustomPagesApiTestCest
         $publicPage = $I->createCustomPage('Public page', 'Visible to everyone.', ['visibility' => CustomPage::VISIBILITY_PUBLIC]);
         $I->createCustomPage('Admin-only page', 'Visible to admins only.', ['visibility' => CustomPage::VISIBILITY_ADMIN]);
 
-        // The admin-only page is filtered out of `results`, but `total`/`pages` still reflect the
-        // underlying (unfiltered) DB query - see the note on
-        // CustomPageController::returnFilteredPagination().
+        // The admin-only page is filtered out at the SQL level (see
+        // ActiveQueryCustomPage::filterByVisibility()), so `total`/`pages` reflect the already-
+        // filtered query, not the underlying unfiltered one.
         $I->amUser1();
-        $I->seePaginationCustomPagesResponse('custom-pages', [$publicPage->id], ['total' => 2, 'pages' => 1]);
+        $I->seePaginationCustomPagesResponse('custom-pages', [$publicPage->id], ['total' => 1, 'pages' => 1]);
     }
 }

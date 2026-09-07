@@ -22,10 +22,15 @@ class CustomPagesService extends Component
 
     public const EVENT_FETCH_TARGETS = 'fetchTargets';
 
-    private array $cache = [];
-
     /**
      * Fetches all available navigations for a given container.
+     *
+     * Note: Results are memoized via {@see \Yii::$app->runtimeCache} (request-scoped) rather
+     * than in a plain instance property. {@see CustomPagesService} is a process-wide singleton
+     * (see {@see \yii\base\StaticInstanceTrait}), so a plain property would keep serving a
+     * stale target list - computed before some listener was attached to
+     * {@see self::EVENT_FETCH_TARGETS} - for the remainder of the PHP process, e.g. across
+     * requests in functional tests or long-running workers.
      *
      * @param string $type
      * @param ContentContainerActiveRecord|null $container
@@ -35,16 +40,14 @@ class CustomPagesService extends Component
     {
         $containerKey = $container ? $container->contentcontainer_id : 'global';
 
-        if (!isset($this->cache[$type][$containerKey])) {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . '-' . $type . '-' . $containerKey, function () use ($type, $container) {
             $event = new CustomPagesTargetEvent(['type' => $type, 'container' => $container]);
             $event->addDefaultTargets();
 
             $this->trigger(self::EVENT_FETCH_TARGETS, $event);
 
-            $this->cache[$type][$containerKey] = $event->getTargets();
-        }
-
-        return $this->cache[$type][$containerKey];
+            return $event->getTargets();
+        });
     }
 
     /**

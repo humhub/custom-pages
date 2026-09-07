@@ -12,6 +12,7 @@ use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\custom_pages\components\ActiveQueryCustomPage;
 use humhub\modules\custom_pages\components\PhpPageContainer;
 use humhub\modules\custom_pages\components\TemplatePageContainer;
 use humhub\modules\custom_pages\helpers\Html;
@@ -118,6 +119,15 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
     public static function tableName()
     {
         return 'custom_pages_page';
+    }
+
+    /**
+     * @inheritdoc
+     * @return ActiveQueryCustomPage
+     */
+    public static function find()
+    {
+        return new ActiveQueryCustomPage(static::class);
     }
 
     /**

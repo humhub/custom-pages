@@ -1,0 +1,336 @@
+openapi: 3.0.0
+info:
+  description: |
+    Welcome to the HumHub custom pages module API reference.
+
+    This is a **read-only** API: only `GET` endpoints are exposed for reading pages and their
+    rendered content. The CRUD-style requests (create/update/delete) supported by other modules'
+    REST APIs are intentionally disabled here and return `405 Method Not Allowed`.
+
+    All endpoints enforce the page's own visibility settings (Public / Logged-In Users /
+    Non-Logged-In Users / Administrative Users / Custom group- or language-restricted) - the
+    same rules that apply when viewing the page in the web UI, see the `visibility` field of the
+    `CustomPage` schema below. A page returns `403` on `/custom-pages/page/{id}` when the
+    requesting user is not allowed to view it, and is silently omitted from the list endpoints.
+    Since that visibility check runs in addition to, and after, the regular database pagination,
+    a listing page can come back with fewer results than `limit` (or, rarely, empty) when
+    restricted pages are mixed into it, and `total`/`pages` may be slightly higher than what a
+    given user will actually see across all pages combined.
+  version: 1.0.0
+  title: HumHub - Custom Pages API
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+paths:
+  /custom-pages:
+    get:
+      tags:
+        - Custom Pages
+      summary: Find all custom pages
+      description: |
+        Returns all custom pages the current user is allowed to view, ordered by creation date
+        descending. Pass `contentcontainer_id=0` to only return global custom pages (equivalent
+        to `/custom-pages/global`), or a specific container id to only return that container's
+        pages (equivalent to `/custom-pages/container/{containerId}`).
+      parameters:
+        - name: contentcontainer_id
+          in: query
+          required: false
+          description: Filter by content container id. Use `0` for global pages.
+          schema:
+            type: integer
+        - $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/parameters/pageParam
+        - $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/parameters/limitParam
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/schemas/totalProperty
+                  page:
+                    $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/schemas/pageProperty
+                  pages:
+                    $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/schemas/pagesProperty
+                  links:
+                    $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/schemas/linksProperty
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CustomPage"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid contentcontainer_id parameter.
+  /custom-pages/global:
+    get:
+      tags:
+        - Custom Pages
+      summary: Find all global custom pages
+      description: Alias for `/custom-pages?contentcontainer_id=0`.
+      parameters:
+        - $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/parameters/pageParam
+        - $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/parameters/limitParam
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/schemas/totalProperty
+                  page:
+                    $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/schemas/pageProperty
+                  pages:
+                    $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/schemas/pagesProperty
+                  links:
+                    $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/schemas/linksProperty
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CustomPage"
+  "/custom-pages/container/{containerId}":
+    get:
+      tags:
+        - Custom Pages
+      summary: Find all custom pages by container
+      description: ""
+      parameters:
+        - name: containerId
+          in: path
+          description: ID of content container
+          required: true
+          schema:
+            type: integer
+        - $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/parameters/pageParam
+        - $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/parameters/limitParam
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/schemas/totalProperty
+                  page:
+                    $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/schemas/pageProperty
+                  pages:
+                    $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/schemas/pagesProperty
+                  links:
+                    $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/components/schemas/linksProperty
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CustomPage"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Content container not found!
+  "/custom-pages/page/{id}":
+    get:
+      tags:
+        - Custom Page
+      summary: Get custom page by id
+      description: ""
+      parameters:
+        - name: id
+          in: path
+          description: The id of the custom page
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomPage"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 403
+                  message:
+                    type: string
+                    example: You cannot view this content!
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: Requested content not found!
+servers:
+  - url: /api/v1
+components:
+  securitySchemes:
+    _ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/common.yaml#/securityDefinitions
+  schemas:
+    CustomPage:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+          example: 123
+        title:
+          type: string
+          example: My custom page
+        type:
+          type: integer
+          format: int64
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+          description: |
+            Content type of the page:
+              * `1` - Link
+              * `2` - Html
+              * `3` - Iframe
+              * `4` - Markdown
+              * `5` - Template
+              * `6` - Php
+          example: 2
+        target:
+          type: string
+          description: |
+            Category/target key this page is attached to, e.g. `SpaceMenu` (space navigation),
+            `StartPage`, `TopMenuWidget`, `FooterMenuWidget`, `AccountMenuWidget`,
+            `WithOutMenu` (direct link, not added to any navigation), `PeopleButtonsWidget`,
+            `Dashboard`, `SpaceStreamSidebar`. Available targets depend on whether the page is a
+            global or space page.
+          example: SpaceMenu
+        icon:
+          type: string
+          example: fa-file-text-o
+        sort_order:
+          type: integer
+          format: int64
+          nullable: true
+          description: Menu position. `null` when the page has no menu entry (e.g. a snippet).
+          example: 100
+        in_new_window:
+          type: boolean
+          example: false
+        url:
+          type: string
+          description: Url shortcut/slug of the page, if configured.
+          example: my-custom-page
+        abstract:
+          type: string
+          nullable: true
+          description: Short description shown on the wall entry, if the page has one.
+          example: Short description
+        cssClass:
+          type: string
+          nullable: true
+          example: team-page
+        page_content:
+          type: string
+          nullable: true
+          description: |
+            Raw, unrendered page content as stored - meaning depends on `type`: Html/Markdown
+            source, the target URL for a Link page, or the iframe URL for an Iframe page.
+          example: "# Raw content"
+        rendered_content:
+          type: string
+          nullable: true
+          readOnly: true
+          description: |
+            The page rendered to HTML, as it would be displayed in the web UI. `null` if
+            rendering failed (the error is logged server-side).
+          example: "<h1>Rendered content</h1><p>… as displayed…</p>"
+        text_content:
+          type: string
+          nullable: true
+          readOnly: true
+          description: Plain-text version of `rendered_content` (HTML tags stripped, whitespace collapsed).
+          example: "Rendered content… as displayed…"
+        visibility:
+          type: integer
+          format: int64
+          enum:
+            - 0
+            - 1
+            - 3
+            - 4
+            - 5
+          description: |
+            Who can view the page:
+              * `0` - Private (space members only, or logged-in users for global pages)
+              * `1` - Public (space visitors, or anyone for global pages)
+              * `3` - Administrative Users only (global pages only)
+              * `4` - Non-Logged-In Users only / guests only (global pages only)
+              * `5` - Custom (restricted to specific groups and/or languages, see the module's
+                settings for this page)
+          example: 1
+        hide_menu:
+          type: boolean
+          example: false
+        page_type:
+          type: string
+          readOnly: true
+          enum:
+            - page
+            - snippet
+          example: page
+        template_id:
+          type: integer
+          format: int64
+          nullable: true
+          description: Layout template id, only set when `type` is `5` (Template).
+          example: 0
+        page_url:
+          type: string
+          readOnly: true
+          example: https://example.org/s/space/custom_pages/view?id=123
+        permalink:
+          type: string
+          readOnly: true
+          example: https://example.org/content/perma?id=999
+        content:
+          $ref: https://raw.githubusercontent.com/humhub/rest/master/docs/swagger/content.yaml#/components/schemas/Content

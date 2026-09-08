@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.12.21 (Unreleased)
---------------------
+1.12.21 (September 8, 2026)
+---------------------------
 - Enh: Automated code refactoring for HumHub 1.18.1 using Rector
 - Enh #536: Add read-only REST API end points
 

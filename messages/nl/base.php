@@ -5,7 +5,7 @@ return [
   '<strong>Edit</strong> snippet' => '<strong>Bewerk</strong> snipper',
   'Activities' => 'Activiteiten',
   'Activity' => 'Activiteit',
-  'Activity content ID' => 'Activiteitsinhoud-ID',
+  'Activity ID' => 'Activiteits-ID',
   'Add' => 'Toevoegen',
   'Add a file icon before the title' => 'Voeg een bestandspictogram toe vóór de titel',
   'Additional IFrame Attributes' => 'Extra IFrame-kenmerken',

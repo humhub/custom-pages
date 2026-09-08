@@ -9,7 +9,7 @@
 namespace humhub\modules\custom_pages;
 
 use humhub\components\ActiveRecord;
-use humhub\libs\ProfileImage;
+use humhub\components\assets\AssetImage;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\custom_pages\helpers\Url;
@@ -64,7 +64,7 @@ class Module extends ContentContainerModule
             ContentContainerActiveRecord::class => [
                 'getUrl',
             ],
-            ProfileImage::class => [
+            AssetImage::class => [
                 'getUrl',
             ],
             ContainerParentVariable::class => [
@@ -79,7 +79,7 @@ class Module extends ContentContainerModule
             ],
             SimpleXMLElement::class => '*',
             ActiveRecord::class => '*',
-            ProfileImage::class => '*',
+            AssetImage::class => '*',
             ContainerParentVariable::class => '*',
         ],
     ];

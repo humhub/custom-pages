@@ -13,3 +13,4 @@ jobs:
     with:
       module-id: custom_pages
       use-rest-module: true
+      rest-module-branch: develop

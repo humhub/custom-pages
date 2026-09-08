@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.13.2 (Unreleased)
+-------------------
+- Fix: Remove deprecated function `curl_close()`
+
 1.13.1 (July 7, 2026)
 ---------------------
 - Fix #530: Update content container images

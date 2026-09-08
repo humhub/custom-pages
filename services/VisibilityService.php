@@ -103,10 +103,7 @@ class VisibilityService
 
     public function initDefault(): void
     {
-        if ($this->page->visibility === null) {
-            // Get first available visibility depending on global settings and the page options
-            $this->page->visibility = min(array_keys($this->getOptions()));
-        }
+        $this->page->visibility ??= min(array_keys($this->getOptions()));
     }
 
     /**

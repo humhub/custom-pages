@@ -68,9 +68,7 @@ class AdminController extends Controller
     {
         $model = Template::findOne(['id' => $id]);
 
-        if ($model === null) {
-            $model = new Template(['type' => Template::TYPE_LAYOUT]);
-        }
+        $model ??= new Template(['type' => Template::TYPE_LAYOUT]);
 
         $model->scenario = 'edit';
 

@@ -101,9 +101,7 @@ class m241220_101915_template_elements extends Migration
         foreach ($elements->each() as $element) {
             $definitionId = null;
             if (!empty($element['definition_id'])) {
-                if (!isset($definitionIds[$element['definition_id']])) {
-                    $definitionIds[$element['definition_id']] = $this->migrateDefinition($element['definition_id'], $oldDefinitionTable, $definitionDynAttributes);
-                }
+                $definitionIds[$element['definition_id']] ??= $this->migrateDefinition($element['definition_id'], $oldDefinitionTable, $definitionDynAttributes);
                 $definitionId = $definitionIds[$element['definition_id']];
             }
 

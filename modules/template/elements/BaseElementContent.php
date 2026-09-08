@@ -246,10 +246,7 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
             $this->definitionInstance = call_user_func($this->definitionModel . "::findOne", ['id' => $this->element_id]);
         }
 
-        if ($this->definitionInstance === null) {
-            // Create empty definition instance
-            $this->definitionInstance = Yii::createObject($this->definitionModel);
-        }
+        $this->definitionInstance ??= Yii::createObject($this->definitionModel);
 
         $this->definitionInstance->setFormName($this->formName() . '[definitionPostData]');
 

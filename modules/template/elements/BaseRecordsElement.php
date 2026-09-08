@@ -42,9 +42,7 @@ abstract class BaseRecordsElement extends BaseElementContent implements Template
      */
     public function getItems(): iterable
     {
-        if ($this->records === null) {
-            $this->records = $this->getQuery()->all();
-        }
+        $this->records ??= $this->getQuery()->all();
 
         yield from $this->records;
     }

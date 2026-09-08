@@ -52,9 +52,7 @@ class ContainerElementVariable extends BaseElementVariable
 
     private function getItems(): array
     {
-        if ($this->_items === null) {
-            $this->_items = $this->elementContent->items;
-        }
+        $this->_items ??= $this->elementContent->items;
 
         return $this->_items;
     }

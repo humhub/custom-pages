@@ -136,12 +136,20 @@
   transition: background 0.3s;
 }
 
-.cp-structure-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1031;
+.cp-structure-label {
+  position: absolute;
+  z-index: 1028; // below the fixed top bars
+  padding: 5px 8px;
+  border-radius: 3px 3px 0 0;
+  background: var(--cp-container-item-color);
+  color: var(--text-color-contrast);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+
+  &.cp-structure-label-container {
+    background: var(--cp-container-color);
+  }
 }

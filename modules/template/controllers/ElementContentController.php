@@ -14,6 +14,7 @@ use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\components\TemplateCache;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\models\forms\EditMultipleElementsForm;
+use humhub\modules\custom_pages\modules\template\services\TemplateInstanceRendererService;
 use humhub\modules\custom_pages\modules\template\widgets\EditMultipleElementsModal;
 use Yii;
 use yii\base\Response;
@@ -91,23 +92,35 @@ class ElementContentController extends ContentContainerController
      * @param int $id
      * @return Response
      */
-    public function actionEditMultiple($id, $parentId = null)
+    public function actionEditMultiple($id, $parentId = null, $elementId = null)
     {
         $templateInstance = TemplateInstance::findOne(['id' => $id]);
 
-        $form = new EditMultipleElementsForm();
+        $form = new EditMultipleElementsForm(['elementFilter' => $elementId ? (int) $elementId : null]);
         $form->editDefault = false;
         $form->setOwner($templateInstance, $templateInstance->template_id);
 
         if ($form->load(Yii::$app->request->post()) && $form->save()) {
             TemplateCache::flushByTemplateInstance($templateInstance);
-            return $this->asJson(['success' => true]);
+            $response = ['success' => true];
+
+            if ($form->elementFilter !== null) {
+                // Inline editing of a single element: return its new output to replace it on the page
+                TemplateInstanceRendererService::setEditMode();
+                $response['output'] = (string) $form->getSingleContent()?->getTemplateVariable();
+            }
+
+            return $this->asJson($response);
         }
+
+        $title = $form->elementFilter !== null
+            ? Yii::t('CustomPagesModule.template', '<strong>Edit</strong> element {name}', ['name' => $form->getSingleContent()?->element?->getTitle()])
+            : Yii::t('CustomPagesModule.template', '<strong>Edit</strong> elements of {templateName}', ['templateName' => $form->template->name]);
 
         return $this->asJson([
             'output' => $this->renderAjaxPartial(EditMultipleElementsModal::widget([
                 'model' => $form,
-                'title' => Yii::t('CustomPagesModule.template', '<strong>Edit</strong> elements of {templateName}', ['templateName' => $form->template->name]),
+                'title' => $title,
                 'backUrl' => $parentId ? $this->createEditMultipleUrl((int) $parentId) : null,
             ])),
         ]);

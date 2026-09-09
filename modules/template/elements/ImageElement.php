@@ -76,6 +76,14 @@ class ImageElement extends FileElement
     /**
      * @inheritdoc
      */
+    /**
+     * @inheritdoc
+     */
+    public static function isInlineEditingEnabledByDefault(): bool
+    {
+        return true;
+    }
+
     public function __toString(): string
     {
         if (!$this->hasFile()) {

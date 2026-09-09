@@ -23,7 +23,7 @@ $footer .= $model->hasEditableFields()
     ? ModalButton::cancel() .
     ModalButton::save()
         ->submit()
-        ->action('editMultipleElementsSubmit', null, '#templatePageRoot')
+        ->action($model->elementFilter !== null ? 'editInlineElementSubmit' : 'editMultipleElementsSubmit', null, '#templatePageRoot')
     : ModalButton::cancel($backUrl ? null : Yii::t('CustomPagesModule.base', 'Back'));
 ?>
 <?php $form = Modal::beginFormDialog([

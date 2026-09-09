@@ -27,6 +27,7 @@ use yii\db\Expression;
  * @property string $content_type
  * @property string $title
  * @property string $dyn_attributes
+ * @property int|null $inline_editing
  *
  * @property-read BaseElementContent[] $contents
  * @property-read Template|null $template
@@ -65,6 +66,7 @@ class TemplateElement extends ActiveRecord
             ['name', 'uniqueTemplateElementName', 'on' => ['create']],
             ['name', 'validateReservedName'],
             [['template_id'], 'integer'],
+            [['inline_editing'], 'boolean'],
         ];
     }
 
@@ -79,8 +81,8 @@ class TemplateElement extends ActiveRecord
     public function scenarios()
     {
         return [
-            self::SCENARIO_CREATE => ['name', 'content_type', 'template_id', 'title'],
-            self::SCENARIO_EDIT_ADMIN => ['title'],
+            self::SCENARIO_CREATE => ['name', 'content_type', 'template_id', 'title', 'inline_editing'],
+            self::SCENARIO_EDIT_ADMIN => ['title', 'inline_editing'],
             self::SCENARIO_EDIT => [],
         ];
     }
@@ -93,12 +95,37 @@ class TemplateElement extends ActiveRecord
         return [
             'name' => Yii::t('CustomPagesModule.model', 'Placeholder name'),
             'title' => Yii::t('CustomPagesModule.model', 'Label'),
+            'inline_editing' => Yii::t('CustomPagesModule.model', 'Enable inline editing'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'inline_editing' => Yii::t('CustomPagesModule.model', 'Marks the output of this element on the page in edit mode, so it can be edited directly there. Disable it if the element is used inside HTML attributes like "alt", "src" or "class", where the marker would break the markup.'),
         ];
     }
 
     public function getTitle()
     {
         return $this->title ?: $this->name;
+    }
+
+    /**
+     * @return bool True if the output of this element is marked on the page in edit mode for inline editing,
+     *              falls back to the default of the content type if not configured for the element
+     */
+    public function isInlineEditingEnabled(): bool
+    {
+        if ($this->inline_editing !== null) {
+            return (bool) $this->inline_editing;
+        }
+
+        return is_subclass_of($this->content_type, BaseElementContent::class)
+            && $this->content_type::isInlineEditingEnabledByDefault();
     }
 
     /**

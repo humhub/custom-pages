@@ -114,6 +114,27 @@ span[data-editor-container-item-id] {
     background: var(--cp-container-color);
 }
 
+// Element marked for the inline editing, a click on it opens its edit dialog
+[data-editor-element-id].cp-editor-element-hover {
+    outline: 1px dashed var(--cp-element-color) !important;
+    outline-offset: -1px;
+    cursor: pointer;
+
+    * {
+        cursor: pointer;
+    }
+}
+
+.cp-editor-element-empty {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px dashed var(--cp-element-color);
+    border-radius: 3px;
+    color: var(--cp-element-color);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
 [data-actions-page-id], [data-actions-container-item-id] {
     > i.fa {
         background: var(--cp-container-item-color);

@@ -76,7 +76,17 @@ class TextElement extends BaseElementContent implements \Stringable
     {
         return [
             'content' => Yii::t('CustomPagesModule.template', 'Content'),
-            'inline_text' => Yii::t('CustomPagesModule.template', 'Is inline text'),
+            'inline_text' => Yii::t('CustomPagesModule.template', 'Allow inline HTML'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'inline_text' => Yii::t('CustomPagesModule.template', 'The text is output as purified HTML and may contain inline formatting like bold text or links. Uncheck it to encode the output, for example if the element is used as an attribute value.'),
         ];
     }
 
@@ -109,12 +119,7 @@ class TextElement extends BaseElementContent implements \Stringable
         $result = $form->field($this, 'content')->textInput(['maxlength' => 255])->label(false);
 
         if ($this->isAdminEditMode()) {
-            $result .= $form->field($this, 'inline_text')->checkbox()
-                . Html::tag(
-                    'div',
-                    Yii::t('CustomPagesModule.base', 'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.'),
-                    ['class' => 'alert alert-info'],
-                );
+            $result .= $form->field($this, 'inline_text')->checkbox();
         }
 
         return $result;

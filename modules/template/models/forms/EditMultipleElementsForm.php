@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
@@ -28,6 +29,11 @@ class EditMultipleElementsForm extends \yii\base\Model
      * @var ContentFormItem[]
      */
     public array $contentMap = [];
+
+    /**
+     * @var int|null Restricts the form to a single element, used for the inline editing on the page
+     */
+    public ?int $elementFilter = null;
     public $scenario = 'edit';
 
     public function setOwnerTemplateId($templateId)
@@ -61,6 +67,10 @@ class EditMultipleElementsForm extends \yii\base\Model
         $elementContents = $this->template->getElementContents($templateInstance);
 
         foreach ($elementContents as $elementContent) {
+            if ($this->elementFilter !== null && (int) $elementContent->element_id !== $this->elementFilter) {
+                continue;
+            }
+
             if ($elementContent instanceof ContainerElement && $templateInstance === null) {
                 // The items of a container can only be managed for an existing template instance
                 continue;
@@ -79,6 +89,16 @@ class EditMultipleElementsForm extends \yii\base\Model
 
             $this->contentMap[$contentItem->key] = $contentItem;
         }
+    }
+
+    /**
+     * @return BaseElementContent|null The content of the single element in case of the element filter
+     */
+    public function getSingleContent(): ?BaseElementContent
+    {
+        $contentItem = reset($this->contentMap);
+
+        return $contentItem instanceof ContentFormItem ? $contentItem->content : null;
     }
 
     /**

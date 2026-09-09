@@ -17,6 +17,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
     };
 
     TemplateInlineEditor.prototype.initHighlight = function () {
+        const that = this;
         $(document).on('mouseenter', '[data-editor-page-id]', function () {
             if ($(this).find('[data-editor-page-id].cp-editor-page-hover').length) {
                 return;
@@ -111,6 +112,19 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
                 $('[data-actions-container-item-id=' + containerItemId+ ']').hide();
                 $('.cp-structure-active').removeClass('cp-structure-active');
             }
+        }).on('mouseenter', '[data-editor-element-id]', function () {
+            // Element marked for the inline editing: highlighted on hover, a click opens its edit dialog
+            $(this).addClass('cp-editor-element-hover');
+        }).on('mouseleave', '[data-editor-element-id]', function () {
+            $(this).removeClass('cp-editor-element-hover');
+        }).on('click', '[data-editor-element-id]', function (e) {
+            // Plain left click only, so links inside the content can still be opened with a modifier key
+            if (e.which !== 1 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
+                return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            that.editElement(this);
         }).on('mouseenter mouseleave', '[data-actions-container-item-id]', function (e) {
             const containerItemId = $(this).data('actions-container-item-id');
             const container = $('[data-editor-container-item-id=' + containerItemId + ']').closest('[data-editor-container-id]');
@@ -281,6 +295,53 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             that._destroyInput();
             if (response.success) {
                 client.reload();
+            } else {
+                modal.global.setDialog(response);
+            }
+        });
+    };
+
+    TemplateInlineEditor.prototype.editElement = function (element) {
+        const structure = this.structure();
+        if (!structure || !element) {
+            return;
+        }
+
+        // The element belongs to the instance of the surrounding container item, otherwise to the page itself
+        const $element = $(element);
+        const containerItem = $element.closest('[data-editor-container-item-id]');
+        const templateInstanceId = containerItem.length
+            ? $('.cp-structure [data-container-item-id="' + containerItem.data('editor-container-item-id') + '"]').data('template-instance-id')
+            : structure.getRootTemplateInstanceId();
+
+        this.editingElement = element;
+        modal.global.load(structure.data('elements-edit-url'), {
+            dataType: 'json',
+            data: {
+                id: templateInstanceId,
+                elementId: $element.data('editor-element-id'),
+            },
+        });
+    };
+
+    TemplateInlineEditor.prototype.editInlineElementSubmit = function (evt) {
+        const that = this;
+        that._updateInputValue();
+        that._removeDisabledFields(evt.$form);
+
+        client.submit(evt, {dataType: 'json'}).then(function (response) {
+            that._destroyInput();
+            if (response.success) {
+                const $output = $(response.output);
+                if (that.editingElement && $output.length) {
+                    // Replace only the edited element on the page
+                    $(that.editingElement).replaceWith($output);
+                    additions.applyTo($output);
+                    that.editingElement = null;
+                    modal.global.close();
+                } else {
+                    client.reload();
+                }
             } else {
                 modal.global.setDialog(response);
             }

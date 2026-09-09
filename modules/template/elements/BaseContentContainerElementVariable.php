@@ -37,7 +37,7 @@ class BaseContentContainerElementVariable extends BaseRecordElementVariable
         return parent::setRecord($record);
     }
 
-    public function __toString(): string
+    protected function renderOutput(): string
     {
         return (string) Html::encode($this->record?->getDisplayName());
     }

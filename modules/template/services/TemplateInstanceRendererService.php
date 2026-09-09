@@ -99,9 +99,9 @@ class TemplateInstanceRendererService
         return true;
     }
 
-    public static function setEditMode(): void
+    public static function setEditMode(bool $editMode = true): void
     {
-        self::$inEditMode = true;
+        self::$inEditMode = $editMode;
     }
 
     public static function inEditMode(): bool

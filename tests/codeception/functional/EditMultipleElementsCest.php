@@ -34,6 +34,21 @@ class EditMultipleElementsCest
         Assert::assertStringNotContainsString('This section has no editable elements', $output);
     }
 
+    public function testSingleElementDialogForInlineEditing(FunctionalTester $I)
+    {
+        $I->wantTo('edit a single element of a template instance from the page');
+        $I->amAdmin();
+
+        // Instance 3 uses the template "containerText" with the html element 5 and a container
+        $I->amOnRoute('/custom_pages/template/element-content/edit-multiple', ['id' => 3, 'elementId' => 5]);
+        $output = json_decode($I->grabPageSource(), true)['output'] ?? '';
+        Assert::assertSame(1, substr_count($output, 'template-edit-multiple-tab'));
+        Assert::assertStringContainsString('Content[2][content]', $output);
+        Assert::assertStringContainsString('editInlineElementSubmit', $output);
+        Assert::assertStringContainsString('<strong>Edit</strong> element text', $output);
+        Assert::assertStringNotContainsString('cp-container-items', $output);
+    }
+
     public function testNoContainerItemsWhenAddingItem(FunctionalTester $I)
     {
         $I->wantTo('not see any container items while adding a new item');

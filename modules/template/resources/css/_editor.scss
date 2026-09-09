@@ -88,7 +88,11 @@ span[data-editor-container-item-id] {
     position: absolute;
     display: inline-block;
     max-width: max-content;
-    z-index: 1;
+    z-index: 1034; // above the structure view, so the buttons stay reachable when it overlaps them
+
+    &.cp-editor-actions-offscreen {
+        visibility: hidden;
+    }
 }
 
 [data-actions-page-id], [data-actions-container-id], [data-actions-container-item-id] {
@@ -99,6 +103,11 @@ span[data-editor-container-item-id] {
         cursor: pointer;
         color: var(--text-color-contrast);
     }
+}
+
+.cp-editor-actions-pinned > i.fa {
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 [data-actions-container-id] > i.fa {

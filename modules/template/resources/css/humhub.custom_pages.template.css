@@ -134,7 +134,10 @@ span[data-editor-container-item-id] {
   position: absolute;
   display: inline-block;
   max-width: max-content;
-  z-index: 1;
+  z-index: 1034;
+}
+[data-actions-page-id].cp-editor-actions-offscreen, [data-actions-container-id].cp-editor-actions-offscreen, [data-actions-container-item-id].cp-editor-actions-offscreen {
+  visibility: hidden;
 }
 
 [data-actions-page-id] > i.fa, [data-actions-container-id] > i.fa, [data-actions-container-item-id] > i.fa {
@@ -143,6 +146,11 @@ span[data-editor-container-item-id] {
   border-radius: 3px 3px 0 0;
   cursor: pointer;
   color: var(--text-color-contrast);
+}
+
+.cp-editor-actions-pinned > i.fa {
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 [data-actions-container-id] > i.fa {

@@ -138,6 +138,19 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         this.$.css('overflow-y', this.$[0].scrollHeight > this.$.outerHeight() + 1 ? 'auto' : '');
     }
 
+    TemplateStructure.prototype.refresh = function () {
+        const that = this;
+        return client.html(this.data('structure-url'), {data: {id: this.getRootTemplateInstanceId()}}).then(function (response) {
+            const content = $('<div>').html(response.html).find('.cp-structure').html();
+            if (content) {
+                that.$.html(content);
+                that.initOverflow();
+            }
+        }).catch(function (e) {
+            module.log.error(e, true);
+        });
+    }
+
     TemplateStructure.prototype.getPositionData = function () {
         const data = window.localStorage.getItem('cp-structure');
         return data ? JSON.parse(data) : {};

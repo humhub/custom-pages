@@ -8,6 +8,7 @@ Changelog
 - Enh: Hide the TinyMCE "Get all features" promotion link in the HTML editor
 - Fix: Edit buttons of template elements were hidden behind the structure view when it overlapped them
 - Fix: Edit button of a single container item was covered by the add button of its container or disappeared when moving the mouse over it
+- Enh: Manage the items of container elements (edit, sort, add, delete) in the "Edit elements" dialog of a template instance
 
 1.12.21 (September 8, 2026)
 ---------------------------

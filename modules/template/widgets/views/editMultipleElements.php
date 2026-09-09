@@ -16,16 +16,20 @@ use humhub\widgets\modal\ModalButton;
 
 /* @var $model EditMultipleElementsForm */
 /* @var $title string */
+/* @var $backUrl string|null */
+
+$footer = $backUrl ? ModalButton::light(Yii::t('CustomPagesModule.base', 'Back'))->load($backUrl) : '';
+$footer .= $model->hasEditableFields()
+    ? ModalButton::cancel() .
+    ModalButton::save()
+        ->submit()
+        ->action('editMultipleElementsSubmit', null, '#templatePageRoot')
+    : ModalButton::cancel($backUrl ? null : Yii::t('CustomPagesModule.base', 'Back'));
 ?>
 <?php $form = Modal::beginFormDialog([
     'title' => $title,
     'size' => empty($model->contentMap) ? Modal::SIZE_DEFAULT : Modal::SIZE_LARGE,
-    'footer' => empty($model->contentMap)
-        ? ModalButton::cancel(Yii::t('CustomPagesModule.base', 'Back'))
-        : ModalButton::cancel() .
-        ModalButton::save()
-            ->submit()
-            ->action('editMultipleElementsSubmit', null, '#templatePageRoot'),
+    'footer' => $footer,
     'form' => ['enableClientValidation' => false],
 ]) ?>
 <?= Html::hiddenInput('editMultipleElements', true); ?>
@@ -35,6 +39,7 @@ use humhub\widgets\modal\ModalButton;
     <?php foreach ($model->contentMap as $contentItem) : ?>
 
         <?php $isContainer = $contentItem->content instanceof ContainerElement; ?>
+        <?php $isEmpty = $isContainer ? !$contentItem->content->hasItems() : $contentItem->content->isNewRecord; ?>
 
         <div class="panel panel-default">
             <div class="template-edit-multiple-tab panel-heading" tabindex="0">
@@ -43,14 +48,13 @@ use humhub\widgets\modal\ModalButton;
                     <i class="switchIcon fa fa-caret-down" aria-hidden="true"></i>
                 </strong>
                 <?= Badge::success($contentItem->elementContent->label)->right() ?>
-                <?php if ($contentItem->content->isNewRecord): ?>
+                <?php if ($isEmpty): ?>
                     <?= Badge::warning(Yii::t('CustomPagesModule.view', 'Empty'))->right() ?>
                 <?php endif; ?>
-                <?php if ($isContainer && $contentItem->content->definition->allow_multiple): ?>
+                <?php if ($isContainer && $contentItem->content->definition?->allow_multiple): ?>
                     <?= Badge::success(Yii::t('CustomPagesModule.view', 'Multiple'))->right() ?>
                 <?php endif; ?>
             </div>
-            <?php // This was only set for container elements before. ?>
             <div class="panel-body<?= $counter != 0 ? ' d-none' : '' ?>" data-element-index="<?= $counter ?>">
                 <?= TemplateContentFormFields::widget(['form' => $form, 'model' => $contentItem->content]) ?>
             </div>

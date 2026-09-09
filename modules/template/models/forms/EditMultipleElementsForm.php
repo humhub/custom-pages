@@ -61,8 +61,8 @@ class EditMultipleElementsForm extends \yii\base\Model
         $elementContents = $this->template->getElementContents($templateInstance);
 
         foreach ($elementContents as $elementContent) {
-            if ($elementContent instanceof ContainerElement) {
-                // Skip Container from the edit form because it has no editable fields
+            if ($elementContent instanceof ContainerElement && $templateInstance === null) {
+                // The items of a container can only be managed for an existing template instance
                 continue;
             }
 
@@ -71,8 +71,28 @@ class EditMultipleElementsForm extends \yii\base\Model
                 'element' => $elementContent->element,
                 'editDefault' => $this->editDefault,
                 'scenario' => $this->scenario]);
+
+            if ($elementContent instanceof ContainerElement && $contentItem->content->isNewRecord) {
+                // Container without own content yet: the item list needs the instance to add the first item
+                $contentItem->content->template_instance_id = $templateInstance->id;
+            }
+
             $this->contentMap[$contentItem->key] = $contentItem;
         }
+    }
+
+    /**
+     * @return bool True if the form contains an element with editable fields, containers only list their items
+     */
+    public function hasEditableFields(): bool
+    {
+        foreach ($this->contentMap as $contentItem) {
+            if (!($contentItem->content instanceof ContainerElement)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getElement($name)

@@ -357,6 +357,25 @@ class ContainerContentController extends ContentContainerController
      * @param TemplateInstance $instance
      * @return bool
      */
+    /**
+     * Renders the structure view of a template instance, used to refresh it after changes from other views
+     */
+    public function actionStructure($id)
+    {
+        $templateInstance = TemplateInstance::findOne(['id' => $id]);
+        if (!$templateInstance) {
+            throw new NotFoundHttpException('Template instance is not found!');
+        }
+
+        if (!$this->isValidTemplateInstance($templateInstance)) {
+            throw new BadRequestHttpException('Invalid template instance!');
+        }
+
+        TemplateInstanceRendererService::setEditMode();
+
+        return TemplateStructure::widget(['templateInstance' => $templateInstance]);
+    }
+
     private function isValidTemplateInstance(TemplateInstance $instance): bool
     {
         $instanceContainer = $instance->page?->content?->container;

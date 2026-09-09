@@ -20,6 +20,7 @@ use yii\base\Response;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
+use yii\helpers\Url;
 
 /**
  * This controller is used to manage TemplateElementContent instances.
@@ -90,7 +91,7 @@ class ElementContentController extends ContentContainerController
      * @param int $id
      * @return Response
      */
-    public function actionEditMultiple($id)
+    public function actionEditMultiple($id, $parentId = null)
     {
         $templateInstance = TemplateInstance::findOne(['id' => $id]);
 
@@ -107,7 +108,21 @@ class ElementContentController extends ContentContainerController
             'output' => $this->renderAjaxPartial(EditMultipleElementsModal::widget([
                 'model' => $form,
                 'title' => Yii::t('CustomPagesModule.template', '<strong>Edit</strong> elements of {templateName}', ['templateName' => $form->template->name]),
+                'backUrl' => $parentId ? $this->createEditMultipleUrl((int) $parentId) : null,
             ])),
         ]);
+    }
+
+    /**
+     * URL of the edit dialog of a template instance, e.g. the parent instance of a container item
+     */
+    private function createEditMultipleUrl(int $templateInstanceId): string
+    {
+        $route = '/custom_pages/template/element-content/edit-multiple';
+        $params = ['id' => $templateInstanceId];
+
+        return $this->contentContainer
+            ? $this->contentContainer->createUrl($route, $params)
+            : Url::to(array_merge([$route], $params));
     }
 }

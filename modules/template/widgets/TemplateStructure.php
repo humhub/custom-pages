@@ -71,6 +71,7 @@ class TemplateStructure extends JsWidget
             'item-delete-url' => $this->createUrl('/custom_pages/template/container-content/delete-item'),
             'instance-export-url' => $this->createUrl('/custom_pages/template/container-content/export-instance'),
             'instance-import-url' => $this->createUrl('/custom_pages/template/container-content/import-instance'),
+            'structure-url' => $this->createUrl('/custom_pages/template/container-content/structure'),
         ];
     }
 

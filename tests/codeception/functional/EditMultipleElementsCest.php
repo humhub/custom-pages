@@ -39,8 +39,8 @@ class EditMultipleElementsCest
         $I->wantTo('not see any container items while adding a new item');
         $I->amAdmin();
 
-        // Add a new "containerText" item (template with a container) to the container content 6
-        $I->amOnRoute('/custom_pages/template/container-content/edit-add-item', ['elementContentId' => 6, 'templateId' => 3]);
+        // Add a new "containerText" item (template with a container) to the multiple container content 7
+        $I->amOnRoute('/custom_pages/template/container-content/edit-add-item', ['elementContentId' => 7, 'templateId' => 3]);
         $output = json_decode($I->grabPageSource(), true)['output'] ?? '';
         Assert::assertNotEmpty($output);
         Assert::assertStringNotContainsString('cp-container-items', $output);

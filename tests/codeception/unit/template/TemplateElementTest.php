@@ -38,8 +38,8 @@ class TemplateElementTest extends HumHubDbTestCase
     {
         $result = TemplateInstanceRendererService::instance($this->owner->page, true)->render();
 
-        $this->assertStringContainsString('<p>Default</p>', $result);
-        // Edit mode is not allowed for elements except of Container
+        // In edit mode the output is marked for the inline editing, the old edit attributes do not exist anymore
+        $this->assertStringContainsString('<p data-editor-element-id="1">Default</p>', $result);
         $this->assertStringNotContainsString('data-template-element="test_content"', $result);
         $this->assertStringNotContainsString('data-template-empty="0"', $result);
     }
@@ -53,8 +53,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $result = TemplateInstanceRendererService::instance($this->owner->page, true)->render();
 
-        $this->assertStringContainsString('<p>Non Default</p>', $result);
-        // Edit mode is not allowed for elements except of Container
+        $this->assertStringContainsString('<p data-editor-element-id="1">Non Default</p>', $result);
         $this->assertStringNotContainsString('data-template-element="test_content"', $result);
         $this->assertStringNotContainsString('data-template-empty="0"', $result);
         $this->assertStringNotContainsString('data-template-empty="1"', $result);
@@ -69,8 +68,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $result = TemplateInstanceRendererService::instance($this->owner->page, true)->render();
 
-        $this->assertStringContainsString('<p>Non Default2</p>', $result);
-        // Edit mode is not allowed for elements except of Container
+        $this->assertStringContainsString('<p data-editor-element-id="2">Non Default2</p>', $result);
         $this->assertStringNotContainsString('data-template-element="test_text"', $result);
         $this->assertStringNotContainsString('data-template-empty="1"', $result);
     }
@@ -87,7 +85,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $result = TemplateInstanceRendererService::instance($this->owner->page, true)->render();
 
-        $this->assertStringContainsString('<p>Non Default New</p>', $result);
+        $this->assertStringContainsString('<p data-editor-element-id="2">Non Default New</p>', $result);
         $this->assertNull(HtmlElement::findOne(['id' => $content->id]));
     }
 
@@ -99,7 +97,7 @@ class TemplateElementTest extends HumHubDbTestCase
 
         $result = TemplateInstanceRendererService::instance($this->owner->page, true)->render();
 
-        $this->assertStringContainsString('<p>Default2</p>', $result);
+        $this->assertStringContainsString('<p data-editor-element-id="1">Default2</p>', $result);
         // Get sure the old default content was removed
         $this->assertNull(HtmlElement::findOne(['id' => $this->defaultContent1->id]));
     }

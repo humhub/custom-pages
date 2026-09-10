@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.12.22 (Unreleased)
---------------------
+1.12.22 (September 10, 2026)
+----------------------------
 - Enh: Highlight the hovered element of the structure view with a colored frame and a name label instead of dimming the page
 - Enh: Keep the edit buttons of long template elements visible while scrolling
 - Enh: Hide the TinyMCE "Get all features" promotion link in the HTML editor

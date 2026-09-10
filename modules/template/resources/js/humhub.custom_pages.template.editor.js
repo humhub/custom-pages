@@ -18,11 +18,30 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
 
     TemplateInlineEditor.prototype.initHighlight = function () {
         const that = this;
+
+        // Hiding the action buttons is delayed a bit, so they survive a mouse path which leaves the block
+        // shortly before reaching the button, e.g. a diagonal move from the middle of a wide block
+        const hideTimeouts = {};
+        const cancelHide = function (key) {
+            if (hideTimeouts[key]) {
+                window.clearTimeout(hideTimeouts[key]);
+                delete hideTimeouts[key];
+            }
+        };
+        const scheduleHide = function (key, hide) {
+            cancelHide(key);
+            hideTimeouts[key] = window.setTimeout(function () {
+                delete hideTimeouts[key];
+                hide();
+            }, 300);
+        };
+
         $(document).on('mouseenter', '[data-editor-page-id]', function () {
             if ($(this).find('[data-editor-page-id].cp-editor-page-hover').length) {
                 return;
             }
             const pageId = $(this).data('editor-page-id');
+            cancelHide('page');
             const actionsSelector = '[data-actions-page-id=' + pageId + ']';
             const pageRow = $('.cp-structure > ul > li > .cp-structure-row');
             $(this).addClass('cp-editor-page-hover');
@@ -42,12 +61,17 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             alignActions(this, actionsSelector);
         }).on('mouseleave', '[data-editor-page-id]', function (e) {
             if (isOutside(e, ['[data-editor-page-id]', '[data-actions-page-id]'])) {
-                $('[data-editor-page-id]').removeClass('cp-editor-page-hover');
-                $('[data-actions-page-id]').hide();
+                scheduleHide('page', function () {
+                    $('[data-editor-page-id]').removeClass('cp-editor-page-hover');
+                    $('[data-actions-page-id]').hide();
+                });
             }
+        }).on('mouseenter', '[data-actions-page-id]', function () {
+            cancelHide('page');
         }).on('mouseenter', '[data-editor-container-id]', function () {
             const containerId = $(this).data('editor-container-id');
             const actionsSelector = '[data-actions-container-id=' + containerId + ']';
+            cancelHide('container:' + containerId);
             $(this).addClass('cp-editor-container-hover');
 
             if (!$(actionsSelector).length) {
@@ -72,18 +96,23 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             }).get();
             // The actions of the items inside belong to the same group as the container and its add button
             if (isOutside(e, ['[data-editor-container-id="' + containerId + '"]', '[data-actions-container-id="' + containerId + '"]', ...itemActions])) {
-                container.removeClass('cp-editor-container-hover');
-                $('[data-actions-container-id=' + containerId + ']').hide();
-                items.removeClass('cp-editor-container-hover');
-                if (itemActions.length) {
-                    $(itemActions.join(',')).hide();
-                }
+                scheduleHide('container:' + containerId, function () {
+                    container.removeClass('cp-editor-container-hover');
+                    $('[data-actions-container-id=' + containerId + ']').hide();
+                    items.removeClass('cp-editor-container-hover');
+                    if (itemActions.length) {
+                        $(itemActions.join(',')).hide();
+                    }
+                });
             }
+        }).on('mouseenter', '[data-actions-container-id]', function () {
+            cancelHide('container:' + $(this).data('actions-container-id'));
         }).on('mouseenter', '[data-editor-container-item-id]', function () {
             if ($(this).find('[data-editor-container-item-id].cp-editor-container-hover').length) {
                 return;
             }
             const containerItemId = $(this).data('editor-container-item-id');
+            cancelHide('item:' + containerItemId);
             const actionsSelector = '[data-actions-container-item-id=' + containerItemId + ']';
             const containerItemSelector = '.cp-structure [data-container-item-id=' + containerItemId + '] > li > .cp-structure-row';
             const containerItem = $(containerItemSelector);
@@ -108,9 +137,11 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             const containerId = $('[data-editor-container-item-id="' + containerItemId + '"]').closest('[data-editor-container-id]').data('editor-container-id');
             // The add button of the parent container belongs to the same group, moving onto it keeps the item actions
             if (isOutside(e, ['[data-editor-container-item-id="' + containerItemId + '"]', '[data-actions-container-item-id="' + containerItemId + '"]', '[data-actions-container-id="' + containerId + '"]'])) {
-                $('[data-editor-container-item-id=' + containerItemId+ ']').removeClass('cp-editor-container-hover');
-                $('[data-actions-container-item-id=' + containerItemId+ ']').hide();
-                $('.cp-structure-active').removeClass('cp-structure-active');
+                scheduleHide('item:' + containerItemId, function () {
+                    $('[data-editor-container-item-id=' + containerItemId + ']').removeClass('cp-editor-container-hover');
+                    $('[data-actions-container-item-id=' + containerItemId + ']').hide();
+                    $('.cp-structure-active').removeClass('cp-structure-active');
+                });
             }
         }).on('mouseenter', '[data-editor-element-id]', function () {
             // Element marked for the inline editing: highlighted on hover, a click opens its edit dialog
@@ -131,11 +162,15 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             if (container.length) {
                 const containerId = container.data('editor-container-id');
                 if (e.type === 'mouseenter') {
+                    cancelHide('item:' + containerItemId);
+                    cancelHide('container:' + containerId);
                     container.addClass('cp-editor-container-hover');
-                    $('[data-actions-container-id=' + container.data('editor-container-id') + ']').show();
-                } else if (isOutside(e, ['[data-editor-container-id="' + containerId+ '"]', '[data-actions-container-id="' + containerId+ '"]'])) {
-                    container.removeClass('cp-editor-container-hover');
-                    $('[data-actions-container-id=' + container.data('editor-container-id') + ']').hide();
+                    $('[data-actions-container-id=' + containerId + ']').show();
+                } else if (isOutside(e, ['[data-editor-container-id="' + containerId + '"]', '[data-actions-container-id="' + containerId + '"]'])) {
+                    scheduleHide('container:' + containerId, function () {
+                        container.removeClass('cp-editor-container-hover');
+                        $('[data-actions-container-id=' + containerId + ']').hide();
+                    });
                 }
             }
         });

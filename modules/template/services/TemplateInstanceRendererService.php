@@ -22,7 +22,10 @@ class TemplateInstanceRendererService
     private ?TemplateInstance $templateInstance = null;
     private bool $applyScriptNonce = true;
     private bool $ignoreCache = false;
-    private static ?bool $inEditMode = null;
+    /**
+     * The edit mode is stored per application instance (request), not statically, so it cannot leak between requests or tests
+     */
+    private const EDIT_MODE_PARAM = 'custom_pages.template.editMode';
 
     public function __construct(CustomPage $customPage)
     {
@@ -38,7 +41,7 @@ class TemplateInstanceRendererService
     public static function instance(CustomPage $customPage, bool $enableEditMode = false): self
     {
         if ($enableEditMode) {
-            self::$inEditMode = PagePermissionHelper::canEdit($customPage);
+            self::setEditMode(PagePermissionHelper::canEdit($customPage));
         }
 
         return new self($customPage);
@@ -101,11 +104,11 @@ class TemplateInstanceRendererService
 
     public static function setEditMode(bool $editMode = true): void
     {
-        self::$inEditMode = $editMode;
+        Yii::$app->params[self::EDIT_MODE_PARAM] = $editMode;
     }
 
     public static function inEditMode(): bool
     {
-        return self::$inEditMode === true;
+        return (Yii::$app->params[self::EDIT_MODE_PARAM] ?? false) === true;
     }
 }

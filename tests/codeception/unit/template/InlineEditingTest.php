@@ -17,6 +17,7 @@ class InlineEditingTest extends HumHubDbTestCase
         $this->assertTrue($html->element->isInlineEditingEnabled());
 
         $textElement = new TemplateElement(['template_id' => 1, 'name' => 'headline', 'content_type' => TextElement::class]);
+        $textElement->scenario = TemplateElement::SCENARIO_CREATE;
         $this->assertTrue($textElement->save());
         // Text may be used inside attributes of the template, so it is disabled by default
         $this->assertFalse($textElement->isInlineEditingEnabled());
@@ -36,6 +37,7 @@ class InlineEditingTest extends HumHubDbTestCase
             $this->assertSame('Headline', (string) $text->getTemplateVariable());
 
             // Enabled per element: plain text is wrapped
+            $textElement->scenario = TemplateElement::SCENARIO_EDIT_ADMIN;
             $textElement->inline_editing = 1;
             $this->assertTrue($textElement->save());
             $text = new TextElement();

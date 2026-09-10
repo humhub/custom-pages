@@ -42,7 +42,7 @@ class EditMultipleElementsCest
         // Instance 3 uses the template "containerText" with the html element 5 and a container
         $I->amOnRoute('/custom_pages/template/element-content/edit-multiple', ['id' => 3, 'elementId' => 5]);
         $output = json_decode($I->grabPageSource(), true)['output'] ?? '';
-        Assert::assertSame(1, substr_count($output, 'template-edit-multiple-tab'));
+        Assert::assertSame(1, substr_count($output, 'data-element-index="'));
         Assert::assertStringContainsString('Content[2][content]', $output);
         Assert::assertStringContainsString('editInlineElementSubmit', $output);
         Assert::assertStringContainsString('<strong>Edit</strong> element text', $output);

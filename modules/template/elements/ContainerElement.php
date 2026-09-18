@@ -9,6 +9,7 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\custom_pages\modules\template\models\Template;
+use humhub\modules\custom_pages\modules\template\widgets\ContainerItemsList;
 use humhub\modules\ui\form\widgets\MultiSelect;
 use humhub\widgets\form\ActiveForm;
 use Yii;
@@ -165,12 +166,14 @@ class ContainerElement extends BaseElementContent
      */
     public function renderEditForm(ActiveForm $form): string
     {
-        $disableDefinition = !$this->isAdminEditMode() && !$this->definition->isNewRecord;
+        if (!$this->isAdminEditMode()) {
+            // Content editing of a template instance: the definition is not editable here, only the items
+            return ContainerItemsList::widget(['containerElement' => $this]);
+        }
 
         return $form->field($this->definition, 'templates')->widget(MultiSelect::class, [
             'items' => $this->definition->getAllowedTemplateOptions(),
-            'disabled' => $disableDefinition,
         ])
-            . $form->field($this->definition, 'allow_multiple')->checkbox(['disabled' => $disableDefinition]);
+            . $form->field($this->definition, 'allow_multiple')->checkbox();
     }
 }

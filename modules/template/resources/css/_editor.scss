@@ -30,15 +30,13 @@ span[data-editor-container-item-id] {
     display: inline-block;
 }
 
-[data-editor-container-id] {
-    &.cp-editor-container-hover, &.cp-editor-container-active {
-        outline: 1px dashed var(--cp-container-color) !important;
-        outline-offset: -1px;
-    }
+[data-editor-container-id].cp-editor-container-hover {
+    outline: 1px dashed var(--cp-container-color) !important;
+    outline-offset: -1px;
 }
 
 [data-editor-container-item-id] {
-    &.cp-editor-container-hover, &.cp-editor-container-active {
+    &.cp-editor-container-hover {
         outline: 1px dashed var(--cp-container-item-color) !important;
         outline-offset: -1px;
     }
@@ -54,17 +52,24 @@ span[data-editor-container-item-id] {
     outline-offset: -1px;
 }
 
-.cp-editor-container-active {
-    display: none;
-    z-index: 1032;
-    position: absolute;
-    background: #FFF;
+// Element highlighted by hovering its row in the structure view
+[data-editor-container-id].cp-editor-container-active,
+[data-editor-container-item-id].cp-editor-container-active,
+[data-editor-page-id].cp-editor-page-active {
+    --cp-highlight-color: var(--cp-container-item-color);
+    outline: 2px solid var(--cp-highlight-color) !important;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--cp-highlight-color) 22%, transparent) !important;
+}
 
-    > {
-        div:first-child, [data-editor-container-item-id]:first-child > div:first-child {
-            margin-top: 0 !important;
-        }
-    }
+[data-editor-container-id].cp-editor-container-active {
+    --cp-highlight-color: var(--cp-container-color);
+}
+
+[data-editor-container-id].cp-editor-container-active,
+[data-editor-container-item-id].cp-editor-container-active {
+    position: relative;
+    z-index: 1;
 }
 
 [data-editor-container-id].cp-editor-container-empty > div {
@@ -83,7 +88,11 @@ span[data-editor-container-item-id] {
     position: absolute;
     display: inline-block;
     max-width: max-content;
-    z-index: 1;
+    z-index: 1034; // above the structure view, so the buttons stay reachable when it overlaps them
+
+    &.cp-editor-actions-offscreen {
+        visibility: hidden;
+    }
 }
 
 [data-actions-page-id], [data-actions-container-id], [data-actions-container-item-id] {
@@ -96,12 +105,72 @@ span[data-editor-container-item-id] {
     }
 }
 
+.cp-editor-actions-pinned > i.fa {
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
 [data-actions-container-id] > i.fa {
     background: var(--cp-container-color);
+}
+
+// Element marked for the inline editing, a click on it opens its edit dialog
+[data-editor-element-id].cp-editor-element-hover {
+    outline: 1px dashed var(--cp-element-color) !important;
+    outline-offset: -1px;
+    cursor: pointer;
+
+    * {
+        cursor: pointer;
+    }
+}
+
+.cp-editor-element-empty {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px dashed var(--cp-element-color);
+    border-radius: 3px;
+    color: var(--cp-element-color);
+    font-size: 12px;
+    line-height: 1.4;
 }
 
 [data-actions-page-id], [data-actions-container-item-id] {
     > i.fa {
         background: var(--cp-container-item-color);
+    }
+}
+
+// List of the container items in the edit dialog of a template instance
+.cp-container-items-list {
+    list-style: none;
+    margin: 0 0 10px;
+    padding: 0;
+
+    .cp-container-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 8px;
+        border-bottom: 1px solid var(--default);
+    }
+
+    .cp-container-item-icon {
+        color: var(--cp-container-item-color);
+        font-size: 70%;
+    }
+
+    .cp-container-item-name {
+        flex: 1;
+    }
+
+    .cp-container-item-actions a {
+        padding: 0 6px;
+        color: var(--text-color-soft);
+    }
+
+    .cp-container-item:first-child .cp-container-item-move-up,
+    .cp-container-item:last-child .cp-container-item-move-down {
+        visibility: hidden;
     }
 }

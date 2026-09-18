@@ -34,6 +34,7 @@ class InlineEditorAsset extends AssetBundle
     public $js = [
         'js/humhub.custom_pages.template.editor.js',
         'js/humhub.custom_pages.template.structure.js',
+        'js/humhub.custom_pages.template.containerList.js',
     ];
 
     /**

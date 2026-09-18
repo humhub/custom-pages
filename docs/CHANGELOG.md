@@ -14,6 +14,18 @@ Changelog
 ----------------------
 - Enh #505: Update for HumHub 1.19
 
+1.12.22 (September 10, 2026)
+----------------------------
+- Enh: Highlight the hovered element of the structure view with a colored frame and a name label instead of dimming the page
+- Enh: Keep the edit buttons of long template elements visible while scrolling
+- Enh: Hide the TinyMCE "Get all features" promotion link in the HTML editor
+- Fix: Edit buttons of template elements were hidden behind the structure view when it overlapped them
+- Fix: Edit button of a single container item was covered by the add button of its container or disappeared when moving the mouse over it
+- Fix: Edit buttons disappeared when the mouse left the element shortly before reaching them
+- Enh: Manage the items of container elements (edit, sort, add, delete) in the "Edit elements" dialog of a template instance
+- Enh: Inline editing of template elements directly on the page, can be enabled per element in the template administration
+- Enh: Clearer option "Allow inline HTML" (formerly "Is inline text") for text elements with a description of the encoding
+
 1.12.21 (September 8, 2026)
 ---------------------------
 - Enh: Automated code refactoring for HumHub 1.18.1 using Rector

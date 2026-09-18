@@ -123,6 +123,14 @@ class FileDownloadElement extends BaseElementContent implements \Stringable
     /**
      * @inheritdoc
      */
+    /**
+     * @inheritdoc
+     */
+    public static function isInlineEditingEnabledByDefault(): bool
+    {
+        return true;
+    }
+
     public function __toString(): string
     {
         $options = [];

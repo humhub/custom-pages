@@ -428,4 +428,14 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
     {
         return in_array($this->scenario, [self::SCENARIO_EDIT_ADMIN, self::SCENARIO_CREATE]);
     }
+
+    /**
+     * Whether the output of this content type is marked for inline editing on the page by default.
+     * Only types which render their own HTML tags are safe here, plain values like texts or URLs
+     * may be used inside attributes of the template, where a marker would break the markup.
+     */
+    public static function isInlineEditingEnabledByDefault(): bool
+    {
+        return false;
+    }
 }

@@ -54,32 +54,53 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
     }
 
     TemplateStructure.prototype.initHighlight = function () {
-        this.$.on('mouseenter', function () {
-            $('body').append('<div class="cp-structure-overlay"></div>');
-        }).on('mouseleave', function () {
-            $('.cp-structure-overlay').remove();
-        }).on('mouseenter', '.cp-structure-template, .cp-structure-container', function () {
-            const obj = $(this).hasClass('cp-structure-container')
-                ? $('[data-editor-container-id=' + $(this).closest('[data-container-id]').data('container-id') + ']')
-                : $('[data-editor-container-item-id=' + $(this).closest('[data-container-item-id]').data('container-item-id') + ']');
+        const that = this;
+        this.$.on('mouseenter', '.cp-structure-template, .cp-structure-container', function () {
+            const $row = $(this);
+            const obj = that.getEditorElement($row);
             if (!obj.length || ['STYLE', 'SCRIPT'].includes(obj[0].tagName)) {
                 return;
             }
 
-            const copy = obj.clone();
-            copy.addClass('cp-editor-container-active').css({
-                width: obj.outerWidth(),
-                minHeight: obj.outerHeight() > 2 ? obj.outerHeight() : 2,
-                top: obj.position().top,
-                left: obj.position().left,
-            });
-
-            obj.after(copy);
-            copy.fadeIn('fast');
+            obj.addClass(obj.is('[data-editor-page-id]') ? 'cp-editor-page-active' : 'cp-editor-container-active');
+            that.showLabel(obj, $row.find('.cp-structure-text').text().trim(), $row.hasClass('cp-structure-container'));
         }).on('mouseleave', '.cp-structure-template, .cp-structure-container', function () {
-            $('.cp-editor-container-active').remove();
+            that.removeHighlight();
             $('.cp-structure-actions.dropdown.open').removeClass('open');
+        }).on('mouseleave', function () {
+            that.removeHighlight();
         });
+    }
+
+    TemplateStructure.prototype.showLabel = function (obj, text, isContainer) {
+        // Appended to the body like the editor action buttons, so it cannot be clipped by parent elements
+        const label = $('<div class="cp-structure-label">')
+            .toggleClass('cp-structure-label-container', isContainer)
+            .text(text);
+        $('body').append(label);
+
+        const pos = obj[0].getBoundingClientRect();
+        label.css({
+            top: pos.top + window.scrollY - label.outerHeight(),
+            left: pos.left + window.scrollX,
+        });
+    }
+
+    TemplateStructure.prototype.removeHighlight = function () {
+        $('.cp-editor-container-active').removeClass('cp-editor-container-active');
+        $('.cp-editor-page-active').removeClass('cp-editor-page-active');
+        $('.cp-structure-label').remove();
+    }
+
+    TemplateStructure.prototype.getEditorElement = function ($row) {
+        if ($row.hasClass('cp-structure-container')) {
+            return $('[data-editor-container-id=' + $row.closest('[data-container-id]').data('container-id') + ']');
+        }
+
+        const containerItem = $row.closest('[data-container-item-id]');
+        return containerItem.length
+            ? $('[data-editor-container-item-id=' + containerItem.data('container-item-id') + ']')
+            : $('[data-editor-page-id]'); // Root template of the page or snippet
     }
 
     TemplateStructure.prototype.initMenuAlignment = function () {
@@ -115,6 +136,19 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
     TemplateStructure.prototype.initOverflow = function () {
         // Activate scrollbar only for long to avoid overflow of menu on small structure
         this.$.css('overflow-y', this.$[0].scrollHeight > this.$.outerHeight() + 1 ? 'auto' : '');
+    }
+
+    TemplateStructure.prototype.refresh = function () {
+        const that = this;
+        return client.html(this.data('structure-url'), {data: {id: this.getRootTemplateInstanceId()}}).then(function (response) {
+            const content = $('<div>').html(response.html).find('.cp-structure').html();
+            if (content) {
+                that.$.html(content);
+                that.initOverflow();
+            }
+        }).catch(function (e) {
+            module.log.error(e, true);
+        });
     }
 
     TemplateStructure.prototype.getPositionData = function () {

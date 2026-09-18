@@ -53,7 +53,8 @@ class CreateTemplatePageCest
         $I->fillField('TemplateElement[name]', 'tmplimage');
         $I->attachFile('.fileinput-button input[type=file]', 'test.jpg');
         $I->waitForElementVisible('.file-preview-item');
-        $I->click('.collapsableTrigger'); //Show more
+        // A JS click cannot miss the thin trigger line while the loading preview image still shifts the layout
+        $I->jsClick('#globalModal .collapsableTrigger'); // Show more
         $I->waitForElementVisible('#imageelement-definitionpostdata-height');
         $I->fillField('ImageElement[definitionPostData][height]', '100');
         $I->fillField('ImageElement[definitionPostData][width]', '100');

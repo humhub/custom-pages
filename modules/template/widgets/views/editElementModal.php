@@ -6,6 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\models\forms\TemplateElementForm;
 use humhub\modules\custom_pages\modules\template\widgets\EditContentSeperator;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateContentFormFields;
@@ -60,4 +61,9 @@ if ($canEdit && !$model->content->isNewRecord && $resetUrl != null) {
     <?= EditContentSeperator::widget(['isAdminEdit' => $isAdminEdit]) ?>
 
     <?= TemplateContentFormFields::widget(['form' => $form, 'model' => $model->content]) ?>
+
+    <?php if ($isAdminEdit && !($model->content instanceof ContainerElement)) : ?>
+        <?php $model->element->inline_editing ??= (int) $model->element->isInlineEditingEnabled(); ?>
+        <?= $form->field($model->element, 'inline_editing')->checkbox() ?>
+    <?php endif; ?>
 <?php Modal::endFormDialog() ?>

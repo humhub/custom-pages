@@ -18,11 +18,17 @@ class EditMultipleElementsModal extends \humhub\components\Widget
     public $model;
     public $title;
 
+    /**
+     * @var string|null URL of the dialog to return to, e.g. the parent instance of a container item
+     */
+    public $backUrl = null;
+
     public function run()
     {
         return $this->render('editMultipleElements', [
             'model' => $this->model,
             'title' => $this->title,
+            'backUrl' => $this->backUrl,
         ]);
     }
 

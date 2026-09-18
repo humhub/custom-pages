@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.13.3 (Unreleased)
--------------------
+1.13.3 (September 18, 2026)
+---------------------------
 - Enh: Merge of the changes of version 1.12.22
 
 1.13.2 (September 8, 2026)

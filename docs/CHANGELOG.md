@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.13.3 (Unreleased)
+-------------------
+- Enh: Merge of the changes of version 1.12.22
+
 1.13.2 (September 8, 2026)
 --------------------------
 - Fix: Remove deprecated function `curl_close()`

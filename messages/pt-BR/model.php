@@ -26,7 +26,9 @@ return [
     'Visible to Group Members' => 'Visível para membros do grupo',
     'page' => 'página',
     'snippet' => 'trecho',
+    'Enable inline editing' => '',
     'Hide in Navigation' => '',
+    'Marks the output of this element on the page in edit mode, so it can be edited directly there. Disable it if the element is used inside HTML attributes like "alt", "src" or "class", where the marker would break the markup.' => '',
     'Mobile App only' => '',
     'The element name is reserved, please choose another one.' => '',
 ];

@@ -4,6 +4,7 @@ Changelog
 1.12.23 (Unreleased)
 ----------------------------
 - Enh #538: Show the footer menu on global Template and Markdown pages (except on the Account Menu target, to avoid duplicates)
+- Fix #514: Sort order 0 for pages/snippets no longer falls back to the bottom of menus/sidebars
 
 1.12.22 (September 10, 2026)
 ----------------------------

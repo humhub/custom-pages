@@ -111,7 +111,7 @@ class Events
                         'url' => $page->getUrl(),
                         'icon' => $page->icon ?? '',
                         'isActive' => ControllerHelper::isActivePath('custom_pages', 'view', 'index', ['id' => $page->id]),
-                        'sortOrder' => $page->sort_order ?: 1000 + $page->id,
+                        'sortOrder' => $page->sort_order ?? 1000 + $page->id,
                     ]));
                 }
             }
@@ -178,7 +178,7 @@ class Events
                     'icon' => $page->icon ?? '',
                     'isActive' => ControllerHelper::isActivePath('custom_pages', 'view', [], ['id' => $page->id])
                         || static::isCurrentTargetUrl($page),
-                    'sortOrder' => $page->sort_order ?: 1000 + $page->id,
+                    'sortOrder' => $page->sort_order ?? 1000 + $page->id,
                 ]));
             }
         } catch (Throwable $e) {
@@ -231,7 +231,7 @@ class Events
                     'htmlOptions' => ['target' => $page->in_new_window ? '_blank' : ''],
                     'icon' => $page->icon ?? '',
                     'isActive' => ControllerHelper::isActivePath('custom_pages', 'view', [], ['id' => $page->id]),
-                    'sortOrder' => $page->sort_order ?: 1000 + $page->id,
+                    'sortOrder' => $page->sort_order ?? 1000 + $page->id,
                 ]));
             }
         } catch (Throwable $e) {
@@ -274,7 +274,7 @@ class Events
                 /* @var CustomPage $page */
                 if ($page->canView()) {
                     $dashboardSidebar->addWidget(SnippetWidget::class, ['model' => $page], [
-                        'sortOrder' => $page->sort_order ?: 1000 + $page->id,
+                        'sortOrder' => $page->sort_order ?? 1000 + $page->id,
                     ]);
                 }
             }
@@ -295,7 +295,7 @@ class Events
                     /* @var CustomPage $page */
                     if ($page->canView()) {
                         $spaceSidebar->addWidget(SnippetWidget::class, ['model' => $page], [
-                            'sortOrder' => $page->sort_order ?: 1000 + $page->id,
+                            'sortOrder' => $page->sort_order ?? 1000 + $page->id,
                         ]);
                     }
                 }
@@ -321,7 +321,7 @@ class Events
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
                     'url' => Url::to(['/custom_pages/view', 'id' => $page->id], true),
                     'htmlOptions' => ['target' => $page->in_new_window ? '_blank' : ''],
-                    'sortOrder' => $page->sort_order ?: 1000 + $page->id,
+                    'sortOrder' => $page->sort_order ?? 1000 + $page->id,
                 ]));
             }
         } catch (Throwable $e) {
@@ -344,7 +344,7 @@ class Events
                     'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
                     'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                     'htmlOptions' => ['target' => $page->in_new_window ? '_blank' : ''],
-                    'sortOrder' => $page->sort_order ?: 1000 + $page->id,
+                    'sortOrder' => $page->sort_order ?? 1000 + $page->id,
                     'icon' => $page->icon ?? '',
                 ]));
             }

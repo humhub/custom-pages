@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'Activities' => 'Aktiviteter',
+    'Activity' => 'Aktivitet',
     'Advanced' => 'Advanced',
     'Always' => 'Altid',
     'Back' => 'Tilbage',
@@ -29,6 +31,7 @@ return [
     'Settings' => 'Indstillinger',
     'Snippet' => 'Uddrag',
     'Sort Order' => 'Sorteringsrækkefølge',
+    'Sorting' => 'Sortering',
     'Source' => 'Kilde',
     'Space' => 'Rum',
     'Spaces' => 'Rum',
@@ -45,9 +48,7 @@ return [
     '<strong>Add</strong> {templateName} item' => '',
     '<strong>Custom</strong> Pages' => '',
     '<strong>Edit</strong> snippet' => '',
-    'Activities' => '',
-    'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Add' => '',
     'Add a file icon before the title' => '',
     'Additional IFrame Attributes' => '',
@@ -109,10 +110,8 @@ return [
     'Reset the content to default value' => '',
     'Resources' => '',
     'Restrict to following comma separated content IDs' => '',
-    'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => '',
     'Show additional file information (size)' => '',
     'Snippets' => '',
-    'Sorting' => '',
     'Space Members only' => '',
     'Space Navigation' => '',
     'Space Page' => '',

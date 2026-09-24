@@ -1,6 +1,27 @@
 Changelog
 =========
 
+1.13.4 (Unreleased)
+-------------------
+- Enh: Merge of the changes of version 1.12.23
+
+1.13.3 (September 18, 2026)
+---------------------------
+- Enh: Merge of the changes of version 1.12.22
+
+1.13.2 (September 8, 2026)
+--------------------------
+- Fix: Remove deprecated function `curl_close()`
+
+1.13.1 (July 7, 2026)
+---------------------
+- Fix #530: Update content container images
+- Enh #531: Add aria-label attribute for icon-only buttons
+
+1.13.0 (June 7, 2026)
+----------------------
+- Enh #505: Update for HumHub 1.19
+
 1.12.23 (September 24, 2026)
 ----------------------------
 - Enh #538: Show the footer menu on global Template and Markdown pages (except on the Account Menu target, to avoid duplicates)

@@ -13,16 +13,11 @@ use humhub\helpers\ControllerHelper;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\Menu;
+use humhub\modules\ui\menu\widgets\SubTabMenu;
 use Yii;
 
-class OverviewSubMenu extends Menu
+class OverviewSubMenu extends SubTabMenu
 {
-    /**
-     * @inheritdoc
-     */
-    public $template = '@humhub/widgets/views/subTabMenu';
-
     public function init()
     {
         $container = ContentContainerHelper::getCurrent();

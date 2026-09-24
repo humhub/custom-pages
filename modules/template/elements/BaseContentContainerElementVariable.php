@@ -29,8 +29,8 @@ class BaseContentContainerElementVariable extends BaseRecordElementVariable
             $this->displayNameSub = $record->displayNameSub;
             $this->url = $record->getUrl();
             $this->guid = $record->guid;
-            $this->imageUrl = $record->profileImage->getUrl();
-            $this->bannerImageUrl = $record->profileBannerImage->getUrl();
+            $this->imageUrl = $record->image->getUrl();
+            $this->bannerImageUrl = $record->bannerImage->getUrl();
             $this->tags = $record->tags;
         }
 

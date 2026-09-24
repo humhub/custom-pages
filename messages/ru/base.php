@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'Activities' => 'Действия',
+    'Activity' => 'Активность',
     'Add' => 'Добавить',
     'Advanced' => 'Расширенные',
     'Always' => 'Всегда',
@@ -31,6 +33,7 @@ return [
     'Settings' => 'Настройки',
     'Snippet' => 'Виджет',
     'Sort Order' => 'Порядок сортировки',
+    'Sorting' => 'Сортировка',
     'Source' => 'Источник',
     'Space' => 'Сообщество',
     'Spaces' => 'Сообщества',
@@ -47,9 +50,7 @@ return [
     '<strong>Add</strong> {templateName} item' => '',
     '<strong>Custom</strong> Pages' => '',
     '<strong>Edit</strong> snippet' => '',
-    'Activities' => '',
-    'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Add a file icon before the title' => '',
     'Additional IFrame Attributes' => '',
     'Adds plain HTML content to your site.' => '',
@@ -109,10 +110,8 @@ return [
     'Reset the content to default value' => '',
     'Resources' => '',
     'Restrict to following comma separated content IDs' => '',
-    'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => '',
     'Show additional file information (size)' => '',
     'Snippets' => '',
-    'Sorting' => '',
     'Space Members only' => '',
     'Space Navigation' => '',
     'Space Page' => '',

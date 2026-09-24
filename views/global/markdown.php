@@ -16,6 +16,7 @@ use humhub\widgets\FooterMenu;
 
 /* @var $this View */
 /* @var $page CustomPage */
+/* @var $md string */
 
 $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page->cssClass : 'custom-pages-page';
 
@@ -47,4 +48,6 @@ Assets::register($this);
     </div>
 <?php endif; ?>
 
-<?= FooterMenu::widget() ?>
+<?php if (!$page->hasTarget(PageType::TARGET_ACCOUNT_MENU)): ?>
+    <?= FooterMenu::widget() ?>
+<?php endif; ?>

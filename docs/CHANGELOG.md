@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.12.24 (Unreleased)
---------------------
+1.12.24 (October 4, 2026)
+-------------------------
 - Fix: Refined page form handling
 
 1.12.23 (September 24, 2026)

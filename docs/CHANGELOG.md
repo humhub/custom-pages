@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.12.24 (Unreleased)
+--------------------
+- Fix: Refined page form handling
+
 1.12.23 (September 24, 2026)
 ----------------------------
 - Enh #538: Show the footer menu on global Template and Markdown pages (except on the Account Menu target, to avoid duplicates)

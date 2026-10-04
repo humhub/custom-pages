@@ -167,7 +167,7 @@ class PageController extends AbstractCustomContainerController
             $page->target = $targetId;
         }
 
-        if (!$page->canEdit()) {
+        if (!$page->canEdit() || !$page->canEditType((int) $page->type)) {
             throw new ForbiddenHttpException('You cannot manage the page!');
         }
 
@@ -226,7 +226,7 @@ class PageController extends AbstractCustomContainerController
             throw new BadRequestHttpException('Invalid request data!');
         }
 
-        if (!$sourcePage->canEdit()) {
+        if (!$sourcePage->canEdit() || !$sourcePage->canEditType((int) $sourcePage->type)) {
             throw new ForbiddenHttpException('You cannot manage the page!');
         }
 

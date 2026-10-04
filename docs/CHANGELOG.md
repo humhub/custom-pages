@@ -4,6 +4,7 @@ Changelog
 1.13.4 (Unreleased)
 -------------------
 - Enh: Merge of the changes of version 1.12.23
+- Enh: Merge of the changes of version 1.12.24
 
 1.13.3 (September 18, 2026)
 ---------------------------
@@ -21,6 +22,10 @@ Changelog
 1.13.0 (June 7, 2026)
 ----------------------
 - Enh #505: Update for HumHub 1.19
+
+1.12.24 (October 4, 2026)
+-------------------------
+- Fix: Refined page form handling
 
 1.12.23 (September 24, 2026)
 ----------------------------

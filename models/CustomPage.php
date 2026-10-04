@@ -207,10 +207,10 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
     public function rules()
     {
         $rules = [
-            [['type', 'title', 'target', 'visibility'], 'required'],
-            [['type'], 'integer'],
+            [['!type', 'title', 'target', 'visibility'], 'required'],
+            [['!type'], 'integer'],
             [['target'], 'validateTarget'],
-            [['type'], 'validateContentType'],
+            [['!type'], 'validateContentType'],
             [['visibility'], 'integer', 'min' => self::VISIBILITY_PRIVATE, 'max' => self::VISIBILITY_CUSTOM],
             [['visibilityGroups', 'visibilityLanguages', 'editors'], 'safe'],
             [['visibilityMobileApp'], 'boolean'],
@@ -243,12 +243,12 @@ class CustomPage extends ContentActiveRecord implements ViewableInterface, Edita
         }
 
         if (PhpType::isType($type)) {
-            $rules[] = [['type'], 'validatePhpType'];
+            $rules[] = [['!type'], 'validatePhpType'];
         }
 
         if (TemplateType::isType($type)) {
             $rules[] = [['templateId'], 'safe'];
-            $rules[] = [['type'], 'validateTemplateType'];
+            $rules[] = [['!type'], 'validateTemplateType'];
         }
 
         if ($type->hasContent()) {

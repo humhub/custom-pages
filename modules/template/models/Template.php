@@ -193,7 +193,8 @@ class Template extends ActiveRecord
         // We just allow the template deletion if there are template owner relations.
         if (!$this->isInUse()) {
             foreach ($this->getContents()->all() as $content) {
-                $content->hardDelete();
+                /* @var Content $content */
+                $content->getPolymorphicRelation()?->hardDelete();
             }
             foreach ($this->elements as $element) {
                 $element->delete();

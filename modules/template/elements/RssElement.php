@@ -134,8 +134,6 @@ class RssElement extends BaseElementContent implements TemplateElementContentIte
             Yii::error('RSS Element "' . $this->element->name . '"(' . $this->url . ') error: ' . curl_error($ch), 'custom-pages');
         }
 
-        curl_close($ch);
-
         return is_string($response) ? $response : '';
     }
 

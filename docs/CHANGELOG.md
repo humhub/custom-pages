@@ -1,6 +1,29 @@
 Changelog
 =========
 
+1.13.4 (Unreleased)
+-------------------
+- Enh: Merge of the changes of version 1.12.23
+- Enh: Merge of the changes of version 1.12.24
+- Fix #542: Wrong asset base URL alias of TinyMCE plugins (codemirror, wrapper, humhubtrigger); Validate template elements on adding
+
+1.13.3 (September 18, 2026)
+---------------------------
+- Enh: Merge of the changes of version 1.12.22
+
+1.13.2 (September 8, 2026)
+--------------------------
+- Fix: Remove deprecated function `curl_close()`
+
+1.13.1 (July 7, 2026)
+---------------------
+- Fix #530: Update content container images
+- Enh #531: Add aria-label attribute for icon-only buttons
+
+1.13.0 (June 7, 2026)
+----------------------
+- Enh #505: Update for HumHub 1.19
+
 1.12.24 (October 4, 2026)
 -------------------------
 - Fix: Refined page form handling

@@ -8,8 +8,11 @@
 
 namespace humhub\modules\custom_pages\modules\template\models\forms;
 
-use Yii;
+use humhub\modules\custom_pages\modules\template\elements\BaseElementContent;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
+use ReflectionClass;
+use Yii;
+use yii\web\BadRequestHttpException;
 
 /**
  * Form model used to add new TemplateElement instances to a Template.
@@ -61,11 +64,15 @@ class AddElementForm extends TemplateElementForm
      *
      * Todo: rename because of definition...
      *
-     * @param type $templateId
-     * @param type $type
+     * @param int $templateId
+     * @param string $type
      */
     public function setElementDefinition($templateId, $type)
     {
+        if (!is_string($type) || !is_subclass_of($type, BaseElementContent::class) || (new ReflectionClass($type))->isAbstract()) {
+            throw new BadRequestHttpException('Invalid element type!');
+        }
+
         $this->templateId = $templateId;
         $this->type = $type;
 

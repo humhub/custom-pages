@@ -5,6 +5,7 @@ Changelog
 -------------------
 - Enh: Merge of the changes of version 1.12.23
 - Enh: Merge of the changes of version 1.12.24
+- Fix #542: Wrong asset base URL alias of TinyMCE plugins (codemirror, wrapper, humhubtrigger); Validate template elements on adding
 
 1.13.3 (September 18, 2026)
 ---------------------------

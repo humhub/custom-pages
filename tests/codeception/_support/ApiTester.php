@@ -65,7 +65,7 @@ class ApiTester extends \ApiTester
         $container = null;
         if ($params['containerId'] !== null) {
             $contentContainer = ContentContainer::findOne(['id' => $params['containerId']]);
-            $container = $contentContainer !== null ? $contentContainer->getPolymorphicRelation() : null;
+            $container = $contentContainer?->getPolymorphicRelation();
         }
 
         $target = $params['target'] ?? ($container !== null ? PageType::TARGET_SPACE_MENU : PageType::TARGET_TOP_MENU);

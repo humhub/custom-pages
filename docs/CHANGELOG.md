@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.12.25 (Unreleased)
+--------------------
+- Enh: Automated code refactoring for HumHub 1.18.1 using Rector
+
 1.12.24 (October 4, 2026)
 -------------------------
 - Fix: Refined page form handling

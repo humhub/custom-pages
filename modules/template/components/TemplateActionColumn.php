@@ -79,7 +79,10 @@ class TemplateActionColumn extends ActionColumn
         $html .= Button::light()
             ->cssClass('dropdown-toggle')
             ->sm()
-            ->options(['data-bs-toggle' => 'dropdown'])
+            ->options([
+                'aria-label' => Yii::t('CustomPagesModule.template', 'Actions'),
+                'data-bs-toggle' => 'dropdown',
+            ])
             ->icon('controls')
             ->loader(false);
 

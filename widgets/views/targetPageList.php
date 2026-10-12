@@ -20,7 +20,10 @@ use yii\helpers\Html;
 <div class="target-page-list <?= Html::encode($target->id) ?>">
     <div class="target-page-list-head d-flex justify-content-between align-items-center">
         <strong><?= $target->icon ? '<i class="fa ' . Html::encode($target->icon) . '"></i> ' : '' ?><?= Html::encode($target->name) ?></strong>
-        <?= Button::success()->icon('plus')->link(Url::toChooseContentType($target, $pageType))->sm() ?>
+        <?= Button::success()->icon('plus')
+            ->options(['aria-label' => Yii::t('base', 'Add')])
+            ->link(Url::toChooseContentType($target, $pageType))
+            ->sm() ?>
     </div>
     <div class="target-page-list-grid">
         <?= GridView::widget([
@@ -53,9 +56,16 @@ use yii\helpers\Html;
                     'template' => '{update} {copy}',
                     'buttons' => [
                         'update' => fn($url, CustomPage $model) => $model->canEdit()
-                            ? Link::primary()->icon('pencil')->link($model->getEditUrl())->sm()
+                            ? Link::primary()->icon('pencil')
+                                ->options(['aria-label' => Yii::t('base', 'Edit')])
+                                ->link($model->getEditUrl())
+                                ->sm()
                             : '',
-                        'copy' => fn($url, CustomPage $model) => ModalButton::light()->load(Url::toCopyPage($model))->icon('copy')->sm(),
+                        'copy' => fn($url, CustomPage $model) => ModalButton::light()
+                            ->load(Url::toCopyPage($model))
+                            ->icon('copy')
+                            ->options(['aria-label' => Yii::t('base', 'Copy')])
+                            ->sm(),
                     ],
                 ],
             ],

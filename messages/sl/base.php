@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'Activities' => 'Aktivnosti',
     'Advanced' => 'Napredno',
     'Back' => 'Nazaj',
     'Back to dashboard' => 'Nazaj na prvo stran',
@@ -18,9 +19,8 @@ return [
     '<strong>Add</strong> {templateName} item' => '',
     '<strong>Custom</strong> Pages' => '',
     '<strong>Edit</strong> snippet' => '',
-    'Activities' => '',
     'Activity' => '',
-    'Activity content ID' => '',
+    'Activity ID' => '',
     'Add' => '',
     'Add a file icon before the title' => '',
     'Additional IFrame Attributes' => '',
@@ -96,7 +96,6 @@ return [
     'Reset the content to default value' => '',
     'Resources' => '',
     'Restrict to following comma separated content IDs' => '',
-    'Select this setting for visible text nodes only. Uncheck this setting in case this element is used for example as HTML attribute value.' => '',
     'Show additional file information (size)' => '',
     'Snippet' => '',
     'Snippets' => '',

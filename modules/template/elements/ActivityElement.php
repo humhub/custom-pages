@@ -9,17 +9,41 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\helpers\Html;
+use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\activity\services\ActivityManager;
+use humhub\widgets\form\ActiveForm;
 use Yii;
 
 /**
- * Class to manage content record of the Activity
+ * Class to manage Activity record
  *
  * @property-read Activity|null $record
+ *
+ * Dynamic attributes:
+ * @property string $id
  */
-class ActivityElement extends BaseContentRecordElement implements \Stringable
+class ActivityElement extends BaseElementContent implements \Stringable
 {
-    protected const RECORD_CLASS = Activity::class;
+    /**
+     * @inheritdoc
+     */
+    protected function getDynamicAttributes(): array
+    {
+        return [
+            'id' => null,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['id'], 'integer'],
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -35,13 +59,26 @@ class ActivityElement extends BaseContentRecordElement implements \Stringable
     public function attributeLabels()
     {
         return [
-            'contentId' => Yii::t('CustomPagesModule.base', 'Activity content ID'),
+            'id' => Yii::t('CustomPagesModule.base', 'Activity ID'),
         ];
     }
 
     public function __toString(): string
     {
-        return (string) Html::encode($this->record?->getActivityBaseClass()?->getTitle() ?: $this->contentId);
+        $baseActivity = ActivityManager::load($this->record);
+
+        return Html::encode($baseActivity instanceof ConfigurableActivityInterface
+            ? $baseActivity->getTitle()
+            : $this->id);
+    }
+
+    protected function getRecord(): ?Activity
+    {
+        if (empty($this->id)) {
+            return null;
+        }
+
+        return Yii::$app->runtimeCache->getOrSet(self::class . $this->id, fn() => Activity::findOne($this->id));
     }
 
     /**
@@ -50,5 +87,13 @@ class ActivityElement extends BaseContentRecordElement implements \Stringable
     public function getTemplateVariable(): BaseElementVariable
     {
         return ActivityElementVariable::instance($this)->setRecord($this->getRecord());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function renderEditForm(ActiveForm $form): string
+    {
+        return $form->field($this, 'id');
     }
 }

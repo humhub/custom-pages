@@ -29,13 +29,14 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
         $this->language = substr($this->language ?? Yii::$app->language, 0, 2);
 
         $tinyMcePluginsAssets = TinyMcePluginsAssets::register($this->view);
+        $tinyMcePluginsBaseUrl = Yii::getAlias($tinyMcePluginsAssets->baseUrl);
         $external_plugins = [
-            'codemirror' => $tinyMcePluginsAssets->baseUrl . '/codemirror/plugin.min.js',
-            'wrapper' => $tinyMcePluginsAssets->baseUrl . '/wrapper/plugin.min.js',
+            'codemirror' => $tinyMcePluginsBaseUrl . '/codemirror/plugin.min.js',
+            'wrapper' => $tinyMcePluginsBaseUrl . '/wrapper/plugin.min.js',
         ];
         $humhubTriggerToolbar = '';
         if (isset($this->clientOptions['humhubTrigger'])) {
-            $external_plugins['humhubtrigger'] = $tinyMcePluginsAssets->baseUrl . '/humhubtrigger/plugin.min.js';
+            $external_plugins['humhubtrigger'] = $tinyMcePluginsBaseUrl . '/humhubtrigger/plugin.min.js';
             $humhubTriggerToolbar = ' | humhubtrigger';
         }
 

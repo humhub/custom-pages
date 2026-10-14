@@ -32,6 +32,11 @@ use humhub\widgets\form\ActiveForm;
             <?= $form->field($model, 'allow_for_spaces')->checkbox() ?>
         </div>
 
+        <?= $form->field($model, 'template_instance_title_element')->dropDownList(
+            $model->getTemplateInstanceTitleElementOptions(),
+            ['prompt' => Yii::t('CustomPagesModule.template', 'Automatic (first suitable element)')],
+        ) ?>
+
         <?= $model->canEdit() ? Button::save()->submit() : '' ?>
 
         <?php $form::end(); ?>

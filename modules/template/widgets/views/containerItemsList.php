@@ -22,7 +22,8 @@ use humhub\widgets\bootstrap\Link;
             <?php /* @var ContainerItem $item */ ?>
             <li class="cp-container-item" data-item-id="<?= $item->id ?>" data-template-instance-id="<?= $item->templateInstance->id ?>">
                 <?= Icon::get('circle')->class('cp-container-item-icon') ?>
-                <span class="cp-container-item-name"><?= Html::encode($item->template->name) ?></span>
+                <?php $title = $item->templateInstance->getTemplateInstanceTitle() ?>
+                <span class="cp-container-item-name" title="<?= Html::encode($title) ?>"><?= Html::encode($title) ?></span>
                 <span class="cp-container-item-actions">
                     <?= Link::to()->icon('chevron-up')->action('moveUp')
                         ->title(Yii::t('CustomPagesModule.template', 'Move Up'))

@@ -123,6 +123,26 @@ class FileDownloadElement extends BaseElementContent implements \Stringable
     /**
      * @inheritdoc
      */
+    public static function supportsTemplateInstanceTitle(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTemplateInstanceTitleValue(): ?string
+    {
+        if (!empty($this->title)) {
+            return $this->title;
+        }
+
+        return empty($this->file_guid) ? null : $this->getFile()?->file_name;
+    }
+
+    /**
+     * @inheritdoc
+     */
     /**
      * @inheritdoc
      */

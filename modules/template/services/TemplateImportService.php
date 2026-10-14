@@ -104,6 +104,12 @@ class TemplateImportService extends BaseImportService
             $oldElement->delete();
         }
 
+        $titleElement = $data['template_instance_title_element'] ?? null;
+        $titleElementOptions = Template::findOne(['id' => $this->template->id])->getTemplateInstanceTitleElementOptions();
+        $this->template->updateAttributes([
+            'template_instance_title_element' => isset($titleElementOptions[$titleElement]) ? $titleElement : null,
+        ]);
+
         return !$this->hasErrors();
     }
 
@@ -148,6 +154,8 @@ class TemplateImportService extends BaseImportService
         $template->js = $data['js'] ?? '';
         $template->allow_for_spaces = $data['allow_for_spaces'] ?? false;
         $template->is_default = $data['is_default'] ?? false;
+        // Set after the elements are imported, because the value must reference an existing element
+        $template->template_instance_title_element = null;
 
         $this->template = $this->saveRecord($template);
 

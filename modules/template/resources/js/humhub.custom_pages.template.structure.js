@@ -63,7 +63,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
             }
 
             obj.addClass(obj.is('[data-editor-page-id]') ? 'cp-editor-page-active' : 'cp-editor-container-active');
-            that.showLabel(obj, $row.find('.cp-structure-text').text().trim(), $row.hasClass('cp-structure-container'));
+            that.showLabel(obj, $row.attr('data-template-name') ?? $row.find('.cp-structure-text').text().trim(), $row.hasClass('cp-structure-container'));
         }).on('mouseleave', '.cp-structure-template, .cp-structure-container', function () {
             that.removeHighlight();
             $('.cp-structure-actions.dropdown.open').removeClass('open');

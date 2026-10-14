@@ -84,6 +84,14 @@ class ImageElement extends FileElement
         return true;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getTemplateInstanceTitleValue(): ?string
+    {
+        return empty($this->alt) ? parent::getTemplateInstanceTitleValue() : $this->alt;
+    }
+
     public function __toString(): string
     {
         if (!$this->hasFile()) {

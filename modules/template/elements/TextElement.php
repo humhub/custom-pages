@@ -124,4 +124,20 @@ class TextElement extends BaseElementContent implements \Stringable
 
         return $result;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public static function supportsTemplateInstanceTitle(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTemplateInstanceTitleValue(): ?string
+    {
+        return $this->content;
+    }
 }

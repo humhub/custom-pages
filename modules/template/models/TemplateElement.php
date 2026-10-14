@@ -282,6 +282,17 @@ class TemplateElement extends ActiveRecord
         return true;
     }
 
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        // Fall back to the automatic title of the template instances, when the selected element is deleted
+        Template::updateAll(
+            ['template_instance_title_element' => null],
+            ['id' => $this->template_id, 'template_instance_title_element' => $this->name],
+        );
+    }
+
     public function getTemplate(): ActiveQuery
     {
         return $this->hasOne(Template::class, ['id' => 'template_id']);

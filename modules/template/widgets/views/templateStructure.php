@@ -21,6 +21,7 @@ use humhub\widgets\bootstrap\Link;
 /* @var TemplateInstance $templateInstance */
 /* @var ContainerElement[] $containers */
 /* @var array $options */
+/* @var string $title */
 /* @var array $templateInstanceOptions */
 /* @var int $level */
 /* @var View $this */
@@ -53,9 +54,9 @@ $widget = $this->context;
 
 <?= Html::beginTag('ul', $templateInstanceOptions) ?>
     <?= Html::beginTag('li') ?>
-        <div class="cp-structure-template cp-structure-row" style="padding-left:<?= $level * 10 + 8 ?>px">
+        <div class="cp-structure-template cp-structure-row" style="padding-left:<?= $level * 10 + 8 ?>px" data-template-name="<?= Html::encode($templateInstance->template->name) ?>">
             <?= Icon::get('circle') ?>
-            <div class="cp-structure-text"><?= $templateInstance->template->name ?></div>
+            <div class="cp-structure-text" title="<?= Html::encode($title) ?>"><?= Html::encode($title) ?></div>
             <div class="cp-structure-actions dropdown">
                 <?= Icon::get('ellipsis-h', ['htmlOptions' => ['data-bs-toggle' => 'dropdown']])
                     ->class('cp-structure-action') ?>

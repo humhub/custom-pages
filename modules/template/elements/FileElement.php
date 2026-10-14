@@ -110,6 +110,22 @@ class FileElement extends BaseElementContent implements \Stringable
     /**
      * @inheritdoc
      */
+    public static function supportsTemplateInstanceTitle(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTemplateInstanceTitleValue(): ?string
+    {
+        return $this->getFile()?->file_name;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function __toString(): string
     {
         if ($this->hasFile()) {

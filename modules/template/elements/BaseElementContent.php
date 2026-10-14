@@ -438,4 +438,21 @@ abstract class BaseElementContent extends ActiveRecordDynamicAttributes implemen
     {
         return false;
     }
+
+    /**
+     * Whether this content type can provide the title of its template instance,
+     * which is displayed e.g. in the structure view instead of the template name.
+     */
+    public static function supportsTemplateInstanceTitle(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Returns the value used as title of the template instance, see [[supportsTemplateInstanceTitle()]]
+     */
+    public function getTemplateInstanceTitleValue(): ?string
+    {
+        return null;
+    }
 }

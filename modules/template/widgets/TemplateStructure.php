@@ -47,10 +47,12 @@ class TemplateStructure extends JsWidget
      */
     public function run()
     {
-        $containers = array_filter($this->templateInstance->template->getElementContents($this->templateInstance), fn($element) => $element instanceof ContainerElement);
+        $elementContents = $this->templateInstance->template->getElementContents($this->templateInstance);
+        $containers = array_filter($elementContents, fn($element) => $element instanceof ContainerElement);
 
         return $this->render('templateStructure', [
             'templateInstance' => $this->templateInstance,
+            'title' => $this->templateInstance->getTemplateInstanceTitle($elementContents),
             'containers' => $containers,
             'options' => $this->getOptions(),
             'templateInstanceOptions' => $this->getTemplateInstanceOptions(),

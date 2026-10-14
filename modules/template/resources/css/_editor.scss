@@ -162,6 +162,10 @@ span[data-editor-container-item-id] {
 
     .cp-container-item-name {
         flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .cp-container-item-actions a {

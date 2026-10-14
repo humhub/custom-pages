@@ -110,6 +110,33 @@ class TemplateInstance extends ActiveRecord
         return $this->hasOne(ContainerItem::class, ['id' => 'container_item_id']);
     }
 
+    /**
+     * Returns the title of this instance, e.g. for the structure view.
+     * It is the value of the element selected in the template, or of the first suitable element
+     * with a value, or the template name with the instance id as fallback.
+     *
+     * @param BaseElementContent[]|null $elementContents already loaded contents of this instance
+     */
+    public function getTemplateInstanceTitle(?array $elementContents = null): string
+    {
+        $template = $this->template;
+        $titleElementId = $template->getTemplateInstanceTitleElementId();
+
+        foreach ($elementContents ?? $template->getElementContents($this) as $elementContent) {
+            if (!$elementContent::supportsTemplateInstanceTitle()
+                || ($titleElementId !== null && (int) $elementContent->element_id !== $titleElementId)) {
+                continue;
+            }
+
+            $value = trim((string) $elementContent->getTemplateInstanceTitleValue());
+            if ($value !== '') {
+                return $value;
+            }
+        }
+
+        return $template->name . ' (' . $this->id . ')';
+    }
+
     public static function findByOwner(ActiveRecord $owner): ?self
     {
         if ($owner instanceof CustomPage) {

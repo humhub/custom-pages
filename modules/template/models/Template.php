@@ -54,6 +54,7 @@ use yii\web\View;
  * @property string $type
  * @property bool $allow_for_spaces
  * @property bool $is_default
+ * @property string|null $template_instance_title_element
  * @property string $created_at
  * @property int $created_by
  * @property string $updated_at
@@ -104,6 +105,17 @@ class Template extends ActiveRecord
             'allow_for_spaces' => Yii::t('CustomPagesModule.template', 'Allow this layout in spaces'),
             'description' => Yii::t('CustomPagesModule.template', 'Description'),
             'type' => Yii::t('CustomPagesModule.template', 'Type'),
+            'template_instance_title_element' => Yii::t('CustomPagesModule.template', 'Template instance title'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'template_instance_title_element' => Yii::t('CustomPagesModule.template', 'This element is shown as the title of the template instance in the structure view.'),
         ];
     }
 
@@ -121,6 +133,8 @@ class Template extends ActiveRecord
             [['type'], 'in', 'range' => [self::TYPE_CONTAINER, self::TYPE_LAYOUT, self::TYPE_SNIPPET_LAYOUT, self::TYPE_NAVIGATION]],
             [['source'], 'required', 'on' => ['source']],
             [['css', 'js'], 'safe', 'on' => ['resources']],
+            [['template_instance_title_element'], 'default', 'value' => null],
+            [['template_instance_title_element'], 'in', 'range' => fn() => array_keys($this->getTemplateInstanceTitleElementOptions())],
         ];
     }
 
@@ -130,7 +144,7 @@ class Template extends ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['edit'] = ['name', 'description', 'type', 'allow_for_spaces'];
+        $scenarios['edit'] = ['name', 'description', 'type', 'allow_for_spaces', 'template_instance_title_element'];
         $scenarios['source'] = ['source'];
         $scenarios['resources'] = ['css', 'js'];
         return $scenarios;
@@ -254,6 +268,54 @@ class Template extends ActiveRecord
     public function getElements()
     {
         return $this->hasMany(TemplateElement::class, ['template_id' => 'id']);
+    }
+
+    /**
+     * Returns the elements which can be used as title of the template instances
+     *
+     * @return array element name => element title
+     */
+    public function getTemplateInstanceTitleElementOptions(): array
+    {
+        $options = [];
+        foreach ($this->getCachedElements() as $element) {
+            if (is_subclass_of($element->content_type, BaseElementContent::class)
+                && $element->content_type::supportsTemplateInstanceTitle()) {
+                $options[$element->name] = $element->getTitle() . ' (' . $element->name . ')';
+            }
+        }
+
+        return $options;
+    }
+
+    /**
+     * Returns the id of the element explicitly selected as title of the template instances
+     */
+    public function getTemplateInstanceTitleElementId(): ?int
+    {
+        if ($this->template_instance_title_element === null) {
+            return null;
+        }
+
+        foreach ($this->getCachedElements() as $element) {
+            if ($element->name === $this->template_instance_title_element) {
+                return (int) $element->id;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return TemplateElement[]
+     */
+    private function getCachedElements(): array
+    {
+        if (!is_array($this->_elements)) {
+            $this->_elements = $this->getElements()->all();
+        }
+
+        return $this->_elements;
     }
 
     /**
@@ -458,7 +520,8 @@ class Template extends ActiveRecord
 
     public function saveCopy(): bool
     {
-        $elements = $this->elements;
+        // Cached, so the elements are still available for the validation after the id is unset
+        $elements = $this->getCachedElements();
         unset($this->id);
         $this->is_default = 0;
 

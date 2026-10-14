@@ -198,6 +198,10 @@ span[data-editor-container-item-id] {
 }
 .cp-container-items-list .cp-container-item-name {
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .cp-container-items-list .cp-container-item-actions a {
   padding: 0 6px;
@@ -217,6 +221,7 @@ span[data-editor-container-item-id] {
   font-size: 11px;
   z-index: 1033;
   min-width: 280px;
+  max-width: 360px;
   max-height: 80%;
   scrollbar-width: none;
   outline: none;
@@ -298,6 +303,10 @@ span[data-editor-container-item-id] {
 .cp-structure-template .cp-structure-text, .cp-structure-container .cp-structure-text {
   padding: 0 8px;
   cursor: default;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .cp-structure-row .cp-structure-action {

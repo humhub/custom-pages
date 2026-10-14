@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.13.5 (Unreleased)
--------------------
+1.13.5 (October 14, 2026)
+-------------------------
 - Fix: Edit button of the page elements does not work again after saving the elements
 - Enh: Show a title taken from one of the elements for template instances in the structure view
 

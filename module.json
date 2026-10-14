@@ -11,7 +11,7 @@
         "navigation",
         "spaces"
     ],
-    "version": "1.13.4",
+    "version": "1.13.5",
     "homepage": "https://github.com/humhub/custom-pages",
     "humhub": {
         "minVersion": "1.19"

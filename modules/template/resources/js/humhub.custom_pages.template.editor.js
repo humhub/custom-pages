@@ -43,7 +43,8 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
             const pageId = $(this).data('editor-page-id');
             cancelHide('page');
             const actionsSelector = '[data-actions-page-id=' + pageId + ']';
-            const pageRow = $('.cp-structure > ul > li > .cp-structure-row');
+            const pageRowSelector = '.cp-structure > ul > li > .cp-structure-row';
+            const pageRow = $(pageRowSelector);
             $(this).addClass('cp-editor-page-hover');
             $('[data-actions-page-id]').hide();
 
@@ -54,7 +55,7 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
                         .attr('data-actions-page-id', pageId)
                         .append(editButton.clone()
                             .removeAttr('data-action-click')
-                            .on('click', () => pageRow.click())));
+                            .on('click', () => $(pageRowSelector).click())));
                 }
             }
 

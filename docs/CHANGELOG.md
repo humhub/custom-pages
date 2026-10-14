@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.13.5 (Unreleased)
+-------------------
+- Fix: Edit button of the page elements does not work again after saving the elements
+
 1.13.4 (October 13, 2026)
 -------------------------
 - Enh: Merge of the changes of version 1.12.23

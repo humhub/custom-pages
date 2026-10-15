@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.13.6 (Unreleased)
--------------------
+1.13.6 (October 15, 2026)
+-------------------------
 - Fix: Double HTML encoding of page titles in the top menu, footer menu and people buttons
 
 1.13.5 (October 14, 2026)

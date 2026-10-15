@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.13.6 (Unreleased)
+-------------------
+- Fix: Double HTML encoding of page titles in the top menu, footer menu and people buttons
+
 1.13.5 (October 14, 2026)
 -------------------------
 - Fix: Edit button of the page elements does not work again after saving the elements

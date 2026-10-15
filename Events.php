@@ -26,7 +26,6 @@ use humhub\widgets\FooterMenu;
 use humhub\widgets\TopMenu;
 use Throwable;
 use Yii;
-use yii\helpers\Html;
 
 /**
  * CustomPagesEvents
@@ -154,7 +153,7 @@ class Events
                 && !$page->hide_menu) {
                 $menu->addEntry(new MenuLink([
                     'id' => 'custom-page-' . $page->id,
-                    'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
+                    'label' => Yii::t('CustomPagesModule.base', $page->title),
                     'url' => ['/custom_pages/view', 'id' => $page->id],
                     'htmlOptions' => ['target' => $page->in_new_window ? '_blank' : ''],
                     'icon' => $page->icon ?? '',
@@ -172,7 +171,7 @@ class Events
 
                 $menu->addEntry(new MenuLink([
                     'id' => 'custom-page-' . $page->id,
-                    'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
+                    'label' => Yii::t('CustomPagesModule.base', $page->title),
                     'url' => ['/custom_pages/view', 'id' => $page->id],
                     'htmlOptions' => ['target' => $page->in_new_window ? '_blank' : ''],
                     'icon' => $page->icon ?? '',
@@ -318,7 +317,7 @@ class Events
                 }
 
                 $menu->addEntry(new MenuLink([
-                    'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
+                    'label' => Yii::t('CustomPagesModule.base', $page->title),
                     'url' => Url::to(['/custom_pages/view', 'id' => $page->id], true),
                     'htmlOptions' => ['target' => $page->in_new_window ? '_blank' : ''],
                     'sortOrder' => $page->sort_order ?? 1000 + $page->id,
@@ -341,7 +340,7 @@ class Events
                 }
 
                 $peopleHeadingButtons->addEntry(new MenuLink([
-                    'label' => Html::encode(Yii::t('CustomPagesModule.base', $page->title)),
+                    'label' => Yii::t('CustomPagesModule.base', $page->title),
                     'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                     'htmlOptions' => ['target' => $page->in_new_window ? '_blank' : ''],
                     'sortOrder' => $page->sort_order ?? 1000 + $page->id,

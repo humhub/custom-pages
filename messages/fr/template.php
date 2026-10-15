@@ -123,9 +123,12 @@ return [
     'Wrong import data!' => 'Données d’importation invalides.',
     'You haven\'t saved your last changes yet. Do you want to leave without saving?' => 'Vous n\'avez pas enregistré vos modifications. Voulez-vous quitter sans enregistrer ?',
     'Allow inline HTML' => '',
+    'Automatic (first suitable element)' => '',
     'Define template resources.' => '',
     'JavaScript' => '',
     'Placeholder' => '',
     'Select new element type' => '',
+    'Template instance title' => '',
     'The text is output as purified HTML and may contain inline formatting like bold text or links. Uncheck it to encode the output, for example if the element is used as an attribute value.' => '',
+    'This element is shown as the title of the template instance in the structure view.' => '',
 ];

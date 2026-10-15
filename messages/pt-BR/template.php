@@ -126,6 +126,9 @@ return [
     'Wrong import data!' => 'Dados de importação incorretos!',
     'You haven\'t saved your last changes yet. Do you want to leave without saving?' => 'Você ainda não salvou suas últimas alterações. Você quer sair sem salvar?',
     'Allow inline HTML' => '',
+    'Automatic (first suitable element)' => '',
     'Select new element type' => '',
+    'Template instance title' => '',
     'The text is output as purified HTML and may contain inline formatting like bold text or links. Uncheck it to encode the output, for example if the element is used as an attribute value.' => '',
+    'This element is shown as the title of the template instance in the structure view.' => '',
 ];

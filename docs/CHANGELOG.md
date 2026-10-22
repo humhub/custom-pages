@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.13.7 (Unreleased)
+-------------------
+- Fix #544: Restore the Space/Profile "Homepage" setting that pointed to a Custom Page and was lost after upgrading from module version 1.10 or older, because pages received new IDs during the migration
+
 1.13.6 (October 15, 2026)
 -------------------------
 - Fix: Double HTML encoding of page titles in the top menu, footer menu and people buttons

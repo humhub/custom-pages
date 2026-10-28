@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.13.8 (Unreleased)
+-------------------
+- Fix #544: Skip the Homepage setting migration if the column `custom_pages_page.old_id` does not exist
+
 1.13.7 (October 28, 2026)
 -------------------------
 - Fix: Deprecation warning "Using null as an array offset" on template import with PHP 8.5

@@ -5,10 +5,14 @@ namespace humhub\modules\custom_pages\controllers;
 use Yii;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\custom_pages\models\forms\SettingsForm;
-use humhub\modules\custom_pages\widgets\AdminMenu;
 
 class ConfigController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public $subLayout = '@custom_pages/views/layouts/admin';
+
     /**
      * @return string
      * @throws \Exception
@@ -21,9 +25,6 @@ class ConfigController extends Controller
             $this->view->saved();
         }
 
-        return $this->render('settings', [
-            'model' => $model,
-            'subNav' => AdminMenu::widget(),
-        ]);
+        return $this->render('settings', ['model' => $model]);
     }
 }

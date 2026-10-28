@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.14.0 (Unreleased)
+-------------------
+- Enh: The administration uses the core's page header, content cards and data tables (humhub/humhub#8637)
+
 1.13.7 (Unreleased)
 -------------------
 - Fix: Deprecation warning "Using null as an array offset" on template import with PHP 8.5

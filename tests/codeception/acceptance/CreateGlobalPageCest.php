@@ -13,16 +13,15 @@ class CreateGlobalPageCest
         $I->amGoingTo('add a new page');
         $I->amOnRoute(['/custom_pages/page']);
         $I->expectTo('see the add new page site');
-        $I->see('Overview');
-        $I->see('Top Navigation');
-        $I->seeElement('.target-page-list.TopMenuWidget');
-
-        $I->click('.btn-success', '.target-page-list.TopMenuWidget');
+        $I->waitForElementVisible('[aria-label="Add page"]');
+        $I->click('[aria-label="Add page"]');
+        $I->waitForText('Where should it be shown?', 10, '#globalModal');
+        $I->click('Top Navigation', '#globalModal');
 
         $I->waitForText('Add new page');
         $I->click('#add-content-type-4');
 
-        $I->waitForText('Configuration');
+        $I->waitForElementVisible('#custompage-title');
 
         $I->fillField('CustomPage[title]', 'Test title');
         $I->fillField('#custompage-page_content .humhub-ui-richtext', 'Test Content');
@@ -52,16 +51,15 @@ class CreateGlobalPageCest
         $I->amGoingTo('add a new page');
         $I->amOnRoute(['/custom_pages/page']);
         $I->expectTo('see the add new page site');
-        $I->see('Overview');
-        $I->see('User Account Menu');
-        $I->seeElement('.target-page-list.AccountMenuWidget');
-
-        $I->click('.btn-success', '.target-page-list.AccountMenuWidget');
+        $I->waitForElementVisible('[aria-label="Add page"]');
+        $I->click('[aria-label="Add page"]');
+        $I->waitForText('Where should it be shown?', 10, '#globalModal');
+        $I->click('User Account Menu (Settings)', '#globalModal');
 
         $I->waitForText('Add new page');
         $I->click('#add-content-type-1');
 
-        $I->waitForText('Configuration');
+        $I->waitForElementVisible('#custompage-title');
 
         $I->fillField('CustomPage[title]', 'Test link');
         $I->fillField('CustomPage[page_content]', '/dashboard/dashboard');
@@ -94,18 +92,15 @@ class CreateGlobalPageCest
         $I->amGoingTo('add a new page');
         $I->amOnRoute(['/custom_pages/page']);
         $I->expectTo('see the add new page site');
-        $I->see('Overview');
-        $I->see('People Buttons');
-        $I->seeElement('.target-page-list.PeopleButtonsWidget');
-
-        $I->scrollTo('.target-page-list.PeopleButtonsWidget');
-        $I->wait(1);
-        $I->click('.btn-success', '.target-page-list.PeopleButtonsWidget');
+        $I->waitForElementVisible('[aria-label="Add page"]');
+        $I->click('[aria-label="Add page"]');
+        $I->waitForText('Where should it be shown?', 10, '#globalModal');
+        $I->click('People Buttons', '#globalModal');
 
         $I->waitForText('Add new page');
         $I->click('#add-content-type-4');
 
-        $I->waitForText('Configuration');
+        $I->waitForElementVisible('#custompage-title');
 
         $I->fillField('CustomPage[title]', 'Custom people page');
         $I->fillField('#custompage-page_content .humhub-ui-richtext', 'Custom people page content');
@@ -120,7 +115,7 @@ class CreateGlobalPageCest
         $I->click('Create');
         $I->scrollToBottom();
         $I->wait(1);
-        $I->waitForText('People Buttons');
+        $I->waitForText('Custom people page');
         $I->see('Custom people page');
         $I->amOnRoute(['/people']);
         $I->waitForElementVisible('.container-people .panel-heading .fa-anchor');

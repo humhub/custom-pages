@@ -23,6 +23,8 @@ class Url extends BaseUrl
     public const ROUTE_PAGE_OVERVIEW = '/custom_pages/page';
 
     public const ROUTE_PAGE_ADD = '/custom_pages/page/add';
+    public const ROUTE_PAGE_CHOOSE_TARGET = '/custom_pages/page/choose-target';
+    public const ROUTE_SNIPPET_CHOOSE_TARGET = '/custom_pages/snippet/choose-target';
     public const ROUTE_SNIPPET_ADD = '/custom_pages/snippet/add';
 
     public const ROUTE_SNIPPET_OVERVIEW = '/custom_pages/snippet';
@@ -77,6 +79,13 @@ class Url extends BaseUrl
         $route = ($pageType === PageType::Page) ? static::ROUTE_EDIT_PAGE : static::ROUTE_EDIT_SNIPPET;
 
         return static::create($route, ['targetId' => $targetId, 'type' => $contentType], $container);
+    }
+
+    public static function toChooseTarget($pageType, ?ContentContainerActiveRecord $container = null)
+    {
+        $route = ($pageType === PageType::Page) ? static::ROUTE_PAGE_CHOOSE_TARGET : static::ROUTE_SNIPPET_CHOOSE_TARGET;
+
+        return static::create($route, [], $container);
     }
 
     public static function toChooseContentType($targetId, $pageType, ?ContentContainerActiveRecord $container = null)

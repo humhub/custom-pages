@@ -12,7 +12,6 @@ use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\interfaces\CustomPagesService;
 use humhub\modules\content\components\ContentContainerControllerAccess;
 use humhub\modules\space\models\Space;
-use humhub\modules\custom_pages\widgets\AdminMenu;
 use humhub\modules\custom_pages\models\forms\AddPageForm;
 use Yii;
 use yii\web\BadRequestHttpException;
@@ -36,9 +35,9 @@ class PageController extends AbstractCustomContainerController
     {
         parent::init();
 
-        if (!$this->contentContainer) {
-            $this->subLayout = "@humhub/modules/admin/views/layouts/main";
-        }
+        $this->subLayout = $this->contentContainer
+            ? '@custom_pages/views/layouts/container'
+            : '@custom_pages/views/layouts/admin';
     }
 
     /**
@@ -93,19 +92,21 @@ class PageController extends AbstractCustomContainerController
     public function actionOverview()
     {
         return $this->render('@custom_pages/views/common/list', [
-            'targets' => CustomPagesService::instance()->getTargets($this->getPageType(), $this->contentContainer),
             'pageType' => $this->getPageType(),
-            'subNav' => $this->getSubNav(),
         ]);
     }
 
     /**
-     * @return string
-     * @throws \Exception
+     * Returns a modal to choose the target of a new page, before its content type.
+     *
+     * @return string view
      */
-    private function getSubNav()
+    public function actionChooseTarget()
     {
-        return $this->contentContainer ? '' : AdminMenu::widget();
+        return $this->renderAjax('@custom_pages/views/common/chooseTarget', [
+            'targets' => CustomPagesService::instance()->getTargets($this->getPageType(), $this->contentContainer),
+            'pageType' => $this->getPageType(),
+        ]);
     }
 
     /**
@@ -135,7 +136,6 @@ class PageController extends AbstractCustomContainerController
             'model' => $model,
             'target' => $target,
             'pageType' => $this->getPageType(),
-            'subNav' => $this->getSubNav(),
         ]);
     }
 
@@ -184,7 +184,6 @@ class PageController extends AbstractCustomContainerController
         return $this->render('@custom_pages/views/common/edit', [
             'page' => $page,
             'pageType' => $this->getPageType(),
-            'subNav' => $this->getSubNav(),
         ]);
     }
 

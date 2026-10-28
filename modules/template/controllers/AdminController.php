@@ -18,7 +18,6 @@ use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\models\forms\AddElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\EditElementForm;
 use humhub\modules\custom_pages\modules\template\models\forms\ImportForm;
-use humhub\modules\custom_pages\modules\template\models\TemplateSearch;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\models\TemplateElement;
 use humhub\modules\custom_pages\modules\template\services\TemplateExportService;
@@ -44,19 +43,19 @@ use yii\web\NotFoundHttpException;
 class AdminController extends Controller
 {
     /**
-     * Returns a searchable gridview with all avialable templates of the given type.
+     * @inheritdoc
+     */
+    public $subLayout = '@custom_pages/views/layouts/admin';
+
+    /**
+     * The template table (`widgets\TemplateTable`, its rows from
+     * `GET /api/v2/custom-pages/template`).
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new TemplateSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-        ]);
+        return $this->render('index');
     }
 
     /**

@@ -9,18 +9,17 @@
 namespace humhub\modules\custom_pages\modules\template\widgets;
 
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\Menu;
+use humhub\widgets\menu\DropdownMenu;
+use humhub\widgets\menu\MenuLink;
 use Yii;
 use yii\helpers\Url;
 
-class TemplateMenu extends Menu
+/**
+ * The ⋮ menu of a template's card ({@see TemplateCard}): edit all elements, copy, export and
+ * delete.
+ */
+class TemplateMenu extends DropdownMenu
 {
-    /**
-     * @inheritdoc
-     */
-    public $template = 'templateMenu';
-
     /**
      * @var Template
      */
@@ -61,7 +60,7 @@ class TemplateMenu extends Menu
             'sortOrder' => 300,
         ]));
 
-        if ($this->model->canEdit()) {
+        if ($this->model->canDelete()) {
             $this->addEntry(new MenuLink([
                 'label' => Yii::t('CustomPagesModule.template', 'Delete'),
                 'url' => ['delete-template', 'id' => $this->model->id],
@@ -74,16 +73,5 @@ class TemplateMenu extends Menu
         }
 
         parent::init();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAttributes()
-    {
-        return [
-            'class' => 'dropdown-navigation float-end',
-            'style' => 'margin-left:16px',
-        ];
     }
 }

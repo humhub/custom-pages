@@ -15,16 +15,15 @@ class CreateContainerPageCest
         $I->amGoingTo('add a new page');
         $I->amOnSpace2('/custom_pages/page');
         $I->expectTo('see the add new page site');
-        $I->see('Overview');
-        $I->see('Space Navigation');
-        $I->seeElement('.target-page-list.SpaceMenu');
-
-        $I->click('.btn-success', '.target-page-list.SpaceMenu');
+        $I->waitForElementVisible('[aria-label="Add page"]');
+        $I->click('[aria-label="Add page"]');
+        $I->waitForText('Where should it be shown?', 10, '#globalModal');
+        $I->click('Space Navigation', '#globalModal');
 
         $I->waitForText('Add new page');
         $I->click('#add-content-type-4');
 
-        $I->waitForText('Configuration');
+        $I->waitForElementVisible('#custompage-title');
 
         $I->fillField('CustomPage[title]', 'Space Markdown Page');
         $I->fillField('#custompage-page_content .humhub-ui-richtext', 'Space Test Content');

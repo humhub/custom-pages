@@ -17,9 +17,9 @@ class CreateTemplatePageCest
         $I->amGoingTo('add a new layout template');
         $I->amOnRoute(['/custom_pages/template/admin']);
         $I->expectTo('see the overview site');
-        $I->see('Overview');
+        $I->waitForElementVisible('[aria-label="Create"]');
 
-        $I->click('Create'); // Add Markdown button
+        $I->click('[aria-label="Create"]');
 
         $I->waitForElementVisible('#template-name');
 

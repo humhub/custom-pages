@@ -10,11 +10,14 @@ namespace humhub\modules\custom_pages\modules\template\widgets;
 
 use humhub\helpers\ControllerHelper;
 use humhub\modules\custom_pages\modules\template\models\Template;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\SubTabMenu;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\PillTabs;
 use Yii;
 
-class TemplateTabs extends SubTabMenu
+/**
+ * The tabs of a template's card ({@see TemplateCard}): General, Source, Resources and Usage.
+ */
+class TemplateTabs extends PillTabs
 {
     /**
      * @var Template

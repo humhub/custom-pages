@@ -25,6 +25,9 @@ return [
     ],
     'urlManagerRules' => [
         ['class' => 'humhub\modules\custom_pages\components\PageUrlRule'],
+        ['pattern' => 'api/v2/space/<spaceId:\d+>/custom-pages/<pageType:page|snippet>', 'route' => 'custom_pages/api/page-table/index', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/custom-pages/<pageType:page|snippet>', 'route' => 'custom_pages/api/page-table/index', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/custom-pages/template', 'route' => 'custom_pages/template/api/template-table/index', 'verb' => ['GET', 'HEAD']],
     ],
     'namespace' => 'humhub\modules\custom_pages',
     'events' => [

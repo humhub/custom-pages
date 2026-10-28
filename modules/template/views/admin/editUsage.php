@@ -6,7 +6,9 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\custom_pages\modules\template\models\Template;
+use humhub\modules\custom_pages\modules\template\widgets\TemplateCard;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
 
@@ -14,17 +16,13 @@ use yii\data\ActiveDataProvider;
 /* @var ActiveDataProvider $dataProvider */
 /* @var array $columns */
 ?>
-<div class="panel panel-default">
-    <?= $this->render('editHeader', [
-        'model' => $model,
-        'description' => Yii::t('CustomPagesModule.template', 'Here you can review where the template is used in.'),
+<?php TemplateCard::begin([
+    'model' => $model,
+    'description' => Html::encode(Yii::t('CustomPagesModule.template', 'Here you can review where the template is used in.')),
+]) ?>
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'layout' => '{items}{pager}',
+        'columns' => $columns,
     ]) ?>
-
-    <div class="panel-body">
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'layout' => '{items}{pager}',
-            'columns' => $columns,
-        ]) ?>
-    </div>
-</div>
+<?php TemplateCard::end() ?>

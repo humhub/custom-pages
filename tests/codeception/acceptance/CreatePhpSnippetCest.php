@@ -10,7 +10,6 @@
 namespace custom_pages\acceptance;
 
 use custom_pages\AcceptanceTester;
-use humhub\modules\custom_pages\helpers\PageType;
 
 class CreatePhpSnippetCest
 {
@@ -35,16 +34,16 @@ class CreatePhpSnippetCest
         $I->amGoingTo('add a new snippet');
         $I->amOnRoute(['/custom_pages/snippet']);
         $I->expectTo('see the add new page site');
-        $I->see('Overview');
-
-        $I->seeElement('.target-page-list.' . PageType::TARGET_DASHBOARD_SIDEBAR);
-        $I->click('.btn-success', '.target-page-list.' . PageType::TARGET_DASHBOARD_SIDEBAR);
+        $I->waitForElementVisible('[aria-label="Add snippet"]');
+        $I->click('[aria-label="Add snippet"]');
+        $I->waitForText('Where should it be shown?', 10, '#globalModal');
+        $I->click('Dashboard', '#globalModal');
 
         $I->waitForText('Add new snippet');
 
         $I->click('#add-content-type-6');
 
-        $I->waitForText('Configuration');
+        $I->waitForElementVisible('#custompage-title');
 
         $I->fillField('CustomPage[title]', 'PHP snippet');
         $I->selectOption('CustomPage[page_content]', ['value' => 'test_snippet']);

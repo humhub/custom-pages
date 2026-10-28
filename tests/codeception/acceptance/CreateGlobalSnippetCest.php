@@ -3,7 +3,6 @@
 namespace custom_pages\acceptance;
 
 use custom_pages\AcceptanceTester;
-use humhub\modules\custom_pages\helpers\PageType;
 
 class CreateGlobalSnippetCest
 {
@@ -14,16 +13,15 @@ class CreateGlobalSnippetCest
         $I->amGoingTo('add a new page');
         $I->amOnRoute(['/custom_pages/snippet']);
         $I->expectTo('see the add new page site');
-        $I->see('Overview');
-        $I->see('Dashboard', '.target-page-list');
-        $I->seeElement('.target-page-list.' . PageType::TARGET_DASHBOARD_SIDEBAR);
-
-        $I->click('.btn-success', '.target-page-list.' . PageType::TARGET_DASHBOARD_SIDEBAR);
+        $I->waitForElementVisible('[aria-label="Add snippet"]');
+        $I->click('[aria-label="Add snippet"]');
+        $I->waitForText('Where should it be shown?', 10, '#globalModal');
+        $I->click('Dashboard', '#globalModal');
 
         $I->waitForText('Add new snippet');
         $I->click('#add-content-type-4');
 
-        $I->waitForText('Configuration');
+        $I->waitForElementVisible('#custompage-title');
 
         $I->fillField('CustomPage[title]', 'Test title');
         $I->fillField('#custompage-page_content .humhub-ui-richtext', 'Test Snippet Content');

@@ -1,34 +1,14 @@
 <?php
 
-use humhub\modules\custom_pages\widgets\OverviewSubMenu;
-use humhub\modules\custom_pages\widgets\TargetPageList;
+use humhub\components\View;
+use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\custom_pages\widgets\PageTable;
 
-/* @var $targets \humhub\modules\custom_pages\models\Target[] */
-/* @var $subNav string */
+/* @var $this View */
 /* @var $pageType string */
 
-\humhub\modules\custom_pages\assets\Assets::register($this);
-
 ?>
-<div class="panel panel-default">
-    <div class="panel-heading"><?= Yii::t('CustomPagesModule.base', '<strong>Custom</strong> Pages'); ?></div>
-
-    <?= $subNav ?>
-
-    <div class="panel-body">
-        <div class="clearfix">
-            <h4><?= Yii::t('CustomPagesModule.base', 'Overview') ?></h4>
-            <div class="text-body-secondary">
-                <?= Yii::t('CustomPagesModule.view', 'This page lists all available custom content entries.'); ?>
-            </div>
-        </div>
-    </div>
-
-    <?= OverviewSubMenu::widget() ?>
-
-    <div class="panel-body">
-        <?php foreach ($targets as $target) : ?>
-            <?= TargetPageList::widget(['target' => $target, 'pageType' => $pageType])?>
-        <?php endforeach; ?>
-    </div>
-</div>
+<?= PageTable::widget([
+    'pageType' => $pageType,
+    'container' => ContentContainerHelper::getCurrent(),
+]) ?>

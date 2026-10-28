@@ -37,11 +37,11 @@ class InterfaceCest
 
         $I->amAdmin();
 
-        $I->amOnRoute('/custom_pages/page');
-        $I->see('Test Target', '.target-page-list');
+        $I->amOnRoute('/custom_pages/page/choose-target');
+        $I->see('Test Target', '.list-group');
 
         $I->enableModule(1, 'custom_pages');
-        $I->amOnSpace1('/custom_pages/page');
+        $I->amOnSpace1('/custom_pages/page/choose-target');
         $I->see('Space Navigation');
         $I->dontSee('Test Target');
         $I->dontSeeElement('.fa-bath');

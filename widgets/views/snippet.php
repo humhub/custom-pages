@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\Icon;
 use yii\helpers\Html;
 
 $snippetId = 'custom-snippet-'.$model->id;
@@ -15,7 +16,7 @@ foreach($navigation as $navigationOption) {
 
 <div class="panel panel-default custom-snippet <?= Html::encode($cssClass) ?> " id="<?= $snippetId ?>">
     <?php echo \humhub\widgets\PanelMenu::widget(['id' => $snippetId, 'extraMenus' => $extraOptions]); ?>
-    <div class="panel-heading"><i class="fa <?= $model->icon; ?>"></i> <?= Html::encode($model->title) ?></div>
+    <div class="panel-heading"><?= $model->icon ? Icon::get($model->icon) . ' ' : '' ?><?= Html::encode($model->title) ?></div>
     <div class="panel-body">
         <?= $content ?>
     </div>

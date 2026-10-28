@@ -29,7 +29,7 @@ class CreateGlobalPageCest
         $I->scrollToBottom();
         $I->waitForElementVisible('#custompage-sort_order');
         $I->fillField('CustomPage[sort_order]', '400');
-        $I->selectOption('CustomPage[icon]', ['value' => 'fa-anchor']);
+        $I->executeJS("$('#custompage-icon').append(new Option('anchor', 'anchor', true, true)).trigger('change');");
 
         $I->scrollToBottom();
         $I->wait(1);
@@ -67,7 +67,7 @@ class CreateGlobalPageCest
         $I->scrollToBottom();
         $I->waitForElementVisible('#custompage-sort_order');
         $I->fillField('CustomPage[sort_order]', '400');
-        $I->selectOption('CustomPage[icon]', ['value' => 'fa-anchor']);
+        $I->executeJS("$('#custompage-icon').append(new Option('anchor', 'anchor', true, true)).trigger('change');");
 
         $I->scrollToBottom();
         $I->wait(1);
@@ -108,7 +108,7 @@ class CreateGlobalPageCest
         $I->scrollToBottom();
         $I->waitForElementVisible('#custompage-sort_order');
         $I->fillField('CustomPage[sort_order]', '200');
-        $I->selectOption('CustomPage[icon]', ['value' => 'fa-anchor']);
+        $I->executeJS("$('#custompage-icon').append(new Option('anchor', 'anchor', true, true)).trigger('change');");
 
         $I->scrollToBottom();
         $I->wait(1);

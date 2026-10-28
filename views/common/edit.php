@@ -6,12 +6,12 @@ use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\types\TemplateType;
-use humhub\modules\custom_pages\widgets\PageIconSelect;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\bootstrap\Link;
 use humhub\widgets\ContentCard;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\IconPicker;
 
 Assets::register($this);
 
@@ -54,7 +54,7 @@ $contentType = $page->getContentType();
     <?php endif; ?>
 
     <?php if ($page->isAllowedField('icon')) : ?>
-        <?= PageIconSelect::widget(['page' => $page]) ?>
+        <?= $form->field($page, 'icon')->widget(IconPicker::class) ?>
     <?php endif; ?>
 
     <?php if ($page->isAllowedField('sort_order')) : ?>

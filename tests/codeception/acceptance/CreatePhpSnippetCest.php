@@ -50,7 +50,7 @@ class CreatePhpSnippetCest
         $I->jsClick('.form-collapsible-fields-label.collapsed label');
         $I->scrollToBottom();
         $I->waitForElementVisible('#custompage-sort_order');
-        $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
+        $I->executeJS("$('#custompage-icon').append(new Option('anchor', 'anchor', true, true)).trigger('change');");
 
         $I->scrollToBottom();
         $I->wait(1);

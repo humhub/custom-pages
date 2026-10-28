@@ -29,7 +29,7 @@ class CreateGlobalSnippetCest
         $I->scrollToBottom();
         $I->waitForElementVisible('#custompage-sort_order');
         $I->fillField('CustomPage[sort_order]', '400');
-        $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
+        $I->executeJS("$('#custompage-icon').append(new Option('anchor', 'anchor', true, true)).trigger('change');");
         $I->fillField('CustomPage[cssClass]', 'myDashboardWidget');
 
         $I->scrollToBottom();

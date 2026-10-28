@@ -4,6 +4,7 @@ use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomPage;
 use yii\helpers\Html;
 use humhub\modules\custom_pages\modules\template\widgets\TemplatePage;
+use humhub\widgets\Icon;
 
 /* @var $snippet CustomPage */
 /* @var $html string */
@@ -24,7 +25,7 @@ $editUrl = Url::toEditSnippet($snippet, $snippet->content->container);
                     <div class="col-md-6">
                         <div class="panel panel-default custom-snippet">
                             <div class="panel-heading">
-                                <i class="fa <?= Html::encode($snippet->icon) ?>"></i> <?= Html::encode($snippet->title) ?>
+                                <?= $snippet->icon ? Icon::get($snippet->icon) . ' ' : '' ?><?= Html::encode($snippet->title) ?>
                                 <a id="snippet-config-button" href="<?= $editUrl ?>" title="<?= Yii::t('CustomPagesModule.base', 'Configuration'); ?>" target="_blank" class="float-end"><i class="fa fa-pencil"></i></a>
                             </div>
                             <div class="panel-body">

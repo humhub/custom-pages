@@ -52,15 +52,15 @@ class CreatePhpPageCest
         $I->scrollToBottom();
         $I->waitForElementVisible('#custompage-sort_order');
         $I->fillField('CustomPage[sort_order]', '400');
-        $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
+        $I->selectOption('CustomPage[icon]', ['value' => 'fa-anchor']);
 
         $I->scrollToBottom();
         $I->wait(1);
         $I->click('Create');
-        $I->waitForElementVisible('#topbar-second .fa-adn');
+        $I->waitForElementVisible('#topbar-second .ti-anchor');
         $I->expectTo('see my new page in the top navigation');
 
-        $I->click('#topbar-second .fa-adn');
+        $I->click('#topbar-second .ti-anchor');
         $I->expectTo('see no my new page content');
 
         $I->waitForElementVisible('#test-page');

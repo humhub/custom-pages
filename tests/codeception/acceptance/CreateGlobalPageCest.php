@@ -29,15 +29,15 @@ class CreateGlobalPageCest
         $I->scrollToBottom();
         $I->waitForElementVisible('#custompage-sort_order');
         $I->fillField('CustomPage[sort_order]', '400');
-        $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
+        $I->selectOption('CustomPage[icon]', ['value' => 'fa-anchor']);
 
         $I->scrollToBottom();
         $I->wait(1);
         $I->click('Create');
-        $I->waitForElementVisible('#topbar-second .fa-adn');
+        $I->waitForElementVisible('#topbar-second .ti-anchor');
         $I->expectTo('see my new page in the top navigation');
 
-        $I->click('#topbar-second .fa-adn');
+        $I->click('#topbar-second .ti-anchor');
         $I->expectTo('see no my new page content');
 
         $I->waitForText('Test Content');
@@ -67,7 +67,7 @@ class CreateGlobalPageCest
         $I->scrollToBottom();
         $I->waitForElementVisible('#custompage-sort_order');
         $I->fillField('CustomPage[sort_order]', '400');
-        $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
+        $I->selectOption('CustomPage[icon]', ['value' => 'fa-anchor']);
 
         $I->scrollToBottom();
         $I->wait(1);
@@ -76,10 +76,10 @@ class CreateGlobalPageCest
         $I->amOnRoute(['/user/account/edit']);
         $I->expectTo('see my new page in the user account setting menu');
 
-        $I->waitForElementVisible('.left-navigation .fa-adn');
+        $I->waitForElementVisible('.left-navigation .ti-anchor');
         $I->see('Test link');
 
-        $I->click('.left-navigation .fa-adn');
+        $I->click('.left-navigation .ti-anchor');
         $I->expectTo('see the dashboard');
         $I->wait(2);
         $I->seeInCurrentUrl('dashboard/dashboard');
@@ -118,10 +118,10 @@ class CreateGlobalPageCest
         $I->waitForText('Custom people page');
         $I->see('Custom people page');
         $I->amOnRoute(['/people']);
-        $I->waitForElementVisible('.container-people .panel-heading .fa-anchor');
+        $I->waitForElementVisible('.container-people .page-header-actions .ti-anchor');
         $I->expectTo('see my new page in the people heading buttons');
 
-        $I->jsClick('.container-people .panel-heading .fa-anchor');
+        $I->jsClick('.container-people .page-header-actions .ti-anchor');
         $I->expectTo('see no my new page content');
 
         $I->waitForText('Custom people page content');

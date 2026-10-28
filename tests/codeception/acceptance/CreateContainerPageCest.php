@@ -31,12 +31,12 @@ class CreateContainerPageCest
         $I->scrollToBottom();
         $I->waitForElementVisible('#custompage-sort_order');
         $I->fillField('CustomPage[sort_order]', '400');
-        $I->selectOption('CustomPage[icon]', ['value' => 'fa-adn']);
+        $I->selectOption('CustomPage[icon]', ['value' => 'fa-anchor']);
 
         $I->scrollToBottom();
         $I->wait(1);
         $I->click('Create');
-        $I->waitForElementVisible('.left-navigation .fa-adn');
+        $I->waitForElementVisible('.left-navigation .ti-anchor');
         $I->see('Space Markdown Page', '.left-navigation');
         $I->click('Space Markdown Page', '.left-navigation');
 

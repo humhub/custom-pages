@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.13.7 (Unreleased)
--------------------
+1.13.7 (October 28, 2026)
+-------------------------
 - Fix: Deprecation warning "Using null as an array offset" on template import with PHP 8.5
 - Enh: Show the "People Buttons" pages in the People page header of HumHub 1.20 (`PeopleHeaderActions`, humhub/humhub#8637)
 - Fix #544: Restore the Space/Profile "Homepage" setting that pointed to a Custom Page and was lost after upgrading from module version 1.10 or older, because pages received new IDs during the migration

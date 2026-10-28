@@ -69,7 +69,8 @@ class PageType
                 self::TARGET_FOOTER => Yii::t('CustomPagesModule.base', 'Footer menu'),
                 self::TARGET_START_PAGE => Yii::t('CustomPagesModule.base', 'Start Page'),
             ];
-            if (class_exists('humhub\modules\user\widgets\PeopleHeadingButtons')) {
+            if (class_exists('humhub\modules\user\widgets\PeopleHeaderActions')
+                || class_exists('humhub\modules\user\widgets\PeopleHeadingButtons')) {
                 $targets[self::TARGET_PEOPLE] = Yii::t('CustomPagesModule.base', 'People Buttons');
             }
 

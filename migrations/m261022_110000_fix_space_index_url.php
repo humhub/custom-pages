@@ -17,6 +17,14 @@ class m261022_110000_fix_space_index_url extends Migration
      */
     public function safeUp()
     {
+        // The column is missing if `m241111_164223_refactor` was applied before it started to store old IDs
+        $tableSchema = $this->db->getTableSchema('custom_pages_page', true);
+        if ($tableSchema === null || $tableSchema->getColumn('old_id') === null) {
+            echo "Column custom_pages_page.old_id does not exist, skipping.\n";
+
+            return;
+        }
+
         $settings = (new Query())
             ->select(['module_id', 'contentcontainer_id', 'name', 'value'])
             ->from('contentcontainer_setting')

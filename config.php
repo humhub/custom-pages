@@ -35,7 +35,9 @@ return [
         ['class' => Menu::class, 'event' => Menu::EVENT_INIT, 'callback' => [Events::class, 'onSpaceMenuInit']],
         ['class' => AccountTopMenu::class, 'event' => AccountTopMenu::EVENT_INIT, 'callback' => [Events::class, 'onAccountTopMenuInit']],
         ['class' => FooterMenu::class, 'event' => FooterMenu::EVENT_INIT, 'callback' => [Events::class, 'onFooterMenuInit']],
-        ['class' => 'humhub\modules\user\widgets\PeopleHeadingButtons', 'event' => 'init', 'callback' => [Events::class, 'onPeopleHeadingButtonsInit']],
+        // The People page's buttons: PeopleHeadingButtons up to HumHub 1.19, PeopleHeaderActions since 1.20
+        ['class' => 'humhub\modules\user\widgets\PeopleHeadingButtons', 'event' => 'init', 'callback' => [Events::class, 'onPeopleHeaderActionsInit']],
+        ['class' => 'humhub\modules\user\widgets\PeopleHeaderActions', 'event' => 'init', 'callback' => [Events::class, 'onPeopleHeaderActionsInit']],
 
         ['class' => HeaderControlsMenu::class, 'event' => HeaderControlsMenu::EVENT_INIT, 'callback' => [Events::class, 'onSpaceAdminMenuInit']],
 

@@ -21,7 +21,6 @@ use humhub\modules\space\widgets\Sidebar as SpaceSidebar;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\AccountMenu;
 use humhub\modules\user\widgets\HeaderControlsMenu;
-use humhub\modules\user\widgets\PeopleHeadingButtons;
 use humhub\widgets\FooterMenu;
 use humhub\widgets\TopMenu;
 use Throwable;
@@ -328,23 +327,28 @@ class Events
         }
     }
 
-    public static function onPeopleHeadingButtonsInit($event)
+    /**
+     * Adds the pages of the target "People Buttons" to the People page's buttons:
+     * `PeopleHeadingButtons` up to HumHub 1.19, `PeopleHeaderActions` since 1.20. The latter shows
+     * its entries as icon buttons, so a page without an icon gets a generic one there.
+     */
+    public static function onPeopleHeaderActionsInit($event)
     {
         try {
-            /* @var PeopleHeadingButtons $peopleHeadingButtons */
-            $peopleHeadingButtons = $event->sender;
+            $menu = $event->sender;
+            $iconsOnly = $menu instanceof \humhub\widgets\menu\HeaderActions;
             foreach (CustomPagesService::instance()->findByTarget(PageType::TARGET_PEOPLE)->all() as $page) {
                 /* @var CustomPage $page */
                 if (!$page->canView()) {
                     continue;
                 }
 
-                $peopleHeadingButtons->addEntry(new MenuLink([
+                $menu->addEntry(new MenuLink([
                     'label' => Yii::t('CustomPagesModule.base', $page->title),
                     'url' => Url::to(['/custom_pages/view', 'id' => $page->id]),
                     'htmlOptions' => ['target' => $page->in_new_window ? '_blank' : ''],
                     'sortOrder' => $page->sort_order ?? 1000 + $page->id,
-                    'icon' => $page->icon ?? '',
+                    'icon' => $page->icon ?: ($iconsOnly ? 'file-text' : ''),
                 ]));
             }
         } catch (Throwable $e) {

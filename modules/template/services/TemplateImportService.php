@@ -107,7 +107,7 @@ class TemplateImportService extends BaseImportService
         $titleElement = $data['template_instance_title_element'] ?? null;
         $titleElementOptions = Template::findOne(['id' => $this->template->id])->getTemplateInstanceTitleElementOptions();
         $this->template->updateAttributes([
-            'template_instance_title_element' => isset($titleElementOptions[$titleElement]) ? $titleElement : null,
+            'template_instance_title_element' => $titleElement !== null && isset($titleElementOptions[$titleElement]) ? $titleElement : null,
         ]);
 
         return !$this->hasErrors();

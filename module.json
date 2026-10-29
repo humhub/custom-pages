@@ -11,10 +11,11 @@
         "navigation",
         "spaces"
     ],
-    "version": "1.13.7",
+    "version": "1.13.8",
     "homepage": "https://github.com/humhub/custom-pages",
     "humhub": {
-        "minVersion": "1.19"
+        "minVersion": "1.19",
+        "maxVersion": "1.19"
     },
     "screenshots": [
         "resources/screenshot1.png",

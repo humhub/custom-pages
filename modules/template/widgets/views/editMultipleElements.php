@@ -73,12 +73,3 @@ $footer .= $model->hasEditableFields()
 <?php Modal::endFormDialog() ?>
 
 <?= Html::script(' $(\'.template-edit-multiple-tab:first\').focus();')?>
-
-<style>
-    /**
-     * This prevents the select2 template selection to be shrunk if rendered within a hidden panel.
-     */
-    .field-templateelement-name .select2-container--humhub {
-        width:100% !important;
-    }
-</style>

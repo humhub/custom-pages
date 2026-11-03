@@ -24,6 +24,6 @@ use yii\helpers\Html;
 ]) ?>
     <div class="mb-3 field-templateelement-name required">
         <label class="control-label" for="templateSelection"><?= Yii::t('CustomPagesModule.template', 'Template') ?></label>
-        <?= Html::dropDownList('templateId', null, $allowedTemplateSelection, ['id' => 'templateSelection', 'class' => 'form-control', 'data-ui-select2' => '']) ?>
+        <?= Html::dropDownList('templateId', null, $allowedTemplateSelection, ['id' => 'templateSelection', 'class' => 'form-control', 'data-ui-picker' => '']) ?>
     </div>
 <?php Modal::endFormDialog() ?>

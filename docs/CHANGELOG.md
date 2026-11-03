@@ -5,6 +5,7 @@ Changelog
 -------------------
 - Enh: The administration uses the core's page header, content cards and data tables (humhub/humhub#8637)
 - Enh: The page icon is chosen with the core's Tabler icon picker
+- Enh: Compatibility with the core picker that replaces Select2 (humhub/humhub#8677)
 
 1.13.7 (October 28, 2026)
 -------------------------

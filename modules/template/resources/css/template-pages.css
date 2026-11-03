@@ -248,8 +248,7 @@ span[data-editor-container-item-id] {
 .cp-templates-filter .input-group .form-group {
     flex-grow: 1;
 }
-.cp-templates-filter .form-control,
-.cp-templates-filter .select2-selection.select2-selection--single {
+.cp-templates-filter .form-control {
     height: 37px;
 }
 .cp-templates-filter .form-group, .cp-templates-filter .help-block {

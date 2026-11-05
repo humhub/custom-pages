@@ -7,8 +7,8 @@ use humhub\widgets\bootstrap\Button;
 /* @var $page CustomPage */
 ?>
 <?php if ($page->canView()) : ?>
-<div class="media">
-    <div class="media-body">
+<div class="d-flex">
+    <div class="flex-grow-1">
         <div data-ui-show-more>
             <?= RichText::output($page->abstract, ['fadeIn' => true])?>
         </div>

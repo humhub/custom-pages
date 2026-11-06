@@ -3,6 +3,7 @@ Changelog
 
 1.14.0 (Unreleased)
 -------------------
+- Enh: Dark mode: hard-coded greys and light backgrounds became colour tokens of the core (humhub/humhub#8710)
 - Enh: Colour tokens of the core 1.20 instead of the deprecated ones (humhub/humhub#8707)
 - Enh: The administration uses the core's page header, content cards and data tables (humhub/humhub#8637)
 - Enh: The page icon is chosen with the core's Tabler icon picker

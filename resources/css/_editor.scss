@@ -1,5 +1,5 @@
 .preview {
-  border: 1px solid rgba(210, 210, 210, 0.5);
+  border: 1px solid var(--bs-border-color);
   min-height:100px;
   box-shadow: 1px 1px 1px 1px rgba(210, 210, 210, 0.5);
 }
@@ -16,7 +16,7 @@ img.preview {
     li {
       border-left: 3px solid transparent;
       &:hover, &.selected {
-        background-color: #f7f7f7;
+        background-color: var(--bs-tertiary-bg);
         border-left: 3px solid #6fdbe8;
       }
     }
@@ -35,7 +35,7 @@ img.preview {
   position: relative;
   outline: 0;
   border: 0;
-  color: black;
+  color: var(--bs-emphasis-color);
   text-align: center;
   height: 1.5em;
   opacity: .5;
@@ -45,7 +45,7 @@ img.preview {
       background:#a0c2f9;
     }
     &:after {
-      color: #000;
+      color: var(--bs-emphasis-color);
       font-weight: bold;
     }
     &:hover::after {
@@ -54,7 +54,7 @@ img.preview {
   }
   &:before {
     content: '';
-    background: #E0E0E0;
+    background: var(--bs-border-color);
     position: absolute;
     left: 0;
     top: 50%;
@@ -67,7 +67,7 @@ img.preview {
     display: inline-block;
     padding: 0 .5em;
     line-height: 1.5em;
-    color: #818078;
-    background-color: #fcfcfa;
+    color: var(--bs-secondary-color);
+    background-color: var(--bs-body-bg);
   }
 }

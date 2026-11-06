@@ -19,12 +19,7 @@
     display: none;
   }
 
-  .dropdown-menu-top {
-    top: inherit;
-    bottom: 100%;
-  }
-
-  ul {
+  ul:not(.dropdown-menu) {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -72,10 +67,6 @@
   &:hover .cp-structure-actions {
     visibility: visible;
   }
-
-  .cp-structure-actions .dropdown-menu {
-    padding: 0;
-  }
 }
 
 .cp-structure-header {
@@ -86,11 +77,6 @@
     padding: 4px;
     margin: -4px 5px -4px -5px;
     cursor: pointer;
-
-    .dropdown-menu {
-      top: 10px !important;
-      left: -4px !important;
-    }
   }
 
   .cp-structure-text {

@@ -11,21 +11,6 @@ img.preview {
   max-height:200px;
 }
 
-#editPageButton {
-  .dropdown-menu {
-    li {
-      border-left: 3px solid transparent;
-      &:hover, &.selected {
-        background-color: var(--bs-tertiary-bg);
-        border-left: 3px solid #6fdbe8;
-      }
-    }
-    a {
-      background: none;
-    }
-  }
-}
-
 .content-edit .ProseMirror {
   min-height: 150px !important;
 }

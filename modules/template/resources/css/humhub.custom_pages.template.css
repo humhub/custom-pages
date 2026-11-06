@@ -1,3 +1,10 @@
+#templatePageRoot .download-list {
+  margin-top: 10px;
+  padding: 0 20px;
+}
+#templatePageRoot .download-item {
+  margin-top: 5px;
+}
 #templatePageRoot {
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -7,13 +14,6 @@
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-}
-#templatePageRoot .download-list {
-  margin-top: 10px;
-  padding: 0 20px;
-}
-#templatePageRoot .download-item {
-  margin-top: 5px;
 }
 #templatePageRoot img {
   max-width: 100%;
@@ -179,11 +179,7 @@ span[data-editor-container-item-id] {
 .cp-structure::-webkit-scrollbar {
   display: none;
 }
-.cp-structure .dropdown-menu-top {
-  top: inherit;
-  bottom: 100%;
-}
-.cp-structure ul {
+.cp-structure ul:not(.dropdown-menu) {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -222,9 +218,6 @@ span[data-editor-container-item-id] {
 .cp-structure-row:hover .cp-structure-actions {
   visibility: visible;
 }
-.cp-structure-row .cp-structure-actions .dropdown-menu {
-  padding: 0;
-}
 
 .cp-structure-header {
   cursor: move;
@@ -234,10 +227,6 @@ span[data-editor-container-item-id] {
   padding: 4px;
   margin: -4px 5px -4px -5px;
   cursor: pointer;
-}
-.cp-structure-header .cp-structure-actions .dropdown-menu {
-  top: 10px !important;
-  left: -4px !important;
 }
 .cp-structure-header .cp-structure-text {
   font-weight: 600;

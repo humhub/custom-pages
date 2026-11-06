@@ -47,17 +47,6 @@ img.preview {
   max-height: 200px;
 }
 
-#editPageButton .dropdown-menu li {
-  border-left: 3px solid transparent;
-}
-#editPageButton .dropdown-menu li:hover, #editPageButton .dropdown-menu li.selected {
-  background-color: var(--bs-tertiary-bg);
-  border-left: 3px solid #6fdbe8;
-}
-#editPageButton .dropdown-menu a {
-  background: none;
-}
-
 .content-edit .ProseMirror {
   min-height: 150px !important;
 }
@@ -104,6 +93,7 @@ img.preview {
   background-color: var(--bs-body-bg);
 }
 
-.custom-pages-page a:not(.btn) {
-  color: var(--bs-accent);
+.custom-pages-page {
+  --bs-link-color-rgb: var(--bs-accent-rgb);
+  --bs-link-hover-color-rgb: var(--bs-accent-rgb);
 }

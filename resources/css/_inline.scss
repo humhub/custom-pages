@@ -1,5 +1,6 @@
-.custom-pages-page a:not(.btn) {
-    & {
-        color: var(--bs-accent);
-    }
+// Plain links in the page content use the accent colour; components such as
+// buttons and dropdown items keep their own colours
+.custom-pages-page {
+    --bs-link-color-rgb: var(--bs-accent-rgb);
+    --bs-link-hover-color-rgb: var(--bs-accent-rgb);
 }

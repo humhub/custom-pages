@@ -15,7 +15,6 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         this.initDraggable();
         this.initEditableRows();
         this.initHighlight();
-        this.initMenuAlignment();
         this.initResize();
         this.initOverflow();
     }
@@ -66,7 +65,6 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
             that.showLabel(obj, $row.attr('data-template-name') ?? $row.find('.cp-structure-text').text().trim(), $row.hasClass('cp-structure-container'));
         }).on('mouseleave', '.cp-structure-template, .cp-structure-container', function () {
             that.removeHighlight();
-            $('.cp-structure-actions.dropdown.open').removeClass('open');
         }).on('mouseleave', function () {
             that.removeHighlight();
         });
@@ -101,16 +99,6 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         return containerItem.length
             ? $('[data-editor-container-item-id=' + containerItem.data('container-item-id') + ']')
             : $('[data-editor-page-id]'); // Root template of the page or snippet
-    }
-
-    TemplateStructure.prototype.initMenuAlignment = function () {
-        const that = this;
-        that.$.on('mouseenter', '.dropdown-toggle', function () {
-            const menu = $(this).next();
-            $(this).parent().position().top + menu.outerHeight() + 10 > that.$.outerHeight()
-                ? menu.addClass('dropdown-menu-top')
-                : menu.removeClass('dropdown-menu-top');
-        });
     }
 
     TemplateStructure.prototype.initResize = function () {

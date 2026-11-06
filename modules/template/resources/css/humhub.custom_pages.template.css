@@ -92,7 +92,7 @@ span[data-editor-container-item-id] {
   padding: 4px 8px;
   border-radius: 3px 3px 0 0;
   cursor: pointer;
-  color: var(--text-color-contrast);
+  color: var(--bs-white);
 }
 
 .cp-editor-actions-pinned > i.fa {
@@ -137,7 +137,7 @@ span[data-editor-container-item-id] {
   align-items: center;
   gap: 8px;
   padding: 6px 8px;
-  border-bottom: 1px solid var(--default);
+  border-bottom: 1px solid var(--bs-light);
 }
 .cp-container-items-list .cp-container-item-icon {
   color: var(--cp-container-item-color);
@@ -152,7 +152,7 @@ span[data-editor-container-item-id] {
 }
 .cp-container-items-list .cp-container-item-actions a {
   padding: 0 6px;
-  color: var(--text-color-soft);
+  color: var(--bs-body-color);
 }
 .cp-container-items-list .cp-container-item:first-child .cp-container-item-move-up,
 .cp-container-items-list .cp-container-item:last-child .cp-container-item-move-down {
@@ -174,7 +174,7 @@ span[data-editor-container-item-id] {
   outline: none;
   background: var(--cp-strucutre-bg);
   box-shadow: 0 0 3px var(--cp-strucutre-bg);
-  color: var(--text-color-contrast);
+  color: var(--bs-white);
 }
 .cp-structure::-webkit-scrollbar {
   display: none;
@@ -288,7 +288,7 @@ span[data-editor-container-item-id] {
   padding: 5px 8px;
   border-radius: 3px 3px 0 0;
   background: var(--cp-container-item-color);
-  color: var(--text-color-contrast);
+  color: var(--bs-white);
   font-size: 11px;
   font-weight: 600;
   line-height: 1;

@@ -87,7 +87,7 @@ span[data-editor-container-item-id] {
     padding: 4px 8px;
     border-radius: 3px 3px 0 0;
     cursor: pointer;
-    color: var(--text-color-contrast);
+    color: var(--bs-white);
 }
 [data-actions-container-id] > i.fa {
     background: var(--cp-container-color);
@@ -112,7 +112,7 @@ span[data-editor-container-item-id] {
     outline: none;
     background: var(--cp-strucutre-bg);
     box-shadow: 0 0 3px var(--cp-strucutre-bg);
-    color: var(--text-color-contrast);
+    color: var(--bs-white);
 }
 .cp-structure::-webkit-scrollbar {
     display: none;

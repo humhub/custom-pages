@@ -3,6 +3,7 @@ Changelog
 
 1.14.0 (Unreleased)
 -------------------
+- Enh: Colour tokens of the core 1.20 instead of the deprecated ones (humhub/humhub#8707)
 - Enh: The administration uses the core's page header, content cards and data tables (humhub/humhub#8637)
 - Enh: The page icon is chosen with the core's Tabler icon picker
 - Enh: Compatibility with the core picker that replaces Select2 (humhub/humhub#8677)

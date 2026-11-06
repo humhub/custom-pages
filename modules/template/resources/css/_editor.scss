@@ -101,7 +101,7 @@ span[data-editor-container-item-id] {
         padding: 4px 8px;
         border-radius: 3px 3px 0 0;
         cursor: pointer;
-        color: var(--text-color-contrast);
+        color: var(--bs-white);
     }
 }
 
@@ -152,7 +152,7 @@ span[data-editor-container-item-id] {
         align-items: center;
         gap: 8px;
         padding: 6px 8px;
-        border-bottom: 1px solid var(--default);
+        border-bottom: 1px solid var(--bs-light);
     }
 
     .cp-container-item-icon {
@@ -170,7 +170,7 @@ span[data-editor-container-item-id] {
 
     .cp-container-item-actions a {
         padding: 0 6px;
-        color: var(--text-color-soft);
+        color: var(--bs-body-color);
     }
 
     .cp-container-item:first-child .cp-container-item-move-up,

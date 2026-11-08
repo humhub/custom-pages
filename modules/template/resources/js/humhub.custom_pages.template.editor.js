@@ -81,9 +81,8 @@ humhub.module('custom_pages.template.editor', function (module, require, $) {
                 if (addButton.length) {
                     $('body').append($('<div>')
                         .attr('data-actions-container-id', containerId)
-                        .append(addButton.clone()
-                        .removeAttr('data-action-click')
-                        .on('click', () => $(addButtonSelector).click())));
+                        .append(addButton.children('.fa').clone()
+                            .on('click', () => $(addButtonSelector).click())));
                 }
             }
 

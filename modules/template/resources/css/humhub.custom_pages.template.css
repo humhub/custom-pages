@@ -205,25 +205,34 @@ span[data-editor-container-item-id] {
   text-align: center;
 }
 
-.cp-structure-actions > .fa {
+.cp-structure-actions > .fa,
+.cp-structure-actions > .btn > .fa {
   width: 18px;
   text-align: center;
+}
+
+.cp-structure-row .btn {
+  padding: 0;
+  border: 0;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }
 
 .cp-structure-row .cp-structure-actions {
   flex: 0;
   white-space: nowrap;
-  visibility: hidden;
 }
-.cp-structure-row:hover .cp-structure-actions {
-  visibility: visible;
+@media (hover: hover) {
+  .cp-structure-row:not(.cp-structure-header, :hover, :focus-within) .cp-structure-actions:not(:has(.dropdown-menu.show)) {
+    opacity: 0;
+  }
 }
 
 .cp-structure-header {
   cursor: move;
 }
 .cp-structure-header .cp-structure-actions {
-  visibility: visible;
   padding: 4px;
   margin: -4px 5px -4px -5px;
   cursor: pointer;
@@ -247,11 +256,7 @@ span[data-editor-container-item-id] {
 
 .cp-structure-row .cp-structure-action {
   font-size: 14px;
-  visibility: hidden;
   cursor: pointer;
-}
-.cp-structure-row:hover .cp-structure-action, .cp-structure-row .cp-structure-action.fa-plus {
-  visibility: visible;
 }
 .cp-structure-row .fa-circle, .cp-structure-row .fa-circle-o {
   font-size: 70%;

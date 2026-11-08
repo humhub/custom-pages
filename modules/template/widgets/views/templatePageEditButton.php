@@ -6,6 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\custom_pages\helpers\Url;
 use humhub\modules\custom_pages\models\CustomPage;
@@ -19,7 +20,7 @@ use humhub\widgets\bootstrap\Link;
 <div style="margin-bottom:5px">
 <?php if (TemplateInstanceRendererService::inEditMode()) : ?>
     <div id="editPageButton" class="btn-group">
-        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="<?= Html::encode(Yii::t('CustomPagesModule.template', 'Edit')) ?>">
             <i class="fa fa-pencil"></i>
         </button>
         <ul class="dropdown-menu">

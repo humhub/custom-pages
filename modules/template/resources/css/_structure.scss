@@ -52,20 +52,32 @@
   }
 }
 
-.cp-structure-actions > .fa {
+.cp-structure-actions > .fa,
+.cp-structure-actions > .btn > .fa {
   width: 18px;
   text-align: center;
+}
+
+.cp-structure-row .btn {
+  padding: 0;
+  border: 0;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }
 
 .cp-structure-row {
   .cp-structure-actions {
     flex: 0;
     white-space: nowrap;
-    visibility: hidden;
   }
 
-  &:hover .cp-structure-actions {
-    visibility: visible;
+  // Hidden until the row is hovered or holds the focus. Opacity, not visibility: the toggle stays
+  // in the tab order. A touch screen has no hover and always shows it.
+  @media (hover: hover) {
+    &:not(.cp-structure-header, :hover, :focus-within) .cp-structure-actions:not(:has(.dropdown-menu.show)) {
+      opacity: 0;
+    }
   }
 }
 
@@ -73,7 +85,6 @@
   cursor: move;
 
   .cp-structure-actions {
-    visibility: visible;
     padding: 4px;
     margin: -4px 5px -4px -5px;
     cursor: pointer;
@@ -100,12 +111,7 @@
 .cp-structure-row {
   .cp-structure-action {
     font-size: 14px;
-    visibility: hidden;
     cursor: pointer;
-  }
-
-  &:hover .cp-structure-action, .cp-structure-action.fa-plus {
-    visibility: visible;
   }
 
   .fa-circle, .fa-circle-o {

@@ -28,12 +28,19 @@ use humhub\widgets\bootstrap\Link;
 
 /* @var TemplateStructure $widget */
 $widget = $this->context;
+$actionsToggle = static fn(string $class = '') => Html::button(Icon::get('ellipsis-h'), [
+    'class' => trim('btn btn-link ' . $class),
+    'data-bs-toggle' => 'dropdown',
+    'aria-expanded' => 'false',
+    'aria-label' => Yii::t('CustomPagesModule.template', 'Actions'),
+    'encode' => false,
+]);
 ?>
 <?php if ($templateInstance->isPage()) : ?>
 <?= Html::beginTag('div', $options) ?>
     <div class="cp-structure-header cp-structure-row">
         <div class="cp-structure-actions dropdown">
-            <?= Icon::get('ellipsis-h', ['htmlOptions' => ['data-bs-toggle' => 'dropdown']]) ?>
+            <?= $actionsToggle() ?>
             <ul class="dropdown-menu">
                 <?php if ($templateInstance->page->canEdit()) : ?>
                 <li><?= Link::to(
@@ -58,8 +65,7 @@ $widget = $this->context;
             <?= Icon::get('circle') ?>
             <div class="cp-structure-text" title="<?= Html::encode($title) ?>"><?= Html::encode($title) ?></div>
             <div class="cp-structure-actions dropdown">
-                <?= Icon::get('ellipsis-h', ['htmlOptions' => ['data-bs-toggle' => 'dropdown']])
-                    ->class('cp-structure-action') ?>
+                <?= $actionsToggle('cp-structure-action') ?>
                 <ul class="dropdown-menu dropdown-menu-end">
                 <?php if ($templateInstance->isContainer()) : ?>
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Edit'))
@@ -122,8 +128,7 @@ $widget = $this->context;
                     <div class="cp-structure-text"><?= $container->element->title === null || $container->element->title === '' ? $container->element->name : $container->element->title ?></div>
 
                     <div class="cp-structure-actions dropdown">
-                        <?= Icon::get('ellipsis-h', ['htmlOptions' => ['data-bs-toggle' => 'dropdown']])
-                            ->class('cp-structure-action') ?>
+                        <?= $actionsToggle('cp-structure-action') ?>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Import'))
                                     ->icon('download')
@@ -135,8 +140,12 @@ $widget = $this->context;
                                     ->cssClass('dropdown-item') ?></li>
                         </ul>
                     </div>
-                    <?= Icon::get('plus', ['htmlOptions' => ['data-action-click' => 'addContainerItem']])
-                        ->class('cp-structure-action' . ($container->canAddItem() ? '' : ' d-none')) ?>
+                    <?= Html::button(Icon::get('plus'), [
+                        'class' => 'btn btn-link p-0 cp-structure-action' . ($container->canAddItem() ? '' : ' d-none'),
+                        'data-action-click' => 'addContainerItem',
+                        'encode' => false,
+                        'aria-label' => Yii::t('CustomPagesModule.template', 'Add item'),
+                    ]) ?>
                 </div>
 
                 <?php if ($container->hasItems()) : ?>

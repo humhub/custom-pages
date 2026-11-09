@@ -3,6 +3,7 @@ Changelog
 
 1.14.0 (Unreleased)
 -------------------
+- Enh: The acceptance tests find the account menu by the core's section menu classes (humhub/humhub#8741)
 - Fix: The structure view's action buttons stay reachable by keyboard and have names (humhub/humhub#8721)
 - Enh: Dark mode: hard-coded greys and light backgrounds became colour tokens of the core (humhub/humhub#8710)
 - Enh: Colour tokens of the core 1.20 instead of the deprecated ones (humhub/humhub#8707)

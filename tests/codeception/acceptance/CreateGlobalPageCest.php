@@ -76,10 +76,10 @@ class CreateGlobalPageCest
         $I->amOnRoute(['/user/account/edit']);
         $I->expectTo('see my new page in the user account setting menu');
 
-        $I->waitForElementVisible('.left-navigation .ti-anchor');
+        $I->waitForElementVisible('.section-menu .ti-anchor');
         $I->see('Test link');
 
-        $I->click('.left-navigation .ti-anchor');
+        $I->click('.section-menu .ti-anchor');
         $I->expectTo('see the dashboard');
         $I->wait(2);
         $I->seeInCurrentUrl('dashboard/dashboard');

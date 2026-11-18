@@ -12,6 +12,10 @@ Changelog
 - Enh: Compatibility with the core picker that replaces Select2 (humhub/humhub#8677)
 - Enh: Replaced the Bootstrap 3 classes removed from the core (humhub/humhub#8696)
 
+1.13.8 (October 28, 2026)
+-------------------------
+- Fix #544: Skip the Homepage setting migration if the column `custom_pages_page.old_id` does not exist
+
 1.13.7 (October 28, 2026)
 -------------------------
 - Fix: Deprecation warning "Using null as an array offset" on template import with PHP 8.5

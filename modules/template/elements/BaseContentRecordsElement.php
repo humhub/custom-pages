@@ -9,8 +9,8 @@
 namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\content\components\ActiveQueryContent;
+use humhub\modules\content\models\stream\filters\DefaultStreamFilter;
 use humhub\modules\space\widgets\SpacePickerField;
-use humhub\modules\stream\models\filters\DefaultStreamFilter;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\form\ActiveForm;

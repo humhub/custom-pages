@@ -45,7 +45,7 @@ $footer .= $model->hasEditableFields()
             <div class="template-edit-multiple-tab panel-heading" tabindex="0">
                 <strong>
                     <?= Html::encode($model->getElement($contentItem->elementContent->element->name)->getTitle()) ?>&nbsp;
-                    <i class="switchIcon fa fa-caret-down" aria-hidden="true"></i>
+                    <i class="switchIcon ti ti-caret-down-filled" aria-hidden="true"></i>
                 </strong>
                 <?= Badge::success($contentItem->elementContent->label)->right() ?>
                 <?php if ($isEmpty): ?>

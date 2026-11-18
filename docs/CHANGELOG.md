@@ -11,6 +11,8 @@ Changelog
 - Enh: The page icon is chosen with the core's Tabler icon picker
 - Enh: Compatibility with the core picker that replaces Select2 (humhub/humhub#8677)
 - Enh: Replaced the Bootstrap 3 classes removed from the core (humhub/humhub#8696)
+- Enh: Deprecated `ui`/`stream` classes and Font Awesome icons replaced by the 1.20 ones and Tabler icons
+- Fix: The Activity element of templates renders its entry itself, `RenderService::getWeb()` is removed in the core 1.20
 
 1.13.8 (October 28, 2026)
 -------------------------

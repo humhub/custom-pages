@@ -18,10 +18,10 @@ use humhub\modules\dashboard\widgets\Sidebar as DashboardSidebar;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\space\widgets\Sidebar as SpaceSidebar;
-use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\AccountMenu;
 use humhub\modules\user\widgets\HeaderControlsMenu;
 use humhub\widgets\FooterMenu;
+use humhub\widgets\menu\MenuLink;
 use humhub\widgets\TopMenu;
 use Throwable;
 use Yii;
@@ -74,7 +74,7 @@ class Events
             $menu->addEntry(new MenuLink([
                 'label' => Yii::t('CustomPagesModule.base', 'Custom Pages'),
                 'url' => Url::toPageOverview(),
-                'icon' => 'file-text-o',
+                'icon' => 'file-text',
                 'isActive' => ControllerHelper::isActivePath('custom_pages', ['page', 'snippet', 'config'])
                     || ControllerHelper::isActivePath('template'),
                 'sortOrder' => 300,
@@ -132,7 +132,7 @@ class Events
                 $menu->addEntry(new MenuLink([
                     'label' => Yii::t('CustomPagesModule.base', 'Custom Pages'),
                     'url' => Url::toPageOverview($space),
-                    'icon' => 'file-text-o',
+                    'icon' => 'file-text',
                 ]));
             }
         } catch (Throwable $e) {

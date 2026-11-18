@@ -12,7 +12,7 @@ use humhub\widgets\bootstrap\Button;
 ?>
 <?= Button::danger(Yii::t('CustomPagesModule.base', 'Delete'))
     ->action('custom_pages.template.deleteElementContent', $url)
-    ->icon('times')
+    ->icon('x')
     ->tooltip(Yii::t('CustomPagesModule.base', 'Reset the content to default value'))
     ->options($options)
     ->confirm(Yii::t('CustomPagesModule.template', '<strong>Confirm</strong> content deletion'),

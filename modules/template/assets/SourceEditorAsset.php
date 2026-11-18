@@ -8,8 +8,8 @@
 
 namespace humhub\modules\custom_pages\modules\template\assets;
 
+use humhub\assets\CodeMirrorAssetBundle;
 use humhub\components\assets\AssetBundle;
-use humhub\modules\ui\form\assets\CodeMirrorAssetBundle;
 use Yii;
 use yii\web\View;
 

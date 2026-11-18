@@ -12,7 +12,6 @@ use Exception;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\services\ActivityManager;
-use humhub\modules\activity\services\RenderService;
 use humhub\modules\custom_pages\lib\templates\twig\TwigEngine;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -57,10 +56,18 @@ class ActivityElementVariable extends BaseRecordElementVariable
                     $this->title = $baseActivity->getTitle();
                 }
 
-                $renderService = new RenderService($record);
-
                 $this->message = $baseActivity->asWeb();
-                $this->html = $renderService->getWeb();
+                // The core renders the web entry on the client since 1.20 (`RenderService::getWeb()` is removed)
+                $this->html = Yii::$app->getView()->renderFile(
+                    '@custom_pages/modules/template/views/activity/web.php',
+                    [
+                        'url' => $baseActivity->getUrl(),
+                        'contentContainer' => $baseActivity->contentContainer,
+                        'createdAt' => $baseActivity->createdAt,
+                        'user' => $baseActivity->user,
+                        'message' => $this->message,
+                    ],
+                );
             } catch (Exception $e) {
                 Yii::error('Activity not found: ' . $e, 'custom-pages');
             }

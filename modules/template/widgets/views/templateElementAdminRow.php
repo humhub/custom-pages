@@ -30,7 +30,7 @@ use yii\helpers\Html;
     </td>
     <td>
     <?php if ($model->template->canEdit()) : ?>
-        <?= Button::danger()->icon('times')->sm()
+        <?= Button::danger()->icon('x')->sm()
             ->options(['aria-label' => Yii::t('CustomPagesModule.base', 'Delete')])
             ->action('deleteElementSubmit', ['/custom_pages/template/admin/delete-element', 'id' => $model->id])
             ->confirm(

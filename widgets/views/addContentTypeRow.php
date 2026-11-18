@@ -23,7 +23,7 @@ $contentContainer = ContentContainerHelper::getCurrent();
     <td>
         <?= Button::success(Yii::t('CustomPagesModule.base', 'Add'))
             ->link(Url::toAddContentType($target, $pageType,  $contentType->getId(), $contentContainer))
-            ->icon('fa-plus')->sm()->id('add-content-type-'.$contentType->getId())
+            ->icon('plus')->sm()->id('add-content-type-'.$contentType->getId())
             ->cssClass(($disabled ? 'disabled' : '')) ?>
     </td>
 </tr>

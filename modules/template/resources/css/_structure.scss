@@ -114,16 +114,16 @@
     cursor: pointer;
   }
 
-  .fa-circle, .fa-circle-o {
+  .ti-circle-filled, .ti-circle {
     font-size: 70%;
   }
 }
 
-.cp-structure-template .fa-circle {
+.cp-structure-template .ti-circle-filled {
   color: var(--cp-container-item-color);
 }
 
-.cp-structure-container .fa-circle-o {
+.cp-structure-container .ti-circle {
   color: var(--cp-container-color);
 }
 

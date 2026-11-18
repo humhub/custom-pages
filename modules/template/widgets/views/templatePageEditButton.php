@@ -21,7 +21,7 @@ use humhub\widgets\bootstrap\Link;
 <?php if (TemplateInstanceRendererService::inEditMode()) : ?>
     <div id="editPageButton" class="btn-group">
         <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="<?= Html::encode(Yii::t('CustomPagesModule.template', 'Edit')) ?>">
-            <i class="fa fa-pencil"></i>
+            <i class="ti ti-pencil"></i>
         </button>
         <ul class="dropdown-menu">
             <?php if ($page->canEdit()) : ?>

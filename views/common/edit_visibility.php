@@ -9,8 +9,8 @@
 use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\UserEditForm;
 use humhub\modules\custom_pages\models\CustomPage;
-use humhub\modules\ui\form\widgets\MultiSelect;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\MultiSelect;
 
 /* @var $page CustomPage */
 /* @var $form ActiveForm */

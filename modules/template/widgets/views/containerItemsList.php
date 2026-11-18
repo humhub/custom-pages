@@ -9,9 +9,9 @@
 use humhub\helpers\Html;
 use humhub\modules\custom_pages\modules\template\elements\ContainerElement;
 use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
-use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\bootstrap\Link;
+use humhub\widgets\Icon;
 
 /* @var ContainerElement $container */
 /* @var array $options */
@@ -21,7 +21,7 @@ use humhub\widgets\bootstrap\Link;
         <?php foreach ($container->items as $item) : ?>
             <?php /* @var ContainerItem $item */ ?>
             <li class="cp-container-item" data-item-id="<?= $item->id ?>" data-template-instance-id="<?= $item->templateInstance->id ?>">
-                <?= Icon::get('circle')->class('cp-container-item-icon') ?>
+                <?= Icon::get('circle-filled')->class('cp-container-item-icon') ?>
                 <?php $title = $item->templateInstance->getTemplateInstanceTitle() ?>
                 <span class="cp-container-item-name" title="<?= Html::encode($title) ?>"><?= Html::encode($title) ?></span>
                 <span class="cp-container-item-actions">

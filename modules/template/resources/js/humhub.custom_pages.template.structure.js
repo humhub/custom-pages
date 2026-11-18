@@ -45,7 +45,7 @@ humhub.module('custom_pages.template.TemplateStructure', function (module, requi
         const that = this;
         this.$.on('click', '.cp-structure-template', function (evt) {
             evt.$target = $(evt.target);
-            if (evt.$target.is('.cp-structure-template, .cp-structure-text, .fa-circle')) {
+            if (evt.$target.is('.cp-structure-template, .cp-structure-text, .ti-circle-filled')) {
                 evt.$trigger = $(this);
                 that.editElements(evt);
             }

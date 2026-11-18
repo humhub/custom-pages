@@ -11,7 +11,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplatePage;
         </div>
         <div class="panel-body">
             <a href="<?= $contentContainer->createUrl('/space/space/index') ?>" class="btn btn-light float-end" data-ui-loader>
-                <i class="fa fa-arrow-left"></i> <?= Yii::t('CustomPagesModule.base', 'Back to space'); ?>
+                <i class="ti ti-arrow-left"></i> <?= Yii::t('CustomPagesModule.base', 'Back to space'); ?>
             </a>
             <div class="row">
                 <div class="col-md-4"></div>
@@ -20,7 +20,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplatePage;
                         <div class="panel-heading">
                             <i class="fa <?= Html::encode($snippet->icon); ?>"></i> <?= Html::encode($snippet->title) ?>
                             <a id="snippet-config-button" href="<?= $contentContainer->createUrl('edit', ['id' => $snippet->id]) ?>" title="<?= Yii::t('CustomPagesModule.base', 'Configuration'); ?>" target="_blank" class="float-end">
-                                <i class="fa fa-pencil"></i>
+                                <i class="ti ti-pencil"></i>
                             </a>
                         </div>
                         <div class="panel-body">

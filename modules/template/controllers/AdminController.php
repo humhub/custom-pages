@@ -251,7 +251,7 @@ class AdminController extends Controller
                 },
                 'delete' => fn($url, $model) => $model instanceof Template
                     ? Link::danger()
-                        ->icon('times')
+                        ->icon('x')
                         ->options(['aria-label' => Yii::t('base', 'Delete')])
                         ->link(Url::toRoute(['delete-template', 'id' => $model->id]))
                         ->sm()

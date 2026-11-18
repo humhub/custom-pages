@@ -29,7 +29,7 @@ use humhub\widgets\modal\ModalButton;
     <div class="list-group">
         <?php foreach ($targets as $target) : ?>
             <?= Html::a(
-                Icon::get($target->getIcon() ?: 'file-o', ['fixedWidth' => true]) . ' ' . Html::encode($target->name),
+                Icon::get($target->getIcon() ?: 'file', ['fixedWidth' => true]) . ' ' . Html::encode($target->name),
                 Url::toChooseContentType($target, $pageType),
                 ['class' => 'list-group-item list-group-item-action', 'data-pjax-prevent' => true],
             ) ?>

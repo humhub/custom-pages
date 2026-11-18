@@ -15,8 +15,8 @@ use humhub\modules\custom_pages\modules\template\elements\ContainerItem;
 use humhub\modules\custom_pages\modules\template\helpers\PagePermissionHelper;
 use humhub\modules\custom_pages\modules\template\models\TemplateInstance;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateStructure;
-use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\bootstrap\Link;
+use humhub\widgets\Icon;
 
 /* @var TemplateInstance $templateInstance */
 /* @var ContainerElement[] $containers */
@@ -28,7 +28,7 @@ use humhub\widgets\bootstrap\Link;
 
 /* @var TemplateStructure $widget */
 $widget = $this->context;
-$actionsToggle = static fn(string $class = '') => Html::button(Icon::get('ellipsis-h'), [
+$actionsToggle = static fn(string $class = '') => Html::button(Icon::get('dots'), [
     'class' => trim('btn btn-link ' . $class),
     'data-bs-toggle' => 'dropdown',
     'aria-expanded' => 'false',
@@ -55,14 +55,14 @@ $actionsToggle = static fn(string $class = '') => Html::button(Icon::get('ellips
             </ul>
         </div>
         <div class="cp-structure-text"><?= Yii::t('CustomPagesModule.template', 'Structure View') ?></div>
-        <?= Icon::get('arrows') ?>
+        <?= Icon::get('arrows-move') ?>
     </div>
 <?php endif; ?>
 
 <?= Html::beginTag('ul', $templateInstanceOptions) ?>
     <?= Html::beginTag('li') ?>
         <div class="cp-structure-template cp-structure-row" style="padding-left:<?= $level * 10 + 8 ?>px" data-template-name="<?= Html::encode($templateInstance->template->name) ?>">
-            <?= Icon::get('circle') ?>
+            <?= Icon::get('circle-filled') ?>
             <div class="cp-structure-text" title="<?= Html::encode($title) ?>"><?= Html::encode($title) ?></div>
             <div class="cp-structure-actions dropdown">
                 <?= $actionsToggle('cp-structure-action') ?>
@@ -110,7 +110,7 @@ $actionsToggle = static fn(string $class = '') => Html::button(Icon::get('ellips
 
                 <?php if (PagePermissionHelper::canTemplate()) : ?>
                     <li><?= Link::to(Yii::t('CustomPagesModule.template', 'Edit template'))
-                            ->icon('pencil-square-o')
+                            ->icon('edit')
                             ->link(['/custom_pages/template/admin/edit-source', 'id' => $templateInstance->template_id])
                             ->blank()
                             ->cssClass('dropdown-item') ?></li>
@@ -124,7 +124,7 @@ $actionsToggle = static fn(string $class = '') => Html::button(Icon::get('ellips
             <?php foreach ($containers as $container) : ?>
             <?= Html::beginTag('li', $widget->getContainerOptions($container)) ?>
                 <div class="cp-structure-container cp-structure-row" style="padding-left:<?= ($level + 1) * 10 + 8 ?>px">
-                    <?= Icon::get('circle-o') ?>
+                    <?= Icon::get('circle') ?>
                     <div class="cp-structure-text"><?= $container->element->title === null || $container->element->title === '' ? $container->element->name : $container->element->title ?></div>
 
                     <div class="cp-structure-actions dropdown">

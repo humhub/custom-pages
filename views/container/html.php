@@ -8,7 +8,7 @@
 use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\modules\template\widgets\PageConfigurationButton;
-use humhub\modules\ui\view\components\View;
+use humhub\components\View;
 use yii\helpers\Html;
 
 /* @var $this View */

@@ -9,9 +9,9 @@
 use humhub\helpers\Html;
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\widgets\TemplateCard;
-use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\CodeMirrorInputWidget;
 
 /* @var $model Template */
 ?>

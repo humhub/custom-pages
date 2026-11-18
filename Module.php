@@ -25,7 +25,7 @@ use Yii;
 
 class Module extends ContentContainerModule
 {
-    public const ICON = 'fa-file-text-o';
+    public const ICON = 'file-text';
 
     public const SETTING_MIGRATION_KEY = 'global_pages_migrated_visibility';
 

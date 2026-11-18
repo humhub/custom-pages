@@ -70,12 +70,12 @@ humhub.module('custom_pages.template', function (module, require, $) {
         }).on('click.custom_pages', '.template-edit-multiple-tab', function () {
             $(this).next('.panel-body').slideToggle('fast');
             var $switchIcon = $(this).find('.switchIcon');
-            if ($switchIcon.hasClass('fa-caret-down')) {
-                $switchIcon.removeClass('fa-caret-down');
-                $switchIcon.addClass('fa-caret-up');
+            if ($switchIcon.hasClass('ti-caret-down-filled')) {
+                $switchIcon.removeClass('ti-caret-down-filled');
+                $switchIcon.addClass('ti-caret-up-filled');
             } else {
-                $switchIcon.removeClass('fa-caret-up');
-                $switchIcon.addClass('fa-caret-down');
+                $switchIcon.removeClass('ti-caret-up-filled');
+                $switchIcon.addClass('ti-caret-down-filled');
             }
         });
     };

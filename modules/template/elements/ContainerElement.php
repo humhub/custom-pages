@@ -10,8 +10,8 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 
 use humhub\modules\custom_pages\modules\template\models\Template;
 use humhub\modules\custom_pages\modules\template\widgets\ContainerItemsList;
-use humhub\modules\ui\form\widgets\MultiSelect;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\MultiSelect;
 use Yii;
 use yii\db\ActiveQuery;
 

@@ -55,20 +55,20 @@ humhub.module('custom_pages.template', function (module, require, $) {
                 case 39:
                 case 40:
                     e.preventDefault();
-                    if (!$(this).next('.panel-body').is(':visible')) {
+                    if (!$(this).next('.card-body').is(':visible')) {
                         $(this).trigger('click');
                     }
                     break;
                 case 37:
                 case 38:
                     e.preventDefault();
-                    if ($(this).next('.panel-body').is(':visible')) {
+                    if ($(this).next('.card-body').is(':visible')) {
                         $(this).trigger('click');
                     }
                     break;
             }
         }).on('click.custom_pages', '.template-edit-multiple-tab', function () {
-            $(this).next('.panel-body').slideToggle('fast');
+            $(this).next('.card-body').slideToggle('fast');
             var $switchIcon = $(this).find('.switchIcon');
             if ($switchIcon.hasClass('ti-caret-down-filled')) {
                 $switchIcon.removeClass('ti-caret-down-filled');

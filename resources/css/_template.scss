@@ -1,11 +1,11 @@
 .template-edit-multiple {
-  .panel-body {
+  .card-body {
     padding-bottom: 0 !important;
   }
-  .panel-heading {
+  .card-header {
     background-color: var(--bs-tertiary-bg) !important;
     border: 2px solid var(--bs-tertiary-bg) !important;
-    padding: 5px !important;
+    padding: .25rem !important;
     border-radius: 0 !important;
     box-sizing: border-box !important;
     &:hover {
@@ -13,7 +13,7 @@
       border: 2px solid var(--bs-secondary-bg) !important;
     }
   }
-  .panel-footer {
+  .card-footer {
     padding:0 !important;
   }
 }
@@ -24,7 +24,8 @@
     box-sizing: border-box !important;
     outline: 0;
   }
+  // Beside each other by the gap of `.card-header-actions`
   .badge {
-    margin: 3px;
+    margin: .25rem 0;
   }
 }

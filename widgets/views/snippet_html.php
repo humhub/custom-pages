@@ -7,12 +7,13 @@
 
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\widgets\SnippetContent;
+use humhub\widgets\menu\MenuLink;
 
 /* @var $model CustomPage */
 /* @var $canEdit bool */
 
 $navigation = (!$canEdit) ? [] : [
-    '<a href="'.$model->getEditUrl().'"><i class="ti ti-pencil"></i>' . Yii::t('CustomPagesModule.base', 'Edit') . '</a>'
+    new MenuLink(['label' => Yii::t('CustomPagesModule.base', 'Edit'), 'url' => $model->getEditUrl(), 'icon' => 'pencil']),
 ];
 ?>
 <?= SnippetContent::widget([

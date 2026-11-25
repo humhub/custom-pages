@@ -8,6 +8,7 @@
 
 namespace humhub\modules\custom_pages\widgets;
 
+use humhub\widgets\menu\MenuEntry;
 use Yii;
 
 /**
@@ -19,6 +20,9 @@ class SnippetContent extends \yii\base\Widget
 {
     public $model;
     public $content;
+    /**
+     * @var MenuEntry[] the entries of the snippet card's ⋮ menu
+     */
     public $navigation = [];
 
     public function run()

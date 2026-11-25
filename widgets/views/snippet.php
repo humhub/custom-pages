@@ -1,23 +1,24 @@
 <?php
 
 use humhub\widgets\Icon;
+use humhub\widgets\menu\MenuEntry;
+use humhub\widgets\SidebarCard;
 use yii\helpers\Html;
+
+/* @var MenuEntry[] $navigation */
 
 $snippetId = 'custom-snippet-'.$model->id;
 
 $cssClass = ($model->hasAttribute('cssClass') && !empty($model->cssClass)) ? $model->cssClass :  'custom-pages-snippet';
 
-$extraOptions = '';
-foreach($navigation as $navigationOption) {
-    $extraOptions .= '<li>'.$navigationOption.'</li>';
-}
-
 ?>
-
-<div class="panel panel-default custom-snippet <?= Html::encode($cssClass) ?> " id="<?= $snippetId ?>">
-    <?php echo \humhub\widgets\PanelMenu::widget(['id' => $snippetId, 'extraMenus' => $extraOptions]); ?>
-    <div class="panel-heading"><?= $model->icon ? Icon::get($model->icon) . ' ' : '' ?><?= Html::encode($model->title) ?></div>
-    <div class="panel-body">
+<?php SidebarCard::begin([
+    'title' => ($model->icon ? Icon::get($model->icon) . ' ' : '') . Html::encode($model->title),
+    'encodeTitle' => false,
+    'menu' => $navigation,
+    // Every snippet is rendered by the same widget: each needs a collapse id of its own
+    'collapseId' => $snippetId . '-body',
+    'options' => ['id' => $snippetId, 'class' => ['custom-snippet', $cssClass]],
+]) ?>
         <?= $content ?>
-    </div>
-</div>
+<?php SidebarCard::end() ?>

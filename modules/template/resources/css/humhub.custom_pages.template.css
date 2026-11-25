@@ -1,9 +1,9 @@
 #templatePageRoot .download-list {
-  margin-top: 10px;
-  padding: 0 20px;
+  margin-top: 0.5rem;
+  padding: 0 1rem;
 }
 #templatePageRoot .download-item {
-  margin-top: 5px;
+  margin-top: 0.25rem;
 }
 #templatePageRoot {
   word-wrap: break-word;
@@ -74,7 +74,7 @@ span[data-editor-container-item-id] {
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 [data-actions-page-id], [data-actions-container-id], [data-actions-container-item-id] {
@@ -89,14 +89,14 @@ span[data-editor-container-item-id] {
 
 [data-actions-page-id] > i.fa, [data-actions-container-id] > i.fa, [data-actions-container-item-id] > i.fa {
   display: inline-block;
-  padding: 4px 8px;
-  border-radius: 3px 3px 0 0;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--bs-border-radius-sm) var(--bs-border-radius-sm) 0 0;
   cursor: pointer;
   color: var(--bs-white);
 }
 
 .cp-editor-actions-pinned > i.fa {
-  border-radius: 3px;
+  border-radius: var(--bs-border-radius-sm);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
@@ -115,11 +115,11 @@ span[data-editor-container-item-id] {
 
 .cp-editor-element-empty {
   display: inline-block;
-  padding: 2px 8px;
+  padding: 0 0.5rem;
   border: 1px dashed var(--cp-element-color);
-  border-radius: 3px;
+  border-radius: var(--bs-border-radius-sm);
   color: var(--cp-element-color);
-  font-size: 12px;
+  font-size: var(--hh-font-size-meta);
   line-height: 1.4;
 }
 
@@ -129,14 +129,14 @@ span[data-editor-container-item-id] {
 
 .cp-container-items-list {
   list-style: none;
-  margin: 0 0 10px;
+  margin: 0 0 0.5rem;
   padding: 0;
 }
 .cp-container-items-list .cp-container-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 8px;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
   border-bottom: 1px solid var(--bs-light);
 }
 .cp-container-items-list .cp-container-item-icon {
@@ -151,7 +151,7 @@ span[data-editor-container-item-id] {
   white-space: nowrap;
 }
 .cp-container-items-list .cp-container-item-actions a {
-  padding: 0 6px;
+  padding: 0 0.25rem;
   color: var(--bs-body-color);
 }
 .cp-container-items-list .cp-container-item:first-child .cp-container-item-move-up,
@@ -163,9 +163,9 @@ span[data-editor-container-item-id] {
   display: none;
   position: fixed;
   margin: 0;
-  padding: 8px;
+  padding: 0.5rem;
   list-style: none;
-  font-size: 11px;
+  font-size: var(--hh-font-size-meta);
   z-index: 1033;
   min-width: 280px;
   max-width: 360px;
@@ -194,7 +194,7 @@ span[data-editor-container-item-id] {
 .cp-structure-row {
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: 0.5rem;
   margin-bottom: 1px;
 }
 .cp-structure-row > div {
@@ -233,8 +233,8 @@ span[data-editor-container-item-id] {
   cursor: move;
 }
 .cp-structure-header .cp-structure-actions {
-  padding: 4px;
-  margin: -4px 5px -4px -5px;
+  padding: 0.25rem;
+  margin: -0.25rem 0.25rem -0.25rem -0.25rem;
   cursor: pointer;
 }
 .cp-structure-header .cp-structure-text {
@@ -246,7 +246,7 @@ span[data-editor-container-item-id] {
 }
 
 .cp-structure-template .cp-structure-text, .cp-structure-container .cp-structure-text {
-  padding: 0 8px;
+  padding: 0 0.5rem;
   cursor: default;
   min-width: 0;
   overflow: hidden;
@@ -255,23 +255,23 @@ span[data-editor-container-item-id] {
 }
 
 .cp-structure-row .cp-structure-action {
-  font-size: 14px;
+  font-size: var(--bs-body-font-size);
   cursor: pointer;
 }
-.cp-structure-row .fa-circle, .cp-structure-row .fa-circle-o {
+.cp-structure-row .ti-circle-filled, .cp-structure-row .ti-circle {
   font-size: 70%;
 }
 
-.cp-structure-template .fa-circle {
+.cp-structure-template .ti-circle-filled {
   color: var(--cp-container-item-color);
 }
 
-.cp-structure-container .fa-circle-o {
+.cp-structure-container .ti-circle {
   color: var(--cp-container-color);
 }
 
 .cp-structure-header .cp-structure-actions:hover, .cp-structure-template:hover, .cp-structure-container:hover, .cp-structure-active {
-  border-radius: 4px;
+  border-radius: var(--bs-border-radius-sm);
   background: var(--cp-strucutre-bg-active);
   transition: background 0.3s;
 }
@@ -279,11 +279,11 @@ span[data-editor-container-item-id] {
 .cp-structure-label {
   position: absolute;
   z-index: 1028;
-  padding: 5px 8px;
-  border-radius: 3px 3px 0 0;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--bs-border-radius-sm) var(--bs-border-radius-sm) 0 0;
   background: var(--cp-container-item-color);
   color: var(--bs-white);
-  font-size: 11px;
+  font-size: var(--hh-font-size-meta);
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;

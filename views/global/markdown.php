@@ -12,6 +12,7 @@ use humhub\modules\custom_pages\assets\Assets;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\helpers\PageType;
 use humhub\modules\custom_pages\modules\template\widgets\PageConfigurationButton;
+use humhub\widgets\ContentCard;
 use humhub\widgets\FooterMenu;
 
 /* @var $this View */
@@ -23,8 +24,10 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 Assets::register($this);
 ?>
 <?php if ($page->hasTarget(PageType::TARGET_ACCOUNT_MENU)): ?>
-    <div class="panel panel-default <?= Html::encode($cssClass) ?>">
-        <div class="panel-body">
+    <?php // The account layout puts a card only around a page without one of its own
+    ContentCard::markRendered($this) ?>
+    <div class="card content-card <?= Html::encode($cssClass) ?>">
+        <div class="card-body">
             <?= PageConfigurationButton::widget() ?>
             <div class="markdown-render">
                 <?= RichText::output($md, ['fadeIn' => true]) ?>
@@ -36,8 +39,8 @@ Assets::register($this);
         <div class="row">
             <div class="col-md-12">
                 <?= PageConfigurationButton::widget() ?>
-                <div class="panel panel-default">
-                    <div class="panel-body">
+                <div class="card content-card">
+                    <div class="card-body">
                         <div class="markdown-render">
                             <?= RichText::output($md, ['fadeIn' => true]) ?>
                         </div>

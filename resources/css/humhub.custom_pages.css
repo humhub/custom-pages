@@ -7,21 +7,21 @@
     Created on : 26.07.2016, 14:59:56
     Author     : buddha
 */
-.template-edit-multiple .panel-body {
+.template-edit-multiple .card-body {
   padding-bottom: 0 !important;
 }
-.template-edit-multiple .panel-heading {
+.template-edit-multiple .card-header {
   background-color: var(--bs-tertiary-bg) !important;
   border: 2px solid var(--bs-tertiary-bg) !important;
-  padding: 5px !important;
+  padding: 0.25rem !important;
   border-radius: 0 !important;
   box-sizing: border-box !important;
 }
-.template-edit-multiple .panel-heading:hover {
+.template-edit-multiple .card-header:hover {
   background-color: var(--bs-secondary-bg) !important;
   border: 2px solid var(--bs-secondary-bg) !important;
 }
-.template-edit-multiple .panel-footer {
+.template-edit-multiple .card-footer {
   padding: 0 !important;
 }
 
@@ -31,7 +31,7 @@
   outline: 0;
 }
 .template-edit-multiple-tab .badge {
-  margin: 3px;
+  margin: 0.25rem 0;
 }
 
 .preview {
@@ -69,7 +69,7 @@ img.preview {
 }
 .hr-text.collapsableTrigger:after {
   color: var(--bs-emphasis-color);
-  font-weight: bold;
+  font-weight: 600;
 }
 .hr-text.collapsableTrigger:hover::after {
   text-decoration: underline;

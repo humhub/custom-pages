@@ -83,7 +83,7 @@ class TemplateStructure extends JsWidget
     protected function getAttributes()
     {
         return [
-            'class' => 'panel cp-structure',
+            'class' => 'card content-card cp-structure',
         ];
     }
 

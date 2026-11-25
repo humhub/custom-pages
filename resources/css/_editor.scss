@@ -31,7 +31,7 @@ img.preview {
     }
     &:after {
       color: var(--bs-emphasis-color);
-      font-weight: bold;
+      font-weight: 600;
     }
     &:hover::after {
       text-decoration: underline;

@@ -2,9 +2,9 @@
   display: none;
   position: fixed;
   margin: 0;
-  padding: 8px;
+  padding: .5rem;
   list-style: none;
-  font-size: 11px;
+  font-size: var(--hh-font-size-meta);
   z-index: 1033;
   min-width: 280px;
   max-width: 360px;
@@ -37,7 +37,7 @@
 .cp-structure-row {
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: .5rem;
   margin-bottom: 1px;
 
   > {
@@ -85,8 +85,8 @@
   cursor: move;
 
   .cp-structure-actions {
-    padding: 4px;
-    margin: -4px 5px -4px -5px;
+    padding: .25rem;
+    margin: -.25rem .25rem -.25rem -.25rem;
     cursor: pointer;
   }
 
@@ -100,7 +100,7 @@
 }
 
 .cp-structure-template .cp-structure-text, .cp-structure-container .cp-structure-text {
-  padding: 0 8px;
+  padding: 0 .5rem;
   cursor: default;
   min-width: 0;
   overflow: hidden;
@@ -110,7 +110,7 @@
 
 .cp-structure-row {
   .cp-structure-action {
-    font-size: 14px;
+    font-size: var(--bs-body-font-size);
     cursor: pointer;
   }
 
@@ -128,7 +128,7 @@
 }
 
 .cp-structure-header .cp-structure-actions:hover, .cp-structure-template:hover, .cp-structure-container:hover, .cp-structure-active {
-  border-radius: 4px;
+  border-radius: var(--bs-border-radius-sm);
   background: var(--cp-strucutre-bg-active);
   transition: background 0.3s;
 }
@@ -136,11 +136,11 @@
 .cp-structure-label {
   position: absolute;
   z-index: 1028; // below the fixed top bars
-  padding: 5px 8px;
-  border-radius: 3px 3px 0 0;
+  padding: .25rem .5rem;
+  border-radius: var(--bs-border-radius-sm) var(--bs-border-radius-sm) 0 0;
   background: var(--cp-container-item-color);
   color: var(--bs-white);
-  font-size: 11px;
+  font-size: var(--hh-font-size-meta);
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;

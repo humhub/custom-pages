@@ -17,18 +17,18 @@ $editUrl = Url::toEditSnippet($snippet, $snippet->content->container);
 
 <div>
     <?php TemplatePage::begin(['page' => $snippet]) ?>
-        <div class="panel panel default">
-            <div class="panel-body">
+        <div class="card content-card">
+            <div class="card-body">
                 <a href="<?= $backUrl ?>" class="btn btn-light float-end" data-ui-loader><i class="ti ti-arrow-left"></i> <?= $backText ?></a>
                 <div class="row">
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
-                        <div class="panel panel-default custom-snippet">
-                            <div class="panel-heading">
-                                <?= $snippet->icon ? Icon::get($snippet->icon) . ' ' : '' ?><?= Html::encode($snippet->title) ?>
-                                <a id="snippet-config-button" href="<?= $editUrl ?>" title="<?= Yii::t('CustomPagesModule.base', 'Configuration'); ?>" target="_blank" class="float-end"><i class="ti ti-pencil"></i></a>
+                        <div class="card content-card custom-snippet">
+                            <div class="card-header">
+                                <div class="card-title"><?= $snippet->icon ? Icon::get($snippet->icon) . ' ' : '' ?><?= Html::encode($snippet->title) ?></div>
+                                <div class="card-header-actions"><a id="snippet-config-button" href="<?= $editUrl ?>" title="<?= Yii::t('CustomPagesModule.base', 'Configuration'); ?>" target="_blank"><i class="ti ti-pencil"></i></a></div>
                             </div>
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <?= $html; ?>
                             </div>
                         </div>

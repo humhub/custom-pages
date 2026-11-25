@@ -3,7 +3,7 @@
 use humhub\helpers\Html;
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\widgets\SnippetContent;
-use humhub\widgets\bootstrap\Link;
+use humhub\widgets\menu\MenuLink;
 
 /* @var $model CustomPage */
 /* @var $canEdit bool */
@@ -11,9 +11,7 @@ use humhub\widgets\bootstrap\Link;
 $iframeId = 'iframesnippet-' . $model->id;
 
 $navigation = !$canEdit ? [] : [
-    Link::to(Yii::t('CustomPagesModule.base', 'Edit'), $model->getEditUrl())
-        ->icon('pencil')
-        ->cssClass(['btn', 'dropdown-item']),
+    new MenuLink(['label' => Yii::t('CustomPagesModule.base', 'Edit'), 'url' => $model->getEditUrl(), 'icon' => 'pencil']),
 ];
 ?>
 

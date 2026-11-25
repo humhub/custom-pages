@@ -8,6 +8,7 @@
 
 use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\widgets\SnippetContent;
+use humhub\widgets\menu\MenuLink;
 use yii\base\ViewNotFoundException;
 
 /* @var $model CustomPage */
@@ -20,7 +21,7 @@ try {
 }
 
 $navigation = (!$canEdit) ? [] : [
-    '<a href="' . $model->getEditUrl() . '"><i class="ti ti-pencil"></i>' . Yii::t('CustomPagesModule.base', 'Edit') . '</a>'
+    new MenuLink(['label' => Yii::t('CustomPagesModule.base', 'Edit'), 'url' => $model->getEditUrl(), 'icon' => 'pencil']),
 ];
 
 ?>

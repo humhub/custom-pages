@@ -1,11 +1,11 @@
 #templatePageRoot {
     .download-list {
-        margin-top: 10px;
-        padding: 0 20px;
+        margin-top: .5rem;
+        padding: 0 1rem;
     }
 
     .download-item {
-        margin-top: 5px;
+        margin-top: .25rem;
     }
 
     word-wrap: break-word;
@@ -81,7 +81,7 @@ span[data-editor-container-item-id] {
     align-items: center;
     justify-content: center;
     text-align: center;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 [data-actions-page-id], [data-actions-container-id], [data-actions-container-item-id] {
@@ -98,15 +98,15 @@ span[data-editor-container-item-id] {
 [data-actions-page-id], [data-actions-container-id], [data-actions-container-item-id] {
     > i.fa {
         display: inline-block;
-        padding: 4px 8px;
-        border-radius: 3px 3px 0 0;
+        padding: .25rem .5rem;
+        border-radius: var(--bs-border-radius-sm) var(--bs-border-radius-sm) 0 0;
         cursor: pointer;
         color: var(--bs-white);
     }
 }
 
 .cp-editor-actions-pinned > i.fa {
-    border-radius: 3px;
+    border-radius: var(--bs-border-radius-sm);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
@@ -127,11 +127,11 @@ span[data-editor-container-item-id] {
 
 .cp-editor-element-empty {
     display: inline-block;
-    padding: 2px 8px;
+    padding: 0 .5rem;
     border: 1px dashed var(--cp-element-color);
-    border-radius: 3px;
+    border-radius: var(--bs-border-radius-sm);
     color: var(--cp-element-color);
-    font-size: 12px;
+    font-size: var(--hh-font-size-meta);
     line-height: 1.4;
 }
 
@@ -144,14 +144,14 @@ span[data-editor-container-item-id] {
 // List of the container items in the edit dialog of a template instance
 .cp-container-items-list {
     list-style: none;
-    margin: 0 0 10px;
+    margin: 0 0 .5rem;
     padding: 0;
 
     .cp-container-item {
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 6px 8px;
+        gap: .5rem;
+        padding: .25rem .5rem;
         border-bottom: 1px solid var(--bs-light);
     }
 
@@ -169,7 +169,7 @@ span[data-editor-container-item-id] {
     }
 
     .cp-container-item-actions a {
-        padding: 0 6px;
+        padding: 0 .25rem;
         color: var(--bs-body-color);
     }
 

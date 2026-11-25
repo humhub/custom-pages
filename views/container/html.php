@@ -20,8 +20,8 @@ $cssClass = ($page->hasAttribute('cssClass') && !empty($page->cssClass)) ? $page
 Assets::register($this);
 ?>
 <?= PageConfigurationButton::widget() ?>
-<div class="panel panel-default <?= Html::encode($cssClass) ?>">
-    <div class="panel-body">
+<div class="card content-card <?= Html::encode($cssClass) ?>">
+    <div class="card-body">
         <?= $html ?>
     </div>
 </div>

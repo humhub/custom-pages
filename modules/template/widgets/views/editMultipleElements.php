@@ -41,24 +41,28 @@ $footer .= $model->hasEditableFields()
         <?php $isContainer = $contentItem->content instanceof ContainerElement; ?>
         <?php $isEmpty = $isContainer ? !$contentItem->content->hasItems() : $contentItem->content->isNewRecord; ?>
 
-        <div class="panel panel-default">
-            <div class="template-edit-multiple-tab panel-heading" tabindex="0">
-                <strong>
-                    <?= Html::encode($model->getElement($contentItem->elementContent->element->name)->getTitle()) ?>&nbsp;
-                    <i class="switchIcon ti ti-caret-down-filled" aria-hidden="true"></i>
-                </strong>
-                <?= Badge::success($contentItem->elementContent->label)->right() ?>
-                <?php if ($isEmpty): ?>
-                    <?= Badge::warning(Yii::t('CustomPagesModule.view', 'Empty'))->right() ?>
-                <?php endif; ?>
-                <?php if ($isContainer && $contentItem->content->definition?->allow_multiple): ?>
-                    <?= Badge::success(Yii::t('CustomPagesModule.view', 'Multiple'))->right() ?>
-                <?php endif; ?>
+        <div class="card content-card">
+            <div class="template-edit-multiple-tab card-header" tabindex="0">
+                <div class="card-title">
+                    <strong>
+                        <?= Html::encode($model->getElement($contentItem->elementContent->element->name)->getTitle()) ?>&nbsp;
+                        <i class="switchIcon ti ti-caret-down-filled" aria-hidden="true"></i>
+                    </strong>
+                </div>
+                <div class="card-header-actions">
+                    <?php if ($isContainer && $contentItem->content->definition?->allow_multiple): ?>
+                        <?= Badge::success(Yii::t('CustomPagesModule.view', 'Multiple')) ?>
+                    <?php endif; ?>
+                    <?php if ($isEmpty): ?>
+                        <?= Badge::warning(Yii::t('CustomPagesModule.view', 'Empty')) ?>
+                    <?php endif; ?>
+                    <?= Badge::success($contentItem->elementContent->label) ?>
+                </div>
             </div>
-            <div class="panel-body<?= $counter != 0 ? ' d-none' : '' ?>" data-element-index="<?= $counter ?>">
+            <div class="card-body<?= $counter != 0 ? ' d-none' : '' ?>" data-element-index="<?= $counter ?>">
                 <?= TemplateContentFormFields::widget(['form' => $form, 'model' => $contentItem->content]) ?>
             </div>
-            <div class="panel-footer">&nbsp;</div>
+            <div class="card-footer">&nbsp;</div>
         </div>
         <?php $counter++ ?>
     <?php endforeach; ?>

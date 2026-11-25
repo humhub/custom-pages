@@ -35,14 +35,14 @@ $('.collapsableTrigger').off('click').on('click', function() {
         case 39:
         case 40:
             e.preventDefault();
-            if (!$(this).next('.panel-body').is(':visible')) {
+            if (!$(this).next('.collapsableContent').is(':visible')) {
                 $(this).trigger('click');
             }
             break;
         case 37:
         case 38:
             e.preventDefault();
-            if ($(this).next('.panel-body').is(':visible')) {
+            if ($(this).next('.collapsableContent').is(':visible')) {
                 $(this).trigger('click');
             }
             break;

@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\Icon;
 use yii\helpers\Html;
 use humhub\modules\custom_pages\modules\template\widgets\TemplatePage;
 ?>
@@ -18,7 +19,7 @@ use humhub\modules\custom_pages\modules\template\widgets\TemplatePage;
                 <div class="col-md-4">
                     <div class="card content-card custom-snippet">
                         <div class="card-header">
-                            <div class="card-title"><i class="fa <?= Html::encode($snippet->icon); ?>"></i> <?= Html::encode($snippet->title) ?></div>
+                            <div class="card-title"><?= $snippet->icon ? Icon::get($snippet->icon) . ' ' : '' ?><?= Html::encode($snippet->title) ?></div>
                             <div class="card-header-actions">
                                 <a id="snippet-config-button" href="<?= $contentContainer->createUrl('edit', ['id' => $snippet->id]) ?>" title="<?= Yii::t('CustomPagesModule.base', 'Configuration'); ?>" target="_blank">
                                     <i class="ti ti-pencil"></i>

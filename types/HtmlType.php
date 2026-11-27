@@ -13,7 +13,6 @@ use humhub\modules\custom_pages\models\CustomPage;
 use humhub\modules\custom_pages\widgets\TinyMce;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
-use humhub\modules\file\widgets\UploadProgress;
 use humhub\widgets\form\ActiveForm;
 use Yii;
 
@@ -62,7 +61,6 @@ class HtmlType extends ContentType
                 'label' => Yii::t('CustomPagesModule.model', 'Attach Files'),
                 'tooltip' => false,
                 'hideInStream' => true,
-                'progress' => '#custom-page-html-upload-progress',
                 'preview' => '#custom-page-html-upload-preview',
                 'cssButtonClass' => 'btn-light btn-sm',
                 'model' => $page,
@@ -73,7 +71,6 @@ class HtmlType extends ContentType
                 'model' => $page,
                 'edit' => true,
             ])
-            . UploadProgress::widget(['id' => 'custom-page-html-upload-progress'])
         . '</div>';
 
         return $field;

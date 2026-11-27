@@ -13,7 +13,6 @@ use humhub\modules\custom_pages\modules\template\widgets\DeleteContentButton;
 use humhub\modules\file\models\File;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
-use humhub\modules\file\widgets\UploadProgress;
 use humhub\widgets\form\ActiveForm;
 use Yii;
 
@@ -173,7 +172,6 @@ class FileElement extends BaseElementContent implements \Stringable
                         'dropZone' => '#' . $id,
                         'tooltip' => false,
                         'preview' => '#' . $id . '-preview',
-                        'progress' => '#' . $id . '-progress',
                     ]) . ' '
                     . DeleteContentButton::widget([
                         'model' => $this,
@@ -187,7 +185,6 @@ class FileElement extends BaseElementContent implements \Stringable
                         'popoverPosition' => 'top',
                         'items' => [$this->getFile()],
                     ])
-                    . UploadProgress::widget(['id' => $id . '-progress'])
                 . Html::endTag('div')
 
             . Html::endTag('div')

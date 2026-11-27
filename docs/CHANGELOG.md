@@ -3,6 +3,7 @@ Changelog
 
 1.14.0 (Unreleased)
 -------------------
+- Enh: The file fields show their upload progress in the file rows of the core 1.20 instead of a separate bar; the image element keeps a preview and bar of its own (humhub/humhub#8793)
 - Enh: Cards instead of Bootstrap 3 panels, the snippets as `SidebarCard`, sizes in rem and the text styles of the core 1.20 (humhub/humhub#8777)
 - Enh: The acceptance tests find the account menu by the core's section menu classes (humhub/humhub#8741)
 - Fix: The structure view's action buttons stay reachable by keyboard and have names (humhub/humhub#8721)

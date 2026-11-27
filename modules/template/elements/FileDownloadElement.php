@@ -14,7 +14,6 @@ use humhub\modules\file\models\File;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
-use humhub\modules\file\widgets\UploadProgress;
 use humhub\widgets\form\ActiveForm;
 use Yii;
 use yii\helpers\Url;
@@ -204,7 +203,6 @@ class FileDownloadElement extends BaseElementContent implements \Stringable
                     'dropZone' => '#' . $id,
                     'tooltip' => false,
                     'preview' => '#' . $id . '-preview',
-                    'progress' => '#' . $id . '-progress',
                     'buttonOptions' => ['style' => 'float:left;'],
                 ])
                 . FilePreview::widget([
@@ -212,10 +210,6 @@ class FileDownloadElement extends BaseElementContent implements \Stringable
                     'popoverPosition' => 'top',
                     'items' => [$this->getFile()],
                     'options' => ['style' => 'display:block;margin-left:150px']])
-                . UploadProgress::widget([
-                    'id' => $id . '-progress',
-                    'options' => ['style' => 'display:block;margin-left:150px;width:500px'],
-                ])
             . Html::endTag('div')
             . $this->renderCollapsableEditForm($form);
     }

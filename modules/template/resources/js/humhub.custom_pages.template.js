@@ -1,42 +1,63 @@
 humhub.module('custom_pages.template', function (module, require, $) {
     var object = require('util').object;
-    var string = require('util').string;
-    var Preview = require('file').Preview;
+    var Widget = require('ui.widget').Widget;
     var client = require('client');
-    
-    var ImagePreview = function(node, options) {
-        Preview.call(this, node, options);
+
+    /**
+     * The image of an image element. `ImageElement` renders the container with the current file as the init data (as
+     * the upload response has it, `FileHelper::getFileInfos()`). Not a `file.Preview`, which lists files as file rows:
+     * the upload stays one request and adds the uploaded image here.
+     */
+    var ImagePreview = function (node, options) {
+        Widget.call(this, node, options);
     };
-    
-    object.inherits(ImagePreview, Preview);
-    
-    ImagePreview.prototype.add = function (file) {     
-        if(this.source && this.source.options.uploadSingle) {
-            this.$list.find('li').remove();
+
+    object.inherits(ImagePreview, Widget);
+
+    ImagePreview.prototype.init = function (files) {
+        var that = this;
+        this.$list = $('<ul class="files"></ul>').appendTo(this.$);
+        (Array.isArray(files) ? files : []).forEach(function (file) {
+            that.add(file);
+        });
+
+        if (this.hasFiles()) {
+            this.$.show();
+        } else {
+            this.$.hide();
         }
-        
-        var template = this.getTemplate(file);
-        var $file = $(string.template(template, file));
-        this.$list.append($file);
-        $file.fadeIn();
     };
-    
-    ImagePreview.prototype.setSource = function(source) {
+
+    // A single image: a new one replaces the one before
+    ImagePreview.prototype.add = function (file) {
+        this.$list.html(
+            $('<li class="file-preview-item"></li>')
+                .attr('data-preview-guid', file.guid)
+                .append($('<img class="preview">').attr({src: file.thumbnailUrl, alt: file.name}))
+        );
+    };
+
+    ImagePreview.prototype.getFileCount = function () {
+        return this.$list.find('.file-preview-item').length;
+    };
+
+    ImagePreview.prototype.hasFiles = function () {
+        return this.getFileCount() > 0;
+    };
+
+    ImagePreview.prototype.reset = function () {
+        this.$list.empty();
+        this.$.hide();
+    };
+
+    ImagePreview.prototype.setSource = function (source) {
         var that = this;
         this.source = source;
-        this.source.on('humhub:file:uploadStart', function() {
+        this.source.on('humhub:file:uploadStart', function () {
             that.hide();
         });
     };
-    
-    ImagePreview.template = {
-        file_image: '<li class="file-preview-item" data-preview-guid="{guid}"><img src="{thumbnailUrl}" class="preview" /></li>'
-    };
-    
-    ImagePreview.prototype.getTemplate = function (file) {
-        return ImagePreview.template.file_image;
-    };
-    
+
     module.initOnPjaxLoad = true;
     var init = function () {
         if ($('#templatePageRoot').length) {
@@ -94,8 +115,9 @@ humhub.module('custom_pages.template', function (module, require, $) {
             if (response.success) {
                 const preview = $('#' + btn.data('preview-id'));
                 if (preview.length) {
+                    // The image element's own preview or the file rows of `file.Preview`
                     preview.fadeOut(400, function () {
-                        $(this).find('.file-preview-item').remove();
+                        Widget.instance(preview).reset();
                     });
                 }
                 btn.remove();

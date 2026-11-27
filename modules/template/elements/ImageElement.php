@@ -11,10 +11,11 @@ namespace humhub\modules\custom_pages\modules\template\elements;
 use humhub\helpers\Html;
 use humhub\modules\custom_pages\modules\template\widgets\CollapsableFormGroup;
 use humhub\modules\custom_pages\modules\template\widgets\DeleteContentButton;
-use humhub\modules\file\widgets\FilePreview;
+use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\UploadProgress;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\JsWidget;
 use Yii;
 
 /**
@@ -122,6 +123,7 @@ class ImageElement extends FileElement
     public function renderEditForm(ActiveForm $form): string
     {
         $id = 'imageElement-' . $this->id;
+        $file = $this->getFile();
 
         return $form->field($this, 'file_guid')->hiddenInput(['class' => 'file-guid'])->label(false)
 
@@ -146,10 +148,12 @@ class ImageElement extends FileElement
                 . Html::endTag('div')
 
                 . UploadProgress::widget(['id' => $id . '-progress', 'options' => ['style' => 'width:500px']])
-                . FilePreview::widget([
+                // The image, no file rows: the JS widget shows the file it starts with and an uploaded one
+                . JsWidget::widget([
                     'id' => $id . '-preview',
-                    'items' => [$this->getFile()],
                     'jsWidget' => 'custom_pages.template.ImagePreview',
+                    'init' => $file ? [FileHelper::getFileInfos($file)] : [],
+                    'visible' => $file !== null,
                     'options' => ['class' => 'col-md-8 previewContainer'],
                 ])
             . Html::endTag('div')
